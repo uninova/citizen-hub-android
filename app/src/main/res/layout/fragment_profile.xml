@@ -9,12 +9,12 @@
         android:id="@+id/text_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="68dp"
         android:gravity="center"
         android:text="TextView"
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/text_birthdate"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="10dp" />
 
     <EditText
         android:id="@+id/text_height"
@@ -83,7 +83,7 @@
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/text_weight"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -117,13 +117,13 @@
         android:id="@+id/button_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="96dp"
-        android:background="@color/colorPrimary"
-        android:text="Feature Coming Soon"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/btn_rounded_color"
+        android:padding="8dp"
+        android:text="Coming Soon"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -131,13 +131,10 @@
         android:layout_width="125dp"
         android:layout_height="106dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toTopOf="@+id/text_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_profile"
         tools:srcCompat="@drawable/ic_profile" />
 

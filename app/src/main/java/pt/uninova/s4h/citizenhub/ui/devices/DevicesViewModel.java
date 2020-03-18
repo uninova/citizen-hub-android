@@ -10,7 +10,7 @@ public class DevicesViewModel extends ViewModel {
 
     public DevicesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("In development...");
+        mText.setValue("There are no connected devices.");
     }
 
     public LiveData<String> getText() {

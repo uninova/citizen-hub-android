@@ -14,4 +14,7 @@
     <string name="menu_reports">Daily Activity Reports</string>
     <string name="menu_devices">Devices</string>
     <string name="menu_profile">User Profile</string>
+    <string name="menu_search">Search</string>
+    <string name="controlcenter_delete_device">Delete Device</string>
+    <string name="device_image">Device Image</string>
 </resources>
