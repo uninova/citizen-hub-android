@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import datastorage.DeviceDbHelper;
 import pt.uninova.s4h.citizenhub.ui.Home;
 import pt.uninova.s4h.citizenhub.ui.R;
+
+import static datastorage.DeviceContract.DeviceEntry.TABLE_NAME;
 
 public class DevicesFragment extends ListFragment {
     OnDataPass dataPasser;
@@ -44,6 +49,15 @@ public class DevicesFragment extends ListFragment {
     private Activity mActivity;
     private ArrayAdapter mAdapter;
     private ListView mListView;
+
+
+
+    //
+    ArrayList<String> listItem;
+    ArrayAdapter adapter;
+
+
+    //
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -135,6 +149,14 @@ public class DevicesFragment extends ListFragment {
 
                         Home.fab.show();
                         ((Home) getActivity()).setActionBarTitle("Connected Devices");
+                        //
+               listItem = new ArrayList<>();
+                DeviceDbHelper deviceDbHelper = new DeviceDbHelper(getContext());
+               viewData(deviceDbHelper);
+
+
+
+
                         //TODO implementar databases aqui
 
                         getListView().setAdapter(null);
@@ -154,6 +176,25 @@ public class DevicesFragment extends ListFragment {
             }
         }
     };
+
+    public Cursor ViewData(DeviceDbHelper deviceDbHelper){
+        SQLiteDatabase db = deviceDbHelper.getReadableDatabase();
+        String query = "Select * from "+TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
+    }
+    private void viewData(DeviceDbHelper deviceDbHelper){
+        Cursor cursor = ViewData(deviceDbHelper);
+        if(cursor.getCount()==0){
+            Log.d("DATABASESS", "No devices to show");
+        }
+        else {
+            while (cursor.moveToNext()){
+            Log.d("DATABASESS", "Valores da tabela:" + cursor.getString(2) + cursor.getString(3));
+                listItem.add(cursor.getString(3));
+            }
+        }
+    }
 
     /**
      * Interface to send a whole device to activity

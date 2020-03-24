@@ -70,6 +70,8 @@ public class DeviceDbHelper extends SQLiteOpenHelper {
         }
     }
 
+
+
     /**
      * This is called when the database needs to be upgraded.
      */
