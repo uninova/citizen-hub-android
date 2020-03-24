@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.gigamole.library.PulseView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.ui.Home;
@@ -38,9 +40,7 @@ public class DevicesFragment extends ListFragment {
 
     private DevicesViewModel galleryViewModel;
     private ArrayList<String> mDeviceList = new ArrayList<>(); //to show
-    private Context mContext;
     private Activity mActivity;
-    private ConstraintLayout mCLayout;
     private ArrayAdapter mAdapter;
     private ListView mListView;
 
@@ -49,54 +49,19 @@ public class DevicesFragment extends ListFragment {
         galleryViewModel =
                 ViewModelProviders.of(this).get(DevicesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_devices, container, false);
-        //root = inflater.inflate(R.layout.list_devices,container,false);
+        //root = inflater.inflate(R.layout.backup_list_devices,container,false);
         galleryViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
             }
         });
+        ((Home) getActivity()).setActionBarTitle("Connected Devices");
         Home.fab.show();
 
-        /** to list bonded
-         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-         getActivity().registerReceiver(mReceiver, filter);
-         **/
-
-
         // Get the application context
-        mContext = getContext();
         mActivity = getActivity();
 
-        // Get the widget reference from XML layout
-        mCLayout = root.findViewById(R.id.cL);
-        mListView = root.findViewById(R.id.list_view_2);
-
         return root;
-    }
-
-    private void getBluetoothPairedDevices(final ArrayList<String> deviceList){
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
-            Toast.makeText(getActivity(), "This device not support bluetooth", Toast.LENGTH_LONG).show();
-        } else {
-            if (!bluetoothAdapter.isEnabled()) {
-                Intent enableAdapter = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableAdapter, 0);
-            }
-            Set<BluetoothDevice> all_devices = bluetoothAdapter.getBondedDevices();
-            if (all_devices.size() > 0) {
-                for (BluetoothDevice currentDevice : all_devices) {
-                    deviceList.add("Device Name: "+currentDevice.getName() + "\nDevice Address: " + currentDevice.getAddress());
-                    mListView.setAdapter(new ArrayAdapter<>(getActivity(),
-                            android.R.layout.simple_list_item_1, deviceList));
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
-        //getBluetoothPairedDevices(mDeviceList); //gets BONDED DEVICES //TODO filtrar
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -108,7 +73,7 @@ public class DevicesFragment extends ListFragment {
                         .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mDeviceList.add(device.getName() + "\n" + device.getAddress());
                 Log.i("BT", device.getName() + "\n" + device.getAddress());
-                mListView.setAdapter(new ArrayAdapter<>(context,
+                getListView().setAdapter(new ArrayAdapter<>(context,
                         android.R.layout.simple_list_item_1, mDeviceList));
             }
         }
@@ -127,32 +92,49 @@ public class DevicesFragment extends ListFragment {
                     }
                 }
                 // Initialize an array adapter
-                mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_devices,mDeviceList){
+                mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details,mDeviceList){
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent){
+                        ((Home) getActivity()).setActionBarTitle("Select a Device");
                         // Get the view
-                        Log.i("FSL","i'm here");
                         LayoutInflater inflater = mActivity.getLayoutInflater();
-                        View itemView = inflater.inflate(R.layout.list_devices,null,true);
-                        PulseView pulseView = itemView.findViewById(R.id.pv);
-                        pulseView.startPulse();
+                        View itemView = inflater.inflate(R.layout.device_search_details,null,true);
 
                         // Get current device name
                         TextView deviceName = itemView.findViewById(R.id.device_name);
-                        String deviceNameString = (String) mListView.getAdapter().getItem(position);
+                        TextView deviceDetails = itemView.findViewById(R.id.device_details);
+                        String deviceNameString = (String) getListView().getAdapter().getItem(position);
                         String[] deviceNameStringSplitted = deviceNameString.split("\n");
                         deviceName.setText(deviceNameStringSplitted[0]);
-                        //for address, use deviceNameStringSplitted[1]
+                        deviceDetails.setText(deviceNameStringSplitted[1]);
                         return itemView;
                     }
                 };
 
-                mListView.setAdapter(mAdapter);
+                getListView().setAdapter(mAdapter);
 
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Log.i("info_new", "got here.");
+                        String deviceList[]=mDeviceList.get(i).split("\n");
+                        Log.d("device",deviceList[0]);
+                        Log.d("device", deviceList[1]);
+                        BluetoothDevice device = Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]);
+                        device.createBond();
+
+                        Home.fab.show();
+                        ((Home) getActivity()).setActionBarTitle("Connected Devices");
+                        getListView().setAdapter(null);
+
+                        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                        ArrayList<String> s = new ArrayList<>();
+                        for(BluetoothDevice bt : pairedDevices)
+                            s.add(bt.getName());
+                        mDeviceList.clear();mDeviceList.addAll(s);
+
+                        getListView().setAdapter(new ArrayAdapter<>(getActivity(),
+                                android.R.layout.simple_list_item_1, mDeviceList));
                     }
                 });
 
@@ -161,29 +143,13 @@ public class DevicesFragment extends ListFragment {
     };
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        String deviceList[]=mDeviceList.get(position).split("\n");
-        Log.d("device",deviceList[0]);
-        Log.d("device", deviceList[1]);
-        BluetoothDevice device = Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]);
-        device.createBond();
-    }
-
-
-
-    @Override
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,  new IntentFilter("IntentFilterSendData"));
     }
-
-
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
     }
-
-
 }

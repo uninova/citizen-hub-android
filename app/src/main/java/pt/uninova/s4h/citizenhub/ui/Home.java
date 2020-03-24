@@ -50,13 +50,13 @@ public class Home extends AppCompatActivity {
     public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     public Handler mHandler = new Handler(Looper.myLooper());
     public static BluetoothManager mBluetoothManager;
-    BackgroundService mService;
+    public static BackgroundService mService;
     boolean mBound = false;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final int MY_PERMISSION_RESPONSE = 2;
     private static final int REQUEST_ENABLE_BT = 1;
     public static boolean loggedIn = false;
-    public static boolean bypassForTesting = false;
+    public static boolean bypassForTesting = true; //TODO login disabled
     public static String loggedEmail = "person@uninova.pt";
 
     @Override
@@ -103,14 +103,12 @@ public class Home extends AppCompatActivity {
                 } else {
                     // Bluetooth is enabled. Search.
                     if (mBound) {
-                        //Intent intent = new Intent(Home.this, Temp_MainActivity.class);
-                        //startActivity(intent);
                         mService.PreScan();
                         mService.scanDevice(true);
+                        setActionBarTitle("Searching Devices...");
+                        fab.hide();
                     } else {
                     }
-
-
                 }
 
             }
@@ -195,79 +193,12 @@ public class Home extends AppCompatActivity {
 
     public void run_service_crono()
     {
-        //run chronometer
-        //((Chronometer) findViewById(R.id.chrono)).start();
-        //running task on alarm (reading probably)
-        //Timer myTimer = new Timer("MyTimer", true);
-        //myTimer.scheduleAtFixedRate(new MyTask(), 0, 60000);
-        //Intent mServiceIntent = new Intent(getApplicationContext(), mService.getClass());
-        //if (!isMyServiceRunning(mService.getClass())) {
-        //    startService(mServiceIntent);
-        //}
         sendNotification(); //calls methods from NotificationHelper
-
-    }
-
-    public void runHeartRate (View view)
-    {
-        //just for testing
-        //Log.i("FSL_debug", "got here, running heart rate");
-    }
-
-    private class MyTask extends TimerTask {
-
-        public void run(){
-            //task to create Toasts, check method
-            (new MyAsyncTask()).execute();
-            //running service
-            //BackgroundService_backup mSensorService = new BackgroundService_backup(getApplicationContext());
-            //Intent mServiceIntent = new Intent(getApplicationContext(), mSensorService.getClass());
-            //if (!isMyServiceRunning(mSensorService.getClass())) {
-            //    startService(mServiceIntent);
-            //}
-            sendNotification(); //calls methods from NotificationHelper
-        }
     }
 
     public void sendNotification() {
                 NotificationHelper helper = new NotificationHelper(Home.this);
                 helper.createNotification("Citizen Hub","Reading Heart Rate...");
-                //placeholder message
-    }
-
-    //check whether the service is running or not, if service already in running mode then no need to start it again
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
-                return true;
-            }
-        }
-        Log.i ("isMyServiceRunning?", false+"");
-        return false;
-    }
-
-    class MyAsyncTask extends android.os.AsyncTask {
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            runOnUiThread(new Runnable(){
-                public void run() {
-                    //debug task to show Toasts, periodically
-                    counter++;
-                    Toast.makeText(getApplicationContext(), "Service runned " + counter + " times.", Toast.LENGTH_LONG).show();
-                    //end of debug task
-                }
-            });
-            return null;
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu); //the three dots on the left of the action bar
-        return true;
     }
 
     @Override
