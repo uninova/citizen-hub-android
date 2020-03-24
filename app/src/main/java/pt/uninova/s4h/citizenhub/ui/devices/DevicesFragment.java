@@ -37,6 +37,7 @@ import pt.uninova.s4h.citizenhub.ui.Home;
 import pt.uninova.s4h.citizenhub.ui.R;
 
 public class DevicesFragment extends ListFragment {
+    OnDataPass dataPasser;
 
     private DevicesViewModel galleryViewModel;
     private ArrayList<String> mDeviceList = new ArrayList<>(); //to show
@@ -119,11 +120,23 @@ public class DevicesFragment extends ListFragment {
                         String deviceList[]=mDeviceList.get(i).split("\n");
                         Log.d("device",deviceList[0]);
                         Log.d("device", deviceList[1]);
-                        BluetoothDevice device = Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]);
-                        device.createBond();
+                        //TODO
+                        if(Home.mBluetoothManager.getAdapter().getBondedDevices().contains(Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1])))
+                        {
+                            passData(Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]));
+                        }
+                        //TODO
+                        else {
+                            BluetoothDevice device = Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]);
+                            if (device.createBond()) {
+                                passData(device);
+                            }
+                        }
 
                         Home.fab.show();
                         ((Home) getActivity()).setActionBarTitle("Connected Devices");
+                        //TODO implementar databases aqui
+
                         getListView().setAdapter(null);
 
                         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -142,14 +155,40 @@ public class DevicesFragment extends ListFragment {
         }
     };
 
+    /**
+     * Interface to send a whole device to activity
+     */
+    public interface OnDataPass {
+        public void onDataPass(BluetoothDevice device);
+    }
+    public void passData(BluetoothDevice device) {
+        dataPasser.onDataPass(device);
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        dataPasser = (OnDataPass) context;
+    }
+
+    /**
+     * Register's the receiver
+     */
+
     @Override
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,  new IntentFilter("IntentFilterSendData"));
+
     }
+
+    /**
+     * Unregisters the receiver
+     */
+
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
     }
+
 }

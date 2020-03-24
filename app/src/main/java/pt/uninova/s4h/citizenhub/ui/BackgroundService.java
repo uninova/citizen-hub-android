@@ -3,53 +3,302 @@ package pt.uninova.s4h.citizenhub.ui;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
+import datastorage.DeviceContract;
+import datastorage.DeviceContract.DeviceEntry;
+import datastorage.DeviceDbHelper;
+import datastorage.MeasurementsContract;
+import datastorage.MeasurementsDbHelper;
+
+import datastorage.DeviceProvider;
 
 import static android.content.ContentValues.TAG;
+import static datastorage.DeviceContract.DeviceEntry.*;
 
-public class BackgroundService extends Service {
+import static datastorage.DeviceContract.DeviceEntry.CONTENT_URI;
+import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME;
+import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_DATE;
+import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE;
+import static pt.uninova.s4h.citizenhub.ui.Constants.ACTION_DATA_AVAILABLE;
+import static pt.uninova.s4h.citizenhub.ui.Constants.ACTION_GATT_CONNECTED;
+import static pt.uninova.s4h.citizenhub.ui.Constants.ACTION_GATT_DISCONNECTED;
+import static pt.uninova.s4h.citizenhub.ui.Constants.ACTION_GATT_SERVICES_DISCOVERED;
+import static pt.uninova.s4h.citizenhub.ui.Constants.CLIENT_CHARACTERISTIC_CONFIG;
+import static pt.uninova.s4h.citizenhub.ui.Constants.EXTRA_DATA;
 
+public class BackgroundService extends Service{
+
+
+
+    private static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
     public ArrayList<BluetoothDevice> deviceList;
     private Handler mHandler;
     private boolean mScanning;
     private static final long SCAN_PERIOD = 10000;
-    private BluetoothLeScanner mBluetoothScanner;
+    public BluetoothLeScanner mBluetoothScanner;
     public int mConnectionState = Constants.STATE_DISCONNECTED;
     public Context myContext = null;
     BluetoothAdapter mBluetoothAdapter;
+    private BluetoothGatt bluetoothGatt;
 
+    HashMap<String, List<BluetoothGattCharacteristic>> FullDeviceList
+            = new HashMap<>();
+    public boolean isConnectedToGatt = false;
     private final IBinder mBinder = new LocalBinder();
+    private int connectionState = STATE_DISCONNECTED;
+    private static final int STATE_DISCONNECTED = 0;
+    private static final int STATE_CONNECTING = 1;
+    private static final int STATE_CONNECTED = 2;
 
+
+
+    /**
+     * Core of the service, receives updates from the device's gatt server and handles them
+     * Broadcast updates from data received through specified bluetooth characteristic
+     *
+     * @param action
+     * @param characteristic
+     */
+
+    public final BluetoothGattCallback gattCallback =
+            new BluetoothGattCallback() {
+                @Override
+                public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                                    int newState) {
+                    String intentAction;
+                    if (newState == BluetoothProfile.STATE_CONNECTED) {
+                        intentAction = ACTION_GATT_CONNECTED;
+                        connectionState = STATE_CONNECTED;
+                        broadcastUpdate(intentAction);
+                        Log.i(TAG, "Connected to GATT server.");
+                        Log.i(TAG, "Attempting to start service discovery:");
+                        bluetoothGatt.discoverServices();
+                    } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                        intentAction = ACTION_GATT_DISCONNECTED;
+                        connectionState = STATE_DISCONNECTED;
+                        Log.i(TAG, "Disconnected from GATT server.");
+                        broadcastUpdate(intentAction);
+                    }
+                }
+
+                @Override
+                // New services discovered
+                public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                    List<BluetoothGattService> AllServices = gatt.getServices();
+                    List<BluetoothGattCharacteristic> mGattCharacteristics = new ArrayList<BluetoothGattCharacteristic>();
+                    for (BluetoothGattService service : AllServices) {
+                        Log.i("SERVICESS", service.getUuid().toString());
+                        List<BluetoothGattCharacteristic> gattCharacteristics =
+                                service.getCharacteristics();
+                        for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                            Log.i("CHARACTERISTICS", gattCharacteristic.getUuid().toString());
+                            mGattCharacteristics.add(gattCharacteristic);
+                        }
+                    }
+                    FullDeviceList.put(gatt.getDevice().getAddress(), mGattCharacteristics);
+                    Log.i("ARRAY DE DEVICES", String.valueOf(FullDeviceList.size()));
+                    //   saveHashMap("ConnectedDevices", FullDeviceList);
+                    if (status == BluetoothGatt.GATT_SUCCESS) {
+                        BluetoothGattService service = gatt.getService(Constants.UUID_SERVICE_HEARTBEAT);
+                        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID_HEART_RATE_MEASUREMENT);
+                        if (characteristic != null) {
+                            setCharacteristicNotification(characteristic, true);
+                            broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+                        }
+                    } else {
+                        Log.w(TAG, "onServicesDiscovered received: " + status);
+                    }
+
+                }
+
+
+                @Override
+                // Result of a characteristic read operation
+                public void onCharacteristicRead(BluetoothGatt gatt,
+                                                 BluetoothGattCharacteristic characteristic,
+                                                 int status) {
+                    if (status == BluetoothGatt.GATT_SUCCESS) {
+                        broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                    }
+                }
+
+                @Override
+// Characteristic notification
+                public void onCharacteristicChanged(BluetoothGatt gatt,
+                                                    BluetoothGattCharacteristic characteristic) {
+                    broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                    setCharacteristicNotification(characteristic, true);
+                }
+            };
+
+    /**
+     * Broadcast actions through the application
+     * @param action
+     */
+    private void broadcastUpdate(final String action) {
+        final Intent intent = new Intent(action);
+        sendBroadcast(intent);
+    }
+
+    /**
+     * Broadcast updates from data received through specified bluetooth characteristic
+     * @param action
+     * @param characteristic
+     */
+    private void broadcastUpdate(final String action,
+                                 final BluetoothGattCharacteristic characteristic) {
+        final Intent intent = new Intent(action);
+
+        // This is special handling for the Heart Rate Measurement profile. Data
+        // parsing is carried out as per profile specifications.
+        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+            int flag = characteristic.getProperties();
+            int format = -1;
+            if ((flag & 0x01) != 0) {
+                format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                Log.d("heart_rate", "Heart rate format UINT16.");
+            } else {
+                format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                Log.d("heart_rate", "Heart rate format UINT8.");
+            }
+            final int heartRate = characteristic.getIntValue(format, 1);
+            int HeartRateToString = heartRate;
+            Log.d("heartrate", String.format("Received heart rate: %d", heartRate));
+      //      Globals.setHeartRate(( String.valueOf(heartRate)));
+            MeasurementsDbHelper measurementsDbHelper = new MeasurementsDbHelper(getApplicationContext());
+            SQLiteDatabase db= measurementsDbHelper.getWritableDatabase();
+            Calendar cal = Calendar.getInstance();
+            String date = cal.getTime().toString();
+            String value  = String.valueOf(heartRate);
+            String name = "HeartRate";
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_DATE, date);
+            values.put(COLUMN_MEASUREMENT_VALUE, value);
+            values.put(COLUMN_CHARACTERISTIC_NAME, name);
+            db.insertWithOnConflict("measurements",null,values, SQLiteDatabase.CONFLICT_IGNORE);
+            Log.d("TABLEWTF", String.valueOf(Home.measurementsDbHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null,null,null, null, null)));
+            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+        } else {
+            // For all other profiles, writes the data formatted in HEX.
+            final byte[] data = characteristic.getValue();
+            if (data != null && data.length > 0) {
+                final StringBuilder stringBuilder;
+                stringBuilder = new StringBuilder(data.length);
+                for(byte byteChar : data)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
+                        stringBuilder.toString());
+            }
+        }
+        sendBroadcast(intent);
+    }
+
+    /**
+     * Enabled automatic data notifications from a specified characteristic
+     * @param characteristic
+     * @param enabled
+     */
+    //todo Acidental recursive? name of function = function inside lol
+    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
+                                              boolean enabled) {
+        if (mBluetoothAdapter == null || bluetoothGatt == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        bluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+
+        // This is specific to Heart Rate Measurement.
+        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            bluetoothGatt.writeDescriptor(descriptor);
+        } else {
+            BluetoothGattDescriptor descriptor2 = characteristic.getDescriptor(
+                    UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
+            if (descriptor2 != null) {
+                if (BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE != null) {
+                    descriptor2.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                    bluetoothGatt.writeDescriptor(descriptor2);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Binder to allow communication between the service and the activity
+     */
     public class LocalBinder extends Binder {
         BackgroundService getService() {
             return BackgroundService.this;
         }
     }
 
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
-    private final ScanCallback mLeScanCallback = new ScanCallback() {
+    /**
+     * Handle the results of bluetooth scans
+     */
+    public final ScanCallback mLeScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             if (result.getDevice() != null && result.getDevice().getName() != null && result.getDevice().getAddress() != null) {
                 if (!deviceList.contains(result.getDevice())) {
                     deviceList.add(result.getDevice());
-                    Log.i("infos",result.getDevice().getName());
+                    Log.i("infos", result.getDevice().getName());
+                    DeviceDbHelper deviceDbHelper = new DeviceDbHelper(getApplicationContext());
+                    //TODO put insert into function, nice english
+                    SQLiteDatabase db= deviceDbHelper.getWritableDatabase();
+                    String name = result.getDevice().getName();
+                    String address = result.getDevice().getAddress();
+                    int connected = 0;
+                    ContentValues values = new ContentValues();
+                    values.put(COLUMN_DEVICE_NAME, name);
+                    values.put(COLUMN_DEVICE_ADDRESS, address);
+                    values.put(COLUMN_IS_CONNECTED, connected);
+                    db.insertWithOnConflict("devices",null,values, SQLiteDatabase.CONFLICT_IGNORE);
+
+                    Log.d("TABLEWTF", String.valueOf(Home.deviceDbHelper.getReadableDatabase().query(TABLE_NAME, null, null,null,null, null, null)));
                     SendList();
                 }
             }
@@ -74,15 +323,22 @@ public class BackgroundService extends Service {
         }
     };
 
+    /**
+     * Broadcast a list of all devices scanned to activity
+     */
     public void SendList() {
         Intent intent = new Intent("IntentFilterSendData");
         intent.putParcelableArrayListExtra("DEVICE_LIST", deviceList);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(BackgroundService.this).sendBroadcast(intent);
     }
 
+    /**
+     * Scan Bluetooth Devices
+     * @param enable
+     */
     public void scanDevice(final boolean enable) {
         if (enable) {
-            Log.i("infos","got into scanDevice");
+            Log.i("infos", "got into scanDevice");
             Handler scanHandler = new Handler();
             scanHandler.postDelayed(new Runnable() {
                 @Override
@@ -100,7 +356,18 @@ public class BackgroundService extends Service {
         }
     }
 
-    public void PreScan (){
+    /**
+     *Tries to connect to device's gatt server
+     * @param device
+     */
+    public void getData(BluetoothDevice device){
+        bluetoothGatt = device.connectGatt(getApplicationContext(),true,gattCallback);
+    }
+
+    /**
+     * Handles all Bluetooth Scanner's needs to execute the scan
+     */
+    public void PreScan() {
         deviceList = new ArrayList<>();
         mHandler = new Handler();
         // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
@@ -113,14 +380,4 @@ public class BackgroundService extends Service {
         mBluetoothScanner = mBluetoothAdapter.getBluetoothLeScanner();
     }
 
-    /**
-     * Empty constructor
-     */
-    public BackgroundService() {
-        super();
-    }
-
-    public BackgroundService(Context context) {
-        myContext = context;
-    }
 }

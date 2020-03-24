@@ -3,12 +3,15 @@ package pt.uninova.s4h.citizenhub.ui;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -40,9 +43,19 @@ import android.widget.Toast;
 
 import java.util.TimerTask;
 
+import datastorage.DeviceDbHelper;
+import datastorage.DeviceProvider;
+import datastorage.MeasurementProvider;
+import datastorage.MeasurementsDbHelper;
+import pt.uninova.s4h.citizenhub.ui.devices.DevicesFragment;
 import pt.uninova.s4h.citizenhub.ui.login.LoginActivity;
 
-public class Home extends AppCompatActivity {
+import static datastorage.DeviceContract.DeviceEntry.COLUMN_IS_CONNECTED;
+
+public class Home extends AppCompatActivity implements DevicesFragment.OnDataPass {
+    public static Context homecontext;
+    public static DeviceDbHelper deviceDbHelper;
+    public static MeasurementsDbHelper measurementsDbHelper;
 
     private AppBarConfiguration mAppBarConfiguration;
     int counter = 0;
@@ -56,7 +69,7 @@ public class Home extends AppCompatActivity {
     private static final int MY_PERMISSION_RESPONSE = 2;
     private static final int REQUEST_ENABLE_BT = 1;
     public static boolean loggedIn = false;
-    public static boolean bypassForTesting = true; //TODO login disabled
+    public static boolean bypassForTesting = true;
     public static String loggedEmail = "person@uninova.pt";
 
     @Override
@@ -67,9 +80,20 @@ public class Home extends AppCompatActivity {
             Intent intent = new Intent (this, LoginActivity.class);
             startActivity(intent);
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        homecontext=getApplicationContext();
+        homecontext=getApplicationContext();
+        deviceDbHelper = new DeviceDbHelper(getApplicationContext());
+        measurementsDbHelper = new MeasurementsDbHelper(getApplicationContext());
+        DeviceProvider deviceProvider = new DeviceProvider();
+        MeasurementProvider measurementProvider = new MeasurementProvider();
+        measurementProvider.openAndQueryDatabase(measurementsDbHelper);
+        deviceProvider.openAndQueryDatabase(deviceDbHelper);
+        Log.d("WRITETEST", "writen to" + this.getFilesDir().getAbsolutePath());
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -154,6 +178,19 @@ public class Home extends AppCompatActivity {
             finish();
             return;
         }
+    }
+
+    @Override
+    public void onDataPass(BluetoothDevice device) {
+        Log.d("OndataPass", device.getName());
+        DeviceDbHelper deviceDbHelper = new DeviceDbHelper(this);
+        SQLiteDatabase db= deviceDbHelper.getWritableDatabase();
+        int connected = 1;
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IS_CONNECTED, connected);
+        db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
+        mService.mBluetoothScanner.stopScan(mService.mLeScanCallback);
+        mService.getData(device);
     }
 
     @Override
