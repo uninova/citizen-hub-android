@@ -11,7 +11,9 @@ public final class MeasurementsContract {
     public static final String CONTENT_AUTHORITY = "pt.uninova.s4h.citizenhub";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MEASUREMENTS = "measurements";
-    private MeasurementsContract() {}
+
+    private MeasurementsContract() {
+    }
 
 
     public static abstract class MeasureEntry implements BaseColumns {
@@ -25,7 +27,9 @@ public final class MeasurementsContract {
 
         public final static String TABLE_NAME = "measurements";
         public final static String _ID = BaseColumns._ID;
-        public final static String COLUMN_DATE = "date";
+
+        public final static String COLUMN_SOURCE_UUID = "uuid";
+        public final static String COLUMN_TIMESTAMP = "timestamp";
         public final static String COLUMN_MEASUREMENT_VALUE = "value";
         public final static String COLUMN_CHARACTERISTIC_NAME = "characteristic";
     }

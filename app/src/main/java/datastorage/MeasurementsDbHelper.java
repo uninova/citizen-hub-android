@@ -3,16 +3,17 @@ package datastorage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import static datastorage.MeasurementsContract.MeasureEntry.TABLE_NAME;
 
 public class MeasurementsDbHelper extends SQLiteOpenHelper {
 
     public static final String LOG_TAG = MeasurementsDbHelper.class.getSimpleName();
 
-    /** Name of the database file */
+    /**
+     * Name of the database file
+     */
     private static final String DATABASE_NAME = "measurements.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * Constructs a new instance of {@link DeviceDbHelper}.
@@ -29,16 +30,16 @@ public class MeasurementsDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create a String that contains the SQL statement to create the pets table
-        String SQL_CREATE_MEASUREMENTS_TABLE =  "CREATE TABLE " + MeasurementsContract.MeasureEntry.TABLE_NAME + " ("
-                + MeasurementsContract.MeasureEntry._ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + MeasurementsContract.MeasureEntry.COLUMN_DATE +" TEXT NOT NULL, "
-                + MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE +" TEXT NOT NULL, "
-                + MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME +" TEXT NOT NULL " + " ) ";
+        String SQL_CREATE_MEASUREMENTS_TABLE = "CREATE TABLE " + MeasurementsContract.MeasureEntry.TABLE_NAME + " ("
+                + MeasurementsContract.MeasureEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + MeasurementsContract.MeasureEntry.COLUMN_SOURCE_UUID + " TEXT NOT NULL, "
+                + MeasurementsContract.MeasureEntry.COLUMN_TIMESTAMP + " TEXT NOT NULL, "
+                + MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE + " TEXT NOT NULL, "
+                + MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME + " TEXT NOT NULL " + " ) ";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_MEASUREMENTS_TABLE);
     }
-
 
 
     /**

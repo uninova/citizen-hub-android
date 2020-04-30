@@ -11,7 +11,9 @@ public final class DeviceContract {
     public static final String CONTENT_AUTHORITY = "pt.uninova.s4h.citizenhub";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_DEVICES = "devices";
-    private DeviceContract() {}
+
+    private DeviceContract() {
+    }
 
 
     public static abstract class DeviceEntry implements BaseColumns {
@@ -24,12 +26,14 @@ public final class DeviceContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_DEVICES;
 
         public final static String TABLE_NAME = "devices";
+
         public final static String _ID = BaseColumns._ID;
-        public final static String COLUMN_DEVICE_NAME ="name";
-        public final static String COLUMN_DEVICE_ADDRESS ="address";
-        public final static String COLUMN_IS_CONNECTED = "connected";
-        public final static String COLUMN_DEVICE_SERVICES = "services";
-        public final static String COLUMN_DEVICE_CHARACTERISTICS = "characteristics";
+
+        public final static String COLUMN_DEVICE_NAME = "name";
+        public final static String COLUMN_DEVICE_ADDRESS = "address";
+        public final static String COLUMN_DEVICE_TYPE = "type";
+        public final static String COLUMN_DEVICE_STATE = "state";
+
 
         public static final int UNKNOWN_DEVICE = 0;
         public static final int KNOWN_DEVICE = 1;

@@ -13,14 +13,16 @@ public class DeviceDbHelper extends SQLiteOpenHelper {
 
     public static final String LOG_TAG = DeviceDbHelper.class.getSimpleName();
 
-    /** Name of the database file */
+    /**
+     * Name of the database file
+     */
     private static final String DATABASE_NAME = "devices.db";
     private static final String MEASUREMENTS_DB_NAME = "measurements.db";
 
     /**
      * Database version. If you change the database schema, you must increment the database version.
      */
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 7;
 
     /**
      * Constructs a new instance of {@link DeviceDbHelper}.
@@ -37,13 +39,12 @@ public class DeviceDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create a String that contains the SQL statement to create the pets table
-        String SQL_CREATE_DEVICES_TABLE =  "CREATE TABLE " + DeviceContract.DeviceEntry.TABLE_NAME + " ("
-                + DeviceContract.DeviceEntry._ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + DeviceContract.DeviceEntry.COLUMN_DEVICE_NAME +" TEXT NOT NULL, "
-                + DeviceContract.DeviceEntry.COLUMN_DEVICE_ADDRESS +" TEXT NOT NULL UNIQUE, "
-                + DeviceContract.DeviceEntry.COLUMN_IS_CONNECTED +" INTEGER NOT NULL, "
-                + DeviceContract.DeviceEntry.COLUMN_DEVICE_SERVICES +" BLOB, "
-                + DeviceContract.DeviceEntry.COLUMN_DEVICE_CHARACTERISTICS +" BLOB " + " ) ";
+        String SQL_CREATE_DEVICES_TABLE = "CREATE TABLE " + DeviceContract.DeviceEntry.TABLE_NAME + " ("
+                + DeviceContract.DeviceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + DeviceContract.DeviceEntry.COLUMN_DEVICE_NAME + " TEXT NOT NULL, "
+                + DeviceContract.DeviceEntry.COLUMN_DEVICE_ADDRESS + " TEXT NOT NULL UNIQUE, "
+                + DeviceContract.DeviceEntry.COLUMN_DEVICE_TYPE + " TEXT NOT NULL, "
+                + DeviceContract.DeviceEntry.COLUMN_DEVICE_STATE + " BLOB " + " ) ";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_DEVICES_TABLE);
@@ -71,14 +72,13 @@ public class DeviceDbHelper extends SQLiteOpenHelper {
     }
 
 
-
     /**
      * This is called when the database needs to be upgraded.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-db.execSQL("DROP TABLE IF EXISTS " + DeviceContract.DeviceEntry.TABLE_NAME);
-onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + DeviceContract.DeviceEntry.TABLE_NAME);
+        onCreate(db);
     }
 
 

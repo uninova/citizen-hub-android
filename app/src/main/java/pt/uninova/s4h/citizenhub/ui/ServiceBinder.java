@@ -4,13 +4,13 @@ import android.os.Binder;
 
 public class ServiceBinder extends Binder {
 
-    private BackgroundService backgroundService = new BackgroundService();
+    private BackgroundServiceInterface backgroundServiceInterface = new BackgroundService();
 
     public ServiceBinder(Home home) {
-        this.backgroundService = backgroundService;
+        this.backgroundServiceInterface = backgroundServiceInterface;
     }
 
-    BackgroundService getService() {
-        return backgroundService;
+    BackgroundServiceInterface getService() {
+        return backgroundServiceInterface;
     }
 }

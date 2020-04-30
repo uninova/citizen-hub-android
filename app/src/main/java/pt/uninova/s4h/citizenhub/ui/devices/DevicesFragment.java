@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,19 +46,12 @@ public class DevicesFragment extends ListFragment {
     OnDataPass dataPasser;
 
     private DevicesViewModel galleryViewModel;
-    private ArrayList<String> mDeviceList = new ArrayList<>(); //to show
+    public ArrayList<String> mDeviceList = new ArrayList<>(); //to show
+    public ArrayList<String> mDeviceList_aux = new ArrayList<>(); //to show
     private Activity mActivity;
     private ArrayAdapter mAdapter;
     private ListView mListView;
-
-
-
-    //
-    ArrayList<String> listItem;
-    ArrayAdapter adapter;
-
-
-    //
+    DeviceDbHelper deviceDbHelper;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +70,40 @@ public class DevicesFragment extends ListFragment {
         // Get the application context
         mActivity = getActivity();
 
+        //show previously connected devices
+
+
         return root;
+    }
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mDeviceList.clear();
+        getListView().setAdapter(null);
+        deviceDbHelper = new DeviceDbHelper(getContext());
+        viewData(deviceDbHelper, mDeviceList);
+
+        mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details,mDeviceList){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                ((Home) getActivity()).setActionBarTitle("Connected Devices");
+                Home.fab.show();
+                // Get the view
+                LayoutInflater inflater = mActivity.getLayoutInflater();
+                View itemView = inflater.inflate(R.layout.device_search_details,null,true);
+
+                // Get current device name
+                TextView deviceName = itemView.findViewById(R.id.device_name);
+                TextView deviceDetails = itemView.findViewById(R.id.device_details);
+                ImageView deviceImage = itemView.findViewById(R.id.device_image);
+                deviceImage.setImageResource(R.drawable.ic_device_miband2);
+                String deviceNameString = (String) getListView().getAdapter().getItem(position);
+                String[] deviceNameStringSplitted = deviceNameString.split("\n");
+                deviceName.setText(deviceNameStringSplitted[0]);
+                deviceDetails.setText(deviceNameStringSplitted[1]);
+                return itemView;
+            }
+        };
+        getListView().setAdapter(mAdapter);
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -97,11 +124,18 @@ public class DevicesFragment extends ListFragment {
     public BroadcastReceiver  mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            //clear list and adapter
+            mDeviceList.clear();
+            getListView().setAdapter(null);
+
             ArrayList<BluetoothDevice> DEVICE_LIST = intent.getParcelableArrayListExtra("DEVICE_LIST");
             if (DEVICE_LIST != null) {
                 for (int i = 0; i < DEVICE_LIST.size(); i++) {
                     String deviceName = DEVICE_LIST.get(i).getName();
                     String deviceAddress = DEVICE_LIST.get(i).getAddress();
+                    //if device is not already connected in the DB
+
+                    //if device is already on the list
                     if (!mDeviceList.contains(deviceName + "\n" + deviceAddress)) {
                         mDeviceList.add(deviceName + "\n" + deviceAddress);
                     }
@@ -111,6 +145,7 @@ public class DevicesFragment extends ListFragment {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent){
                         ((Home) getActivity()).setActionBarTitle("Select a Device");
+                        Home.foundDevice = true;
                         // Get the view
                         LayoutInflater inflater = mActivity.getLayoutInflater();
                         View itemView = inflater.inflate(R.layout.device_search_details,null,true);
@@ -118,6 +153,8 @@ public class DevicesFragment extends ListFragment {
                         // Get current device name
                         TextView deviceName = itemView.findViewById(R.id.device_name);
                         TextView deviceDetails = itemView.findViewById(R.id.device_details);
+                        ImageView deviceImage = itemView.findViewById(R.id.device_image);
+                        deviceImage.setImageResource(R.drawable.ic_device_miband2_disabled);
                         String deviceNameString = (String) getListView().getAdapter().getItem(position);
                         String[] deviceNameStringSplitted = deviceNameString.split("\n");
                         deviceName.setText(deviceNameStringSplitted[0]);
@@ -132,44 +169,21 @@ public class DevicesFragment extends ListFragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String deviceList[]=mDeviceList.get(i).split("\n");
-                        Log.d("device",deviceList[0]);
-                        Log.d("device", deviceList[1]);
-                        //TODO
+                        Log.i("device",deviceList[0]);
+                        Log.i("device", deviceList[1]);
+
                         if(Home.mBluetoothManager.getAdapter().getBondedDevices().contains(Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1])))
                         {
                             passData(Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]));
                         }
-                        //TODO
                         else {
                             BluetoothDevice device = Home.mBluetoothManager.getAdapter().getRemoteDevice(deviceList[1]);
                             if (device.createBond()) {
                                 passData(device);
                             }
                         }
-
-                        Home.fab.show();
-                        ((Home) getActivity()).setActionBarTitle("Connected Devices");
-                        //
-               listItem = new ArrayList<>();
-                DeviceDbHelper deviceDbHelper = new DeviceDbHelper(getContext());
-               viewData(deviceDbHelper);
-
-
-
-
-                        //TODO implementar databases aqui
-
-                        getListView().setAdapter(null);
-
-                        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-                        ArrayList<String> s = new ArrayList<>();
-                        for(BluetoothDevice bt : pairedDevices)
-                            s.add(bt.getName());
-                        mDeviceList.clear();mDeviceList.addAll(s);
-
-                        getListView().setAdapter(new ArrayAdapter<>(getActivity(),
-                                android.R.layout.simple_list_item_1, mDeviceList));
+                        clearList();
+                        showConnectedList();
                     }
                 });
 
@@ -177,21 +191,59 @@ public class DevicesFragment extends ListFragment {
         }
     };
 
+    public void showConnectedList()
+    {
+        deviceDbHelper = new DeviceDbHelper(getContext());
+        viewData(deviceDbHelper, mDeviceList);
+
+        mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details,mDeviceList){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                ((Home) getActivity()).setActionBarTitle("Connected Devices");
+                Home.fab.show();
+                // Get the view
+                LayoutInflater inflater = mActivity.getLayoutInflater();
+                View itemView = inflater.inflate(R.layout.device_search_details,null,true);
+
+                // Get current device name
+                TextView deviceName = itemView.findViewById(R.id.device_name);
+                TextView deviceDetails = itemView.findViewById(R.id.device_details);
+                ImageView deviceImage = itemView.findViewById(R.id.device_image);
+                deviceImage.setImageResource(R.drawable.ic_device_miband2);
+                String deviceNameString = (String) getListView().getAdapter().getItem(position);
+                String[] deviceNameStringSplitted = deviceNameString.split("\n");
+                deviceName.setText(deviceNameStringSplitted[0]);
+                deviceDetails.setText(deviceNameStringSplitted[1]);
+                return itemView;
+            }
+        };
+        getListView().setAdapter(mAdapter);
+
+    }
+
+    public void clearList ()
+    {
+        //clear list and adapter
+        mDeviceList.clear();
+        getListView().setAdapter(null);
+    }
+
+
     public Cursor ViewData(DeviceDbHelper deviceDbHelper){
         SQLiteDatabase db = deviceDbHelper.getReadableDatabase();
-        String query = "Select * from "+TABLE_NAME;
+        String query = "Select * from "+ TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         return cursor;
     }
-    private void viewData(DeviceDbHelper deviceDbHelper){
+    private void viewData(DeviceDbHelper deviceDbHelper, ArrayList<String> mDeviceList){
         Cursor cursor = ViewData(deviceDbHelper);
         if(cursor.getCount()==0){
-            Log.d("DATABASESS", "No devices to show");
+            Log.i("DATABASESS", "No devices to show");
         }
         else {
             while (cursor.moveToNext()){
-            Log.d("DATABASESS", "Valores da tabela:" + cursor.getString(2) + cursor.getString(3));
-                listItem.add(cursor.getString(3));
+            Log.i("DATABASESS", "Valores da tabela:" + cursor.getString(1) + cursor.getString(2));
+                mDeviceList.add(cursor.getString(1) + "\n" + cursor.getString(2));
             }
         }
     }

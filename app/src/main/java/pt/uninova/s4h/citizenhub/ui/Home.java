@@ -1,17 +1,15 @@
 package pt.uninova.s4h.citizenhub.ui;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +24,7 @@ import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,24 +37,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.widget.Toast;
 
-import java.util.TimerTask;
-
+import datastorage.DatabaseHelperInterface;
 import datastorage.DeviceDbHelper;
 import datastorage.DeviceProvider;
 import datastorage.MeasurementProvider;
 import datastorage.MeasurementsDbHelper;
+import datastorage.SourceDbHelper;
+import datastorage.SourceProvider;
+import datastorage.pdf;
 import pt.uninova.s4h.citizenhub.ui.devices.DevicesFragment;
 import pt.uninova.s4h.citizenhub.ui.login.LoginActivity;
 
-import static datastorage.DeviceContract.DeviceEntry.COLUMN_IS_CONNECTED;
 
 public class Home extends AppCompatActivity implements DevicesFragment.OnDataPass {
     public static Context homecontext;
     public static DeviceDbHelper deviceDbHelper;
     public static MeasurementsDbHelper measurementsDbHelper;
+    public static SQLiteOpenHelper SQLiteOpenHelper;
 
     private AppBarConfiguration mAppBarConfiguration;
     int counter = 0;
@@ -71,7 +71,8 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     public static boolean loggedIn = false;
     public static boolean bypassForTesting = true;
     public static String loggedEmail = "person@uninova.pt";
-
+    public static Boolean foundDevice = false;
+    SourceDbHelper sourceDbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,10 +88,15 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         homecontext=getApplicationContext();
         deviceDbHelper = new DeviceDbHelper(getApplicationContext());
         measurementsDbHelper = new MeasurementsDbHelper(getApplicationContext());
+        sourceDbHelper = new SourceDbHelper(getApplicationContext());
+        SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
+
         DeviceProvider deviceProvider = new DeviceProvider();
         MeasurementProvider measurementProvider = new MeasurementProvider();
+        SourceProvider sourceProvider = new SourceProvider();
         measurementProvider.openAndQueryDatabase(measurementsDbHelper);
         deviceProvider.openAndQueryDatabase(deviceDbHelper);
+        sourceProvider.openAndQueryDatabase(sourceDbHelper);
         Log.d("WRITETEST", "writen to" + this.getFilesDir().getAbsolutePath());
 
 
@@ -127,10 +133,34 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
                 } else {
                     // Bluetooth is enabled. Search.
                     if (mBound) {
+                        mService.CheckConnectedDevices(mBluetoothManager);
+                        //search device logic
                         mService.PreScan();
                         mService.scanDevice(true);
+                        //set up search window
                         setActionBarTitle("Searching Devices...");
                         fab.hide();
+                        //start timer 5 sec. and then show fab
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (foundDevice == true) {
+                                            setActionBarTitle("Select a Device");
+                                            foundDevice = false; //reset to variable
+                                        }
+                                        else
+                                        {
+                                            setActionBarTitle("Connected Devices");
+                                            FragmentManager fragmentManager = getSupportFragmentManager();
+                                        }
+                                    }
+                                });
+                                fab.show();
+                            }
+                        }, 6000);
                     } else {
                     }
                 }
@@ -153,8 +183,21 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSION_RESPONSE);
             }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSION_RESPONSE);
+                Log.w("ExternalStorage", "External Storage granted!");
+            }
         }
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSION_RESPONSE);
+            Log.w("ExternalStorage", "External Storage granted!");
+        }
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -183,14 +226,17 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     @Override
     public void onDataPass(BluetoothDevice device) {
         Log.d("OndataPass", device.getName());
+        /*
         DeviceDbHelper deviceDbHelper = new DeviceDbHelper(this);
         SQLiteDatabase db= deviceDbHelper.getWritableDatabase();
         int connected = 1;
         ContentValues values = new ContentValues();
         values.put(COLUMN_IS_CONNECTED, connected);
         db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
+         */
         mService.mBluetoothScanner.stopScan(mService.mLeScanCallback);
         mService.getData(device);
+
     }
 
     @Override
