@@ -5,6 +5,7 @@ import android.bluetooth.*;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -15,22 +16,29 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
 
+import datastorage.DatabaseHelperInterface;
+import datastorage.MeasurementsContract;
 import datastorage.MeasurementsDbHelper;
 
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_SOURCE_UUID;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_TIMESTAMP;
+import static pt.uninova.s4h.citizenhub.ui.Constants.EXTRA_DATA;
 import static pt.uninova.s4h.citizenhub.ui.Home.homecontext;
 
 public class MiBand2 extends BluetoothGattCallback {
 
     public final static UUID UUID_SERVICE_1 = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
+    public final static UUID UUID_CHARACTERISTIC_STEPS = UUID.fromString("00000007-0000-3512-2118-0009af100700");
 
     public final static UUID UUID_SERVICE_ALERT = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_ALERT = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");
@@ -64,6 +72,21 @@ public class MiBand2 extends BluetoothGattCallback {
         BluetoothGattDescriptor descriptor = hr.getDescriptor(UUID_DESCRIPTOR_AUTH);
         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
         gatt.writeDescriptor(descriptor);
+    }
+
+    private void steps() {
+        Log.d("STEPPING", "START");
+
+        final BluetoothGattCharacteristic st = characteristics.get("steps");
+
+        final Handler h = new Handler(Looper.getMainLooper());
+
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                gatt.readCharacteristic(st);
+            }
+        }, 10000);
     }
 
     private void authenticate() {
@@ -112,6 +135,9 @@ public class MiBand2 extends BluetoothGattCallback {
         service = gatt.getService(UUID_SERVICE_HEART_RATE);
         characteristics.put("heartrate_data", service.getCharacteristic(UUID_CHARACTERISTIC_HEART_RATE_DATA));
         characteristics.put("heartrate_control", service.getCharacteristic(UUID_CHARACTERISTIC_HEART_RATE_CONTROL));
+
+        service = gatt.getService(UUID_SERVICE_1);
+        characteristics.put("steps", service.getCharacteristic(UUID_CHARACTERISTIC_STEPS));
 
         authenticate();
 
@@ -162,6 +188,7 @@ public class MiBand2 extends BluetoothGattCallback {
                 }
             } else if (value[0] == 0x10 && value[1] == 0x03 && value[2] == 0x01) {
                 heartrate();
+                steps();
             }
         } else if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_HEART_RATE_DATA)) {
               int heartrate = characteristic.getValue()[1];
@@ -187,10 +214,55 @@ public class MiBand2 extends BluetoothGattCallback {
     }
 
     @Override
-    public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+    public void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicRead(gatt, characteristic, status);
-        Log.i("MiBand2", "onCharacteristicRead " + characteristic.getUuid().toString() + " " + Arrays.toString(characteristic.getValue()) + " " + status);
+
+        Log.d("MiBand2", "onCharacteristicRead " + characteristic.getUuid().toString() + " " + Arrays.toString(characteristic.getValue()) + " " + status);
+
+        final byte[] value = characteristic.getValue();
+
+        if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_STEPS)) {
+            ByteBuffer val = ByteBuffer.wrap(value);
+            val.order(ByteOrder.LITTLE_ENDIAN);
+
+
+            final int value1 = val.getInt(1); //steps
+            final int value2 = val.getInt(5);//distance
+            final int value3 = val.getInt(9);   //kcal
+
+            saveData(characteristic.getUuid(),value1, "Steps");
+            saveData(characteristic.getUuid(), value2, "Distance");
+            saveData(characteristic.getUuid(), value3, "Calories");
+
+            final Handler h = new Handler(Looper.getMainLooper());
+
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gatt.readCharacteristic(characteristic);
+                }
+            }, 10000);
+
+        }
     }
+public void saveData (UUID charUUID, int value, String characteristicName) {
+    SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(homecontext);
+    SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
+    Calendar cal = Calendar.getInstance();
+    String timestamp = cal.getTime().toString();
+    String values = String.valueOf(value);
+    String name = characteristicName;
+    String uuid = charUUID.toString();
+
+    ContentValues Cvalues = new ContentValues();
+    Cvalues.put(COLUMN_TIMESTAMP, timestamp);
+    Cvalues.put(COLUMN_MEASUREMENT_VALUE, values);
+    Cvalues.put(COLUMN_CHARACTERISTIC_NAME, name);
+    Cvalues.put(COLUMN_SOURCE_UUID, uuid);
+
+    db.insertWithOnConflict("measurements", null, Cvalues, SQLiteDatabase.CONFLICT_IGNORE);
+    Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null, null, null, null, null)));
+}
 
     @Override
     public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, int status) {
