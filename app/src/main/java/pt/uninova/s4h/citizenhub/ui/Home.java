@@ -73,6 +73,18 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     public static String loggedEmail = "person@uninova.pt";
     public static Boolean foundDevice = false;
     SourceDbHelper sourceDbHelper;
+
+    // and returned in the Activity's onRequestPermissionsResult()
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -173,8 +185,22 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         getSupportActionBar().setTitle(title);
     }
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void BleCheckPermissions(){
 
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {

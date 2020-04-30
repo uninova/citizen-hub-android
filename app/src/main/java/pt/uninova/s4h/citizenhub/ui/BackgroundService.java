@@ -324,7 +324,9 @@ public class BackgroundService extends Service implements BackgroundServiceInter
         public void onScanResult(int callbackType, ScanResult result) {
             if (result.getDevice() != null && result.getDevice().getName() != null && result.getDevice().getAddress() != null) {
                 if (!deviceList.contains(result.getDevice())) {
-                    pdf PDF = new pdf();
+                    String asd = "imprime";
+
+                    pdf PDF = new pdf(70,1500,525,500);
                     PDF.createPDF();
                     deviceList.add(result.getDevice());
                     Log.i("infos", result.getDevice().getName());

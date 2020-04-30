@@ -16,6 +16,10 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+
 
 import static android.graphics.Bitmap.createScaledBitmap;
 import static pt.uninova.s4h.citizenhub.ui.Home.homecontext;
@@ -26,8 +30,15 @@ public class pdf extends Activity implements Runnable {
 
     public Bitmap bmp;
     public Bitmap scaledbitmap;
-
+    public String HeartRate, Steps, Distance,Calories;
     public int pageWidth = 1200;
+
+    public pdf(int heartrate, int steps, int distance, int calories) {
+  this.HeartRate = String.valueOf(heartrate);
+  this.Steps = String.valueOf(steps);
+  this.Distance = String.valueOf(distance);
+  this.Calories = String.valueOf(calories);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +90,15 @@ public class pdf extends Activity implements Runnable {
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(50);
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
+
+
+        canvas.drawText("Average values of today:" + dateOnly.format(cal.getTime())  , 600,270,titlePaint);
+        canvas.drawText("Heartrate: " + HeartRate , 600,270,titlePaint);
+        canvas.drawText("Steps: " + Steps, 600,270,titlePaint);
+        canvas.drawText("Distance: " + Distance, 600,270,titlePaint);
+        canvas.drawText("Calories: " + Calories, 600,270,titlePaint);
         /*
         // repaint the user's text into the page
         View content = findViewById(R.id.sunday);
@@ -90,7 +110,6 @@ public class pdf extends Activity implements Runnable {
         File folder = new File(Environment.getExternalStorageDirectory().toString()+"/smart4health/pdfs");
         folder.mkdirs();
         String extStorageDirectory = folder.toString();
-
         File file = new File( extStorageDirectory, "/smart4health.pdf");
         Log.w("ExternalStorage", Environment.getExternalStorageDirectory().toString());
 
