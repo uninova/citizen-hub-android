@@ -1,19 +1,14 @@
 package datastorage;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -22,12 +17,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import pt.uninova.s4h.citizenhub.ui.R;
-
 import static android.graphics.Bitmap.createScaledBitmap;
 import static pt.uninova.s4h.citizenhub.ui.Home.homecontext;
 import static pt.uninova.s4h.citizenhub.ui.R.drawable.logo2_s4h;
-import static pt.uninova.s4h.citizenhub.ui.R.drawable.logo_s4h;
 
 public class pdf extends Activity implements Runnable {
 
@@ -43,6 +35,7 @@ public class pdf extends Activity implements Runnable {
 
 //        setContentView(R.layout.activity_main);
         Log.w("ExternalStorage", "pdf class");
+
         createPDF();
     }
 
@@ -86,8 +79,6 @@ public class pdf extends Activity implements Runnable {
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(50);
-        canvas.drawText("Future Heartrate Info", 600,270,titlePaint);
-
         /*
         // repaint the user's text into the page
         View content = findViewById(R.id.sunday);

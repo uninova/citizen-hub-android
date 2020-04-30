@@ -11,7 +11,7 @@ public class DatabaseHelperInterface extends SQLiteOpenHelper implements Databas
      */
     private static final String DATABASE_NAME = "S4HDB.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 9;
     String SQL_CREATE_DEVICES_TABLE = "CREATE TABLE " + DeviceContract.DeviceEntry.TABLE_NAME + " ("
             + DeviceContract.DeviceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
             + DeviceContract.DeviceEntry.COLUMN_DEVICE_NAME + " TEXT NOT NULL, "

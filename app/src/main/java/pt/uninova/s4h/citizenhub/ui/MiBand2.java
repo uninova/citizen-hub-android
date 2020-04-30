@@ -192,24 +192,7 @@ public class MiBand2 extends BluetoothGattCallback {
             }
         } else if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_HEART_RATE_DATA)) {
               int heartrate = characteristic.getValue()[1];
-            MeasurementsDbHelper measurementsDbHelper = new MeasurementsDbHelper(homecontext);
-            SQLiteDatabase db= measurementsDbHelper.getWritableDatabase();
-            Calendar cal = Calendar.getInstance();
-            String timestamp = cal.getTime().toString();
-            String val  = String.valueOf(heartrate);
-            String name = "HeartRate";
-            String uuid = characteristic.getUuid().toString();
-
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_TIMESTAMP, timestamp);
-            values.put(COLUMN_MEASUREMENT_VALUE, val);
-            values.put(COLUMN_CHARACTERISTIC_NAME, name);
-            values.put(COLUMN_SOURCE_UUID, uuid);
-
-            db.insertWithOnConflict("measurements",null,values, SQLiteDatabase.CONFLICT_IGNORE);
-
-
-
+            saveData(characteristic.getUuid(),heartrate,"HeartRate");
         }
     }
 
