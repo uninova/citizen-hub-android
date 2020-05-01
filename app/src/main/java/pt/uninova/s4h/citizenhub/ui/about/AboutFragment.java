@@ -26,7 +26,7 @@ public class AboutFragment extends Fragment {
         ///
 
         ///show S4H website in a new window, browser. Back returns to home fragment
-        Intent i = new Intent (Intent.ACTION_VIEW, Uri.parse("https://www.smart4health.eu"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.smart4health.eu"));
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
 

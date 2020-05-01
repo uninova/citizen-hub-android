@@ -12,32 +12,27 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 
 import datastorage.DatabaseHelperInterface;
 import datastorage.DeviceDbHelper;
@@ -46,34 +41,30 @@ import datastorage.MeasurementProvider;
 import datastorage.MeasurementsDbHelper;
 import datastorage.SourceDbHelper;
 import datastorage.SourceProvider;
-import datastorage.pdf;
 import pt.uninova.s4h.citizenhub.ui.devices.DevicesFragment;
 import pt.uninova.s4h.citizenhub.ui.login.LoginActivity;
 
 
 public class Home extends AppCompatActivity implements DevicesFragment.OnDataPass {
+    private static final int MY_PERMISSION_RESPONSE = 2;
+    private static final int REQUEST_ENABLE_BT = 1;
     public static Context homecontext;
     public static DeviceDbHelper deviceDbHelper;
     public static MeasurementsDbHelper measurementsDbHelper;
     public static SQLiteOpenHelper SQLiteOpenHelper;
-
-    private AppBarConfiguration mAppBarConfiguration;
-    int counter = 0;
     public static FloatingActionButton fab;
-    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    public Handler mHandler = new Handler(Looper.myLooper());
     public static BluetoothManager mBluetoothManager;
     public static BackgroundService mService;
-    boolean mBound = false;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private static final int MY_PERMISSION_RESPONSE = 2;
-    private static final int REQUEST_ENABLE_BT = 1;
     public static boolean loggedIn = false;
     public static boolean bypassForTesting = true;
     public static String loggedEmail = "person@uninova.pt";
     public static Boolean foundDevice = false;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    public Handler mHandler = new Handler(Looper.myLooper());
+    int counter = 0;
+    boolean mBound = false;
     SourceDbHelper sourceDbHelper;
-
     // and returned in the Activity's onRequestPermissionsResult()
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -82,22 +73,47 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
+    private AppBarConfiguration mAppBarConfiguration;
+    private ServiceConnection connection = new ServiceConnection() {
 
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            BackgroundService.LocalBinder binder = (BackgroundService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (loggedIn == false && bypassForTesting == false)
-        {
-            Intent intent = new Intent (this, LoginActivity.class);
+        if (loggedIn == false && bypassForTesting == false) {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        homecontext=getApplicationContext();
-        homecontext=getApplicationContext();
+        homecontext = getApplicationContext();
+        homecontext = getApplicationContext();
         deviceDbHelper = new DeviceDbHelper(getApplicationContext());
         measurementsDbHelper = new MeasurementsDbHelper(getApplicationContext());
         sourceDbHelper = new SourceDbHelper(getApplicationContext());
@@ -162,9 +178,7 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
                                         if (foundDevice == true) {
                                             setActionBarTitle("Select a Device");
                                             foundDevice = false; //reset to variable
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             setActionBarTitle("Connected Devices");
                                             FragmentManager fragmentManager = getSupportFragmentManager();
                                         }
@@ -181,22 +195,11 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         });
     }
 
-    public void setActionBarTitle(String title){
+    public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
 
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public void BleCheckPermissions(){
+    public void BleCheckPermissions() {
 
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
@@ -236,10 +239,9 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-        if (!mBluetoothAdapter.isEnabled())
-        {
+        if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent,REQUEST_ENABLE_BT);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
         // Checks if Bluetooth is supported on the device.
         if (mBluetoothAdapter == null) {
@@ -268,10 +270,9 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent (getApplicationContext(), BackgroundService.class);
+        Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
         startService(intent);
-        if (!mBound)
-        {
+        if (!mBound) {
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
     }
@@ -283,31 +284,13 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         mBound = false;
     }
 
-    private ServiceConnection connection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            BackgroundService.LocalBinder binder = (BackgroundService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
-    public void run_service_crono()
-    {
+    public void run_service_crono() {
         sendNotification(); //calls methods from NotificationHelper
     }
 
     public void sendNotification() {
-                NotificationHelper helper = new NotificationHelper(Home.this);
-                helper.createNotification("Citizen Hub","Reading Heart Rate...");
+        NotificationHelper helper = new NotificationHelper(Home.this);
+        helper.createNotification("Citizen Hub", "Reading Heart Rate...");
     }
 
     @Override

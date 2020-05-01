@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.ui.login;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,17 +49,16 @@ public class SignUpActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void checkSignUp (View view) throws ExecutionException, InterruptedException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        if (checkFields(true)==false)
+    public void checkSignUp(View view) throws ExecutionException, InterruptedException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        if (checkFields(true) == false)
             return;
 
-        if(!haveNetworkConnection()) {
+        if (!haveNetworkConnection()) {
             Toast.makeText(this, "Please, check your internet connection!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(!check.isChecked())
-        {
+        if (!check.isChecked()) {
             Toast.makeText(this, "Please accept terms and conditions.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -68,8 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         String current_email = email.getText().toString();
         String current_password = password.getText().toString();
 
-        if(!current_email.contains("@") || !current_email.contains("."))
-        {
+        if (!current_email.contains("@") || !current_email.contains(".")) {
             Toast.makeText(this, "Please, enter a valid e-mail!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -79,37 +76,29 @@ public class SignUpActivity extends AppCompatActivity {
         //loginBackgroundWorker.execute(type, current_email, current_password);
         //String result = loginBackgroundWorker.get();
         String result = "Successful Registration!"; //TODO remove this later, only to bypass connection to server
-        if(result.contains("Successful Registration!"))
-        {
+        if (result.contains("Successful Registration!")) {
             Toast.makeText(this, "Welcome!", Toast.LENGTH_LONG).show();
             Home.loggedIn = true;
             Home.loggedEmail = current_email;
             LoginActivity.loginActivity.finish();
             finish(); //to go back to previous activity
-        }
-        else{
+        } else {
             Toast.makeText(this, "Error, Please Try Again.", Toast.LENGTH_LONG).show();
         }
     }
 
     boolean checkFields(boolean fields) //true is both fields, false is only email
     {
-        if(email.getText().toString().matches("") && fields == false)
-        {
+        if (email.getText().toString().matches("") && fields == false) {
             Toast.makeText(this, "You did not enter an e-mail", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else if(email.getText().toString().matches("") && fields == true)
-        {
+        } else if (email.getText().toString().matches("") && fields == true) {
             Toast.makeText(this, "You did not enter an e-mail", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else if(password.getText().toString().matches("") && fields == true)
-        {
+        } else if (password.getText().toString().matches("") && fields == true) {
             Toast.makeText(this, "You did not enter a password", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else
+        } else
             return true;
     }
 

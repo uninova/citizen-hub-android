@@ -4,8 +4,8 @@
     tools:showIn="navigation_view">
 
     <group
-        android:checkableBehavior="single"
-        android:id="@+id/topOptions">
+        android:id="@+id/topOptions"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_today"
@@ -24,8 +24,8 @@
             android:title="@string/menu_profile" />
     </group>
     <group
-        android:checkableBehavior="single"
-        android:id="@+id/botOptions">
+        android:id="@+id/botOptions"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"

@@ -1,15 +1,29 @@
 package pt.uninova.s4h.citizenhub.ui;
 
-import android.app.Activity;
-import android.bluetooth.*;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothProfile;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -17,22 +31,13 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.*;
-
 import datastorage.DatabaseHelperInterface;
 import datastorage.MeasurementsContract;
-import datastorage.MeasurementsDbHelper;
 
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_SOURCE_UUID;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_TIMESTAMP;
-import static pt.uninova.s4h.citizenhub.ui.Constants.EXTRA_DATA;
 import static pt.uninova.s4h.citizenhub.ui.Home.homecontext;
 
 public class MiBand2 extends BluetoothGattCallback {
@@ -52,11 +57,10 @@ public class MiBand2 extends BluetoothGattCallback {
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
     private final Map<String, BluetoothGattCharacteristic> characteristics;
-
+    private final SecureRandom keyGenerator;
     private BluetoothGatt gatt;
     private boolean ready;
     private byte[] key;
-    private final SecureRandom keyGenerator;
 
     public MiBand2() {
         this.ready = false;
@@ -191,8 +195,8 @@ public class MiBand2 extends BluetoothGattCallback {
                 steps();
             }
         } else if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_HEART_RATE_DATA)) {
-              int heartrate = characteristic.getValue()[1];
-            saveData(characteristic.getUuid(),heartrate,"HeartRate");
+            int heartrate = characteristic.getValue()[1];
+            saveData(characteristic.getUuid(), heartrate, "HeartRate");
         }
     }
 
@@ -213,7 +217,7 @@ public class MiBand2 extends BluetoothGattCallback {
             final int value2 = val.getInt(5);//distance
             final int value3 = val.getInt(9);   //kcal
 
-            saveData(characteristic.getUuid(),value1, "Steps");
+            saveData(characteristic.getUuid(), value1, "Steps");
             saveData(characteristic.getUuid(), value2, "Distance");
             saveData(characteristic.getUuid(), value3, "Calories");
 
@@ -228,24 +232,25 @@ public class MiBand2 extends BluetoothGattCallback {
 
         }
     }
-public void saveData (UUID charUUID, int value, String characteristicName) {
-    SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(homecontext);
-    SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
-    Calendar cal = Calendar.getInstance();
-    String timestamp = cal.getTime().toString();
-    String values = String.valueOf(value);
-    String name = characteristicName;
-    String uuid = charUUID.toString();
 
-    ContentValues Cvalues = new ContentValues();
-    Cvalues.put(COLUMN_TIMESTAMP, timestamp);
-    Cvalues.put(COLUMN_MEASUREMENT_VALUE, values);
-    Cvalues.put(COLUMN_CHARACTERISTIC_NAME, name);
-    Cvalues.put(COLUMN_SOURCE_UUID, uuid);
+    public void saveData(UUID charUUID, int value, String characteristicName) {
+        SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(homecontext);
+        SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
+        Calendar cal = Calendar.getInstance();
+        String timestamp = cal.getTime().toString();
+        String values = String.valueOf(value);
+        String name = characteristicName;
+        String uuid = charUUID.toString();
 
-    db.insertWithOnConflict("measurements", null, Cvalues, SQLiteDatabase.CONFLICT_IGNORE);
-    Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null, null, null, null, null)));
-}
+        ContentValues Cvalues = new ContentValues();
+        Cvalues.put(COLUMN_TIMESTAMP, timestamp);
+        Cvalues.put(COLUMN_MEASUREMENT_VALUE, values);
+        Cvalues.put(COLUMN_CHARACTERISTIC_NAME, name);
+        Cvalues.put(COLUMN_SOURCE_UUID, uuid);
+
+        db.insertWithOnConflict("measurements", null, Cvalues, SQLiteDatabase.CONFLICT_IGNORE);
+        Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null, null, null, null, null)));
+    }
 
     @Override
     public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, int status) {

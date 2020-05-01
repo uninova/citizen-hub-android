@@ -11,10 +11,10 @@ import androidx.core.app.NotificationCompat;
 
 public class NotificationHelper {
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private Context mContext;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mBuilder;
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
 
     public NotificationHelper(Context context) {
         mContext = context;
@@ -23,10 +23,9 @@ public class NotificationHelper {
     /**
      * Create and push the notification
      */
-    public void createNotification(String title, String message)
-    {
+    public void createNotification(String title, String message) {
         /**Creates an explicit intent for an Activity in your app**/
-        Intent resultIntent = new Intent(mContext , Home.class);
+        Intent resultIntent = new Intent(mContext, Home.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(mContext,
@@ -42,8 +41,7 @@ public class NotificationHelper {
 
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
-        {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
             notificationChannel.enableVibration(false);

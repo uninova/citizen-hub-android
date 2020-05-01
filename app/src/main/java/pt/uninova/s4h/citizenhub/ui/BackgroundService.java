@@ -25,8 +25,6 @@ import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,12 +33,15 @@ import java.util.UUID;
 
 import datastorage.DatabaseHelperInterface;
 import datastorage.MeasurementsContract;
-
 import datastorage.SourceContract;
 import datastorage.pdf;
 
 import static android.content.ContentValues.TAG;
-import static datastorage.DeviceContract.DeviceEntry.*;
+import static datastorage.DeviceContract.DeviceEntry.COLUMN_DEVICE_ADDRESS;
+import static datastorage.DeviceContract.DeviceEntry.COLUMN_DEVICE_NAME;
+import static datastorage.DeviceContract.DeviceEntry.COLUMN_DEVICE_STATE;
+import static datastorage.DeviceContract.DeviceEntry.COLUMN_DEVICE_TYPE;
+import static datastorage.DeviceContract.DeviceEntry.TABLE_NAME;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_SOURCE_UUID;
@@ -57,29 +58,82 @@ import static pt.uninova.s4h.citizenhub.ui.Constants.EXTRA_DATA;
 public class BackgroundService extends Service implements BackgroundServiceInterface {
 
 
-
     private static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
-    public ArrayList<BluetoothDevice> deviceList;
-    private Handler mHandler;
-    private boolean mScanning;
     private static final long SCAN_PERIOD = 10000;
-    public BluetoothLeScanner mBluetoothScanner;
-    public int mConnectionState = Constants.STATE_DISCONNECTED;
-    public Context myContext = null;
-    BluetoothAdapter mBluetoothAdapter;
-    private BluetoothGatt bluetoothGatt;
-
-    HashMap<String, List<BluetoothGattCharacteristic>> FullDeviceList
-            = new HashMap<>();
-    public boolean isConnectedToGatt = false;
-    private final IBinder mBinder = new LocalBinder();
-    private int connectionState = STATE_DISCONNECTED;
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
+    private final IBinder mBinder = new LocalBinder();
+    public ArrayList<BluetoothDevice> deviceList;
+    /**
+     * Handle the results of bluetooth scans
+     */
+    public final ScanCallback mLeScanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            if (result.getDevice() != null && result.getDevice().getName() != null && result.getDevice().getAddress() != null) {
+                if (!deviceList.contains(result.getDevice())) {
+                    String asd = "imprime";
 
+                    pdf PDF = new pdf(70, 1500, 2, 500,3,50,2,45);
+                    PDF.createPDF();
+                    deviceList.add(result.getDevice());
+                    Log.i("infos", result.getDevice().getName());
+                    SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
+                    //TODO put insert into function
+                    SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
+                    String name = result.getDevice().getName();
+                    String address = result.getDevice().getAddress();
+                    String state = "scanned";
+                    String type;
+                    if (result.getDevice().getName().contains("MI Band 2")) {
+                        type = "MI Band 2";
+                    } else {
+                        type = "n/a";
+                    }
+                    Log.d("testeasd", type);
+                    ContentValues values = new ContentValues();
+                    values.put(COLUMN_DEVICE_NAME, name);
+                    values.put(COLUMN_DEVICE_ADDRESS, address);
+                    values.put(COLUMN_DEVICE_STATE, state);
+                    values.put(COLUMN_DEVICE_TYPE, type);
+                    db.insertWithOnConflict("devices", null, values, SQLiteDatabase.CONFLICT_IGNORE);
 
+                    Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(TABLE_NAME, null, null, null, null, null, null)));
+                    SendList();
+                }
+            }
+        }
 
+        @Override
+        public void onScanFailed(int errorCode) {
+            switch (errorCode) {
+                case SCAN_FAILED_ALREADY_STARTED:
+                    Log.d(TAG, "already started");
+                    break;
+                case SCAN_FAILED_APPLICATION_REGISTRATION_FAILED:
+                    Log.d(TAG, "cannot be registered");
+                    break;
+                case SCAN_FAILED_FEATURE_UNSUPPORTED:
+                    Log.d(TAG, "power optimized scan not supported");
+                    break;
+                case SCAN_FAILED_INTERNAL_ERROR:
+                    Log.d(TAG, "internal error");
+                    break;
+            }
+        }
+    };
+    public BluetoothLeScanner mBluetoothScanner;
+    public int mConnectionState = Constants.STATE_DISCONNECTED;
+    public Context myContext = null;
+    public boolean isConnectedToGatt = false;
+    BluetoothAdapter mBluetoothAdapter;
+    HashMap<String, List<BluetoothGattCharacteristic>> FullDeviceList
+            = new HashMap<>();
+    private Handler mHandler;
+    private boolean mScanning;
+    private BluetoothGatt bluetoothGatt;
+    private int connectionState = STATE_DISCONNECTED;
     /**
      * Core of the service, receives updates from the device's gatt server and handles them
      * Broadcast updates from data received through specified bluetooth characteristic
@@ -87,7 +141,6 @@ public class BackgroundService extends Service implements BackgroundServiceInter
      * @param action
      * @param characteristic
      */
-
 
 
     public final BluetoothGattCallback gattCallback =
@@ -137,7 +190,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
                             UpdateDevice(gatt.getDevice(), deviceType);
                             String sourceType = "HeartRate";
                             int sourceInterval = 10;
-                            UpdateSource(gatt.getDevice(), characteristic.getUuid().toString(),sourceType, sourceInterval);
+                            UpdateSource(gatt.getDevice(), characteristic.getUuid().toString(), sourceType, sourceInterval);
                             setCharacteristicNotification(characteristic, true);
                             broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                         }
@@ -146,19 +199,19 @@ public class BackgroundService extends Service implements BackgroundServiceInter
                     }
                 }
 
-                public void UpdateDevice(BluetoothDevice device, String deviceType){
+                public void UpdateDevice(BluetoothDevice device, String deviceType) {
                     SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
-                    SQLiteDatabase db= SQLiteOpenHelper.getWritableDatabase();
+                    SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
                     String type = deviceType;
                     ContentValues values = new ContentValues();
                     String state = "todo";
                     values.put(COLUMN_DEVICE_TYPE, type);
-                    db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
+                    db.update("devices", values, "address = ?", new String[]{String.valueOf(device.getAddress())});
                 }
 
-                public void UpdateSource(BluetoothDevice device, String sourceUUID, String sourceType, int sourceInterval){
+                public void UpdateSource(BluetoothDevice device, String sourceUUID, String sourceType, int sourceInterval) {
                     SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
-                    SQLiteDatabase db= SQLiteOpenHelper.getWritableDatabase();
+                    SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
                     String uuid = sourceUUID;
                     String address = device.getAddress();
                     String type = sourceType;
@@ -168,7 +221,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
                     values.put(SourceContract.SourceEntry.COLUMN_DEVICE_UUID, address);
                     values.put(COLUMN_SOURCE_TYPE, type);
                     values.put(COLUMN_SOURCE_INTERVAL, interval);
-                    db.insertWithOnConflict("source",null,values, SQLiteDatabase.CONFLICT_IGNORE);
+                    db.insertWithOnConflict("source", null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 }
 
                 @Override
@@ -192,6 +245,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
 
     /**
      * Broadcast actions through the application
+     *
      * @param action
      */
     private void broadcastUpdate(final String action) {
@@ -201,6 +255,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
 
     /**
      * Broadcast updates from data received through specified bluetooth characteristic
+     *
      * @param action
      * @param characteristic
      */
@@ -223,12 +278,12 @@ public class BackgroundService extends Service implements BackgroundServiceInter
             final int heartRate = characteristic.getIntValue(format, 1);
             int HeartRateToString = heartRate;
             Log.d("heartrate", String.format("Received heart rate: %d", heartRate));
-      //      Globals.setHeartRate(( String.valueOf(heartRate)));
+            //      Globals.setHeartRate(( String.valueOf(heartRate)));
             SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
-            SQLiteDatabase db= SQLiteOpenHelper.getWritableDatabase();
+            SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
             Calendar cal = Calendar.getInstance();
             String timestamp = cal.getTime().toString();
-            String value  = String.valueOf(heartRate);
+            String value = String.valueOf(heartRate);
             String name = "HeartRate";
             String uuid = characteristic.getUuid().toString();
 
@@ -238,8 +293,8 @@ public class BackgroundService extends Service implements BackgroundServiceInter
             values.put(COLUMN_CHARACTERISTIC_NAME, name);
             values.put(COLUMN_SOURCE_UUID, uuid);
 
-            db.insertWithOnConflict("measurements",null,values, SQLiteDatabase.CONFLICT_IGNORE);
-            Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null,null,null, null, null)));
+            db.insertWithOnConflict("measurements", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(MeasurementsContract.MeasureEntry.TABLE_NAME, null, null, null, null, null, null)));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
         } else {
             // For all other profiles, writes the data formatted in HEX.
@@ -247,7 +302,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder;
                 stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
+                for (byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
                         stringBuilder.toString());
@@ -258,6 +313,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
 
     /**
      * Enabled automatic data notifications from a specified characteristic
+     *
      * @param characteristic
      * @param enabled
      */
@@ -289,91 +345,21 @@ public class BackgroundService extends Service implements BackgroundServiceInter
         }
     }
 
+    /*
+        public void SaveAvailableCharacteristics(BluetoothDevice device, String NewCharacteristic){
+            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+            SQLiteDatabase db= databaseHelper.getWritableDatabase();
+            String characteristics = NewCharacteristic;
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_DEVICE_CHARACTERISTICS, characteristics);
+            db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
 
-    /**
-     * Binder to allow communication between the service and the activity
-     */
-    public class LocalBinder extends Binder {
-        BackgroundService getService() {
-            return BackgroundService.this;
         }
-    }
-/*
-    public void SaveAvailableCharacteristics(BluetoothDevice device, String NewCharacteristic){
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        SQLiteDatabase db= databaseHelper.getWritableDatabase();
-        String characteristics = NewCharacteristic;
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_DEVICE_CHARACTERISTICS, characteristics);
-        db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
-
-    }
- */
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
-
-
-
-    /**
-     * Handle the results of bluetooth scans
-     */
-    public final ScanCallback mLeScanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            if (result.getDevice() != null && result.getDevice().getName() != null && result.getDevice().getAddress() != null) {
-                if (!deviceList.contains(result.getDevice())) {
-                    String asd = "imprime";
-
-                    pdf PDF = new pdf(70,1500,525,500);
-                    PDF.createPDF();
-                    deviceList.add(result.getDevice());
-                    Log.i("infos", result.getDevice().getName());
-                    SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
-                    //TODO put insert into function
-                    SQLiteDatabase db= SQLiteOpenHelper.getWritableDatabase();
-                    String name = result.getDevice().getName();
-                    String address = result.getDevice().getAddress();
-                    String state = "scanned";
-                    String type;
-                    if(result.getDevice().getName().contains("MI Band 2")){
-                         type = "MI Band 2";
-                    }else {
-                        type = "n/a";
-                    }
-                    Log.d("testeasd", type);
-                    ContentValues values = new ContentValues();
-                    values.put(COLUMN_DEVICE_NAME, name);
-                    values.put(COLUMN_DEVICE_ADDRESS, address);
-                    values.put(COLUMN_DEVICE_STATE, state);
-                    values.put(COLUMN_DEVICE_TYPE, type);
-                    db.insertWithOnConflict("devices",null,values, SQLiteDatabase.CONFLICT_IGNORE);
-
-                    Log.d("TABLEWTF", String.valueOf(Home.SQLiteOpenHelper.getReadableDatabase().query(TABLE_NAME, null, null,null,null, null, null)));
-                    SendList();
-                }
-            }
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            switch (errorCode) {
-                case SCAN_FAILED_ALREADY_STARTED:
-                    Log.d(TAG, "already started");
-                    break;
-                case SCAN_FAILED_APPLICATION_REGISTRATION_FAILED:
-                    Log.d(TAG, "cannot be registered");
-                    break;
-                case SCAN_FAILED_FEATURE_UNSUPPORTED:
-                    Log.d(TAG, "power optimized scan not supported");
-                    break;
-                case SCAN_FAILED_INTERNAL_ERROR:
-                    Log.d(TAG, "internal error");
-                    break;
-            }
-        }
-    };
 
     /**
      * Broadcast a list of all devices scanned to activity
@@ -385,33 +371,31 @@ public class BackgroundService extends Service implements BackgroundServiceInter
         LocalBroadcastManager.getInstance(BackgroundService.this).sendBroadcast(intent);
     }
 
-
     @Override
     public List<BluetoothDevice> CheckConnectedDevices(BluetoothManager bluetoothManager) {
         List<BluetoothDevice> connected_devices_list = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
-        for(BluetoothDevice device : connected_devices_list) {
-            Log.d("PREVCONNECTED:", device.getName() + ": " +  device.getAddress());
+        for (BluetoothDevice device : connected_devices_list) {
+            Log.d("PREVCONNECTED:", device.getName() + ": " + device.getAddress());
         }
         return connected_devices_list;
     }
 
     @Override
-    public void CheckDeviceConnection(BluetoothManager bluetoothManager, BluetoothDevice device){
-        int a = bluetoothManager.getConnectionState(device,bluetoothGatt.GATT);
-        if(a == BluetoothProfile.STATE_CONNECTED ) {
-            Log.d("PREVCONNECTED:", "Woah, device:" + device + " is currently connected" );
-        }
-        else if(a == BluetoothProfile.STATE_CONNECTING){
-            Log.d("PREVCONNECTED:", "Woah, device:" + device + " is trying to connect" );
-        }
-        else {
-            Log.d("PREVCONNECTED:",  device + " not connected" );
+    public void CheckDeviceConnection(BluetoothManager bluetoothManager, BluetoothDevice device) {
+        int a = bluetoothManager.getConnectionState(device, bluetoothGatt.GATT);
+        if (a == BluetoothProfile.STATE_CONNECTED) {
+            Log.d("PREVCONNECTED:", "Woah, device:" + device + " is currently connected");
+        } else if (a == BluetoothProfile.STATE_CONNECTING) {
+            Log.d("PREVCONNECTED:", "Woah, device:" + device + " is trying to connect");
+        } else {
+            Log.d("PREVCONNECTED:", device + " not connected");
         }
 
     }
 
     /**
      * Scan Bluetooth Devices
+     *
      * @param enable
      */
     @Override
@@ -436,17 +420,19 @@ public class BackgroundService extends Service implements BackgroundServiceInter
     }
 
     /**
-     *Tries to connect to device's gatt server
+     * Tries to connect to device's gatt server
+     *
      * @param device
      */
     @Override
-    public void getData(BluetoothDevice device){
-        if(device.getName().contains("MI Band 2")) {
-            device.connectGatt(getApplicationContext(),true, new MiBand2());
-        }else {
+    public void getData(BluetoothDevice device) {
+        if (device.getName().contains("MI Band 2")) {
+            device.connectGatt(getApplicationContext(), true, new MiBand2());
+        } else {
             bluetoothGatt = device.connectGatt(getApplicationContext(), true, gattCallback);
         }
-        }
+    }
+
     /**
      * Handles all Bluetooth Scanner's needs to execute the scan
      */
@@ -462,6 +448,15 @@ public class BackgroundService extends Service implements BackgroundServiceInter
             return;
         }
         mBluetoothScanner = mBluetoothAdapter.getBluetoothLeScanner();
+    }
+
+    /**
+     * Binder to allow communication between the service and the activity
+     */
+    public class LocalBinder extends Binder {
+        BackgroundService getService() {
+            return BackgroundService.this;
+        }
     }
 
 }

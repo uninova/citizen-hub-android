@@ -15,12 +15,11 @@ interface BackgroundServiceInterface extends ComponentCallbacks2 {
                                        boolean enabled);
 
 
-
     IBinder onBind(Intent intent);
 
     void SendList();
 
-    List<BluetoothDevice> CheckConnectedDevices (BluetoothManager bluetoothManager);
+    List<BluetoothDevice> CheckConnectedDevices(BluetoothManager bluetoothManager);
 
     void CheckDeviceConnection(BluetoothManager bluetoothManager, BluetoothDevice device);
 

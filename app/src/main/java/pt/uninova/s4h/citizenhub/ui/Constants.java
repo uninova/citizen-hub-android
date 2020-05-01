@@ -20,12 +20,12 @@ public class Constants {
     public static final byte[] BYTE_NEW_HEART_RATE_SCAN = {21, 2, 1};
     public static final UUID UUID_DESCRIPTOR_UPDATE_NOTIFICATION = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     public static final UUID UUID_SERVICE_HEARTBEAT = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
+    public static final String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
+    public static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
     static final int STATE_DISCONNECTED = 0;
     static final int STATE_CONNECTING = 1;
     static final int STATE_CONNECTED = 2;
     private static final String BASE_UUID = "0000%s-0000-1000-8000-00805f9b34fb";
     public static final UUID UUID_SERVICE_MIBAND_SERVICE = UUID.fromString(String.format(BASE_UUID, "FEE0"));
     public static final UUID UUID_SERVICE_MIBAND2_SERVICE = UUID.fromString(String.format(BASE_UUID, "FEE1"));
-    public static final String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
-    public static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 }

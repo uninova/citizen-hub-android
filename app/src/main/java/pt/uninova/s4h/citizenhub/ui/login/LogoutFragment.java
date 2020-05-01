@@ -35,10 +35,10 @@ public class LogoutFragment extends Fragment {
         OnClickListener dialogClickListener = new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case BUTTON_POSITIVE:
                         Home.loggedIn = false;
-                        Intent intent = new Intent (LogoutFragment.this.getActivity(), LoginActivity.class);
+                        Intent intent = new Intent(LogoutFragment.this.getActivity(), LoginActivity.class);
                         startActivity(intent);
                         break;
                     case BUTTON_NEGATIVE:

@@ -22,7 +22,8 @@ public class LoginBackgroundWork extends AsyncTask<String, Void, String> {
     AlertDialog alertDialog;
     String result;
     String type;
-    LoginBackgroundWork (Context ctx) {
+
+    LoginBackgroundWork(Context ctx) {
         context = ctx;
     }
 
@@ -31,28 +32,28 @@ public class LoginBackgroundWork extends AsyncTask<String, Void, String> {
         type = params[0];
         String login_url = "https://auth.smart4health.gris.uninova.pt/login.php";
         String signup_url = "https://auth.smart4health.gris.uninova.pt/signup.php";
-        if(type.equals("login")) {
+        if (type.equals("login")) {
             try {
                 String mail = params[1];
                 String password = params[2];
                 URL url = new URL(login_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("mail","UTF-8")+"="+URLEncoder.encode(mail,"UTF-8")+"&"
-                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                String post_data = URLEncoder.encode("mail", "UTF-8") + "=" + URLEncoder.encode(mail, "UTF-8") + "&"
+                        + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result="";
-                String line="";
-                while((line = bufferedReader.readLine())!= null) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
                 bufferedReader.close();
@@ -64,29 +65,28 @@ public class LoginBackgroundWork extends AsyncTask<String, Void, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if(type.equals("signup")) {
+        } else if (type.equals("signup")) {
             try {
                 String mail = params[1];
                 String password = params[2];
                 URL url = new URL(signup_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("mail","UTF-8")+"="+URLEncoder.encode(mail,"UTF-8")+"&"
-                        + URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                String post_data = URLEncoder.encode("mail", "UTF-8") + "=" + URLEncoder.encode(mail, "UTF-8") + "&"
+                        + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result="";
-                String line="";
-                while((line = bufferedReader.readLine())!= null) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
                 bufferedReader.close();
@@ -110,28 +110,24 @@ public class LoginBackgroundWork extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if(type.equals("signup"))
+        if (type.equals("signup"))
             alertDialog.setTitle("Sign Up status");
         else
             alertDialog.setTitle("Login status");
 
-        if(result.contains("Error"))
-        {
-            if(type.equals("signup"))
+        if (result.contains("Error")) {
+            if (type.equals("signup"))
                 alertDialog.setMessage("Error, please try again. This e-mail may already exist.");
-            else if(type.equals("login"))
+            else if (type.equals("login"))
                 alertDialog.setMessage("Error, please try again. This password may be wrong.");
-        }
-        else if (result.contains("Successful Registration"))
-        {
-            if(type.equals("signup"))
+        } else if (result.contains("Successful Registration")) {
+            if (type.equals("signup"))
                 alertDialog.setMessage("Successful Registration!");
-            else if(type.equals("login"))
+            else if (type.equals("login"))
                 alertDialog.setMessage("Sucessful Login!");
-        }
-        else
+        } else
             alertDialog.setMessage(result);
-        if(!(result.contains("Successful Registration") && type.equals("login")))
+        if (!(result.contains("Successful Registration") && type.equals("login")))
             alertDialog.show();
     }
 
