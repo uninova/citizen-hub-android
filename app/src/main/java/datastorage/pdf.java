@@ -29,9 +29,11 @@ public class pdf extends Activity implements Runnable {
     public Bitmap bmp;
     public Bitmap scaledbitmap;
     public String HeartRate, Steps, Distance, Calories, HoursSitting, MinutesSitting, HoursGoodPosture, MinutesGoodPosture;
+    public String Username, Age, StepsGoal, StandingTimeHours, StandingTimeMinutes, MinHeartRate, MaxHeartRate;
     public int pageWidth = 1200;
 
-    public pdf(int heartrate, int steps, int distance, int calories, int hoursSitting, int minutesSitting, int hoursGoodPosture, int minutesGoodPosture) {
+    public pdf(int heartrate, int steps, int distance, int calories, int hoursSitting, int minutesSitting, int hoursGoodPosture, int minutesGoodPosture,
+               String username, int age, int stepsgoal, int standingtimehours, int standingtimeminutes, int minheartrate, int maxheartrate ) {
         this.HeartRate = String.valueOf(heartrate);
         this.Steps = String.valueOf(steps);
         this.Distance = String.valueOf(distance);
@@ -40,6 +42,15 @@ public class pdf extends Activity implements Runnable {
         this.MinutesSitting = String.valueOf(minutesSitting);
         this.HoursGoodPosture = String.valueOf(hoursGoodPosture);
         this.MinutesGoodPosture = String.valueOf(minutesGoodPosture);
+        this.Username = username;
+        this.Age = String.valueOf(age);
+        this.StepsGoal = String.valueOf(stepsgoal);
+        this.StandingTimeHours = String.valueOf(standingtimehours);
+        this.StandingTimeMinutes = String.valueOf(standingtimeminutes);
+        this.MaxHeartRate = String.valueOf(maxheartrate);
+        this.MinHeartRate = String.valueOf(minheartrate);
+
+
     }
 
     @Override
@@ -95,13 +106,19 @@ public class pdf extends Activity implements Runnable {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
 
+        canvas.drawText("Username: " + Username + " ," + Age + " years old", 600, 270, titlePaint);
+        canvas.drawText("Today's results:  " + dateOnly.format(cal.getTime()), 600, 320, titlePaint);
+        canvas.drawText("Steps: " + Steps + ".", 600, 400, titlePaint);
+        canvas.drawText("Steps goal: " + StepsGoal + ".", 600, 450, titlePaint);
+        canvas.drawText("Estimated calories burned: " + Calories, 600, 500, titlePaint);
+        canvas.drawText("Total distance walked: " + Distance + " km", 600, 550, titlePaint);
+        canvas.drawText("Spent " + HoursSitting + "h"+ MinutesSitting + "m sitting.", 600, 600, titlePaint);
+        canvas.drawText("Spent " + HoursGoodPosture + "h"+ MinutesGoodPosture+"m seated with good posture.", 600, 650, titlePaint);
+        canvas.drawText("Average heart rate: " + HeartRate + " bpm.", 600, 700, titlePaint);
+        canvas.drawText("Minimum heart rate " + MinHeartRate + " bpm.", 600, 750, titlePaint);
+        canvas.drawText("Maximum heart rate " + MaxHeartRate + " bpm.", 600, 800, titlePaint);
 
-        canvas.drawText("Today's results:  " + dateOnly.format(cal.getTime()), 600, 270, titlePaint);
-        canvas.drawText("Your average heart rate was " + HeartRate + " bpm.", 600, 350, titlePaint);
-        canvas.drawText("Your total steps today were " + Steps + ".", 600, 400, titlePaint);
-        canvas.drawText("and burned " + Calories + " calories today!", 600, 500, titlePaint);
-        canvas.drawText("You've walked " + Distance + " km!", 600, 450, titlePaint);
-        canvas.drawText("Spent " + HoursSitting + "h"+ MinutesSitting + "m and "+ HoursGoodPosture + "h"+ MinutesGoodPosture+"m with good posture.", 600, 550, titlePaint);
+
         /*
         // repaint the user's text into the page
         View content = findViewById(R.id.sunday);

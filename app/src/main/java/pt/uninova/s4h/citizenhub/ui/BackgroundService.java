@@ -75,7 +75,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
                 if (!deviceList.contains(result.getDevice())) {
                     String asd = "imprime";
 
-                    pdf PDF = new pdf(70, 1500, 2, 500,3,50,2,45);
+                    pdf PDF = new pdf(70, 1500, 2, 500,3,50,2,45, "Maria Josefa", 30, 6000, 1,50,50,112);
                     PDF.createPDF();
                     deviceList.add(result.getDevice());
                     Log.i("infos", result.getDevice().getName());
