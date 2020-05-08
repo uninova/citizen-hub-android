@@ -4,8 +4,9 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import pt.uninova.util.Pair;
+import pt.uninova.util.Triple;
 
-import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -18,8 +19,8 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     private BluetoothGatt gatt;
     private final Queue<Runnable> runnables;
-    private final Map<byte[], Set<CharacteristicListener>> characteristicListenerMap;
-    private final Map<byte[], Set<DescriptorListener>> descriptorListenerMap;
+    private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
+    private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
 
     public BluetoothConnection() {
         runnables = new ConcurrentLinkedQueue<>();
@@ -28,7 +29,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
     }
 
     public void addCharacteristicListener(CharacteristicListener listener) {
-        final byte[] key = characteristicKey(listener);
+        final Pair<UUID, UUID> key = characteristicKey(listener);
 
         if (!characteristicListenerMap.containsKey(key)) {
             characteristicListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<CharacteristicListener, Boolean>()));
@@ -38,7 +39,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
     }
 
     public void addDescriptorListener(DescriptorListener listener) {
-        final byte[] key = descriptorKey(listener);
+        final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
 
         if (!descriptorListenerMap.containsKey(key)) {
             descriptorListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<DescriptorListener, Boolean>()));
@@ -47,19 +48,16 @@ public class BluetoothConnection extends BluetoothGattCallback {
         descriptorListenerMap.get(key).add(listener);
     }
 
-    private byte[] characteristicKey(CharacteristicListener listener) {
+    private Pair<UUID, UUID> characteristicKey(BluetoothGattCharacteristic characteristic) {
+        return characteristicKey(characteristic.getService().getUuid(), characteristic.getUuid());
+    }
+
+    private Pair<UUID, UUID> characteristicKey(CharacteristicListener listener) {
         return characteristicKey(listener.getServiceUuid(), listener.getCharacteristicUuid());
     }
 
-    private byte[] characteristicKey(UUID serviceUuid, UUID characteristicUuid) {
-        final ByteBuffer key = ByteBuffer.allocate(32);
-
-        key.putLong(serviceUuid.getMostSignificantBits());
-        key.putLong(serviceUuid.getLeastSignificantBits());
-        key.putLong(characteristicUuid.getMostSignificantBits());
-        key.putLong(characteristicUuid.getLeastSignificantBits());
-
-        return key.array();
+    private Pair<UUID, UUID> characteristicKey(UUID serviceUuid, UUID characteristicUuid) {
+        return new Pair<>(serviceUuid, characteristicUuid);
     }
 
     public void close() {
@@ -70,21 +68,16 @@ public class BluetoothConnection extends BluetoothGattCallback {
         gatt.close();
     }
 
-    private byte[] descriptorKey(DescriptorListener listener) {
+    private Triple<UUID, UUID, UUID> descriptorKey(BluetoothGattDescriptor descriptor) {
+        return descriptorKey(descriptor.getCharacteristic().getService().getUuid(), descriptor.getCharacteristic().getUuid(), descriptor.getUuid());
+    }
+
+    private Triple<UUID, UUID, UUID> descriptorKey(DescriptorListener listener) {
         return descriptorKey(listener.getServiceUuid(), listener.getCharacteristicUuid(), listener.getDescriptorUuid());
     }
 
-    private byte[] descriptorKey(final UUID serviceUuid, final UUID characteristicUuid, final UUID descriptorUuid) {
-        final ByteBuffer key = ByteBuffer.allocate(48);
-
-        key.putLong(serviceUuid.getMostSignificantBits());
-        key.putLong(serviceUuid.getLeastSignificantBits());
-        key.putLong(characteristicUuid.getMostSignificantBits());
-        key.putLong(characteristicUuid.getLeastSignificantBits());
-        key.putLong(descriptorUuid.getMostSignificantBits());
-        key.putLong(descriptorUuid.getLeastSignificantBits());
-
-        return key.array();
+    private Triple<UUID, UUID, UUID> descriptorKey(final UUID serviceUuid, final UUID characteristicUuid, final UUID descriptorUuid) {
+        return new Triple<>(serviceUuid, characteristicUuid, descriptorUuid);
     }
 
     public void disableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
@@ -111,7 +104,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        final byte[] key = characteristicKey(characteristic.getService().getUuid(), characteristic.getUuid());
+        final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
             for (CharacteristicListener i : characteristicListenerMap.get(key)) {
@@ -122,7 +115,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        final byte[] key = characteristicKey(characteristic.getService().getUuid(), characteristic.getUuid());
+        final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
             for (CharacteristicListener i : characteristicListenerMap.get(key)) {
@@ -139,7 +132,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        final byte[] key = characteristicKey(characteristic.getService().getUuid(), characteristic.getUuid());
+        final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
             for (CharacteristicListener i : characteristicListenerMap.get(key)) {
@@ -170,7 +163,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-        final byte[] key = descriptorKey(descriptor.getCharacteristic().getService().getUuid(), descriptor.getCharacteristic().getUuid(), descriptor.getUuid());
+        final Triple<UUID, UUID, UUID> key = descriptorKey(descriptor);
 
         if (descriptorListenerMap.containsKey(key)) {
             for (DescriptorListener i : descriptorListenerMap.get(key)) {
@@ -187,7 +180,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-        final byte[] key = descriptorKey(descriptor.getCharacteristic().getService().getUuid(), descriptor.getCharacteristic().getUuid(), descriptor.getUuid());
+        final Triple<UUID, UUID, UUID> key = descriptorKey(descriptor);
 
         if (descriptorListenerMap.containsKey(key)) {
             for (DescriptorListener i : descriptorListenerMap.get(key)) {
@@ -238,7 +231,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
     }
 
     public void removeCharacteristicListener(CharacteristicListener listener) {
-        final byte[] key = characteristicKey(listener);
+        final Pair<UUID, UUID> key = characteristicKey(listener);
 
         if (characteristicListenerMap.containsKey(key)) {
             final Set<CharacteristicListener> listeners = characteristicListenerMap.get(key);
@@ -252,7 +245,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
     }
 
     public void removeDescriptorListener(DescriptorListener listener) {
-        final byte[] key = descriptorKey(listener);
+        final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
 
         if (descriptorListenerMap.containsKey(key)) {
             final Set<DescriptorListener> listeners = descriptorListenerMap.get(key);
