@@ -30,7 +30,7 @@ public class BluetoothScanner extends ScanCallback {
 
         if (!devices.containsKey(address)) {
             devices.put(device.getAddress(), device);
-            listener.onDeviceFound(new BluetoothDeviceDescriptor(address, name));
+            listener.onDeviceFound(address, name);
         }
     }
 
@@ -38,7 +38,7 @@ public class BluetoothScanner extends ScanCallback {
         return devices.get(address);
     }
 
-    public boolean hasDevice(String address) {
+    public boolean foundDevice(String address) {
         return devices.containsKey(address);
     }
 
