@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
@@ -24,11 +25,16 @@ public class BluetoothDeviceManager {
         manager.getAdapter().getRemoteDevice(address).connectGatt(context, true, connection);
     }
 
-    public void startScan(BluetoothScannerListener listener) {
+    public void disconnect(String address) {
+
+    }
+
+    public void startDiscovery(BluetoothScannerListener listener) {
         bluetoothScanner.start(listener);
     }
 
-    public void stopScan() {
+    public void stopDiscovery() {
         bluetoothScanner.stop();
     }
+    
 }

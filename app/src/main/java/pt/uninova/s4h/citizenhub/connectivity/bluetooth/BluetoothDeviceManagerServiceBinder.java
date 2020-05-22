@@ -13,4 +13,5 @@ public class BluetoothDeviceManagerServiceBinder extends Binder {
     public BluetoothDeviceManager getDeviceManager() {
         return service.getBluetoothDeviceManager();
     }
+
 }
