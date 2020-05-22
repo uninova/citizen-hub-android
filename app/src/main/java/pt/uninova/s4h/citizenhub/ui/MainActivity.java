@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.ui;
 
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +12,11 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothDeviceManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothDeviceManagerService;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothDeviceManagerServiceBinder;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BluetoothDeviceManagerService bluetoothDeviceManagerService;
+    private BluetoothDeviceManager bluetoothDeviceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +34,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 BluetoothDeviceManagerServiceBinder binder = (BluetoothDeviceManagerServiceBinder) service;
-                BluetoothDeviceManager bluetoothDeviceManager = binder.getDeviceManager();
+                bluetoothDeviceManager = binder.getDeviceManager();
 
-                bluetoothDeviceManager.startScan(new ScanCallback() {
+                bluetoothDeviceManager.startDiscovery(new BluetoothScannerListener() {
                     @Override
-                    public void onScanResult(int callbackType, ScanResult result) {
-                        Log.d("BLES", result.getDevice().getAddress());
+                    public void onDeviceFound(String address, String name) {
+                        Log.d("BLES", address + ":" + name);
                     }
                 });
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                bluetoothDeviceManagerService = null;
+                bluetoothDeviceManager = null;
             }
         }, Context.BIND_AUTO_CREATE);
+    }
+
+    private void startScan() {
+        if (bluetoothDeviceManager != null) {
+            bluetoothDeviceManager.startDiscovery(new BluetoothScannerListener() {
+                @Override
+                public void onDeviceFound(String address, String name) {
+                    Log.d("BLES", address + ":" + name);
+                }
+            });
+        }
+    }
+
+    private void connect(String address) {
+        if (bluetoothDeviceManager != null) {
+            bluetoothDeviceManager.connect(address);
+        }
     }
 }

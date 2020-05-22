@@ -17,10 +17,11 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     public final static UUID ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
-    private BluetoothGatt gatt;
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
+
+    private BluetoothGatt gatt;
 
     public BluetoothConnection() {
         runnables = new ConcurrentLinkedQueue<>();
@@ -31,8 +32,10 @@ public class BluetoothConnection extends BluetoothGattCallback {
     public void addCharacteristicListener(CharacteristicListener listener) {
         final Pair<UUID, UUID> key = characteristicKey(listener);
 
-        if (!characteristicListenerMap.containsKey(key)) {
-            characteristicListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<CharacteristicListener, Boolean>()));
+        synchronized (characteristicListenerMap) {
+            if (!characteristicListenerMap.containsKey(key)) {
+                characteristicListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<CharacteristicListener, Boolean>()));
+            }
         }
 
         characteristicListenerMap.get(key).add(listener);
@@ -41,8 +44,10 @@ public class BluetoothConnection extends BluetoothGattCallback {
     public void addDescriptorListener(DescriptorListener listener) {
         final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
 
-        if (!descriptorListenerMap.containsKey(key)) {
-            descriptorListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<DescriptorListener, Boolean>()));
+        synchronized (descriptorListenerMap) {
+            if (!descriptorListenerMap.containsKey(key)) {
+                descriptorListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<DescriptorListener, Boolean>()));
+            }
         }
 
         descriptorListenerMap.get(key).add(listener);
