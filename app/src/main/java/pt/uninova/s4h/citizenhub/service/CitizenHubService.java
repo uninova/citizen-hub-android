@@ -11,7 +11,6 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothDeviceManager;
 
 public class CitizenHubService extends Service {
 
@@ -24,7 +23,7 @@ public class CitizenHubService extends Service {
     }
 
     private Notification buildNotification() {
-        return new NotificationCompat.Builder(this, BluetoothDeviceManager.class.getCanonicalName())
+        return new NotificationCompat.Builder(this, CitizenHubService.class.getCanonicalName())
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .build();
@@ -32,7 +31,7 @@ public class CitizenHubService extends Service {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(BluetoothDeviceManagerService.class.getCanonicalName(), NOTIFICATION_TITLE, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(CitizenHubService.class.getCanonicalName(), NOTIFICATION_TITLE, NotificationManager.IMPORTANCE_DEFAULT);
 
             notificationManager.createNotificationChannel(channel);
         }
