@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
 
-        <service
-                android:name="pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothDeviceManagerService"
-                android:enabled="true"/>
     </application>
 
 </manifest>
