@@ -10,4 +10,8 @@ public class CitizenHubServiceBinder extends Binder {
         this.service = service;
     }
 
+    public CitizenHubService getService() {
+        return service;
+    }
+
 }
