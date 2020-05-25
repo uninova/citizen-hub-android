@@ -11,12 +11,15 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
 
 public class CitizenHubService extends Service {
 
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
 
     private NotificationManager notificationManager;
+
+    private DeviceManager deviceManager;
 
     public CitizenHubService() {
         super();
@@ -37,6 +40,10 @@ public class CitizenHubService extends Service {
         }
     }
 
+    public DeviceManager getDeviceManager() {
+        return deviceManager;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,11 +58,14 @@ public class CitizenHubService extends Service {
 
         createNotificationChannel();
         startForeground(1, buildNotification());
+
+        deviceManager = new DeviceManager();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        deviceManager.close();
     }
 
     @Override
