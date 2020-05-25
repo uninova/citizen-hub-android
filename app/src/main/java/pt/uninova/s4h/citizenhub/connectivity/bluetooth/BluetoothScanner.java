@@ -34,6 +34,10 @@ public class BluetoothScanner extends ScanCallback {
         }
     }
 
+    public void clearDevices() {
+        devices.clear();
+    }
+
     public BluetoothDevice getDevice(String address) {
         return devices.get(address);
     }
