@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,17 +23,21 @@ import com.google.android.material.snackbar.Snackbar;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -39,23 +45,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.ChronoField;
+import org.threeten.bp.temporal.TemporalAccessor;
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.TimerTask;
 
+import datastorage.DatabaseHelperInterface;
 import datastorage.DeviceDbHelper;
 import datastorage.DeviceProvider;
 import datastorage.MeasurementProvider;
 import datastorage.MeasurementsDbHelper;
+import datastorage.SourceDbHelper;
+import datastorage.SourceProvider;
+import kbz.s4h.S4HDCM.BLELibrary;
 import pt.uninova.s4h.citizenhub.ui.devices.DevicesFragment;
 import pt.uninova.s4h.citizenhub.ui.login.LoginActivity;
 
-import static datastorage.DeviceContract.DeviceEntry.COLUMN_IS_CONNECTED;
 
 public class Home extends AppCompatActivity implements DevicesFragment.OnDataPass {
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+    };
+
     public static Context homecontext;
     public static DeviceDbHelper deviceDbHelper;
+    public static DatabaseHelperInterface databaseHelperInterface;
     public static MeasurementsDbHelper measurementsDbHelper;
+    public static SQLiteOpenHelper SQLiteOpenHelper;
 
     private AppBarConfiguration mAppBarConfiguration;
     int counter = 0;
@@ -69,8 +100,12 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     private static final int MY_PERMISSION_RESPONSE = 2;
     private static final int REQUEST_ENABLE_BT = 1;
     public static boolean loggedIn = false;
-    public static boolean bypassForTesting = true;
+    public static boolean bypassForTesting = false;
     public static String loggedEmail = "person@uninova.pt";
+    public static Boolean foundDevice = false;
+    SourceDbHelper sourceDbHelper;
+    public static BLELibrary ble;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +119,19 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         setContentView(R.layout.activity_home);
 
         homecontext=getApplicationContext();
-        homecontext=getApplicationContext();
-        deviceDbHelper = new DeviceDbHelper(getApplicationContext());
+
+        SQLiteOpenHelper = new DatabaseHelperInterface(getApplicationContext());
         measurementsDbHelper = new MeasurementsDbHelper(getApplicationContext());
+        sourceDbHelper = new SourceDbHelper(getApplicationContext());
+        deviceDbHelper = new DeviceDbHelper(getApplicationContext());
+
         DeviceProvider deviceProvider = new DeviceProvider();
         MeasurementProvider measurementProvider = new MeasurementProvider();
+        SourceProvider sourceProvider = new SourceProvider();
         measurementProvider.openAndQueryDatabase(measurementsDbHelper);
         deviceProvider.openAndQueryDatabase(deviceDbHelper);
+        sourceProvider.openAndQueryDatabase(sourceDbHelper);
         Log.d("WRITETEST", "writen to" + this.getFilesDir().getAbsolutePath());
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,7 +145,7 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_reports, R.id.nav_profile,
-                R.id.nav_devices, R.id.nav_about, R.id.nav_logout,
+                R.id.nav_devices, R.id.nav_body, R.id.nav_posture, R.id.nav_about, R.id.nav_logout,
                 R.id.nav_quit)
                 .setDrawerLayout(drawer)
                 .build();
@@ -127,10 +166,34 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
                 } else {
                     // Bluetooth is enabled. Search.
                     if (mBound) {
+                        mService.CheckConnectedDevices(mBluetoothManager);
+                        //search device logic
                         mService.PreScan();
                         mService.scanDevice(true);
+                        //set up search window
                         setActionBarTitle("Searching Devices...");
                         fab.hide();
+                        //start timer 5 sec. and then show fab
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (foundDevice == true) {
+                                            setActionBarTitle("Select a Device");
+                                            foundDevice = false; //reset to variable
+                                        }
+                                        else
+                                        {
+                                            setActionBarTitle("Connected Devices");
+                                            FragmentManager fragmentManager = getSupportFragmentManager();
+                                        }
+                                    }
+                                });
+                                fab.show();
+                            }
+                        }, 6000);
                     } else {
                     }
                 }
@@ -144,6 +207,10 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     }
 
     public void BleCheckPermissions(){
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -180,15 +247,28 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
         }
     }
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void onDataPass(BluetoothDevice device) {
         Log.d("OndataPass", device.getName());
+        /*
         DeviceDbHelper deviceDbHelper = new DeviceDbHelper(this);
         SQLiteDatabase db= deviceDbHelper.getWritableDatabase();
         int connected = 1;
         ContentValues values = new ContentValues();
         values.put(COLUMN_IS_CONNECTED, connected);
         db.update("devices",values,"address = ?",new String[]{String.valueOf(device.getAddress())});
+         */
         mService.mBluetoothScanner.stopScan(mService.mLeScanCallback);
         mService.getData(device);
     }

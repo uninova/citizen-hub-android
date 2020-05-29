@@ -1,13 +1,17 @@
 package pt.uninova.s4h.citizenhub.ui.login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     static Activity loginActivity;
+    CheckBox check;
+    boolean accepted_terms = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,42 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         email = findViewById(R.id.text_email_login);
         password = findViewById(R.id.text_password_login);
+        check = findViewById(R.id.checkBox);
+    }
+
+    public void displayMessage(View view) {
+        check.setChecked(false);
+        final EditText taskEditText = new EditText(this);
+        check.setChecked(true);
+        /*AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage("This mobile application will ask you for your e-mail contact in order to " +
+                        "keep you updated with new versions of the application and to divulge information " +
+                        "on the project outcomes. The data collected by this application is soly stored in " +
+                        "your mobile application and will not be deposited by the application developers in " +
+                        "any other device or infrastructure. e-mail will be archived at UNINOVA – FCT – NOVA " +
+                        "University.At any time you can contact us to op-out from our database of users. ")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        accepted_terms = true;
+                        check.setChecked(true);
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                })
+                .setNegativeButton("Reject", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        accepted_terms = false;
+                        check.setChecked(false);
+                    }
+                })
+                .create();
+        dialog.show();*/
     }
 
     @Override
@@ -61,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         String current_email = email.getText().toString();
+        Home.loggedEmail = current_email;
         String current_password = password.getText().toString();
         String type = "login";
         //TODO following three statements enable connection to server

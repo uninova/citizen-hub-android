@@ -4,18 +4,21 @@
     xmlns:grid="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorS4HGreyLight">
 
     <TextView
         android:id="@+id/textHome_warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:fontFamily="@font/lato"
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Values are updated when a device is connected."
+        android:text="Values are updated when this tab is opened."
         android:textAlignment="center"
+        android:textColor="@color/colorS4HGrey"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -60,17 +63,19 @@
                 grid:srcCompat="@drawable/img_good_posture" />
 
             <TextView
-                android:id="@+id/textHome_1"
+                android:id="@+id/textHome_sitting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Spent 0h00m sitting and 0h00m with bad posture."
+                android:text="Spent 0h00m sitting and 0h00m with good posture."
                 android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp"
                 grid:layout_constraintEnd_toEndOf="parent"
                 grid:layout_constraintHorizontal_bias="0.863"
@@ -86,16 +91,18 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/textHome_2"
+                android:id="@+id/textHome_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="You've walked 0.00 km!"
                 android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp"
                 grid:layout_constraintEnd_toEndOf="parent"
                 grid:layout_constraintHorizontal_bias="0.818"
@@ -133,16 +140,18 @@
                 grid:srcCompat="@drawable/img_steps" />
 
             <TextView
-                android:id="@+id/textHome_3"
+                android:id="@+id/textHome_steps"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="That is 0 steps only today"
                 android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp"
                 grid:layout_constraintEnd_toEndOf="parent"
                 grid:layout_constraintHorizontal_bias="0.875"
@@ -158,16 +167,18 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/textHome_4"
+                android:id="@+id/textHome_calories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="And 0 calories burned!"
+                android:text="and 0 calories burned!"
                 android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp"
                 grid:layout_constraintEnd_toEndOf="parent"
                 grid:layout_constraintHorizontal_bias="0.863"
@@ -207,16 +218,18 @@
                 grid:srcCompat="@drawable/ic_heart_red" />
 
             <TextView
-                android:id="@+id/textHome_5"
+                android:id="@+id/textHome_HR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Your average heart rate is unknown."
                 android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp"
                 grid:layout_constraintEnd_toEndOf="parent"
                 grid:layout_constraintHorizontal_bias="0.863"

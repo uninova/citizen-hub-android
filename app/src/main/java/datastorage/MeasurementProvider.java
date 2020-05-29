@@ -15,8 +15,8 @@ import android.util.Log;
 
 import pt.uninova.s4h.citizenhub.ui.Home;
 
-import static datastorage.MeasurementsContract.*;
 import static datastorage.MeasurementsContract.CONTENT_AUTHORITY;
+import static datastorage.MeasurementsContract.MeasureEntry;
 import static datastorage.MeasurementsContract.MeasureEntry.TABLE_NAME;
 import static datastorage.MeasurementsContract.PATH_MEASUREMENTS;
 
@@ -25,25 +25,27 @@ import static datastorage.MeasurementsContract.PATH_MEASUREMENTS;
  */
 public class MeasurementProvider extends ContentProvider {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = MeasurementProvider.class.getSimpleName();
-    private MeasurementsDbHelper measurementsDbHelper;
-    private Context mContext;
     private static final int MEASUREMENTS = 100;
     private static final int MEASUREMENTS_ID = 101;
     private static final String PARAM = " ? ";
     private static final UriMatcher sUriMatcher = builderUriMatcher();
-
     private static final String EQUAL_TO = " = ";
-
     private static final String AND = " AND ";
+    private MeasurementsDbHelper measurementsDbHelper;
+    private Context mContext;
+
     // Static initializer. This is run the first time anything is called from this class.
     private static UriMatcher builderUriMatcher() {            // The calls to addURI() go here, for all of the content URI patterns that the provider
         UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(CONTENT_AUTHORITY, PATH_MEASUREMENTS, MEASUREMENTS);
-        sUriMatcher.addURI(CONTENT_AUTHORITY, MEASUREMENTS +"/#", MEASUREMENTS_ID);
+        sUriMatcher.addURI(CONTENT_AUTHORITY, MEASUREMENTS + "/#", MEASUREMENTS_ID);
         return sUriMatcher;
     }
+
     /**
      * Initialize the provider and the database helper object.
      */
@@ -64,7 +66,7 @@ public class MeasurementProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch (match) {
             case MEASUREMENTS:
-                cursor = database.query(TABLE_NAME, projection,MeasureEntry.COLUMN_DATE,selectionArgs,null,null,sortOrder);
+                cursor = database.query(TABLE_NAME, projection, MeasureEntry.COLUMN_TIMESTAMP, selectionArgs, null, null, sortOrder);
                 break;
             case MEASUREMENTS_ID:
                 selection = MeasureEntry._ID + "=?";
@@ -74,9 +76,10 @@ public class MeasurementProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI" + uri);
         }
-        Home.homecontext.getContentResolver().notifyChange(uri,null);
+        Home.homecontext.getContentResolver().notifyChange(uri, null);
         return cursor;
     }
+
     /**
      * Insert new data into the provider with the given ContentValues.
      */
@@ -90,14 +93,15 @@ public class MeasurementProvider extends ContentProvider {
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
     }
+
     private Uri insertDevice(Uri uri, ContentValues values) {
-        String devicename = values.getAsString(MeasureEntry.COLUMN_DATE);
+        String devicename = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
         if (devicename == null) {
             throw new IllegalArgumentException("Device requires a name");
         }
 
-        String deviceaddress = values.getAsString(MeasureEntry.COLUMN_DATE);
+        String deviceaddress = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
         if (deviceaddress == null) {
             throw new IllegalArgumentException("Device requires an adress");
@@ -129,7 +133,7 @@ public class MeasurementProvider extends ContentProvider {
                 // para que saibamos qual registro atualizar. Selection será "_id=?" and selection
                 // args será um String array contendo o atual ID.
                 selection = MeasureEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateDevice(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
@@ -142,16 +146,16 @@ public class MeasurementProvider extends ContentProvider {
             return 0;
         }
 
-        if (values.containsKey(MeasureEntry.COLUMN_DATE)) {
-            String devicename = values.getAsString(MeasureEntry.COLUMN_DATE);
+        if (values.containsKey(MeasureEntry.COLUMN_TIMESTAMP)) {
+            String devicename = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
             if (devicename == null) {
                 throw new IllegalArgumentException("devicename requires a name");
             }
         }
 
-        if (values.containsKey(MeasureEntry.COLUMN_DATE)) {
-            String deviceaddress = values.getAsString(MeasureEntry.COLUMN_DATE);
+        if (values.containsKey(MeasureEntry.COLUMN_TIMESTAMP)) {
+            String deviceaddress = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
             if (deviceaddress == null) {
                 throw new IllegalArgumentException("devicename requires an address");
@@ -186,7 +190,7 @@ public class MeasurementProvider extends ContentProvider {
                 break;
             case MEASUREMENTS_ID:
                 selection = MeasureEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(TABLE_NAME, selection, selectionArgs);
                 break;
             default:

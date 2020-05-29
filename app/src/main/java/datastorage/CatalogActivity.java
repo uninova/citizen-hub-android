@@ -20,6 +20,7 @@ public class CatalogActivity extends AppCompatActivity {
         SQLiteDatabase db = deviceDbHelper.getReadableDatabase();
         SQLiteDatabase mesDb = measurementsDbHelper.getReadableDatabase();
     }
+
     private void insertDevice() {
 
     }

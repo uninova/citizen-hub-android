@@ -3,16 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorS4HGreyLight">
 
     <TextView
         android:id="@+id/textView_selectday"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="84dp"
+        android:fontFamily="@font/lato"
         android:gravity="center"
         android:text="Select a Day"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

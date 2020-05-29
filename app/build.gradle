@@ -32,4 +32,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
     implementation 'com.github.devlight.pulseview:library:1.0.2'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation project(path: ':S4HDCM')
 }

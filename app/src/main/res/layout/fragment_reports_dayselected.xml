@@ -1,0 +1,136 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_DayTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto_slab"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="TextView"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:orientation="horizontal">
+
+                <com.anychart.AnyChartView
+                    android:id="@+id/any_chart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.anychart.AnyChartView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:orientation="horizontal">
+
+                <com.anychart.AnyChartView
+                    android:id="@+id/any_chart_view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.anychart.AnyChartView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.anychart.AnyChartView
+                    android:id="@+id/any_chart_view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.anychart.AnyChartView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="120dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="225dp"
+            android:background="#ffffff"
+            android:padding="10dp"
+            android:text="tapar1"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="120dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="450dp"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:text="tapar2"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="767dp"
+            android:background="#FFFFFF"
+            android:padding="8dp"
+            android:text="tapar3"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/button_pdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="390dp"
+            android:background="@drawable/btn_rounded_color"
+            android:backgroundTint="@color/colorS4HGreyLight"
+            android:fontFamily="@font/roboto_slab"
+            android:onClick="goPDF"
+            android:padding="5dp"
+            android:text="Generate Report"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="10sp" />
+
+    </FrameLayout>
+
+</LinearLayout>
+
