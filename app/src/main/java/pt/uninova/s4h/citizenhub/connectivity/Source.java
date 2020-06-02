@@ -3,10 +3,10 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import java.util.Collection;
 import java.util.UUID;
 
-public interface Device {
+public interface Source {
 
-    UUID getId();
+    UUID[] getChannelIds();
 
-    Collection<Source> getSources();
+    Channel getChannel(UUID channelId);
 
 }
