@@ -1,7 +1,9 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import pt.uninova.util.events.EventDispatcher;
+import pt.uninova.util.events.GenericEventMessage;
+
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,11 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DeviceManager implements AutoCloseable {
 
     private final Map<UUID, Device> deviceMap;
-    private final Collection<DeviceManagerListener> deviceManagerListeners;
+
+    private final EventDispatcher<DeviceManager, GenericEventMessage<Device>> onDeviceAdded;
+    private final EventDispatcher<DeviceManager, GenericEventMessage<Device>> onDeviceRemoved;
 
     public DeviceManager() {
         deviceMap = new ConcurrentHashMap<>();
-        deviceManagerListeners = new LinkedList<>();
+        onDeviceAdded = new EventDispatcher<>(this);
+        onDeviceRemoved = new EventDispatcher<>(this);
     }
 
     public void add(final Device device) {
@@ -24,22 +29,21 @@ public class DeviceManager implements AutoCloseable {
             deviceMap.put(device.getId(), device);
         }
 
-        synchronized (deviceManagerListeners) {
-            for (DeviceManagerListener i : deviceManagerListeners) {
-                i.onDeviceAdded(device);
-            }
-        }
+        onDeviceAdded.dispatch(new GenericEventMessage<Device>(device));
     }
 
-    public void addListener(DeviceManagerListener listener) {
-        synchronized (deviceManagerListeners) {
-            deviceManagerListeners.add(listener);
-        }
+    public EventDispatcher<DeviceManager, GenericEventMessage<Device>> onDeviceAdded() {
+        return onDeviceAdded;
+    }
+
+    public EventDispatcher<DeviceManager, GenericEventMessage<Device>> onDeviceRemoved() {
+        return onDeviceRemoved;
     }
 
     @Override
     public void close() {
-        deviceManagerListeners.clear();
+        onDeviceAdded.clearListeners();
+        onDeviceRemoved.clearListeners();
         deviceMap.clear();
     }
 
@@ -66,17 +70,6 @@ public class DeviceManager implements AutoCloseable {
             deviceMap.remove(id);
         }
 
-        synchronized (deviceManagerListeners) {
-            for (DeviceManagerListener i : deviceManagerListeners) {
-                i.onDeviceRemoved(device);
-            }
-        }
+        onDeviceRemoved.dispatch(new GenericEventMessage<Device>(device));
     }
-
-    public void removeListener(DeviceManagerListener listener) {
-        synchronized (deviceManagerListeners) {
-            deviceManagerListeners.remove(listener);
-        }
-    }
-
 }
