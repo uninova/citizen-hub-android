@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="pt.uninova.s4h.citizenhub.ui">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="pt.uninova.s4h.citizenhub.ui">
 
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".Home"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".Home"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
+                android:name=".login.LoginActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
-        android:name=".login.SignUpActivity"
-        android:label="@string/app_name"
-        android:screenOrientation="portrait"
-        android:theme="@style/AppTheme.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
+                android:name=".login.SignUpActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
+        </activity>
         <activity
-            android:name=".reports.DaySelectedActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
+                android:name=".reports.DaySelectedActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
         </activity>
         <service
-            android:name=".BackgroundService"
-            android:enabled="true" />
+                android:name=".BackgroundService"
+                android:enabled="true"/>
         <provider
-            android:name="datastorage.DeviceProvider"
-            android:authorities="pt.uninova.s4h.citizenhub"
-            android:exported="false" />
+                android:name="datastorage.DeviceProvider"
+                android:authorities="pt.uninova.s4h.citizenhub"
+                android:exported="false"/>
 
         <service android:name="kbz.s4h.S4HDCM.BluetoothLeService"
-            android:enabled="true"/>
+                 android:enabled="true"/>
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-        <service android:name=".service.CitizenHubService"
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts"/>
+        <service android:name="pt.uninova.s4h.citizenhub.service.CitizenHubService"
                  android:exported="false"/>
     </application>
 </manifest>

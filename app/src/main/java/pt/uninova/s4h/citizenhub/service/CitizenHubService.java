@@ -10,8 +10,8 @@ import android.os.Build;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
+import pt.uninova.s4h.citizenhub.ui.R;
 
 public class CitizenHubService extends Service {
 

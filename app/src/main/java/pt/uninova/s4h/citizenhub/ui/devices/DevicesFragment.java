@@ -291,7 +291,6 @@ public class DevicesFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,  new IntentFilter("IntentFilterSendData"));
-
     }
 
     /**
