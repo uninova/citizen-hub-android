@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorS4HGreyLight">
+
+    <TextView
+        android:id="@+id/textHome_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fontFamily="@font/lato"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Values are updated when this tab is opened."
+        android:textAlignment="center"
+        android:textColor="@color/colorS4HGrey"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        grid:layout_constraintBottom_toBottomOf="parent"
+        grid:layout_constraintEnd_toEndOf="parent"
+        grid:layout_constraintHorizontal_bias="1.0"
+        grid:layout_constraintStart_toEndOf="@+id/imageView3"
+        grid:layout_constraintStart_toStartOf="parent"
+        grid:layout_constraintTop_toBottomOf="@+id/text_nodata"
+        grid:layout_constraintVertical_bias="0.948"
+        grid:layout_editor_absoluteX="-16dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/textHome_warning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        grid:layout_constraintBottom_toBottomOf="parent"
+        grid:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/imageHome_1"
+                android:layout_width="match_parent"
+                android:layout_height="155dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/img_good_posture"
+                grid:layout_constraintStart_toStartOf="parent"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6"
+                grid:srcCompat="@drawable/img_good_posture" />
+
+            <TextView
+                android:id="@+id/textHome_sitting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Spent 0h00m sitting and 0h00m with good posture."
+                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="24sp"
+                grid:layout_constraintEnd_toEndOf="parent"
+                grid:layout_constraintHorizontal_bias="0.863"
+                grid:layout_constraintStart_toEndOf="@+id/imageView3"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textHome_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="You've walked 0.00 km!"
+                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="24sp"
+                grid:layout_constraintEnd_toEndOf="parent"
+                grid:layout_constraintHorizontal_bias="0.818"
+                grid:layout_constraintStart_toEndOf="@+id/imageView5"
+                grid:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageHome_2"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_gravity="top"
+                android:layout_marginEnd="40dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/img_distance"
+                grid:layout_constraintStart_toStartOf="parent"
+                grid:srcCompat="@drawable/img_distance"
+                tools:layout_editor_absoluteY="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageHome_3"
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/img_steps"
+                grid:layout_constraintStart_toStartOf="parent"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView5"
+                grid:srcCompat="@drawable/img_steps" />
+
+            <TextView
+                android:id="@+id/textHome_steps"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="That is 0 steps only today"
+                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="24sp"
+                grid:layout_constraintEnd_toEndOf="parent"
+                grid:layout_constraintHorizontal_bias="0.875"
+                grid:layout_constraintStart_toEndOf="@+id/imageView6"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textHome_calories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="and 0 calories burned!"
+                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="24sp"
+                grid:layout_constraintEnd_toEndOf="parent"
+                grid:layout_constraintHorizontal_bias="0.863"
+                grid:layout_constraintStart_toEndOf="@+id/imageView3"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+            <ImageView
+                android:id="@+id/imageHome_4"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/img_calories"
+                grid:layout_constraintStart_toStartOf="parent"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6"
+                grid:srcCompat="@drawable/img_calories" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/imageHome_5"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_weight="2"
+                app:srcCompat="@drawable/ic_heart_red"
+                grid:layout_constraintStart_toStartOf="parent"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6"
+                grid:srcCompat="@drawable/ic_heart_red" />
+
+            <TextView
+                android:id="@+id/textHome_HR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Your average heart rate is unknown."
+                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="24sp"
+                grid:layout_constraintEnd_toEndOf="parent"
+                grid:layout_constraintHorizontal_bias="0.863"
+                grid:layout_constraintStart_toEndOf="@+id/imageView3"
+                grid:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':S4HDCM'
 rootProject.name='Citizen Hub'
