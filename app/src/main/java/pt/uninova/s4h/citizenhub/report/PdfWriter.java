@@ -76,7 +76,7 @@ public class PdfWriter {
         createFolder();
 
         try {
-            document.writeTo(new FileOutputStream(createFile()));
+            document.writeTo(new FileOutputStream(createFile().getName()));
 
         } catch (IOException e) {
             throw new RuntimeException("Error generating file", e);
@@ -87,7 +87,7 @@ public class PdfWriter {
     }
 
     private String createFolder() {
-        File folder = new File(pathName); //TODO SPLIT
+        File folder = new File(pathName);
         folder.mkdirs();
         String extStorageDirectory;
         return extStorageDirectory = folder.toString();

@@ -1,10 +1,7 @@
 package pt.uninova.s4h.citizenhub.report;
 
-import java.util.Date;
-
 public class Report {
 
-    private final Date fileName;
     private final String pathName;
     private String heartrate, steps, distance, calories, hoursSitting, minutesSitting, hoursGoodPosture, minutesGoodPosture;
     private String username, age, stepsGoal, standingTimeHours, standingTimeMinutes, minHeartRate, maxHeartrate;
@@ -13,7 +10,7 @@ public class Report {
 
     public Report(int heartrate, int steps, int distance, int calories, int hoursSitting, int minutesSitting, int hoursGoodPosture, int minutesGoodPosture,
                   String username, int age, int stepsgoal, int standingtimehours, int standingtimeminutes, int minheartrate, int maxheartrate, String minheartratetime,
-                  String maxheartratetime, Date fileName, String pathName) {
+                  String maxheartratetime, String pathName) {
         this.heartrate = String.valueOf(heartrate);
         this.steps = String.valueOf(steps);
         this.distance = String.valueOf(distance);
@@ -31,7 +28,6 @@ public class Report {
         this.minHeartRate = String.valueOf(minheartrate);
         this.minHeartRateTime = minheartratetime;
         this.maxHeartRateTime = maxheartratetime;
-        this.fileName = fileName;
         this.pathName = pathName;
     }
 
@@ -99,9 +95,6 @@ public class Report {
         this.minutesGoodPosture = minutesGoodPosture;
     }
 
-    public Date getFileName() {
-        return fileName;
-    }
 
     public String getPathName() {
         return pathName;
