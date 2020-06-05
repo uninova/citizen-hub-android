@@ -52,11 +52,13 @@ public class DevicesFragment extends ListFragment {
                 ViewModelProviders.of(this).get(DevicesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_devices, container, false);
         //root = inflater.inflate(R.layout.backup_list_devices,container,false);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
+        /*
+        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
             }
         });
+        */
         ((Home) getActivity()).setActionBarTitle("Connected Devices");
         Home.fab.show();
 
@@ -118,12 +120,7 @@ public class DevicesFragment extends ListFragment {
             }
         }
     };
-    public ArrayList<String> mDeviceList_aux = new ArrayList<>(); //to show
-    OnDataPass dataPasser;
-    DeviceDbHelper deviceDbHelper;
-    private DevicesViewModel galleryViewModel;
-    private Activity mActivity;
-    private ArrayAdapter mAdapter;
+
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

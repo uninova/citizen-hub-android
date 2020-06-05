@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     static Activity loginActivity;
     EditText email;
     EditText password;
-    static Activity loginActivity;
     CheckBox check;
     boolean accepted_terms = false;
 

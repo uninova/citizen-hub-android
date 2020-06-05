@@ -98,9 +98,7 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
     private final Handler handler = new Handler(Looper.getMainLooper());
     public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     public Handler mHandler = new Handler(Looper.myLooper());
-    int counter = 0;
     boolean mBound = false;
-    SourceDbHelper sourceDbHelper;
     // and returned in the Activity's onRequestPermissionsResult()
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -109,7 +107,7 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
-    private AppBarConfiguration mAppBarConfiguration;
+
     private ServiceConnection connection = new ServiceConnection() {
 
         @Override
@@ -126,17 +124,6 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
             mBound = false;
         }
     };
-
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
