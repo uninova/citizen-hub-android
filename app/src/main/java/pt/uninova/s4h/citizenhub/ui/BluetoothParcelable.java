@@ -8,18 +8,6 @@ import java.util.ArrayList;
 
 public class BluetoothParcelable implements Parcelable {
 
-    public ArrayList<BluetoothDevice> deviceList;
-
-    protected BluetoothParcelable(Parcel in) {
-        if (in.readByte() == 0x01) {
-            deviceList = new ArrayList<>();
-            in.readList(deviceList, BluetoothDevice.class.getClassLoader());
-        } else {
-            deviceList = null;
-        }
-    }
-
-
     public static final Creator<BluetoothParcelable> CREATOR = new Creator<BluetoothParcelable>() {
         @Override
         public BluetoothParcelable createFromParcel(Parcel in) {
@@ -31,6 +19,17 @@ public class BluetoothParcelable implements Parcelable {
             return new BluetoothParcelable[size];
         }
     };
+    public ArrayList<BluetoothDevice> deviceList;
+
+
+    protected BluetoothParcelable(Parcel in) {
+        if (in.readByte() == 0x01) {
+            deviceList = new ArrayList<>();
+            in.readList(deviceList, BluetoothDevice.class.getClassLoader());
+        } else {
+            deviceList = null;
+        }
+    }
 
     @Override
     public int describeContents() {

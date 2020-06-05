@@ -22,11 +22,21 @@ import java.nio.ByteOrder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
 import datastorage.DatabaseHelperInterface;
 import datastorage.MeasurementsContract;
-import datastorage.MeasurementsDbHelper;
 
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_CHARACTERISTIC_NAME;
 import static datastorage.MeasurementsContract.MeasureEntry.COLUMN_MEASUREMENT_VALUE;
@@ -52,11 +62,10 @@ public class MiBand2 extends BluetoothGattCallback {
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
     private final Map<String, BluetoothGattCharacteristic> characteristics;
-
+    private final SecureRandom keyGenerator;
     private BluetoothGatt gatt;
     private boolean ready;
     private byte[] key;
-    private final SecureRandom keyGenerator;
 
     public MiBand2() {
         this.ready = false;
@@ -192,7 +201,7 @@ public class MiBand2 extends BluetoothGattCallback {
             }
         } else if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_HEART_RATE_DATA)) {
             int heartrate = characteristic.getValue()[1];
-            saveData(characteristic.getUuid(),heartrate,"HeartRate");
+            saveData(characteristic.getUuid(), heartrate, "HeartRate");
         }
     }
 
@@ -213,7 +222,7 @@ public class MiBand2 extends BluetoothGattCallback {
             final int value2 = val.getInt(5);//distance
             final int value3 = val.getInt(9);   //kcal
 
-            saveData(characteristic.getUuid(),value1, "Steps");
+            saveData(characteristic.getUuid(), value1, "Steps");
             saveData(characteristic.getUuid(), value2, "Distance");
             saveData(characteristic.getUuid(), value3, "Calories");
 
@@ -228,7 +237,8 @@ public class MiBand2 extends BluetoothGattCallback {
 
         }
     }
-    public void saveData (UUID charUUID, int value, String characteristicName) {
+
+    public void saveData(UUID charUUID, int value, String characteristicName) {
         SQLiteOpenHelper SQLiteOpenHelper = new DatabaseHelperInterface(homecontext);
         SQLiteDatabase db = SQLiteOpenHelper.getWritableDatabase();
         Calendar cal = Calendar.getInstance();

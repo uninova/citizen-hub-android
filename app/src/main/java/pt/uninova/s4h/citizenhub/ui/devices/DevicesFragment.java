@@ -106,7 +106,7 @@ public class DevicesFragment extends ListFragment {
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            Log.i("info","got in broadcast receiver");
+            Log.i("info", "got in broadcast receiver");
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent
@@ -118,8 +118,13 @@ public class DevicesFragment extends ListFragment {
             }
         }
     };
-
-    public BroadcastReceiver  mMessageReceiver = new BroadcastReceiver() {
+    public ArrayList<String> mDeviceList_aux = new ArrayList<>(); //to show
+    OnDataPass dataPasser;
+    DeviceDbHelper deviceDbHelper;
+    private DevicesViewModel galleryViewModel;
+    private Activity mActivity;
+    private ArrayAdapter mAdapter;
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             //clear list and adapter
@@ -141,14 +146,14 @@ public class DevicesFragment extends ListFragment {
                     }
                 }
                 // Initialize an array adapter
-                mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details,mDeviceList){
+                mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details, mDeviceList) {
                     @Override
-                    public View getView(int position, View convertView, ViewGroup parent){
+                    public View getView(int position, View convertView, ViewGroup parent) {
                         ((Home) getActivity()).setActionBarTitle("Select a Device");
                         Home.foundDevice = true;
                         // Get the view
                         LayoutInflater inflater = mActivity.getLayoutInflater();
-                        View itemView = inflater.inflate(R.layout.device_search_details,null,true);
+                        View itemView = inflater.inflate(R.layout.device_search_details, null, true);
 
                         // Get current device name
                         TextView deviceName = itemView.findViewById(R.id.device_name);
@@ -249,7 +254,8 @@ public class DevicesFragment extends ListFragment {
     }
 
 
-    public Cursor ViewData(DeviceDbHelper deviceDbHelper){
+
+    public Cursor ViewData(DeviceDbHelper deviceDbHelper) {
         SQLiteDatabase db = deviceDbHelper.getReadableDatabase();
         String query = "Select * from "+ TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
@@ -268,15 +274,10 @@ public class DevicesFragment extends ListFragment {
         }
     }
 
-    /**
-     * Interface to send a whole device to activity
-     */
-    public interface OnDataPass {
-        public void onDataPass(BluetoothDevice device);
-    }
     public void passData(BluetoothDevice device) {
         dataPasser.onDataPass(device);
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -301,6 +302,13 @@ public class DevicesFragment extends ListFragment {
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+    }
+
+    /**
+     * Interface to send a whole device to activity
+     */
+    public interface OnDataPass {
+        public void onDataPass(BluetoothDevice device);
     }
 
 }

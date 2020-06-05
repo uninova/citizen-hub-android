@@ -24,6 +24,7 @@ import pt.uninova.s4h.citizenhub.ui.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    static Activity loginActivity;
     EditText email;
     EditText password;
     static Activity loginActivity;
@@ -33,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         loginActivity = this;
-        if(Home.bypassForTesting)
-        {
+        if (Home.bypassForTesting) {
             Home.loggedIn = true;
             //set something dummy here if needed
             finish(); //close this activity
@@ -94,10 +94,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void checkLogin(View view) throws InterruptedException, ExecutionException {
-        if (checkFields(true)==false)
+        if (checkFields(true) == false)
             return;
 
-        if(!haveNetworkConnection()) {
+        if (!haveNetworkConnection()) {
             Toast.makeText(this, "Please, check your internet connection!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -111,8 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         //loginBackgroundWorker.execute(type, current_email, current_password);
         //String result = loginBackgroundWorker.get();
         String result = "Successful Login!"; //TODO remove this later, only to bypass connection to server
-        if(result.matches("Successful Login!"))
-        {
+        if (result.matches("Successful Login!")) {
             Toast.makeText(this, result, Toast.LENGTH_LONG).show();
             Home.loggedIn = true;
             Home.loggedEmail = current_email;
@@ -122,22 +121,16 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean checkFields(boolean fields) //true is both fields, false is only email
     {
-        if(email.getText().toString().matches("") && fields == false)
-        {
+        if (email.getText().toString().matches("") && fields == false) {
             Toast.makeText(this, "You did not enter an e-mail", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else if(email.getText().toString().matches("") && fields == true)
-        {
+        } else if (email.getText().toString().matches("") && fields == true) {
             Toast.makeText(this, "You did not enter an e-mail", Toast.LENGTH_SHORT).show();
             return false; //check for valid e-mail format is done in SignUp, check here unnecessary
-        }
-        else if(password.getText().toString().matches("") && fields == true)
-        {
+        } else if (password.getText().toString().matches("") && fields == true) {
             Toast.makeText(this, "You did not enter a password", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        else
+        } else
             return true;
     }
 
@@ -158,8 +151,8 @@ public class LoginActivity extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-    public void checkSignUp (View view) throws ExecutionException, InterruptedException {
-        if(!haveNetworkConnection()) {
+    public void checkSignUp(View view) throws ExecutionException, InterruptedException {
+        if (!haveNetworkConnection()) {
             Toast.makeText(this, "Please, check your internet connection!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -169,16 +162,15 @@ public class LoginActivity extends AppCompatActivity {
         this.startActivity(startIntent);
     }
 
-    public void RecoverPassword(View view)
-    {
+    public void RecoverPassword(View view) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
-        String[] recipients={"uninova.development.team@gmail.com"};
+        String[] recipients = {"uninova.development.team@gmail.com"};
         emailIntent.putExtra(Intent.EXTRA_EMAIL, recipients);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"[Recover/Change Password] Want to Retrieve/Change my Password");
-        emailIntent.putExtra(Intent.EXTRA_TEXT,"Please mention if you want to retrieve or change your password" +
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[Recover/Change Password] Want to Retrieve/Change my Password");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please mention if you want to retrieve or change your password" +
                 " and the e-mail address associated with your account: \n");
 
-        startActivity(Intent.createChooser(emailIntent,"Send mail (choose Gmail, etc)"));
+        startActivity(Intent.createChooser(emailIntent, "Send mail (choose Gmail, etc)"));
     }
 }

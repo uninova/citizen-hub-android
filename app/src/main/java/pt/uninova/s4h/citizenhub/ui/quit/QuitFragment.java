@@ -14,7 +14,9 @@ import androidx.fragment.app.FragmentManager;
 import pt.uninova.s4h.citizenhub.ui.R;
 import pt.uninova.s4h.citizenhub.ui.home.HomeFragment;
 
-import static android.content.DialogInterface.*;
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.content.DialogInterface.OnClickListener;
 
 public class QuitFragment extends Fragment {
 
@@ -31,7 +33,7 @@ public class QuitFragment extends Fragment {
         OnClickListener dialogClickListener = new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case BUTTON_POSITIVE:
                         getActivity().finish();
                         System.exit(0);
