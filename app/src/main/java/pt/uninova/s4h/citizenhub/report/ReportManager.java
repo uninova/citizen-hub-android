@@ -3,8 +3,7 @@ package pt.uninova.s4h.citizenhub.report;
 import java.util.LinkedList;
 import java.util.List;
 
-//public class ReportManager <T extends PdfWriter> {
-public class ReportManager<T extends PdfWriter> {
+public class ReportManager implements AutoCloseable {
 
     private List<Report> reports; //queue
     private String basePath;
@@ -19,6 +18,10 @@ public class ReportManager<T extends PdfWriter> {
         basePath = "";
     }
 
+    @Override
+    public void close() {
+        reports.clear();
+    }
 
     public void writeReport(Report report, String pathName) {
         // T writer = (T) T.createInstance(pathName);
