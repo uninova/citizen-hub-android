@@ -11,6 +11,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
+import pt.uninova.s4h.citizenhub.report.ReportManager;
 import pt.uninova.s4h.citizenhub.ui.R;
 
 public class CitizenHubService extends Service {
@@ -20,6 +21,7 @@ public class CitizenHubService extends Service {
     private NotificationManager notificationManager;
 
     private DeviceManager deviceManager;
+    private ReportManager reportManager;
 
     public CitizenHubService() {
         super();
@@ -44,6 +46,8 @@ public class CitizenHubService extends Service {
         return deviceManager;
     }
 
+    public ReportManager getReportManager() { return reportManager; }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -60,12 +64,15 @@ public class CitizenHubService extends Service {
         startForeground(1, buildNotification());
 
         deviceManager = new DeviceManager();
+        reportManager = new ReportManager("/Smart4Health");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         deviceManager.close();
+        reportManager.close();
     }
 
     @Override
