@@ -60,7 +60,7 @@ public class MeasurementsTable {
 
     }
 
-    public long addRecord(storage.MeasurementsRecord record) {
+    public long addRecord(MeasurementsRecord record) {
         return addRecord(record.getUuid(), record.getTimestamp(), record.getValue(), record.getName());
 
     }
@@ -69,14 +69,14 @@ public class MeasurementsTable {
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
     }
 
-    public void removeRecord(storage.MeasurementsRecord record) {
+    public void removeRecord(MeasurementsRecord record) {
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
     }
 
-    public List<storage.MeasurementsRecord> getAllRows() throws Exception {
+    public List<MeasurementsRecord> getAllRows() throws Exception {
         String selectAllQuery = " SELECT uuid, timestamp, value, characteristic FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
-            List<storage.MeasurementsRecord> list = new LinkedList<>();
+            List<MeasurementsRecord> list = new LinkedList<>();
             while (c.moveToNext()) {
                 list.add(parseCursor(c));
             }
@@ -85,7 +85,7 @@ public class MeasurementsTable {
         }
     }
 
-    public storage.MeasurementsRecord getRow(String name) throws Exception {
+    public MeasurementsRecord getRow(String name) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{name});
 
         if (c.moveToFirst()) {
@@ -95,8 +95,8 @@ public class MeasurementsTable {
         throw new Exception();
     }
 
-    private storage.MeasurementsRecord parseCursor(Cursor c) {
-        storage.MeasurementsRecord r = new storage.MeasurementsRecord(
+    private MeasurementsRecord parseCursor(Cursor c) {
+        MeasurementsRecord r = new MeasurementsRecord(
                 c.getInt(0),
                 c.getString(1),
                 c.getString(2),
@@ -115,7 +115,7 @@ public class MeasurementsTable {
         return db.update(TABLE_NAME, values, "uuid=?", new String[]{uuid});
     }
 
-    public long setRecord(storage.MeasurementsRecord record) {
+    public long setRecord(MeasurementsRecord record) {
         return setRecord(record.getUuid(), record.getTimestamp(), record.getValue(), record.getName());
     }
 
