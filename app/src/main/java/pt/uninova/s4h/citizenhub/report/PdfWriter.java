@@ -73,10 +73,10 @@ public class PdfWriter {
         String extStorageDirectory = folder.toString();
         File file = new File(extStorageDirectory, "/" + filename + ".pdf");
         */
-        createFolder();
+        createFolder(pathName);
 
         try {
-            document.writeTo(new FileOutputStream(createFile().getName()));
+            document.writeTo(new FileOutputStream(createFile(dateOnly.format(cal.getTime()))));
 
         } catch (IOException e) {
             throw new RuntimeException("Error generating file", e);
@@ -86,15 +86,16 @@ public class PdfWriter {
         return true;
     }
 
-    private String createFolder() {
-        File folder = new File(pathName);
-        folder.mkdirs();
-        String extStorageDirectory;
-        return extStorageDirectory = folder.toString();
+    private void createFolder(String path) {
+        File fol = new File(path, "Smart4Health");
+        File folder = new File(fol, "Smart4Health");
+        if (!folder.exists()) {
+            boolean bool = folder.mkdir();
+        }
     }
 
-    private File createFile() {
-        File file = new File(pathName);
+    private File createFile(String filename) {
+        File file = new File(pathName, filename);
         return file;
 //report.getPathName(), "/" + report.getFileName() + ".pdf"
     }

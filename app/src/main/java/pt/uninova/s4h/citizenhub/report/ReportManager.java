@@ -23,9 +23,9 @@ public class ReportManager implements AutoCloseable {
         reports.clear();
     }
 
-    public void writeReport(Report report, String pathName) {
+    public void writeReport(Report report) {
         // T writer = (T) T.createInstance(pathName);
-        PdfWriter pdfWriter = new PdfWriter(pathName);
+        PdfWriter pdfWriter = new PdfWriter(basePath);
         pdfWriter.write(report);
     }
 
