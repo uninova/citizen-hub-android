@@ -6,8 +6,6 @@ import android.provider.BaseColumns;
 
 public final class DeviceColumns {
 
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
     public static final String CONTENT_AUTHORITY = "pt.uninova.s4h.citizenhub";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_DEVICES = "devices";

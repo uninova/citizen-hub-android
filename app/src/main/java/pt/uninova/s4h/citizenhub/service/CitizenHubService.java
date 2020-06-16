@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 
 import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
 import pt.uninova.s4h.citizenhub.report.ReportManager;
+import pt.uninova.s4h.citizenhub.storage.DatabaseManager;
 import pt.uninova.s4h.citizenhub.ui.R;
 
 public class CitizenHubService extends Service {
@@ -25,6 +26,7 @@ public class CitizenHubService extends Service {
 
     private DeviceManager deviceManager;
     private ReportManager reportManager;
+    private DatabaseManager databaseManager;
 
     public CitizenHubService() {
         super();
@@ -49,7 +51,13 @@ public class CitizenHubService extends Service {
         return deviceManager;
     }
 
-    public ReportManager getReportManager() { return reportManager; }
+    public ReportManager getReportManager() {
+        return reportManager;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
 
     @Nullable
     @Override
@@ -68,6 +76,7 @@ public class CitizenHubService extends Service {
 
         deviceManager = new DeviceManager();
         reportManager = new ReportManager(Environment.getExternalStorageDirectory().toString());
+        databaseManager = new DatabaseManager(getApplicationContext(), "CitizenHubDatabase.db");
     }
 
     @Override
