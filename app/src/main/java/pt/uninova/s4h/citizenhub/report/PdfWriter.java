@@ -53,7 +53,6 @@ public class PdfWriter {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
 
-        String filename = "";// filename;
         canvas.drawText("Username: " + report.getUsername(), 200, 250, titlePaint);
         canvas.drawText(report.getAge() + " years old", 200, 300, titlePaint);
         canvas.drawText("Today's results:  " + dateOnly.format(cal.getTime()), 200, 350, titlePaint);
@@ -67,16 +66,10 @@ public class PdfWriter {
         canvas.drawText("Minimum heart rate " + report.getMinHeartRate() + " bpm, at " + report.getMinHeartRateTime(), 200, 750, titlePaint);
         canvas.drawText("Maximum heart rate " + report.getMaxHeartrate() + " bpm, at " + report.getMaxHeartRateTime(), 200, 800, titlePaint);
 
-    /*    document.finishPage(page);
-        File folder = new File("");
-        folder.mkdirs();
-        String extStorageDirectory = folder.toString();
-        File file = new File(extStorageDirectory, "/" + filename + ".pdf");
-        */
         createFolder(pathName);
 
         try {
-            document.writeTo(new FileOutputStream(createFile(dateOnly.format(cal.getTime()))));
+            document.writeTo(new FileOutputStream(createFile()));
 
         } catch (IOException e) {
             throw new RuntimeException("Error generating file", e);
@@ -97,7 +90,13 @@ public class PdfWriter {
     private File createFile(String filename) {
         File file = new File(pathName, filename);
         return file;
-//report.getPathName(), "/" + report.getFileName() + ".pdf"
+    }
+
+    private File createFile() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
+        File file = new File(pathName, dateOnly.format(cal.getTime()));
+        return file;
     }
 
 
