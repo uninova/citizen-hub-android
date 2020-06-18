@@ -16,9 +16,7 @@ import static pt.uninova.s4h.citizenhub.storage.DeviceColumns.DeviceEntry.TABLE_
 
 public class DeviceTable {
     public static final String LOG_TAG = DeviceTable.class.getSimpleName();
-    private static final String DATABASE_NAME = "devices.db";
-    private static final String MEASUREMENTS_DB_NAME = "measurements.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 1;
     private final SQLiteDatabase db;
 
     public DeviceTable(SQLiteDatabase db) {

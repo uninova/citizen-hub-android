@@ -29,9 +29,6 @@ public final class SourceColumns {
         public final static String COLUMN_DEVICE_UUID = "address";
         public final static String COLUMN_SOURCE_TYPE = "type";
         public final static String COLUMN_SOURCE_INTERVAL = "interval";
-
-        public static final int UNKNOWN_DEVICE = 0;
-        public static final int KNOWN_DEVICE = 1;
     }
 
 }

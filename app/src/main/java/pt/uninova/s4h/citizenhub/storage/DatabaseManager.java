@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 1;
     SQLiteDatabase db;
     private MeasurementsTable measurementsTable;
     private SourceTable sourceTable;

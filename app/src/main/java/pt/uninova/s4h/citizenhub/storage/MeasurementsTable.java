@@ -18,9 +18,7 @@ public class MeasurementsTable {
 
     public static final String LOG_TAG = MeasurementsTable.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "measurements.db";
-
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private final SQLiteDatabase db;
 
     public MeasurementsTable(SQLiteDatabase db) {
