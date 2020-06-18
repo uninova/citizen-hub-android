@@ -54,7 +54,7 @@ public class SourceTable {
     }
 
     public long addRecord(SourceRecord record) {
-        return addRecord(record.getUuid(),record.getAddress(),record.getType(),record.getInterval());
+        return addRecord(record.getUuid(), record.getAddress(), record.getType(), record.getInterval());
 
     }
 
@@ -90,7 +90,7 @@ public class SourceTable {
         }
     }
 
-    private SourceRecord parseCursor(Cursor c){
+    private SourceRecord parseCursor(Cursor c) {
         SourceRecord record = new SourceRecord(
                 c.getInt(0),
                 c.getString(1),
@@ -112,7 +112,7 @@ public class SourceTable {
     }
 
     public long setRecord(SourceRecord record) {
-       return setRecord(record.getUuid(),record.getAddress(),record.getType(),record.getInterval());
+        return setRecord(record.getUuid(), record.getAddress(), record.getType(), record.getInterval());
     }
 
 }

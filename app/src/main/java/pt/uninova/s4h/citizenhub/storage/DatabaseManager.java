@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-
     private static final int DATABASE_VERSION = 9;
     SQLiteDatabase db;
     private MeasurementsTable measurementsTable;
@@ -35,9 +34,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return this.measurementsTable;
     }
 
-    /**
-     * This is called when the database is created for the first time.
-     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Execute the SQL statement
@@ -49,9 +45,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return this.sourceTable;
     }
 
-    /**
-     * This is called when the database needs to be upgraded.
-     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         upgradeTables(db);

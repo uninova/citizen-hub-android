@@ -16,16 +16,8 @@ import static pt.uninova.s4h.citizenhub.storage.DeviceColumns.DeviceEntry.TABLE_
 
 public class DeviceTable {
     public static final String LOG_TAG = DeviceTable.class.getSimpleName();
-
-    /**
-     * Name of the database file
-     */
     private static final String DATABASE_NAME = "devices.db";
     private static final String MEASUREMENTS_DB_NAME = "measurements.db";
-
-    /**
-     * DatabaseManager version. If you change the database schema, you must increment the database version.
-     */
     private static final int DATABASE_VERSION = 7;
     private final SQLiteDatabase db;
 
@@ -61,21 +53,22 @@ public class DeviceTable {
     }
 
     public long addRecord(DeviceRecord record) {
-        return addRecord(record.getName(),record.getAddress(),record.getType(),record.getState());
+        return addRecord(record.getName(), record.getAddress(), record.getType(), record.getState());
     }
 
     public void removeRecord(String address) {
-            parseDeleteQuery(address);
+        parseDeleteQuery(address);
     }
 
     public void removeRecord(DeviceRecord record) {
         parseDeleteQuery(record.getAddress());
     }
 
-    private void parseDeleteQuery(String address){
+    private void parseDeleteQuery(String address) {
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_DEVICE_ADDRESS + "='" + address + "'");
         db.close();
     }
+
     public List<DeviceRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT address, name, state, type FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
@@ -88,13 +81,13 @@ public class DeviceTable {
     }
 
     private DeviceRecord parseCursor(Cursor c) {
-            DeviceRecord r = new DeviceRecord(
-                    c.getInt(0),
-                    c.getString(1),
-                    c.getString(2),
-                    c.getString(3),
-                    c.getString(4));
-            return r;
+        DeviceRecord r = new DeviceRecord(
+                c.getInt(0),
+                c.getString(1),
+                c.getString(2),
+                c.getString(3),
+                c.getString(4));
+        return r;
     }
 
     public DeviceRecord getRecord(String address) throws Exception {
@@ -105,17 +98,18 @@ public class DeviceTable {
         }
         throw new Exception();
     }
+
     public long setRecord(String name, String address, String type, String state) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DEVICE_NAME, name);
         values.put(COLUMN_DEVICE_ADDRESS, address);
         values.put(COLUMN_DEVICE_STATE, state);
         values.put(COLUMN_DEVICE_TYPE, type);
-       return db.update(TABLE_NAME, values, "address=?", new String[]{address});
+        return db.update(TABLE_NAME, values, "address=?", new String[]{address});
     }
 
     public long setRecord(DeviceRecord record) {
-        return setRecord(record.getName(),record.getAddress(),record.getType(),record.getState());
+        return setRecord(record.getName(), record.getAddress(), record.getType(), record.getState());
     }
 
 }
