@@ -15,7 +15,6 @@ import static pt.uninova.s4h.citizenhub.storage.DeviceColumns.DeviceEntry.TABLE_
 
 
 public class DeviceTable {
-    //DeviceTable
     public static final String LOG_TAG = DeviceTable.class.getSimpleName();
 
     /**
@@ -25,7 +24,7 @@ public class DeviceTable {
     private static final String MEASUREMENTS_DB_NAME = "measurements.db";
 
     /**
-     * Database version. If you change the database schema, you must increment the database version.
+     * DatabaseManager version. If you change the database schema, you must increment the database version.
      */
     private static final int DATABASE_VERSION = 7;
     private final SQLiteDatabase db;
@@ -35,7 +34,6 @@ public class DeviceTable {
     }
 
     public static void initialize(SQLiteDatabase db) {
-        // Create a String that contains the SQL statement to create the pets table
         String SQL_CREATE_DEVICES_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
                 + DeviceColumns.DeviceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
                 + COLUMN_DEVICE_NAME + " TEXT NOT NULL, "
@@ -43,7 +41,6 @@ public class DeviceTable {
                 + COLUMN_DEVICE_TYPE + " TEXT NOT NULL, "
                 + COLUMN_DEVICE_STATE + " TEXT " + " ) ";
 
-        // Execute the SQL statement
         db.execSQL(SQL_CREATE_DEVICES_TABLE);
     }
 

@@ -7,11 +7,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Environment;
 import android.os.IBinder;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
 import pt.uninova.s4h.citizenhub.report.ReportManager;
+import pt.uninova.s4h.citizenhub.storage.DatabaseManager;
 import pt.uninova.s4h.citizenhub.ui.R;
 
 public class CitizenHubService extends Service {
@@ -22,6 +26,7 @@ public class CitizenHubService extends Service {
 
     private DeviceManager deviceManager;
     private ReportManager reportManager;
+    private DatabaseManager databaseManager;
 
     public CitizenHubService() {
         super();
@@ -46,7 +51,13 @@ public class CitizenHubService extends Service {
         return deviceManager;
     }
 
-    public ReportManager getReportManager() { return reportManager; }
+    public ReportManager getReportManager() {
+        return reportManager;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
 
     @Nullable
     @Override
@@ -64,7 +75,8 @@ public class CitizenHubService extends Service {
         startForeground(1, buildNotification());
 
         deviceManager = new DeviceManager();
-        reportManager = new ReportManager("/Smart4Health");
+        reportManager = new ReportManager(Environment.getExternalStorageDirectory().toString());
+        databaseManager = new DatabaseManager(getApplicationContext(), "CitizenHubDatabase.db");
     }
 
     @Override
@@ -73,6 +85,7 @@ public class CitizenHubService extends Service {
 
         deviceManager.close();
         reportManager.close();
+        databaseManager.close();
     }
 
     @Override

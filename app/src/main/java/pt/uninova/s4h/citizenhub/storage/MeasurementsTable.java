@@ -18,9 +18,6 @@ public class MeasurementsTable {
 
     public static final String LOG_TAG = MeasurementsTable.class.getSimpleName();
 
-    /**
-     * Name of the database file
-     */
     private static final String DATABASE_NAME = "measurements.db";
 
     private static final int DATABASE_VERSION = 2;
@@ -31,7 +28,6 @@ public class MeasurementsTable {
     }
 
     public static void initialize(SQLiteDatabase db) {
-        // Create a String that contains the SQL statement to create the pets table
         String SQL_CREATE_MEASUREMENTS_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
                 + MeasurementsColumns.MeasureEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
                 + COLUMN_SOURCE_UUID + " TEXT NOT NULL, "

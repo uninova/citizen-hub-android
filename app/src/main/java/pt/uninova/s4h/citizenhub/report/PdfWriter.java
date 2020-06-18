@@ -53,7 +53,6 @@ public class PdfWriter {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
 
-        String filename = "";// filename;
         canvas.drawText("Username: " + report.getUsername(), 200, 250, titlePaint);
         canvas.drawText(report.getAge() + " years old", 200, 300, titlePaint);
         canvas.drawText("Today's results:  " + dateOnly.format(cal.getTime()), 200, 350, titlePaint);
@@ -67,16 +66,10 @@ public class PdfWriter {
         canvas.drawText("Minimum heart rate " + report.getMinHeartRate() + " bpm, at " + report.getMinHeartRateTime(), 200, 750, titlePaint);
         canvas.drawText("Maximum heart rate " + report.getMaxHeartrate() + " bpm, at " + report.getMaxHeartRateTime(), 200, 800, titlePaint);
 
-    /*    document.finishPage(page);
-        File folder = new File("");
-        folder.mkdirs();
-        String extStorageDirectory = folder.toString();
-        File file = new File(extStorageDirectory, "/" + filename + ".pdf");
-        */
-        createFolder();
+        createFolder(pathName);
 
         try {
-            document.writeTo(new FileOutputStream(createFile().getName()));
+            document.writeTo(new FileOutputStream(createFile()));
 
         } catch (IOException e) {
             throw new RuntimeException("Error generating file", e);
@@ -86,17 +79,24 @@ public class PdfWriter {
         return true;
     }
 
-    private String createFolder() {
-        File folder = new File(pathName);
-        folder.mkdirs();
-        String extStorageDirectory;
-        return extStorageDirectory = folder.toString();
+    private void createFolder(String path) {
+        File fol = new File(path, "Smart4Health");
+        File folder = new File(fol, "Smart4Health");
+        if (!folder.exists()) {
+            boolean bool = folder.mkdir();
+        }
+    }
+
+    private File createFile(String filename) {
+        File file = new File(pathName, filename);
+        return file;
     }
 
     private File createFile() {
-        File file = new File(pathName);
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
+        File file = new File(pathName, dateOnly.format(cal.getTime()));
         return file;
-//report.getPathName(), "/" + report.getFileName() + ".pdf"
     }
 
 

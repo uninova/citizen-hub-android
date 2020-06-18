@@ -27,7 +27,6 @@ public class SourceTable {
     }
 
     public static void initialize(SQLiteDatabase db) {
-        // Create a String that contains the SQL statement to create the pets table
         String SQL_CREATE_SOURCE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
                 + SourceColumns.SourceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
                 + COLUMN_SOURCE_UUID + " TEXT NOT NULL, "
@@ -35,7 +34,6 @@ public class SourceTable {
                 + COLUMN_SOURCE_TYPE + " TEXT NOT NULL, "
                 + COLUMN_SOURCE_INTERVAL + " INTEGER " + " ) ";
 
-        // Execute the SQL statement
         db.execSQL(SQL_CREATE_SOURCE_TABLE);
     }
 

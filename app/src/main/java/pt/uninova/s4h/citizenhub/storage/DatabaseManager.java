@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class Database extends SQLiteOpenHelper {
+public class DatabaseManager extends SQLiteOpenHelper implements AutoCloseable {
 
 
     private static final int DATABASE_VERSION = 9;
@@ -13,20 +13,13 @@ public class Database extends SQLiteOpenHelper {
     private SourceTable sourceTable;
     private DeviceTable deviceTable;
 
-    /**
-     * Constructs a new instance of {@link DeviceTable}.
-     *
-     * @param context of the app
-     */
-    public Database(Context context, String filePath) {
+    public DatabaseManager(Context context, String filePath) {
         super(context, filePath, null, DATABASE_VERSION);
         db = this.getWritableDatabase();
         deviceTable = new DeviceTable(db);
         measurementsTable = new MeasurementsTable(db);
         sourceTable = new SourceTable(db);
     }
-//TODO   nullpointer exception
-// db.getDeviceTable().addRecord(name,address,state,type);
 
     public void createTables(SQLiteDatabase db) {
         DeviceTable.initialize(db);
@@ -73,4 +66,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+    @Override
+    public void close() {
+        db.close();
+    }
 }
