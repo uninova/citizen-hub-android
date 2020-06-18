@@ -81,6 +81,18 @@ public class MeasurementsTable {
         }
     }
 
+    public List<MeasurementsRecord> getAllRowsWithCharacteristic(String characteristic) throws Exception {
+
+        try (Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{characteristic})) {
+            List<MeasurementsRecord> list = new LinkedList<>();
+            while (c.moveToNext()) {
+                list.add(parseCursor(c));
+            }
+
+            return list;
+        }
+    }
+
     public MeasurementsRecord getRow(String name) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{name});
 
