@@ -34,6 +34,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return this.measurementsTable;
     }
 
+    public SourceTable getSourceTable() {
+        return this.sourceTable;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Execute the SQL statement
@@ -41,9 +45,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public SourceTable getSourceTable() {
-        return this.sourceTable;
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

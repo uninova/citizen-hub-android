@@ -54,17 +54,13 @@ public class DeviceTable {
         return addRecord(record.getName(), record.getAddress(), record.getType(), record.getState());
     }
 
-    public void removeRecord(String address) {
-        parseDeleteQuery(address);
-    }
+    public DeviceRecord getRecord(String address) throws Exception {
+        Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where address =?", new String[]{address});
+        if (c.moveToFirst()) {
 
-    public void removeRecord(DeviceRecord record) {
-        parseDeleteQuery(record.getAddress());
-    }
-
-    private void parseDeleteQuery(String address) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_DEVICE_ADDRESS + "='" + address + "'");
-        db.close();
+            return parseCursor(c);
+        }
+        throw new Exception();
     }
 
     public List<DeviceRecord> getAllRecords() throws Exception {
@@ -88,13 +84,17 @@ public class DeviceTable {
         return r;
     }
 
-    public DeviceRecord getRecord(String address) throws Exception {
-        Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where address =?", new String[]{address});
-        if (c.moveToFirst()) {
+    public void removeRecord(String address) {
+        parseDeleteQuery(address);
+    }
 
-            return parseCursor(c);
-        }
-        throw new Exception();
+    public void removeRecord(DeviceRecord record) {
+        parseDeleteQuery(record.getAddress());
+    }
+
+    private void parseDeleteQuery(String address) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_DEVICE_ADDRESS + "='" + address + "'");
+        db.close();
     }
 
     public long setRecord(String name, String address, String type, String state) {

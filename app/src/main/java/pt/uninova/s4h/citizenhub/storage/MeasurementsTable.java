@@ -59,14 +59,6 @@ public class MeasurementsTable {
 
     }
 
-    public void removeRecord(String value, String column) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
-    }
-
-    public void removeRecord(MeasurementsRecord record) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
-    }
-
     public List<MeasurementsRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT uuid, timestamp, value, characteristic FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
@@ -111,6 +103,13 @@ public class MeasurementsTable {
         return r;
     }
 
+    public void removeRecord(String value, String column) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
+    }
+
+    public void removeRecord(MeasurementsRecord record) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
+    }
 
     public long setRecord(String uuid, String timestamp, String value, String name) {
         ContentValues values = new ContentValues();

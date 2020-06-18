@@ -58,17 +58,6 @@ public class SourceTable {
 
     }
 
-    public void removeRecord(String value, String column) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
-        db.close();
-    }
-
-    public void removeRecord(SourceRecord record) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SOURCE_UUID + "='" + record.getUuid() + "'");
-        db.close();
-    }
-
-
     public SourceRecord getRecord(String uuid) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where uuid =?", new String[]{uuid});
 
@@ -98,6 +87,16 @@ public class SourceTable {
                 c.getString(3),
                 c.getString(4));
         return record;
+    }
+
+    public void removeRecord(String value, String column) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
+        db.close();
+    }
+
+    public void removeRecord(SourceRecord record) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SOURCE_UUID + "='" + record.getUuid() + "'");
+        db.close();
     }
 
     public long setRecord(String uuid, String address, String type, String interval) {
