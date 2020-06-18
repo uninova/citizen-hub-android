@@ -69,7 +69,7 @@ public class MeasurementsTable {
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
     }
 
-    public List<MeasurementsRecord> getAllRows() throws Exception {
+    public List<MeasurementsRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT uuid, timestamp, value, characteristic FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
             List<MeasurementsRecord> list = new LinkedList<>();
@@ -81,7 +81,7 @@ public class MeasurementsTable {
         }
     }
 
-    public List<MeasurementsRecord> getAllRowsWithCharacteristic(String characteristic) throws Exception {
+    public List<MeasurementsRecord> getAllRecordsWithCharacteristic(String characteristic) throws Exception {
 
         try (Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{characteristic})) {
             List<MeasurementsRecord> list = new LinkedList<>();
@@ -93,7 +93,7 @@ public class MeasurementsTable {
         }
     }
 
-    public MeasurementsRecord getRow(String name) throws Exception {
+    public MeasurementsRecord getRecord(String name) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{name});
 
         if (c.moveToFirst()) {

@@ -69,7 +69,7 @@ public class SourceTable {
     }
 
 
-    public SourceRecord getRow(String uuid) throws Exception {
+    public SourceRecord getRecord(String uuid) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where uuid =?", new String[]{uuid});
 
         if (c.moveToFirst()) {
@@ -79,7 +79,7 @@ public class SourceTable {
         throw new Exception();
     }
 
-    public List<SourceRecord> getAllRows() throws Exception {
+    public List<SourceRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT * FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
             List<SourceRecord> list = new LinkedList<>();
