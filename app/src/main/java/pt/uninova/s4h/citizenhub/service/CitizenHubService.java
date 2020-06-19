@@ -85,6 +85,7 @@ public class CitizenHubService extends Service {
 
         deviceManager.close();
         reportManager.close();
+        databaseManager.close();
     }
 
     @Override
