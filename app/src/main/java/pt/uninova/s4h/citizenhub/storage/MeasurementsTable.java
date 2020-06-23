@@ -71,12 +71,12 @@ public class MeasurementsTable {
         }
     }
 
-    public void getRecordsAverageDay(String columnName, String day) throws Exception {
-        Cursor c = db.rawQuery("select avg(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{day});
+    public void getRecordsAverageDay(String columnName, String date) throws Exception {
+        Cursor c = db.rawQuery("select avg(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{date});
     }
 
-    public void getRecordsSumDay(String columnName, String day) throws Exception {
-        Cursor c = db.rawQuery("select sum(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{day});
+    public void getRecordsSumDay(String columnName, String date) throws Exception {
+        Cursor c = db.rawQuery("select sum(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{date});
     }
 
 
