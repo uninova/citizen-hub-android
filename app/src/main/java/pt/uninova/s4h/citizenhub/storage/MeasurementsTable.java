@@ -71,6 +71,15 @@ public class MeasurementsTable {
         }
     }
 
+    public void getRecordsAverageDay(String columnName, String day) throws Exception {
+        Cursor c = db.rawQuery("select avg(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{day});
+    }
+
+    public void getRecordsSumDay(String columnName, String day) throws Exception {
+        Cursor c = db.rawQuery("select sum(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{day});
+    }
+
+
     public List<MeasurementsRecord> getAllRecordsWithCharacteristic(String characteristic) throws Exception {
 
         try (Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{characteristic})) {
