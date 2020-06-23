@@ -54,22 +54,11 @@ public class SourceTable {
     }
 
     public long addRecord(SourceRecord record) {
-        return addRecord(record.getUuid(),record.getAddress(),record.getType(),record.getInterval());
+        return addRecord(record.getUuid(), record.getAddress(), record.getType(), record.getInterval());
 
     }
 
-    public void removeRecord(String value, String column) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
-        db.close();
-    }
-
-    public void removeRecord(SourceRecord record) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SOURCE_UUID + "='" + record.getUuid() + "'");
-        db.close();
-    }
-
-
-    public SourceRecord getRow(String uuid) throws Exception {
+    public SourceRecord getRecord(String uuid) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where uuid =?", new String[]{uuid});
 
         if (c.moveToFirst()) {
@@ -79,7 +68,7 @@ public class SourceTable {
         throw new Exception();
     }
 
-    public List<SourceRecord> getAllRows() throws Exception {
+    public List<SourceRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT * FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
             List<SourceRecord> list = new LinkedList<>();
@@ -90,7 +79,7 @@ public class SourceTable {
         }
     }
 
-    private SourceRecord parseCursor(Cursor c){
+    private SourceRecord parseCursor(Cursor c) {
         SourceRecord record = new SourceRecord(
                 c.getInt(0),
                 c.getString(1),
@@ -98,6 +87,16 @@ public class SourceTable {
                 c.getString(3),
                 c.getString(4));
         return record;
+    }
+
+    public void removeRecord(String value, String column) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
+        db.close();
+    }
+
+    public void removeRecord(SourceRecord record) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SOURCE_UUID + "='" + record.getUuid() + "'");
+        db.close();
     }
 
     public long setRecord(String uuid, String address, String type, String interval) {
@@ -112,7 +111,7 @@ public class SourceTable {
     }
 
     public long setRecord(SourceRecord record) {
-       return setRecord(record.getUuid(),record.getAddress(),record.getType(),record.getInterval());
+        return setRecord(record.getUuid(), record.getAddress(), record.getType(), record.getInterval());
     }
 
 }

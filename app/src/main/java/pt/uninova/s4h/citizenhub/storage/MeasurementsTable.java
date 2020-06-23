@@ -18,9 +18,7 @@ public class MeasurementsTable {
 
     public static final String LOG_TAG = MeasurementsTable.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "measurements.db";
-
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private final SQLiteDatabase db;
 
     public MeasurementsTable(SQLiteDatabase db) {
@@ -61,15 +59,7 @@ public class MeasurementsTable {
 
     }
 
-    public void removeRecord(String value, String column) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
-    }
-
-    public void removeRecord(MeasurementsRecord record) {
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
-    }
-
-    public List<MeasurementsRecord> getAllRows() throws Exception {
+    public List<MeasurementsRecord> getAllRecords() throws Exception {
         String selectAllQuery = " SELECT uuid, timestamp, value, characteristic FROM " + TABLE_NAME;
         try (Cursor c = db.rawQuery(selectAllQuery, null)) {
             List<MeasurementsRecord> list = new LinkedList<>();
@@ -81,7 +71,19 @@ public class MeasurementsTable {
         }
     }
 
-    public MeasurementsRecord getRow(String name) throws Exception {
+    public List<MeasurementsRecord> getAllRecordsWithCharacteristic(String characteristic) throws Exception {
+
+        try (Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{characteristic})) {
+            List<MeasurementsRecord> list = new LinkedList<>();
+            while (c.moveToNext()) {
+                list.add(parseCursor(c));
+            }
+
+            return list;
+        }
+    }
+
+    public MeasurementsRecord getRecord(String name) throws Exception {
         Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{name});
 
         if (c.moveToFirst()) {
@@ -101,6 +103,13 @@ public class MeasurementsTable {
         return r;
     }
 
+    public void removeRecord(String value, String column) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + column + "='" + value + "'");
+    }
+
+    public void removeRecord(MeasurementsRecord record) {
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_CHARACTERISTIC_NAME + "='" + record.getName() + "'");
+    }
 
     public long setRecord(String uuid, String timestamp, String value, String name) {
         ContentValues values = new ContentValues();

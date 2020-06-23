@@ -6,8 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseManager extends SQLiteOpenHelper implements AutoCloseable {
 
-
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 1;
     SQLiteDatabase db;
     private MeasurementsTable measurementsTable;
     private SourceTable sourceTable;
@@ -35,9 +34,10 @@ public class DatabaseManager extends SQLiteOpenHelper implements AutoCloseable {
         return this.measurementsTable;
     }
 
-    /**
-     * This is called when the database is created for the first time.
-     */
+    public SourceTable getSourceTable() {
+        return this.sourceTable;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Execute the SQL statement
@@ -45,13 +45,7 @@ public class DatabaseManager extends SQLiteOpenHelper implements AutoCloseable {
 
     }
 
-    public SourceTable getSourceTable() {
-        return this.sourceTable;
-    }
 
-    /**
-     * This is called when the database needs to be upgraded.
-     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         upgradeTables(db);
