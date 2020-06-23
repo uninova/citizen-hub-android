@@ -71,6 +71,39 @@ public class MeasurementsTable {
         }
     }
 
+    public int getRecordsAverageDay(String columnName, String date) throws Exception {
+        Cursor c = db.rawQuery("select avg(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{date});
+        int avgValue = 0;
+        if (c.moveToFirst())
+            avgValue = c.getInt(0);
+        return avgValue;
+    }
+
+    public int getRecordsSumDay(String columnName, String date) throws Exception {
+        Cursor c = db.rawQuery("select sum(columnName) from " + TABLE_NAME + " where timestamp =?", new String[]{date});
+        int sumValue = 0;
+        if (c.moveToFirst())
+            sumValue = c.getInt(0);
+        return sumValue;
+    }
+
+    public int getRecordsAverageBetweenDates(String columnName, String date1, String date2) throws Exception {
+        Cursor c = db.rawQuery("select avg(columnName) from " + TABLE_NAME + " where timestamp BETWEEN '" + date1 + "' AND '" + date2, null);
+        int avgValue = 0;
+        if (c.moveToFirst())
+            avgValue = c.getInt(0);
+        return avgValue;
+    }
+
+    public int getRecordsSumBetweenDates(String columnName, String date1, String date2) throws Exception {
+        Cursor c = db.rawQuery("select sum(columnName) from " + TABLE_NAME + " where timestamp BETWEEN '" + date1 + "' AND '" + date2, null);
+        int sumValue = 0;
+        if (c.moveToFirst())
+            sumValue = c.getInt(0);
+        return sumValue;
+    }
+
+
     public List<MeasurementsRecord> getAllRecordsWithCharacteristic(String characteristic) throws Exception {
 
         try (Cursor c = db.rawQuery("select * from " + TABLE_NAME + " where characteristic =?", new String[]{characteristic})) {
