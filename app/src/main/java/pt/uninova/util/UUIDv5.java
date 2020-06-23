@@ -13,6 +13,10 @@ public class UUIDv5 {
     private final byte[] namespaceBytes;
     private final MessageDigest messageDigest;
 
+    public UUIDv5(String name) throws  NoSuchAlgorithmException {
+        this((new UUIDv5(new UUID(0,0))).getUUID(name));
+    }
+
     public UUIDv5(UUID namespace) throws NoSuchAlgorithmException {
         this.namespace = namespace;
         namespaceBytes =
