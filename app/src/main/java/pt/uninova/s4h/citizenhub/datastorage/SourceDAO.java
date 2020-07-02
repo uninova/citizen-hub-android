@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.datastorage2;
+package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

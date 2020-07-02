@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.datastorage2;
+package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
