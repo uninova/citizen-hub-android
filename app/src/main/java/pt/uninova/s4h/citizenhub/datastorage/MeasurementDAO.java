@@ -27,11 +27,12 @@ public interface MeasurementDAO {
     List<Measurement> getMeasurements();
 
     @Query("SELECT * FROM measurements WHERE name = :characteristicName")
-    List<Device> getMeasurementsWithCharacteristic(String characteristicName);
+    List<Measurement> getMeasurementsWithCharacteristic(String characteristicName);
 
     @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp =:date ")
     int getAvgFromDay(String characteristicName, String date);
 
+    //TODO databaseView sum/avg
     @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName AND timestamp=:date ")
     int getSumFromDay(String characteristicName, String date);
 
