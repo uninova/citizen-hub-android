@@ -30,4 +30,9 @@ public interface MeasurementDAO {
 
     @Query("SELECT AVG(value) FROM measurements WHERE timestamp BETWEEN  :timestamp_start AND :timestamp_end")
     int getAvgFromDay(String timestamp_start, String timestamp_end);
+
+    @Query("SELECT SUM(value) FROM measurements WHERE timestamp BETWEEN  :timestamp_start AND :timestamp_end")
+    int getSumFromDay(String timestamp_start, String timestamp_end);
+
+
 }
