@@ -6,9 +6,8 @@ import androidx.room.Room;
 
 public class DatabaseClient {
 
-    private Context context;
     private static DatabaseClient dbInstance;
-
+    private Context context;
     //our app database object
     private DatabaseManager dbManager;
 

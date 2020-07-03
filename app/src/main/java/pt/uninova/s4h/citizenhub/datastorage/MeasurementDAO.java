@@ -23,7 +23,6 @@ public interface MeasurementDAO {
     @Query("DELETE FROM measurements")
     void deleteAllMeasurements();
 
-
     @Query("select * from measurements")
     List<Measurement> getMeasurements();
 
