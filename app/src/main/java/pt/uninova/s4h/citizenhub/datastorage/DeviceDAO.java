@@ -20,6 +20,9 @@ public interface DeviceDAO {
     @Delete
     void deleteDevice(Device device);
 
+    @Query("DELETE FROM devices")
+    void deleteAllDevices();
+
     @Query("select * from devices")
     List<Device> getDevices();
 

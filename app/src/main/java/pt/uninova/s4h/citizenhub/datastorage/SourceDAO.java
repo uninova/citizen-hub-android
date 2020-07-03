@@ -20,6 +20,9 @@ public interface SourceDAO {
     @Delete
     void deleteSource(Source source);
 
+    @Query("DELETE FROM sources")
+    void deleteAllSources();
+
     @Query("select * from sources")
     List<Source> getSources();
 

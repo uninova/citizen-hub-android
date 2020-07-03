@@ -20,8 +20,14 @@ public interface MeasurementDAO {
     @Delete
     void deleteMeasurement(Measurement measurement);
 
+    @Query("DELETE FROM measurements")
+    void deleteAllMeasurements();
+
+
     @Query("select * from measurements")
     List<Measurement> getMeasurements();
 
 
+//    @Query("SELECT AVG(value) FROM measurements WHERE timestamp BETWEEN   AND :dayend")
+//    int getAvgFromDay(int value);
 }
