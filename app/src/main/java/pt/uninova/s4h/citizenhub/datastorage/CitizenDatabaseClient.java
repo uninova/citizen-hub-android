@@ -1,0 +1,27 @@
+package pt.uninova.s4h.citizenhub.datastorage;
+
+import android.content.Context;
+
+import androidx.room.Room;
+
+public class CitizenDatabaseClient {
+
+    private static CitizenDatabaseClient INSTANCE;
+    private CitizenDatabase database;
+
+    private CitizenDatabaseClient(Context context) {
+
+        database = Room.databaseBuilder(context, CitizenDatabase.class, "citizen").build();
+    }
+
+    public static synchronized CitizenDatabaseClient getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new CitizenDatabaseClient(context);
+        }
+        return INSTANCE;
+    }
+
+    public CitizenDatabase getDatabase() {
+        return database;
+    }
+}
