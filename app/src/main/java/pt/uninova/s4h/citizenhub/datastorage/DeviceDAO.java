@@ -23,7 +23,8 @@ public interface DeviceDAO {
     @Query("DELETE FROM devices")
     void deleteAllDevices();
 
-    @Query("select * from devices")
+    //Sql all in caps
+    @Query("SELECT * FROM devices")
     List<Device> getDevices();
 
     @Query("select * from devices where address ==:deviceAddress")
