@@ -27,7 +27,7 @@ public interface DeviceDAO {
     @Query("SELECT * FROM devices")
     List<Device> getDevices();
 
-    @Query("select * from devices where address ==:deviceAddress")
+    @Query("SELECT * FROM devices WHERE address ==:deviceAddress")
     Device getDevice(String deviceAddress);
 
 }

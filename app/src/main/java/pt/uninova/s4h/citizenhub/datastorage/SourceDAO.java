@@ -23,13 +23,13 @@ public interface SourceDAO {
     @Query("DELETE FROM sources")
     void deleteAllSources();
 
-    @Query("select * from sources")
+    @Query("SELECT * FROM sources")
     List<Source> getSources();
 
 
-    @Query("select * from sources where uuid ==:sourceUuid")
+    @Query("SELECT * FROM sources WHERE uuid ==:sourceUuid")
     Device getSourceFromUUID(String sourceUuid);
 
-    @Query("select * from sources where address ==:deviceAddress")
+    @Query("SELECT * FROM sources WHERE address ==:deviceAddress")
     Device getSourceFomAddress(String deviceAddress);
 }

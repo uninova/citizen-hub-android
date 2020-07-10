@@ -23,7 +23,7 @@ public interface MeasurementDAO {
     @Query("DELETE FROM measurements")
     void deleteAllMeasurements();
 
-    @Query("select * from measurements")
+    @Query("SELECT * FROM measurements")
     List<Measurement> getMeasurements();
 
     @Query("SELECT * FROM measurements WHERE name = :characteristicName")
