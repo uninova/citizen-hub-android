@@ -12,7 +12,7 @@ import java.util.List;
 public interface SourceDAO {
 
     @Insert
-    String addSource(Source source);
+    void addSource(Source source);
 
     @Update
     void updateSource(Source source);

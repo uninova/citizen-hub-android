@@ -12,7 +12,7 @@ import java.util.List;
 public interface MeasurementDAO {
 
     @Insert
-    String addMeasurement(Measurement measurement);
+    void addMeasurement(Measurement measurement);
 
     @Update
     void updateMeasurement(Measurement measurement);

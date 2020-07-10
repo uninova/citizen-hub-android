@@ -12,7 +12,7 @@ import java.util.List;
 public interface DeviceDAO {
 
     @Insert
-    String addDevice(Device device);
+    void addDevice(Device device);
 
     @Update
     void updateDevice(Device device);

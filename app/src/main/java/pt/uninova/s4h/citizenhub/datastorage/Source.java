@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -11,6 +12,7 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Source {
 
     @PrimaryKey
+    @NonNull
     private String uuid;
     //CASCADE = "if user row will be deleted, we’d like to delete also all of it repositories"
     @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "address", onDelete = CASCADE)

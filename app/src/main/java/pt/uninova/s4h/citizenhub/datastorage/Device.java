@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,6 +10,7 @@ public class Device {
 
     private String name;
     @PrimaryKey
+    @NonNull
     private String address;
     private String type;
     private String state;
