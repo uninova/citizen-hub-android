@@ -9,7 +9,7 @@ public class CitizenDatabaseClient {
     private static CitizenDatabaseClient INSTANCE;
     private CitizenDatabase database;
 
-    public CitizenDatabaseClient(Context context) {
+    private CitizenDatabaseClient(Context context) {
 
         database = Room.databaseBuilder(context, CitizenDatabase.class, "citizen").build();
     }

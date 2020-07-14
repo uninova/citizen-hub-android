@@ -31,7 +31,7 @@ public class SimpleEntityReadWriteTest {
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        db = new CitizenDatabaseClient(context);
+        CitizenDatabaseClient db = CitizenDatabaseClient.getInstance(context);
         deviceDAO = db.getDatabase().deviceDao();
         measurementDAO = db.getDatabase().measurementDAO();
         sourceDAO = db.getDatabase().sourceDAO();
@@ -53,7 +53,6 @@ public class SimpleEntityReadWriteTest {
         Measurement measurement1 = new Measurement(1, "00:00:00:01", date, "70", "HeartRate");
         Measurement measurement2 = new Measurement(2, "00:00:00:02", date, "75", "HeartRate");
         Measurement measurement3 = new Measurement(3, "00:00:00:03", date, "80", "HeartRate");
-        Measurement measurement4 = new Measurement(4, "00:00:00:04", date, "70", "Unknown");
 
         deviceDAO.addDevice(device1);
         deviceDAO.addDevice(device2);
@@ -63,7 +62,6 @@ public class SimpleEntityReadWriteTest {
         measurementDAO.addMeasurement(measurement1);
         measurementDAO.addMeasurement(measurement2);
         measurementDAO.addMeasurement(measurement3);
-        measurementDAO.addMeasurement(measurement4);
 
 
         List<Device> byName = deviceDAO.getDevices();
