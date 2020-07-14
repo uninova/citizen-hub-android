@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -25,12 +26,12 @@ public interface SourceDAO {
     void deleteAllSources();
 
     @Query("SELECT * FROM sources")
-    List<Source> getSources();
+    LiveData<List<Source>> getSources();
 
 
     @Query("SELECT * FROM sources WHERE uuid ==:sourceUuid")
-    Device getSourceFromUUID(String sourceUuid);
+    LiveData<List<Source>> getSourceFromUUID(String sourceUuid);
 
     @Query("SELECT * FROM sources WHERE address ==:deviceAddress")
-    Device getSourceFomAddress(String deviceAddress);
+    LiveData<List<Source>> getSourceFomAddress(String deviceAddress);
 }

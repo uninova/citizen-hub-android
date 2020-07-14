@@ -30,6 +30,6 @@ public interface DeviceDAO {
     LiveData<List<Device>> getDevices();
 
     @Query("SELECT * FROM devices WHERE address ==:deviceAddress")
-    Device getDevice(String deviceAddress);
+    LiveData<Device> getDevice(String deviceAddress);
 
 }

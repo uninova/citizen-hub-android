@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -25,10 +26,10 @@ public interface MeasurementDAO {
     void deleteAllMeasurements();
 
     @Query("SELECT * FROM measurements")
-    List<Measurement> getMeasurements();
+    LiveData<List<Measurement>> getMeasurements();
 
     @Query("SELECT * FROM measurements WHERE name = :characteristicName")
-    List<Measurement> getMeasurementsWithCharacteristic(String characteristicName);
+    LiveData<List<Measurement>> getMeasurementsWithCharacteristic(String characteristicName);
 
     @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp =:date ")
     int getAvgFromDay(String characteristicName, String date);
