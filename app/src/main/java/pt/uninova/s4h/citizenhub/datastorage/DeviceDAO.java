@@ -15,7 +15,7 @@ public interface DeviceDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addDevice(Device device);
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateDevice(Device device);
 
     @Delete
