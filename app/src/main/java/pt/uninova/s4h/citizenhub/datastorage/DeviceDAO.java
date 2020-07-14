@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -26,7 +27,7 @@ public interface DeviceDAO {
 
     //Sql all in caps
     @Query("SELECT * FROM devices")
-    List<Device> getDevices();
+    LiveData<List<Device>> getDevices();
 
     @Query("SELECT * FROM devices WHERE address ==:deviceAddress")
     Device getDevice(String deviceAddress);
