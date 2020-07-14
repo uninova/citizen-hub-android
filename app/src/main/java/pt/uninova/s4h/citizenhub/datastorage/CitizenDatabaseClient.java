@@ -9,7 +9,7 @@ public class CitizenDatabaseClient {
     private static CitizenDatabaseClient INSTANCE;
     private CitizenDatabase database;
 
-    private CitizenDatabaseClient(Context context) {
+    public CitizenDatabaseClient(Context context) {
 
         database = Room.databaseBuilder(context, CitizenDatabase.class, "citizen").build();
     }
@@ -24,4 +24,11 @@ public class CitizenDatabaseClient {
     public CitizenDatabase getDatabase() {
         return database;
     }
+
+    @Override
+    public void finalize() throws Throwable {
+        super.finalize();
+        database.close();
+    }
+
 }
