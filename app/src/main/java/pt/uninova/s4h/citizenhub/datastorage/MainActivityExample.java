@@ -12,6 +12,8 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.ui.R;
 
+//Todo Useless test example class, delete in future
+
 public class MainActivityExample extends AppCompatActivity {
     private DeviceViewModel deviceViewModel;
 
