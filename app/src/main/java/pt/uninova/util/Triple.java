@@ -1,15 +1,12 @@
 package pt.uninova.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.Objects;
 
-public class Triple<F, S, T> {
+public final class Triple<F, S, T> {
 
-    private F first;
-    private S second;
-    private T third;
+    private final F first;
+    private final S second;
+    private final T third;
 
     public Triple(F first, S second, T third) {
         this.first = first;
@@ -18,7 +15,7 @@ public class Triple<F, S, T> {
     }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
+    public boolean equals(Object obj) {
         if (!(obj instanceof Triple)) {
             return false;
         }
@@ -45,19 +42,6 @@ public class Triple<F, S, T> {
         return Objects.hash(first, second, third);
     }
 
-    public void setFirst(F first) {
-        this.first = first;
-    }
-
-    public void setSecond(S second) {
-        this.second = second;
-    }
-
-    public void setThird(T third) {
-        this.third = third;
-    }
-
-    @NonNull
     @Override
     public String toString() {
         return "(" + first + "," + second + "," + third + ")";
