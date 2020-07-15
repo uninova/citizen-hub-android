@@ -20,4 +20,24 @@ public class DeviceViewModel extends AndroidViewModel {
         allDevices = repository.getAllDevices();
     }
 
+    public void insert(Device device) {
+        repository.insert(device);
+    }
+
+    public void update(Device device) {
+        repository.update(device);
+    }
+
+    public void delete(Device device) {
+        repository.delete(device);
+    }
+
+    public void deleteAllDevices() {
+        repository.deleteAll();
+    }
+
+    public LiveData<List<Device>> getAllDevices() {
+        return allDevices;
+    }
+
 }
