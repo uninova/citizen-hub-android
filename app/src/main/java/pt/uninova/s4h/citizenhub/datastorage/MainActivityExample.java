@@ -13,6 +13,8 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.ui.R;
 
 //Todo Useless test example class, delete in future
+//Room DB structure: https://prnt.sc/tiejdz
+//https://www.youtube.com/watch?v=reSPN7mgshI
 
 public class MainActivityExample extends AppCompatActivity {
     private DeviceViewModel deviceViewModel;
