@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.datastorage.CitizenDatabaseClient;
@@ -52,7 +52,8 @@ public class SimpleEntityReadWriteTest {
         Device device3 = new Device("Miband2", "00:00:00:03", "health", "on");
         Device device4 = new Device("PokemongoPLus", "00:00:00:04", "unknown", "on");
         DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-        String date = df.format(Calendar.getInstance().getTime());
+        Date date = new Date();
+        
         Measurement measurement1 = new Measurement(1, "00:00:00:01", date, "70", "HeartRate");
         Measurement measurement2 = new Measurement(2, "00:00:00:02", date, "75", "HeartRate");
         Measurement measurement3 = new Measurement(3, "00:00:00:03", date, "80", "HeartRate");

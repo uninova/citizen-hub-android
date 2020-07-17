@@ -32,20 +32,20 @@ public interface MeasurementDAO {
     @Query("SELECT * FROM measurements WHERE name = :characteristicName")
     LiveData<List<Measurement>> getMeasurementsWithCharacteristic(String characteristicName);
 
-    @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp=date(:date) ")
+    @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp=datetime(:date) ")
     int getAvgFromDay(String characteristicName, Date date);
 
     //TODO databaseView sum/avg
 
     //datawarehouse
-    @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName AND timestamp=date(:date) ")
+    @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName AND timestamp=datetime(:date) ")
     long getSumFromDay(String characteristicName, Date date);
 
 
-    @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  date(:timestamp_start) AND date(:timestamp_end)")
+    @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  datetime(:timestamp_start) AND datetime(:timestamp_end)")
     long getAvgFromDayInterval(String characteristicName, Date timestamp_start, Date timestamp_end);
 
-    @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  date(:timestamp_start) AND date(:timestamp_end)")
+    @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  datetime(:timestamp_start) AND datetime(:timestamp_end)")
     long getSumFromDayInterval(String characteristicName, Date timestamp_start, Date timestamp_end);
 
 
