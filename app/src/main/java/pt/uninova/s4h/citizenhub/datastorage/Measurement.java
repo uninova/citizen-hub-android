@@ -5,6 +5,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "measurements")
@@ -14,7 +16,7 @@ public class Measurement {
     private int id;
     @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
     private String uuid;
-    private String timestamp;
+    private Date timestamp;
     private String value;
     private String name;
 
@@ -24,7 +26,7 @@ public class Measurement {
     }
 
 
-    public Measurement(Integer id, String uuid, String timestamp, String value, String name) {
+    public Measurement(Integer id, String uuid, Date timestamp, String value, String name) {
         this.id = id;
         this.uuid = uuid;
         this.timestamp = timestamp;
@@ -48,11 +50,11 @@ public class Measurement {
         this.uuid = uuid;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
