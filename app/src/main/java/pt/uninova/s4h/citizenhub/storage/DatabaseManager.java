@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseManager extends SQLiteOpenHelper {
+public class DatabaseManager extends SQLiteOpenHelper implements AutoCloseable {
 
     private static final int DATABASE_VERSION = 1;
     SQLiteDatabase db;
@@ -60,4 +60,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
 
+    @Override
+    public void close() {
+        db.close();
+    }
 }
