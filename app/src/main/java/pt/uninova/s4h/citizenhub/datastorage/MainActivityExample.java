@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class MainActivityExample extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        deviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel.class);
+        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         deviceViewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
             @Override
             public void onChanged(@Nullable List<Device> devices) {
