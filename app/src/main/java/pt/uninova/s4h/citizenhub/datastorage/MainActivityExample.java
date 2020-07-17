@@ -15,6 +15,7 @@ import pt.uninova.s4h.citizenhub.ui.R;
 //Todo Useless test example class, delete in future
 //Room DB structure: https://prnt.sc/tiejdz
 //https://www.youtube.com/watch?v=reSPN7mgshI
+//https://developer.android.com/training/data-storage/room/creating-views
 
 public class MainActivityExample extends AppCompatActivity {
     private DeviceViewModel deviceViewModel;
