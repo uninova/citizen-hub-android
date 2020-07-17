@@ -1,6 +1,7 @@
 import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -21,6 +22,8 @@ import pt.uninova.s4h.citizenhub.datastorage.Measurement;
 import pt.uninova.s4h.citizenhub.datastorage.MeasurementDAO;
 import pt.uninova.s4h.citizenhub.datastorage.SourceDAO;
 
+import static java.util.Objects.requireNonNull;
+
 @RunWith(AndroidJUnit4.class)
 public class SimpleEntityReadWriteTest {
     private DeviceDAO deviceDAO;
@@ -39,7 +42,7 @@ public class SimpleEntityReadWriteTest {
 
     @After
     public void closeDb() throws Throwable {
-        db.finalize();
+        db.close();
     }
 
     @Test
@@ -64,14 +67,14 @@ public class SimpleEntityReadWriteTest {
         measurementDAO.addMeasurement(measurement3);
 
 
-        List<Device> byName = deviceDAO.getDevices();
-        List<Measurement> byName1 = measurementDAO.getMeasurementsWithCharacteristic("HeartRate");
+        LiveData<List<Device>> byName = deviceDAO.getDevices();
+        LiveData<List<Measurement>> byName1 = measurementDAO.getMeasurementsWithCharacteristic("HeartRate");
 
-        for (Device device : byName) {
+        for (Device device : requireNonNull(byName.getValue())) {
             Log.d("DeviceTable", device.getName() + " " + device.getAddress() + "\n");
         }
 
-        for (Measurement measurement : byName1) {
+        for (Measurement measurement : requireNonNull(byName1.getValue())) {
             Log.d("MeasurementTable", measurement.getUuid() + " " + measurement.getName() + " " + measurement.getTimestamp() + " " + measurement.getValue() + "\n");
         }
     }
