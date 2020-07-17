@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -32,20 +33,20 @@ public interface MeasurementDAO {
     LiveData<List<Measurement>> getMeasurementsWithCharacteristic(String characteristicName);
 
     @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp=date(:date) ")
-    int getAvgFromDay(String characteristicName, String date);
+    int getAvgFromDay(String characteristicName, Date date);
 
     //TODO databaseView sum/avg
 
     //datawarehouse
     @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName AND timestamp=date(:date) ")
-    long getSumFromDay(String characteristicName, String date);
+    long getSumFromDay(String characteristicName, Date date);
 
 
     @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  date(:timestamp_start) AND date(:timestamp_end)")
-    long getAvgFromDayInterval(String characteristicName, String timestamp_start, String timestamp_end);
+    long getAvgFromDayInterval(String characteristicName, Date timestamp_start, Date timestamp_end);
 
     @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName  AND timestamp BETWEEN  date(:timestamp_start) AND date(:timestamp_end)")
-    long getSumFromDayInterval(String characteristicName, String timestamp_start, String timestamp_end);
+    long getSumFromDayInterval(String characteristicName, Date timestamp_start, Date timestamp_end);
 
 
 }
