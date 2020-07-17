@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-public class CitizenDatabaseClient {
+public class CitizenDatabaseClient implements AutoCloseable {
 
     private static CitizenDatabaseClient INSTANCE;
     private CitizenDatabase database;
@@ -25,10 +25,9 @@ public class CitizenDatabaseClient {
         return database;
     }
 
+
     @Override
-    public void finalize() throws Throwable {
-        super.finalize();
+    public void close() {
         database.close();
     }
-
 }
