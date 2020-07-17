@@ -4,9 +4,8 @@ import androidx.room.DatabaseView;
 
 import java.util.Date;
 
-@DatabaseView("SELECT AVG(value) AS averageValue FROM measurements WHERE name = :characteristicName AND timestamp BETWEEN datetime(:from) AND datetime(:to)")
+@DatabaseView("SELECT value, timestamp FROM measurements WHERE name = 'HeartRate' ORDER BY timestamp ASC")
 public class AvgMeasurementView {
-    public String averageValue;
-    public Date from;
-    public Date to;
+    public float value;
+    public Date timestamp;
 }
