@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
@@ -16,6 +17,7 @@ public class Measurement {
     private int id;
     @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
     private String uuid;
+    @TypeConverters({Converters.class})
     private Date timestamp;
     private String value;
     private String name;
