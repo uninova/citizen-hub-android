@@ -11,7 +11,7 @@ public class CitizenDatabaseClient implements AutoCloseable {
 
     private CitizenDatabaseClient(Context context) {
 
-        database = Room.databaseBuilder(context, CitizenDatabase.class, "citizen").build();
+        database = Room.databaseBuilder(context, CitizenDatabase.class, "citizenDB").build();
     }
 
     public static synchronized CitizenDatabaseClient getInstance(Context context) {
