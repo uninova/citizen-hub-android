@@ -35,12 +35,8 @@ public interface MeasurementDAO {
     @Query("SELECT * FROM AverageMeasurement")
     LiveData<List<AverageMeasurement>> getMeasurementsWithoutTime();
 
-    @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp=datetime(:date) ")
+    @Query("SELECT averageValue FROM AverageMeasurement WHERE characteristicName = :characteristicName AND date=datetime(:date) ")
     float getAvgFromDay(String characteristicName, Date date);
-
-    @Query("SELECT SUM(value) FROM measurements WHERE name = :characteristicName AND timestamp=datetime(:date) ")
-    float getSumFromDay(String characteristicName, Date date);
-
 
 
 
