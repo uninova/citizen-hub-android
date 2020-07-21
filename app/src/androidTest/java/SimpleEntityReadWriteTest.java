@@ -1,5 +1,4 @@
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.test.core.app.ApplicationProvider;
@@ -15,14 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.datastorage.AverageMeasurement;
 import pt.uninova.s4h.citizenhub.datastorage.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.datastorage.Device;
 import pt.uninova.s4h.citizenhub.datastorage.DeviceDAO;
 import pt.uninova.s4h.citizenhub.datastorage.Measurement;
 import pt.uninova.s4h.citizenhub.datastorage.MeasurementDAO;
 import pt.uninova.s4h.citizenhub.datastorage.SourceDAO;
-
-import static java.util.Objects.requireNonNull;
 
 @RunWith(AndroidJUnit4.class)
 public class SimpleEntityReadWriteTest {
@@ -34,7 +32,7 @@ public class SimpleEntityReadWriteTest {
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        CitizenDatabaseClient db = CitizenDatabaseClient.getInstance(context);
+        db = CitizenDatabaseClient.getInstance(context);
         deviceDAO = db.getDatabase().deviceDao();
         measurementDAO = db.getDatabase().measurementDAO();
         sourceDAO = db.getDatabase().sourceDAO();
@@ -51,9 +49,9 @@ public class SimpleEntityReadWriteTest {
         Device device2 = new Device("Miband2", "00:00:00:02", "health", "on");
         Device device3 = new Device("Miband2", "00:00:00:03", "health", "on");
         Device device4 = new Device("PokemongoPLus", "00:00:00:04", "unknown", "on");
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-        
+        df.format(date);
         Measurement measurement1 = new Measurement(1, "00:00:00:01", date, "70", "HeartRate");
         Measurement measurement2 = new Measurement(2, "00:00:00:02", date, "75", "HeartRate");
         Measurement measurement3 = new Measurement(3, "00:00:00:03", date, "80", "HeartRate");
@@ -68,16 +66,12 @@ public class SimpleEntityReadWriteTest {
         measurementDAO.addMeasurement(measurement3);
 
 
-        LiveData<List<Device>> byName = deviceDAO.getDevices();
-        LiveData<List<Measurement>> byName1 = measurementDAO.getMeasurementsWithCharacteristic("HeartRate");
+        LiveData<List<AverageMeasurement>> byName1 = measurementDAO.getMeasurementsWithoutTime();
 
-        for (Device device : requireNonNull(byName.getValue())) {
-            Log.d("DeviceTable", device.getName() + " " + device.getAddress() + "\n");
+       /* for (AverageMeasurement averageMeasurement : requireNonNull(byName1.getValue())) {
+            Log.d("MeasurementTable", averageMeasurement.AverageValue + " " + averageMeasurement.date + averageMeasurement.characteristicName + "\n");
         }
-
-        for (Measurement measurement : requireNonNull(byName1.getValue())) {
-            Log.d("MeasurementTable", measurement.getUuid() + " " + measurement.getName() + " " + measurement.getTimestamp() + " " + measurement.getValue() + "\n");
-        }
+        */
     }
 
 }
