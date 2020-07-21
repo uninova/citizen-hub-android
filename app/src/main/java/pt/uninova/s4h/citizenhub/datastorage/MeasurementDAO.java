@@ -32,6 +32,9 @@ public interface MeasurementDAO {
     @Query("SELECT * FROM measurements WHERE name = :characteristicName")
     LiveData<List<Measurement>> getMeasurementsWithCharacteristic(String characteristicName);
 
+    @Query("SELECT * FROM AverageMeasurement")
+    LiveData<List<AverageMeasurement>> getMeasurementsWithoutTime();
+
     @Query("SELECT AVG(value) FROM measurements WHERE name = :characteristicName AND timestamp=datetime(:date) ")
     float getAvgFromDay(String characteristicName, Date date);
 
@@ -39,12 +42,7 @@ public interface MeasurementDAO {
     float getSumFromDay(String characteristicName, Date date);
 
 
-    @Query("SELECT AVG(value) FROM HeartRateView WHERE timestamp BETWEEN  datetime(:timestamp_start) AND datetime(:timestamp_end)")
-    float getAvgHeartrateFromInterval(Date timestamp_start, Date timestamp_end);
 
-
-    @Query("SELECT SUM(value) FROM StepsView WHERE timestamp BETWEEN  datetime(:timestamp_start) AND datetime(:timestamp_end)")
-    float getSumStepsFromInterval(Date timestamp_start, Date timestamp_end);
 
 
 }
