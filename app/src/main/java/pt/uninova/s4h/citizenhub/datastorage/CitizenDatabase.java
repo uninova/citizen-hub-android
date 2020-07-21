@@ -4,10 +4,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import pt.uninova.s4h.citizenhub.datastorage.DatabaseViews.HeartRateView;
-import pt.uninova.s4h.citizenhub.datastorage.DatabaseViews.StepsView;
-
-@Database(entities = {Device.class, Source.class, Measurement.class}, views = {HeartRateView.class, StepsView.class}, version = 2)
+@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class}, version = 1)
 @TypeConverters({Converters.class})
 
 public abstract class CitizenDatabase extends RoomDatabase {
