@@ -22,7 +22,6 @@ public class Source {
 
     @Ignore
     public Source() {
-
     }
 
     public Source(String uuid, String address, String type, String interval) {

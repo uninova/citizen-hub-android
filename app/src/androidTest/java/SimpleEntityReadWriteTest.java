@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import pt.uninova.s4h.citizenhub.datastorage.AverageMeasurement;
 import pt.uninova.s4h.citizenhub.datastorage.CitizenDatabaseClient;
@@ -51,11 +53,45 @@ public class SimpleEntityReadWriteTest {
         Device device4 = new Device("PokemongoPLus", "00:00:00:04", "unknown", "on");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-        df.format(date);
-        Measurement measurement1 = new Measurement(1, "00:00:00:01", date, "70", "HeartRate");
-        Measurement measurement2 = new Measurement(2, "00:00:00:02", date, "75", "HeartRate");
-        Measurement measurement3 = new Measurement(3, "00:00:00:03", date, "80", "HeartRate");
 
+
+        Measurement measurement1 = new Measurement(1, date, "70", 1);
+        Measurement measurement2 = new Measurement(2, date, "75", 1);
+        Measurement measurement3 = new Measurement(3, date, "80", 0);
+        for (int j = 1; j < 4; j++) {
+            int k = 0;
+            if (j > 1) {
+                k = (j - 1) * 100;
+            }
+            Random rand = new Random();
+            int value = 0;
+            for (int i = 0; i < 100000; i++) {
+                DateFormat dfz = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                int currRand = rand.nextInt(150);
+                int currRand2 = rand.nextInt(150);
+                Date datez = new Date();
+                Calendar c = Calendar.getInstance();
+
+                if (rand.nextInt(2) == 1) {
+                    value = i;
+                }
+
+                c.add(Calendar.DATE, value);
+                Date tomorrow = dfz.parse((dfz.format(c.getTime())));
+                measurement1 = new Measurement(i + k, tomorrow, String.valueOf(currRand), 1);
+                measurement2 = new Measurement(i + k, tomorrow, String.valueOf(currRand2), 1);
+                measurement3 = new Measurement(i + k, tomorrow, String.valueOf(currRand2), 0);
+
+                measurementDAO.addMeasurement(measurement1);
+                //     Log.d("measurementTest", measurement1.getValue() + " " + measurement1.getTimestamp() + "\n");
+                //   Log.d("measurementTest", String.valueOf(measurementDAO.getAvgFromDay("HeartRate", tomorrow)));
+                // 72 reads + 72 writes da/na view em 0.5 segundos após 10100 inserts
+                if (i == 9999) {
+                    ++j;
+                }
+            }
+        }
         deviceDAO.addDevice(device1);
         deviceDAO.addDevice(device2);
         deviceDAO.addDevice(device3);

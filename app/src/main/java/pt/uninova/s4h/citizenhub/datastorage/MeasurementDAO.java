@@ -29,16 +29,15 @@ public interface MeasurementDAO {
     @Query("SELECT * FROM measurements")
     LiveData<List<Measurement>> getMeasurements();
 
-    @Query("SELECT * FROM measurements WHERE name = :characteristicName")
-    LiveData<List<Measurement>> getMeasurementsWithCharacteristic(String characteristicName);
+    @Query("SELECT * FROM measurements WHERE type = :characteristicType")
+    LiveData<List<Measurement>> getMeasurementsWithCharacteristic(int characteristicType);
 
     @Query("SELECT * FROM AverageMeasurement")
     LiveData<List<AverageMeasurement>> getMeasurementsWithoutTime();
 
-    @Query("SELECT averageValue FROM AverageMeasurement WHERE characteristicName = :characteristicName AND date=datetime(:date) ")
-    float getAvgFromDay(String characteristicName, Date date);
-
-
+    @Query("SELECT AverageValue FROM AverageMeasurement WHERE CharacteristicType = :characteristicType AND Date=(date(:datez)) ")
+    float getAvgFromDay(int characteristicType, Date datez);
+    // SELECT AverageValue,CharacteristicName, date FROM AverageMeasurement WHERE CharacteristicName = 'HeartRate' AND date=('2020-07-21')
 
 
 }
