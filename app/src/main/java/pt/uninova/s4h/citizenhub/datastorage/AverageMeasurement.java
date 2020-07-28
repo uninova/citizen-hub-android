@@ -1,12 +1,15 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.DatabaseView;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@DatabaseView("SELECT AVG(value) AS AverageValue , date(timestamp) AS Date, name as CharacteristicName FROM measurements GROUP BY Date, CharacteristicName")
+@DatabaseView("SELECT AVG(value) AS AverageValue , strftime('%s', strftime('%Y-%m-%d', timestamp, 'UNIXEPOCH')) AS Date, type as characteristicType FROM measurements GROUP BY Date, characteristicType")
 public class AverageMeasurement {
     public float AverageValue;
+    @TypeConverters({Converters.class})
     public Date date;
-    public String characteristicName;
+    public int characteristicType;
 }
+//SELECT strftime('%s', strftime('%Y-%m-%d','now', 'UNIXEPOCH'))

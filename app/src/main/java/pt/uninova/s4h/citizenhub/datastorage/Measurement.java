@@ -1,26 +1,23 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-import static androidx.room.ForeignKey.CASCADE;
-
 @Entity(tableName = "measurements")
 public class Measurement {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
-    private String uuid;
+    /* @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
+    private String uuid;*/
     @TypeConverters({Converters.class})
     private Date timestamp;
     private String value;
-    private String name;
+    private int type;
 
     @Ignore
     public Measurement() {
@@ -28,12 +25,12 @@ public class Measurement {
     }
 
 
-    public Measurement(Integer id, String uuid, Date timestamp, String value, String name) {
+    public Measurement(Integer id, Date timestamp, String value, int type) {
         this.id = id;
-        this.uuid = uuid;
+        // this.uuid = uuid;
         this.timestamp = timestamp;
         this.value = value;
-        this.name = name;
+        this.type = type;
     }
 
     public int getId() {
@@ -42,14 +39,6 @@ public class Measurement {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     public Date getTimestamp() {
@@ -68,11 +57,11 @@ public class Measurement {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public int getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(int type) {
+        this.type = type;
     }
 }
