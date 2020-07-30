@@ -1,11 +1,14 @@
 package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
+
+import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "measurements")
 public class Measurement {
@@ -17,6 +20,7 @@ public class Measurement {
     @TypeConverters({Converters.class})
     private Date timestamp;
     private String value;
+    @ForeignKey(entity = CharacteristicType.class, parentColumns = "type", childColumns = "id", onDelete = CASCADE)
     private int type;
 
     @Ignore
