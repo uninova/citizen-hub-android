@@ -2,11 +2,13 @@ package pt.uninova.s4h.citizenhub.datastorage;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = "type")
 public class CharacteristicType {
     @PrimaryKey
     private int id;
+    @TypeConverters(CharacteristicTypeConverter.class)
     private String name;
 
     public int getId() {
