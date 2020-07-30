@@ -21,6 +21,7 @@ public class Measurement {
     private Date timestamp;
     private String value;
     @ForeignKey(entity = CharacteristicType.class, parentColumns = "type", childColumns = "id", onDelete = CASCADE)
+    @TypeConverters(CharacteristicTypeConverter.class)
     private int type;
 
     @Ignore
