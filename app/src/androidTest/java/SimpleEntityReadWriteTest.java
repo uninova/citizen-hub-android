@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 import pt.uninova.s4h.citizenhub.datastorage.AverageMeasurement;
+import pt.uninova.s4h.citizenhub.datastorage.CharacteristicType;
+import pt.uninova.s4h.citizenhub.datastorage.CharacteristicTypeDAO;
 import pt.uninova.s4h.citizenhub.datastorage.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.datastorage.Device;
 import pt.uninova.s4h.citizenhub.datastorage.DeviceDAO;
@@ -30,7 +32,7 @@ public class SimpleEntityReadWriteTest {
     private MeasurementDAO measurementDAO;
     private SourceDAO sourceDAO;
     private CitizenDatabaseClient db;
-
+    private CharacteristicTypeDAO typeDAO;
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
@@ -38,6 +40,7 @@ public class SimpleEntityReadWriteTest {
         deviceDAO = db.getDatabase().deviceDao();
         measurementDAO = db.getDatabase().measurementDAO();
         sourceDAO = db.getDatabase().sourceDAO();
+        typeDAO = db.getDatabase().typeDAO();
     }
 
     @After
@@ -54,6 +57,13 @@ public class SimpleEntityReadWriteTest {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
+        CharacteristicType cType1 = new CharacteristicType(0, "HeartRate");
+        CharacteristicType cType2 = new CharacteristicType(1, "Steps");
+        CharacteristicType cType3 = new CharacteristicType(2, "Posture");
+
+        typeDAO.addType(cType1);
+        typeDAO.addType(cType2);
+        typeDAO.addType(cType3);
 
         Measurement measurement1 = new Measurement(1, date, "70", 1);
         Measurement measurement2 = new Measurement(2, date, "75", 1);
