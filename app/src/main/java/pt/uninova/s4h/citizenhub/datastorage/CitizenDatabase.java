@@ -4,7 +4,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class}, version = 1)
+@Database(entities = {Device.class, Source.class, Measurement.class, CharacteristicType.class}, views = {AverageMeasurement.class}, version = 1)
 @TypeConverters({Converters.class})
 
 public abstract class CitizenDatabase extends RoomDatabase {
