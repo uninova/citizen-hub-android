@@ -15,4 +15,5 @@ public abstract class CitizenDatabase extends RoomDatabase {
 
     public abstract MeasurementDAO measurementDAO();
 
+    public abstract CharacteristicTypeDAO typeDAO();
 }
