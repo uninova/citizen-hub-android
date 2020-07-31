@@ -11,6 +11,11 @@ public class CharacteristicType {
     @TypeConverters(CharacteristicTypeConverter.class)
     private String name;
 
+    public CharacteristicType(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
