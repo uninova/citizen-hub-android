@@ -17,7 +17,7 @@ public class Measurement {
     private int id;
     /* @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
     private String uuid;*/
-    @TypeConverters({Converters.class})
+    @TypeConverters({TimestampConverter.class})
     private Date timestamp;
     private String value;
     @ForeignKey(entity = CharacteristicType.class, parentColumns = "type", childColumns = "id", onDelete = CASCADE)
