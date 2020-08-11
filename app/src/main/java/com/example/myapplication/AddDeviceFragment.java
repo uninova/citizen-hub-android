@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-
 import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
@@ -27,15 +26,14 @@ public class AddDeviceFragment extends Fragment {
             "pt.uninova.s4h.citizenhub.EXTRA_DESCRIPTION";
     public static final String EXTRA_PRIORITY =
             "pt.uninova.s4h.citizenhub.EXTRA_PRIORITY";
+    DeviceViewModel deviceViewModel;
     private EditText editTextTitle;
     private EditText editTextDescription;
     private NumberPicker numberPickerPriority;
     private CitizenDatabaseClient db;
     private DeviceDAO deviceDAO;
-    DeviceViewModel deviceViewModel;
 
-
-    public static AddDeviceFragment getInstance(){
+    public static AddDeviceFragment getInstance() {
         Bundle bundle = new Bundle();
         AddDeviceFragment fragment = new AddDeviceFragment();
         fragment.setArguments(bundle);
@@ -61,13 +59,14 @@ public class AddDeviceFragment extends Fragment {
         buttonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              saveDevice();
+                saveDevice();
             }
         });
 
-       // getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-       // setTitle("Add Device");
+        // getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        // setTitle("Add Device");
     }
+
     private void saveDevice() {
         String title = editTextTitle.getText().toString();
         String description = editTextDescription.getText().toString();
@@ -77,7 +76,7 @@ public class AddDeviceFragment extends Fragment {
             return;
         }
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        Device device = new Device(title, description,String.valueOf(priority), "state");
+        Device device = new Device(title, description, String.valueOf(priority), "state");
         deviceViewModel.insert(device);
 
     }
