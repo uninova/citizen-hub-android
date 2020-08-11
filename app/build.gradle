@@ -41,6 +41,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
