@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.ui.R;
+import pt.uninova.s4h.citizenhub.R;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
     private List<Device> devices = new ArrayList<>();
@@ -21,7 +21,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     @Override
     public DeviceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.device_item, parent, false);
+                .inflate(R.layout.example_device_item, parent, false);
         return new DeviceHolder(itemView);
     }
 
