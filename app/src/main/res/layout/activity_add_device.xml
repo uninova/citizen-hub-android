@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="pt.uninova.s4h.citizenhub.datastorage.AddDeviceActivity">
+    tools:context="com.example.myapplication.MainActivityExample">
     <EditText
         android:id="@+id/edit_text_title"
         android:layout_width="match_parent"
@@ -29,4 +29,10 @@
         android:id="@+id/number_picker_priority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT" />
 </LinearLayout>
