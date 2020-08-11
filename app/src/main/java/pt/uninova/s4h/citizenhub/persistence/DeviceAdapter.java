@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.datastorage;
+package pt.uninova.s4h.citizenhub.persistence;
 
 
 import android.view.LayoutInflater;
