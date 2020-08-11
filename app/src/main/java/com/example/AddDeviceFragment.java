@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.ui.R;
+import pt.uninova.s4h.citizenhub.R;
 
 public class AddDeviceFragment extends Fragment {
     public static final String EXTRA_TITLE =
@@ -43,7 +43,7 @@ public class AddDeviceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_add_device, container, false);
+        return inflater.inflate(R.layout.example_activity_add_device, container, false);
     }
 
 
@@ -83,14 +83,9 @@ public class AddDeviceFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save_device:
-                saveDevice();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+        saveDevice();
 
+        return super.onOptionsItemSelected(item);
+    }
 
 }

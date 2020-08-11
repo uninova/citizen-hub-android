@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +18,7 @@ import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceAdapter;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.ui.R;
+import pt.uninova.s4h.citizenhub.R;
 
 
 public class MainActivityExample extends AppCompatActivity {
