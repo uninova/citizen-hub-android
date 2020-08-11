@@ -16,15 +16,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import pt.uninova.s4h.citizenhub.datastorage.AverageMeasurement;
-import pt.uninova.s4h.citizenhub.datastorage.CharacteristicType;
-import pt.uninova.s4h.citizenhub.datastorage.CharacteristicTypeDAO;
-import pt.uninova.s4h.citizenhub.datastorage.CitizenDatabaseClient;
-import pt.uninova.s4h.citizenhub.datastorage.Device;
-import pt.uninova.s4h.citizenhub.datastorage.DeviceDAO;
-import pt.uninova.s4h.citizenhub.datastorage.Measurement;
-import pt.uninova.s4h.citizenhub.datastorage.MeasurementDAO;
-import pt.uninova.s4h.citizenhub.datastorage.SourceDAO;
+import pt.uninova.s4h.citizenhub.persistence.AverageMeasurement;
+import pt.uninova.s4h.citizenhub.persistence.CharacteristicType;
+import pt.uninova.s4h.citizenhub.persistence.CharacteristicTypeDAO;
+import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementDAO;
+import pt.uninova.s4h.citizenhub.persistence.SourceDAO;
 
 @RunWith(AndroidJUnit4.class)
 public class SimpleEntityReadWriteTest {
