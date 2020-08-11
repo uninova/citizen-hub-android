@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/topOptions"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/save_device"
+            android:icon="@drawable/ic_save"
+            android:title="Save"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_today"
+            android:title="@string/menu_today" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/ic_reports"
+            android:title="@string/menu_reports" />
+        <item
+            android:id="@+id/nav_devices"
+            android:icon="@drawable/ic_devices"
+            android:title="@string/menu_devices" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/menu_profile" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_body"
+            android:icon="@drawable/ic_menu_body"
+            android:title="@string/menu_body" />
+        <item
+            android:id="@+id/nav_posture"
+            android:icon="@drawable/img_sitting"
+            android:title="@string/menu_posture" />
+    </group>
+    <group
+        android:id="@+id/botOptions"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/menu_about" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/menu_logout" />
+        <item
+            android:id="@+id/nav_quit"
+            android:icon="@drawable/ic_quit"
+            android:title="@string/menu_quit" />
+    </group>
+</menu>

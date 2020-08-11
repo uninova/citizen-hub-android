@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#064266">
+
+    <ImageView
+        android:id="@+id/image_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/logo_s4h"
+        grid:layout_constraintBottom_toTopOf="@+id/text_email_login"
+        grid:layout_constraintEnd_toEndOf="parent"
+        grid:layout_constraintHorizontal_bias="0.5"
+        grid:layout_constraintStart_toStartOf="parent"
+        grid:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/text_email_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="Enter a valid E-Mail"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        android:textColorLink="@color/colorWhite"
+        android:textSize="30sp"
+        grid:layout_constraintEnd_toEndOf="parent"
+        grid:layout_constraintHorizontal_bias="0.0"
+        grid:layout_constraintStart_toStartOf="parent"
+        grid:layout_constraintTop_toBottomOf="@+id/image_login" />
+
+    <EditText
+        android:id="@+id/text_password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:hint="Enter a Password"
+        android:inputType="textPassword"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        android:textColorLink="@color/colorWhite"
+        android:textSize="30sp"
+        grid:layout_constraintTop_toBottomOf="@+id/text_email_login"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/button_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_rounded"
+        android:onClick="checkSignUp"
+        android:padding="15dp"
+        android:text="SignUp"
+        grid:layout_constraintEnd_toEndOf="parent"
+        grid:layout_constraintHorizontal_bias="0.5"
+        grid:layout_constraintStart_toStartOf="parent"
+        grid:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="0dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="20dp"
+        android:buttonTint="@color/colorWhite"
+        android:onClick="displayMessage"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="I authorize the use of my e-mail contact to receive information regarding new updates of the Smart4Health application and new outcomes of the Smart4Health project."
+        android:textColor="@color/colorWhite"
+        grid:layout_constraintEnd_toEndOf="parent"
+        grid:layout_constraintTop_toBottomOf="@+id/text_password_login" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
