@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/graph"
+            app:startDestination="@id/summary_fragment">
+
+    <fragment
+            android:id="@+id/summary_fragment"
+            android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
+            android:label="@string/fragment_summary_label"
+            tools:layout="@layout/fragment_summary"/>
+
+    <fragment
+            android:id="@+id/report_fragment"
+            android:name="pt.uninova.s4h.citizenhub.ReportFragment"
+            android:label="@string/fragment_report_label"
+            tools:layout="@layout/fragment_report"/>
+
+    <fragment
+            android:id="@+id/user_fragment"
+            android:name="pt.uninova.s4h.citizenhub.UserFragment"
+            android:label="@string/fragment_user_label"
+            tools:layout="@layout/fragment_user"/>
+
+    <fragment
+            android:id="@+id/device_list_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
+            android:label="@string/fragment_device_list_label"
+            tools:layout="@layout/fragment_device_list">
+
+        <action
+                android:id="@+id/action_device_list_fragment_to_device_search_fragment"
+                app:destination="@+id/device_search_fragment"/>
+
+        <action
+                android:id="@+id/action_device_list_fragment_to_device_detail_fragment"
+                app:destination="@+id/device_detail_fragment"/>
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/device_search_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragment"
+            android:label="@string/fragment_device_search_label"
+            tools:layout="@layout/fragment_device_search">
+
+        <action
+                android:id="@+id/action_device_search_fragment_to_device_add_fragment"
+                app:destination="@+id/device_add_fragment"/>
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/device_detail_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceDetailFragment"
+            android:label="@string/fragment_device_detail_label"
+            tools:layout="@layout/fragment_device_detail"/>
+
+    <fragment
+            android:id="@+id/device_add_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceAddFragment"
+            android:label="@string/fragment_device_add_label"
+            tools:layout="@layout/fragment_device_add">
+
+        <action
+                android:id="@+id/action_device_add_fragment_to_device_list_fragment"
+                app:destination="@+id/device_list_fragment"
+                app:popUpTo="@+id/device_list_fragment"/>
+
+    </fragment>
+
+
+    <fragment
+            android:id="@+id/about_fragment"
+            android:name="pt.uninova.s4h.citizenhub.AboutFragment"
+            android:label="@string/fragment_about_label"
+            tools:layout="@layout/fragment_about"/>
+
+</navigation>

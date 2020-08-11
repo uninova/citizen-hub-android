@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+            android:id="@+id/group_activity">
+        <item
+                android:id="@+id/summary_fragment"
+                android:title="@string/fragment_summary_label"/>
+        <item
+                android:id="@+id/report_fragment"
+                android:title="@string/fragment_report_label"/>
+    </group>
+
+    <group
+            android:id="@+id/group_configuration">
+        <item
+                android:id="@+id/user_fragment"
+                android:title="@string/fragment_user_label"/>
+        <item
+                android:id="@+id/device_list_fragment"
+                android:title="@string/fragment_device_list_label"/>
+    </group>
+
+    <group
+            android:id="@+id/group_system">
+        <item
+                android:id="@+id/about_fragment"
+                android:title="@string/fragment_about_label"/>
+    </group>
+</menu>

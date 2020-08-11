@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.report;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -15,10 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import static android.graphics.Bitmap.createScaledBitmap;
-import static pt.uninova.s4h.citizenhub.ui.Home.homecontext;
-import static pt.uninova.s4h.citizenhub.ui.R.drawable.logo2_s4h;
 
 public class PdfWriter {
 
@@ -38,15 +33,15 @@ public class PdfWriter {
     */
     public boolean write(Report report) {
         Log.w("ExternalStorage", "trying to create PdfWriter");
-        bmp = BitmapFactory.decodeResource(homecontext.getResources(), logo2_s4h);
-        scaledbitmap = createScaledBitmap(bmp, 700, 300, false);
+        //bmp = BitmapFactory.decodeResource(homecontext.getResources(), logo2_s4h);
+        //scaledbitmap = createScaledBitmap(bmp, 700, 300, false);
         PdfDocument document = new PdfDocument();
         PageInfo pageInfo = new PageInfo.Builder(1200, 1000, 1).create();
         Paint myPaint = new Paint();
         Paint titlePaint = new Paint();
         Page page = document.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
-        canvas.drawBitmap(scaledbitmap, 0, 0, myPaint);
+        //canvas.drawBitmap(scaledbitmap, 0, 0, myPaint);
         titlePaint.setTextAlign(Paint.Align.LEFT);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(30);

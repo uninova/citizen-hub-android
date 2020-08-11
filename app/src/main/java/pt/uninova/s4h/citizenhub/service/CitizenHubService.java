@@ -7,16 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Environment;
 import android.os.IBinder;
-
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import pt.uninova.s4h.citizenhub.R;
 
-import pt.uninova.s4h.citizenhub.connectivity.DeviceManager;
-import pt.uninova.s4h.citizenhub.report.ReportManager;
-import pt.uninova.s4h.citizenhub.storage.DatabaseManager;
-import pt.uninova.s4h.citizenhub.ui.R;
+import java.util.Objects;
 
 public class CitizenHubService extends Service {
 
@@ -24,16 +19,12 @@ public class CitizenHubService extends Service {
 
     private NotificationManager notificationManager;
 
-    private DeviceManager deviceManager;
-    private ReportManager reportManager;
-    private DatabaseManager databaseManager;
-
     public CitizenHubService() {
         super();
     }
 
     private Notification buildNotification() {
-        return new NotificationCompat.Builder(this, CitizenHubService.class.getCanonicalName())
+        return new NotificationCompat.Builder(this, Objects.requireNonNull(CitizenHubService.class.getCanonicalName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .build();
@@ -47,19 +38,6 @@ public class CitizenHubService extends Service {
         }
     }
 
-    public DeviceManager getDeviceManager() {
-        return deviceManager;
-    }
-
-    public ReportManager getReportManager() {
-        return reportManager;
-    }
-
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return new CitizenHubServiceBinder(this);
@@ -73,19 +51,11 @@ public class CitizenHubService extends Service {
 
         createNotificationChannel();
         startForeground(1, buildNotification());
-
-        deviceManager = new DeviceManager();
-        reportManager = new ReportManager(Environment.getExternalStorageDirectory().toString());
-        databaseManager = new DatabaseManager(getApplicationContext(), "CitizenHubDatabase.db");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        deviceManager.close();
-        reportManager.close();
-        databaseManager.close();
     }
 
     @Override
