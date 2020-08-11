@@ -25,19 +25,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="pt.uninova.s4h.citizenhub.datastorage.AddDeviceActivity"
-            android:parentActivityName="pt.uninova.s4h.citizenhub.datastorage.MainActivityExample" />
-        <activity
-            android:name="pt.uninova.s4h.citizenhub.datastorage.MainActivityExample"
-            android:launchMode="singleTop"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:name="com.example.myapplication.MainActivityExample"
+        android:launchMode="singleTop"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
