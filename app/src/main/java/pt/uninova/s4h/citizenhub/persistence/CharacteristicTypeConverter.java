@@ -2,7 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.room.TypeConverter;
 
-public class CharacteristicTypeConverter{
+public class CharacteristicTypeConverter {
     @TypeConverter
     public static int fromString(String name) {
         int type;
@@ -14,7 +14,7 @@ public class CharacteristicTypeConverter{
                 type = 1;
                 break;
             case "Posture":
-                type=2;
+                type = 2;
                 break;
             default:
                 type = -1;

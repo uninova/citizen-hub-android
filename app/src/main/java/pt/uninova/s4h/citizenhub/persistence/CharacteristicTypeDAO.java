@@ -8,16 +8,16 @@ import androidx.room.Update;
 
 
 @Dao
-    public interface CharacteristicTypeDAO {
+public interface CharacteristicTypeDAO {
 
-        @Insert(onConflict = OnConflictStrategy.IGNORE)
-        void addType(CharacteristicType type);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void addType(CharacteristicType type);
 
-        @Update(onConflict = OnConflictStrategy.REPLACE)
-        void updateType(CharacteristicType type);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateType(CharacteristicType type);
 
-        @Delete
-        void deleteType(CharacteristicType type);
+    @Delete
+    void deleteType(CharacteristicType type);
 
-    }
+}
 
