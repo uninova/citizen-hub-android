@@ -28,6 +28,6 @@
         android:id="@+id/addDeviceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/activity_add_device" />
+        tools:layout="@layout/example_activity_add_device" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
