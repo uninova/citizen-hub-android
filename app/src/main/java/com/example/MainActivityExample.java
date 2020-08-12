@@ -29,7 +29,7 @@ public class MainActivityExample extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.example_activity_main);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         // FloatingActionButton buttonAddDevice = findViewById(R.id.button_add_device);
