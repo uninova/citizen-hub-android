@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.content.Context;
-
 import androidx.room.Room;
 
 public class CitizenDatabaseClient implements AutoCloseable {
