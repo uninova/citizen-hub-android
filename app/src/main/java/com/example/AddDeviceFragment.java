@@ -13,11 +13,12 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.R;
 
 public class AddDeviceFragment extends Fragment {
     public static final String EXTRA_TITLE =
