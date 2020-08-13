@@ -28,9 +28,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     @Override
     public void onBindViewHolder(@NonNull DeviceHolder holder, int position) {
         Device currentDevice = devices.get(position);
-        holder.textViewTitle.setText(currentDevice.getName());
-        holder.textViewDescription.setText(currentDevice.getAddress());
-        holder.textViewPriority.setText(String.valueOf(currentDevice.getType()));
+
     }
 
     @Override
@@ -44,15 +42,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     }
 
     class DeviceHolder extends RecyclerView.ViewHolder {
-        private TextView textViewTitle;
-        private TextView textViewDescription;
-        private TextView textViewPriority;
+
 
         public DeviceHolder(View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.text_view_title);
-            textViewDescription = itemView.findViewById(R.id.text_view_description);
-            textViewPriority = itemView.findViewById(R.id.text_device);
+
         }
     }
 }
