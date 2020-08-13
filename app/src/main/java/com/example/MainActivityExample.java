@@ -16,7 +16,6 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceAdapter;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.R;
 
@@ -53,7 +52,7 @@ public class MainActivityExample extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        DeviceAdapter adapter = new DeviceAdapter();
+        DeviceAdapterExample adapter = new DeviceAdapterExample();
         recyclerView.setAdapter(adapter);
 
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
