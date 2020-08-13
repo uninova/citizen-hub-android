@@ -21,13 +21,17 @@ import static android.graphics.Bitmap.createScaledBitmap;
 
 public class PdfWriter {
 
+    private final String pathName;
     public Bitmap bmp;
     public Bitmap scaledbitmap;
     private Report report;
-    private final String pathName;
 
     public PdfWriter(String pathName) {
         this.pathName = pathName;
+    }
+
+    public boolean writeAll(Resources res, int logo) {
+        return write(null, res, logo);
     }
 
     /*
