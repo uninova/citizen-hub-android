@@ -31,11 +31,11 @@ public class ReportManager implements AutoCloseable {
         pdfWriter.write(report, res, logo);
     }
 
-    public void writeAllReports() {
+    public void writeAllReports(Resources res, int logo) {
         final PdfWriter pdfWriter = new PdfWriter(basePath);
 
         for (Report rep : reports) {
-            while (!pdfWriter.writeAll(rep)) {
+            while (!pdfWriter.writeAll(res,logo)) {
             }
         }
         reports.clear();
