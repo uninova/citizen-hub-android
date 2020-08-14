@@ -2,8 +2,13 @@ package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
 import android.view.*;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import java.util.ArrayList;
 
 public class DeviceListFragment extends Fragment {
 
@@ -16,6 +21,11 @@ public class DeviceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
+
+        TextView deviceName = result.findViewById(R.id.text_view_title);
+        TextView deviceDetails = result.findViewById(R.id.text_view_description);
+        deviceName.setText("deviceNameStringSplitted[0]");
+        deviceDetails.setText("deviceNameStringSplitted[1]");
 
         setHasOptionsMenu(true);
 

@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorS4HLightBlue</item>
         <item name="colorPrimaryDark">@color/colorS4HDarkBlue</item>
-        <item name="colorAccent">@color/colorS4HOrange</item>
+        <item name="colorAccent">@color/colorS4HTurquoise</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
