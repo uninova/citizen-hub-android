@@ -7,10 +7,19 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DeviceListFragment extends Fragment {
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -22,10 +31,25 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
 
-        TextView deviceName = result.findViewById(R.id.text_view_title);
-        TextView deviceDetails = result.findViewById(R.id.text_view_description);
-        deviceName.setText("deviceNameStringSplitted[0]");
-        deviceDetails.setText("deviceNameStringSplitted[1]");
+        ArrayList<DeviceListItem> devicesList = new ArrayList<>();
+        int deviceCounter = 1;
+        for(int i=0; i<10; i++) {
+            devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch1", "It's good.", String.valueOf(deviceCounter++)));
+            devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2_disabled, "Watch2", "It's bad.", String.valueOf(deviceCounter++)));
+            devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch3", "It's meh.", String.valueOf(deviceCounter++)));
+        }
+
+
+        recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new DeviceListAdapter(devicesList);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         setHasOptionsMenu(true);
 
