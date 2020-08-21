@@ -5,7 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Device.class, Source.class, Measurement.class, CharacteristicType.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 2)
+@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 2)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DailySummaryDao dailySummaryDao();
