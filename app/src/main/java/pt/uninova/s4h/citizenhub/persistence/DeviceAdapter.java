@@ -15,11 +15,18 @@ import java.util.List;
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
     private List<Device> devices = new ArrayList<>();
 
+    int layoutId;
+
+    public DeviceAdapter(int layoutId) {
+        super();
+        this.layoutId = layoutId;
+    }
+
     @NonNull
     @Override
     public DeviceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.example_device_item, parent, false);
+                .inflate(layoutId, parent, false);
         return new DeviceHolder(itemView);
     }
 
