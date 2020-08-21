@@ -11,8 +11,9 @@ public class MeasurementRepository {
     private LiveData<List<Measurement>> allMeasurements;
 
     public MeasurementRepository(Application application) {
-        CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        measurementDAO = citizenDbClient.getDatabase().measurementDAO();
+        //CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
+        //measurementDAO = citizenDbClient.getDatabase().measurementDAO();
+        measurementDAO = CitizenHubDatabase.getDatabase(application).measurementDao();
         allMeasurements = measurementDAO.getMeasurements();
     }
 
