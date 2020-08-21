@@ -2,13 +2,9 @@ package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
 import android.view.*;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
-import java.util.ArrayList;
 
 public class DeviceListFragment extends Fragment {
 
