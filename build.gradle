@@ -1,10 +1,17 @@
 buildscript {
+    ext {
+        lifecycle_version = '2.2.0'
+        navigation_version = '2.3.0'
+        room_version = '2.2.5'
+    }
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
         classpath 'com.android.tools.build:gradle:4.0.1'
     }
 }
