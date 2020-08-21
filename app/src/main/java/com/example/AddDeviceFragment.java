@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
+import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
@@ -28,7 +28,7 @@ public class AddDeviceFragment extends Fragment {
     private EditText editTextTitle;
     private EditText editTextDescription;
     private NumberPicker numberPickerPriority;
-    private CitizenDatabaseClient db;
+    private CitizenHubDatabase db;
     private DeviceDAO deviceDAO;
 
     public static AddDeviceFragment getInstance() {

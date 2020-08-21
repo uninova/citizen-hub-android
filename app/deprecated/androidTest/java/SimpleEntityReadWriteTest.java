@@ -18,7 +18,6 @@ import java.util.Random;
 
 import pt.uninova.s4h.citizenhub.persistence.AverageMeasurement;
 import pt.uninova.s4h.citizenhub.persistence.CharacteristicTypeDAO;
-import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDAO;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
