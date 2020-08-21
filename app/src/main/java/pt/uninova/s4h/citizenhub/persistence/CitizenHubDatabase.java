@@ -10,11 +10,23 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DailySummaryDao dailySummaryDao();
 
+    public abstract DeviceDAO deviceDao();
+
+    public abstract SourceDAO sourceDAO();
+
     public abstract MeasurementDAO measurementDao();
 
     private static volatile CitizenHubDatabase INSTANCE;
 
-    public static CitizenHubDatabase getDatabase(final Context context) {
+    private CitizenHubDatabase database;
+
+
+    private CitizenHubDatabase(Context context) {
+
+        database = Room.databaseBuilder(context, CitizenHubDatabase.class, "citizen").build();
+    }
+
+    public static CitizenHubDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
             synchronized (CitizenHubDatabase.class) {
                 if (INSTANCE == null) {
@@ -25,4 +37,16 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
         return INSTANCE;
     }
+
+    public CitizenHubDatabase getDatabase() {
+        return database;
+    }
+
+
+    @Override
+    public void close() {
+        database.close();
+    }
 }
+
+
