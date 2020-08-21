@@ -17,14 +17,14 @@ public interface DeviceDAO {
     @Delete
     void deleteDevice(Device device);
 
-    @Query("DELETE FROM devices")
+    @Query("DELETE FROM device")
     void deleteAllDevices();
 
     //Sql all in caps
-    @Query("SELECT * FROM devices")
+    @Query("SELECT * FROM device")
     LiveData<List<Device>> getDevices();
 
-    @Query("SELECT * FROM devices WHERE address ==:deviceAddress")
+    @Query("SELECT * FROM device WHERE address ==:deviceAddress")
     LiveData<Device> getDevice(String deviceAddress);
 
 }
