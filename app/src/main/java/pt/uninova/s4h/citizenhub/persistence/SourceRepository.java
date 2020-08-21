@@ -11,8 +11,8 @@ public class SourceRepository {
     private LiveData<List<Source>> allSources;
 
     public SourceRepository(Application application) {
-        CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        sourceDAO = citizenDbClient.getDatabase().sourceDAO();
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        sourceDAO = citizenHubDatabase.getDatabase().sourceDAO();
         allSources = sourceDAO.getSources();
     }
 

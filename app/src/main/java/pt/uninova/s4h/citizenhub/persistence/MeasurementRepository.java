@@ -13,7 +13,8 @@ public class MeasurementRepository {
     public MeasurementRepository(Application application) {
         //CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
         //measurementDAO = citizenDbClient.getDatabase().measurementDAO();
-        measurementDAO = CitizenHubDatabase.getDatabase(application).measurementDao();
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        measurementDAO = citizenHubDatabase.getDatabase().measurementDao();
         allMeasurements = measurementDAO.getMeasurements();
     }
 

@@ -11,8 +11,8 @@ public class DeviceRepository {
     private LiveData<List<Device>> allDevices;
 
     public DeviceRepository(Application application) {
-        CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        deviceDAO = citizenDbClient.getDatabase().deviceDao();
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        deviceDAO = citizenHubDatabase.getDatabase().deviceDao();
         allDevices = deviceDAO.getDevices();
     }
 
