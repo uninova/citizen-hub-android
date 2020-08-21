@@ -51,7 +51,7 @@ public class MainActivityExample extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        DeviceAdapter adapter = new DeviceAdapter();
+        DeviceAdapter adapter = new DeviceAdapter(R.layout.example_device_item);
         recyclerView.setAdapter(adapter);
 
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
