@@ -14,7 +14,7 @@ public class MeasurementRepository {
         //CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
         //measurementDAO = citizenDbClient.getDatabase().measurementDAO();
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
-        measurementDAO = citizenHubDatabase.getDatabase().measurementDao();
+        measurementDAO = citizenHubDatabase.measurementDao();
         allMeasurements = measurementDAO.getMeasurements();
     }
 

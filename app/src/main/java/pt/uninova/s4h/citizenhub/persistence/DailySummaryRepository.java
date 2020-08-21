@@ -9,7 +9,7 @@ public class DailySummaryRepository {
     private final LiveData<DailySummary> dailySummary;
 
     public DailySummaryRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getDatabase(application);
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
 
