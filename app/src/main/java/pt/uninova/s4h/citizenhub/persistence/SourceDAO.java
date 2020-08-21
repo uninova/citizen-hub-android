@@ -17,16 +17,16 @@ public interface SourceDAO {
     @Delete
     void deleteSource(Source source);
 
-    @Query("DELETE FROM sources")
+    @Query("DELETE FROM source")
     void deleteAllSources();
 
-    @Query("SELECT * FROM sources")
+    @Query("SELECT * FROM source")
     LiveData<List<Source>> getSources();
 
 
-    @Query("SELECT * FROM sources WHERE uuid ==:sourceUuid")
+    @Query("SELECT * FROM source WHERE uuid ==:sourceUuid")
     LiveData<List<Source>> getSourceFromUUID(String sourceUuid);
 
-    @Query("SELECT * FROM sources WHERE address ==:deviceAddress")
+    @Query("SELECT * FROM source WHERE address ==:deviceAddress")
     LiveData<List<Source>> getSourceFomAddress(String deviceAddress);
 }

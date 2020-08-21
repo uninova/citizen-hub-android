@@ -6,7 +6,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@DatabaseView(value = "SELECT strftime('%s', strftime('%Y-%m-%d', timestamp, 'UNIXEPOCH')) AS date, id, type as kind_id, value FROM measurements", viewName = "date_measurement")
+@DatabaseView(value = "SELECT strftime('%s', strftime('%Y-%m-%d', timestamp, 'UNIXEPOCH')) AS date, id, type as kind_id, value FROM measurement", viewName = "date_measurement")
 public class DateMeasurement {
 
     @TypeConverters({TimestampConverter.class})

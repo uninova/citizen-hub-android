@@ -18,13 +18,13 @@ public interface MeasurementDAO {
     @Delete
     void deleteMeasurement(Measurement measurement);
 
-    @Query("DELETE FROM measurements")
+    @Query("DELETE FROM measurement")
     void deleteAllMeasurements();
 
-    @Query("SELECT * FROM measurements")
+    @Query("SELECT * FROM measurement")
     LiveData<List<Measurement>> getMeasurements();
 
-    @Query("SELECT * FROM measurements WHERE type = :characteristicType")
+    @Query("SELECT * FROM measurement WHERE type = :characteristicType")
     LiveData<List<Measurement>> getMeasurementsWithCharacteristic(int characteristicType);
 
     @Query("SELECT * FROM AverageMeasurement")

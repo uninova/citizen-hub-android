@@ -5,7 +5,7 @@ import androidx.room.DatabaseView;
 import java.util.Date;
 
 
-@DatabaseView("SELECT SUM(value) AS AverageValue , date(timestamp) AS Date, name as CharacteristicName FROM measurements GROUP BY Date, CharacteristicName")
+@DatabaseView("SELECT SUM(value) AS AverageValue , date(timestamp) AS Date, name as CharacteristicName FROM measurement GROUP BY Date, CharacteristicName")
 public class SumMeasurement {
     public float SumValue;
     public Date date;

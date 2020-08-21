@@ -6,7 +6,7 @@ import java.util.Date;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "measurements")
+@Entity(tableName = "measurement")
 public class Measurement {
 
     @PrimaryKey(autoGenerate = true)
@@ -16,7 +16,6 @@ public class Measurement {
     @TypeConverters({TimestampConverter.class})
     private Date timestamp;
     private String value;
-    @ForeignKey(entity = CharacteristicType.class, parentColumns = "type", childColumns = "id", onDelete = CASCADE)
     @TypeConverters(CharacteristicTypeConverter.class)
     private int type;
 

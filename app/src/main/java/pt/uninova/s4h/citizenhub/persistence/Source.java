@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "sources")
+@Entity(tableName = "source")
 public class Source {
 
     @PrimaryKey
