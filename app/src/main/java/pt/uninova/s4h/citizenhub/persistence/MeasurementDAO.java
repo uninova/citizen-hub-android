@@ -31,6 +31,7 @@ public interface MeasurementDAO {
     LiveData<List<AverageMeasurement>> getMeasurementsWithoutTime();
 
     @Query("SELECT AverageValue FROM AverageMeasurement WHERE CharacteristicType = :characteristicType AND Date=(date(:datez)) ")
+    @TypeConverters(TimestampConverter.class)
     float getAvgFromDay(int characteristicType, Date datez);
     // SELECT AverageValue,CharacteristicName, date FROM AverageMeasurement WHERE CharacteristicName = 'HeartRate' AND date=('2020-07-21')
 
