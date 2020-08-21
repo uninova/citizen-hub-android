@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
+import android.app.Application;
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -20,11 +21,10 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private CitizenHubDatabase database;
 
-
-    private CitizenHubDatabase(Context context) {
-
-        database = Room.databaseBuilder(context, CitizenHubDatabase.class, "citizen").build();
-    }
+//    public CitizenHubDatabase(Context context) {
+//        context = Application
+//        database = Room.databaseBuilder(context, CitizenHubDatabase.class, "citizen").build();
+//    }
 
     public static CitizenHubDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
@@ -39,7 +39,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     }
 
     public CitizenHubDatabase getDatabase() {
-        return database;
+        return INSTANCE.database;
     }
 
 
