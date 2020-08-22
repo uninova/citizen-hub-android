@@ -6,13 +6,10 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
+import java.util.List;
 
 @Dao
 public interface MonthlySummaryDao {
-    @Query("SELECT * FROM monthly_summary WHERE date = strftime('%s', date(month))")
-    LiveData<MonthlySummary> getMonthlySummary(Date month);
-
-    @Query("SELECT * FROM daily_summary WHERE date = :month")
-    @TypeConverters(TimestampConverter.class)
-    LiveData<MonthlySummary> getMonthSummary(Date month);
+    @Query("SELECT CAST(strftime('%d', datetime(date, 'unixepoch')) AS int) AS date from date_measurement WHERE date BETWEEN catchTheFirstDayOfTheMonth(:month) AND catchTheLastDayOfTheMonth(:month)")
+    LiveData<List<Integer>> getDaysWithSummary(Integer month);
 }
