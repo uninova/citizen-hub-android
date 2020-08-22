@@ -6,7 +6,7 @@ import androidx.room.*;
 import java.util.List;
 
 @Dao
-public interface DeviceDAO {
+public interface DeviceDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addDevice(Device device);

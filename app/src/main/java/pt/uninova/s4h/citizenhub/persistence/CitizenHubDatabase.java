@@ -10,7 +10,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DailySummaryDao dailySummaryDao();
 
-    public abstract DeviceDAO deviceDao();
+    public abstract DeviceDao deviceDao();
 
     public abstract SourceDAO sourceDAO();
 
