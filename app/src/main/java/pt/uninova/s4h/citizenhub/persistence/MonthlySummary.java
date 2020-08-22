@@ -6,11 +6,11 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@DatabaseView(value = "SELECT DISTINCT date, (SELECT AVG(value) FROM date_measurement WHERE date_measurement.kind_id = 1 AND date_measurement.date = main.date GROUP BY date) average_heart_rate, (SELECT SUM(value) FROM date_measurement WHERE date_measurement.kind_id = 2 AND date_measurement.date = main.date GROUP BY date) sum_steps, (SELECT SUM(value) FROM date_measurement WHERE date_measurement.kind_id = 3 AND date_measurement.date = main.date GROUP BY date) sum_distance, (SELECT SUM(value) FROM date_measurement WHERE date_measurement.kind_id = 4 AND date_measurement.date = main.date GROUP BY date) sum_calories, (SELECT SUM(value) FROM date_measurement WHERE date_measurement.kind_id = 5 AND date_measurement.date = main.date GROUP BY date) sum_good_posture, (SELECT SUM(value) FROM date_measurement WHERE date_measurement.kind_id = 6 AND date_measurement.date = main.date GROUP BY date) sum_bad_posture FROM date_measurement AS main", viewName = "monthly_summary")
+@DatabaseView(value = "SELECT CAST(strftime('%m', datetime(date, 'unixepoch')) AS int) AS date from date_measurement WHERE CAST(strftime('%m', datetime(date, 'unixepoch')) AS int) = CAST(strftime('%m', datetime('now', 'unixepoch')) AS int)", viewName = "monthly_summary")
 public class MonthlySummary {
     @ColumnInfo(name = "month")
     private int month;
-    @ColumnInfo(name = "daysWithReport")
+    @ColumnInfo(name = "days_with_report")
     private int day;
     @TypeConverters(TimestampConverter.class)
     private Date date;
