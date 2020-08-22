@@ -11,6 +11,8 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DailySummaryDao dailySummaryDao();
 
+    public abstract MonthlySummaryDao monthlySummaryDao();
+
     public abstract DeviceDAO deviceDao();
 
     public abstract SourceDAO sourceDAO();
@@ -38,6 +40,8 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+
+    //TODO (CitizenHubDatabase getInstance())
     public CitizenHubDatabase getDatabase() {
         return INSTANCE.database;
     }
