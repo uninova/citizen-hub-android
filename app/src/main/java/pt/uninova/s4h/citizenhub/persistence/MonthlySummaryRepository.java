@@ -5,21 +5,22 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import java.util.Date;
+import java.util.List;
 
 public class MonthlySummaryRepository {
 
     private final MonthlySummaryDao monthlySummaryDao;
-    private final LiveData<MonthlySummary> monthlySummary ;
+    private final LiveData<List<Integer>> getDaysWithSummary ;
 
-    public MonthlySummaryRepository(Application application, Date month) {
+    public MonthlySummaryRepository(Application application, int month) {
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         monthlySummaryDao = citizenHubDatabase.monthlySummaryDao();
 
-        monthlySummary = monthlySummaryDao.getMonthlySummary(month);
+        getDaysWithSummary = monthlySummaryDao.getDaysWithSummary(month);
     }
 
-    public LiveData<MonthlySummary> getMonthlySummary() {
-        return monthlySummary;
+    public LiveData<List<Integer>> getMonthlySummary() {
+        return getDaysWithSummary;
     }
 }

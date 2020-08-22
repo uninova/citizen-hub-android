@@ -5,20 +5,21 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.Date;
+import java.util.List;
 
 public class MonthlySummaryViewModel extends AndroidViewModel {
 
     private final MonthlySummaryRepository monthlySummaryRepository;
-    private final LiveData<MonthlySummary> monthlySummary;
+    private final LiveData<List<Integer>> getDaysWithSummary ;
 
-    public MonthlySummaryViewModel(Application application, Date month) {
+    public MonthlySummaryViewModel(Application application, int month) {
         super(application);
 
         monthlySummaryRepository = new MonthlySummaryRepository(application, month);
-        monthlySummary = monthlySummaryRepository.getMonthlySummary();
+        getDaysWithSummary = monthlySummaryRepository.getMonthlySummary();
     }
 
-    public LiveData<MonthlySummary> getMonthlySummary() {
-        return monthlySummary;
+    public  LiveData<List<Integer>> getMonthlySummary() {
+        return getDaysWithSummary;
     }
 }
