@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class MeasurementRepository {
-    private MeasurementDAO measurementDAO;
+    private MeasurementDao measurementDAO;
     private LiveData<List<Measurement>> allMeasurements;
 
     public MeasurementRepository(Application application) {
@@ -41,9 +41,9 @@ public class MeasurementRepository {
     }
 
     private static class InsertMeasurementAsyncTask extends AsyncTask<Measurement, Void, Void> {
-        private MeasurementDAO measurementDAO;
+        private MeasurementDao measurementDAO;
 
-        private InsertMeasurementAsyncTask(MeasurementDAO measurementDAO) {
+        private InsertMeasurementAsyncTask(MeasurementDao measurementDAO) {
             this.measurementDAO = measurementDAO;
         }
 
@@ -55,9 +55,9 @@ public class MeasurementRepository {
     }
 
     private static class UpdateMeasurementAsyncTask extends AsyncTask<Measurement, Void, Void> {
-        private MeasurementDAO measurementDAO;
+        private MeasurementDao measurementDAO;
 
-        private UpdateMeasurementAsyncTask(MeasurementDAO measurementDAO) {
+        private UpdateMeasurementAsyncTask(MeasurementDao measurementDAO) {
             this.measurementDAO = measurementDAO;
         }
 
@@ -69,9 +69,9 @@ public class MeasurementRepository {
     }
 
     private static class DeleteMeasurementAsyncTask extends AsyncTask<Measurement, Void, Void> {
-        private MeasurementDAO measurementDAO;
+        private MeasurementDao measurementDAO;
 
-        private DeleteMeasurementAsyncTask(MeasurementDAO measurementDAO) {
+        private DeleteMeasurementAsyncTask(MeasurementDao measurementDAO) {
             this.measurementDAO = measurementDAO;
         }
 
@@ -83,9 +83,9 @@ public class MeasurementRepository {
     }
 
     private static class DeleteAllMeasurementsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private MeasurementDAO measurementDAO;
+        private MeasurementDao measurementDAO;
 
-        private DeleteAllMeasurementsAsyncTask(MeasurementDAO measurementDAO) {
+        private DeleteAllMeasurementsAsyncTask(MeasurementDao measurementDAO) {
             this.measurementDAO = measurementDAO;
         }
 

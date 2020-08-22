@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Dao
-public interface MeasurementDAO {
+public interface MeasurementDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addMeasurement(Measurement measurement);

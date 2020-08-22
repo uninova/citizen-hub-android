@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import android.app.Application;
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -15,7 +14,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract SourceDAO sourceDAO();
 
-    public abstract MeasurementDAO measurementDao();
+    public abstract MeasurementDao measurementDao();
 
     private static volatile CitizenHubDatabase INSTANCE;
 
