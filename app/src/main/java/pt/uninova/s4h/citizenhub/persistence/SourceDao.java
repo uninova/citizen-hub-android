@@ -6,7 +6,7 @@ import androidx.room.*;
 import java.util.List;
 
 @Dao
-public interface SourceDAO {
+public interface SourceDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addSource(Source source);
