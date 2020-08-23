@@ -10,17 +10,17 @@ import java.util.List;
 public class MonthlySummaryRepository {
 
     private final MonthlySummaryDao monthlySummaryDao;
-    private final LiveData<List<Integer>> getDaysWithSummary ;
+    private final LiveData<List<Integer>> getDaysWithDataInMonthYear ;
 
-    public MonthlySummaryRepository(Application application, int month) {
+    public MonthlySummaryRepository(Application application, int month, int year) {
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         monthlySummaryDao = citizenHubDatabase.monthlySummaryDao();
 
-        getDaysWithSummary = monthlySummaryDao.getDaysWithSummary(month);
+        getDaysWithDataInMonthYear = monthlySummaryDao.getDaysWithDataInMonthYear(month,year);
     }
 
     public LiveData<List<Integer>> getMonthlySummary() {
-        return getDaysWithSummary;
+        return getDaysWithDataInMonthYear;
     }
 }

@@ -12,6 +12,8 @@ public class MonthlySummary {
     private int month;
     @ColumnInfo(name = "days_with_report")
     private int day;
+    @ColumnInfo(name = "year")
+    private int year;
     @TypeConverters(TimestampConverter.class)
     private Date date;
 
@@ -29,6 +31,14 @@ public class MonthlySummary {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public Date getDate() {
