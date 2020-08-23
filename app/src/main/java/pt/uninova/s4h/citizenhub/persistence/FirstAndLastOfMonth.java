@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+
+//TODO Useless to have day as integer, either change to Date of First day of certain month in certain year or completely remove class
+
 public class FirstAndLastOfMonth {
     public static Integer catchTheFirstDayOfTheMonth(Integer month) {
         Calendar cal = GregorianCalendar.getInstance();
