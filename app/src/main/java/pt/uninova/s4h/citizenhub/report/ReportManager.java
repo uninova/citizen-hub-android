@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.report;
 
+import android.content.res.Resources;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,17 +25,17 @@ public class ReportManager implements AutoCloseable {
         reports.clear();
     }
 
-    public void writeReport(Report report) {
+    public void writeReport(Report report, Resources res, int logo) {
         // T writer = (T) T.createInstance(pathName);
         PdfWriter pdfWriter = new PdfWriter(basePath);
-        pdfWriter.write(report);
+        pdfWriter.write(report, res, logo);
     }
 
-    public void writeAllReports() {
+    public void writeAllReports(Resources res, int logo) {
         final PdfWriter pdfWriter = new PdfWriter(basePath);
 
         for (Report rep : reports) {
-            while (!pdfWriter.write(rep)) {
+            while (!pdfWriter.writeAll(res,logo)) {
             }
         }
         reports.clear();

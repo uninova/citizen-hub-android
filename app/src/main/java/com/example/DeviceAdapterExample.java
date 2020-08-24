@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package com.example;
 
 
 import android.view.LayoutInflater;
@@ -13,28 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
-    int layoutId;
+public class DeviceAdapterExample extends RecyclerView.Adapter<DeviceAdapterExample.DeviceHolder> {
     private List<Device> devices = new ArrayList<>();
-
-    public DeviceAdapter(int layoutId) {
-        super();
-        this.layoutId = layoutId;
-    }
 
     @NonNull
     @Override
     public DeviceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(layoutId, parent, false);
+                .inflate(R.layout.example_device_item, parent, false);
         return new DeviceHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DeviceHolder holder, int position) {
         Device currentDevice = devices.get(position);
-
+        holder.textViewTitle.setText(currentDevice.getName());
+        holder.textViewDescription.setText(currentDevice.getAddress());
+        holder.textViewPriority.setText(String.valueOf(currentDevice.getType()));
     }
 
     @Override
@@ -48,11 +45,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     }
 
     class DeviceHolder extends RecyclerView.ViewHolder {
-
+        private TextView textViewTitle;
+        private TextView textViewDescription;
+        private TextView textViewPriority;
 
         public DeviceHolder(View itemView) {
             super(itemView);
-
+            textViewTitle = itemView.findViewById(R.id.text_view_title);
+            textViewDescription = itemView.findViewById(R.id.text_view_description);
+            textViewPriority = itemView.findViewById(R.id.text_device);
         }
     }
 }

@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.report;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -15,15 +17,21 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.graphics.Bitmap.createScaledBitmap;
+
 public class PdfWriter {
 
+    private final String pathName;
     public Bitmap bmp;
     public Bitmap scaledbitmap;
     private Report report;
-    private final String pathName;
 
     public PdfWriter(String pathName) {
         this.pathName = pathName;
+    }
+
+    public boolean writeAll(Resources res, int logo) {
+        return write(null, res, logo);
     }
 
     /*
@@ -31,10 +39,11 @@ public class PdfWriter {
             return new PdfWriter(pathName);
         }
     */
-    public boolean write(Report report) {
+    public boolean write(Report report, Resources res, int logo) {
         Log.w("ExternalStorage", "trying to create PdfWriter");
+        bmp = BitmapFactory.decodeResource(res, logo);
         //bmp = BitmapFactory.decodeResource(homecontext.getResources(), logo2_s4h);
-        //scaledbitmap = createScaledBitmap(bmp, 700, 300, false);
+        scaledbitmap = createScaledBitmap(bmp, 700, 300, false);
         PdfDocument document = new PdfDocument();
         PageInfo pageInfo = new PageInfo.Builder(1200, 1000, 1).create();
         Paint myPaint = new Paint();
