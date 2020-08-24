@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
 import java.util.Date;
@@ -54,10 +55,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Measurement measurement = new Measurement();
-                measurement.setTimestamp(new Date());
-                measurement.setType(1);
-                measurement.setValue("" + random.nextInt(200));
+                Measurement measurement = new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) random.nextInt(200));
 
                 MeasurementRepository repo = new MeasurementRepository(getApplication());
                 repo.insert(measurement);
