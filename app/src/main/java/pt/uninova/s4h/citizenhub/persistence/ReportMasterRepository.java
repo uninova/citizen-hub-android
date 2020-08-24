@@ -16,7 +16,7 @@ public class ReportMasterRepository {
 
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
 
-        reportMasterSummary = dailySummaryDao.getDaysWithDataInMonthYear( year, month );
+        reportMasterSummary = dailySummaryDao.getDaysWithSummaryInYearMonth( year, month );
     }
 
     public LiveData<List<Integer>> getReportMasterSummary() {
