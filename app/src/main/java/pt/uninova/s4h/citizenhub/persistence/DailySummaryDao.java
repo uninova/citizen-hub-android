@@ -18,12 +18,10 @@ public interface DailySummaryDao {
     @TypeConverters(TimestampConverter.class)
     LiveData<DailySummary> getDailySummary(Date date);
 
-    @Query("SELECT * FROM daily_summary WHERE strftime('%Y',datetime(date, 'unixepoch')) = :year AND strftime('%m',datetime(date, 'unixepoch')) = :month AND strftime('%d',datetime(date, 'unixepoch')) = :day ")
+    @Query("SELECT * FROM daily_summary WHERE CAST(strftime('%Y', date, 'unixepoch') AS INT) = :year AND CAST(strftime('%m', date, 'unixepoch') AS INT) = :month AND CAST(strftime('%d', date, 'unixepoch') AS INT) = :day")
     LiveData<DailySummary> getDailySummary(Integer year, Integer month, Integer day);
 
-    @Query("SELECT strftime('%d',datetime(date, 'unixepoch')) AS day FROM date_measurement \n" +
-            "WHERE strftime('%Y',datetime(date, 'unixepoch')) = :year \n" +
-            "AND strftime('%m',datetime(date, 'unixepoch')) = :month;")
-    LiveData<List<Integer>> getDaysWithDataInMonthYear(Integer year, Integer month);
+    @Query("SELECT CAST(strftime('%d', date, 'unixepoch') AS INT) AS day FROM daily_summary WHERE CAST(strftime('%Y', date, 'unixepoch') AS INT) = :year AND CAST(strftime('%m', date, 'unixepoch') AS INT) = :month")
+    LiveData<List<Integer>> getDaysWithSummaryInYearMonth(Integer year, Integer month);
 
 }
