@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class SourceRepository {
 
     public SourceRepository(Application application) {
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
-        sourceDAO = citizenHubDatabase.getDatabase().sourceDAO();
+        sourceDAO = citizenHubDatabase.sourceDAO();
         allSources = sourceDAO.getSources();
     }
 
