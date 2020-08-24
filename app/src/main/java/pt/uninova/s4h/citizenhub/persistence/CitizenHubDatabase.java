@@ -1,16 +1,14 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.content.Context;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 2)
+@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 2, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static volatile CitizenHubDatabase INSTANCE;
-    private CitizenHubDatabase database;
 
     public static CitizenHubDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
@@ -28,14 +26,10 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DeviceDao deviceDao();
 
-    public abstract SourceDao sourceDAO();
+    public abstract SourceDao sourceDao();
 
     public abstract MeasurementDao measurementDao();
 
-    @Override
-    public void close() {
-        database.close();
-    }
 }
 
 

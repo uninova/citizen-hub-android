@@ -13,7 +13,7 @@ public class SourceRepository {
 
     public SourceRepository(Application application) {
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
-        sourceDAO = citizenHubDatabase.sourceDAO();
+        sourceDAO = citizenHubDatabase.sourceDao();
         allSources = sourceDAO.getSources();
     }
 
