@@ -1,23 +1,29 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
+
+import java.util.Date;
 
 public class DailySummaryRepository {
 
     private final DailySummaryDao dailySummaryDao;
-    private final LiveData<DailySummary> dailySummary;
 
     public DailySummaryRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
-
-        dailySummary = dailySummaryDao.getCurrentSummary();
     }
 
     public LiveData<DailySummary> getCurrentSummary() {
-        return dailySummary;
+        return dailySummaryDao.getCurrentSummary();
+    }
+
+    public LiveData<DailySummary> getDailySummary(Date date) {
+        return dailySummaryDao.getDailySummary(date);
+    }
+
+    public LiveData<DailySummary> getDailySummary(int year, int month, int day) {
+        return dailySummaryDao.getDailySummary(year, month, day);
     }
 }
