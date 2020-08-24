@@ -3,44 +3,45 @@ package pt.uninova.s4h.citizenhub.persistence;
 import androidx.room.TypeConverter;
 
 public class CharacteristicTypeConverter {
-    @TypeConverter
-    public static int fromString(String name) {
-        int type;
-        switch (name) {
-            case "HeartRate":
-                type = 0;
-                break;
-            case "Steps":
-                type = 1;
-                break;
-            case "Posture":
-                type = 2;
-                break;
-            default:
-                type = -1;
-                break;
-        }
-        return type;
-    }
+
+    public enum CharacteristicType {
+        Unknown(0),
+        Heartrate(1),
+        Steps(2),
+        Distance(3),
+        Calories(4),
+        GoodPosture(5),
+        BadPosture(6);
 
 
-    @TypeConverter
-    public static String fromInt(int type) {
-        String name;
-        switch (type) {
-            case 0:
-                name = "HeartRate";
-                break;
-            case 1:
-                name = "Steps";
-                break;
-            case 2:
-                name = "Posture";
-                break;
-            default:
-                name = "unknown";
-                break;
+        private final int numeral;
+
+        CharacteristicType(int value) {
+            this.numeral = value;
         }
-        return name;
+
+        public int getCode() {
+            return numeral;
+        }
+
+        @TypeConverter
+        public static CharacteristicType getCharacteristicName(int numeral) {
+            for (CharacteristicType characteristicType : values()) {
+                if (characteristicType.numeral == numeral) {
+                    return characteristicType;
+                }
+            }
+            return null;
+        }
+
+        @TypeConverter
+        public static int getCharacteristicTypeInt(CharacteristicType type) {
+            return type.numeral;
+        }
     }
 }
+
+
+
+
+
