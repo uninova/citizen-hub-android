@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -11,8 +12,6 @@ public class MeasurementRepository {
     private LiveData<List<Measurement>> allMeasurements;
 
     public MeasurementRepository(Application application) {
-        //CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        //measurementDAO = citizenDbClient.getDatabase().measurementDAO();
         CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
         measurementDAO = citizenHubDatabase.measurementDao();
         allMeasurements = measurementDAO.getMeasurements();
