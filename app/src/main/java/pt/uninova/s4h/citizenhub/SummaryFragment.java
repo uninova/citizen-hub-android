@@ -9,11 +9,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import pt.uninova.s4h.citizenhub.persistence.DailySummary;
-import pt.uninova.s4h.citizenhub.persistence.DailySummaryViewModel;
 
 public class SummaryFragment extends Fragment {
 
-    private DailySummaryViewModel model;
+    private SummaryViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,7 +22,8 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DailySummaryViewModel.class);
+
+        model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         // TODO: match with proper layout
         TextView viewTextHomeSitting = getView().findViewById(R.id.textHome_sitting);
