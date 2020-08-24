@@ -30,7 +30,7 @@ public interface MeasurementDao {
     @Query("SELECT * FROM measurement")
     LiveData<List<Measurement>> getMeasurements();
 
-    @Query("SELECT * FROM measurement WHERE type = :characteristicType")
+    @Query("SELECT * FROM measurement WHERE kind_id = :characteristicType")
     LiveData<List<Measurement>> getMeasurementsWithCharacteristic(int characteristicType);
 
     @Query("SELECT * FROM AverageMeasurement")

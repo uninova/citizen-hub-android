@@ -6,15 +6,15 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@DatabaseView(value = "SELECT strftime('%s', strftime('%Y-%m-%d', timestamp, 'UNIXEPOCH')) AS date, id, type as kind_id, value FROM measurement", viewName = "date_measurement")
+@DatabaseView(value = "SELECT strftime('%s', strftime('%Y-%m-%d', timestamp, 'UNIXEPOCH')) AS date, id, kind_id, value FROM measurement", viewName = "date_measurement")
 public class DateMeasurement {
 
     @TypeConverters({TimestampConverter.class})
     private Date date;
     private int id;
     @ColumnInfo(name = "kind_id")
-    @TypeConverters(CharacteristicTypeConverter.class)
-    private int kindId;
+    @TypeConverters(MeasurementKindTypeConverter.class)
+    private MeasurementKind kind;
     private double value;
 
     public Date getDate() {
@@ -33,12 +33,12 @@ public class DateMeasurement {
         this.id = id;
     }
 
-    public int getKindId() {
-        return kindId;
+    public MeasurementKind getKind() {
+        return kind;
     }
 
-    public void setKindId(int kindId) {
-        this.kindId = kindId;
+    public void setKind(MeasurementKind kind) {
+        this.kind = kind;
     }
 
     public double getValue() {
