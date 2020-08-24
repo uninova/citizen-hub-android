@@ -24,9 +24,9 @@ public interface SourceDao {
     LiveData<List<Source>> getSources();
 
 
-    @Query("SELECT * FROM source WHERE uuid ==:sourceUuid")
+    @Query("SELECT * FROM source WHERE uuid =:sourceUuid")
     LiveData<List<Source>> getSourceFromUUID(String sourceUuid);
 
-    @Query("SELECT * FROM source WHERE address ==:deviceAddress")
+    @Query("SELECT * FROM source WHERE address =:deviceAddress")
     LiveData<List<Source>> getSourceFomAddress(String deviceAddress);
 }

@@ -37,9 +37,6 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public CitizenHubDatabase getDatabase() {
-        return INSTANCE.database;
-    }
 
 
     @Override
