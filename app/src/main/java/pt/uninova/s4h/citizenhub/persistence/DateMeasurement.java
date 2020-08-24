@@ -13,6 +13,7 @@ public class DateMeasurement {
     private Date date;
     private int id;
     @ColumnInfo(name = "kind_id")
+    @TypeConverters(CharacteristicTypeConverter.class)
     private int kindId;
     private double value;
 
