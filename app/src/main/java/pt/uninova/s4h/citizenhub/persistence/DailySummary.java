@@ -28,52 +28,52 @@ public class DailySummary {
         return averageHeartRate;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public float getSumBadPosture() {
-        return sumBadPosture;
-    }
-
-    public int getSumCalories() {
-        return sumCalories;
-    }
-
-    public int getSumDistance() {
-        return sumDistance;
-    }
-
-    public float getSumGoodPosture() {
-        return sumGoodPosture;
-    }
-
-    public int getSumSteps() {
-        return sumSteps;
-    }
-
     public void setAverageHeartRate(float averageHeartRate) {
         this.averageHeartRate = averageHeartRate;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
     }
 
+    public float getSumBadPosture() {
+        return sumBadPosture;
+    }
+
     public void setSumBadPosture(float sumBadPosture) {
         this.sumBadPosture = sumBadPosture;
+    }
+
+    public int getSumCalories() {
+        return sumCalories;
     }
 
     public void setSumCalories(int sumCalories) {
         this.sumCalories = sumCalories;
     }
 
+    public int getSumDistance() {
+        return sumDistance;
+    }
+
     public void setSumDistance(int sumDistance) {
         this.sumDistance = sumDistance;
     }
 
+    public float getSumGoodPosture() {
+        return sumGoodPosture;
+    }
+
     public void setSumGoodPosture(float sumGoodPosture) {
         this.sumGoodPosture = sumGoodPosture;
+    }
+
+    public int getSumSteps() {
+        return sumSteps;
     }
 
     public void setSumSteps(int sumSteps) {

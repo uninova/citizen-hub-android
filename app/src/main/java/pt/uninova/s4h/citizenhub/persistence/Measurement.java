@@ -1,18 +1,17 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import androidx.room.*;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "measurement")
 public class Measurement {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    /* @ForeignKey(entity = Source.class, parentColumns = "uuid", childColumns = "uuid", onDelete = CASCADE)
-    private String uuid;*/
     @TypeConverters({TimestampConverter.class})
     private Date timestamp;
     private String value;
@@ -23,7 +22,6 @@ public class Measurement {
     public Measurement() {
 
     }
-
 
     public Measurement(Integer id, Date timestamp, String value, int type) {
         this.id = id;

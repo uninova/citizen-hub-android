@@ -1,7 +1,13 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.TypeConverters;
+import androidx.room.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +39,5 @@ public interface MeasurementDao {
     @Query("SELECT AverageValue FROM AverageMeasurement WHERE CharacteristicType = :characteristicType AND Date=(date(:datez)) ")
     @TypeConverters(TimestampConverter.class)
     float getAvgFromDay(int characteristicType, Date datez);
-    // SELECT AverageValue,CharacteristicName, date FROM AverageMeasurement WHERE CharacteristicName = 'HeartRate' AND date=('2020-07-21')
-
 
 }

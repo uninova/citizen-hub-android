@@ -20,28 +20,28 @@ public class DateMeasurement {
         return date;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getKindId() {
-        return kindId;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public int getKindId() {
+        return kindId;
+    }
+
     public void setKindId(int kindId) {
         this.kindId = kindId;
+    }
+
+    public double getValue() {
+        return value;
     }
 
     public void setValue(double value) {

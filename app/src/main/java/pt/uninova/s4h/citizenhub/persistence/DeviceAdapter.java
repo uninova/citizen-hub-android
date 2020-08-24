@@ -5,17 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
-    private List<Device> devices = new ArrayList<>();
+import pt.uninova.s4h.citizenhub.R;
 
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
     int layoutId;
+    private List<Device> devices = new ArrayList<>();
 
     public DeviceAdapter(int layoutId) {
         super();
