@@ -12,9 +12,8 @@ public class MeasurementRepository {
     private LiveData<List<Measurement>> allMeasurements;
 
     public MeasurementRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
         measurementDAO = citizenHubDatabase.measurementDao();
-        allMeasurements = measurementDAO.getMeasurements();
     }
 
     public void insert(Measurement measurement) {
@@ -36,7 +35,8 @@ public class MeasurementRepository {
     }
 
     public LiveData<List<Measurement>> getAllMeasurements() {
-        return allMeasurements;
+        return measurementDAO.getMeasurements();
+
     }
 
     private static class InsertMeasurementAsyncTask extends AsyncTask<Measurement, Void, Void> {
