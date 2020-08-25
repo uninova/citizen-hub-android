@@ -9,17 +9,16 @@ import java.util.List;
 public class ReportDetailRepository {
 
     private final DailySummaryDao dailySummaryDao;
-    private final LiveData<DailySummary> dailySummary;
 
     public ReportDetailRepository(Application application, int year, int month,int day) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+       final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
 
-        dailySummary = dailySummaryDao.getDailySummary( year, month, day );
+
     }
 
-    public LiveData<DailySummary> getDailySummary() {
-        return dailySummary;
+    public LiveData<DailySummary> getDailySummary(int year, int month, int day) {
+        return dailySummaryDao.getDailySummary( year, month, day );
     }
 }
