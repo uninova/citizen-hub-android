@@ -9,12 +9,10 @@ import java.util.List;
 
 public class DeviceRepository {
     private DeviceDao deviceDAO;
-    private LiveData<List<Device>> allDevices;
 
     public DeviceRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
         deviceDAO = citizenHubDatabase.deviceDao();
-        allDevices = deviceDAO.getDevices();
     }
 
     public void insert(Device device) {
@@ -36,7 +34,7 @@ public class DeviceRepository {
     }
 
     public LiveData<List<Device>> getAllDevices() {
-        return allDevices;
+        return deviceDAO.getDevices();
     }
 
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
