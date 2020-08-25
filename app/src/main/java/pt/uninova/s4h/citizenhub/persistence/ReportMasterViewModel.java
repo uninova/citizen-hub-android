@@ -9,16 +9,15 @@ import java.util.List;
 
 public class ReportMasterViewModel extends AndroidViewModel {
 
-    private final LiveData<List<Integer>> reportMasterSummary;
+    private final ReportMasterRepository reportMasterRepository;
 
     public ReportMasterViewModel(Application application, int year, int month) {
         super(application);
 
-        final ReportMasterRepository reportMasterRepository = new ReportMasterRepository(application, year, month);
-        reportMasterSummary = reportMasterRepository.getReportMasterSummary(year, month);
+        reportMasterRepository = new ReportMasterRepository(application, year, month);
     }
 
     public LiveData<List<Integer>> getReportMasterSummary() {
-        return reportMasterSummary;
+        return reportMasterRepository.getReportMasterSummary();
     }
 }
