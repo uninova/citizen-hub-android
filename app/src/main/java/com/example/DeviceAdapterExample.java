@@ -16,6 +16,8 @@ import java.util.List;
 public class DeviceAdapterExample extends RecyclerView.Adapter<DeviceAdapterExample.DeviceHolder> {
     private List<Device> devices = new ArrayList<>();
 
+
+
     @NonNull
     @Override
     public DeviceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,7 +31,6 @@ public class DeviceAdapterExample extends RecyclerView.Adapter<DeviceAdapterExam
         Device currentDevice = devices.get(position);
         holder.textViewTitle.setText(currentDevice.getName());
         holder.textViewDescription.setText(currentDevice.getAddress());
-        holder.textViewPriority.setText(String.valueOf(currentDevice.getType()));
     }
 
     @Override
@@ -45,13 +46,11 @@ public class DeviceAdapterExample extends RecyclerView.Adapter<DeviceAdapterExam
     class DeviceHolder extends RecyclerView.ViewHolder {
         private TextView textViewTitle;
         private TextView textViewDescription;
-        private TextView textViewPriority;
 
         public DeviceHolder(View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.text_view_title);
             textViewDescription = itemView.findViewById(R.id.text_view_description);
-            textViewPriority = itemView.findViewById(R.id.text_device);
         }
     }
 }

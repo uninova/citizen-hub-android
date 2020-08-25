@@ -4,18 +4,26 @@ public class DeviceListItem {
     private int mImageResource;
     private String mTextTitle;
     private String mTextDescription;
-    private String mTextNumber;
+    private int mImageSettings;
 
-    public DeviceListItem(int imageResource, String textTitle, String textDescription, String textNumber)
+    public DeviceListItem(int imageResource, String textTitle, String textDescription, int imageSettings)
     {
         mImageResource = imageResource;
         mTextTitle = textTitle;
         mTextDescription = textDescription;
-        mTextNumber = textNumber;
+        mImageSettings = imageSettings;
     }
+
+    public void changeImageResource(int imageResource) {mImageResource = imageResource; }
+
+    public void changeImageSettings(int imageSettings) {mImageSettings = imageSettings; }
 
     public int getmImageResource() {
         return mImageResource;
+    }
+
+    public int getmImageSettings() {
+        return mImageSettings;
     }
 
     public String getmTextTitle(){
@@ -24,9 +32,5 @@ public class DeviceListItem {
 
     public String getmTextDescription() {
         return mTextDescription;
-    }
-
-    public String getmTextNumber(){
-        return mTextNumber;
     }
 }
