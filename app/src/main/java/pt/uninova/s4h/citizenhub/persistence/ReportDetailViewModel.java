@@ -9,13 +9,12 @@ import java.util.List;
 
 public class ReportDetailViewModel extends AndroidViewModel {
 
-    private final ReportDetailRepository reportDetailRepository;
     private final LiveData<DailySummary> reportDetailSummary;
 
     public ReportDetailViewModel(Application application, int year, int month, int day) {
         super(application);
-        reportDetailRepository = new ReportDetailRepository(application,year,month,day);
-        reportDetailSummary = reportDetailRepository.getDailySummary();
+        final ReportDetailRepository reportDetailRepository = new ReportDetailRepository(application,year,month,day);
+        reportDetailSummary = reportDetailRepository.getDailySummary(year,month,day);
     }
 
     public LiveData<DailySummary> getReportDetailSummary() {

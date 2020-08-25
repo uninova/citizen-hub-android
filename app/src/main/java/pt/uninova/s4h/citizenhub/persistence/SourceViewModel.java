@@ -9,29 +9,29 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class SourceViewModel extends AndroidViewModel {
-    private SourceRepository repository;
-    private LiveData<List<Source>> allSources;
+    final SourceRepository sourceRepository;
+    private final LiveData<List<Source>> allSources;
 
     public SourceViewModel(@NonNull Application application) {
         super(application);
-        repository = new SourceRepository(application);
-        allSources = repository.getAllSources();
+        sourceRepository = new SourceRepository(application);
+        allSources = sourceRepository.getAllSources();
     }
 
     public void insert(Source source) {
-        repository.insert(source);
+        sourceRepository.insert(source);
     }
 
     public void update(Source source) {
-        repository.update(source);
+        sourceRepository.update(source);
     }
 
     public void delete(Source source) {
-        repository.delete(source);
+        sourceRepository.delete(source);
     }
 
     public void deleteAllSources() {
-        repository.deleteAll();
+        sourceRepository.deleteAll();
     }
 
     public LiveData<List<Source>> getAllSources() {
