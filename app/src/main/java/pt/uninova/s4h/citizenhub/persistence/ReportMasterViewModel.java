@@ -11,13 +11,13 @@ public class ReportMasterViewModel extends AndroidViewModel {
 
     private final ReportMasterRepository reportMasterRepository;
 
-    public ReportMasterViewModel(Application application, int year, int month) {
+    public ReportMasterViewModel(Application application) {
         super(application);
 
-        reportMasterRepository = new ReportMasterRepository(application, year, month);
+        reportMasterRepository = new ReportMasterRepository(application);
     }
 
-    public LiveData<List<Integer>> getReportMasterSummary() {
-        return reportMasterRepository.getReportMasterSummary();
+    public LiveData<List<Integer>> getReportMasterSummary(int year, int month) {
+        return reportMasterRepository.getReportMasterSummary(year, month);
     }
 }
