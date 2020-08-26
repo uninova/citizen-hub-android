@@ -32,7 +32,7 @@ public class DeviceRepository {
 
     }
 
-    public LiveData<List<Device>> getAllDevices() {
+    public LiveData<List<Device>> getAllDevicesLive() {
         return deviceDAO.getDevices();
     }
 

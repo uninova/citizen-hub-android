@@ -13,7 +13,7 @@ public class DeviceViewModel extends AndroidViewModel {
     public DeviceViewModel(@NonNull Application application) {
         super(application);
         deviceRepository = new DeviceRepository(application);
-        allDevices = deviceRepository.getAllDevices();
+        allDevices = deviceRepository.getAllDevicesLive();
     }
 
     public void insert(Device device) {
