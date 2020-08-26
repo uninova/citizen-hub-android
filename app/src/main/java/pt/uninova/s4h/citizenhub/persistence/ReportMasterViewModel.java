@@ -1,16 +1,14 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
 public class ReportMasterViewModel extends AndroidViewModel {
 
     private final ReportMasterRepository reportMasterRepository;
-    private final LiveData<List<Integer>> reportMasterSummary;
+    private final List<Integer> reportMasterSummary;
 
     public ReportMasterViewModel(Application application, int year, int month) {
         super(application);
@@ -19,7 +17,7 @@ public class ReportMasterViewModel extends AndroidViewModel {
         reportMasterSummary = reportMasterRepository.getReportMasterSummary();
     }
 
-    public LiveData<List<Integer>> getReportMasterSummary() {
+    public List<Integer> getReportMasterSummary() {
         return reportMasterSummary;
     }
 }
