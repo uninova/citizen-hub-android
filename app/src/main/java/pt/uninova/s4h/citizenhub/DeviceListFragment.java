@@ -60,9 +60,9 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //insertItem(position); //TODO remove this, testing
+                insertItem(position); //TODO remove this, testing
                 //removeItem(position); //TODO remove this, testing
-                onoffItem(position);
+                //onoffItem(position);
             }
 
             @Override
