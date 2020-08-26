@@ -9,21 +9,21 @@ import java.util.List;
 public interface DeviceDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void addDevice(Device device);
+    void insert(Device device);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateDevice(Device device);
+    void update(Device device);
 
     @Delete
-    void deleteDevice(Device device);
+    void delete(Device device);
 
     @Query("DELETE FROM device")
-    void deleteAllDevices();
+    void deleteAll();
 
     @Query("SELECT * FROM device")
-    LiveData<List<Device>> getDevices();
+    LiveData<List<Device>> getAll();
 
     @Query("SELECT * FROM device WHERE address =:deviceAddress")
-    Device getDevice(String deviceAddress);
+    Device get(String deviceAddress);
 
 }

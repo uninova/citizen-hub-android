@@ -16,37 +16,37 @@ public class DeviceRepository {
 
     public void add(Device device) {
         CitizenHubDatabase.executorService().execute(() -> {
-            deviceDAO.addDevice(device);
+            deviceDAO.insert(device);
         });
     }
 
     public void update(Device device) {
         CitizenHubDatabase.executorService().execute(() -> {
-            deviceDAO.updateDevice(device);
+            deviceDAO.update(device);
         });
     }
 
     public void remove(Device device) {
         CitizenHubDatabase.executorService().execute(() -> {
-            deviceDAO.deleteDevice(device);
+            deviceDAO.delete(device);
         });
     }
 
     public void removeAll() {
         CitizenHubDatabase.executorService().execute(() -> {
-            deviceDAO.deleteAllDevices();
+            deviceDAO.deleteAll();
         });
     }
 
     public LiveData<List<Device>> getAllDevicesLive() {
-        return deviceDAO.getDevices();
+        return deviceDAO.getAll();
     }
 
     public Device getDevice(String address) {
-        return deviceDAO.getDevice(address);
+        return deviceDAO.get(address);
     }
 
     public void obtainDevice(String address, Observer<Device> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDAO.getDevice(address)));
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDAO.get(address)));
     }
 }
