@@ -2,11 +2,12 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
+import pt.uninova.util.Observer;
 
 import java.util.List;
 
 public class DeviceRepository {
+
     private final DeviceDao deviceDao;
 
     public DeviceRepository(Application application) {
@@ -20,10 +21,16 @@ public class DeviceRepository {
         });
     }
 
-    public void update(Device device) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            deviceDao.update(device);
-        });
+    public Device get(String address) {
+        return deviceDao.get(address);
+    }
+
+    public LiveData<List<Device>> getAll() {
+        return deviceDao.getAll();
+    }
+
+    public void obtain(String address, Observer<Device> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChange(deviceDao.get(address)));
     }
 
     public void remove(Device device) {
@@ -33,20 +40,12 @@ public class DeviceRepository {
     }
 
     public void removeAll() {
+        CitizenHubDatabase.executorService().execute(deviceDao::deleteAll);
+    }
+
+    public void update(Device device) {
         CitizenHubDatabase.executorService().execute(() -> {
-            deviceDao.deleteAll();
+            deviceDao.update(device);
         });
-    }
-
-    public LiveData<List<Device>> getAll() {
-        return deviceDao.getAll();
-    }
-
-    public Device get(String address) {
-        return deviceDao.get(address);
-    }
-
-    public void obtain(String address, Observer<Device> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.get(address)));
     }
 }
