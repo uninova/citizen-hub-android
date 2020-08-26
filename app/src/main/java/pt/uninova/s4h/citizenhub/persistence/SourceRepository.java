@@ -32,7 +32,7 @@ public class SourceRepository {
 
     }
 
-    public LiveData<List<Source>> getAllSources() {
+    public LiveData<List<Source>> getAllSourcesLive() {
         return sourceDAO.getSources();
 
     }

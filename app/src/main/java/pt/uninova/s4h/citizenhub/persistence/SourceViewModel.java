@@ -14,7 +14,7 @@ public class SourceViewModel extends AndroidViewModel {
     public SourceViewModel(@NonNull Application application) {
         super(application);
         sourceRepository = new SourceRepository(application);
-        allSources = sourceRepository.getAllSources();
+        allSources = sourceRepository.getAllSourcesLive();
     }
 
     public LiveData<List<Source>> getAllSourcesLive() {
