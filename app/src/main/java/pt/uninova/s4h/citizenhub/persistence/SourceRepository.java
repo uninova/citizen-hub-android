@@ -7,12 +7,12 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class SourceRepository {
-    private SourceDAO sourceDAO;
+    private SourceDao sourceDAO;
     private LiveData<List<Source>> allSources;
 
     public SourceRepository(Application application) {
-        CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        sourceDAO = citizenDbClient.getDatabase().sourceDAO();
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        sourceDAO = citizenHubDatabase.sourceDao();
         allSources = sourceDAO.getSources();
     }
 
@@ -39,9 +39,9 @@ public class SourceRepository {
     }
 
     private static class InsertSourceAsyncTask extends AsyncTask<Source, Void, Void> {
-        private SourceDAO sourceDAO;
+        private SourceDao sourceDAO;
 
-        private InsertSourceAsyncTask(SourceDAO sourceDAO) {
+        private InsertSourceAsyncTask(SourceDao sourceDAO) {
             this.sourceDAO = sourceDAO;
         }
 
@@ -53,9 +53,9 @@ public class SourceRepository {
     }
 
     private static class UpdateSourceAsyncTask extends AsyncTask<Source, Void, Void> {
-        private SourceDAO sourceDAO;
+        private SourceDao sourceDAO;
 
-        private UpdateSourceAsyncTask(SourceDAO sourceDAO) {
+        private UpdateSourceAsyncTask(SourceDao sourceDAO) {
             this.sourceDAO = sourceDAO;
         }
 
@@ -67,9 +67,9 @@ public class SourceRepository {
     }
 
     private static class DeleteSourceAsyncTask extends AsyncTask<Source, Void, Void> {
-        private SourceDAO sourceDAO;
+        private SourceDao sourceDAO;
 
-        private DeleteSourceAsyncTask(SourceDAO sourceDAO) {
+        private DeleteSourceAsyncTask(SourceDao sourceDAO) {
             this.sourceDAO = sourceDAO;
         }
 
@@ -81,9 +81,9 @@ public class SourceRepository {
     }
 
     private static class DeleteAllSourcesAsyncTask extends AsyncTask<Void, Void, Void> {
-        private SourceDAO sourceDAO;
+        private SourceDao sourceDAO;
 
-        private DeleteAllSourcesAsyncTask(SourceDAO sourceDAO) {
+        private DeleteAllSourcesAsyncTask(SourceDao sourceDAO) {
             this.sourceDAO = sourceDAO;
         }
 

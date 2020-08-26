@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.CitizenDatabaseClient;
+import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class MainActivityExample extends AppCompatActivity {
     public static final int ADD_DEVICE_REQUEST = 37;
     private DeviceViewModel deviceViewModel;
-    private CitizenDatabaseClient db;
+    private CitizenHubDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +46,11 @@ public class MainActivityExample extends AppCompatActivity {
                         .commit();
             }
         });
-        db = CitizenDatabaseClient.getInstance(this);
+        db = CitizenHubDatabase.getInstance(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        DeviceAdapterExample adapter = new DeviceAdapterExample();
+        DeviceAdapter adapter = new DeviceAdapter(R.layout.example_device_item);
         recyclerView.setAdapter(adapter);
 
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);

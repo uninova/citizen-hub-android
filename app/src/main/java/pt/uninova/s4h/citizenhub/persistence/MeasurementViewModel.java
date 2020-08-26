@@ -14,23 +14,11 @@ public class MeasurementViewModel extends AndroidViewModel {
     public MeasurementViewModel(@NonNull Application application) {
         super(application);
         repository = new MeasurementRepository(application);
-        allMeasurements = repository.getAllMeasurements();
+        allMeasurements = repository.getAllMeasurementsLive();
     }
 
     public void insert(Measurement measurement) {
-        repository.insert(measurement);
-    }
-
-    public void update(Measurement measurement) {
-        repository.update(measurement);
-    }
-
-    public void delete(Measurement measurement) {
-        repository.delete(measurement);
-    }
-
-    public void deleteAllMeasurements() {
-        repository.deleteAll();
+        repository.add(measurement);
     }
 
     public LiveData<List<Measurement>> getAllMeasurements() {

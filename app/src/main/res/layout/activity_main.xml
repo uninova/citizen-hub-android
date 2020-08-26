@@ -13,7 +13,7 @@
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +24,7 @@
                     android:id="@+id/nav_host_fragment"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="?attr/actionBarSize"
                     android:layout_width="match_parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -41,6 +42,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            app:itemTextAppearance="@style/LatoRegularForDrawerTextViewStyle"
             app:menu="@menu/drawer"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

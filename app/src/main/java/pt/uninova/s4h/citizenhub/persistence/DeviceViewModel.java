@@ -7,8 +7,6 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-//ViewModel outlives activities, that's why we pass application instead of context so there are no memory leaks
-
 public class DeviceViewModel extends AndroidViewModel {
     private DeviceRepository repository;
     private LiveData<List<Device>> allDevices;

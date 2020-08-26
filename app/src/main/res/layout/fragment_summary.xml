@@ -1,25 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".SummaryFragment">
+        android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/text_home"
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Today's Activity"/>
+            android:layout_width="match_parent"
+            tools:context=".SummaryFragment"
+            tools:ignore="UseCompoundDrawables">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                    android:id="@+id/fragment_summary_layout_posture"
+                    style="@style/AppTheme.Summary.Item">
+
+                <ImageView
+                        android:id="@+id/fragment_summary_image_view_posture"
+                        android:contentDescription="@string/fragment_summary_image_view_posture_content_description"
+                        app:srcCompat="@drawable/img_good_posture"
+                        style="@style/AppTheme.Summary.Item.ImageView"/>
+
+                <TextView
+                        android:id="@+id/fragment_summary_text_view_posture"
+                        android:text="@string/fragment_summary_text_view_posture_text"
+                        style="@style/AppTheme.Summary.Item.TextView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/fragment_summary_layout_distance"
+                    style="@style/AppTheme.Summary.Item">
+
+                <TextView
+                        android:id="@+id/fragment_summary_text_view_distance"
+                        android:text="@string/fragment_summary_text_view_distance_text"
+                        style="@style/AppTheme.Summary.Item.TextView"/>
+
+                <ImageView
+                        android:id="@+id/fragment_summary_image_view_distance"
+                        android:contentDescription="@string/fragment_summary_image_view_distance_content_description"
+                        app:srcCompat="@drawable/img_distance"
+                        style="@style/AppTheme.Summary.Item.ImageView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/fragment_summary_layout_steps"
+                    style="@style/AppTheme.Summary.Item">
+
+                <ImageView
+                        android:id="@+id/fragment_summary_image_view_steps"
+                        android:contentDescription="@string/fragment_summary_image_view_steps_content_description"
+                        app:srcCompat="@drawable/img_steps"
+                        style="@style/AppTheme.Summary.Item.ImageView"/>
+
+                <TextView
+                        android:id="@+id/fragment_summary_text_view_steps"
+                        android:text="@string/fragment_summary_text_view_steps_text"
+                        style="@style/AppTheme.Summary.Item.TextView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/fragment_summary_layout_calories"
+                    style="@style/AppTheme.Summary.Item">
+
+                <TextView
+                        android:id="@+id/fragment_summary_text_view_calories"
+                        android:text="@string/fragment_summary_text_view_calories_text"
+                        style="@style/AppTheme.Summary.Item.TextView"/>
+
+                <ImageView
+                        android:id="@+id/fragment_summary_image_view_calories"
+                        android:contentDescription="@string/fragment_summary_image_view_calories_content_description"
+                        app:srcCompat="@drawable/img_calories"
+                        style="@style/AppTheme.Summary.Item.ImageView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/fragment_summary_layout_heart_rate"
+                    style="@style/AppTheme.Summary.Item">
+
+                <ImageView
+                        android:id="@+id/fragment_summary_image_view_heart_rate"
+                        android:contentDescription="@string/fragment_summary_image_view_heart_rate_content_description"
+                        app:srcCompat="@drawable/ic_heart_red"
+                        style="@style/AppTheme.Summary.Item.ImageView"/>
+
+                <TextView
+                        android:id="@+id/fragment_summary_text_view_heart_rate"
+                        android:text="@string/fragment_summary_text_view_heart_rate_text"
+                        style="@style/AppTheme.Summary.Item.TextView"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

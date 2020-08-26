@@ -7,12 +7,12 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class DeviceRepository {
-    private DeviceDAO deviceDAO;
+    private DeviceDao deviceDAO;
     private LiveData<List<Device>> allDevices;
 
     public DeviceRepository(Application application) {
-        CitizenDatabaseClient citizenDbClient = CitizenDatabaseClient.getInstance(application);
-        deviceDAO = citizenDbClient.getDatabase().deviceDao();
+        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        deviceDAO = citizenHubDatabase.deviceDao();
         allDevices = deviceDAO.getDevices();
     }
 
@@ -39,9 +39,9 @@ public class DeviceRepository {
     }
 
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDAO deviceDAO;
+        private DeviceDao deviceDAO;
 
-        private InsertDeviceAsyncTask(DeviceDAO deviceDAO) {
+        private InsertDeviceAsyncTask(DeviceDao deviceDAO) {
             this.deviceDAO = deviceDAO;
         }
 
@@ -53,9 +53,9 @@ public class DeviceRepository {
     }
 
     private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDAO deviceDAO;
+        private DeviceDao deviceDAO;
 
-        private UpdateDeviceAsyncTask(DeviceDAO deviceDAO) {
+        private UpdateDeviceAsyncTask(DeviceDao deviceDAO) {
             this.deviceDAO = deviceDAO;
         }
 
@@ -67,9 +67,9 @@ public class DeviceRepository {
     }
 
     private static class DeleteDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDAO deviceDAO;
+        private DeviceDao deviceDAO;
 
-        private DeleteDeviceAsyncTask(DeviceDAO deviceDAO) {
+        private DeleteDeviceAsyncTask(DeviceDao deviceDAO) {
             this.deviceDAO = deviceDAO;
         }
 
@@ -81,9 +81,9 @@ public class DeviceRepository {
     }
 
     private static class DeleteAllDevicesAsyncTask extends AsyncTask<Void, Void, Void> {
-        private DeviceDAO deviceDAO;
+        private DeviceDao deviceDAO;
 
-        private DeleteAllDevicesAsyncTask(DeviceDAO deviceDAO) {
+        private DeleteAllDevicesAsyncTask(DeviceDao deviceDAO) {
             this.deviceDAO = deviceDAO;
         }
 
