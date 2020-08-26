@@ -17,7 +17,7 @@ public class ReportDetailViewModel extends AndroidViewModel {
         dailySummary = new MutableLiveData<>();
     }
 
-    public LiveData<DailySummary> getDailySummary() {
+    public LiveData<DailySummary> getDailySummaryLive() {
         return dailySummary;
     }
 
