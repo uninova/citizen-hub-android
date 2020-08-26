@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class DeviceRepository {
-    private DeviceDao deviceDAO;
+    private final DeviceDao deviceDAO;
 
     public DeviceRepository(Application application) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
