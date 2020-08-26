@@ -22,16 +22,10 @@ public interface MeasurementDao {
     void deleteAllMeasurements();
 
     @Query("SELECT * FROM measurement")
-    LiveData<List<Measurement>> getMeasurements();
+    List<Measurement> getMeasurements();
 
     @Query("SELECT * FROM measurement WHERE kind_id = :characteristicType")
-    LiveData<List<Measurement>> getMeasurementsWithCharacteristic(int characteristicType);
+    List<Measurement> getMeasurementsWithCharacteristic(int characteristicType);
 
-    @Query("SELECT * FROM AverageMeasurement")
-    LiveData<List<AverageMeasurement>> getMeasurementsWithoutTime();
-
-    @Query("SELECT AverageValue FROM AverageMeasurement WHERE CharacteristicType = :characteristicType AND Date=(date(:datez)) ")
-    @TypeConverters(TimestampConverter.class)
-    float getAvgFromDay(int characteristicType, Date datez);
 
 }
