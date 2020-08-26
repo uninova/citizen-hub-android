@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
 import android.view.*;
-import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;

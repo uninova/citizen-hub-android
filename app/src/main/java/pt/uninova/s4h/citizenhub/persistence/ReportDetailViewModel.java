@@ -1,23 +1,27 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
+import androidx.lifecycle.MutableLiveData;
 
 public class ReportDetailViewModel extends AndroidViewModel {
 
-    private final LiveData<DailySummary> reportDetailSummary;
+    private final DailySummaryRepository dailySummaryRepository;
+    private final MutableLiveData<DailySummary> dailySummary;
 
-    public ReportDetailViewModel(Application application, int year, int month, int day) {
+    public ReportDetailViewModel(Application application) {
         super(application);
-        final ReportDetailRepository reportDetailRepository = new ReportDetailRepository(application,year,month,day);
-        reportDetailSummary = reportDetailRepository.getDailySummary(year,month,day);
+
+        dailySummaryRepository = new DailySummaryRepository(application);
+        dailySummary = new MutableLiveData<>();
     }
 
-    public LiveData<DailySummary> getReportDetailSummary() {
-        return reportDetailSummary;
+    public LiveData<DailySummary> getDailySummary() {
+        return dailySummary;
+    }
+
+    public void setParameters(int year, int month, int day) {
+        dailySummaryRepository.obtainDailySummary(year, month, day, dailySummary::postValue);
     }
 }

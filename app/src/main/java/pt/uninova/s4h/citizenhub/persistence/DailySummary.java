@@ -10,73 +10,73 @@ import java.util.Date;
 public class DailySummary {
 
     @ColumnInfo(name = "average_heart_rate")
-    private float averageHeartRate;
+    private Double averageHeartRate;
     @TypeConverters(TimestampConverter.class)
     private Date date;
     @ColumnInfo(name = "sum_bad_posture")
-    private float sumBadPosture;
+    private Integer sumBadPosture;
     @ColumnInfo(name = "sum_calories")
-    private int sumCalories;
+    private Integer sumCalories;
     @ColumnInfo(name = "sum_distance")
-    private int sumDistance;
+    private Integer sumDistance;
     @ColumnInfo(name = "sum_good_posture")
-    private float sumGoodPosture;
+    private Integer sumGoodPosture;
     @ColumnInfo(name = "sum_steps")
-    private int sumSteps;
+    private Integer sumSteps;
 
-    public float getAverageHeartRate() {
+    public Double getAverageHeartRate() {
         return averageHeartRate;
+    }
+
+    public void setAverageHeartRate(Double averageHeartRate) {
+        this.averageHeartRate = averageHeartRate;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public float getSumBadPosture() {
-        return sumBadPosture;
-    }
-
-    public int getSumCalories() {
-        return sumCalories;
-    }
-
-    public int getSumDistance() {
-        return sumDistance;
-    }
-
-    public float getSumGoodPosture() {
-        return sumGoodPosture;
-    }
-
-    public int getSumSteps() {
-        return sumSteps;
-    }
-
-    public void setAverageHeartRate(float averageHeartRate) {
-        this.averageHeartRate = averageHeartRate;
-    }
-
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public void setSumBadPosture(float sumBadPosture) {
+    public Integer getSumBadPosture() {
+        return sumBadPosture;
+    }
+
+    public void setSumBadPosture(Integer sumBadPosture) {
         this.sumBadPosture = sumBadPosture;
     }
 
-    public void setSumCalories(int sumCalories) {
+    public Integer getSumCalories() {
+        return sumCalories;
+    }
+
+    public void setSumCalories(Integer sumCalories) {
         this.sumCalories = sumCalories;
     }
 
-    public void setSumDistance(int sumDistance) {
+    public Integer getSumDistance() {
+        return sumDistance;
+    }
+
+    public void setSumDistance(Integer sumDistance) {
         this.sumDistance = sumDistance;
     }
 
-    public void setSumGoodPosture(float sumGoodPosture) {
+    public Integer getSumGoodPosture() {
+        return sumGoodPosture;
+    }
+
+    public void setSumGoodPosture(Integer sumGoodPosture) {
         this.sumGoodPosture = sumGoodPosture;
     }
 
-    public void setSumSteps(int sumSteps) {
+    public Integer getSumSteps() {
+        return sumSteps;
+    }
+
+    public void setSumSteps(Integer sumSteps) {
         this.sumSteps = sumSteps;
     }
 

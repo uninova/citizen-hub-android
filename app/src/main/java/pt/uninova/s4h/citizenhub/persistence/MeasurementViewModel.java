@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -17,23 +16,11 @@ public class MeasurementViewModel extends AndroidViewModel {
     public MeasurementViewModel(@NonNull Application application) {
         super(application);
         measurementRepository = new MeasurementRepository(application);
-        allMeasurements = measurementRepository.getAllMeasurements();
+        allMeasurements = measurementRepository.getAllMeasurementsLive();
     }
 
     public void insert(Measurement measurement) {
-        measurementRepository.insert(measurement);
-    }
-
-    public void update(Measurement measurement) {
-        measurementRepository.update(measurement);
-    }
-
-    public void delete(Measurement measurement) {
-        measurementRepository.delete(measurement);
-    }
-
-    public void deleteAllMeasurements() {
-        measurementRepository.deleteAll();
+        measurementRepository.add(measurement);
     }
 
     public LiveData<List<Measurement>> getAllMeasurements() {
