@@ -10,7 +10,7 @@ public class MeasurementRepository {
     private final MeasurementDao measurementDao;
 
     public MeasurementRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         measurementDao = citizenHubDatabase.measurementDao();
     }
@@ -21,7 +21,7 @@ public class MeasurementRepository {
         });
     }
 
-    public LiveData<List<Measurement>> getAllMeasurementsLive() {
+    public List<Measurement> getAllMeasurements() {
         return measurementDao.getMeasurements();
     }
 

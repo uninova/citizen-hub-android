@@ -16,7 +16,7 @@ public class MeasurementViewModel extends AndroidViewModel {
     public MeasurementViewModel(@NonNull Application application) {
         super(application);
         measurementRepository = new MeasurementRepository(application);
-        allMeasurements = measurementRepository.getAllMeasurementsLive();
+        allMeasurements = measurementRepository.getAllMeasurements();
     }
 
     public void insert(Measurement measurement) {
