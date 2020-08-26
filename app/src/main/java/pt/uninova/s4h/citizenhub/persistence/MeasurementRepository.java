@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
 
 import java.util.List;
 

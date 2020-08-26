@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -36,8 +37,8 @@ public class DeviceRepository {
         return deviceDAO.getDevices();
     }
 
-    public Device getDevice(String address){
-       return deviceDAO.getDevice(address);
+    public Device getDevice(String address) {
+        return deviceDAO.getDevice(address);
     }
 
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
