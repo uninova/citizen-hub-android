@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.SharedDeviceViewModel;
+import pt.uninova.s4h.citizenhub.SharedDeviceViewModel;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 
@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 
 public class SharedDeviceViewModel extends ViewModel {
     private MutableLiveData<Device> device;

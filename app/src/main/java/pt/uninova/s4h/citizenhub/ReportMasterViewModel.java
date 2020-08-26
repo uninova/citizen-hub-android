@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 
@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.Calendar;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.persistence.DailySummaryRepository;
 
 public class ReportMasterViewModel extends AndroidViewModel {
 

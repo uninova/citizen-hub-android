@@ -10,15 +10,12 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDao;
-import pt.uninova.s4h.citizenhub.persistence.SharedDeviceViewModel;
+import pt.uninova.s4h.citizenhub.SharedDeviceViewModel;
 
 public class AddDeviceFragment extends Fragment {
     public static final String EXTRA_TITLE =
