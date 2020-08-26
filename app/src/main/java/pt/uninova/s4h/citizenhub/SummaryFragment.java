@@ -77,6 +77,5 @@ public class SummaryFragment extends Fragment {
                 stepsLayout.setVisibility(View.GONE);
             }
         }
-
     }
 }
