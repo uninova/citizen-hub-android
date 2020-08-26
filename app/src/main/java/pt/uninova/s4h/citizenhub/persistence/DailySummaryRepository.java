@@ -2,8 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
-
-import java.util.Date;
+import androidx.lifecycle.Observer;
 
 public class DailySummaryRepository {
 
@@ -15,15 +14,13 @@ public class DailySummaryRepository {
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
     }
 
-    public LiveData<DailySummary> getCurrentSummary() {
-        return dailySummaryDao.getCurrentSummary();
+    public void getCurrentDailySummary(Observer<DailySummary> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            observer.onChanged(dailySummaryDao.getCurrentDailySummary());
+        });
     }
 
-    public LiveData<DailySummary> getDailySummary(Date date) {
-        return dailySummaryDao.getDailySummary(date);
-    }
-
-    public LiveData<DailySummary> getDailySummary(int year, int month, int day) {
-        return dailySummaryDao.getDailySummary(year, month, day);
+    public LiveData<DailySummary> getCurrentDailySummaryLive() {
+        return dailySummaryDao.getCurrentDailySummaryLive();
     }
 }
