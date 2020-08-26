@@ -22,7 +22,7 @@ public enum MeasurementKind {
 
     private final int id;
 
-    private MeasurementKind(int value) {
+    MeasurementKind(int value) {
         this.id = value;
     }
 

@@ -11,11 +11,11 @@ public class DateMeasurement {
 
     @TypeConverters({TimestampConverter.class})
     private Date date;
-    private int id;
+    private Integer id;
     @ColumnInfo(name = "kind_id")
     @TypeConverters(MeasurementKindTypeConverter.class)
     private MeasurementKind kind;
-    private double value;
+    private Double value;
 
     public Date getDate() {
         return date;
@@ -25,11 +25,11 @@ public class DateMeasurement {
         this.date = date;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -41,11 +41,11 @@ public class DateMeasurement {
         this.kind = kind;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 }
