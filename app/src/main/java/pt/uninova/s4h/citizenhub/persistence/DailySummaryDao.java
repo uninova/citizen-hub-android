@@ -10,13 +10,13 @@ import java.util.List;
 public interface DailySummaryDao {
 
     @Query("SELECT * FROM daily_summary WHERE date = strftime('%s', date('now'))")
-    DailySummary getCurrentDailySummary();
+    DailySummary get();
 
     @Query("SELECT * FROM daily_summary WHERE date = strftime('%s', date('now'))")
-    LiveData<DailySummary> getCurrentDailySummaryLive();
+    LiveData<DailySummary> getLive();
 
     @Query("SELECT * FROM daily_summary WHERE CAST(strftime('%Y', date, 'unixepoch') AS INT) = :year AND CAST(strftime('%m', date, 'unixepoch') AS INT) = :month AND CAST(strftime('%d', date, 'unixepoch') AS INT) = :day")
-    DailySummary getDailySummary(Integer year, Integer month, Integer day);
+    DailySummary getSpecific(Integer year, Integer month, Integer day);
 
     @Query("SELECT CAST(strftime('%d', date, 'unixepoch') AS INT) AS day FROM daily_summary WHERE CAST(strftime('%Y', date, 'unixepoch') AS INT) = :year AND CAST(strftime('%m', date, 'unixepoch') AS INT) = :month")
     List<Integer> getDaysWithSummaryInYearMonth(Integer year, Integer month);
