@@ -38,15 +38,15 @@ public class DeviceRepository {
         });
     }
 
-    public LiveData<List<Device>> getAllDevicesLive() {
+    public LiveData<List<Device>> getAll() {
         return deviceDAO.getAll();
     }
 
-    public Device getDevice(String address) {
+    public Device get(String address) {
         return deviceDAO.get(address);
     }
 
-    public void obtainDevice(String address, Observer<Device> observer) {
+    public void obtain(String address, Observer<Device> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDAO.get(address)));
     }
 }
