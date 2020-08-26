@@ -5,9 +5,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 2, exportSchema = false)
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Database(entities = {Device.class, Source.class, Measurement.class}, views = {AverageMeasurement.class, DailySummary.class, DateMeasurement.class}, version = 4, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
+    private static final int NUMBER_OF_THREADS = 4;
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private static volatile CitizenHubDatabase INSTANCE;
 
     public static CitizenHubDatabase getInstance(final Context context) {
@@ -20,6 +25,10 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
         }
 
         return INSTANCE;
+    }
+
+    public static ExecutorService executorService() {
+        return EXECUTOR_SERVICE;
     }
 
     public abstract DailySummaryDao dailySummaryDao();
