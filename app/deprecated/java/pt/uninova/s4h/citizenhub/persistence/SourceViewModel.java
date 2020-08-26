@@ -1,9 +1,11 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import pt.uninova.s4h.citizenhub.persistence.SourceRepository;
 
 import java.util.List;
 
@@ -14,26 +16,10 @@ public class SourceViewModel extends AndroidViewModel {
     public SourceViewModel(@NonNull Application application) {
         super(application);
         sourceRepository = new SourceRepository(application);
-        allSources = sourceRepository.getAllSources();
+        allSources = sourceRepository.getAllSourcesLive();
     }
 
-    public void insert(Source source) {
-        sourceRepository.insert(source);
-    }
-
-    public void update(Source source) {
-        sourceRepository.update(source);
-    }
-
-    public void delete(Source source) {
-        sourceRepository.delete(source);
-    }
-
-    public void deleteAllSources() {
-        sourceRepository.deleteAll();
-    }
-
-    public LiveData<List<Source>> getAllSources() {
+    public LiveData<List<Source>> getAllSourcesLive() {
         return allSources;
     }
 
