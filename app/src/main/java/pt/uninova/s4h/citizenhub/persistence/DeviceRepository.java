@@ -36,6 +36,10 @@ public class DeviceRepository {
         return deviceDAO.getDevices();
     }
 
+    public Device getDevice(String address){
+       return deviceDAO.getDevice(address);
+    }
+
     private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
         private DeviceDao deviceDAO;
 
