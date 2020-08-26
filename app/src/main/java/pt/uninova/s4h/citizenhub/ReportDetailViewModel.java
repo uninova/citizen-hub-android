@@ -24,6 +24,6 @@ public class ReportDetailViewModel extends AndroidViewModel {
     }
 
     public void setParameters(int year, int month, int day) {
-        dailySummaryRepository.obtainDailySummary(year, month, day, dailySummary::postValue);
+        dailySummaryRepository.obtain(year, month, day, dailySummary::postValue);
     }
 }

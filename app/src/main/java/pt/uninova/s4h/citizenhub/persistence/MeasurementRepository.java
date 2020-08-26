@@ -16,7 +16,7 @@ public class MeasurementRepository {
 
     public void add(Measurement measurement) {
         CitizenHubDatabase.executorService().execute(() -> {
-            measurementDao.addMeasurement(measurement);
+            measurementDao.insert(measurement);
         });
     }
 

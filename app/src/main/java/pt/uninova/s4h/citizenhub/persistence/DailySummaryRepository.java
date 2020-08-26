@@ -16,16 +16,16 @@ public class DailySummaryRepository {
         dailySummaryDao = citizenHubDatabase.dailySummaryDao();
     }
 
-    public LiveData<DailySummary> getCurrentDailySummaryLive() {
-        return dailySummaryDao.getLive();
+    public LiveData<DailySummary> getCurrentLive() {
+        return dailySummaryDao.getCurrentLive();
     }
 
-    public void obtainCurrentDailySummary(Observer<DailySummary> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(dailySummaryDao.get()));
+    public void obtainCurrent(Observer<DailySummary> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(dailySummaryDao.getCurrent()));
     }
 
-    public void obtainDailySummary(int year, int month, int day, Observer<DailySummary> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(dailySummaryDao.getSpecific(year, month, day)));
+    public void obtain(int year, int month, int day, Observer<DailySummary> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(dailySummaryDao.get(year, month, day)));
     }
 
     public void obtainDaysWithSummaryInYearMonth(int year, int month, Observer<List<Integer>> observer) {
