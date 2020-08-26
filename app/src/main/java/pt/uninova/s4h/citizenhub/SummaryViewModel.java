@@ -18,7 +18,7 @@ public class SummaryViewModel extends AndroidViewModel {
 
         dailySummary = new MediatorLiveData<>();
 
-        dailySummaryRepository.obtainCurrentDailySummary((dailySummary::postValue));
+        dailySummaryRepository.obtainCurrentDailySummary(dailySummary::postValue);
         dailySummary.addSource(dailySummaryRepository.getCurrentDailySummaryLive(), dailySummary::postValue);
     }
 
