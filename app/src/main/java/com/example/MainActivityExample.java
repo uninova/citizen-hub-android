@@ -54,7 +54,7 @@ public class MainActivityExample extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        deviceViewModel.getAllDevices().observe(this, new Observer<List<Device>>() {
+        deviceViewModel.getAllDevicesLive().observe(this, new Observer<List<Device>>() {
             @Override
             public void onChanged(@Nullable List<Device> devices) {
                 adapter.setDevices(devices);
