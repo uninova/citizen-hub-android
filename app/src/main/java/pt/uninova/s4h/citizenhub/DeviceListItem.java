@@ -6,8 +6,7 @@ public class DeviceListItem {
     private String mTextDescription;
     private String mTextNumber;
 
-    public DeviceListItem(int imageResource, String textTitle, String textDescription, String textNumber)
-    {
+    public DeviceListItem(int imageResource, String textTitle, String textDescription, String textNumber) {
         mImageResource = imageResource;
         mTextTitle = textTitle;
         mTextDescription = textDescription;
@@ -18,7 +17,7 @@ public class DeviceListItem {
         return mImageResource;
     }
 
-    public String getmTextTitle(){
+    public String getmTextTitle() {
         return mTextTitle;
     }
 
@@ -26,7 +25,7 @@ public class DeviceListItem {
         return mTextDescription;
     }
 
-    public String getmTextNumber(){
+    public String getmTextNumber() {
         return mTextNumber;
     }
 }

@@ -8,10 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
-import pt.uninova.s4h.citizenhub.R;
 
 import java.util.Objects;
+
+import pt.uninova.s4h.citizenhub.R;
 
 public class CitizenHubService extends Service {
 

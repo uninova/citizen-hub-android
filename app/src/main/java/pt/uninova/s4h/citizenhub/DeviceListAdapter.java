@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,14 +22,13 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @NonNull
     @Override
     public DeviceListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_device_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_device_item, parent, false);
         DeviceListViewHolder hol = new DeviceListViewHolder(v);
         return hol;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position) {
         DeviceListItem currentItem = devicesList.get(position);
         holder.textTitle.setText(currentItem.getmTextTitle());
         holder.textDescription.setText(currentItem.getmTextDescription());
@@ -41,8 +41,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         return devicesList.size();
     }
 
-    public static class DeviceListViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView textTitle;
         public TextView textDescription;
@@ -51,8 +50,8 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         public DeviceListViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image_device);
-            textTitle =itemView.findViewById(R.id.text_view_title);
-            textDescription =itemView.findViewById(R.id.text_view_description);
+            textTitle = itemView.findViewById(R.id.text_view_title);
+            textDescription = itemView.findViewById(R.id.text_view_description);
             textNumber = itemView.findViewById(R.id.text_device);
         }
     }

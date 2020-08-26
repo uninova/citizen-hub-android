@@ -4,12 +4,17 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import pt.uninova.util.Pair;
-import pt.uninova.util.Triple;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import pt.uninova.util.Pair;
+import pt.uninova.util.Triple;
 
 public class BluetoothConnection extends BluetoothGattCallback {
 
