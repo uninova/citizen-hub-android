@@ -12,7 +12,7 @@ public class MeasurementViewModel extends AndroidViewModel {
 
     final MeasurementRepository measurementRepository;
 
-    private final LiveData<List<Measurement>> allMeasurements;
+    private final List<Measurement> allMeasurements;
 
     public MeasurementViewModel(@NonNull Application application) {
         super(application);
@@ -24,7 +24,7 @@ public class MeasurementViewModel extends AndroidViewModel {
         measurementRepository.add(measurement);
     }
 
-    public LiveData<List<Measurement>> getAllMeasurements() {
+    public List<Measurement> getAllMeasurements() {
         return allMeasurements;
     }
 
