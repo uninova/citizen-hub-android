@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import java.util.List;
 
@@ -45,5 +46,9 @@ public class DeviceRepository {
 
     public Device getDevice(String address) {
         return deviceDAO.getDevice(address);
+    }
+
+    public void obtainDevice(String address, Observer<Device> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDAO.getDevice(address)));
     }
 }
