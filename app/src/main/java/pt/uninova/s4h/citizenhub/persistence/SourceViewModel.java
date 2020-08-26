@@ -17,23 +17,7 @@ public class SourceViewModel extends AndroidViewModel {
         allSources = sourceRepository.getAllSources();
     }
 
-    public void insert(Source source) {
-        sourceRepository.insert(source);
-    }
-
-    public void update(Source source) {
-        sourceRepository.update(source);
-    }
-
-    public void delete(Source source) {
-        sourceRepository.delete(source);
-    }
-
-    public void deleteAllSources() {
-        sourceRepository.deleteAll();
-    }
-
-    public LiveData<List<Source>> getAllSources() {
+    public LiveData<List<Source>> getAllSourcesLive() {
         return allSources;
     }
 
