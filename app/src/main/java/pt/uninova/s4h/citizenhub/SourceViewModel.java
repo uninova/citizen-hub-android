@@ -1,15 +1,13 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
-
 import pt.uninova.s4h.citizenhub.persistence.Source;
 import pt.uninova.s4h.citizenhub.persistence.SourceRepository;
+
+import java.util.List;
 
 public class SourceViewModel extends AndroidViewModel {
     final SourceRepository sourceRepository;
