@@ -2,6 +2,8 @@ package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
 import android.view.*;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -73,7 +75,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     public void insertItem(int position){
-        deviceList.add(position, new DeviceListItem(R.drawable.ic_about, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
+        deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
         adapter.notifyItemInserted(position);
     }
 
