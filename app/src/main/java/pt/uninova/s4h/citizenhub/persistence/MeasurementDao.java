@@ -14,10 +14,10 @@ public interface MeasurementDao {
     void addMeasurement(Measurement measurement);
 
     @Query("SELECT * FROM measurement")
-    List<Measurement> getMeasurements();
+    List<Measurement> getAll();
 
-    @Query("SELECT * FROM measurement WHERE kind_id = :characteristicType")
-    List<Measurement> getMeasurementsWithCharacteristic(int characteristicType);
+    @Query("SELECT * FROM measurement WHERE kind_id = :kind")
+    List<Measurement> getWithCharacteristic(MeasurementKind kind);
 
 
 }
