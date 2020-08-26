@@ -20,7 +20,7 @@ public class MeasurementRepository {
         });
     }
 
-    public List<Measurement> getAllMeasurements() {
+    public List<Measurement> getAll() {
         return measurementDao.getAll();
     }
 
