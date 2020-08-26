@@ -1,99 +1,52 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import java.util.List;
 
 public class DeviceRepository {
-    private DeviceDao deviceDAO;
-    private LiveData<List<Device>> allDevices;
+    private final DeviceDao deviceDao;
 
     public DeviceRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
-        deviceDAO = citizenHubDatabase.deviceDao();
-        allDevices = deviceDAO.getDevices();
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        deviceDao = citizenHubDatabase.deviceDao();
     }
 
-    public void insert(Device device) {
-        new InsertDeviceAsyncTask(deviceDAO).execute(device);
+    public void add(Device device) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            deviceDao.insert(device);
+        });
     }
 
     public void update(Device device) {
-        new UpdateDeviceAsyncTask(deviceDAO).execute(device);
+        CitizenHubDatabase.executorService().execute(() -> {
+            deviceDao.update(device);
+        });
     }
 
-    public void delete(Device device) {
-        new DeleteDeviceAsyncTask(deviceDAO).execute(device);
-
+    public void remove(Device device) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            deviceDao.delete(device);
+        });
     }
 
-    public void deleteAll() {
-        new DeleteAllDevicesAsyncTask(deviceDAO).execute();
-
+    public void removeAll() {
+        CitizenHubDatabase.executorService().execute(() -> {
+            deviceDao.deleteAll();
+        });
     }
 
-    public LiveData<List<Device>> getAllDevices() {
-        return allDevices;
+    public LiveData<List<Device>> getAll() {
+        return deviceDao.getAll();
     }
 
-    private static class InsertDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDAO;
-
-        private InsertDeviceAsyncTask(DeviceDao deviceDAO) {
-            this.deviceDAO = deviceDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Device... devices) {
-            deviceDAO.addDevice(devices[0]);
-            return null;
-        }
+    public Device get(String address) {
+        return deviceDao.get(address);
     }
 
-    private static class UpdateDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDAO;
-
-        private UpdateDeviceAsyncTask(DeviceDao deviceDAO) {
-            this.deviceDAO = deviceDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Device... devices) {
-            deviceDAO.updateDevice(devices[0]);
-            return null;
-        }
+    public void obtain(String address, Observer<Device> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.get(address)));
     }
-
-    private static class DeleteDeviceAsyncTask extends AsyncTask<Device, Void, Void> {
-        private DeviceDao deviceDAO;
-
-        private DeleteDeviceAsyncTask(DeviceDao deviceDAO) {
-            this.deviceDAO = deviceDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Device... devices) {
-            deviceDAO.deleteDevice(devices[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAllDevicesAsyncTask extends AsyncTask<Void, Void, Void> {
-        private DeviceDao deviceDAO;
-
-        private DeleteAllDevicesAsyncTask(DeviceDao deviceDAO) {
-            this.deviceDAO = deviceDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            deviceDAO.deleteAllDevices();
-            return null;
-        }
-
-
-    }
-
 }

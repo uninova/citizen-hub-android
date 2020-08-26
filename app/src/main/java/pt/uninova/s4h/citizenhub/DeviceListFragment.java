@@ -28,7 +28,7 @@ public class DeviceListFragment extends Fragment {
 
         ArrayList<DeviceListItem> devicesList = new ArrayList<>();
         int deviceCounter = 1;
-        for(int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch1", "It's good.", String.valueOf(deviceCounter++)));
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2_disabled, "Watch2", "It's bad.", String.valueOf(deviceCounter++)));
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch3", "It's meh.", String.valueOf(deviceCounter++)));

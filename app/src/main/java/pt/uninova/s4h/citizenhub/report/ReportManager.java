@@ -35,7 +35,7 @@ public class ReportManager implements AutoCloseable {
         final PdfWriter pdfWriter = new PdfWriter(basePath);
 
         for (Report rep : reports) {
-            while (!pdfWriter.writeAll(res,logo)) {
+            while (!pdfWriter.writeAll(res, logo)) {
             }
         }
         reports.clear();
