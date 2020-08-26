@@ -47,23 +47,24 @@ public class MainActivity extends AppCompatActivity {
         //
         // SAMPLING CODE
         //
-        Handler handler = new Handler();
-        int delay = 500;
+        Handler handler = new Handler(getMainLooper());
+        int delay = 10000;
         final Random random = new Random();
-
+        final MeasurementRepository repo = new MeasurementRepository(getApplication());
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Measurement measurement = new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) random.nextInt(200));
+                MeasurementKind kind = MeasurementKind.find(random.nextInt(7));
 
-                MeasurementRepository repo = new MeasurementRepository(getApplication());
-                repo.insert(measurement);
+                Measurement measurement = new Measurement(new Date(), kind, (double) random.nextInt(200));
+                System.out.println(measurement.getKind().toString() + ":" + measurement.getTimestamp().toString() + ":" + measurement.getValue());
 
-                handler.postDelayed(this, delay);
-                System.out.println("DO SOMETHING!");
+                repo.add(measurement);
+
+                handler.postDelayed(this, random.nextInt(delay));
             }
-        }, delay);
+        }, random.nextInt(delay));
         //
         // END SAMPLING CODE
         //
