@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+
 import pt.uninova.s4h.citizenhub.persistence.DailySummary;
 import pt.uninova.s4h.citizenhub.persistence.DailySummaryRepository;
 

@@ -5,13 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceAdapterExample extends RecyclerView.Adapter<DeviceAdapterExample.DeviceHolder> {
     private List<Device> devices = new ArrayList<>();

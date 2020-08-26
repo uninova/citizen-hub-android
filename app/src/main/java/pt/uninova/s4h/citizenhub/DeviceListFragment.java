@@ -1,7 +1,13 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -28,7 +34,7 @@ public class DeviceListFragment extends Fragment {
 
         ArrayList<DeviceListItem> devicesList = new ArrayList<>();
         int deviceCounter = 1;
-        for(int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch1", "It's good.", String.valueOf(deviceCounter++)));
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2_disabled, "Watch2", "It's bad.", String.valueOf(deviceCounter++)));
             devicesList.add(new DeviceListItem(R.drawable.ic_device_miband2, "Watch3", "It's meh.", String.valueOf(deviceCounter++)));
