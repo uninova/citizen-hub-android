@@ -10,17 +10,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import pt.uninova.s4h.citizenhub.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.SharedDeviceViewModel;
 
 import java.util.List;
 
 
 public class MainActivityExample extends AppCompatActivity {
     public static final int ADD_DEVICE_REQUEST = 37;
-    private SharedDeviceViewModel sharedDeviceViewModel;
+    private DeviceViewModel sharedDeviceViewModel;
     private CitizenHubDatabase db;
 
     @Override
@@ -53,8 +53,8 @@ public class MainActivityExample extends AppCompatActivity {
         DeviceAdapter adapter = new DeviceAdapter(R.layout.example_device_item);
         recyclerView.setAdapter(adapter);
 
-        sharedDeviceViewModel = new ViewModelProvider(this).get(SharedDeviceViewModel.class);
-        sharedDeviceViewModel.getAllDevicesLive().observe(this, new Observer<List<Device>>() {
+        sharedDeviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        sharedDeviceViewModel.getDevices().observe(this, new Observer<List<Device>>() {
             @Override
             public void onChanged(@Nullable List<Device> devices) {
                 adapter.setDevices(devices);
