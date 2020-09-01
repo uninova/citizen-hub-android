@@ -8,17 +8,19 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class MeasurementViewModel extends AndroidViewModel {
-    private MeasurementRepository repository;
-    private LiveData<List<Measurement>> allMeasurements;
+
+    final MeasurementRepository measurementRepository;
+
+    private final LiveData<List<Measurement>> allMeasurements;
 
     public MeasurementViewModel(@NonNull Application application) {
         super(application);
-        repository = new MeasurementRepository(application);
-        allMeasurements = repository.getAllMeasurementsLive();
+        measurementRepository = new MeasurementRepository(application);
+        allMeasurements = measurementRepository.getAllMeasurementsLive();
     }
 
     public void insert(Measurement measurement) {
-        repository.add(measurement);
+        measurementRepository.add(measurement);
     }
 
     public LiveData<List<Measurement>> getAllMeasurements() {

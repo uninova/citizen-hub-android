@@ -8,12 +8,10 @@ import java.util.List;
 
 public class SourceRepository {
     private SourceDao sourceDAO;
-    private LiveData<List<Source>> allSources;
 
     public SourceRepository(Application application) {
-        CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
         sourceDAO = citizenHubDatabase.sourceDao();
-        allSources = sourceDAO.getSources();
     }
 
     public void insert(Source source) {
@@ -35,7 +33,8 @@ public class SourceRepository {
     }
 
     public LiveData<List<Source>> getAllSources() {
-        return allSources;
+        return sourceDAO.getSources();
+
     }
 
     private static class InsertSourceAsyncTask extends AsyncTask<Source, Void, Void> {

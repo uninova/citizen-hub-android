@@ -13,5 +13,4 @@ public class MeasurementKindTypeConverter {
     public static int toInt(MeasurementKind measurementKind) {
         return measurementKind.getId();
     }
-
 }

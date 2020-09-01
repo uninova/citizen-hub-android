@@ -35,8 +35,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position) {
         DeviceListItem currentItem = devicesList.get(position);
         holder.textTitle.setText(currentItem.getmTextTitle());
         holder.textDescription.setText(currentItem.getmTextDescription());
@@ -49,8 +48,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         return devicesList.size();
     }
 
-    public static class DeviceListViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView textTitle;
         public TextView textDescription;

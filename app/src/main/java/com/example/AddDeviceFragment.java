@@ -11,11 +11,10 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import pt.uninova.s4h.citizenhub.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceDao;
-import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
 
 public class AddDeviceFragment extends Fragment {
     public static final String EXTRA_TITLE =
@@ -24,7 +23,7 @@ public class AddDeviceFragment extends Fragment {
             "pt.uninova.s4h.citizenhub.EXTRA_DESCRIPTION";
     public static final String EXTRA_PRIORITY =
             "pt.uninova.s4h.citizenhub.EXTRA_PRIORITY";
-    DeviceViewModel deviceViewModel;
+    private DeviceViewModel sharedDeviceViewModel;
     private EditText editTextTitle;
     private EditText editTextDescription;
     private NumberPicker numberPickerPriority;
@@ -43,7 +42,6 @@ public class AddDeviceFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.example_activity_add_device, container, false);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -73,9 +71,9 @@ public class AddDeviceFragment extends Fragment {
             Toast.makeText(getActivity(), "Please insert a name and address", Toast.LENGTH_SHORT).show();
             return;
         }
-        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        Device device = new Device(title, description, String.valueOf(priority), "state");
-        deviceViewModel.insert(device);
+        sharedDeviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        // Device device = new Device(title, description, String.valueOf(priority), "state");
+        // sharedDeviceViewModel.setDevice(device);
 
     }
 
