@@ -21,14 +21,20 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
+
+    // Appcompat
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+
+    // Constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
@@ -41,16 +47,26 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-ui:$navigation_version"
 
-    // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // Recyclerview
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    // Material Calendar View
-    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    // D4L SDK
+    implementation("de.gesundheitscloud.hc-sdk-android:sdk-android:$d4lsdk_version") {
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'securestore-jvm'
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'crypto-jvm'
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'auth-jvm'
+        exclude group: 'de.gesundheitscloud.sdk-util-multiplatform', module: 'util-jvm'
+        exclude group: 'org.threeten', module: 'threetenbp'
+    }
 
+    // Material Calendar View
+    implementation "com.github.prolificinteractive:material-calendarview:$materialcalendarview_version"
+
+//    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2'
 
 //    implementation 'androidx.appcompat:appcompat:1.1.0'
 //    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
