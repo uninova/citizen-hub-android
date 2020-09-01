@@ -38,7 +38,7 @@ public class DeviceListFragment extends Fragment {
         return result;
     }
 
-    public void createList(){
+    private void createList(){
         deviceList = new ArrayList<>(); //TODO remove this, testing
         for(int i=0; i<10; i++) {
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch1", "It's good.", R.drawable.ic_settings));
@@ -47,7 +47,7 @@ public class DeviceListFragment extends Fragment {
         }
     }
 
-    public void buildRecycleView(View result){
+    private void buildRecycleView(View result){
         recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -62,9 +62,9 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                insertItem(position); //TODO remove this, testing
+                //insertItem(position); //TODO remove this, testing
                 //removeItem(position); //TODO remove this, testing
-                //onoffItem(position);
+                onoffItem(position);
             }
 
             @Override
