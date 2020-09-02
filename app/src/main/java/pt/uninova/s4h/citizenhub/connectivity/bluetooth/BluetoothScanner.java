@@ -1,14 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 
 public class BluetoothScanner extends ScanCallback {
 
@@ -29,6 +33,7 @@ public class BluetoothScanner extends ScanCallback {
         final String name = device.getName();
 
         if (!devices.containsKey(address)) {
+            Log.d("bluescanner", "AddDevice");
             devices.put(device.getAddress(), device);
             listener.onDeviceFound(address, name);
         }
@@ -47,6 +52,8 @@ public class BluetoothScanner extends ScanCallback {
     }
 
     public boolean isScanning() {
+        Log.d("bluescanner", "IsScanning");
+
         return listener != null;
     }
 
@@ -66,12 +73,15 @@ public class BluetoothScanner extends ScanCallback {
     @Override
     public synchronized void onScanResult(int callbackType, ScanResult result) {
         addDevice(result.getDevice());
+
     }
 
     public synchronized void start(BluetoothScannerListener listener) {
         if (!isScanning()) {
             this.listener = listener;
             scanner.startScan(this);
+            Log.d("bluescanner", "StartScan");
+
         }
     }
 
