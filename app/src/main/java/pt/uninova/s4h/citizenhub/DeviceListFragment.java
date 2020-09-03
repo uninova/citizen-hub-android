@@ -1,9 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
-import android.bluetooth.le.ScanResult;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 
 import androidx.annotation.NonNull;
@@ -16,10 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceListFragment extends Fragment {
@@ -58,12 +58,15 @@ public class DeviceListFragment extends Fragment {
     private void createList(){
         deviceList = new ArrayList<>(); //TODO remove this, testing
         DeviceRepository repo = new DeviceRepository(app);
+        DeviceViewModel deviceViewModel = new DeviceViewModel(app);
+        Device device1 = new Device("HexoTest", "39:42:45:69", "Health", "on");
+        Device device2 = new Device("ChineseHexo", "39:42:45:69", "Unknown", "off");
+        Device device3 = new Device("KBZ", "39:42:45:69", "Health", "on");
 
-//        if(repo.getAllDevices().getValue() !=null) {
-//            for (Device d : (repo.getAllDevices().getValue())) {
-//                Log.d("Devices", d.getName() + " " + d.getAddress() + " " + d.getState() + " " + d.getType());
-//            }
-//        }
+        repo.insert(device1);
+        repo.insert(device2);
+        repo.insert(device3);
+
         for(int i=0; i<10; i++) {
 
 
@@ -101,11 +104,25 @@ public class DeviceListFragment extends Fragment {
     }
 
     public void insertItem(int position){
+        DeviceRepository repo = new DeviceRepository(app);
+        Device deviceTest = new Device();
+        repo.insert(deviceTest);
         deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
         adapter.notifyItemInserted(position);
     }
 
+    public void removeDevice(Device device){
+        DeviceRepository repo = new DeviceRepository(app);
+        repo.delete(device);
+    }
+
+    public void insertDevice(Device device){
+        DeviceRepository repo = new DeviceRepository(app);
+        repo.insert(device);
+    }
+
     public void removeItem(int position){
+
         deviceList.remove(position);
         adapter.notifyItemRemoved(position);
     }
@@ -142,17 +159,17 @@ public class DeviceListFragment extends Fragment {
 //            Intent intent = new Intent(this, CitizenHubService.class);
 //
            // getActivity().startService(new Intent(getActivity(),CitizenHubService.class));
-           CitizenHubServiceBound activity = (CitizenHubServiceBound) getActivity();
-            activity.getService().StartScan();
-            DeviceRepository repo = new DeviceRepository(app);
+            getService().StartScan();
 
-            Device device1 = new Device("HexoTest", "39:42:45:69", "Health", "on");
-            Device device2 = new Device("ChineseHexo", "39:42:45:69", "Unknown", "off");
-            Device device3 = new Device("KBZ", "39:42:45:69", "Health", "on");
-            repo.insert(device1);
-            repo.insert(device2);
-            repo.insert(device3);
         }
         return super.onOptionsItemSelected(item);
     }
+
+   public CitizenHubService getService (){
+       CitizenHubServiceBound activity = (CitizenHubServiceBound) getActivity();
+       assert activity != null;
+       return activity.getService();
+
+   }
+
 }
