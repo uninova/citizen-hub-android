@@ -26,7 +26,6 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -97,9 +96,9 @@ public class DeviceListFragment extends Fragment {
         Device device2 = new Device("ChineseHexo", "39:42:45:69", "Unknown", "off");
         Device device3 = new Device("KBZ", "39:42:45:69", "Health", "on");
 
-        repo.insert(device1);
-        repo.insert(device2);
-        repo.insert(device3);
+        repo.add(device1);
+        repo.add(device2);
+        repo.add(device3);
 
         for(int i=0; i<10; i++) {
 
@@ -140,19 +139,19 @@ public class DeviceListFragment extends Fragment {
     public void insertItem(int position){
         DeviceRepository repo = new DeviceRepository(app);
         Device deviceTest = new Device();
-        repo.insert(deviceTest);
+        repo.add(deviceTest);
         deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
         adapter.notifyItemInserted(position);
     }
 
     public void removeDevice(Device device){
         DeviceRepository repo = new DeviceRepository(app);
-        repo.delete(device);
+        repo.remove(device);
     }
 
     public void insertDevice(Device device){
         DeviceRepository repo = new DeviceRepository(app);
-        repo.insert(device);
+        repo.add(device);
     }
 
     public void removeItem(int position){

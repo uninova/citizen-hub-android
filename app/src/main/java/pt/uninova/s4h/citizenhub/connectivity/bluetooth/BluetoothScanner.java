@@ -12,9 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pt.uninova.s4h.citizenhub.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
 
 public class BluetoothScanner extends ScanCallback {
 
@@ -32,7 +31,7 @@ public class BluetoothScanner extends ScanCallback {
 
     private void addDevice2(Device device){
         DeviceViewModel deviceViewModel = new DeviceViewModel(app);
-        deviceViewModel.insert(device);
+        deviceViewModel.setDevice(device);
     }
 
     private void addDevice(BluetoothDevice device) {
