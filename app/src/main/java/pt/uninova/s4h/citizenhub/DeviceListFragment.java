@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.*;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -22,12 +24,20 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+
 public class DeviceListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
+    private Application app;
 
     private DeviceViewModel model;
 
@@ -35,6 +45,13 @@ public class DeviceListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_device_list, menu);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (Application) requireActivity().getApplication();
+
     }
 
     @Override
@@ -73,7 +90,19 @@ public class DeviceListFragment extends Fragment {
 
     private void createList(){
         deviceList = new ArrayList<>(); //TODO remove this, testing
+        DeviceRepository repo = new DeviceRepository(app);
+        DeviceViewModel deviceViewModel = new DeviceViewModel(app);
+        Device device1 = new Device("HexoTest", "39:42:45:69", "Health", "on");
+        Device device2 = new Device("ChineseHexo", "39:42:45:69", "Unknown", "off");
+        Device device3 = new Device("KBZ", "39:42:45:69", "Health", "on");
+
+        repo.insert(device1);
+        repo.insert(device2);
+        repo.insert(device3);
+
         for(int i=0; i<10; i++) {
+
+
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch1", "It's good.", R.drawable.ic_settings));
             deviceList.add(new DeviceListItem(R.drawable.ic_watch_off, "Watch2", "It's bad.", R.drawable.ic_settings_off));
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch3", "It's meh.", R.drawable.ic_settings));
@@ -108,11 +137,25 @@ public class DeviceListFragment extends Fragment {
     }
 
     public void insertItem(int position){
+        DeviceRepository repo = new DeviceRepository(app);
+        Device deviceTest = new Device();
+        repo.insert(deviceTest);
         deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
         adapter.notifyItemInserted(position);
     }
 
+    public void removeDevice(Device device){
+        DeviceRepository repo = new DeviceRepository(app);
+        repo.delete(device);
+    }
+
+    public void insertDevice(Device device){
+        DeviceRepository repo = new DeviceRepository(app);
+        repo.insert(device);
+    }
+
     public void removeItem(int position){
+
         deviceList.remove(position);
         adapter.notifyItemRemoved(position);
     }
@@ -146,8 +189,20 @@ public class DeviceListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
             Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
-        }
+//            Intent intent = new Intent(this, CitizenHubService.class);
+//
+           // getActivity().startService(new Intent(getActivity(),CitizenHubService.class));
+            getService().StartScan();
 
+        }
         return super.onOptionsItemSelected(item);
     }
+
+   public CitizenHubService getService (){
+       CitizenHubServiceBound activity = (CitizenHubServiceBound) getActivity();
+       assert activity != null;
+       return activity.getService();
+
+   }
+
 }
