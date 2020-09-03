@@ -46,7 +46,6 @@ public class DeviceListFragment extends Fragment {
         //String name, String address, String type, String state
         Device device = new Device("a","a","a","a");
         //System.out.println(device.getAddress());
-
         repo.add(device);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
