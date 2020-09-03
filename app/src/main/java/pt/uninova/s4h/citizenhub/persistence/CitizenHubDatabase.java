@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Device.class, Measurement.class}, views = {DailySummary.class, DateMeasurement.class}, version = 5, exportSchema = false)
+@Database(entities = {Device.class, Measurement.class}, views = {DailySummary.class, DateMeasurement.class}, version = 6, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;

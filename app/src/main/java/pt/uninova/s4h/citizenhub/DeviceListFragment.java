@@ -5,6 +5,7 @@ import android.view.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -12,6 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import pt.uninova.s4h.citizenhub.persistence.DailySummary;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
 public class DeviceListFragment extends Fragment {
 
@@ -19,6 +28,8 @@ public class DeviceListFragment extends Fragment {
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
+
+    private DeviceViewModel model;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -30,13 +41,36 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
 
-        createList();
-        buildRecycleView(result);
+        final DeviceRepository repo = new DeviceRepository(this.getActivity().getApplication());
+
+        //String name, String address, String type, String state
+        Device device = new Device("a","a","a","a");
+        //System.out.println(device.getAddress());
+
+        repo.add(device);
+
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate); //when is it?
+
+        //createList();
+        //buildRecycleView(result);
 
         setHasOptionsMenu(true);
 
         return result;
     }
+
+    private void onDeviceUpdate(List<Device> devices) {
+        deviceList = new ArrayList<>();
+        //deviceList.addAll(devices);
+        for(Device device : devices) {
+            System.out.println(device.getName());
+        }
+        //caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, dailySummary.getSumCalories()));
+        //buildRecycleView(result);
+    }
+
 
     private void createList(){
         deviceList = new ArrayList<>(); //TODO remove this, testing
