@@ -76,13 +76,13 @@ public class CitizenHubService extends Service {
         return START_STICKY;
     }
 
-    public void StartScan(){
-        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager,getApplication());
+    public void StartScan() {
+        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager, getApplication());
         bs.start(listener);
     }
 
 
-    public void SamplingCode(){
+    public void SamplingCode() {
         Handler handler = new Handler(getMainLooper());
         int delay = 10000;
         final Random random = new Random();
@@ -93,7 +93,9 @@ public class CitizenHubService extends Service {
             public void run() {
                 MeasurementKind kind = MeasurementKind.find(random.nextInt(7));
 
-                Measurement measurement = new Measurement(new Date(), kind, (double) random.nextInt(200));
+                Date date = new Date();
+
+                Measurement measurement = new Measurement(date, kind, (double) random.nextInt(200));
                 System.out.println(measurement.getKind().toString() + ":" + measurement.getTimestamp().toString() + ":" + measurement.getValue());
 
                 repo.add(measurement);

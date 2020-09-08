@@ -3,7 +3,6 @@ package pt.uninova.s4h.citizenhub;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.*;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,22 +12,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import pt.uninova.s4h.citizenhub.persistence.DailySummary;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeviceListFragment extends Fragment {
 
