@@ -5,36 +5,37 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ReportFragment">
+        tools:context=".ReportMasterFragment">
 
     <TextView
-        android:id="@+id/textView_selectday"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="108dp"
-        android:fontFamily="@font/roboto_slab"
-        android:gravity="center"
-        android:text="Select a Day"
-        android:textAlignment="center"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/textView_selectday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="108dp"
+            android:fontFamily="@font/roboto_slab"
+            android:gravity="center"
+            android:text="Select a Day"
+            android:textAlignment="center"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="516dp"
-        android:layout_margin="10dp"
-        android:layout_marginTop="244dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_selectday"
-        app:layout_constraintVertical_bias="0.267" />
+            android:id="@+id/fragment_report_calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="516dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="244dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_selectday"
+            app:layout_constraintVertical_bias="0.267"
+            app:mcv_selectionMode="none"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
