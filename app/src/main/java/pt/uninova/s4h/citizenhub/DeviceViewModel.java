@@ -10,15 +10,15 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import java.util.List;
 
 public class DeviceViewModel extends AndroidViewModel {
-    private MutableLiveData<Device> device = new MutableLiveData<Device>();
+    private MutableLiveData<Device> device;
     private LiveData<List<Device>> deviceList;
+    final private DeviceRepository deviceRepository;
 
     public DeviceViewModel(Application application) {
         super(application);
-        final DeviceRepository deviceRepository = new DeviceRepository(application);
+        deviceRepository = new DeviceRepository(application);
         device = new MutableLiveData<>();
         deviceList = deviceRepository.getAll();
-
     }
 
     public LiveData<List<Device>> getDevices() {
@@ -31,5 +31,9 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void setDevice(Device device) {
         this.device.postValue(device);
+    }
+
+    public void apply(){
+        deviceRepository.add(device.getValue());
     }
 }

@@ -1,11 +1,13 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -15,20 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.persistence.DailySummary;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceListFragment extends Fragment {
 
@@ -37,6 +28,7 @@ public class DeviceListFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
     private Application app;
+    private View resultView;
 
     private DeviceViewModel model;
 
@@ -51,62 +43,45 @@ public class DeviceListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
 
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
+                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH},
+                1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
-
-        final DeviceRepository repo = new DeviceRepository(this.getActivity().getApplication());
-
-        //String name, String address, String type, String state
-        Device device = new Device("a","a","a","a");
-        Device device2 = new Device("b","b","b","b");
-        //System.out.println(device.getAddress());
-        repo.add(device);repo.add(device2);
+        resultView = result;
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
 
-        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate); //when is it?
-
-        //createList();
-        //buildRecycleView(result);
+        cleanList();
+        buildRecycleView(result);
 
         setHasOptionsMenu(true);
 
         return result;
     }
 
-    private void onDeviceUpdate(List<Device> devices) {
-        deviceList = new ArrayList<>();
-        //deviceList.addAll(devices);
-        for(Device device : devices) {
-            System.out.println(device.getName());
-        }
-        //caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, dailySummary.getSumCalories()));
-        //buildRecycleView(result);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
     }
 
-
-    private void createList(){
-        deviceList = new ArrayList<>(); //TODO remove this, testing
-        DeviceRepository repo = new DeviceRepository(app);
-        DeviceViewModel deviceViewModel = new DeviceViewModel(app);
-        Device device1 = new Device("HexoTest", "39:42:45:69", "Health", "on");
-        Device device2 = new Device("ChineseHexo", "39:42:45:69", "Unknown", "off");
-        Device device3 = new Device("KBZ", "39:42:45:69", "Health", "on");
-
-        repo.add(device1);
-        repo.add(device2);
-        repo.add(device3);
-
-        for(int i=0; i<10; i++) {
-
-
-            deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch1", "It's good.", R.drawable.ic_settings));
-            deviceList.add(new DeviceListItem(R.drawable.ic_watch_off, "Watch2", "It's bad.", R.drawable.ic_settings_off));
-            deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch3", "It's meh.", R.drawable.ic_settings));
+    private void onDeviceUpdate(List<Device> devices) {
+        cleanList();
+        for(Device device : devices) {
+            deviceList.add(new DeviceListItem(R.drawable.ic_watch, device, R.drawable.ic_settings));
         }
+        buildRecycleView(resultView);
+    }
+
+    private void cleanList(){
+        deviceList = new ArrayList<>();
     }
 
     private void buildRecycleView(View result){
@@ -124,9 +99,9 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //insertItem(position); //TODO remove this, testing
-                //removeItem(position); //TODO remove this, testing
-                onoffItem(position);
+                //insertItem(position);
+                //removeItem(position);
+                //onoffItem(position);
             }
 
             @Override
@@ -136,31 +111,16 @@ public class DeviceListFragment extends Fragment {
         });
     }
 
-    public void insertItem(int position){
-        DeviceRepository repo = new DeviceRepository(app);
-        Device deviceTest = new Device();
-        repo.add(deviceTest);
-        deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, "This is a new watch", "Hello World", R.drawable.ic_settings)); //TODO change this, testing
+    public void insertItem(int position){ //this is for the recyclerview testing
+        deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, new Device(), R.drawable.ic_settings));
         adapter.notifyItemInserted(position);
     }
-
-    public void removeDevice(Device device){
-        DeviceRepository repo = new DeviceRepository(app);
-        repo.remove(device);
-    }
-
-    public void insertDevice(Device device){
-        DeviceRepository repo = new DeviceRepository(app);
-        repo.add(device);
-    }
-
-    public void removeItem(int position){
-
+    public void removeItem(int position){ //this is for the recyclerview testing
         deviceList.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
-    public void onoffItem(int position){ //TODO this is for testing
+    public void onoffItem(int position){ //this is for the recyclerview testing
         if (deviceList.get(position).getmImageResource() == R.drawable.ic_watch) {
             deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
             deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
@@ -172,16 +132,16 @@ public class DeviceListFragment extends Fragment {
         adapter.notifyItemChanged(position);
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0 /*ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT*/) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //this inactive
             int position = viewHolder.getAdapterPosition();
-            removeItem(position);
+            //removeItem(position);
         }
     };
 
@@ -189,20 +149,10 @@ public class DeviceListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
             Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
-//            Intent intent = new Intent(this, CitizenHubService.class);
-//
-           // getActivity().startService(new Intent(getActivity(),CitizenHubService.class));
-            getService().StartScan();
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-   public CitizenHubService getService (){
-       CitizenHubServiceBound activity = (CitizenHubServiceBound) getActivity();
-       assert activity != null;
-       return activity.getService();
 
-   }
 
 }

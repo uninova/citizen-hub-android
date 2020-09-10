@@ -22,10 +22,9 @@ public class BluetoothScanner extends ScanCallback {
     private Application app;
     private BluetoothScannerListener listener;
 
-    public BluetoothScanner(BluetoothManager manager, Application application) {
+    public BluetoothScanner(BluetoothManager manager) {
         devices = new HashMap<>();
         scanner = manager.getAdapter().getBluetoothLeScanner();
-        this.app=application;
         listener = null;
     }
 
@@ -39,7 +38,6 @@ public class BluetoothScanner extends ScanCallback {
         final String name = device.getName();
 
         if (!devices.containsKey(address)) {
-            Log.d("bluescanner", "AddDevice");
             devices.put(device.getAddress(), device);
             listener.onDeviceFound(address, name);
         }
@@ -66,8 +64,10 @@ public class BluetoothScanner extends ScanCallback {
     @Override
     public synchronized void onBatchScanResults(List<ScanResult> results) {
         for (ScanResult i : results) {
+            //System.out.println("device found: " + i.getDevice().getAddress());
             addDevice(i.getDevice());
         }
+
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BluetoothScanner extends ScanCallback {
     @Override
     public synchronized void onScanResult(int callbackType, ScanResult result) {
         addDevice(result.getDevice());
-
+        //System.out.println("device found: " + result.getDevice().getAddress());
     }
 
     public synchronized void start(BluetoothScannerListener listener) {
@@ -87,6 +87,7 @@ public class BluetoothScanner extends ScanCallback {
             this.listener = listener;
             scanner.startScan(this);
             Log.d("bluescanner", "StartScan");
+            System.out.println("bluescan");
 
         }
     }

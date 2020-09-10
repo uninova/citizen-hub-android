@@ -1,16 +1,18 @@
 package pt.uninova.s4h.citizenhub;
 
+import pt.uninova.s4h.citizenhub.persistence.Device;
+
 public class DeviceListItem {
     private int mImageResource;
     private String mTextTitle;
     private String mTextDescription;
     private int mImageSettings;
+    private Device device;
 
-    public DeviceListItem(int imageResource, String textTitle, String textDescription, int imageSettings)
+    public DeviceListItem(int imageResource, Device device, int imageSettings)
     {
         mImageResource = imageResource;
-        mTextTitle = textTitle;
-        mTextDescription = textDescription;
+        this.device = device;
         mImageSettings = imageSettings;
     }
 
@@ -35,10 +37,12 @@ public class DeviceListItem {
     }
 
     public String getmTextTitle(){
-        return mTextTitle;
+        return device.getName();
     }
 
+    public Device getDevice() {return device; }
+
     public String getmTextDescription() {
-        return mTextDescription;
+        return device.getAddress();
     }
 }

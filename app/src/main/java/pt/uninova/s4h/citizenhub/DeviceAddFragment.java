@@ -9,9 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
@@ -19,14 +23,19 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 public class DeviceAddFragment extends Fragment {
 
     private Button addDevice;
+    private TextView infoDevice;
     private Application app;
+    private DeviceViewModel model;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_add, container, false);
 
         addDevice = result.findViewById(R.id.button_add_device);
+        infoDevice = result.findViewById(R.id.text_add_fragment);
 
         addDevice.setOnClickListener(view -> {
+            model.apply();
             Navigation.findNavController(getView()).navigate(DeviceAddFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
         });
 
@@ -39,4 +48,9 @@ public class DeviceAddFragment extends Fragment {
         app = (Application) requireActivity().getApplication();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+    }
 }

@@ -77,7 +77,7 @@ public class CitizenHubService extends Service {
     }
 
     public void StartScan(){
-        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager,getApplication());
+        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager);
         bs.start(listener);
     }
 
