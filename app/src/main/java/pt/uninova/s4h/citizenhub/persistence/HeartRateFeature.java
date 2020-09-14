@@ -1,8 +1,10 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.persistence;
 
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothFeature;
+import pt.uninova.s4h.citizenhub.service.DeviceManager;
 
 public class HeartRateFeature extends BluetoothFeature {
     private static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
