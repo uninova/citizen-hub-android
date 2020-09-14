@@ -1,6 +1,8 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.persistence;
 
 import java.util.UUID;
+
+import pt.uninova.Feature;
 
 public class Features implements Feature {
 
