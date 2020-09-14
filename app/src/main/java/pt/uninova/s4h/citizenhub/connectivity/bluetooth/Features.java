@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.UUID;
 
