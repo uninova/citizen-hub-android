@@ -98,13 +98,13 @@ public class MeasurementProvider extends ContentProvider {
         String devicename = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
         if (devicename == null) {
-            throw new IllegalArgumentException("Device requires a name");
+            throw new IllegalArgumentException("Agent requires a name");
         }
 
         String deviceaddress = values.getAsString(MeasureEntry.COLUMN_TIMESTAMP);
 
         if (deviceaddress == null) {
-            throw new IllegalArgumentException("Device requires an adress");
+            throw new IllegalArgumentException("Agent requires an adress");
         }
 
         SQLiteDatabase db = Home.measurementsDbHelper.getWritableDatabase();
