@@ -13,7 +13,7 @@
 
     <fragment
             android:id="@+id/report_fragment"
-            android:name="pt.uninova.s4h.citizenhub.ReportFragment"
+            android:name="pt.uninova.s4h.citizenhub.ReportMasterFragment"
             android:label="@string/fragment_report_label"
             tools:layout="@layout/fragment_report"/>
 

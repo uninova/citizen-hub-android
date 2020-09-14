@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.*;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -15,11 +14,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListFragment extends Fragment {
 

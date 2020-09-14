@@ -7,13 +7,12 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.util.Log;
+import pt.uninova.s4h.citizenhub.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import pt.uninova.s4h.citizenhub.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class BluetoothScanner extends ScanCallback {
 
