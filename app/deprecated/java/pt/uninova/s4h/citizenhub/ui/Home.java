@@ -170,9 +170,9 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
             @Override
             public void onClick(View view) {
                 if (mBluetoothAdapter == null) {
-                    // Device does not support Bluetooth, useless option?
+                    // Agent does not support Bluetooth, useless option?
                 } else if (!mBluetoothAdapter.isEnabled()) {
-                    // Device Bluetooth is not enabled.
+                    // Agent Bluetooth is not enabled.
                     Snackbar.make(view, "Please enable Bluetooth in your phone settings.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -193,7 +193,7 @@ public class Home extends AppCompatActivity implements DevicesFragment.OnDataPas
                                     @Override
                                     public void run() {
                                         if (foundDevice == true) {
-                                            setActionBarTitle("Select a Device");
+                                            setActionBarTitle("Select a Agent");
                                             foundDevice = false; //reset to variable
                                         } else {
                                             setActionBarTitle("Connected Devices");

@@ -152,7 +152,7 @@ public class PostureFragment extends Fragment {
             Home.ble.pairNewDevice();//continuous light means connected
         else
             Home.ble.startScan();*/
-                Toast.makeText(getContext(), "Sensor connecting...\nDon't Forget to click the Device Button", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Sensor connecting...\nDon't Forget to click the Agent Button", Toast.LENGTH_LONG).show();
             }
         });
         disconnect.setOnClickListener(new View.OnClickListener() {

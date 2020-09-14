@@ -1,10 +1,12 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
-import pt.uninova.util.Observer;
 
 import java.util.List;
+
+import pt.uninova.util.Observer;
 
 public class DeviceRepository {
 
@@ -22,7 +24,11 @@ public class DeviceRepository {
     }
 
     public Device get(String address) {
-        return deviceDao.get(address);
+        try {
+            return deviceDao.get(address);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public LiveData<List<Device>> getAll() {
@@ -44,6 +50,7 @@ public class DeviceRepository {
     }
 
     public void update(Device device) {
+        //mudar o state
         CitizenHubDatabase.executorService().execute(() -> {
             deviceDao.update(device);
         });

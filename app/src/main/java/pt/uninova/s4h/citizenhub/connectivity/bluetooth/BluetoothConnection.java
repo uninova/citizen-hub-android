@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+
 import pt.uninova.util.Pair;
 import pt.uninova.util.Triple;
 
@@ -20,13 +22,14 @@ public class BluetoothConnection extends BluetoothGattCallback {
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
-
+    private final Map <Pair<BluetoothConnection,Integer>, Set<ConnectionStateListener>> connectionStateListenerMap;
     private BluetoothGatt gatt;
 
     public BluetoothConnection() {
         runnables = new ConcurrentLinkedQueue<>();
         characteristicListenerMap = new ConcurrentHashMap<>();
         descriptorListenerMap = new ConcurrentHashMap<>();
+        connectionStateListenerMap = new ConcurrentHashMap<>();
     }
 
     public void addCharacteristicListener(CharacteristicListener listener) {
@@ -40,6 +43,9 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
         characteristicListenerMap.get(key).add(listener);
     }
+
+//
+
 
     public void addDescriptorListener(DescriptorListener listener) {
         final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
@@ -99,6 +105,11 @@ public class BluetoothConnection extends BluetoothGattCallback {
         writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
     }
 
+    public BluetoothDevice getDevice(){
+        //TODO gatt!=null
+       return gatt.getDevice();
+    }
+
     private synchronized void next() {
         runnables.poll();
 
@@ -156,7 +167,6 @@ public class BluetoothConnection extends BluetoothGattCallback {
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
         if (this.gatt == null && status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
             this.gatt = gatt;
-
             push(new Runnable() {
                 @Override
                 public void run() {

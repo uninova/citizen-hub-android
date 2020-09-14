@@ -347,7 +347,7 @@ public class BackgroundService extends Service implements BackgroundServiceInter
     }
 
     /*
-        public void SaveAvailableCharacteristics(BluetoothDevice device, String NewCharacteristic){
+        public void SaveAvailableCharacteristics(BluetoothAgent device, String NewCharacteristic){
             DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
             SQLiteDatabase db= databaseHelper.getWritableDatabase();
             String characteristics = NewCharacteristic;

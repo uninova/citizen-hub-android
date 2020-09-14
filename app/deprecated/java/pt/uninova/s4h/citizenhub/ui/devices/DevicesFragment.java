@@ -146,7 +146,7 @@ public class DevicesFragment extends ListFragment {
                 mAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_search_details, mDeviceList) {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
-                        ((Home) getActivity()).setActionBarTitle("Select a Device");
+                        ((Home) getActivity()).setActionBarTitle("Select a Agent");
                         Home.foundDevice = true;
                         // Get the view
                         LayoutInflater inflater = mActivity.getLayoutInflater();

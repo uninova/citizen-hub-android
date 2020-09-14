@@ -98,13 +98,13 @@ public class DeviceProvider extends ContentProvider {
         String devicename = values.getAsString(DeviceEntry.COLUMN_DEVICE_NAME);
 
         if (devicename == null) {
-            throw new IllegalArgumentException("Device requires a name");
+            throw new IllegalArgumentException("Agent requires a name");
         }
 
         String deviceaddress = values.getAsString(DeviceEntry.COLUMN_DEVICE_ADDRESS);
 
         if (deviceaddress == null) {
-            throw new IllegalArgumentException("Device requires an adress");
+            throw new IllegalArgumentException("Agent requires an adress");
         }
 
 
