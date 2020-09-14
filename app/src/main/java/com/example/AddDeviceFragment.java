@@ -60,7 +60,7 @@ public class AddDeviceFragment extends Fragment {
         });
 
         // getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        // setTitle("Add Device");
+        // setTitle("Add Agent");
     }
 
     private void saveDevice() {
@@ -72,7 +72,7 @@ public class AddDeviceFragment extends Fragment {
             return;
         }
         sharedDeviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
-        // Device device = new Device(title, description, String.valueOf(priority), "state");
+        // Agent device = new Agent(title, description, String.valueOf(priority), "state");
         // sharedDeviceViewModel.setDevice(device);
 
     }
