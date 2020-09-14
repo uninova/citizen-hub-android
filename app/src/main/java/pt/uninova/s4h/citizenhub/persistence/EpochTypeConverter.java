@@ -6,8 +6,7 @@ import pt.uninova.util.Pair;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class TimestampConverter {
-
+public class EpochTypeConverter {
 
     @TypeConverter
     public static Long fromDate(Date date) {
@@ -21,8 +20,6 @@ public class TimestampConverter {
 
     @TypeConverter
     public static Long fromPair(Pair<Integer, Integer> month) {
-        System.out.println("fromPair:" + month);
-        System.out.println("fromPair:" + LocalDate.of(month.getFirst(), month.getSecond(), 1).toEpochDay() * 86400L);
         return month == null ? null : LocalDate.of(month.getFirst(), month.getSecond(), 1).toEpochDay() * 86400L;
     }
 
@@ -33,8 +30,7 @@ public class TimestampConverter {
 
     @TypeConverter
     public static LocalDate toLocalDate(Long value) {
-        System.out.println("toLocalDate:" + value);
-        return value == null ? null : LocalDate.ofEpochDay(value / 86400L);
+        return value == null ? null : LocalDate.ofEpochDay( value / 86400L);
     }
 
 }

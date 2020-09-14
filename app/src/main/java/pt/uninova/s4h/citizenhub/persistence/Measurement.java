@@ -9,7 +9,7 @@ public class Measurement {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
-    @TypeConverters({TimestampConverter.class})
+    @TypeConverters({EpochTypeConverter.class})
     private Date timestamp;
     @ColumnInfo(name = "kind_id")
     @TypeConverters(MeasurementKindTypeConverter.class)
