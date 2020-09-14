@@ -22,10 +22,10 @@ public class BluetoothScanner extends ScanCallback {
     private Application app;
     private BluetoothScannerListener listener;
 
-    public BluetoothScanner(BluetoothManager manager, Application application) {
+    public BluetoothScanner(BluetoothManager manager) {
         devices = new HashMap<>();
         scanner = manager.getAdapter().getBluetoothLeScanner();
-        this.app=application;
+
         listener = null;
     }
 
