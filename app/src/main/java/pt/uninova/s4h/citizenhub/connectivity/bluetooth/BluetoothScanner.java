@@ -1,27 +1,36 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pt.uninova.s4h.citizenhub.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+
 public class BluetoothScanner extends ScanCallback {
 
     private final Map<String, BluetoothDevice> devices;
     private final BluetoothLeScanner scanner;
-
+    private Application app;
     private BluetoothScannerListener listener;
 
     public BluetoothScanner(BluetoothManager manager) {
         devices = new HashMap<>();
         scanner = manager.getAdapter().getBluetoothLeScanner();
-
         listener = null;
+    }
+
+    private void addDevice2(Device device){
+        DeviceViewModel deviceViewModel = new DeviceViewModel(app);
+        deviceViewModel.setDevice(device);
     }
 
     private void addDevice(BluetoothDevice device) {
@@ -47,14 +56,18 @@ public class BluetoothScanner extends ScanCallback {
     }
 
     public boolean isScanning() {
+        Log.d("bluescanner", "IsScanning");
+
         return listener != null;
     }
 
     @Override
     public synchronized void onBatchScanResults(List<ScanResult> results) {
         for (ScanResult i : results) {
+            //System.out.println("device found: " + i.getDevice().getAddress());
             addDevice(i.getDevice());
         }
+
     }
 
     @Override
@@ -66,12 +79,16 @@ public class BluetoothScanner extends ScanCallback {
     @Override
     public synchronized void onScanResult(int callbackType, ScanResult result) {
         addDevice(result.getDevice());
+        //System.out.println("device found: " + result.getDevice().getAddress());
     }
 
     public synchronized void start(BluetoothScannerListener listener) {
         if (!isScanning()) {
             this.listener = listener;
             scanner.startScan(this);
+            Log.d("bluescanner", "StartScan");
+            System.out.println("bluescan");
+
         }
     }
 

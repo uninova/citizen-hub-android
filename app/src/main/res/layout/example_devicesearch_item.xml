@@ -14,15 +14,6 @@
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/image_view_settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="2dp"
-            app:srcCompat="@drawable/ic_settings"
-            android:layout_alignParentEnd="true"
-            />
-
         <TextView
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"

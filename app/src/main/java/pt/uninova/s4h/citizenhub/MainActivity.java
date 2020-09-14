@@ -1,7 +1,12 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.IBinder;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,17 +15,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-import java.util.Date;
-import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CitizenHubServiceBound {
 
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
+    private CitizenHubServiceBinder citizenHubServiceBinder;
+    private CitizenHubService citizenHubService;
+    boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        citizenHubServiceBinder = new CitizenHubServiceBinder(citizenHubService);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,35 +50,49 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-        //
-        // SAMPLING CODE
-        //
-        Handler handler = new Handler(getMainLooper());
-        int delay = 10000;
-        final Random random = new Random();
-        final MeasurementRepository repo = new MeasurementRepository(getApplication());
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MeasurementKind kind = MeasurementKind.find(random.nextInt(7));
-
-                Measurement measurement = new Measurement(new Date(), kind, (double) random.nextInt(200));
-                System.out.println(measurement.getKind().toString() + ":" + measurement.getTimestamp().toString() + ":" + measurement.getValue());
-
-                repo.add(measurement);
-
-                handler.postDelayed(this, random.nextInt(delay));
-            }
-        }, random.nextInt(delay));
-        //
-        // END SAMPLING CODE
-        //
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, CitizenHubService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(connection);
+        mBound = false;
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            CitizenHubServiceBinder binder = (CitizenHubServiceBinder) service;
+            citizenHubService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+
+    @Override
+    public CitizenHubService getService(){
+        return citizenHubService;
     }
 }
