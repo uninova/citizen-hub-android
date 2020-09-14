@@ -3,42 +3,47 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.Service;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
-import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import androidx.lifecycle.LifecycleService;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
-public class CitizenHubService extends Service {
+import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+
+public class CitizenHubService extends LifecycleService {
 
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
     private static BluetoothManager mBluetoothManager;
     private NotificationManager notificationManager;
-    private BluetoothScannerListener listener;
+
 
     public CitizenHubService() {
         super();
     }
 
     private Notification buildNotification() {
+        DeviceRepository deviceRepository = new DeviceRepository(getApplication());
+        //   deviceRepository.getAll().observe(this,deviceList -> {});
+
         return new NotificationCompat.Builder(this, Objects.requireNonNull(CitizenHubService.class.getCanonicalName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .build();
-
     }
 
     private void createNotificationChannel() {
@@ -51,6 +56,7 @@ public class CitizenHubService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        super.onBind(intent);
         return new CitizenHubServiceBinder(this);
     }
 
@@ -73,16 +79,17 @@ public class CitizenHubService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
-    public void StartScan(){
-        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager,getApplication());
-        bs.start(listener);
+    public BluetoothScanner createBLEScanner(BluetoothScannerListener listener) {
+        return new BluetoothScanner(mBluetoothManager);
+        //TODO
     }
 
 
-    public void SamplingCode(){
+    public void SamplingCode() {
         Handler handler = new Handler(getMainLooper());
         int delay = 10000;
         final Random random = new Random();

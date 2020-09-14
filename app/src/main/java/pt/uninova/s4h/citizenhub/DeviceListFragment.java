@@ -101,8 +101,7 @@ public class DeviceListFragment extends Fragment {
         repo.add(device3);
 
         for(int i=0; i<10; i++) {
-
-
+            
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch1", "It's good.", R.drawable.ic_settings));
             deviceList.add(new DeviceListItem(R.drawable.ic_watch_off, "Watch2", "It's bad.", R.drawable.ic_settings_off));
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, "Watch3", "It's meh.", R.drawable.ic_settings));
@@ -192,7 +191,7 @@ public class DeviceListFragment extends Fragment {
 //            Intent intent = new Intent(this, CitizenHubService.class);
 //
            // getActivity().startService(new Intent(getActivity(),CitizenHubService.class));
-            getService().StartScan();
+     //       getService().StartScan();
 
         }
         return super.onOptionsItemSelected(item);

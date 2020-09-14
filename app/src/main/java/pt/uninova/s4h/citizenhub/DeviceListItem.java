@@ -15,7 +15,7 @@ public class DeviceListItem {
     }
 
     /*
-       public Device(String name, String address, String type, String state) {
+       public Agent(String name, String address, String type, String state) {
         this.name = name;
         this.address = address;
         this.type = type;
