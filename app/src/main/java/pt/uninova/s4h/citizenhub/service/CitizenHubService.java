@@ -18,8 +18,6 @@ import java.util.Objects;
 import java.util.Random;
 
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -68,7 +66,7 @@ public class CitizenHubService extends LifecycleService {
         createNotificationChannel();
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 
-        SamplingCode();
+        samplingCode();
         startForeground(1, buildNotification());
     }
 
@@ -83,13 +81,7 @@ public class CitizenHubService extends LifecycleService {
         return START_STICKY;
     }
 
-    public void StartScan() {
-        BluetoothScanner bs = new BluetoothScanner(mBluetoothManager, getApplication());
-        bs.start(listener);
-    }
-
-
-    public void SamplingCode() {
+    public void samplingCode() {
         Handler handler = new Handler(getMainLooper());
         int delay = 10000;
         final Random random = new Random();
