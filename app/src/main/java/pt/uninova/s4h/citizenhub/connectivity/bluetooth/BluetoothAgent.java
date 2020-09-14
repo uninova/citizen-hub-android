@@ -1,8 +1,7 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 

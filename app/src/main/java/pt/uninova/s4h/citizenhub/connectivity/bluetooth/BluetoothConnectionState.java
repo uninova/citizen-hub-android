@@ -1,4 +1,4 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.HashMap;
 import java.util.Map;
