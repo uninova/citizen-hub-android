@@ -1,8 +1,11 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.persistence.HeartRateFeature;
+import pt.uninova.s4h.citizenhub.service.DeviceManager;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.GenericBluetoothAgent;
 
 public class HexoskinAgent extends GenericBluetoothAgent {
     private static UUID uuid = DeviceManager.namespaceGenerator().getUUID("bluetooth.hexoskin");
