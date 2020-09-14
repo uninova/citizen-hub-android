@@ -1,12 +1,12 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import android.app.Application;
 
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
+import pt.uninova.s4h.citizenhub.service.DeviceManager;
 
 public class GenericBluetoothAgent extends BluetoothAgent {
     private static UUID uuid = DeviceManager.namespaceGenerator().getUUID("bluetooth.generic");
