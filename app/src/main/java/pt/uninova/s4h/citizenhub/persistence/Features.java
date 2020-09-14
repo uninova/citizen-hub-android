@@ -2,7 +2,7 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import java.util.UUID;
 
-import pt.uninova.Feature;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.Feature;
 
 public class Features implements Feature {
 

@@ -2,8 +2,6 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.List;
 
-import pt.uninova.Feature;
-
 public class AgentFactory {
 
     private List<Feature> featureList;

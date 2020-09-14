@@ -2,9 +2,6 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import java.util.UUID;
 
-import pt.uninova.Feature;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-
 public abstract class BluetoothFeature implements Feature {
     private BluetoothConnection connection;
     private UUID id;
