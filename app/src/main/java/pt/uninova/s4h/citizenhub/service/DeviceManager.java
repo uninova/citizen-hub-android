@@ -1,4 +1,4 @@
-package pt.uninova;
+package pt.uninova.s4h.citizenhub.service;
 
 import android.app.Service;
 import android.bluetooth.BluetoothManager;
@@ -14,12 +14,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.GenericBluetoothAgent;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 
 public class DeviceManager {
