@@ -12,10 +12,21 @@
             tools:layout="@layout/fragment_summary"/>
 
     <fragment
-            android:id="@+id/report_fragment"
+            android:id="@+id/report_master_fragment"
             android:name="pt.uninova.s4h.citizenhub.ReportMasterFragment"
             android:label="@string/fragment_report_label"
-            tools:layout="@layout/fragment_report"/>
+            tools:layout="@layout/fragment_report_master">
+
+        <action
+                android:id="@+id/action_report_master_fragment_to_report_detail_fragment"
+                app:destination="@+id/report_detail_fragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/report_detail_fragment"
+            android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
+            android:label="Activity Report for %d"
+            tools:layout="@layout/fragment_report_detail"/>
 
     <fragment
             android:id="@+id/user_fragment"
