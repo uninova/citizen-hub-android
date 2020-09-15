@@ -6,6 +6,15 @@ public class AgentFactory {
 
     private List<Feature> featureList;
     private List<Feature> supportedFeatures;
+    private List<Agent> agentList;
+
+    public AgentFactory() {
+
+    }
+
+    public GenericBluetoothAgent createGenericAgent(BluetoothConnection connection){
+        return new GenericBluetoothAgent(connection);
+    }
 
     public AgentFactory(List<Feature> featureList) {
         this.featureList = featureList;
