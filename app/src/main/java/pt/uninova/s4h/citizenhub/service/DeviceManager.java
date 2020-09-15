@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.GenericBluetoothAgent;
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -43,7 +44,7 @@ public class DeviceManager {
     private Map<String, Device> deviceList;
     //TODO fazer lista de agentes, remover no disconnect, adicionar no connect etc
     private List<Agent> agentList;
-
+    private AgentFactory agentFactory;
     private DeviceManager(CitizenHubService service) {
         this.service = service;
         deviceList = new HashMap<>();
@@ -106,13 +107,10 @@ public class DeviceManager {
     }
 
     public Agent attachConnection(BluetoothConnection connection) {
-        Agent agent = new GenericBluetoothAgent(connection);
+       agentFactory = new AgentFactory();
+        Agent agent = agentFactory.createGenericAgent(connection);
         agentList.add(agent);
         return agent;
     }
 
-    // usa o repository para ir buscar os devices
-    // getDeviceManager para adicionar e alterar coisas
-    // livedata para actualizar o que foi updatado e nao a lista toda
-    //   ^^     alertar o devicemanager quando houve alteraçoes
 }
