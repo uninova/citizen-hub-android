@@ -1,23 +1,23 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity;
+
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.generic.GenericBluetoothAgent;
 
 import java.util.List;
 
 public class AgentFactory {
 
-    private List<Feature> featureList;
-    private List<Feature> supportedFeatures;
+    private List<Protocol> protocolList;
+    private List<Protocol> supportedProtocols;
     private List<Agent> agentList;
 
     public AgentFactory() {
 
     }
 
-    public GenericBluetoothAgent createGenericAgent(BluetoothConnection connection){
-        return new GenericBluetoothAgent(connection);
-    }
 
-    public AgentFactory(List<Feature> featureList) {
-        this.featureList = featureList;
+    public AgentFactory(List<Protocol> protocolList) {
+        this.protocolList = protocolList;
     }
 
 
@@ -33,12 +33,12 @@ public class AgentFactory {
 //
 //        }
 
-    public List<Feature> getFeatureList() {
-        return featureList;
+    public List<Protocol> getFeatureList() {
+        return protocolList;
     }
 
-    public void setFeatureList(List<Feature> featureList) {
-        this.featureList = featureList;
+    public void setFeatureList(List<Protocol> protocolList) {
+        this.protocolList = protocolList;
     }
 
     // create

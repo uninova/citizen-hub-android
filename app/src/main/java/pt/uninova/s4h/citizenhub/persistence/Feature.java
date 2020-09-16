@@ -5,8 +5,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "feature", foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address")
-)
+@Entity(tableName = "feature", foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
 public class Feature {
     @PrimaryKey(autoGenerate = true)
     private int id;

@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import java.util.List;
-
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+
+import java.util.List;
 
 public abstract class BluetoothAgent implements Agent {
     final private BluetoothConnection connection;
@@ -30,7 +32,6 @@ public abstract class BluetoothAgent implements Agent {
         this.deviceAddress = deviceAddress;
     }
 
-    @Override
     public List<Feature> getFeatureList() {
         return null;
     }
@@ -43,8 +44,8 @@ public abstract class BluetoothAgent implements Agent {
         this.name = name;
     }
 
-    public Boolean getState() {
-        return state;
+    public AgentState getState() {
+        return null;
     }
 
     public void setState(Boolean state) {

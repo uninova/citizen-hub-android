@@ -1,20 +1,20 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.generic;
 
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothFeature;
-import pt.uninova.s4h.citizenhub.service.DeviceManager;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 
-public class HeartRateFeature extends BluetoothFeature {
+public abstract class HeartRateProtocol extends BluetoothProtocol {
     private static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
     private static UUID heartRateServiceUUID = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     private static UUID heartRateCharacteristicUUID = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     private static UUID heartRateDescriptorUUID;
-    private static UUID uuid = DeviceManager.namespaceGenerator().getUUID("bluetooth.generic.heart_rate_measurement");
+    private static UUID uuid = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.generic.heart_rate_measurement");
 
 
-    public HeartRateFeature(BluetoothConnection connection, UUID id) {
+    public HeartRateProtocol(BluetoothConnection connection, UUID id) {
         super(connection, id);
     }
 
@@ -25,23 +25,19 @@ public class HeartRateFeature extends BluetoothFeature {
     }
 
     @Override
-    public boolean enable() {
+    public void enable() {
         try {
             getConnection().enableNotifications(heartRateServiceUUID, heartRateCharacteristicUUID);
             // observer -> measurementRepository.add;
-            return true;
         } catch (Exception e) {
-            return false;
         }
     }
 
     @Override
-    public boolean disable() {
+    public void disable() {
         try {
             getConnection().disableNotifications(heartRateServiceUUID, heartRateCharacteristicUUID);
-            return true;
         } catch (Exception e) {
-            return false;
             // measurementRepository.add;
         }
     }

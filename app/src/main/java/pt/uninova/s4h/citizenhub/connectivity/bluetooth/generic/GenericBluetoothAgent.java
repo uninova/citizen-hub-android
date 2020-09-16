@@ -1,15 +1,19 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.generic;
 
 import android.app.Application;
 
 import java.util.List;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
-import pt.uninova.s4h.citizenhub.service.DeviceManager;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 
-public class GenericBluetoothAgent extends BluetoothAgent {
-    private static UUID uuid = DeviceManager.namespaceGenerator().getUUID("bluetooth.generic");
+public abstract class GenericBluetoothAgent extends BluetoothAgent {
+    private static UUID uuid = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.generic");
     private Application app;
     private BluetoothConnection connection;
     private String device_address;
@@ -27,7 +31,7 @@ public class GenericBluetoothAgent extends BluetoothAgent {
     }
 
     @Override
-    public BluetoothConnectionState getStateId() {
+    public AgentState getState() {
         return null;
     }
 
@@ -36,12 +40,10 @@ public class GenericBluetoothAgent extends BluetoothAgent {
         return null;
     }
 
-    @Override
     public void connect() {
 
     }
 
-    @Override
     public void disconnect() {
 
     }

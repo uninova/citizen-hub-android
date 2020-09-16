@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.service;
+package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.app.Service;
 import android.bluetooth.BluetoothManager;
@@ -14,18 +14,16 @@ import java.util.Objects;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.GenericBluetoothAgent;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 
-public class DeviceManager {
-    private static DeviceManager instance;
+public class AgentOrchestrator {
+    private static AgentOrchestrator instance;
     private static UUIDv5 NAMESPACE_GENERATOR;
 
     static {
@@ -45,7 +43,7 @@ public class DeviceManager {
     //TODO fazer lista de agentes, remover no disconnect, adicionar no connect etc
     private List<Agent> agentList;
     private AgentFactory agentFactory;
-    private DeviceManager(CitizenHubService service) {
+    private AgentOrchestrator(CitizenHubService service) {
         this.service = service;
         deviceList = new HashMap<>();
         bluetoothManager = (BluetoothManager) service.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -89,9 +87,9 @@ public class DeviceManager {
 
     }
 
-    public DeviceManager getDeviceManager(CitizenHubService service) {
+    public AgentOrchestrator getDeviceManager(CitizenHubService service) {
         if (instance == null) {
-            instance = new DeviceManager(service);
+            instance = new AgentOrchestrator(service);
         }
         return instance;
     }
@@ -108,7 +106,7 @@ public class DeviceManager {
 
     public Agent attachConnection(BluetoothConnection connection) {
        agentFactory = new AgentFactory();
-        Agent agent = agentFactory.createGenericAgent(connection);
+        Agent agent = null;
         agentList.add(agent);
         return agent;
     }

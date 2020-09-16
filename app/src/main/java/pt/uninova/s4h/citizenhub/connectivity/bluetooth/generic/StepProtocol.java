@@ -1,18 +1,20 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.generic;
+
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothProtocol;
 
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.service.DeviceManager;
-
-public class StepFeature extends BluetoothFeature {
+public abstract class StepProtocol extends BluetoothProtocol {
 
     private static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("");
     private static UUID stepServiceUUID = UUID.fromString("");
     private static UUID stepCharacteristicUUID = UUID.fromString("");
     private static UUID stepDescriptorUUID;
-    private static UUID uuid = DeviceManager.namespaceGenerator().getUUID("bluetooth.generic.step_measurement");
+    private static UUID uuid = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.generic.step_measurement");
 
-    public  StepFeature(BluetoothConnection connection, UUID id) {
+    public StepProtocol(BluetoothConnection connection, UUID id) {
         super(connection, id);
     }
 
@@ -23,23 +25,19 @@ public class StepFeature extends BluetoothFeature {
     }
 
     @Override
-    public boolean enable() {
+    public void enable() {
         try {
             getConnection().enableNotifications(stepServiceUUID, stepCharacteristicUUID);
             // observer -> measurementRepository.add;
-            return true;
         } catch (Exception e) {
-            return false;
         }
     }
 
     @Override
-    public boolean disable() {
+    public void disable() {
         try {
             getConnection().disableNotifications(stepServiceUUID, stepCharacteristicUUID);
-            return true;
         } catch (Exception e) {
-            return false;
             // measurementRepository.add;
         }
     }
