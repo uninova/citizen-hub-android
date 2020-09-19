@@ -20,4 +20,5 @@
     <string name="fragment_summary_image_view_calories_content_description">TODO</string>
     <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
     <string name="fragment_summary_text_view_heart_rate_text">Your average heart rate is %1$.2f.</string>
+    <string name="activity_lobby_button_login">Login</string>
 </resources>

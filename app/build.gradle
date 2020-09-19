@@ -1,5 +1,9 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
+
+
 
 android {
     compileSdkVersion 30
@@ -11,6 +15,17 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        def configFile = file(rootDir.absolutePath + "/d4lsdk-config.json")
+        def config = new JsonSlurper().parseText(configFile.text)
+
+        manifestPlaceholders = [
+                clientId      : config.id,
+                clientSecret  : config.secret,
+                environment   : config.environment,
+                redirectScheme: config.redirectScheme,
+                debug         : config.debug
+        ]
     }
 
     buildTypes {
@@ -28,10 +43,13 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    // Appcompat
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+
+    // Constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
@@ -46,12 +64,21 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-ui:$navigation_version"
 
-    // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    // Recyclerview
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // D4L SDK
+    implementation("de.gesundheitscloud.hc-sdk-android:sdk-android:$d4lsdk_version") {
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'securestore-jvm'
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'crypto-jvm'
+        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'auth-jvm'
+        exclude group: 'de.gesundheitscloud.sdk-util-multiplatform', module: 'util-jvm'
+        exclude group: 'org.threeten', module: 'threetenbp'
+    }
 
     // Material Calendar View
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
