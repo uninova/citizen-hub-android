@@ -1,5 +1,9 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
+
+
 
 android {
     compileSdkVersion 30
@@ -11,6 +15,17 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        def configFile = file(rootDir.absolutePath + "/d4lsdk-config.json")
+        def config = new JsonSlurper().parseText(configFile.text)
+
+        manifestPlaceholders = [
+                clientId      : config.id,
+                clientSecret  : config.secret,
+                environment   : config.environment,
+                redirectScheme: config.redirectScheme,
+                debug         : config.debug
+        ]
     }
 
     buildTypes {
