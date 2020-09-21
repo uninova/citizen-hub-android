@@ -9,35 +9,32 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
-import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-
 public class CitizenHubService extends LifecycleService {
 
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
-    private static BluetoothManager mBluetoothManager;
+    private final AgentOrchestrator agentOrchestrator;
     private NotificationManager notificationManager;
-
 
     public CitizenHubService() {
         super();
+
+        agentOrchestrator = new AgentOrchestrator(this);
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
     }
 
     private Notification buildNotification() {
-        DeviceRepository deviceRepository = new DeviceRepository(getApplication());
-        //   deviceRepository.getAll().observe(this,deviceList -> {});
-
         return new NotificationCompat.Builder(this, Objects.requireNonNull(CitizenHubService.class.getCanonicalName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
@@ -52,9 +49,14 @@ public class CitizenHubService extends LifecycleService {
         }
     }
 
+    public AgentOrchestrator getAgentOrchestrator() {
+        return agentOrchestrator;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         super.onBind(intent);
+
         return new CitizenHubServiceBinder(this);
     }
 
@@ -64,9 +66,7 @@ public class CitizenHubService extends LifecycleService {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannel();
-        mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 
-        samplingCode();
         startForeground(1, buildNotification());
     }
 
@@ -78,6 +78,7 @@ public class CitizenHubService extends LifecycleService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
         return START_STICKY;
     }
 
@@ -102,9 +103,6 @@ public class CitizenHubService extends LifecycleService {
                 handler.postDelayed(this, random.nextInt(delay));
             }
         }, random.nextInt(delay));
-        //
-        // END SAMPLING CODE
-        //
     }
 
 }
