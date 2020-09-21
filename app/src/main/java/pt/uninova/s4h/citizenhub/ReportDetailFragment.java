@@ -2,14 +2,17 @@ package pt.uninova.s4h.citizenhub;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import care.data4life.sdk.Data4LifeClient;
 import org.jetbrains.annotations.NotNull;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -26,11 +29,23 @@ public class ReportDetailFragment extends Fragment {
     private ReportViewModel model;
     private TextView infoTextView_timeSitting, infoTextView_timePosture, infoTextView_distance, infoTextView_steps,
             infoTextView_calories, infoTextView_heartrate, infoTextView_day;
-    DateFormat dateFormat;
+    private Button uploadPdfButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_report_detail, container, false);
+        final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
+
+        uploadPdfButton = view.findViewById(R.id.button);
+        uploadPdfButton.setOnClickListener(v -> {
+            Data4LifeClient client = Data4LifeClient.getInstance();
+
+            DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
+                    "Daily Report " + model.getDetailDate().toString(),
+                    );
+            client.createRecord();
+        });
+
+        return view;
     }
 
     private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
@@ -45,11 +60,11 @@ public class ReportDetailFragment extends Fragment {
                 + "-0" + model.getDetailDate().getMonthValue() + "-" +
                 model.getDetailDate().getDayOfMonth());
 
-        if(badPosture != null && goodPosture != null)
-        {  infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitted_text,
-                badPosture.getSum()+goodPosture.getSum()));
-        infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));}
-        else {
+        if (badPosture != null && goodPosture != null) {
+            infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitted_text,
+                    badPosture.getSum() + goodPosture.getSum()));
+            infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));
+        } else {
             infoTextView_timeSitting.setVisibility(View.GONE);
             infoTextView_timePosture.setVisibility(View.GONE);
         }
@@ -59,17 +74,17 @@ public class ReportDetailFragment extends Fragment {
         else
             infoTextView_distance.setVisibility(View.GONE);
 
-        if(steps != null)
+        if (steps != null)
             infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, steps.getSum()));
         else
             infoTextView_steps.setVisibility(View.GONE);
 
-        if(calories != null)
+        if (calories != null)
             infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, calories.getSum()));
         else
             infoTextView_calories.setVisibility(View.GONE);
 
-        if(heartRate != null)
+        if (heartRate != null)
             infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
         else
             infoTextView_heartrate.setVisibility(View.GONE);
