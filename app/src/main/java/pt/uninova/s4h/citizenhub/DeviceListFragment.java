@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ public class DeviceListFragment extends Fragment {
     private ArrayList<DeviceListItem> deviceList;
     private Application app;
     private View resultView;
+    public static Device deviceForSettings;
 
     private DeviceViewModel model;
 
@@ -108,6 +106,9 @@ public class DeviceListFragment extends Fragment {
             @Override
             public void onSettingsClick(int position) {
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
+                //address_for_settings = deviceList.get(position).getmTextDescription();
+                deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
+                        deviceList.get(position).getmTextDescription(), null,null);
             }
         });
     }

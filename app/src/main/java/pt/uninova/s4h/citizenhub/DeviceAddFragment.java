@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.persistence.Device;
+
 public class DeviceAddFragment extends Fragment {
 
     private Button addDevice;
@@ -31,6 +33,11 @@ public class DeviceAddFragment extends Fragment {
             model.apply();
             Navigation.findNavController(getView()).navigate(DeviceAddFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
         });
+
+        TextView detailText = result.findViewById(R.id.text_add_fragment);
+        Device device = DeviceSearchFragment.deviceForSettings;
+
+        detailText.setText("Name: " + device.getName() + "\n" + "Address: " + device.getAddress());
 
         return result;
     }
