@@ -6,3 +6,4 @@ local.properties
 *.iml
 /gradlew
 /gradlew.bat
+/d4lsdk-config.json
