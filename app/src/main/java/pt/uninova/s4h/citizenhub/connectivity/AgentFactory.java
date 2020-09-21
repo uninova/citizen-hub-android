@@ -22,7 +22,7 @@ public class AgentFactory {
     }
 
     public void create(Device device, Observer<Agent> observer) {
-        if (device.getType().equals("BLUETOOTH")) {
+        if (true || device.getType().equals("BLUETOOTH")) { //TODO: duh
             final BluetoothConnection connection = new BluetoothConnection();
 
             connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
@@ -37,6 +37,7 @@ public class AgentFactory {
             });
 
             bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+            observer.onChanged(new MiBand2Agent(connection));
         }
     }
 }

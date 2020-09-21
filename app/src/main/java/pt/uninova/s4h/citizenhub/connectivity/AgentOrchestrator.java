@@ -1,9 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
+import pt.uninova.s4h.citizenhub.persistence.*;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 
@@ -48,8 +46,14 @@ public class AgentOrchestrator {
 
                 if (!deviceAgentMap.containsKey(i)) {
                     agentFactory.create(i, agent -> {
-                        for (UUID j : agent.getPublicProtocolIds()) {
-                            agent.getProtocol(j).enable();
+                        MessagingProtocol<Integer> protocol = (MessagingProtocol<Integer>) agent.getProtocol(MiBand2HeartRateProtocol.ID);
+
+                        if (protocol != null) {
+                            protocol.getMessageObservers().add((Integer value) -> {
+                                measurementRepository.add(new Measurement(new Date(), MeasurementKind.HEART_RATE, value.doubleValue()));
+                            });
+
+                            agent.getProtocol(MiBand2HeartRateProtocol.ID).enable();
                         }
 
                         deviceAgentMap.put(i, agent);
@@ -61,8 +65,12 @@ public class AgentOrchestrator {
         });
     }
 
+    public static UUIDv5 namespaceGenerator() {
+        return NAMESPACE_GENERATOR;
+    }
+
     private void trimAgents(Set<Device> devices) {
-        for (Device i: deviceAgentMap.keySet()) {
+        for (Device i : deviceAgentMap.keySet()) {
             if (!devices.contains(i)) {
                 final Agent agent = deviceAgentMap.get(i);
 
@@ -73,10 +81,6 @@ public class AgentOrchestrator {
                 deviceAgentMap.remove(i);
             }
         }
-    }
-
-    public static UUIDv5 namespaceGenerator() {
-        return NAMESPACE_GENERATOR;
     }
 
 }
