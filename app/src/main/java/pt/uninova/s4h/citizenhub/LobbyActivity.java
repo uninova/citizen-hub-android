@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
@@ -35,11 +37,14 @@ public class LobbyActivity extends AppCompatActivity {
             public void onSuccess(Boolean value) {
                 if (value) {
                     startMainActivity();
+                } else {
+                    loginButton.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onError(D4LException exception) {
+                loginButton.setVisibility(View.VISIBLE);
                 exception.printStackTrace();
             }
         });
@@ -52,10 +57,11 @@ public class LobbyActivity extends AppCompatActivity {
         if (requestCode == D4L_AUTH) {
             if (resultCode == RESULT_OK) {
                 startMainActivity();
+            } else {
+                loginButton.setVisibility(View.VISIBLE);
             }
         }
 
-        loginButton.setVisibility(View.VISIBLE);
     }
 
     private void startMainActivity() {
