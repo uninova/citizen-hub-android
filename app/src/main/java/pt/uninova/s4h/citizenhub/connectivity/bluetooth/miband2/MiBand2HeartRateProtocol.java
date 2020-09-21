@@ -29,7 +29,13 @@ public class MiBand2HeartRateProtocol extends AbstractMessagingProtocol<Integer>
         int delay = 10000;
         final Random random = new Random();
 
-        handler.postDelayed(() -> getMessageDispatcher().dispatch(random.nextInt(20) + 89), random.nextInt(random.nextInt(delay)));
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MiBand2HeartRateProtocol.this.getMessageDispatcher().dispatch(random.nextInt(41) + 60);
+                handler.postDelayed(this, random.nextInt(delay));
+            }
+        }, random.nextInt(delay));
     }
 
 }
