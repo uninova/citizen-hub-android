@@ -9,20 +9,28 @@ public abstract class AbstractAgent implements Agent {
 
     final private Map<UUID, Protocol> protocolMap;
     final private Dispatcher<StateChangedMessage<AgentState>> stateChangedDispatcher;
+    final private UUID id;
 
     private AgentState state;
 
-    protected AbstractAgent() {
-        this(new HashMap<>());
+    protected AbstractAgent(UUID id) {
+        this(id, new HashMap<>());
     }
 
-    protected AbstractAgent(Map<UUID, Protocol> protocolMap) {
+    protected AbstractAgent(UUID id, Map<UUID, Protocol> protocolMap) {
         this.protocolMap = protocolMap;
+        this.id = id;
+
         stateChangedDispatcher = new Dispatcher<>();
     }
 
     public Set<Observer<StateChangedMessage<AgentState>>> getObservers() {
         return stateChangedDispatcher.getObservers();
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
     }
 
     @Override

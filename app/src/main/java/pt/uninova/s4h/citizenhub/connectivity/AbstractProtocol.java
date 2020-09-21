@@ -4,15 +4,24 @@ import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 import java.util.Set;
+import java.util.UUID;
 
 public abstract class AbstractProtocol implements Protocol {
 
+    final private UUID id;
     final private Dispatcher<StateChangedMessage<ProtocolState>> stateChangedDispatcher;
 
     private ProtocolState state;
 
-    protected AbstractProtocol() {
+    protected AbstractProtocol(UUID id) {
+        this.id = id;
+
         stateChangedDispatcher = new Dispatcher<>();
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
     }
 
     @Override

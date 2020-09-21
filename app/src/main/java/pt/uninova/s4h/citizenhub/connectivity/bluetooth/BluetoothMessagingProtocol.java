@@ -1,17 +1,18 @@
-package pt.uninova.s4h.citizenhub.connectivity;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import pt.uninova.s4h.citizenhub.connectivity.MessagingProtocol;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 import java.util.Set;
 import java.util.UUID;
 
-public abstract class AbstractMessagingProtocol<T> extends AbstractProtocol implements MessagingProtocol<T> {
+public abstract class BluetoothMessagingProtocol<T> extends BluetoothProtocol implements MessagingProtocol<T> {
 
     final private Dispatcher<T> messageDispatcher;
 
-    protected AbstractMessagingProtocol(UUID id) {
-        super(id);
+    public BluetoothMessagingProtocol(UUID id, BluetoothConnection connection) {
+        super(id, connection);
 
         messageDispatcher = new Dispatcher<>();
     }

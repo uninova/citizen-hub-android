@@ -14,7 +14,7 @@ public class MiBand2Agent extends BluetoothAgent {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
 
     public MiBand2Agent(BluetoothConnection connection) {
-        super(createProtocols(connection), connection);
+        super(ID, createProtocols(connection), connection);
     }
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
@@ -33,10 +33,4 @@ public class MiBand2Agent extends BluetoothAgent {
     public void enable() {
 
     }
-
-    @Override
-    public UUID getId() {
-        return ID;
-    }
-
 }

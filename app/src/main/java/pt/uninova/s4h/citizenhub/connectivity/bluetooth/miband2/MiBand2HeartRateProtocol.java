@@ -11,7 +11,7 @@ public class MiBand2HeartRateProtocol extends AbstractMessagingProtocol<Integer>
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
 
     public MiBand2HeartRateProtocol(BluetoothConnection connection) {
-        super();
+        super(ID);
     }
 
     @Override
@@ -24,8 +24,4 @@ public class MiBand2HeartRateProtocol extends AbstractMessagingProtocol<Integer>
 
     }
 
-    @Override
-    public UUID getId() {
-        return ID;
-    }
 }

@@ -10,8 +10,8 @@ public abstract class BluetoothAgent extends AbstractAgent {
 
     final private BluetoothConnection connection;
 
-    protected BluetoothAgent(Map<UUID, Protocol> protocolMap, BluetoothConnection connection) {
-        super(protocolMap);
+    protected BluetoothAgent(UUID id, Map<UUID, Protocol> protocolMap, BluetoothConnection connection) {
+        super(id, protocolMap);
 
         this.connection = connection;
     }
