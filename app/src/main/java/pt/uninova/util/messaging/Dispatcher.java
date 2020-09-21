@@ -12,7 +12,7 @@ public class Dispatcher<T> implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         observerSet.clear();
     }
 
