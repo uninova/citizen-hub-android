@@ -16,6 +16,10 @@ public abstract class AbstractMessagingProtocol<T> extends AbstractProtocol impl
         messageDispatcher = new Dispatcher<>();
     }
 
+    protected Dispatcher<T> getMessageDispatcher() {
+        return messageDispatcher;
+    }
+
     @Override
     public Set<Observer<T>> getMessageObservers() {
         return messageDispatcher.getObservers();
