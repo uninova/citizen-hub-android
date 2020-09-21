@@ -35,6 +35,21 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
+    public Set<UUID> getPublicProtocolIds(ProtocolState state) {
+        final Set<UUID> res = new HashSet<>();
+
+        for (UUID i : protocolMap.keySet()) {
+            final Protocol protocol = protocolMap.get(i);
+
+            if (protocol != null && protocol.getState() == state) {
+                res.add(i);
+            }
+        }
+
+        return res;
+    }
+
+    @Override
     public AgentState getState() {
         return state;
     }
