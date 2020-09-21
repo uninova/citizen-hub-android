@@ -1,59 +1,23 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import java.util.List;
+import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 
-import pt.uninova.s4h.citizenhub.persistence.Feature;
-import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import java.util.Map;
+import java.util.UUID;
 
-public abstract class BluetoothAgent implements Agent {
+public abstract class BluetoothAgent extends AbstractAgent {
+
     final private BluetoothConnection connection;
-    // private List<Feature> featureList;
 
-    private String deviceAddress;
-    private String name;
-    private Boolean state;
-    private FeatureRepository featureRepository;
+    protected BluetoothAgent(UUID id, Map<UUID, Protocol> protocolMap, BluetoothConnection connection) {
+        super(id, protocolMap);
 
-    protected BluetoothAgent(BluetoothConnection connection) {
         this.connection = connection;
     }
 
-//    Set<UUID> getSupportedFeatureIds() {
-//        return featureMap.keySet();
-//    }
-
-    public String getDeviceAddress() {
-        return deviceAddress;
-    }
-
-    public void setDeviceAddress(String deviceAddress) {
-        this.deviceAddress = deviceAddress;
-    }
-
-    @Override
-    public List<Feature> getFeatureList() {
-        return null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getState() {
-        return state;
-    }
-
-    public void setState(Boolean state) {
-        this.state = state;
+    protected BluetoothConnection getConnection() {
+        return connection;
     }
 
 }
-
-
-//enable feature, getfeature, connect
-// criar Miband2Agent, GenericAgent
-

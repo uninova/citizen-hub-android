@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import pt.uninova.util.Observer;
+import pt.uninova.util.messaging.Observer;
 
 public class DeviceRepository {
 
@@ -36,7 +36,7 @@ public class DeviceRepository {
     }
 
     public void obtain(String address, Observer<Device> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChange(deviceDao.get(address)));
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.get(address)));
     }
 
     public void remove(Device device) {

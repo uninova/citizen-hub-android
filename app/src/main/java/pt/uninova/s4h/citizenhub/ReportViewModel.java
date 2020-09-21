@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.util.Observer;
+import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.Pair;
 import pt.uninova.util.time.LocalDateInterval;
 

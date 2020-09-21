@@ -4,7 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import pt.uninova.util.time.LocalDateInterval;
-import pt.uninova.util.Observer;
+import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.Pair;
 
 import java.time.LocalDate;
@@ -61,7 +61,7 @@ public class MeasurementRepository {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
             final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
 
-            observer.onChange(measurementDao.getDates(from, to));
+            observer.onChanged(measurementDao.getDates(from, to));
         });
     }
 
@@ -79,7 +79,7 @@ public class MeasurementRepository {
         CitizenHubDatabase.executorService().execute(() -> {
             final List<MeasurementAggregate> aggregates = measurementDao.getAggregate(localDate, localDate.plusDays(1));
 
-            observer.onChange(mapAggregates(aggregates));
+            observer.onChanged(mapAggregates(aggregates));
         });
     }
 
