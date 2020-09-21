@@ -75,6 +75,8 @@ public class DeviceListFragment extends Fragment {
         cleanList();
         for(Device device : devices) {
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, device, R.drawable.ic_settings));
+            if (device.getAddress().equals("0C:B2:B7:39:99:63")) //TODO only for testing
+                device.setName("Posture Sensor");
         }
         buildRecycleView(resultView);
     }
