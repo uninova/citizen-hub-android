@@ -21,4 +21,10 @@
     <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
     <string name="fragment_summary_text_view_heart_rate_text">Your average heart rate is %1$.2f.</string>
     <string name="activity_lobby_button_login">Login</string>
+    <string name="fragment_report_text_view_time_sitted_text">Time sitted: %1$.0f m</string>
+    <string name="fragment_report_text_view_time_posture_text">Time with good posture: %1$.0f m</string>
+    <string name="fragment_report_text_view_distance_text">Distance travelled: %1$.0f km</string>
+    <string name="fragment_report_text_view_steps_text">Steps taken: %1$.0f</string>
+    <string name="fragment_report_text_view_calories_text">Calories burned: %1$.0f kcal</string>
+    <string name="fragment_report_text_view_heartrate_text">Heart rate average: %1$.2f bpm</string>
 </resources>
