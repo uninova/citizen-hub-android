@@ -1,48 +1,42 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import android.bluetooth.BluetoothManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.generic.GenericBluetoothAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.util.messaging.Observer;
 
-import java.util.List;
+import static android.content.Context.BLUETOOTH_SERVICE;
 
 public class AgentFactory {
 
-    private List<Protocol> protocolList;
-    private List<Protocol> supportedProtocols;
-    private List<Agent> agentList;
+    private final CitizenHubService service;
+    private final BluetoothManager bluetoothManager;
 
-    public AgentFactory() {
+    public AgentFactory(CitizenHubService service) {
+        this.service = service;
 
+        bluetoothManager = (BluetoothManager) service.getSystemService(BLUETOOTH_SERVICE);
     }
 
+    public void create(Device device, Observer<Agent> observer) {
+        if (device.getType().equals("BLUETOOTH")) {
+            final BluetoothConnection connection = new BluetoothConnection();
 
-    public AgentFactory(List<Protocol> protocolList) {
-        this.protocolList = protocolList;
+            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
+                @Override
+                public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+                    if (value.getNewState() == BluetoothConnectionState.READY) {
+                        connection.removeConnectionStateChangeListener(this);
+                        // TODO: identify device
+                        observer.onChanged(new MiBand2Agent(connection));
+                    }
+                }
+            });
+
+            bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+        }
     }
-
-
-    //ver nome se é conhecido e inicializar os agents
-//    public void createAgent(){
-//        for (Feature feature:featureList) {
-//            if (supportedFeatures.contains(feature) == true) {//create genericAgent
-//
-//            } else if (supportedFeatures.contains(feature) == 1) {//create Miband2Agent
-//                //...
-//            }
-//        }
-//
-//        }
-
-    public List<Protocol> getFeatureList() {
-        return protocolList;
-    }
-
-    public void setFeatureList(List<Protocol> protocolList) {
-        this.protocolList = protocolList;
-    }
-
-    // create
-
-
-    // gerar miband, hexoskin, ?? (escolher atrás dos serviços e caracteristicas)
 }

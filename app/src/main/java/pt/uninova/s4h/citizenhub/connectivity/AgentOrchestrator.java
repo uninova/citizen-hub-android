@@ -1,29 +1,17 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import android.app.Service;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
-
-import androidx.lifecycle.LiveData;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-
-import pt.uninova.s4h.citizenhub.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+
 public class AgentOrchestrator {
-    private static AgentOrchestrator instance;
+
     private static UUIDv5 NAMESPACE_GENERATOR;
 
     static {
@@ -34,81 +22,61 @@ public class AgentOrchestrator {
         }
     }
 
-    private final FeatureRepository featureRepository;
+    private final CitizenHubService service;
     private final DeviceRepository deviceRepository;
-    private final DeviceViewModel asd;
-    private BluetoothManager bluetoothManager;
-    private Service service;
-    private Map<String, Device> deviceList;
-    //TODO fazer lista de agentes, remover no disconnect, adicionar no connect etc
-    private List<Agent> agentList;
-    private AgentFactory agentFactory;
-    private AgentOrchestrator(CitizenHubService service) {
+    private final FeatureRepository featureRepository;
+    private final MeasurementRepository measurementRepository;
+    private final AgentFactory agentFactory;
+
+    private final Map<Device, Agent> deviceAgentMap;
+
+    public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
-        deviceList = new HashMap<>();
-        bluetoothManager = (BluetoothManager) service.getSystemService(Context.BLUETOOTH_SERVICE);
+
         deviceRepository = new DeviceRepository(service.getApplication());
-        asd = new DeviceViewModel(service.getApplication());
-        deviceRepository.getAll().observe(service, this::onGetAllDevicesChange);
         featureRepository = new FeatureRepository(service.getApplication());
-        LiveData<List<Device>> deviceList = deviceRepository.getAll();
+        measurementRepository = new MeasurementRepository(service.getApplication());
+        agentFactory = new AgentFactory(service);
+
+        deviceAgentMap = new HashMap<>();
+
+        deviceRepository.getAll().observe(service, devices -> {
+            final Set<Device> found = new HashSet<>(devices.size());
+
+            for (Device i : devices) {
+                found.add(i);
+
+                if (!deviceAgentMap.containsKey(i)) {
+                    agentFactory.create(i, agent -> {
+                        for (UUID j : agent.getPublicProtocolIds()) {
+                            agent.getProtocol(j).enable();
+                        }
+
+                        deviceAgentMap.put(i, agent);
+                    });
+                }
+            }
+
+            trimAgents(found);
+        });
+    }
+
+    private void trimAgents(Set<Device> devices) {
+        for (Device i: deviceAgentMap.keySet()) {
+            if (!devices.contains(i)) {
+                final Agent agent = deviceAgentMap.get(i);
+
+                if (agent != null) {
+                    agent.disable();
+                }
+
+                deviceAgentMap.remove(i);
+            }
+        }
     }
 
     public static UUIDv5 namespaceGenerator() {
         return NAMESPACE_GENERATOR;
-    }
-
-    private void onGetAllDevicesChange(List<Device> deviceList) {
-        for (Device device : deviceList
-        ) {
-            if (deviceRepository.get(device.getAddress()) != null) {
-                // já se tinha conectado previamente
-            }
-            connect(device.getAddress());
-        }
-    }
-
-    private LiveData<List<Device>> getAll() {
-        for (Device device : Objects.requireNonNull(deviceRepository.getAll().getValue())) {
-            deviceList.put(device.getAddress(), device);
-        }
-        return deviceRepository.getAll();
-    }
-
-    private List<Feature> getDeviceFeatures(String device_address) {
-        return featureRepository.getAllSpecific(device_address);
-    }
-
-    private void ActiveFeature(String device_address, UUID feature_address) {
-        // connection.enableNotifications();
-    }
-
-    private void DisableFeature(String device_address, String feature_address) {
-
-    }
-
-    public AgentOrchestrator getDeviceManager(CitizenHubService service) {
-        if (instance == null) {
-            instance = new AgentOrchestrator(service);
-        }
-        return instance;
-    }
-
-    public void connect(String address) {
-        BluetoothConnection connection = new BluetoothConnection();
-        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
-        Agent agent = attachConnection(connection);
-    }
-
-    public void disconnect(String address) {
-        deviceList.remove(address);
-    }
-
-    public Agent attachConnection(BluetoothConnection connection) {
-       agentFactory = new AgentFactory();
-        Agent agent = null;
-        agentList.add(agent);
-        return agent;
     }
 
 }
