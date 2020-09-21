@@ -13,4 +13,5 @@
     <color name="colorS4HWhite">#FFFFFF</color>
     <color name="colorS4HGreyLight">#F3F3F3</color>
     <color name="colorS4HGrey">#53646F</color>
+    <color name="colorS4HWebPage">#262626</color>
 </resources>

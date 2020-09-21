@@ -29,8 +29,7 @@ public class DeviceSearchFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    private LiveData<List<Device>> deviceListCompare;
-    DeviceRepository deviceRepository;
+    public static Device deviceForSettings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +77,8 @@ public class DeviceSearchFragment extends Fragment {
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
+                deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
+                        deviceList.get(position).getmTextDescription(), null,null);
             }
 
             @Override
