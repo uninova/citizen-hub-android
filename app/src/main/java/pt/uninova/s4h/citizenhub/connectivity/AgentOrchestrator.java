@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 import pt.uninova.s4h.citizenhub.persistence.*;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -45,19 +47,49 @@ public class AgentOrchestrator {
                 found.add(i);
 
                 if (!deviceAgentMap.containsKey(i)) {
-                    agentFactory.create(i, agent -> {
-                        MessagingProtocol<Integer> protocol = (MessagingProtocol<Integer>) agent.getProtocol(MiBand2HeartRateProtocol.ID);
+                    // TODO: NOOOOOO
+                    if (i.getName() != null) {
+                        if (i.getName().equals("Mi Band 2")) {
+                            agentFactory.create(i, agent -> {
+                                MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(MiBand2HeartRateProtocol.ID);
 
-                        if (protocol != null) {
-                            protocol.getMessageObservers().add((Integer value) -> {
-                                measurementRepository.add(new Measurement(new Date(), MeasurementKind.HEART_RATE, value.doubleValue()));
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+
+                                protocol = (MeasuringProtocol) agent.getProtocol(MiBand2DistanceProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+                                deviceAgentMap.put(i, agent);
+                            });
+                        } else if (i.getName().equals("Posture Sensor")) {
+                            agentFactory.create(i, agent -> {
+                                MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(KbzPostureProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+
+                                protocol = (MeasuringProtocol) agent.getProtocol(MiBand2DistanceProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+                                deviceAgentMap.put(i, agent);
                             });
 
-                            agent.getProtocol(MiBand2HeartRateProtocol.ID).enable();
                         }
-
-                        deviceAgentMap.put(i, agent);
-                    });
+                    }
                 }
             }
 

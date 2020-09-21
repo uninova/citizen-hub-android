@@ -13,11 +13,11 @@ import java.util.UUID;
 
 import static android.os.Looper.getMainLooper;
 
-public class MiBand2HeartRateProtocol extends AbstractMeasuringProtocol {
+public class MiBand2DistanceProtocol extends AbstractMeasuringProtocol {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.distance");
 
-    public MiBand2HeartRateProtocol(BluetoothConnection connection) {
+    public MiBand2DistanceProtocol(BluetoothConnection connection) {
         super(ID);
     }
 
@@ -35,7 +35,11 @@ public class MiBand2HeartRateProtocol extends AbstractMeasuringProtocol {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                MiBand2HeartRateProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) random.nextInt(41) + 60));
+                double val = random.nextDouble();
+
+                MiBand2DistanceProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, val * 2));
+                MiBand2DistanceProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.DISTANCE, val * 1));
+                MiBand2DistanceProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.CALORIES, val * 0.04));
 
                 handler.postDelayed(this, random.nextInt(delay));
             }

@@ -1,27 +1,27 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MiBand2Agent extends BluetoothAgent {
+public class KbzPostureAgent extends BluetoothAgent {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.kbzposture");
 
-    public MiBand2Agent(BluetoothConnection connection) {
+    public KbzPostureAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
     }
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection));
+        protocolMap.put(KbzPostureProtocol.ID, new KbzPostureProtocol(connection));
 
         return protocolMap;
     }

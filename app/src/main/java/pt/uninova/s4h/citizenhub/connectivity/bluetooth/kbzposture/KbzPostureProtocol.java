@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
 import android.os.Handler;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
@@ -13,11 +13,11 @@ import java.util.UUID;
 
 import static android.os.Looper.getMainLooper;
 
-public class MiBand2HeartRateProtocol extends AbstractMeasuringProtocol {
+public class KbzPostureProtocol extends AbstractMeasuringProtocol {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.kbzposture.posture");
 
-    public MiBand2HeartRateProtocol(BluetoothConnection connection) {
+    public KbzPostureProtocol(BluetoothConnection connection) {
         super(ID);
     }
 
@@ -35,7 +35,10 @@ public class MiBand2HeartRateProtocol extends AbstractMeasuringProtocol {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                MiBand2HeartRateProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) random.nextInt(41) + 60));
+                double val = random.nextDouble();
+
+                KbzPostureProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.GOOD_POSTURE, val * 5));
+                KbzPostureProtocol.this.getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BAD_POSTURE, val * 5));
 
                 handler.postDelayed(this, random.nextInt(delay));
             }
