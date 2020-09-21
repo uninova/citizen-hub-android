@@ -24,14 +24,11 @@ import java.util.Random;
 public class CitizenHubService extends LifecycleService {
 
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
-    private final AgentOrchestrator agentOrchestrator;
+    private AgentOrchestrator agentOrchestrator;
     private NotificationManager notificationManager;
 
     public CitizenHubService() {
         super();
-
-        agentOrchestrator = new AgentOrchestrator(this);
-        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
     }
 
     private Notification buildNotification() {
@@ -68,6 +65,9 @@ public class CitizenHubService extends LifecycleService {
         createNotificationChannel();
 
         startForeground(1, buildNotification());
+
+        agentOrchestrator = new AgentOrchestrator(this);
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
     }
 
     @Override
