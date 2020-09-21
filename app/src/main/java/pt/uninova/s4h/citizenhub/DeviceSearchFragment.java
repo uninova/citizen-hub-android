@@ -46,6 +46,8 @@ public class DeviceSearchFragment extends Fragment {
         scanner.start((address, name) -> {
                     buildRecycleView(result);
                     System.out.println("BT: " + address + " and " + name);
+                    if (address.equals("0C:B2:B7:39:99:63"))  //TODO only for testing
+                        name = "Posture Sensor";
                     deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                             new Device(name, address, null, null), R.drawable.ic_settings_off));
                     adapter.notifyItemInserted(0);

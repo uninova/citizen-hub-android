@@ -25,7 +25,7 @@
     <fragment
             android:id="@+id/report_detail_fragment"
             android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
-            android:label="Activity Report for %d"
+            android:label="Activity Report"
             tools:layout="@layout/fragment_report_detail"/>
 
     <fragment

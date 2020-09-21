@@ -54,7 +54,7 @@ public class ReportMasterFragment extends Fragment {
         final LocalDate upper = boundaries.getUpper();
 
         calendarView.state().edit()
-                .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), lower.getDayOfMonth()))
+                .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(),1))
                 .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
                 .commit();
 
