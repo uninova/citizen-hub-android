@@ -49,7 +49,7 @@ public class AgentOrchestrator {
                 if (!deviceAgentMap.containsKey(i)) {
                     // TODO: NOOOOOO
                     if (i.getName() != null) {
-                        if (i.getName().equals("Mi Band 2")) {
+                        if (i.getName().equals("MI Band 2")) {
                             agentFactory.create(i, agent -> {
                                 MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(MiBand2HeartRateProtocol.ID);
 
@@ -66,6 +66,9 @@ public class AgentOrchestrator {
 
                                     protocol.enable();
                                 }
+
+                                agent.enable();
+
                                 deviceAgentMap.put(i, agent);
                             });
                         } else if (i.getName().equals("Posture Sensor")) {

@@ -37,7 +37,6 @@ public class AgentFactory {
             });
 
             bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
-            observer.onChanged(new MiBand2Agent(connection));
         }
     }
 }

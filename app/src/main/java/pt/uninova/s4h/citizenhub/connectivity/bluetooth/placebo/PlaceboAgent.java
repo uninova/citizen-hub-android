@@ -1,21 +1,21 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.placebo;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MiBand2Agent extends BluetoothAgent {
+public class PlaceboAgent extends BluetoothAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
 
-    public MiBand2Agent(BluetoothConnection connection) {
+    public PlaceboAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
     }
 
@@ -30,19 +30,10 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void disable() {
-        setState(AgentState.DISABLED);
     }
 
     @Override
     public void enable() {
-        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection());
 
-        auth.getObservers().add(value -> {
-            if (value.getNewState() == ProtocolState.ENABLED) {
-                setState(AgentState.ENABLED);
-            }
-        });
-
-        auth.enable();
     }
 }
