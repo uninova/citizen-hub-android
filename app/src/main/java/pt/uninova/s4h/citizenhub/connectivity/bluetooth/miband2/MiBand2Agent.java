@@ -40,6 +40,9 @@ public class MiBand2Agent extends BluetoothAgent {
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
                 setState(AgentState.ENABLED);
+
+                getProtocol(MiBand2HeartRateProtocol.ID).enable();
+                getProtocol(MiBand2DistanceProtocol.ID).enable();
             }
         });
 

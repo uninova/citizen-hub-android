@@ -232,6 +232,8 @@ public class BluetoothConnection extends BluetoothGattCallback {
         if (status == BluetoothGatt.GATT_SUCCESS) {
             setState(BluetoothConnectionState.READY);
         }
+
+        next();
     }
 
     private synchronized void push(Runnable runnable) {

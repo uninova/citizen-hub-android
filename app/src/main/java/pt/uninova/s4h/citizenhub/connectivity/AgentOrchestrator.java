@@ -55,16 +55,12 @@ public class AgentOrchestrator {
 
                                 if (protocol != null) {
                                     protocol.getMeasurementObservers().add(measurementRepository::add);
-
-                                    protocol.enable();
                                 }
 
                                 protocol = (MeasuringProtocol) agent.getProtocol(MiBand2DistanceProtocol.ID);
 
                                 if (protocol != null) {
                                     protocol.getMeasurementObservers().add(measurementRepository::add);
-
-                                    protocol.enable();
                                 }
 
                                 agent.enable();
