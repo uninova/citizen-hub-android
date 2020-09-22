@@ -60,7 +60,7 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                     lastDistance = distance;
                     lastCalories = calories;
                 } else {
-                    if (steps > lastSteps) {
+                    if (steps >= lastSteps) {
                         lastSteps = steps - lastSteps;
                         lastDistance = distance - lastDistance;
                         lastCalories = calories - lastCalories;
