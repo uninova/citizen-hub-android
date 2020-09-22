@@ -75,8 +75,16 @@ dependencies {
         exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'crypto-jvm'
         exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'auth-jvm'
         exclude group: 'de.gesundheitscloud.sdk-util-multiplatform', module: 'util-jvm'
+        exclude group: 'de.gesundheitscloud.sdk-fhir-helper-multiplatform', module: 'fhir-helper-jvm'
         exclude group: 'org.threeten', module: 'threetenbp'
     }
+
+    implementation("com.github.gesundheitscloud.sdk-fhir-helper-multiplatform:fhir-helper-android:1.2.4") {
+        exclude group: "de.gesundheitscloud.sdk-util-multiplatform", module: "util-android"
+    }
+
+    implementation("de.gesundheitscloud.sdk-util-multiplatform:util-android:1.5.0")
+
 
     // Material Calendar View
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
