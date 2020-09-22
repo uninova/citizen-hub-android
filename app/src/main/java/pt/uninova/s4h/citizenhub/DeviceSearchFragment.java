@@ -30,6 +30,8 @@ public class DeviceSearchFragment extends Fragment {
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
     public static Device deviceForSettings;
+    private BluetoothScanner scanner;
+    private String sensorName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,15 +44,15 @@ public class DeviceSearchFragment extends Fragment {
         cleanList();
         buildRecycleView(result);
 
-        BluetoothScanner scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
+        scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
         scanner.start((address, name) -> {
-                    buildRecycleView(result);
-                    System.out.println("BT: " + address + " and " + name);
-                    if (address.equals("0C:B2:B7:39:99:63"))  //TODO only for testing
-                        name = "Posture Sensor";
-                    deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
-                            new Device(name, address, null, null), R.drawable.ic_settings_off));
-                    adapter.notifyItemInserted(0);
+            buildRecycleView(result);
+            System.out.println("BT: " + address + " and " + name);
+            if (address.equals("CE:89:CA:57:3F:E6"))
+                name = "Posture Sensor";
+            deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
+                    new Device(name, address, null, null), R.drawable.ic_settings_off));
+            adapter.notifyItemInserted(0);
         });
         return result;
     }
@@ -59,11 +61,11 @@ public class DeviceSearchFragment extends Fragment {
         //not being used
     }
 
-    private void cleanList(){
+    private void cleanList() {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result){
+    private void buildRecycleView(View result) {
         recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -79,8 +81,11 @@ public class DeviceSearchFragment extends Fragment {
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
-                deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null,null);
+
+                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
+                        deviceList.get(position).getmTextDescription(), null, null);
+
+                scanner.stop();
             }
 
             @Override

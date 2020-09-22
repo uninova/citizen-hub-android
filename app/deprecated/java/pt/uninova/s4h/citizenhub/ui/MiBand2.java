@@ -212,7 +212,6 @@ public class MiBand2 extends BluetoothGattCallback {
             ByteBuffer val = ByteBuffer.wrap(value);
             val.order(ByteOrder.LITTLE_ENDIAN);
 
-
             final int value1 = val.getInt(1); //steps
             final int value2 = val.getInt(5);//distance
             final int value3 = val.getInt(9);   //kcal
@@ -260,26 +259,26 @@ public class MiBand2 extends BluetoothGattCallback {
         if (characteristic.getUuid().equals(UUID_CHARACTERISTIC_HEART_RATE_CONTROL)) {
             byte[] value = characteristic.getValue();
 
-            if (value[0] == 0x15 && value[1] == 0x02 && value[2] == 0x00) {
-                characteristic.setValue(new byte[]{0x15, 0x01, 0x00});
-                gatt.writeCharacteristic(characteristic);
-            } else if (value[0] == 0x15 && value[1] == 0x01 && value[2] == 0x00) {
-                characteristic.setValue(new byte[]{0x15, 0x01, 0x01});
-                gatt.writeCharacteristic(characteristic);
-            } else if (value[0] == 0x15 && value[1] == 0x01 && value[2] == 0x01) {
-                Log.i("BOO", "YAAA!");
-                final Handler h = new Handler(Looper.getMainLooper());
+                if (value[0] == 0x15 && value[1] == 0x02 && value[2] == 0x00) {
+                    characteristic.setValue(new byte[]{0x15, 0x01, 0x00});
+                    gatt.writeCharacteristic(characteristic);
+                } else if (value[0] == 0x15 && value[1] == 0x01 && value[2] == 0x00) {
+                    characteristic.setValue(new byte[]{0x15, 0x01, 0x01});
+                    gatt.writeCharacteristic(characteristic);
+                } else if (value[0] == 0x15 && value[1] == 0x01 && value[2] == 0x01) {
+                    Log.i("BOO", "YAAA!");
+                    final Handler h = new Handler(Looper.getMainLooper());
 
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        characteristic.setValue(new byte[]{0x16});
-                        gatt.writeCharacteristic(characteristic);
+                    h.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            characteristic.setValue(new byte[]{0x16});
+                            gatt.writeCharacteristic(characteristic);
 
-                        h.postDelayed(this, 10000);
-                    }
-                }, 10000);
-            }
+                            h.postDelayed(this, 10000);
+                        }
+                    }, 10000);
+                }
         }
     }
 

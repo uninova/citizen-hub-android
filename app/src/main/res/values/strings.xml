@@ -12,7 +12,7 @@
     <string name="menu_fragment_device_list_search_title">Search</string>
     <string name="fragment_summary_image_view_posture_content_description">TODO</string>
     <string name="fragment_summary_text_view_posture_text">Spent %1$.0fm sitting and %2$.0fm with good posture.</string>
-    <string name="fragment_summary_text_view_distance_text">You\'ve walked %1$.0f km!</string>
+    <string name="fragment_summary_text_view_distance_text">You\'ve walked %1$.0f m!</string>
     <string name="fragment_summary_image_view_distance_content_description">TODO</string>
     <string name="fragment_summary_image_view_steps_content_description">TODO</string>
     <string name="fragment_summary_text_view_steps_text">That is %1$.0f steps only today</string>
