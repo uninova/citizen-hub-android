@@ -6,12 +6,16 @@ import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
 import android.util.Log;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
 
 import static android.graphics.Bitmap.createScaledBitmap;
 
@@ -35,6 +39,9 @@ public class PdfWriter {
             return new PdfWriter(pathName);
         }
     */
+
+
+
     public boolean write(Report report, Resources res, int logo) {
         Log.w("ExternalStorage", "trying to create PdfWriter");
         bmp = BitmapFactory.decodeResource(res, logo);
@@ -74,7 +81,6 @@ public class PdfWriter {
         } catch (IOException e) {
             throw new RuntimeException("Error generating file", e);
         }
-
         document.close();
         return true;
     }
