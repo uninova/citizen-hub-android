@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
@@ -67,7 +68,30 @@ public class AgentOrchestrator {
 
                                 deviceAgentMap.put(i, agent);
                             });
-                        } else if (i.getName().equals("Posture Sensor")) {
+                        }
+                        else if (i.getName().equals("HX-00043494")){
+                            agentFactory.create(i, agent -> {
+                                MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinHeartRateProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+
+                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinHeartRateProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
+
+                                deviceAgentMap.put(i, agent);
+                            });
+                        }
+
+                        else if (i.getName().equals("Posture Sensor")) {
                             agentFactory.create(i, agent -> {
                                 MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(KbzPostureProtocol.ID);
 
