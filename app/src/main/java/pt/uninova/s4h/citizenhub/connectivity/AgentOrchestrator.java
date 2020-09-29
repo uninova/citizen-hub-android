@@ -1,15 +1,21 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
-import pt.uninova.s4h.citizenhub.persistence.*;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 public class AgentOrchestrator {
 
@@ -68,8 +74,7 @@ public class AgentOrchestrator {
 
                                 deviceAgentMap.put(i, agent);
                             });
-                        }
-                        else if (i.getName().equals("HX-00043494")){
+                        } else if (i.getName().equals("HX-00043494")) {
                             agentFactory.create(i, agent -> {
                                 MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinHeartRateProtocol.ID);
 
@@ -89,9 +94,7 @@ public class AgentOrchestrator {
 
                                 deviceAgentMap.put(i, agent);
                             });
-                        }
-
-                        else if (i.getName().equals("Posture Sensor")) {
+                        } else if (i.getName().equals("Posture Sensor")) {
                             agentFactory.create(i, agent -> {
                                 MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(KbzPostureProtocol.ID);
 

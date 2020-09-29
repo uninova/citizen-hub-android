@@ -1,24 +1,15 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
-import android.os.Handler;
-import android.os.Looper;
+import java.util.Date;
+import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
-import static android.os.Looper.getMainLooper;
 
 public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 

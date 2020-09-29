@@ -1,13 +1,13 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class HexoSkinAgent extends BluetoothAgent {
 
