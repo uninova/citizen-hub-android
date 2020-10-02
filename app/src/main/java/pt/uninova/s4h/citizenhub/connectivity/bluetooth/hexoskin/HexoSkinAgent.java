@@ -8,6 +8,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 
 public class HexoSkinAgent extends BluetoothAgent {
 
@@ -21,6 +22,8 @@ public class HexoSkinAgent extends BluetoothAgent {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
         protocolMap.put(HexoSkinHeartRateProtocol.ID, new HexoSkinHeartRateProtocol(connection));
+        protocolMap.put(HexoSkinAccelerometerProtocol.ID, new HexoSkinAccelerometerProtocol(connection));
+      //  protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection));
 
         return protocolMap;
     }
