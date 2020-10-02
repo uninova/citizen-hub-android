@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAccelerometerProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinRespirationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
@@ -84,7 +86,15 @@ public class AgentOrchestrator {
                                     protocol.enable();
                                 }
 
-                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinHeartRateProtocol.ID);
+//                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinRespirationProtocol.ID);
+//
+//                                if (protocol != null) {
+//                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+//
+//                                    protocol.enable();
+//                                }
+
+                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinAccelerometerProtocol.ID);
 
                                 if (protocol != null) {
                                     protocol.getMeasurementObservers().add(measurementRepository::add);
@@ -142,3 +152,27 @@ public class AgentOrchestrator {
     }
 
 }
+
+                    if (isStepCountPresent) {
+                        int stepCount = characteristic.getIntValue(format, dataIndex);
+                        _data.set(4, "STEP COUNT " + stepCount + ", (" + hexString + ")");
+                        dataIndex = dataIndex + 2;
+                    }
+
+                    if (isActivityPresent) {
+                        float activity = characteristic.getIntValue(format, dataIndex)/256.0f;
+                        _data.set(5, "ACTIVITY " + activity + ", (" + hexString + ")");
+                        dataIndex = dataIndex + 2;
+                    }
+
+                    if (isCadencePresent) {
+                        int cadence = characteristic.getIntValue(format,dataIndex);
+                        _data.set(6, "CADENCE " + cadence + ", (" + hexString + ")");
+                    }
+                }
+            });
+        }
+    };
+
+
+    */
