@@ -33,11 +33,12 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
             @Override
             public void onChange(byte[] value) {
                 ByteBuffer val = ByteBuffer.wrap(value);
-                val.order(ByteOrder.LITTLE_ENDIAN);
-
+               //   val.order(ByteOrder.LITTLE_ENDIAN);
                 byte flag = value[0];
                 int format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 int dataIndex = 1;
+
+                //TODO add getIntValue
 
                 boolean isStepCountPresent = (flag & 0x01) != 0;
                 boolean isActivityPresent = (flag & 0x02) != 0;
@@ -49,21 +50,24 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                     int stepCount = val.get(dataIndex);
                     Log.d("steps","STEP COUNT " + stepCount + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) value[1]));
+                    //TODO Corrigir os kinds
                 }
 
                 if (isActivityPresent) {
                     float activity = val.get(dataIndex)/256.0f;
                     Log.d("activity","ACTIVITY " + activity + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACCELEROMETER, (double) value[1]));
+
                 }
 
                 if (isCadencePresent) {
                     int cadence = val.get(dataIndex);
                     Log.d("cadence", "CADENCE " + cadence + ", (" + hexString + ")");
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACCELEROMETER, (double) value[1]));
+
                 }
-
-
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACCELEROMETER, (double) value[1]));
             }
         });
     }
