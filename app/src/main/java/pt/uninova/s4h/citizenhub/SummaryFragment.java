@@ -72,13 +72,13 @@ public class SummaryFragment extends Fragment {
             } else {
                 heartRateLayout.setVisibility(View.GONE);
             }
-
-            if (badPosture != null || goodPosture != null) {
+            postureLayout.setVisibility(View.VISIBLE);
+            /*if (badPosture != null || goodPosture != null) {
                 postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, badPosture == null ? 0 : badPosture.getSum(), goodPosture == null ? 0 : goodPosture.getSum()));
                 postureLayout.setVisibility(View.VISIBLE);
             } else {
                 postureLayout.setVisibility(View.GONE);
-            }
+            }*/
 
             if (steps != null) {
                 stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));

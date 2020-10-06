@@ -193,19 +193,9 @@ public class DevicesFragment extends ListFragment {
         }
     };
 
-    public void add_kbz(ArrayList<String> mDeviceList){
-        if (add_kbz_run_once == 1)
-            add_kbz_run_once = 0;
-        else {
-            return;
-        }
-        mDeviceList.add("Posture Sensor" + "\n" + "CA:21:CB:66:9D:C6");
-    }
-
     public ArrayList<String> removeUnwanted(ArrayList<String> mDeviceList){
         mDeviceList.remove(1);
         mDeviceList.remove(1);
-        //mDeviceList.add("Posture Sensor" + "\n" + "CA:21:CB:66:9D:C6");
         return mDeviceList;
     }
 
