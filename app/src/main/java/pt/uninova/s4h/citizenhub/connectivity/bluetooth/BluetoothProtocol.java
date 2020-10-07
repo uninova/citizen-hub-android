@@ -1,6 +1,9 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.util.messaging.Observer;
 
 import java.util.UUID;
 

@@ -56,15 +56,6 @@ public class MeasurementRepository {
         return measurementDao.getDateBoundsLive();
     }
 
-    public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
-            final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
-
-            observer.onChanged(measurementDao.getDates(from, to));
-        });
-    }
-
     private Map<MeasurementKind, MeasurementAggregate> mapAggregates(List<MeasurementAggregate> aggregates) {
         final Map<MeasurementKind, MeasurementAggregate> aggregateMap = new HashMap<>(aggregates.size());
 
@@ -80,6 +71,15 @@ public class MeasurementRepository {
             final List<MeasurementAggregate> aggregates = measurementDao.getAggregate(localDate, localDate.plusDays(1));
 
             observer.onChanged(mapAggregates(aggregates));
+        });
+    }
+
+    public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
+            final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
+
+            observer.onChanged(measurementDao.getDates(from, to));
         });
     }
 

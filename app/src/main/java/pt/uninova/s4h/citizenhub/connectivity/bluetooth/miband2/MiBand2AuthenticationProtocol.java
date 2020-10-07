@@ -19,21 +19,23 @@ import java.util.UUID;
 
 public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
 
+    final private static UUID XIAOMI_MIBAND2_SERVICE_AUTH = UUID.fromString("0000fee1-0000-1000-8000-00805f9b34fb");
+    final private static UUID XIAOMI_MIBAND2_CHARACTERISTIC_AUTH = UUID.fromString("00000009-0000-3512-2118-0009af100700");
+
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.authentication");
 
-    final private static UUID XIAOMI_MIBAND2_CHARACTERISTIC_AUTH = UUID.fromString("00000009-0000-3512-2118-0009af100700");
-    final private static UUID XIAOMI_MIBAND2_DESCRIPTOR_AUTH = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-    final private static UUID XIAOMI_MIBAND2_SERVICE_AUTH = UUID.fromString("0000fee1-0000-1000-8000-00805f9b34fb");
-
     private final SecureRandom keyGenerator;
-    private byte[] key;
-
+    private final byte[] key;
 
     public MiBand2AuthenticationProtocol(BluetoothConnection connection) {
         super(ID, connection);
 
         keyGenerator = new SecureRandom();
         key = new byte[16];
+    }
+
+    private void attachObservers() {
+        final BluetoothConnection connection = getConnection();
 
         connection.addDescriptorListener(new BaseDescriptorListener(XIAOMI_MIBAND2_SERVICE_AUTH, XIAOMI_MIBAND2_CHARACTERISTIC_AUTH, BluetoothConnection.ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION) {
             @Override
@@ -86,16 +88,17 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
             }
         });
 
-        connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
-            @Override
-            public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
-                if (value.getNewState() == BluetoothConnectionState.CONNECTED && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
-                    if (getState() == ProtocolState.ENABLED) {
-                        enable();
-                    }
+        connection.addConnectionStateChangeListener(value -> {
+            if (value.getNewState() == BluetoothConnectionState.CONNECTED && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
+                if (getState() == ProtocolState.ENABLED) {
+                    enable();
                 }
             }
         });
+    }
+
+    private void detachObservers() {
+
     }
 
     @Override

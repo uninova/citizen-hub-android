@@ -7,9 +7,11 @@ import java.util.*;
 
 public abstract class AbstractAgent implements Agent {
 
-    final private Map<UUID, Protocol> protocolMap;
-    final private Dispatcher<StateChangedMessage<AgentState>> stateChangedDispatcher;
     final private UUID id;
+
+    final private Map<UUID, Protocol> protocolMap;
+
+    final private Dispatcher<StateChangedMessage<AgentState>> stateChangedDispatcher;
 
     private AgentState state;
 
