@@ -86,13 +86,13 @@ public class AgentOrchestrator {
                                     protocol.enable();
                                 }
 
-//                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinRespirationProtocol.ID);
-//
-//                                if (protocol != null) {
-//                                    protocol.getMeasurementObservers().add(measurementRepository::add);
-//
-//                                    protocol.enable();
-//                                }
+                                protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinRespirationProtocol.ID);
+
+                                if (protocol != null) {
+                                    protocol.getMeasurementObservers().add(measurementRepository::add);
+
+                                    protocol.enable();
+                                }
 
                                 protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinAccelerometerProtocol.ID);
 
