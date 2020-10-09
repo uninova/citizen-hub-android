@@ -23,7 +23,7 @@ public class HexoSkinAgent extends BluetoothAgent {
 
         protocolMap.put(HexoSkinHeartRateProtocol.ID, new HexoSkinHeartRateProtocol(connection));
         protocolMap.put(HexoSkinAccelerometerProtocol.ID, new HexoSkinAccelerometerProtocol(connection));
-      //  protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection));
+        protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection));
 
         return protocolMap;
     }
