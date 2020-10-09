@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -15,15 +16,14 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
+import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
+import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
+
 public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.respiration");
-    private static UUID RESPIRATION_SERVICE_UUID = UUID.fromString("0x3b55c581-bc19-48f0-bd8c-b522796f8e24");
+    private static UUID RESPIRATION_SERVICE_UUID = UUID.fromString("3b55c581-bc19-48f0-bd8c-b522796f8e24");
     private static UUID RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("9bc730c3-8cc0-4d87-85bc-573d6304403c");
-
-    private Integer lastSteps;
-    private Integer lastDistance;
-    private Double lastCalories;
 
     public HexoSkinRespirationProtocol(BluetoothConnection connection) {
         super(ID, connection);
@@ -41,29 +41,26 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                 } else {
                     format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 }
-//                int respRate = val.getInt(format, 1);
-//                _data.set(2, "RESP. RATE " + respRate + ", (" + hexString + ")");
-//
-//                boolean isInspExpPresent = (flag & 0x02) != 0;
-//                if (isInspExpPresent) {
-//                    int startOffset = 1 + (format == BluetoothGattCharacteristic.FORMAT_UINT8 ? 1 : 2);
-//                    boolean inspFirst = (flag & 0x04) == 0;
-//                    StringBuilder sb = new StringBuilder();
-//                    sb.append("INSP/EXP ");
-//                    for (int i = startOffset; i < data.length; i += 2) {
-//                        float value = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, i) / 32.0f;
-//                        if (inspFirst) {
-//                            sb.append(value).append("(I), ");
-//                            inspFirst = false;
-//                        } else {
-//                            sb.append(value).append("(E), ");
-//                            inspFirst = true;
-//                        }
-//                    }
-//                    _data.set(3, sb.toString());
-//                }
 
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.RESPIRATION, (double) value[1]));
+                int respRate = getIntValue(format, 1,value);
+                Log.d("Respiration","Respiration Rate: " + respRate );
+
+                boolean isInspExpPresent = (flag & 0x02) != 0;
+                if (isInspExpPresent) {
+                    int startOffset = 1 + (format == BluetoothGattCharacteristic.FORMAT_UINT8 ? 1 : 2);
+                    boolean inspFirst = (flag & 0x04) == 0;
+                    for (int i = startOffset; i < value.length; i += 2) {
+                        float result = getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, i,value) / 32.0f;
+                        if (inspFirst) {
+                            Log.d("Respiration","Inspiration: " + result );
+                            inspFirst = false;
+                        } else {
+                            Log.d("Respiration","Expiration: " + result );
+                            inspFirst = true;
+                        }
+                    }
+                }
+            getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.RESPIRATION, (double) value[1]));
             }
         });
     }
@@ -75,6 +72,35 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void enable () {
         getConnection().enableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
+    }
+
+    public Integer getIntValue(int formatType, int offset, byte[] value) {
+        if ((offset + getTypeLen(formatType)) > value.length) return null;
+
+        switch (formatType) {
+            case FORMAT_UINT8:
+                return unsignedByteToInt(value[offset]);
+
+            case FORMAT_UINT16:
+                return unsignedBytesToInt(value[offset], value[offset + 1]);
+        }
+
+        return null;
+    }
+
+    private int getTypeLen(int formatType) {
+        return formatType & 0xF;
+    }
+
+    private int unsignedByteToInt(byte b) {
+        return b & 0xFF;
+    }
+
+    /**
+     * Convert signed bytes to a 16-bit unsigned int.
+     */
+    private int unsignedBytesToInt(byte b0, byte b1) {
+        return (unsignedByteToInt(b0) + (unsignedByteToInt(b1) << 8));
     }
 }
 
