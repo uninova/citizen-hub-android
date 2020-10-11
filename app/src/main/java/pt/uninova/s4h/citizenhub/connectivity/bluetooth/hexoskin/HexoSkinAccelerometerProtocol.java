@@ -22,7 +22,7 @@ import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
 
 public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.respiration");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.accelerometer");
     private static UUID ACCELEROMETER_SERVICE_UUID = UUID.fromString("bdc750c7-2649-4fa8-abe8-fbf25038cda3");
     private static UUID ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("75246a26-237a-4863-aca6-09b639344f43");
     private Integer lastSteps;
@@ -37,8 +37,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID) {
             @Override
             public void onChange(byte[] value) {
-                ByteBuffer val = ByteBuffer.wrap(value);
-               //   val.order(ByteOrder.LITTLE_ENDIAN);
                 byte flag = value[0];
                 int format = FORMAT_UINT16;
                 int dataIndex = 1;
@@ -54,8 +52,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                     // int stepCount = val.get(dataIndex);
                     Log.d("steps","STEP COUNT " + stepCount + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) value[1]));
-                    //TODO Corrigir os kinds
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) stepCount));
                 }
 
                 if (isActivityPresent) {
@@ -69,7 +66,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                   //  float activity = val.get(dataIndex)/256.0f;
                     Log.d("activity","ACTIVITY " + activity + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACCELEROMETER, (double) value[1]));
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACTIVITY, (double) activity));
 
                 }
 
@@ -80,7 +77,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
                     // int cadence = val.get(dataIndex);
                     Log.d("cadence", "CADENCE " + cadence + ", (" + hexString + ")");
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACCELEROMETER, (double) value[1]));
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.CADENCE, (double) cadence));
 
                 }
             }
