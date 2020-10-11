@@ -11,8 +11,12 @@ public enum MeasurementKind {
     CALORIES(4),
     GOOD_POSTURE(5),
     BAD_POSTURE(6),
-    RESPIRATION(7),
-    ACCELEROMETER(8);
+    RESPIRATION_RATE (7),
+    INSPIRATION(8),
+    EXPIRATION(9),
+    STEPS_PER_MINUTE(10),
+    ACTIVITY(11),
+    CADENCE(12);
 
     private static final Map<Integer, MeasurementKind> LOOKUP = new HashMap<>(MeasurementKind.values().length);
 
