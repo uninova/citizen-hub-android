@@ -42,26 +42,26 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                     format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 }
 
-                int respRate = getIntValue(format, 1,value);
+                int respRate = getIntValue(format, 1, value);
                 getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.RESPIRATION_RATE, (double) respRate));
 
-                Log.d("Respiration","Respiration Rate: " + respRate );
+                Log.d("Respiration", "Respiration Rate: " + respRate);
 
                 boolean isInspExpPresent = (flag & 0x02) != 0;
                 if (isInspExpPresent) {
                     int startOffset = 1 + (format == BluetoothGattCharacteristic.FORMAT_UINT8 ? 1 : 2);
                     boolean inspFirst = (flag & 0x04) == 0;
                     for (int i = startOffset; i < value.length; i += 2) {
-                        float result = getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, i,value) / 32.0f;
+                        float result = getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, i, value) / 32.0f;
                         if (inspFirst) {
-                            Log.d("Respiration","Inspiration: " + result );
+                            Log.d("Respiration", "Inspiration: " + result);
                             getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.INSPIRATION, (double) result));
 
                             inspFirst = false;
                         } else {
                             getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.EXPIRATION, (double) result));
 
-                            Log.d("Respiration","Expiration: " + result );
+                            Log.d("Respiration", "Expiration: " + result);
                             inspFirst = true;
                         }
                     }
@@ -69,20 +69,19 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
             }
         });
     }
+
     @Override
-    public void disable () {
+    public void disable() {
         setState(ProtocolState.DISABLED);
     }
 
     @Override
-    public void enable () {
+    public void enable() {
         getConnection().enableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 
     public Integer getIntValue(int formatType, int offset, byte[] value) {
         if ((offset + getTypeLen(formatType)) > value.length) return null;
-
-
 
 
         switch (formatType) {
