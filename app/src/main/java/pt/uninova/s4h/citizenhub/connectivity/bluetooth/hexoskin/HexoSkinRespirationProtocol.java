@@ -43,6 +43,8 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                 }
 
                 int respRate = getIntValue(format, 1,value);
+                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.RESPIRATION_RATE, (double) respRate));
+
                 Log.d("Respiration","Respiration Rate: " + respRate );
 
                 boolean isInspExpPresent = (flag & 0x02) != 0;
@@ -53,14 +55,17 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                         float result = getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, i,value) / 32.0f;
                         if (inspFirst) {
                             Log.d("Respiration","Inspiration: " + result );
+                            getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.INSPIRATION, (double) result));
+
                             inspFirst = false;
                         } else {
+                            getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.EXPIRATION, (double) result));
+
                             Log.d("Respiration","Expiration: " + result );
                             inspFirst = true;
                         }
                     }
                 }
-            getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.RESPIRATION, (double) value[1]));
             }
         });
     }
@@ -76,6 +81,9 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     public Integer getIntValue(int formatType, int offset, byte[] value) {
         if ((offset + getTypeLen(formatType)) > value.length) return null;
+
+
+
 
         switch (formatType) {
             case FORMAT_UINT8:
