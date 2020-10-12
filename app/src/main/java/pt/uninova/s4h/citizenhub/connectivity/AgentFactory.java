@@ -1,8 +1,10 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothManager;
+
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -31,7 +33,11 @@ public class AgentFactory {
                     if (value.getNewState() == BluetoothConnectionState.READY) {
                         connection.removeConnectionStateChangeListener(this);
                         // TODO: identify device
-                        observer.onChanged(new MiBand2Agent(connection));
+                        if (connection.getDevice().getName().equals("HX-00043494")) {
+                            observer.onChanged(new HexoSkinAgent(connection));
+                        } else if (connection.getDevice().getName().equals("MI Band 2")) {
+                            observer.onChanged(new MiBand2Agent(connection));
+                        }
                     }
                 }
             });
