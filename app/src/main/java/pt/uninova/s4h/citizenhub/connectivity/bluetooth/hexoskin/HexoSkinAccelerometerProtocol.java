@@ -22,10 +22,13 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     private static UUID ACCELEROMETER_SERVICE_UUID = UUID.fromString("bdc750c7-2649-4fa8-abe8-fbf25038cda3");
     private static UUID ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("75246a26-237a-4863-aca6-09b639344f43");
 
+    private int lastStepCount;
 
     public HexoSkinAccelerometerProtocol(BluetoothConnection connection) {
         super(ID, connection);
         setState(ProtocolState.DISABLED);
+
+        lastStepCount = 0;
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID) {
             @Override
@@ -44,7 +47,14 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                     int stepCount = getIntValue(format, dataIndex, value);
                     Log.d("steps", "STEP COUNT " + stepCount + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) stepCount));
+
+                    if (stepCount < lastStepCount) {
+                        lastStepCount = 0;
+                    }
+
+                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) stepCount - lastStepCount));
+
+                    lastStepCount = stepCount;
                 }
 
                 if (isActivityPresent) {
