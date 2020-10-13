@@ -108,6 +108,8 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
 
     @Override
     public void enable() {
+        attachObservers();
+
         getConnection().enableNotifications(XIAOMI_MIBAND2_SERVICE_AUTH, XIAOMI_MIBAND2_CHARACTERISTIC_AUTH);
     }
 
@@ -125,9 +127,7 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
         message[0] = 0x01;
         message[1] = 0x08;
 
-        for (int i = 2; i < message.length; i++) {
-            message[i] = key[i - 2];
-        }
+        System.arraycopy(key, 0, message, 2, message.length - 2);
 
         getConnection().writeCharacteristic(XIAOMI_MIBAND2_SERVICE_AUTH, XIAOMI_MIBAND2_CHARACTERISTIC_AUTH, message);
     }
