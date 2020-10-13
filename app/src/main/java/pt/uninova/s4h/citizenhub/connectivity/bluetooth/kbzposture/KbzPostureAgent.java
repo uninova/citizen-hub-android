@@ -4,7 +4,6 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(KbzPostureProtocol.ID, new KbzPostureProtocol(connection));
+        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection));
 
         return protocolMap;
     }

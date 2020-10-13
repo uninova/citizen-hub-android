@@ -20,6 +20,16 @@ public abstract class AbstractProtocol implements Protocol {
     }
 
     @Override
+    public void disable() {
+        setState(ProtocolState.DISABLED);
+    }
+
+    @Override
+    public void enable() {
+        setState(ProtocolState.ENABLED);
+    }
+
+    @Override
     public UUID getId() {
         return id;
     }
