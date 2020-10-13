@@ -9,7 +9,7 @@ import java.util.Set;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAccelerometerProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinRespirationProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -86,8 +86,6 @@ public class AgentOrchestrator {
                                     protocol.enable();
                                 }
 
-
-
                                 protocol = (MeasuringProtocol) agent.getProtocol(HexoSkinAccelerometerProtocol.ID);
 
                                 if (protocol != null) {
@@ -108,7 +106,7 @@ public class AgentOrchestrator {
                             });
                         } else if (i.getName().equals("Posture Sensor")) {
                             agentFactory.create(i, agent -> {
-                                MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(KbzPostureProtocol.ID);
+                                MeasuringProtocol protocol = (MeasuringProtocol) agent.getProtocol(KbzRawProtocol.ID);
 
                                 if (protocol != null) {
                                     protocol.getMeasurementObservers().add(measurementRepository::add);
