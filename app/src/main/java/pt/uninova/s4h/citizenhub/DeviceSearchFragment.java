@@ -52,6 +52,7 @@ public class DeviceSearchFragment extends Fragment {
                     new Device(name, address, null, null), R.drawable.ic_settings_off));
             adapter.notifyItemInserted(0);
         });
+
         return result;
     }
 
@@ -82,13 +83,18 @@ public class DeviceSearchFragment extends Fragment {
 
                 deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
                         deviceList.get(position).getmTextDescription(), null, null);
-
-                scanner.stop();
             }
 
             @Override
             public void onSettingsClick(int position) {
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        scanner.stop();
     }
 }

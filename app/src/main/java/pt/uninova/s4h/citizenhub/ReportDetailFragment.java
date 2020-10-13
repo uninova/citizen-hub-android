@@ -65,38 +65,40 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
 
-        infoTextView_day.setText("Daily Activity for " + model.getDetailDate().getYear()
-                + "-0" + model.getDetailDate().getMonthValue() + "-" +
-                model.getDetailDate().getDayOfMonth());
+        requireActivity().runOnUiThread(() -> {
+            infoTextView_day.setText("Daily Activity for " + model.getDetailDate().getYear()
+                    + "-" + model.getDetailDate().getMonthValue() + "-" +
+                    model.getDetailDate().getDayOfMonth());
 
-        if (badPosture != null && goodPosture != null) {
-            infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitted_text,
-                    badPosture.getSum() + goodPosture.getSum()));
-            infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));
-        } else {
-            infoTextView_timeSitting.setVisibility(View.GONE);
-            infoTextView_timePosture.setVisibility(View.GONE);
-        }
+            if (badPosture != null && goodPosture != null) {
+                infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitted_text,
+                        badPosture.getSum() + goodPosture.getSum()));
+                infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));
+            } else {
+                infoTextView_timeSitting.setVisibility(View.GONE);
+                infoTextView_timePosture.setVisibility(View.GONE);
+            }
 
-        if (distance != null)
-            infoTextView_distance.setText(getString(R.string.fragment_report_text_view_distance_text, distance.getSum()));
-        else
-            infoTextView_distance.setVisibility(View.GONE);
+            if (distance != null)
+                infoTextView_distance.setText(getString(R.string.fragment_report_text_view_distance_text, distance.getSum()));
+            else
+                infoTextView_distance.setVisibility(View.GONE);
 
-        if (steps != null)
-            infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, steps.getSum()));
-        else
-            infoTextView_steps.setVisibility(View.GONE);
+            if (steps != null)
+                infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, steps.getSum()));
+            else
+                infoTextView_steps.setVisibility(View.GONE);
 
-        if (calories != null)
-            infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, calories.getSum()));
-        else
-            infoTextView_calories.setVisibility(View.GONE);
+            if (calories != null)
+                infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, calories.getSum()));
+            else
+                infoTextView_calories.setVisibility(View.GONE);
 
-        if (heartRate != null)
-            infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
-        else
-            infoTextView_heartrate.setVisibility(View.GONE);
+            if (heartRate != null)
+                infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
+            else
+                infoTextView_heartrate.setVisibility(View.GONE);
+        });
     }
 
     @Override
