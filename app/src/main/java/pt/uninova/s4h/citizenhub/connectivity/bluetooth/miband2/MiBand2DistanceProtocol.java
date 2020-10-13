@@ -55,25 +55,21 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
                 final Date now = new Date();
 
-                if (lastSteps == null) {
-                    lastSteps = steps;
-                    lastDistance = distance;
-                    lastCalories = calories;
-                } else {
-                    if (steps >= lastSteps) {
-                        lastSteps = steps - lastSteps;
-                        lastDistance = distance - lastDistance;
-                        lastCalories = calories - lastCalories;
-                    } else {
-                        lastSteps = steps;
-                        lastDistance = distance;
-                        lastCalories = calories;
+                if (lastSteps != null) {
+                    if (steps < lastSteps) {
+                        lastSteps = 0;
+                        lastDistance = 0;
+                        lastCalories = 0.0;
                     }
 
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.STEPS, (double) lastSteps));
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.DISTANCE, (double) lastDistance));
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.CALORIES, lastCalories));
+                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.STEPS, (double) steps - lastSteps));
+                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.DISTANCE, (double) distance - lastDistance));
+                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.CALORIES, calories - lastCalories));
                 }
+
+                lastSteps = steps;
+                lastDistance = distance;
+                lastCalories = calories;
             }
         });
     }
