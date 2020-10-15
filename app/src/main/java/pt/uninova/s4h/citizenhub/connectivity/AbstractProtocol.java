@@ -3,10 +3,11 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
+import java.io.Closeable;
 import java.util.Set;
 import java.util.UUID;
 
-public abstract class AbstractProtocol implements Protocol {
+public abstract class AbstractProtocol implements Closeable, Protocol {
 
     final private UUID id;
     final private Dispatcher<StateChangedMessage<ProtocolState>> stateChangedDispatcher;
@@ -17,6 +18,11 @@ public abstract class AbstractProtocol implements Protocol {
         this.id = id;
 
         stateChangedDispatcher = new Dispatcher<>();
+    }
+
+    @Override
+    public void close() {
+        stateChangedDispatcher.close();
     }
 
     @Override
