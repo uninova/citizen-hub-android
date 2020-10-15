@@ -10,12 +10,21 @@ import java.util.UUID;
 
 public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol implements MeasuringProtocol {
 
-    final private Dispatcher<Measurement> measurementDispatcher;
+    private final Dispatcher<Measurement> measurementDispatcher;
 
     public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection) {
+        this(id, connection, new Dispatcher<>());
+    }
+
+    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Dispatcher<Measurement> dispatcher) {
         super(id, connection);
 
-        measurementDispatcher = new Dispatcher<>();
+        measurementDispatcher = dispatcher;
+    }
+
+    @Override
+    public void close() {
+        super.close();
     }
 
     protected Dispatcher<Measurement> getMeasurementDispatcher() {

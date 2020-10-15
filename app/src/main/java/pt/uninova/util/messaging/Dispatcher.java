@@ -1,9 +1,10 @@
 package pt.uninova.util.messaging;
 
+import java.io.Closeable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Dispatcher<T> implements AutoCloseable {
+public class Dispatcher<T> implements Closeable {
 
     final private Set<Observer<T>> observerSet;
 

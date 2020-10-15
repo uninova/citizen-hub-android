@@ -111,8 +111,15 @@ public class BluetoothConnection extends BluetoothGattCallback {
     }
 
     public BluetoothDevice getDevice() {
-        //TODO gatt!=null
         return gatt.getDevice();
+    }
+
+    public List<BluetoothGattService> getServices() {
+        return gatt.getServices();
+    }
+
+    public boolean hasService(UUID uuid) {
+        return gatt.getService(uuid) != null;
     }
 
     private synchronized void next() {
