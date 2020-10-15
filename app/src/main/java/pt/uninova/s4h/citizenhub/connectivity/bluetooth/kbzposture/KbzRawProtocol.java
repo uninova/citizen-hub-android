@@ -42,8 +42,6 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(KBZ_SERVICE, KBZ_CHARACTERISTIC) {
             @Override
             public void onWrite(byte[] value) {
-                System.out.printf("ONTRACK");
-                // TODO: Need read?
                 connection.enableNotifications(KBZ_SERVICE, KBZ_RAW_CHARACTERISTIC);
             }
         });
@@ -51,12 +49,7 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(KBZ_SERVICE, KBZ_RAW_CHARACTERISTIC) {
             @Override
             public void onChange(byte[] value) {
-                System.out.println("OHYE");
-                System.out.println(Arrays.toString(value));
-
                 final double[] parsed = parseAccelerometer(value);
-                System.out.println(Arrays.toString(parsed));
-
                 final LocalDateTime now = LocalDateTime.now();
 
                 if (isGoodPosture(parsed[2], parsed[3])) {

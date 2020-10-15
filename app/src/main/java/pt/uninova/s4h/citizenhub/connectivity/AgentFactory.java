@@ -35,7 +35,6 @@ public class AgentFactory {
 
                     String name = connection.getDevice().getName();
 
-                    // TODO: identify device CORRECTLY
                     if (name != null && name.equals("HX-00043494")) {
                         observer.onChanged(new HexoSkinAgent(connection));
                     } else if (name != null && name.equals("MI Band 2")) {

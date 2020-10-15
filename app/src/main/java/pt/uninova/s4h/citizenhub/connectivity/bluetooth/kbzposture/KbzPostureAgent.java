@@ -36,7 +36,7 @@ public class KbzPostureAgent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        KbzRawProtocol protocol = new KbzRawProtocol(getConnection());
+        KbzRawProtocol protocol = (KbzRawProtocol) getProtocol(KbzRawProtocol.ID);
 
         protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
             @Override
