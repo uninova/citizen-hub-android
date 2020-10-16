@@ -12,7 +12,7 @@ import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
+import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinDataConverter.getIntValue;
 
 public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
@@ -80,30 +80,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
         getConnection().enableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 
-    public Integer getIntValue(int formatType, int offset, byte[] value) {
-        if ((offset + getTypeLen(formatType)) > value.length) return null;
 
-        switch (formatType) {
-            case FORMAT_UINT8:
-                return unsignedByteToInt(value[offset]);
-
-            case FORMAT_UINT16:
-                return unsignedBytesToInt(value[offset], value[offset + 1]);
-        }
-
-        return null;
-    }
-
-    private int getTypeLen(int formatType) {
-        return formatType & 0xF;
-    }
-
-    private int unsignedByteToInt(byte b) {
-        return b & 0xFF;
-    }
-
-    private int unsignedBytesToInt(byte b0, byte b1) {
-        return (unsignedByteToInt(b0) + (unsignedByteToInt(b1) << 8));
-    }
 
 }
