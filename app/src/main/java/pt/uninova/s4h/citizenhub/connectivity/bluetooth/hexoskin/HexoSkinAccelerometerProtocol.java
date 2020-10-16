@@ -38,7 +38,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 boolean isStepCountPresent = (flag & 0x01) != 0;
                 boolean isActivityPresent = (flag & 0x02) != 0;
                 boolean isCadencePresent = (flag & 0x04) != 0;
-                String hexString = byteArrayToHex(value);
 
                 if (isStepCountPresent) {
                     int stepCount = getIntValue(format, dataIndex, value);
@@ -69,13 +68,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 }
             }
         });
-    }
-
-    private static String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder(a.length * 2);
-        for (byte b : a)
-            sb.append(String.format("%02x", b & 0xff));
-        return sb.toString();
     }
 
     @Override
