@@ -42,10 +42,8 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 boolean isCadencePresent = (flag & 0x04) != 0;
                 String hexString = byteArrayToHex(value);
 
-                //TODO https://bitbucket.org/carre/hexoskin-smart-demo/src/master/hexoskin-smart-android/app/src/main/java/com/hexoskin/hexoskin_smart_android/DeviceActivity.java
                 if (isStepCountPresent) {
                     int stepCount = getIntValue(format, dataIndex, value);
-                    Log.d("steps", "STEP COUNT " + stepCount + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
 
                     if (stepCount < lastStepCount) {
@@ -60,13 +58,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 if (isActivityPresent) {
                     float activity = getIntValue(format, dataIndex, value) / 256.0f;
 
-                    //The activity is a representation of your movement intensity over the last second.
-                    // Looking at your activity lets you know when you started and stopped running, for example.
-                    // The intensity of activity also gives you some insight of your activity efficiency:
-                    // In general, if you can perform an activity by moving less, you are being more efficient in your movements.
-
-                    //  float activity = val.get(dataIndex)/256.0f;
-                    Log.d("activity", "ACTIVITY " + activity + ", (" + hexString + ")");
                     dataIndex = dataIndex + 2;
                     getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACTIVITY, (double) activity));
 
@@ -75,8 +66,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
                 if (isCadencePresent) {
                     int cadence = getIntValue(format, dataIndex, value);
-                    //steps per minute
-                    Log.d("cadence", "CADENCE " + cadence + ", (" + hexString + ")");
                     getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.CADENCE, (double) cadence));
 
                 }
@@ -123,9 +112,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
         return b & 0xFF;
     }
 
-    /**
-     * Convert signed bytes to a 16-bit unsigned int.
-     */
     private int unsignedBytesToInt(byte b0, byte b1) {
         return (unsignedByteToInt(b0) + (unsignedByteToInt(b1) << 8));
     }
