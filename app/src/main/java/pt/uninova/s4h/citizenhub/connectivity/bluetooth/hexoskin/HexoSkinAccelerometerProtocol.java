@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
-import android.util.Log;
-
 import java.util.Date;
 import java.util.UUID;
 
