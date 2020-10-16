@@ -13,8 +13,6 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
 import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinDataConverter.getIntValue;
 
 public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {

@@ -6,7 +6,7 @@ import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8;
 public class HexoSkinDataConverter {
 
     public static Integer getIntValue(int formatType, int offset, byte[] value) {
-        if(value!=null) {
+        if (value != null) {
             if ((offset + getTypeLen(formatType)) > value.length) return null;
 
             switch (formatType) {
