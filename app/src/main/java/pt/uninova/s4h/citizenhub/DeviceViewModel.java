@@ -36,4 +36,7 @@ public class DeviceViewModel extends AndroidViewModel {
     public void apply(){
         deviceRepository.add(device.getValue());
     }
+    public void delete(Device device){
+        deviceRepository.remove(device);
+    }
 }
