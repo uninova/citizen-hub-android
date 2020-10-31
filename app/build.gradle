@@ -22,7 +22,8 @@ android {
                 clientSecret  : config.secret,
                 environment   : config.environment,
                 redirectScheme: config.redirectScheme,
-                debug         : config.debug
+                debug         : config.debug,
+                platform      : config.platform
         ]
     }
 
@@ -31,10 +32,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            matchingFallbacks = ['release']
+        }
     }
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
@@ -70,44 +75,19 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // D4L SDK
-    implementation("de.gesundheitscloud.hc-sdk-android:sdk-android:$d4lsdk_version") {
-        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'securestore-jvm'
-        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'crypto-jvm'
-        exclude group: 'de.gesundheitscloud.hc-sdk-android', module: 'auth-jvm'
-        exclude group: 'de.gesundheitscloud.sdk-util-multiplatform', module: 'util-jvm'
-        exclude group: 'de.gesundheitscloud.sdk-fhir-helper-multiplatform', module: 'fhir-helper-jvm'
-        exclude group: 'org.threeten', module: 'threetenbp'
+    dependencies {
+        implementation("care.data4life.hc-sdk-kmp:sdk-android:$d4lsdk_version") {
+            exclude group: 'care.data4life.hc-sdk-kmp', module: 'securestore-jvm'
+            exclude group: 'care.data4life.hc-sdk-kmp', module: 'crypto-jvm'
+            exclude group: 'care.data4life.hc-sdk-kmp', module: 'auth-jvm'
+            exclude group: 'care.data4life.hc-util-sdk-kmp', module: 'util-jvm'
+            exclude group: 'org.threeten', module: 'threetenbp'
+        }
     }
 
-    implementation("com.github.gesundheitscloud.sdk-fhir-helper-multiplatform:fhir-helper-android:1.2.4") {
-        exclude group: "de.gesundheitscloud.sdk-util-multiplatform", module: "util-android"
-    }
-
-    implementation("de.gesundheitscloud.sdk-util-multiplatform:util-android:1.5.0")
-
+    implementation "care.data4life.hc-fhir-helper-sdk-kmp:fhir-helper-android:1.3.1"
 
     // Material Calendar View
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
-
-//    implementation 'androidx.appcompat:appcompat:1.1.0'
-//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-//    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-//    implementation 'androidx.navigation:navigation-fragment:2.2.2'
-//    implementation 'androidx.navigation:navigation-ui:2.2.2'
-//    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
-//    implementation 'com.github.devlight.pulseview:library:1.0.2'
-//    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-//    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
-//    implementation 'com.google.android.material:material:1.1.0'
-//    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
-//    implementation 'androidx.cardview:cardview:1.0.0'
-//    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-//    annotationProcessor 'androidx.room:room-compiler:2.2.5'
-//    testImplementation 'junit:junit:4.13'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 }
