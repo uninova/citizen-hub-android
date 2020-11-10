@@ -1,21 +1,21 @@
 package pt.uninova.s4h.citizenhub.report;
 
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
 import android.util.Log;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Map;
 
 import static android.graphics.Bitmap.createScaledBitmap;
 
@@ -39,7 +39,6 @@ public class PdfWriter {
             return new PdfWriter(pathName);
         }
     */
-
 
 
     public boolean write(Report report, Resources res, int logo) {
@@ -100,8 +99,8 @@ public class PdfWriter {
 
     private File createFile() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
-        File file = new File(pathName, dateOnly.format(cal.getTime()));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        File file = new File(pathName, dateFormat.format(cal));
         return file;
     }
 
