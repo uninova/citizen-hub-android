@@ -207,7 +207,7 @@ public class ReportViewModel extends AndroidViewModel {
         attachments.add(attach);
 
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                "Daily Report " + detailDate.toString(),
+                "Daily Report " + now.toString(),
                 new FhirInstant(
                         new FhirDateTime(
                                 new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
