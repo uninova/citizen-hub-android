@@ -53,10 +53,19 @@ public class ReportMasterFragment extends Fragment {
         final LocalDate lower = boundaries.getLower();
         final LocalDate upper = boundaries.getUpper();
 
-        calendarView.state().edit()
-                .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), 1))
-                .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
-                .commit();
+        if (lower != null)
+        {
+            calendarView.state().edit()
+                    .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), 1))
+                    .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
+                    .commit();
+        }
+        else {
+            calendarView.state().edit()
+                    .setMinimumDate(CalendarDay.today())
+                    .setMaximumDate(CalendarDay.today())
+                    .commit();
+        }
 
         // TODO: KEEP TRACK OF LAST PEEK calendarView.setCurrentDate(CalendarDay.from(2020,3, 10));
     }

@@ -87,6 +87,13 @@ public class SummaryFragment extends Fragment {
             } else {
                 stepsLayout.setVisibility(View.GONE);
             }
+
+            if (calories == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
+                heartRateTextView.setText("No activity data for today.");
+                heartRateLayout.setVisibility(View.VISIBLE);
+            } else {
+                heartRateLayout.setVisibility(View.GONE);
+            }
         }
     }
 }
