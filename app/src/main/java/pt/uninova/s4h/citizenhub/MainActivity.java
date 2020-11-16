@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
     @Override
     protected void onStop() {
         super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unbindService(connection);
         mBound = false;
     }
