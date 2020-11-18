@@ -66,9 +66,18 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
 
         requireActivity().runOnUiThread(() -> {
-            infoTextView_day.setText("Daily Activity for " + model.getDetailDate().getYear()
-                    + "-" + model.getDetailDate().getMonthValue() + "-" +
-                    model.getDetailDate().getDayOfMonth());
+
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null)
+            {
+                infoTextView_day.setText(getString(R.string.fragment_report_text_view_no_data) + " " + model.getDetailDate().getYear()
+                        + "-" + model.getDetailDate().getMonthValue() + "-" +
+                        model.getDetailDate().getDayOfMonth() + ".");
+            }
+            else {
+                infoTextView_day.setText(getString(R.string.fragment_report_text_view_got_data) + " " + model.getDetailDate().getYear()
+                        + "-" + model.getDetailDate().getMonthValue() + "-" +
+                        model.getDetailDate().getDayOfMonth() + ".");
+            }
 
             if (badPosture != null && goodPosture != null) {
                 infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitted_text,
