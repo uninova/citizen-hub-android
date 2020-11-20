@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -35,12 +34,16 @@ public class DeviceSearchFragment extends Fragment {
     private DeviceViewModel model;
     public static Device deviceForSettings;
     private BluetoothScanner scanner;
-    private String sensorName;
     boolean bluetooth_enabled;
+    LayoutInflater localInflater;
+    ViewGroup localContainer;
+    Boolean goBackNeeded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        localInflater = inflater;
+        localContainer = container;
         LocationManager lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
         BluetoothManager bm = (BluetoothManager) getContext().getSystemService(Context.BLUETOOTH_SERVICE);
         boolean gps_enabled = false;
@@ -73,8 +76,7 @@ public class DeviceSearchFragment extends Fragment {
                     .setNegativeButton("Cancel",null)
                     .show();
         }
-
-        if(!gps_enabled && !network_enabled) {
+        else if(!gps_enabled && !network_enabled) {
             // notify user
             new AlertDialog.Builder(getContext())
                     .setMessage("Location function not enabled.")
@@ -89,13 +91,10 @@ public class DeviceSearchFragment extends Fragment {
         }
 
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
-
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-
         cleanList();
         buildRecycleView(result);
-
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
         if(bluetooth_enabled)
@@ -151,7 +150,22 @@ public class DeviceSearchFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         scanner.stop();
+    }
+
+    public void onStop(){
+        super.onStop();
+        System.out.println("GOT STOPPED");
+        goBackNeeded = true;
+    }
+
+    public void onResume(){
+        super.onResume();
+        System.out.println("GONE BACK TO ONRESUME");
+        if (goBackNeeded) {
+            scanner.stop();
+            //getActivity().getSupportFragmentManager().popBackStack();
+            Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        }
     }
 }

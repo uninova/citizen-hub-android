@@ -105,6 +105,16 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/fragment_summary_layout_no_data"
+                style="@style/AppTheme.Summary.Item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/fragment_summary_text_view_no_data"
+                    style="@style/AppTheme.Summary.Item.TextView"
+                    android:text="@string/fragment_report_text_view_no_data_summary" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
