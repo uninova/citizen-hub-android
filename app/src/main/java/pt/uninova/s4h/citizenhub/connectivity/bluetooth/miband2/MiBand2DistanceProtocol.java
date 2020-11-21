@@ -27,7 +27,7 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
     final private static UUID UUID_CHARACTERISTIC_STEPS = UUID.fromString("00000007-0000-3512-2118-0009af100700");
 
     private Integer lastSteps;
-    private Integer lastDistance;
+    private Double lastDistance;
     private Double lastCalories;
 
     public MiBand2DistanceProtocol(BluetoothConnection connection) {
@@ -42,14 +42,14 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                 val.order(ByteOrder.LITTLE_ENDIAN);
 
                 final int steps = val.getInt(1);
-                final int distance;
+                final double distance;
                 final double calories;
 
                 if (value.length > 5) {
                     distance = val.getInt(5);
                     calories = val.getInt(9);
                 } else {
-                    distance = steps * 2;
+                    distance = steps * 0.5;
                     calories = steps * 0.04;
                 }
 
@@ -58,12 +58,12 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                 if (lastSteps != null) {
                     if (steps < lastSteps) {
                         lastSteps = 0;
-                        lastDistance = 0;
+                        lastDistance = 0.0;
                         lastCalories = 0.0;
                     }
 
                     getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.STEPS, (double) steps - lastSteps));
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.DISTANCE, (double) distance - lastDistance));
+                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.DISTANCE, distance - lastDistance));
                     getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.CALORIES, calories - lastCalories));
                 }
 
@@ -91,10 +91,10 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                 getConnection().readCharacteristic(UUID_SERVICE, UUID_CHARACTERISTIC_STEPS);
 
                 if (getState() == ProtocolState.ENABLED) {
-                    h.postDelayed(this, 30000);
+                    h.postDelayed(this, 10000);
                 }
             }
-        }, 30000);
+        }, 0);
     }
 
 }

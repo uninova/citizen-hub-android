@@ -32,19 +32,19 @@ public class SummaryFragment extends Fragment {
     }
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
-        final LinearLayout caloriesLayout = getView().findViewById(R.id.fragment_summary_layout_calories);
-        final LinearLayout distanceLayout = getView().findViewById(R.id.fragment_summary_layout_distance);
-        final LinearLayout heartRateLayout = getView().findViewById(R.id.fragment_summary_layout_heart_rate);
-        final LinearLayout postureLayout = getView().findViewById(R.id.fragment_summary_layout_posture);
-        final LinearLayout stepsLayout = getView().findViewById(R.id.fragment_summary_layout_steps);
-        final LinearLayout noDataLayout = getView().findViewById(R.id.fragment_summary_layout_no_data);
+        final LinearLayout caloriesLayout = requireView().findViewById(R.id.fragment_summary_layout_calories);
+        final LinearLayout distanceLayout = requireView().findViewById(R.id.fragment_summary_layout_distance);
+        final LinearLayout heartRateLayout = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
+        final LinearLayout postureLayout = requireView().findViewById(R.id.fragment_summary_layout_posture);
+        final LinearLayout stepsLayout = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout noDataLayout = requireView().findViewById(R.id.fragment_summary_layout_no_data);
 
-        final TextView caloriesTextView = getView().findViewById(R.id.fragment_summary_text_view_calories);
-        final TextView distanceTextView = getView().findViewById(R.id.fragment_summary_text_view_distance);
-        final TextView heartRateTextView = getView().findViewById(R.id.fragment_summary_text_view_heart_rate);
-        final TextView postureTextView = getView().findViewById(R.id.fragment_summary_text_view_posture);
-        final TextView stepsTextView = getView().findViewById(R.id.fragment_summary_text_view_steps);
-        final TextView noDataTextView = getView().findViewById(R.id.fragment_summary_text_view_no_data);
+        final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
+        final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
+        final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
+        final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
+        final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
+        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         if (dailySummary != null) {
             final MeasurementAggregate calories = dailySummary.get(MeasurementKind.CALORIES);
