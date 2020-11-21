@@ -42,8 +42,15 @@ public class ReportMasterFragment extends Fragment {
 
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             model.setDetailDate(LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
-            Navigation.findNavController(getView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
+            Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
         });
+
+        LocalDate now = LocalDate.now();
+
+        calendarView.state().edit()
+                .setMinimumDate(CalendarDay.from(now.getYear(), now.getMonthValue(), 1))
+                .setMaximumDate(CalendarDay.from(now.getYear(), now.getMonthValue(), now.getDayOfMonth()))
+                .commit();
 
         model.getAvailableReportDates().observe(getViewLifecycleOwner(), this::onNewMonth);
         model.getAvailableReportDateBoundaries().observe(getViewLifecycleOwner(), this::onAvailableReportDateBoundaries);

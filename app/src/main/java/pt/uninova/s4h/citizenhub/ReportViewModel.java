@@ -1,9 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Typeface;
+import android.graphics.*;
 import android.graphics.pdf.PdfDocument;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -26,6 +24,7 @@ import pt.uninova.util.time.LocalDateInterval;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -94,25 +93,99 @@ public class ReportViewModel extends AndroidViewModel {
         return concept;
     }
 
+    public Bitmap resize(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+    }
+
     public byte[] createPdf() {
         PdfDocument document = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200, 1000, 1).create();
-        Paint myPaint = new Paint();
-        Paint titlePaint = new Paint();
+
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
+        canvas.setDensity(72);
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+
+        Paint titlePaint = new Paint();
 
         titlePaint.setTextAlign(Paint.Align.LEFT);
-        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        titlePaint.setTextSize(30);
+        titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
+        titlePaint.setTextSize(24);
+
+        Paint textPaint = new Paint();
+
+        textPaint.setTextAlign(Paint.Align.LEFT);
+        textPaint.setTypeface(Typeface.DEFAULT);
+        textPaint.setTextSize(12);
 
         int y = 50;
+        int x = 50;
 
-        for (MeasurementKind i : detailAggregates.keySet()) {
-            MeasurementAggregate agg = detailAggregates.get(i);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        options.inDensity = 72;
 
-            canvas.drawText(i.name() + " Sum: " + agg.getSum() + "; Avg: " + agg.getAverage() + "; Min: " + agg.getMin() + "; Max: " + agg.getMax() + "; Count: " + agg.getCount(), 200, y, titlePaint);
-            y += 50;
+        Bitmap logo = BitmapFactory.decodeResource(getApplication().getResources(), R.drawable.img_s4h_logo_report, options);
+
+        canvas.drawBitmap(logo, x, y, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        y += 80;
+
+        canvas.drawText("Citizen Hub Daily Report " + detailDate.toString(), x, y, titlePaint);
+        y += 40;
+        x += 20;
+
+        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.HEART_RATE);
+
+        if (measurementAggregate != null) {
+            canvas.drawText("Average heart rate (bpm): " + decimalFormat.format(measurementAggregate.getAverage()), x, y, textPaint);
+            y += 20;
+            canvas.drawText("Minimum heart rate (bpm): " + measurementAggregate.getMin(), x, y, textPaint);
+            y += 20;
+            canvas.drawText("Maximum heart rate (bpm): " + measurementAggregate.getMax(), x, y, textPaint);
+            y += 20;
+        }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.STEPS);
+
+        if (measurementAggregate != null) {
+            canvas.drawText("Steps taken (number): " + measurementAggregate.getSum(), x, y, textPaint);
+            y += 20;
+        }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
+
+        if (measurementAggregate != null) {
+            canvas.drawText("Travelled distance (m): " + measurementAggregate.getSum(), x, y, textPaint);
+            y += 20;
+        }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.CALORIES);
+
+        if (measurementAggregate != null) {
+            canvas.drawText("Calories consumed (kcal): " + measurementAggregate.getSum(), x, y, textPaint);
+            y += 20;
+        }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
+
+        if (measurementAggregate != null) {
+            canvas.drawText("Total time spent with good posture (min): " + measurementAggregate.getSum(), x, y, textPaint);
         }
 
         document.finishPage(page);
@@ -207,7 +280,7 @@ public class ReportViewModel extends AndroidViewModel {
         attachments.add(attach);
 
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                "Daily Report " + now.toString(),
+                "Citizen Hub Daily Report " + detailDate.toString(),
                 new FhirInstant(
                         new FhirDateTime(
                                 new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
