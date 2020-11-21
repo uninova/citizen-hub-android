@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Citizen Hub</string>
+    <string name="fragment_device_list_label">Devices</string>
+    <string name="fragment_device_search_label">Device Search...</string>
+    <string name="fragment_device_detail_label">Device Detail</string>
+    <string name="fragment_summary_label">Today\'s Activity</string>
+    <string name="fragment_report_label">Daily Activity Reports</string>
+    <string name="fragment_user_label">User Profile</string>
+    <string name="fragment_about_label">About Smart4Health</string>
+    <string name="fragment_device_add_label">Add Device</string>
+    <string name="menu_fragment_device_list_title">Search</string>
+    <string name="menu_fragment_device_list_search_title">Search</string>
+    <string name="fragment_summary_image_view_posture_content_description">TODO</string>
+    <string name="fragment_summary_text_view_posture_text">Spent %1$.0fm sitting and %2$.0fm with good posture.</string>
+    <string name="fragment_summary_text_view_distance_text">You\'ve walked %1$.0f m!</string>
+    <string name="fragment_summary_image_view_distance_content_description">TODO</string>
+    <string name="fragment_summary_image_view_steps_content_description">TODO</string>
+    <string name="fragment_summary_text_view_steps_text">That is %1$.0f steps only today</string>
+    <string name="fragment_summary_text_view_calories_text">and %1$.0f kilocalories burned!</string>
+    <string name="fragment_summary_image_view_calories_content_description">TODO</string>
+    <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
+    <string name="fragment_summary_text_view_heart_rate_text">Your average heart rate is %1$.2f.</string>
+    <string name="activity_lobby_button_login">Login</string>
+    <string name="fragment_report_text_view_time_sitting_text">Time sitting: %1$.0f min</string>
+    <string name="fragment_report_text_view_time_posture_text">Time with good posture: %1$.0f min</string>
+    <string name="fragment_report_text_view_distance_text">Distance travelled: %1$.0f m</string>
+    <string name="fragment_report_text_view_steps_text">Steps taken: %1$.0f</string>
+    <string name="fragment_report_text_view_calories_text">Calories consumed: %1$.0f kcal</string>
+    <string name="fragment_report_text_view_heartrate_text">Heart rate average: %1$.2f bpm</string>
+    <string name="fragment_report_text_view_no_data_summary">No activity data for today.</string>
+    <string name="fragment_report_text_view_title_no_data">No daily activity data for %1$s</string>
+    <string name="fragment_report_text_view_title">Daily activity data for %1$s</string>
+</resources>
