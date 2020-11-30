@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:text="Report Detail"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
@@ -24,80 +24,81 @@
         android:id="@+id/fragment_report_detail_text_view_heartrate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:text="Report Detail"
-        android:textAlignment="center"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/fragment_report_detail_text_view_calories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
-        android:text="Report Detail"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/fragment_report_detail_text_view_steps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:text="Report Detail"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp" />
+
+    <TextView
+            android:id="@+id/fragment_report_detail_text_view_calories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="Report Detail"
+            android:textAlignment="textStart"
+            android:textSize="20sp" />
+
+    <TextView
+            android:id="@+id/fragment_report_detail_text_view_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="Report Detail"
+            android:textAlignment="textStart"
+            android:textSize="20sp" />
 
     <TextView
         android:id="@+id/fragment_report_detail_text_view_time_posture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:text="Report Detail"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/fragment_report_detail_text_view_time_sitting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:text="Report Detail"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/fragment_report_detail_text_view_distance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
-        android:text="Report Detail"
-        android:textAlignment="center"
-        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="Smart4Health PDF upload"
         android:textAlignment="center" />
 

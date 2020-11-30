@@ -33,7 +33,7 @@ github.token=<token>
  
  - *debug*: a `boolean` indicating if debug is active;
  
- - *platform*: a `string` representing the platform where the SDK is being deployed in.
+ - *platform*: a `string` representing the platform logging in to.
  
  Example:
  
@@ -44,7 +44,7 @@ github.token=<token>
     "redirectScheme": "org.example.XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
     "environment": "STAGING",
     "debug": true,
-    "platform": "android"
+    "platform": "EXMPL"
 }
 ```
 
