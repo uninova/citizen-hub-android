@@ -103,9 +103,11 @@ public class DeviceSearchFragment extends Fragment {
             scanner.start((address, name) -> {
                 buildRecycleView(result);
                 System.out.println("BT: " + address + " and " + name);
-                deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
-                        new Device(name, address, null, null), R.drawable.ic_settings_off));
-                adapter.notifyItemInserted(0);
+                if(!(deviceList.contains(new Device(name, address, null, null)))) {
+                    deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
+                            new Device(name, address, null, null), R.drawable.ic_settings_off));
+                    adapter.notifyItemInserted(0);
+                }
             });
         }
 
@@ -165,7 +167,7 @@ public class DeviceSearchFragment extends Fragment {
         if (goBackNeeded) {
             scanner.stop();
             //getActivity().getSupportFragmentManager().popBackStack();
-            Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+            Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
         }
     }
 }
