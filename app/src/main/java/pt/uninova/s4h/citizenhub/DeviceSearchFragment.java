@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceSearchFragment extends Fragment {
 
+    private static final int BLUETOOTH_REQ_CODE =1 ;
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -64,17 +66,19 @@ public class DeviceSearchFragment extends Fragment {
 
         if(!bluetooth_enabled)
         {
-            // notify user
-            new AlertDialog.Builder(getContext())
-                    .setMessage("Bluetooth function not enabled.")
-                    .setPositiveButton("Open bluetooth settings", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                            getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Cancel",null)
-                    .show();
+            Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(bluetoothIntent, BLUETOOTH_REQ_CODE);
+//            // notify user
+//            new AlertDialog.Builder(getContext())
+//                    .setMessage("Bluetooth function not enabled.")
+//                    .setPositiveButton("Open bluetooth settings", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+//                            getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+//                        }
+//                    })
+//                    .setNegativeButton("Cancel",null)
+//                    .show();
         }
         else if(!gps_enabled && !network_enabled) {
             // notify user
