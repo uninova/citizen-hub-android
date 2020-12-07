@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -9,10 +10,12 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.security.identity.ResultData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -22,13 +25,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class DeviceSearchFragment extends Fragment {
 
-    private static final int BLUETOOTH_REQ_CODE =1 ;
+    private static final int BLUETOOTH_REQ_CODE =99 ;
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -40,6 +47,8 @@ public class DeviceSearchFragment extends Fragment {
     LayoutInflater localInflater;
     ViewGroup localContainer;
     Boolean goBackNeeded = false;
+    Fragment fragment = this;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +76,8 @@ public class DeviceSearchFragment extends Fragment {
         if(!bluetooth_enabled)
         {
             Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(bluetoothIntent, BLUETOOTH_REQ_CODE);
+            fragment.startActivityForResult(bluetoothIntent, BLUETOOTH_REQ_CODE);
+
 //            // notify user
 //            new AlertDialog.Builder(getContext())
 //                    .setMessage("Bluetooth function not enabled.")
@@ -116,6 +126,8 @@ public class DeviceSearchFragment extends Fragment {
         return result;
     }
 
+
+
     private void onDeviceUpdate(List<Device> devices) {
         //not being used
     }
@@ -156,6 +168,19 @@ public class DeviceSearchFragment extends Fragment {
         super.onDestroyView();
         scanner.stop();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            if(resultCode == RESULT_OK){
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentSelf());
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                //user rejected turning bluetooth on
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+            }
+    }
+
 
     public void onStop(){
         super.onStop();
