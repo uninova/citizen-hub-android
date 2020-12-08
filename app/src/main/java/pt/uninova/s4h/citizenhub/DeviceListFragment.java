@@ -3,7 +3,13 @@ package pt.uninova.s4h.citizenhub;
 import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -14,10 +20,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListFragment extends Fragment {
 
@@ -74,17 +81,17 @@ public class DeviceListFragment extends Fragment {
 
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
-        for(Device device : devices) {
+        for (Device device : devices) {
             deviceList.add(new DeviceListItem(R.drawable.ic_watch, device, R.drawable.ic_settings));
         }
         buildRecycleView(resultView);
     }
 
-    private void cleanList(){
+    private void cleanList() {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result){
+    private void buildRecycleView(View result) {
         recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -108,27 +115,27 @@ public class DeviceListFragment extends Fragment {
             public void onSettingsClick(int position) {
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
                 //address_for_settings = deviceList.get(position).getmTextDescription();
-                deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null,null);
+                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
+                        deviceList.get(position).getmTextDescription(), null, null);
             }
         });
     }
 
-    public void insertItem(int position){ //this is for the recyclerview testing
+    public void insertItem(int position) { //this is for the recyclerview testing
         deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, new Device(), R.drawable.ic_settings));
         adapter.notifyItemInserted(position);
     }
-    public void removeItem(int position){ //this is for the recyclerview testing
+
+    public void removeItem(int position) { //this is for the recyclerview testing
         deviceList.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
-    public void onoffItem(int position){ //this is for the recyclerview testing
+    public void onoffItem(int position) { //this is for the recyclerview testing
         if (deviceList.get(position).getmImageResource() == R.drawable.ic_watch) {
             deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
             deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
-        }
-        else {
+        } else {
             deviceList.get(position).changeImageResource(R.drawable.ic_watch);
             deviceList.get(position).changeImageSettings(R.drawable.ic_settings);
         }
@@ -151,11 +158,11 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-           int i=0;
+            int i = 0;
             String[] pairedDevices = new String[deviceList.size()];
 
-            for (DeviceListItem device : deviceList){
-               
+            for (DeviceListItem device : deviceList) {
+
 
                 pairedDevices[i] = device.getmTextDescription();
             }
@@ -163,7 +170,6 @@ public class DeviceListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }

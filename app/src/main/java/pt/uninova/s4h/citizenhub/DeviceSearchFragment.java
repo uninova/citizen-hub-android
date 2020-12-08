@@ -1,8 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothClass;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -25,13 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -51,12 +42,13 @@ public class DeviceSearchFragment extends Fragment {
     Boolean goBackNeeded = false;
     private HashSet<String> devices;
     String[] pairedDevices;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         localInflater = inflater;
         localContainer = container;
-        LocationManager lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         BluetoothManager bm = (BluetoothManager) getContext().getSystemService(Context.BLUETOOTH_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -68,18 +60,20 @@ public class DeviceSearchFragment extends Fragment {
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         try {
             bluetooth_enabled = bm.getAdapter().isEnabled();
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
-        if(!bluetooth_enabled)
-        {
+        if (!bluetooth_enabled) {
             // notify user
             new AlertDialog.Builder(getContext())
                     .setMessage("Bluetooth function not enabled.")
@@ -89,10 +83,9 @@ public class DeviceSearchFragment extends Fragment {
                             getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton("Cancel", null)
                     .show();
-        }
-        else if(!gps_enabled && !network_enabled) {
+        } else if (!gps_enabled && !network_enabled) {
             // notify user
             new AlertDialog.Builder(getContext())
                     .setMessage("Location function not enabled.")
@@ -102,7 +95,7 @@ public class DeviceSearchFragment extends Fragment {
                             getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton("Cancel", null)
                     .show();
         }
 
@@ -113,17 +106,17 @@ public class DeviceSearchFragment extends Fragment {
         buildRecycleView(result);
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
-        if(bluetooth_enabled)
-        {
+        if (bluetooth_enabled) {
             System.out.println("Searching...");
             scanner.start((address, name) -> {
                 buildRecycleView(result);
-                if( !(devices.contains(address))) {
+                if (!(devices.contains(address))) {
                     System.out.println("BT: " + address + " and " + name);
                     deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                             new Device(name, address, null, null), R.drawable.ic_settings_off));
                     adapter.notifyItemInserted(0);
-                }});
+                }
+            });
         }
 
         return result;
@@ -170,13 +163,13 @@ public class DeviceSearchFragment extends Fragment {
         scanner.stop();
     }
 
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         System.out.println("GOT STOPPED");
         goBackNeeded = true;
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         System.out.println("GONE BACK TO ONRESUME");
         if (goBackNeeded) {
