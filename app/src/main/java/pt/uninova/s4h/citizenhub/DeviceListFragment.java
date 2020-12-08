@@ -31,6 +31,7 @@ public class DeviceListFragment extends Fragment {
 
     private DeviceViewModel model;
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -41,12 +42,12 @@ public class DeviceListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
-
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
                         Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH},
                 1);
+
     }
 
     @Override
@@ -150,7 +151,15 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
+           int i=0;
+            String[] pairedDevices = new String[deviceList.size()];
+
+            for (DeviceListItem device : deviceList){
+               
+
+                pairedDevices[i] = device.getmTextDescription();
+            }
+            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment(pairedDevices));
         }
         return super.onOptionsItemSelected(item);
     }
