@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothClass;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -20,7 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -38,7 +49,8 @@ public class DeviceSearchFragment extends Fragment {
     LayoutInflater localInflater;
     ViewGroup localContainer;
     Boolean goBackNeeded = false;
-
+    private HashSet<String> devices;
+    String[] pairedDevices;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -49,6 +61,10 @@ public class DeviceSearchFragment extends Fragment {
         boolean gps_enabled = false;
         boolean network_enabled = false;
         bluetooth_enabled = false;
+        devices = new HashSet<String>();
+        pairedDevices = getArguments().getStringArray("pairedDevices");
+
+        devices.addAll(Arrays.asList(pairedDevices));
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -102,13 +118,12 @@ public class DeviceSearchFragment extends Fragment {
             System.out.println("Searching...");
             scanner.start((address, name) -> {
                 buildRecycleView(result);
-                System.out.println("BT: " + address + " and " + name);
-                if(!(deviceList.contains(new Device(name, address, null, null)))) {
+                if( !(devices.contains(address))) {
+                    System.out.println("BT: " + address + " and " + name);
                     deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                             new Device(name, address, null, null), R.drawable.ic_settings_off));
                     adapter.notifyItemInserted(0);
-                }
-            });
+                }});
         }
 
         return result;
