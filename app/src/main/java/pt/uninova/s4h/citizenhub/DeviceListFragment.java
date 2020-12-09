@@ -158,15 +158,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            int i = 0;
-            String[] pairedDevices = new String[deviceList.size()];
-
-            for (DeviceListItem device : deviceList) {
-
-
-                pairedDevices[i] = device.getmTextDescription();
-            }
-            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment(pairedDevices));
+            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
         }
         return super.onOptionsItemSelected(item);
     }
