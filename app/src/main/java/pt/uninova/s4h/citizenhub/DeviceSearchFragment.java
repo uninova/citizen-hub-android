@@ -7,17 +7,13 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -66,7 +62,7 @@ public class DeviceSearchFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        checkPermissions();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,9 +73,8 @@ public class DeviceSearchFragment extends Fragment {
         bm = (BluetoothManager) getContext().getSystemService(Context.BLUETOOTH_SERVICE);
 
         bluetooth_enabled = false;
-        checkPermissions();
-        requestFeatures();
 
+        requestFeatures();
 
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
@@ -205,9 +200,7 @@ public class DeviceSearchFragment extends Fragment {
                 for (int i = 0; i < permissions.length; i++) {
                     getActivity().getPackageManager();
                     if (grantResults[i] == PERMISSION_GRANTED) {
-                        Log.d("Permissions", "Permission Granted: " + permissions[i]);
                     } else if (grantResults[i] == PERMISSION_DENIED) {
-                        Log.d("Permissions", "Permission Denied: " + permissions[i]);
                         required = true;
                     }
                 }
