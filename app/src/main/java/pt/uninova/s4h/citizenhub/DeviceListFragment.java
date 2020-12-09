@@ -115,8 +115,8 @@ public class DeviceListFragment extends Fragment {
             public void onSettingsClick(int position) {
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
                 //address_for_settings = deviceList.get(position).getmTextDescription();
-                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null, null);
+                deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);
             }
         });
     }
@@ -132,7 +132,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     public void onoffItem(int position) { //this is for the recyclerview testing
-        if (deviceList.get(position).getmImageResource() == R.drawable.ic_watch) {
+        if (deviceList.get(position).getImageResource() == R.drawable.ic_watch) {
             deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
             deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
         } else {

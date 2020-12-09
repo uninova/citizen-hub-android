@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
@@ -140,8 +138,8 @@ public class DeviceSearchFragment extends Fragment {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
 
-                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null, null);
+                deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);
             }
 
             @Override
