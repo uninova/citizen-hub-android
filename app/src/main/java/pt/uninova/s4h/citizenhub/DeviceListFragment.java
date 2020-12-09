@@ -42,11 +42,6 @@ public class DeviceListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
 
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
-                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH},
-                1);
     }
 
     @Override
