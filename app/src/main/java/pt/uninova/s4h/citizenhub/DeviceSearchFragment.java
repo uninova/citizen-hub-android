@@ -40,8 +40,6 @@ public class DeviceSearchFragment extends Fragment {
     LayoutInflater localInflater;
     ViewGroup localContainer;
     Boolean goBackNeeded = false;
-    private HashSet<String> devices;
-    String[] pairedDevices;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,11 +51,6 @@ public class DeviceSearchFragment extends Fragment {
         boolean gps_enabled = false;
         boolean network_enabled = false;
         bluetooth_enabled = false;
-        devices = new HashSet<String>();
-        pairedDevices = getArguments().getStringArray("pairedDevices");
-
-        devices.addAll(Arrays.asList(pairedDevices));
-
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex) {
@@ -110,7 +103,7 @@ public class DeviceSearchFragment extends Fragment {
             System.out.println("Searching...");
             scanner.start((address, name) -> {
                 buildRecycleView(result);
-                if (!(devices.contains(address))) {
+                if (!(model.isDevicePaired(address))){
                     System.out.println("BT: " + address + " and " + name);
                     deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                             new Device(name, address, null, null), R.drawable.ic_settings_off));
