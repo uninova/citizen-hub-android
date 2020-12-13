@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
@@ -58,14 +55,6 @@ public class DeviceSearchFragment extends Fragment {
     private LocationManager lm;
     private BluetoothManager bm;
     private boolean goBackNeeded = false;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Log.d("TUDOPRONTO", "oncreate motherfucker");
-
-    }
 
     private void checkPermissions() {
 
@@ -130,7 +119,6 @@ public class DeviceSearchFragment extends Fragment {
             bluetooth_enabled = bm.getAdapter().isEnabled();
         } catch(Exception ex) {}
            if(!bluetooth_enabled){
-               Log.d("TUDOPRONTO", "a checkar bluetooth");
                Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
            }
@@ -143,7 +131,6 @@ public class DeviceSearchFragment extends Fragment {
            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex){}
             if(!gps_enabled){
-            Log.d("TUDOPRONTO", "a checkar localização");
             new AlertDialog.Builder(getContext())
                     .setMessage("Location function not enabled.")
                     .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
@@ -167,12 +154,9 @@ public class DeviceSearchFragment extends Fragment {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                Log.d("TUDOPRONTO", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
                 Toast.makeText(requireContext(), "permission granted", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), "permission denied", Toast.LENGTH_SHORT).show();
-                Log.d("TUDOPRONTO", "permission denied");
 
             }
         } else {
@@ -286,10 +270,6 @@ public class DeviceSearchFragment extends Fragment {
             scanner.stop();
             //   requireActivity().getSupportFragmentManager().popBackStack();
         }
-       // startScan();
-
-        System.out.println("GONE BACK TO ONRESUME");
         startScan();
     }
-
     }
