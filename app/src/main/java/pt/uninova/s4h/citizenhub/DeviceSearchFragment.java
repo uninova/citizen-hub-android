@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
@@ -46,14 +47,14 @@ public class DeviceSearchFragment extends Fragment {
     private DeviceViewModel model;
     public static Device deviceForSettings;
     private BluetoothScanner scanner;
-    private boolean bluetooth_permission = false;
-    private boolean location_permission = false;
-    boolean bluetooth_enabled;
-    boolean gps_enabled;
+    private boolean bluetoothPermission = false;
+    private boolean locationPermission = false;
+    boolean bluetoothEnabled;
+    boolean gpsEnabled;
     LayoutInflater localInflater;
     ViewGroup localContainer;
-    private LocationManager lm;
-    private BluetoothManager bm;
+    private LocationManager locationManager;
+    private BluetoothManager bluetoothManager;
     private boolean goBackNeeded = false;
 
     private void checkPermissions() {
@@ -61,7 +62,7 @@ public class DeviceSearchFragment extends Fragment {
         getPermissionBluetooth();
         getPermissionBluetoothAdmin();
         getPermissionLocation();
-        if (bluetooth_permission && location_permission) {
+        if (bluetoothPermission && locationPermission) {
             isLocationOn();
             isBluetoothOn();
         }
@@ -78,7 +79,7 @@ public class DeviceSearchFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.BLUETOOTH},
                     PERMISSIONS_REQUEST_CODE);
         }
-        bluetooth_permission = true;
+        bluetoothPermission = true;
     }
 
     private void getPermissionBluetoothAdmin() {
@@ -92,7 +93,7 @@ public class DeviceSearchFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.BLUETOOTH_ADMIN},
                     PERMISSIONS_REQUEST_CODE);
         }
-        bluetooth_permission = true;
+        bluetoothPermission = true;
     }
 
     private void getPermissionLocation() {
@@ -110,27 +111,27 @@ public class DeviceSearchFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_CODE);
         }
-        location_permission = true;
+        locationPermission = true;
     }
-
 
     private void isBluetoothOn() {
         try {
-            bluetooth_enabled = bm.getAdapter().isEnabled();
-        } catch(Exception ex) {}
-           if(!bluetooth_enabled){
-               Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-               requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
-           }
-
+            bluetoothEnabled = bluetoothManager.getAdapter().isEnabled();
+        } catch (Exception ex) {
+        }
+        if (!bluetoothEnabled) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
         }
 
+    }
 
     private void isLocationOn() {
         try {
-           gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ex){}
-            if(!gps_enabled){
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+        }
+        if (!gpsEnabled) {
             new AlertDialog.Builder(getContext())
                     .setMessage("Location function not enabled.")
                     .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
@@ -140,7 +141,7 @@ public class DeviceSearchFragment extends Fragment {
                             paramDialogInterface.dismiss();
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton("Cancel", null)
                     .show();
 
         }
@@ -151,14 +152,16 @@ public class DeviceSearchFragment extends Fragment {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
+
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Toast.makeText(requireContext(), "permission granted", Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(requireContext(), "permission denied", Toast.LENGTH_SHORT).show();
-
             }
+
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -166,23 +169,24 @@ public class DeviceSearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         localInflater = inflater;
         localContainer = container;
 
-        lm = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-        bm = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+        bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
+
         checkPermissions();
 
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
+
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+
         cleanList();
         buildRecycleView(result);
 
-
         return result;
-
-
     }
 
     private void startScan() {
@@ -256,20 +260,21 @@ public class DeviceSearchFragment extends Fragment {
         }
 
     }
-@Override
+
+    @Override
     public void onStop() {
         super.onStop();
         System.out.println("GOT STOPPED");
         goBackNeeded = true;
     }
 
-@Override
+    @Override
     public void onResume() {
         super.onResume();
-        if (goBackNeeded){
+        if (goBackNeeded) {
             scanner.stop();
             //   requireActivity().getSupportFragmentManager().popBackStack();
         }
         startScan();
     }
-    }
+}
