@@ -18,6 +18,7 @@ import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DeviceListFragment extends Fragment {
 
@@ -145,7 +146,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
+            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
         }
         return super.onOptionsItemSelected(item);
     }
