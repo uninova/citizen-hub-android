@@ -32,13 +32,10 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
-import static android.app.Activity.RESULT_OK;
-
 public class DeviceSearchFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_CODE = 77;
     private static final int FEATURE_BLUETOOTH_STATE = 78;
-    private static final int FEATURE_LOCATION_STATE = 79;
 
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
@@ -55,31 +52,109 @@ public class DeviceSearchFragment extends Fragment {
     ViewGroup localContainer;
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
-    private boolean goBackNeeded = false;
+    private boolean hasStartedEnableLocationActivity = false;
 
-    private void checkPermissions() {
+    private boolean checkPermissions() {
+        if (!hasBluetoothEnabled()) {
+            enableBluetooth();
+        } else if (!hasBluetoothPermissions()) {
+            System.out.println("requesting permission");
+            requestBluetoothPermissions();
+        } else if (!hasLocationEnabled()) {
+            enableLocation();
+        } else if (!hasLocationPermissions()) {
+            requestLocationPermissions();
+        } else {
+            System.out.println("scanning");
 
-        getPermissionBluetooth();
-        getPermissionBluetoothAdmin();
-        getPermissionLocation();
-        if (bluetoothPermission && locationPermission) {
-            isLocationOn();
-            isBluetoothOn();
+            startScan();
+
+            return true;
         }
+
+        return false;
+    }
+
+    private void requestLocationPermissions() {
+        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSIONS_REQUEST_CODE);
+    }
+
+    private boolean hasLocationPermissions() {
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
 
     }
 
-    private void getPermissionBluetooth() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.BLUETOOTH)) {
-            }
-
-            requestPermissions(new String[]{Manifest.permission.BLUETOOTH},
-                    PERMISSIONS_REQUEST_CODE);
+    private void enableLocation() {
+        if (hasStartedEnableLocationActivity) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage("Application can't scan for devices without location turned on")
+                    .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                            getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            paramDialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Don't turn on location", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+                        }
+                    })
+                    .show();
+        } else {
+            hasStartedEnableLocationActivity = true;
+            new AlertDialog.Builder(getContext())
+                    .setMessage("Location function not enabled.")
+                    .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                            getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            paramDialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                          checkPermissions();
+                        }
+                    })
+                    .show();
         }
-        bluetoothPermission = true;
+    }
+
+    private boolean hasBluetoothEnabled() {
+        return bluetoothManager.getAdapter().isEnabled();
+    }
+
+    private void enableBluetooth() {
+        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
+    }
+
+    private boolean hasBluetoothPermissions() {
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    private void requestBluetoothPermissions() {
+
+        requestPermissions(new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN},
+                PERMISSIONS_REQUEST_CODE);
+//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            if (shouldShowRequestPermissionRationale(
+//                    Manifest.permission.BLUETOOTH)) {
+//            }
+//
+//            requestPermissions(new String[]{Manifest.permission.BLUETOOTH},
+//                    PERMISSIONS_REQUEST_CODE);
+//        }
+//        bluetoothPermission = true;
     }
 
     private void getPermissionBluetoothAdmin() {
@@ -168,15 +243,14 @@ public class DeviceSearchFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
 
         localInflater = inflater;
         localContainer = container;
 
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
-
-        checkPermissions();
 
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
@@ -249,12 +323,8 @@ public class DeviceSearchFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case FEATURE_BLUETOOTH_STATE:
-            case FEATURE_LOCATION_STATE: {
-                if (resultCode == RESULT_OK) {
-                } else {
-                    Toast.makeText(requireContext(), "Bluetooth on failed", Toast.LENGTH_LONG).show();
-                }
+            case FEATURE_BLUETOOTH_STATE: {
+                checkPermissions();
                 break;
             }
         }
@@ -265,16 +335,23 @@ public class DeviceSearchFragment extends Fragment {
     public void onStop() {
         super.onStop();
         System.out.println("GOT STOPPED");
-        goBackNeeded = true;
+        if (scanner != null) {
+            scanner.stop();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (goBackNeeded) {
-            scanner.stop();
-            //   requireActivity().getSupportFragmentManager().popBackStack();
-        }
-        startScan();
+
+        checkPermissions();
+        System.out.println("checking permissions");
+
+    }
+
+
+    private boolean hasLocationEnabled() {
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 }
+
