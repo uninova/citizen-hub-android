@@ -1,11 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
+
+    <Button
+        android:id="@+id/about_licenses_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="124dp"
+        android:text="@string/about_licenses_of_use"
+        app:layout_constraintBottom_toTopOf="@+id/text_about_2paragraph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_rpgd_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/about_rpgd_button"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="161dp"
+        android:text="@string/about_rpgd_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="163dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="285dp"
+        android:layout_marginEnd="208dp"
+        android:layout_marginBottom="369dp"
+        android:contentDescription="@string/about_kbz_logo"
+        android:src="@drawable/img_s4h_logo_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="163dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="285dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="369dp"
+        android:contentDescription="@string/about_comissaoeu_logo"
+        android:src="@drawable/img_s4h_logo_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/about_logo_smart4health"
+        android:layout_width="209dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="101dp"
+        android:contentDescription="@string/about_smart4health_logo"
+        android:src="@drawable/img_s4h_logo_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_about_1paragraph"
@@ -15,16 +87,16 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="40dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="Developed by UNINOVA, under the H2020 Smart4Health project"
+        android:text="@string/about_developedBy"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.263" />
+        app:layout_constraintVertical_bias="0.252" />
 
     <TextView
         android:id="@+id/text_about_2paragraph"
@@ -32,35 +104,44 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="100dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="https://www.smart4health.eu/"
+        android:text="@string/about_website_smart4health"
         android:textAlignment="center"
         android:textColorLink="@color/colorS4HLightBlue"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph"
-        app:layout_constraintVertical_bias="0.143" />
+        app:layout_constraintVertical_bias="0.913" />
 
     <TextView
-        android:id="@+id/text_about_3paragraph"
+        android:id="@+id/text_about_versioning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="40dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="The project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 826117"
+        android:text="@string/about_versioning"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_2paragraph"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintTop_toBottomOf="@+id/about_logo_smart4health"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
