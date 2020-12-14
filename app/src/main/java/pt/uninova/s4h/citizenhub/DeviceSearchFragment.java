@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -14,7 +13,6 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,25 +67,24 @@ public class DeviceSearchFragment extends Fragment {
         return result;
     }
 
-    private boolean checkPermissions() {
+    private void checkPermissions() {
+
         if (!hasBluetoothEnabled()) {
             enableBluetooth();
+
         } else if (!hasBluetoothPermissions()) {
-            System.out.println("requesting permission");
             requestBluetoothPermissions();
+
         } else if (!hasLocationEnabled()) {
             enableLocation();
+
         } else if (!hasLocationPermissions()) {
             requestLocationPermissions();
-        } else {
-            System.out.println("scanning");
 
+        } else {
             startScan();
 
-            return true;
         }
-
-        return false;
     }
 
     private boolean hasLocationPermissions() {
@@ -109,41 +106,26 @@ public class DeviceSearchFragment extends Fragment {
     private boolean hasBluetoothEnabled() {
         return bluetoothManager.getAdapter().isEnabled();
     }
+
     private void enableLocation() {
         if (hasStartedEnableLocationActivity) {
             new AlertDialog.Builder(getContext())
-                    .setMessage("Application can't scan for devices without location turned on")
-                    .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                            getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                            paramDialogInterface.dismiss();
-                        }
+                    .setMessage(R.string.location_warning_message)
+                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton("Don't turn on location", new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
-                        }
-                    })
+                    .setNegativeButton(R.string.location_disable_button, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
                     .show();
         } else {
             hasStartedEnableLocationActivity = true;
             new AlertDialog.Builder(getContext())
-                    .setMessage("Location function not enabled.")
-                    .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                            getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                            paramDialogInterface.dismiss();
-                        }
+                    .setMessage(R.string.location_message)
+                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                          checkPermissions();
-                        }
-                    })
+                    .setNegativeButton(R.string.location_refuse_button, (paramDialogInterface, paramInt) -> checkPermissions())
                     .show();
         }
     }
@@ -174,10 +156,7 @@ public class DeviceSearchFragment extends Fragment {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(requireContext(), "permission granted", Toast.LENGTH_SHORT).show();
-
             } else {
-                Toast.makeText(requireContext(), "permission denied", Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -186,13 +165,10 @@ public class DeviceSearchFragment extends Fragment {
     }
 
 
-
     private void startScan() {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
-        System.out.println("Searching...");
         scanner.start((address, name) -> {
             buildRecycleView(requireView());
-            System.out.println("BT: " + address + " and " + name);
             deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                     new Device(name, address, null, null), R.drawable.ic_settings_off));
             adapter.notifyItemInserted(0);
@@ -246,11 +222,8 @@ public class DeviceSearchFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case FEATURE_BLUETOOTH_STATE: {
-                checkPermissions();
-                break;
-            }
+        if (requestCode == FEATURE_BLUETOOTH_STATE) {
+            checkPermissions();
         }
 
     }
@@ -258,7 +231,6 @@ public class DeviceSearchFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        System.out.println("GOT STOPPED");
         if (scanner != null) {
             scanner.stop();
         }
@@ -269,7 +241,6 @@ public class DeviceSearchFragment extends Fragment {
         super.onResume();
 
         checkPermissions();
-        System.out.println("checking permissions");
 
     }
 }
