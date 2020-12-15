@@ -45,4 +45,6 @@
     <string name="about_rpgd_button">RPGD</string>
     <string name="uninova_logo">uninova_logo</string>
     <string name="img_logo_kbz">kbz logo</string>
+    <string name="text_rpgd_info">Rpgd Info</string>
+    <string name="text_license_of_use_info">License of Use info</string>
 </resources>

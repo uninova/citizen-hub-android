@@ -6,9 +6,11 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 
 public class AboutFragment extends Fragment {
@@ -21,6 +23,20 @@ public class AboutFragment extends Fragment {
         String linkText = getString(R.string.about_website_smart4health);
         clickableTextLink.setText(Html.fromHtml(linkText));
         clickableTextLink.setMovementMethod(LinkMovementMethod.getInstance());
+        Button rpgdButton = (Button) result.findViewById(R.id.about_rpgd_button);
+        rpgdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToRpgdFragment());
+            }
+        });
+        Button licenseOfUseButton = (Button) result.findViewById(R.id.about_licenses_button);
+        licenseOfUseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToLicenseOfUseFragment());
+            }
+        });
 
         /*
         //to test loading screen
@@ -36,5 +52,4 @@ public class AboutFragment extends Fragment {
 
         return result;
     }
-
 }

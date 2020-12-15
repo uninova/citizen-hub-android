@@ -37,8 +37,8 @@
 
     <ImageView
         android:id="@+id/img_logo_uninova"
-        android:layout_width="163dp"
-        android:layout_height="77dp"
+        android:layout_width="180dp"
+        android:layout_height="99dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="285dp"
         android:layout_marginEnd="208dp"
@@ -47,10 +47,10 @@
         android:src="@drawable/img_uninova_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.705"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.409" />
 
     <ImageView
         android:id="@+id/img_logo_ce"
