@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -9,11 +10,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 
 public class AboutFragment extends Fragment {
+
+    Application app;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (Application) requireActivity().getApplication();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,18 +49,16 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        /*
-        //to test loading screen
-        final View result = inflater.inflate(R.layout.fragment_loading, container, false);
-        ProgressDialog nDialog;
-        nDialog = new ProgressDialog(getContext());
-        nDialog.setMessage("Loading Device Data..");
-        nDialog.setTitle("Retrieving Data"); //nice without this
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(true);
-        nDialog.show();
-        nDialog.dismiss(); //TO remove dialog (still shows progress stuff)*/
-
         return result;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }
