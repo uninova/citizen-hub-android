@@ -20,7 +20,7 @@ public class RpgdFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_device_add, container, false);
+        final View result = inflater.inflate(R.layout.fragment_rpgd, container, false);
         return result;
     }
 

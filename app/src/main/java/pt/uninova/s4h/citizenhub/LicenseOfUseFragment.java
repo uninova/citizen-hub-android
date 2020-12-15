@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import pt.uninova.s4h.citizenhub.R;
-
 public class LicenseOfUseFragment extends Fragment {
 
     private TextView licenseTextView;
@@ -20,7 +18,7 @@ public class LicenseOfUseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_device_add, container, false);
+        final View result = inflater.inflate(R.layout.fragment_license_of_use, container, false);
         return result;
     }
 
