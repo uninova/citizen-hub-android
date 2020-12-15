@@ -96,6 +96,26 @@
             android:id="@+id/about_fragment"
             android:name="pt.uninova.s4h.citizenhub.AboutFragment"
             android:label="@string/fragment_about_label"
-            tools:layout="@layout/fragment_about"/>
+            tools:layout="@layout/fragment_about">
+        <action
+            android:id="@+id/action_about_fragment_to_rpgd_fragment"
+            app:destination="@+id/fragment_rpgd"
+            app:popUpTo="@+id/fragment_rpgd"/>
+
+        <action
+            android:id="@+id/action_about_fragment_to_license_of_use_fragment"
+            app:destination="@+id/license_of_use_fragment"
+            app:popUpTo="@+id/license_of_use_fragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_rpgd"
+        android:name="pt.uninova.s4h.citizenhub.RpgdFragment"
+        android:label="fragment_rpgd"
+        tools:layout="@layout/fragment_rpgd" />
+    <fragment
+        android:id="@+id/license_of_use_fragment"
+        android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
+        android:label="license_of_use_fragment" />
 
 </navigation>
