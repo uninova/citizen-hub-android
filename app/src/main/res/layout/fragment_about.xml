@@ -10,63 +10,75 @@
         android:id="@+id/about_licenses_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginBottom="124dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorS4HGreyLight"
+        android:padding="8dp"
         android:text="@string/about_licenses_of_use"
+        android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_website"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_rpgd_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/about_rpgd_button"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="161dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorS4HGreyLight"
+        android:padding="8dp"
         android:text="@string/about_rpgd_button"
+        android:textColor="@color/colorS4HDarkBlue"
+        app:layout_constraintBottom_toTopOf="@+id/about_licenses_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/img_logo_uninova"
         android:layout_width="163dp"
         android:layout_height="77dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="285dp"
         android:layout_marginEnd="208dp"
         android:layout_marginBottom="369dp"
-        android:contentDescription="@string/about_kbz_logo"
-        android:src="@drawable/img_s4h_logo_3"
+        android:contentDescription="@string/uninova_logo"
+        android:src="@drawable/img_uninova_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/img_logo_ce"
+        android:layout_width="217dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/about_kbz_logo"
+        android:src="@drawable/img_ce_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.277"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_logo_kbz"
         android:layout_width="163dp"
         android:layout_height="77dp"
         android:layout_marginTop="285dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginBottom="369dp"
-        android:contentDescription="@string/about_comissaoeu_logo"
-        android:src="@drawable/img_s4h_logo_3"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="26dp"
+        android:contentDescription="@string/img_logo_kbz"
+        android:src="@drawable/img_kbz_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/about_logo_smart4health"
+        android:id="@+id/img_about_logo_smart4health"
         android:layout_width="209dp"
         android:layout_height="64dp"
         android:layout_marginStart="101dp"
@@ -133,7 +145,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_logo_smart4health"
+        app:layout_constraintTop_toBottomOf="@+id/img_about_logo_smart4health"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
