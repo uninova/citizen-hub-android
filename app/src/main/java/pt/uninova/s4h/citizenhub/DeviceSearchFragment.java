@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +44,7 @@ public class DeviceSearchFragment extends Fragment {
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
     private boolean hasStartedEnableLocationActivity = false;
+    private boolean hasStartedEnableBluetoothActivity = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -131,8 +131,27 @@ public class DeviceSearchFragment extends Fragment {
     }
 
     private void enableBluetooth() {
-        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
+        if (hasStartedEnableBluetoothActivity) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.fragment_device_search_bluetooth_warning_title)
+                    .setPositiveButton(R.string.fragment_device_search_bluetooth_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                        paramDialogInterface.dismiss();
+                    })
+                    .setNegativeButton(R.string.fragment_device_search_bluetooth_disable_button, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .show();
+
+        } else {
+            hasStartedEnableBluetoothActivity = true;
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.fragment_device_search_bluetooth_not_enabled_title)
+                    .setPositiveButton(R.string.fragment_device_search_bluetooth_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                        paramDialogInterface.dismiss();
+                    })
+                    .setNegativeButton(R.string.fragment_device_search_bluetooth_refuse_enabling, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .show();
+        }
     }
 
     private void requestBluetoothPermissions() {
