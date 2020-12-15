@@ -29,10 +29,9 @@
     <string name="fragment_report_text_view_heartrate_text">Heart rate average: %1$.2f bpm</string>
     <string name="fragment_report_text_view_no_data_summary">No activity data for today.</string>
     <string name="fragment_report_text_view_title_no_data">No daily activity data for %1$s</string>
-    <string name="fragment_report_text_view_title">Daily activity data for %1$s</string>
-    <string name="location_warning_message">Application can\'t scan for devices without location turned on</string>
-    <string name="location_open_settings_button">Open location settings</string>
-    <string name="location_disable_button">Don\'t turn on location</string>
-    <string name="location_message">Location function not enabled.</string>
-    <string name="location_refuse_button">Cancel</string>
+    <string name="fragment_device_search_location_warning_title">Application can\'t scan for devices without location turned on</string>
+    <string name="fragment_device_search_location_open_settings_button">Open location settings</string>
+    <string name="fragment_device_search_location_disable_button">Don\'t turn on location</string>
+    <string name="fragment_device_search_location_not_enabled_title">Location function not enabled.</string>
+    <string name="fragment_device_search_location_refuse_enabling">Cancel</string>
 </resources>

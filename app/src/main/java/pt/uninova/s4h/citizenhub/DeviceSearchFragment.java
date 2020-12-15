@@ -110,22 +110,22 @@ public class DeviceSearchFragment extends Fragment {
     private void enableLocation() {
         if (hasStartedEnableLocationActivity) {
             new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.location_warning_message)
-                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                    .setMessage(R.string.fragment_device_search_location_warning_title)
+                    .setPositiveButton(R.string.fragment_device_search_location_open_settings_button, (paramDialogInterface, paramInt) -> {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.location_disable_button, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .setNegativeButton(R.string.fragment_device_search_location_disable_button, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
                     .show();
         } else {
             hasStartedEnableLocationActivity = true;
             new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.location_message)
-                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                    .setMessage(R.string.fragment_device_search_location_not_enabled_title)
+                    .setPositiveButton(R.string.fragment_device_search_location_open_settings_button, (paramDialogInterface, paramInt) -> {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.location_refuse_button, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_location_refuse_enabling, (paramDialogInterface, paramInt) -> checkPermissions())
                     .show();
         }
     }
