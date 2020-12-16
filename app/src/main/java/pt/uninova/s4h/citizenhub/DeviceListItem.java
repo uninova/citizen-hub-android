@@ -9,20 +9,12 @@ public class DeviceListItem {
     private int imageSettings;
     private Device device;
 
-    public DeviceListItem(int imageResource, Device device, int imageSettings)
+    public DeviceListItem( Device device,int imageResource, int imageSettings)
     {
         image = imageResource;
         this.device = device;
         this.imageSettings = imageSettings;
     }
-
-    /*
-       public Agent(String name, String address, String type, String state) {
-        this.name = name;
-        this.address = address;
-        this.type = type;
-        this.state = state;
-    }*/
 
     public void changeImageResource(int imageResource) {
         image = imageResource; }
@@ -32,6 +24,10 @@ public class DeviceListItem {
 
     public int getImageResource() {
         return image;
+    }
+
+    public void setImageSettings(int imageSettings) {
+        this.imageSettings = imageSettings;
     }
 
     public int getImageSettings() {

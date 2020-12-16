@@ -1,10 +1,18 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -20,6 +28,8 @@ import pt.uninova.s4h.citizenhub.persistence.Device;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.persistence.Device;
+
 public class DeviceListFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -32,6 +42,7 @@ public class DeviceListFragment extends Fragment {
 
     private DeviceViewModel model;
 
+
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -42,6 +53,11 @@ public class DeviceListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
+                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH},
+                1);
 
     }
 
@@ -70,16 +86,16 @@ public class DeviceListFragment extends Fragment {
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
         for (Device device : devices) {
-            deviceList.add(new DeviceListItem( device,R.drawable.ic_watch, R.drawable.ic_settings));
+            deviceList.add(new DeviceListItem(device,R.drawable.ic_watch, R.drawable.ic_settings));
         }
         buildRecycleView(resultView);
     }
 
-    private void cleanList(){
+    private void cleanList() {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result){
+    private void buildRecycleView(View result) {
         recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -109,11 +125,12 @@ public class DeviceListFragment extends Fragment {
         });
     }
 
-    public void insertItem(int position){ //this is for the recyclerview testing
-        deviceList.add(position, new DeviceListItem( new Device(), R.drawable.ic_about_fragment, R.drawable.ic_settings));
+    public void insertItem(int position) { //this is for the recyclerview testing
+        deviceList.add(position, new DeviceListItem(new Device(),R.drawable.ic_about_fragment, R.drawable.ic_settings));
         adapter.notifyItemInserted(position);
     }
-    public void removeItem(int position){ //this is for the recyclerview testing
+
+    public void removeItem(int position) { //this is for the recyclerview testing
         deviceList.remove(position);
         adapter.notifyItemRemoved(position);
     }
@@ -149,7 +166,6 @@ public class DeviceListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
