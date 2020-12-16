@@ -3,7 +3,7 @@ package pt.uninova.s4h.citizenhub;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListItem {
-    private int image;
+    private int imageResource;
     private String name;
     private String address;
     private int imageSettings;
@@ -11,19 +11,17 @@ public class DeviceListItem {
 
     public DeviceListItem( Device device,int imageResource, int imageSettings)
     {
-        image = imageResource;
+        this.imageResource = imageResource;
         this.device = device;
         this.imageSettings = imageSettings;
     }
 
-    public void changeImageResource(int imageResource) {
-        image = imageResource; }
-
-    public void changeImageSettings(int imageSettings) {
-        this.imageSettings = imageSettings; }
-
     public int getImageResource() {
-        return image;
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
     }
 
     public void setImageSettings(int imageSettings) {

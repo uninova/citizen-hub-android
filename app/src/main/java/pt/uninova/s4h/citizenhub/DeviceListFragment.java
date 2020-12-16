@@ -23,8 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +84,7 @@ public class DeviceListFragment extends Fragment {
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
         for (Device device : devices) {
-            deviceList.add(new DeviceListItem(device,R.drawable.ic_watch, R.drawable.ic_settings));
+            deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
         }
         buildRecycleView(resultView);
     }
@@ -110,52 +108,26 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //insertItem(position);
-                //removeItem(position);
-                //onoffItem(position);
             }
 
             @Override
             public void onSettingsClick(int position) {
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
-                //address_for_settings = deviceList.get(position).getmTextDescription();
                 deviceForSettings = new Device(deviceList.get(position).getName(),
                         deviceList.get(position).getAddress(), null, null);
             }
         });
     }
 
-    public void insertItem(int position) { //this is for the recyclerview testing
-        deviceList.add(position, new DeviceListItem(new Device(),R.drawable.ic_about_fragment, R.drawable.ic_settings));
-        adapter.notifyItemInserted(position);
-    }
-
-    public void removeItem(int position) { //this is for the recyclerview testing
-        deviceList.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-
-    public void onoffItem(int position) { //this is for the recyclerview testing
-        if (deviceList.get(position).getImageResource() == R.drawable.ic_watch) {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
-        } else {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings);
-        }
-        adapter.notifyItemChanged(position);
-    }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0 /*ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT*/) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //this inactive
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            //removeItem(position);
         }
     };
 
