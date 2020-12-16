@@ -58,8 +58,7 @@
 
         <action
                 android:id="@+id/action_device_search_fragment_to_device_add_fragment"
-                app:destination="@+id/device_add_fragment"
-                app:popUpTo="@+id/device_add_fragment"/>
+                app:destination="@+id/device_add_fragment"/>
         <action
             android:id="@+id/action_device_search_fragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
