@@ -18,6 +18,7 @@ import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DeviceListFragment extends Fragment {
 
@@ -42,11 +43,6 @@ public class DeviceListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
 
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
-                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH},
-                1);
     }
 
     @Override
@@ -150,7 +146,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
+            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
         }
         return super.onOptionsItemSelected(item);
     }
