@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 
+import static java.util.Objects.requireNonNull;
+
 public class DeviceViewModel extends AndroidViewModel {
     private MutableLiveData<Device> device;
     private LiveData<List<Device>> deviceList;
@@ -35,7 +37,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public boolean isDevicePaired(String address) {
         pairedDevices = deviceList.getValue();
-        setAddress = pairedDevices.stream()
+        setAddress = requireNonNull(pairedDevices).stream()
                 .map(Device::getAddress)
                 .collect(Collectors.toSet());
         return setAddress.contains(address);
@@ -50,7 +52,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public void apply() {
-        setAddress.add(device.getValue().getAddress());
+        setAddress.add(requireNonNull(device.getValue()).getAddress());
         deviceRepository.add(device.getValue());
     }
 
