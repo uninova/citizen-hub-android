@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity(tableName = "device")
 public class Device {
 
@@ -18,6 +20,19 @@ public class Device {
     @Ignore
     public Device() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device device = (Device) o;
+        return address.equals(device.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address);
     }
 
     public Device(String name, String address, String type, String state) {
