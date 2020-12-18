@@ -107,6 +107,11 @@
             app:destination="@+id/license_of_use_fragment"
             app:popUpTo="@+id/license_of_use_fragment"/>
 
+        <action
+            android:id="@+id/action_about_fragment_to_open_source_licenses_fragment"
+            app:destination="@+id/open_source_licenses_fragment"
+            app:popUpTo="@+id/open_source_licenses_fragment" />
+
     </fragment>
     <fragment
         android:id="@+id/fragment_gpdr"
@@ -117,5 +122,9 @@
         android:id="@+id/license_of_use_fragment"
         android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
         android:label="license_of_use_fragment" />
+    <fragment
+        android:id="@+id/openSourceLicensesFragment"
+        android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
+        android:label="OpenSourceLicensesFragment" />
 
 </navigation>

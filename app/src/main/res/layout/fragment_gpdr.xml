@@ -7,13 +7,13 @@
     tools:context=".GpdrFragment">
 
     <TextView
-        android:id="@+id/text_rpgd_info"
+        android:id="@+id/text_open_sources_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/text_gpdr_info"
+        android:text="@string/open_source_licenses_fragment_button_text"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
