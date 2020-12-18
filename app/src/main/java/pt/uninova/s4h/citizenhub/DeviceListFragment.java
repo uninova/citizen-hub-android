@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;

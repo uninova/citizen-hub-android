@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -189,12 +188,12 @@ public class DeviceSearchFragment extends Fragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
         scanner.start((address, name) -> {
             buildRecycleView(requireView());
-            Device device =new Device(name, address, null, null);
-            if (!model.isDevicePaired(device)){
-                deviceList.add(new DeviceListItem(device,R.drawable.ic_watch_off, R.drawable.ic_settings_off));
-            adapter.notifyItemInserted(0);
-        }
-    });
+            Device device = new Device(name, address, null, null);
+            if (!model.isDevicePaired(device)) {
+                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
+                adapter.notifyItemInserted(0);
+            }
+        });
     }
 
 
