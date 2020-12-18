@@ -49,6 +49,14 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        Button openSourceLicenses = (Button) result.findViewById(R.id.about_open_sources_button);
+        licenseOfUseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToOpenSourceLicensesFragment());
+            }
+        });
+
         return result;
     }
 
