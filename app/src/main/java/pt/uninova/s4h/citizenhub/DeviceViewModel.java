@@ -20,7 +20,6 @@ public class DeviceViewModel extends AndroidViewModel {
     private MutableLiveData<Device> device;
     private LiveData<List<Device>> deviceList;
     final private DeviceRepository deviceRepository;
-    private List<Device> pairedDevices;
     private Set<String> setAddress = new HashSet<>();
 
     public DeviceViewModel(Application application) {
@@ -28,19 +27,18 @@ public class DeviceViewModel extends AndroidViewModel {
         deviceRepository = new DeviceRepository(application);
         device = new MutableLiveData<>();
         deviceList = deviceRepository.getAll();
-        pairedDevices = deviceList.getValue();
     }
 
     public LiveData<List<Device>> getDevices() {
         return deviceList;
     }
 
-    public boolean isDevicePaired(String address) {
-        pairedDevices = deviceList.getValue();
-        setAddress = requireNonNull(pairedDevices).stream()
-                .map(Device::getAddress)
-                .collect(Collectors.toSet());
-        return setAddress.contains(address);
+    public boolean isDevicePaired(Device device) {
+        List<Device> pairedDevices = deviceList.getValue();
+        if(pairedDevices!=null) {
+            return deviceList.getValue().contains(device);
+        }
+        return false;
     }
 
     public MutableLiveData<Device> getSelectedDevice() {
