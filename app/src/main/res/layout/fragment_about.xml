@@ -7,50 +7,47 @@
     tools:context=".AboutFragment">
 
     <Button
-        android:id="@+id/about_licenses_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/about_gdpr_button"
+        android:layout_width="191dp"
+        android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
-        android:text="@string/about_licenses_of_use"
-        android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_website"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/about_rpgd_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
-        android:text="@string/about_rpgd_button"
+        android:text="@string/about_gpdr_button"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/about_licenses_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/img_logo_uninova"
-        android:layout_width="180dp"
-        android:layout_height="99dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="285dp"
-        android:layout_marginEnd="208dp"
-        android:layout_marginBottom="369dp"
-        android:contentDescription="@string/uninova_logo"
-        android:src="@drawable/img_uninova_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/about_licenses_button"
+        android:layout_width="191dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="92dp"
+        android:background="@color/colorS4HGreyLight"
+        android:padding="8dp"
+        android:text="@string/about_licenses_of_use"
+        android:textColor="@color/colorS4HDarkBlue"
+        app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_contact"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.705"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.409" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/about_open_sources_button"
+        android:layout_width="191dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="28dp"
+        android:background="@color/colorS4HGreyLight"
+        android:padding="8dp"
+        android:text="@string/about_open_source_licenses"
+        android:textColor="@color/colorS4HDarkBlue"
+        app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_contact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/img_logo_ce"
@@ -70,11 +67,24 @@
         android:id="@+id/img_logo_kbz"
         android:layout_width="163dp"
         android:layout_height="77dp"
-        android:layout_marginTop="285dp"
-        android:layout_marginEnd="26dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/img_logo_kbz"
         android:src="@drawable/img_kbz_logo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_logo_uninova"
+        android:layout_width="180dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="237dp"
+        android:layout_marginEnd="191dp"
+        android:contentDescription="@string/uninova_logo"
+        android:src="@drawable/img_uninova_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -111,14 +121,14 @@
         app:layout_constraintVertical_bias="0.252" />
 
     <TextView
-        android:id="@+id/text_about_clickable_website"
+        android:id="@+id/text_about_clickable_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="@string/about_website_smart4health"
+        android:text="@string/about_contact_email"
         android:textAlignment="center"
         android:textColorLink="@color/colorS4HLightBlue"
         android:textSize="20sp"
@@ -153,7 +163,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="210dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

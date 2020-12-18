@@ -35,16 +35,17 @@
     <string name="location_disable_button">Don\'t turn on location</string>
     <string name="location_message">Location function not enabled.</string>
     <string name="location_refuse_button">Cancel</string>
-    <string name="about_website_smart4health"><![CDATA[<a href=\'https://www.smart4health.eu/\'>www.smart4health.eu]]></string>
-    <string name="about_developedBy"><![CDATA[Developed by UNINOVA & KnowledgeBiz under Smart4Health (H2020–826117)]]></string>
+    <string name="about_contact_email">helpdesk@uninova.pt</string>
+    <string name="about_developedBy"><![CDATA[Developed by]]></string>
     <string name="about_versioning">version: 0.1.0</string>
     <string name="about_smart4health_logo">smart4health_logo</string>
     <string name="about_kbz_logo">KBZ_Logo</string>
     <string name="about_comissaoeu_logo">ComissãoEU logo</string>
-    <string name="about_licenses_of_use">Licenses of use</string>
-    <string name="about_rpgd_button">RPGD</string>
+    <string name="about_licenses_of_use">Terms and Conditions</string>
+    <string name="about_gpdr_button">Privacy Policy</string>
     <string name="uninova_logo">uninova_logo</string>
     <string name="img_logo_kbz">kbz logo</string>
-    <string name="text_rpgd_info">Rpgd Info</string>
+    <string name="text_gpdr_info">Gpdr Info</string>
     <string name="text_license_of_use_info">License of Use info</string>
+    <string name="about_open_source_licenses">Open Source Licenses</string>
 </resources>

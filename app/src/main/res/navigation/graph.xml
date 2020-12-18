@@ -99,8 +99,8 @@
             tools:layout="@layout/fragment_about">
         <action
             android:id="@+id/action_about_fragment_to_rpgd_fragment"
-            app:destination="@+id/fragment_rpgd"
-            app:popUpTo="@+id/fragment_rpgd"/>
+            app:destination="@+id/fragment_gpdr"
+            app:popUpTo="@+id/fragment_gpdr"/>
 
         <action
             android:id="@+id/action_about_fragment_to_license_of_use_fragment"
@@ -109,10 +109,10 @@
 
     </fragment>
     <fragment
-        android:id="@+id/fragment_rpgd"
-        android:name="pt.uninova.s4h.citizenhub.RpgdFragment"
-        android:label="fragment_rpgd"
-        tools:layout="@layout/fragment_rpgd" />
+        android:id="@+id/fragment_gpdr"
+        android:name="pt.uninova.s4h.citizenhub.GpdrFragment"
+        android:label="fragment_gpdr"
+        tools:layout="@layout/fragment_gpdr" />
     <fragment
         android:id="@+id/license_of_use_fragment"
         android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
