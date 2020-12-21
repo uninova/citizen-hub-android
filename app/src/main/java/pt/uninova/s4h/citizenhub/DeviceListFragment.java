@@ -1,12 +1,16 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.Manifest;
 import android.app.Application;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -14,11 +18,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListFragment extends Fragment {
 
@@ -32,8 +38,9 @@ public class DeviceListFragment extends Fragment {
 
     private DeviceViewModel model;
 
+
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_device_list, menu);
     }
@@ -69,17 +76,17 @@ public class DeviceListFragment extends Fragment {
 
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
-        for(Device device : devices) {
-            deviceList.add(new DeviceListItem(R.drawable.ic_watch, device, R.drawable.ic_settings));
+        for (Device device : devices) {
+            deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
         }
         buildRecycleView(resultView);
     }
 
-    private void cleanList(){
+    private void cleanList() {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result){
+    private void buildRecycleView(View result) {
         recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -94,52 +101,26 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //insertItem(position);
-                //removeItem(position);
-                //onoffItem(position);
             }
 
             @Override
             public void onSettingsClick(int position) {
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
-                //address_for_settings = deviceList.get(position).getmTextDescription();
-                deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null,null);
+                deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);
             }
         });
     }
 
-    public void insertItem(int position){ //this is for the recyclerview testing
-        deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, new Device(), R.drawable.ic_settings));
-        adapter.notifyItemInserted(position);
-    }
-    public void removeItem(int position){ //this is for the recyclerview testing
-        deviceList.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-
-    public void onoffItem(int position){ //this is for the recyclerview testing
-        if (deviceList.get(position).getmImageResource() == R.drawable.ic_watch) {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
-        }
-        else {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings);
-        }
-        adapter.notifyItemChanged(position);
-    }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0 /*ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT*/) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //this inactive
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            //removeItem(position);
         }
     };
 
@@ -150,7 +131,6 @@ public class DeviceListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
