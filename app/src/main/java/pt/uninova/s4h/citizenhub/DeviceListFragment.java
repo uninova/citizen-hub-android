@@ -39,9 +39,9 @@ public class DeviceListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         app = (Application) requireActivity().getApplication();
-
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_ADMIN,
@@ -98,40 +98,16 @@ public class DeviceListFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //insertItem(position);
-                //removeItem(position);
-                //onoffItem(position);
             }
 
             @Override
             public void onSettingsClick(int position) {
-                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
-                //address_for_settings = deviceList.get(position).getmTextDescription();
+                DeviceConfigurationFragment.fromSearch = false;
                 deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
                         deviceList.get(position).getmTextDescription(), null,null);
+                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationFragment());
             }
         });
-    }
-
-    public void insertItem(int position){ //this is for the recyclerview testing
-        deviceList.add(position, new DeviceListItem(R.drawable.ic_about_fragment, new Device(), R.drawable.ic_settings));
-        adapter.notifyItemInserted(position);
-    }
-    public void removeItem(int position){ //this is for the recyclerview testing
-        deviceList.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-
-    public void onoffItem(int position){ //this is for the recyclerview testing
-        if (deviceList.get(position).getmImageResource() == R.drawable.ic_watch) {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch_off);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings_off);
-        }
-        else {
-            deviceList.get(position).changeImageResource(R.drawable.ic_watch);
-            deviceList.get(position).changeImageSettings(R.drawable.ic_settings);
-        }
-        adapter.notifyItemChanged(position);
     }
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0 /*ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT*/) {
@@ -139,11 +115,8 @@ public class DeviceListFragment extends Fragment {
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
-
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //this inactive
-            int position = viewHolder.getAdapterPosition();
-            //removeItem(position);
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         }
     };
 
@@ -154,7 +127,4 @@ public class DeviceListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }

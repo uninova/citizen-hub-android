@@ -32,7 +32,6 @@ public class DeviceSearchFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    public static Device deviceForSettings;
     private BluetoothScanner scanner;
     boolean bluetooth_enabled;
     LayoutInflater localInflater;
@@ -64,7 +63,6 @@ public class DeviceSearchFragment extends Fragment {
 
         if(!bluetooth_enabled)
         {
-            // notify user
             new AlertDialog.Builder(getContext())
                     .setMessage("Bluetooth function not enabled.")
                     .setPositiveButton("Open bluetooth settings", new DialogInterface.OnClickListener() {
@@ -77,7 +75,6 @@ public class DeviceSearchFragment extends Fragment {
                     .show();
         }
         else if(!gps_enabled && !network_enabled) {
-            // notify user
             new AlertDialog.Builder(getContext())
                     .setMessage("Location function not enabled.")
                     .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
@@ -104,7 +101,7 @@ public class DeviceSearchFragment extends Fragment {
                 buildRecycleView(result);
                 System.out.println("BT: " + address + " and " + name);
                 deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
-                        new Device(name, address, null, null), R.drawable.ic_settings_off));
+                        new Device(name, address, null, null)));
                 adapter.notifyItemInserted(0);
             });
         }
@@ -135,9 +132,9 @@ public class DeviceSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
-
-                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
+                DeviceConfigurationFragment.fromSearch = true;
+                Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceConfigurationFragment());
+                DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
                         deviceList.get(position).getmTextDescription(), null, null);
             }
 
@@ -164,7 +161,6 @@ public class DeviceSearchFragment extends Fragment {
         System.out.println("GONE BACK TO ONRESUME");
         if (goBackNeeded) {
             scanner.stop();
-            //getActivity().getSupportFragmentManager().popBackStack();
             Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
         }
     }

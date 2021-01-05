@@ -42,4 +42,5 @@ public enum MeasurementKind {
     public int getId() {
         return id;
     }
+
 }

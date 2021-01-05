@@ -4,10 +4,14 @@ import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListItem {
     private int mImageResource;
-    private String mTextTitle;
-    private String mTextDescription;
     private int mImageSettings;
     private Device device;
+
+    public DeviceListItem(int imageResource, Device device)
+    {
+        mImageResource = imageResource;
+        this.device = device;
+    }
 
     public DeviceListItem(int imageResource, Device device, int imageSettings)
     {
@@ -15,14 +19,6 @@ public class DeviceListItem {
         this.device = device;
         mImageSettings = imageSettings;
     }
-
-    /*
-       public Agent(String name, String address, String type, String state) {
-        this.name = name;
-        this.address = address;
-        this.type = type;
-        this.state = state;
-    }*/
 
     public void changeImageResource(int imageResource) {mImageResource = imageResource; }
 

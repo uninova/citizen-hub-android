@@ -7,7 +7,7 @@
     <string name="fragment_report_label">Daily Activity Reports</string>
     <string name="fragment_user_label">User Profile</string>
     <string name="fragment_about_label">About Smart4Health</string>
-    <string name="fragment_device_add_label">Add Device</string>
+    <string name="fragment_device_configuration_label">Device Configuration</string>
     <string name="menu_fragment_device_list_title">Search</string>
     <string name="menu_fragment_device_list_search_title">Search</string>
     <string name="fragment_summary_image_view_posture_content_description">TODO</string>
