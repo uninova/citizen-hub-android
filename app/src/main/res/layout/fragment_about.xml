@@ -11,14 +11,13 @@
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="24dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_gpdr_button"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/about_licenses_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -26,7 +25,7 @@
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="104dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_licenses_of_use"
@@ -40,7 +39,7 @@
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="40dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_open_source_licenses"
@@ -55,7 +54,7 @@
         android:layout_height="84dp"
         android:layout_marginStart="112dp"
         android:layout_marginEnd="136dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="52dp"
         android:contentDescription="@string/about_kbz_logo"
         android:src="@drawable/img_ce_logo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -65,9 +64,9 @@
 
     <ImageView
         android:id="@+id/img_logo_kbz"
-        android:layout_width="163dp"
-        android:layout_height="77dp"
-        android:layout_marginTop="244dp"
+        android:layout_width="173dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="220dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/img_logo_kbz"
         android:src="@drawable/img_kbz_logo"
@@ -79,11 +78,12 @@
         android:layout_width="180dp"
         android:layout_height="99dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="237dp"
+        android:layout_marginTop="208dp"
         android:layout_marginEnd="191dp"
         android:contentDescription="@string/uninova_logo"
         android:src="@drawable/img_uninova_logo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,10 +115,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.252" />
+        app:layout_constraintVertical_bias="0.215" />
 
     <TextView
         android:id="@+id/text_about_clickable_contact"
@@ -134,10 +134,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph"
-        app:layout_constraintVertical_bias="0.913" />
+        app:layout_constraintVertical_bias="0.875" />
 
     <TextView
         android:id="@+id/text_about_versioning"
