@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/lato_bold"
-            android:text="powered by"
+            android:text="@string/layout_nav_header_main_poweredby"
             android:textColor="@color/colorS4HDarkBlue"
             android:textSize="16sp"/>
 
@@ -39,6 +39,6 @@
             android:layout_height="57dp"
             android:cropToPadding="false"
             app:srcCompat="@drawable/img_s4h_logo"
-            android:contentDescription="TODO"/>
+            android:contentDescription="@string/layout_nav_header_main_logo_content_description"/>
 
 </LinearLayout>

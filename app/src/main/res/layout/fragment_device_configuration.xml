@@ -26,7 +26,7 @@
                 android:id="@+id/textConfigurationDeviceName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Name"
+                android:text="@string/layout_fragment_device_configuration_name"
                 android:textAlignment="center"
                 android:textSize="24sp" />
 
@@ -44,7 +44,7 @@
                 android:id="@+id/textConfigurationDeviceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Address"
+                android:text="@string/layout_fragment_device_configuration_name"
                 android:textAlignment="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="What this device will read:"
+                android:text="@string/layout_fragment_device_configuration_features"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>

@@ -91,7 +91,7 @@ public class SummaryFragment extends Fragment {
             }
 
             if (calories == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
-                noDataTextView.setText("No activity data for today.");
+                noDataTextView.setText(R.string.fragment_report_text_view_no_data_summary);
                 noDataLayout.setVisibility(View.VISIBLE); //TODO make own card
             } else {
                 noDataLayout.setVisibility(View.GONE); //TODO all other gones

@@ -36,13 +36,13 @@ public class ReportDetailFragment extends Fragment {
             model.sendDetail(new ResultListener<Record<DocumentReference>>() {
                 @Override
                 public void onSuccess(Record<DocumentReference> recAord) {
-                    requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show());
+                    requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), R.string.fragment_report_toast_uploaded, Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void onError(D4LException exception) {
                     requireActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.fragment_report_toast_not_uploaded, Toast.LENGTH_SHORT).show();
                         exception.printStackTrace();
                     });
                 }
@@ -94,15 +94,6 @@ public class ReportDetailFragment extends Fragment {
                 infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
             else
                 infoTextView_heartrate.setVisibility(View.GONE);
-
-            /*
-            infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitting_text, 100.0));
-            infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, 200.0));
-            infoTextView_distance.setText(getString(R.string.fragment_report_text_view_distance_text, 200.0));
-            infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, 40.0));
-            infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, 100.0));
-            infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, 200.0));
-            */
         });
     }
 

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:foregroundGravity="bottom"
         android:gravity="bottom"
-        android:text="ADD DEVICE"
+        android:text="@string/layout_activity_main_add_device"
         app:layout_anchor="@+id/recycler_view"
         app:layout_anchorGravity="bottom|center"
         app:layout_dodgeInsetEdges="bottom" />

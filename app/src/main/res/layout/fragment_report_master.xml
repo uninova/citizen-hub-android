@@ -14,7 +14,7 @@
         android:layout_marginTop="108dp"
         android:fontFamily="@font/lato"
         android:gravity="center"
-        android:text="Select a Day"
+        android:text="@string/layout_fragment_report_master_select_day"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="30sp"

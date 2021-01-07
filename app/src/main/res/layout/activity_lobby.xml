@@ -22,6 +22,7 @@
                 android:layout_width="299dp"
                 android:layout_height="253dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/layout_activity_lobby_contentDescription_lines"
                 app:srcCompat="@drawable/img_s4h_logo_addon_login" />
 
             <ImageView
@@ -29,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/layout_activity_lobby_contentDescription_logo"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/img_s4h_logo_3" />
 

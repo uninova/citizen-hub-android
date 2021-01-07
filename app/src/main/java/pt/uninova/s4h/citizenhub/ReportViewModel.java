@@ -146,46 +146,46 @@ public class ReportViewModel extends AndroidViewModel {
 
         y += 80;
 
-        canvas.drawText("Citizen Hub Daily Report " + detailDate.toString(), x, y, titlePaint);
+        canvas.drawText(R.string.fragment_report_pdf_title + detailDate.toString(), x, y, titlePaint);
         y += 40;
         x += 20;
 
         MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.HEART_RATE);
 
         if (measurementAggregate != null) {
-            canvas.drawText("Average heart rate (bpm): " + decimalFormat.format(measurementAggregate.getAverage()), x, y, textPaint);
+            canvas.drawText(R.string.fragment_report_pdf_hr_avg + decimalFormat.format(measurementAggregate.getAverage()), x, y, textPaint);
             y += 20;
-            canvas.drawText("Minimum heart rate (bpm): " + measurementAggregate.getMin(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_hr_min + measurementAggregate.getMin()), x, y, textPaint);
             y += 20;
-            canvas.drawText("Maximum heart rate (bpm): " + measurementAggregate.getMax(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_hr_max + measurementAggregate.getMax()), x, y, textPaint);
             y += 20;
         }
 
         measurementAggregate = detailAggregates.get(MeasurementKind.STEPS);
 
         if (measurementAggregate != null) {
-            canvas.drawText("Steps taken (number): " + measurementAggregate.getSum(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_steps_taken + measurementAggregate.getSum()), x, y, textPaint);
             y += 20;
         }
 
         measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
 
         if (measurementAggregate != null) {
-            canvas.drawText("Travelled distance (m): " + measurementAggregate.getSum(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_distance + measurementAggregate.getSum()), x, y, textPaint);
             y += 20;
         }
 
         measurementAggregate = detailAggregates.get(MeasurementKind.CALORIES);
 
         if (measurementAggregate != null) {
-            canvas.drawText("Calories consumed (kcal): " + measurementAggregate.getSum(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_calories + measurementAggregate.getSum()), x, y, textPaint);
             y += 20;
         }
 
         measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
 
         if (measurementAggregate != null) {
-            canvas.drawText("Total time spent with good posture (min): " + measurementAggregate.getSum(), x, y, textPaint);
+            canvas.drawText(String.valueOf(R.string.fragment_report_pdf_good_posture + measurementAggregate.getSum()), x, y, textPaint);
         }
 
         document.finishPage(page);
@@ -280,7 +280,7 @@ public class ReportViewModel extends AndroidViewModel {
         attachments.add(attach);
 
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                "Citizen Hub Daily Report " + detailDate.toString(),
+                R.string.fragment_report_pdf_file_title + detailDate.toString(),
                 new FhirInstant(
                         new FhirDateTime(
                                 new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
@@ -295,6 +295,4 @@ public class ReportViewModel extends AndroidViewModel {
 
         client.createRecord(documentReference, resultListener);
     }
-
-
 }

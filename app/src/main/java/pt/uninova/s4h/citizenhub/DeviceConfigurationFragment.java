@@ -50,25 +50,26 @@ public class DeviceConfigurationFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_configuration, container, false);
 
         addDevice = result.findViewById(R.id.buttonConfiguration);
-        deleteDevice = result.findViewById(R.id.buttonDelete);
+        deleteDevice = result.findViewById(R.id.buttonDelete); //TODO new function, protected
+
         if(fromSearch) {
-            addDevice.setText("Connect");
+            addDevice.setText(R.string.fragment_configuration_text_view_connect);
             deleteDevice.setVisibility(View.GONE);
         }
         else {
-            addDevice.setText("Update");
+            addDevice.setText(R.string.fragment_configuration_text_view_update);
             deleteDevice.setVisibility(View.VISIBLE);
-            deleteDevice.setText("Delete");
+            deleteDevice.setText(R.string.fragment_configuration_text_view_delete);
         }
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
         addressDevice = result.findViewById(R.id.textConfigurationDeviceAddress);
         listViewFeatures = result.findViewById(R.id.listViewFeature);
         Device device = DeviceListFragment.deviceForSettings;
 
-        nameDevice.setText("Name: " + device.getName());
-        addressDevice.setText("Address: " + device.getAddress());
+        nameDevice.setText(getString(R.string.fragment_configuration_text_view_name, device.getName()));
+        addressDevice.setText(getString(R.string.fragment_configuration_text_view_address, device.getAddress()));
 
-        //TODO TEMP
+        //TODO TEMP FOR TESTING
         featuresDevice = new HashSet<>();
         featuresDevice.add(MeasurementKind.GOOD_POSTURE);
         featuresDevice.add(MeasurementKind.STEPS);
@@ -93,10 +94,12 @@ public class DeviceConfigurationFragment extends Fragment {
             for (FeatureListItem feature : featuresList)
             {
                 System.out.println(feature.getMeasurementKind() + " " + feature.isActive());
-            } //TODO TESTING THIS
-
+            }
             System.out.println(fromSearch);
+            //TODO TEST
+
             //TODO: set features, DB?
+
             if (fromSearch) {
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
             }
@@ -111,7 +114,6 @@ public class DeviceConfigurationFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationFragmentToDeviceListFragment());
             }
         });
-
 
         return result;
     }

@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         super.onStart();
         Intent intent = new Intent(this, CitizenHubService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
     }
 
     @Override
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
-
 
     @Override
     public CitizenHubService getService() {

@@ -64,26 +64,26 @@ public class DeviceSearchFragment extends Fragment {
         if(!bluetooth_enabled)
         {
             new AlertDialog.Builder(getContext())
-                    .setMessage("Bluetooth function not enabled.")
-                    .setPositiveButton("Open bluetooth settings", new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.fragment_search_dialog_bluetooth_not_enabled)
+                    .setPositiveButton(R.string.fragment_search_dialog_bluetooth_open_settings, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                             getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.fragment_search_dialog_bluetooth_cancel,null)
                     .show();
         }
         else if(!gps_enabled && !network_enabled) {
             new AlertDialog.Builder(getContext())
-                    .setMessage("Location function not enabled.")
-                    .setPositiveButton("Open location settings", new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.fragment_search_dialog_location_not_enabled)
+                    .setPositiveButton(R.string.fragment_search_dialog_location_open_settings, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                             getContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.fragment_search_dialog_location_cancel,null)
                     .show();
         }
 
@@ -96,10 +96,10 @@ public class DeviceSearchFragment extends Fragment {
 
         if(bluetooth_enabled)
         {
-            System.out.println("Searching...");
+            System.out.println("Searching..."); //for console
             scanner.start((address, name) -> {
                 buildRecycleView(result);
-                System.out.println("BT: " + address + " and " + name);
+                System.out.println("BT: " + address + " and " + name); //for console
                 deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
                         new Device(name, address, null, null)));
                 adapter.notifyItemInserted(0);
@@ -152,13 +152,11 @@ public class DeviceSearchFragment extends Fragment {
 
     public void onStop(){
         super.onStop();
-        System.out.println("GOT STOPPED");
         goBackNeeded = true;
     }
 
     public void onResume(){
         super.onResume();
-        System.out.println("GONE BACK TO ONRESUME");
         if (goBackNeeded) {
             scanner.stop();
             Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());

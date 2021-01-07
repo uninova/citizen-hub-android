@@ -18,6 +18,7 @@
             android:layout_height="106dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
+            android:contentDescription="@string/layout_fragment_user_icon_content_description"
             app:srcCompat="@drawable/ic_user_fragment"
             tools:srcCompat="@drawable/ic_user_fragment" />
 
@@ -28,7 +29,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_bold"
             android:gravity="center"
-            android:text="someone@uninova.pt"
+            android:text="@string/layout_fragment_user_email"
             android:textColor="@color/colorS4HGrey"
             android:textSize="26sp" />
 
@@ -41,7 +42,7 @@
             android:layout_marginBottom="100dp"
             android:background="@color/colorS4HGreyLight"
             android:padding="8dp"
-            android:text="Sign Out"
+            android:text="@string/layout_fragment_user_sign_out"
             android:textColor="@color/colorS4HDarkBlue" />
     </LinearLayout>
 
