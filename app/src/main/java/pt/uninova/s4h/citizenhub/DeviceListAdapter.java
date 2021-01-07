@@ -37,10 +37,10 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @Override
     public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position) {
         DeviceListItem currentItem = devicesList.get(position);
-        holder.textTitle.setText(currentItem.getmTextTitle());
-        holder.textDescription.setText(currentItem.getmTextDescription());
-        holder.image.setImageResource(currentItem.getmImageResource());
-        holder.imageSettings.setImageResource(currentItem.getmImageSettings());
+        holder.textTitle.setText(currentItem.getName());
+        holder.textDescription.setText(currentItem.getAddress());
+        holder.image.setImageResource(currentItem.getImageResource());
+        holder.imageSettings.setImageResource(currentItem.getImageSettings());
     }
 
     @Override

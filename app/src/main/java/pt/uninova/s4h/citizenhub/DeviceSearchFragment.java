@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +44,7 @@ public class DeviceSearchFragment extends Fragment {
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
     private boolean hasStartedEnableLocationActivity = false;
+    private boolean hasStartedEnableBluetoothActivity = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -110,29 +110,48 @@ public class DeviceSearchFragment extends Fragment {
     private void enableLocation() {
         if (hasStartedEnableLocationActivity) {
             new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.location_warning_message)
-                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                    .setMessage(R.string.fragment_device_search_location_warning_title)
+                    .setPositiveButton(R.string.fragment_device_search_location_open_settings_button, (paramDialogInterface, paramInt) -> {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.location_disable_button, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
                     .show();
         } else {
             hasStartedEnableLocationActivity = true;
             new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.location_message)
-                    .setPositiveButton(R.string.location_open_settings_button, (paramDialogInterface, paramInt) -> {
+                    .setMessage(R.string.fragment_device_search_location_not_enabled_title)
+                    .setPositiveButton(R.string.fragment_device_search_location_open_settings_button, (paramDialogInterface, paramInt) -> {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.location_refuse_button, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
                     .show();
         }
     }
 
     private void enableBluetooth() {
-        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        requireActivity().startActivityForResult(intent, FEATURE_BLUETOOTH_STATE);
+        if (hasStartedEnableBluetoothActivity) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.fragment_device_search_bluetooth_warning_title)
+                    .setPositiveButton(R.string.fragment_device_search_bluetooth_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                        paramDialogInterface.dismiss();
+                    })
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .show();
+
+        } else {
+            hasStartedEnableBluetoothActivity = true;
+            new AlertDialog.Builder(getContext())
+                    .setMessage(R.string.fragment_device_search_cancel_option)
+                    .setPositiveButton(R.string.fragment_device_search_bluetooth_open_settings_button, (paramDialogInterface, paramInt) -> {
+                        requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                        paramDialogInterface.dismiss();
+                    })
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .show();
+        }
     }
 
     private void requestBluetoothPermissions() {
@@ -169,15 +188,17 @@ public class DeviceSearchFragment extends Fragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
         scanner.start((address, name) -> {
             buildRecycleView(requireView());
-            deviceList.add(new DeviceListItem(R.drawable.ic_watch_off,
-                    new Device(name, address, null, null), R.drawable.ic_settings_off));
-            adapter.notifyItemInserted(0);
+            Device device = new Device(name, address, null, null);
+            if (!model.isDevicePaired(device)) {
+                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
+                adapter.notifyItemInserted(0);
+            }
         });
     }
 
 
     private void onDeviceUpdate(List<Device> devices) {
-        //not being used
+
     }
 
     private void cleanList() {
@@ -201,8 +222,8 @@ public class DeviceSearchFragment extends Fragment {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
 
-                deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
-                        deviceList.get(position).getmTextDescription(), null, null);
+                deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);
             }
 
             @Override
@@ -244,4 +265,3 @@ public class DeviceSearchFragment extends Fragment {
 
     }
 }
-
