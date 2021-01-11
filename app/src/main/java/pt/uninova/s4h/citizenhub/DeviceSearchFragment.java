@@ -132,8 +132,7 @@ public class DeviceSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                DeviceConfigurationFragment.fromSearch = true;
-                Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceConfigurationFragment());
+                Navigation.findNavController(getView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
                 DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getmTextTitle(),
                         deviceList.get(position).getmTextDescription(), null, null);
             }

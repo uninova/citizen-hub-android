@@ -102,10 +102,9 @@ public class DeviceListFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
-                DeviceConfigurationFragment.fromSearch = false;
                 deviceForSettings = new Device (deviceList.get(position).getmTextTitle(),
                         deviceList.get(position).getmTextDescription(), null,null);
-                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationFragment());
+                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceUpdateConfigurationFragment());
             }
         });
     }
