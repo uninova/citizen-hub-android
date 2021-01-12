@@ -11,14 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class GpdrFragment extends Fragment {
+public class PrivacyPolicyFragment extends Fragment {
 
     private TextView rpgdInformation;
     private Application app;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_gpdr, container, false);
+        final View result = inflater.inflate(R.layout.fragment_privacy_policy, container, false);
         return result;
     }
 

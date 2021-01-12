@@ -96,9 +96,9 @@
             android:label="@string/fragment_about_label"
             tools:layout="@layout/fragment_about">
         <action
-            android:id="@+id/action_about_fragment_to_rpgd_fragment"
-            app:destination="@+id/fragment_gpdr"
-            app:popUpTo="@+id/fragment_gpdr"/>
+            android:id="@+id/action_about_fragment_to_privacy_policy_fragment"
+            app:destination="@+id/fragment_privacy_policy"
+            app:popUpTo="@+id/fragment_privacy_policy"/>
 
         <action
             android:id="@+id/action_about_fragment_to_license_of_use_fragment"
@@ -112,10 +112,10 @@
 
     </fragment>
     <fragment
-        android:id="@+id/fragment_gpdr"
-        android:name="pt.uninova.s4h.citizenhub.GpdrFragment"
-        android:label="fragment_gpdr"
-        tools:layout="@layout/fragment_gpdr" />
+        android:id="@+id/fragment_privacy_policy"
+        android:name="pt.uninova.s4h.citizenhub.PrivacyPolicyFragment"
+        android:label="fragment_privacy_policy"
+        tools:layout="@layout/fragment_privacy_policy" />
     <fragment
         android:id="@+id/license_of_use_fragment"
         android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"

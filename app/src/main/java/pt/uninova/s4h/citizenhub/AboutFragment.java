@@ -34,11 +34,11 @@ public class AboutFragment extends Fragment {
         String linkText = getString(R.string.about_contact_email);
         clickableTextLink.setText(Html.fromHtml(linkText));
         clickableTextLink.setMovementMethod(LinkMovementMethod.getInstance());
-        Button rpgdButton = (Button) result.findViewById(R.id.about_gdpr_button);
+        Button rpgdButton = (Button) result.findViewById(R.id.about_privacy_policy_button);
         rpgdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToRpgdFragment());
+                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment());
             }
         });
         Button licenseOfUseButton = (Button) result.findViewById(R.id.about_licenses_button);

@@ -18,7 +18,7 @@ public class OpenSourceLicensesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_gpdr, container, false);
+        final View result = inflater.inflate(R.layout.fragment_privacy_policy, container, false);
         return result;
     }
 

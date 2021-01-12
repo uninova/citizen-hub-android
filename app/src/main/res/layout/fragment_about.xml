@@ -7,14 +7,14 @@
     tools:context=".AboutFragment">
 
     <Button
-        android:id="@+id/about_gdpr_button"
+        android:id="@+id/about_privacy_policy_button"
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
-        android:text="@string/about_gpdr_button"
+        android:text="@string/about_privacy_policy_button"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/about_licenses_button"
         app:layout_constraintEnd_toEndOf="parent"
