@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Citizen Hub</string>
     <string name="fragment_device_list_label">Devices</string>
-    <string name="fragment_device_search_label">Device Search...</string>
+    <string name="fragment_device_search_label">Device Search…</string>
+    <string name="fragment_device_search_location_warning_title">Citizen Hub can\'t scan for devices without location turned on</string>
+    <string name="fragment_device_search_location_open_settings_button">Open settings</string>
+    <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
+    <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
+    <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
+    <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
+    <string name="fragment_device_search_cancel_option">Cancel</string>
     <string name="fragment_device_detail_label">Device Detail</string>
     <string name="fragment_summary_label">Today\'s Activity</string>
     <string name="fragment_report_label">Daily Activity Reports</string>
@@ -40,10 +47,10 @@
     <string name="about_versioning">version: 0.1.0</string>
     <string name="about_smart4health_logo">smart4health_logo</string>
     <string name="about_kbz_logo">KBZ_Logo</string>
-    <string name="about_comissaoeu_logo">ComissãoEU logo</string>
+    <string name="about_european_commission_logo">EU commission logo</string>
     <string name="about_licenses_of_use">Terms and Conditions</string>
     <string name="about_gpdr_button">Privacy Policy</string>
-    <string name="uninova_logo">uninova_logo</string>
+    <string name="img_uninova_logo">uninova_logo</string>
     <string name="img_logo_kbz">kbz logo</string>
     <string name="text_gpdr_info">Gpdr Info</string>
     <string name="text_license_of_use_info">License of Use info</string>

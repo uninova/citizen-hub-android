@@ -49,14 +49,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/img_logo_ce"
+        android:id="@+id/img_ec_logo"
         android:layout_width="217dp"
         android:layout_height="84dp"
         android:layout_marginStart="112dp"
         android:layout_marginEnd="136dp"
         android:layout_marginBottom="52dp"
         android:contentDescription="@string/about_kbz_logo"
-        android:src="@drawable/img_ce_logo"
+        android:src="@drawable/img_ec_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.277"
@@ -80,7 +80,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="208dp"
         android:layout_marginEnd="191dp"
-        android:contentDescription="@string/uninova_logo"
+        android:contentDescription="@string/img_uninova_logo"
         android:src="@drawable/img_uninova_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
