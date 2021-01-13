@@ -30,17 +30,24 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View result = inflater.inflate(R.layout.fragment_about, container, false);
+
         TextView clickableTextLink = result.findViewById(R.id.text_about_clickable_contact);
+
         String linkText = getString(R.string.about_contact_email);
+
         clickableTextLink.setText(Html.fromHtml(linkText));
+
         clickableTextLink.setMovementMethod(LinkMovementMethod.getInstance());
+
         Button privacyPolicyButton = (Button) result.findViewById(R.id.about_privacy_policy_button);
+
         privacyPolicyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment());
             }
         });
+
         Button licenseOfUseButton = (Button) result.findViewById(R.id.about_licenses_button);
         licenseOfUseButton.setOnClickListener(new View.OnClickListener() {
             @Override
