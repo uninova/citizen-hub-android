@@ -30,7 +30,7 @@ public class PrivacyPolicyFragment extends Fragment {
         app = (Application) requireActivity().getApplication();
         TextView privacyPolicyText = (TextView) result.findViewById(R.id.text_privacy_policy);
 
-        Scanner data_in = new Scanner(getResources().openRawResource(R.raw.privacypolicy));
+        Scanner data_in = new Scanner(getResources().openRawResource(R.raw.privacy_policy));
         while(data_in.hasNext()){
             original_data.add(data_in.nextLine());
         }
