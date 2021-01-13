@@ -114,7 +114,7 @@
     <fragment
         android:id="@+id/fragment_privacy_policy"
         android:name="pt.uninova.s4h.citizenhub.PrivacyPolicyFragment"
-        android:label="fragment_privacy_policy"
+        android:label="@string/fragment_privacy_policy_label"
         tools:layout="@layout/fragment_privacy_policy" />
     <fragment
         android:id="@+id/license_of_use_fragment"
