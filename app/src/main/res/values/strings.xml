@@ -2,6 +2,7 @@
     <string name="app_name">Citizen Hub</string>
     <string name="fragment_device_list_label">Devices</string>
     <string name="fragment_device_search_label">Device Search…</string>
+    <string name="fragment_privacy_policy_label">Privacy Policy</string>+
     <string name="fragment_device_search_location_warning_title">Citizen Hub can\'t scan for devices without location turned on</string>
     <string name="fragment_device_search_location_open_settings_button">Open settings</string>
     <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
@@ -52,7 +53,7 @@
     <string name="about_privacy_policy_button">Privacy Policy</string>
     <string name="img_uninova_logo">uninova_logo</string>
     <string name="img_logo_kbz">kbz logo</string>
-    <string name="text_gpdr_info">Gpdr Info</string>
+    <string name="text_privacy_policy_info">Privacy Policy Info</string>
     <string name="text_license_of_use_info">License of Use info</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="open_source_licenses_fragment_button_text">Open Source License info</string>
