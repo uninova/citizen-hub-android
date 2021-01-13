@@ -1,0 +1,86 @@
+With our Smart4Health platform, which you can use by using our web app, we enable you to securely store and manage your health data digitally. The protection of your personal data is very important to us. This information describes how Smart4Health platform handles your personal data. Sections 1 to 3 inform you about your legal rights and Sections 4 to 7 explain how your personal data is processed when you register for and use the Smart4Health platform.
+
+1. Controller and data protection officer
+The controller pursuant to Art. 4 para. 7 of the General Data Protection Regulation (GDPR) for the web app is D4L data4life gGmbH, Rudolf-Breitscheid-Straße 32, 14482 Potsdam, Germany, we@data4life.care.
+You can reach our data protection officer (Mr Hans-Christian Ehrlich) at datenschutz@data4life.care or our postal address by writing to the attention of "The data protection officer".
+
+2. Your rights
+You have the following rights regarding personal data concerning you:
+– Right to access (Art. 15 GDPR),
+– Right to rectification (Art. 16 GDPR),
+– Right to erasure (Art. 17 GDPR; “Right to be forgotten”),
+– Right to restriction of processing (Art. 18 GDPR),
+– Right to object to the processing (Art. 21 GDPR),
+– Right to data transferability (Art. 20 GDPR).
+
+You also have the right to complain about our processing of your personal data to a data protection supervisory authority in the Member State where you are located, at your place of work or at the location of the alleged infringement if you believe that the processing of your personal data is unlawful.
+If you have given us consent to the processing of your data, you can withdraw it at any time with effect for the future. The lawfulness of processing your data until withdrawal remains unaffected by this.
+You can contact us at any time using the contact channels listed in Section 1 above and/or the contact information listed in our imprint for the assertion of your rights or for other data protection concerns.
+
+3. Supplementary note about your right of objection
+Please note that if your personal data is processed on the basis of a legitimate interest within the scope of the balancing of interests pursuant to Art. 6 para.1 subpara. 1 point (f) GDPR, you have the right to object to the processing of your personal data at any time. You can indicate your objection by contacting us at any time using the contact channels listed in Section 1 and/or the contact information in our imprint.
+
+4. Purposes and legal bases of the processing of your personal data
+
+a. Registration for the Smart4Health platform using the web app
+You can register for the Smart4Health platform using our web app.
+All you need to register for the Smart4Health platform is your email address, a password of your choice, and a mobile phone number for two-factor authentication. The password you have chosen will not be stored by us, only your email address and phone number. If you have forgotten your password, please use the personal recovery key displayed at the end of registration to regain access to your account.
+We use the double opt-in procedure for registration. This means that after your registration we will send you an email message to the email address you provided, in which we will ask you to confirm your registration.
+The legal basis for the aforementioned processing is Art. 6 para. 1 subpara. 1 point (b) GDPR (processing is necessary for the fulfillment of a contract with the data subject).
+After successful registration you can access the Smart4Health platform with your access data both using the web app and use the functionalities.
+
+b. Usage of the functionalities and storage of your health data
+As a registered user you can safely and in encrypted form upload and save data and documents (for example, medical letters, diagnostic findings) concerning you in the Smart4Health platform. You can also download, view, edit, and delete uploaded data/documents from the Smart4Health platform at any time. For more information on how we ensure the security of your uploaded data and documents in the Smart4Health platform, please see section 5 below.
+You can upload documents using the web app and save them in the Smart4Health platform. In the web app we process the uploaded data for the purpose of transmitting them to the Smart4Health platform.
+You can share data/documents uploaded/stored on the Smart4Health platform and selected by you with another person if you wish to do so. For this purpose, a PIN code is generated using a public URL used by the respective person that you inform this person about before sharing data/documents. This PIN code is used to establish a connection with the respective person using the web app, with which you can share the documents you selected with this person (digital handshake).
+The legal basis for the aforementioned processing of your data stored in the Smart4Health platform, including your health data, is the consent given by you during the registration process (Art. 6 para. 1 subpara. 1 point (a) in conjunction with Art. 9 para. 2 point (a) GDPR). Please note that you can withdraw your consent at any time. The lawfulness of the processing made on the basis of the consent up to your withdrawal remains unaffected by your withdrawal. You can declare your withdrawal, for example, by deleting your profile in the web app. Of course, you can also remove individual or all stored data/documents from the Smart4Health platform at any time using the functions provided and keep your user account.
+
+c. Creation of a personal health profile/medical history
+When using the Smart4Health platform you can also create a personal health profile by completing a questionnaire provided by Smart4Health. In this context, we process the data you provide, including health data in the Smart4Health platform, for the purpose of storing your personal health profile. Creating a health profile or answering the questionnaire is voluntary. For more information on how we ensure the security of your uploaded data and documents in the Smart4Health platform, see section 5 below.
+The legal basis for the aforementioned processing of your data stored in the Smart4Health platform, including your health data, is the consent given by you during the registration process (Art. 6 para. 1 subpara. 1 point (a) in conjunction with Art. 9 para. 2 point (a). GDPR. Please note that you can withdraw your consent at any time. The lawfulness of the processing made on the basis of the consent up to your withdrawal remains unaffected by your withdrawal. You can declare your withdrawal, for example, by deleting your personal health profile in the web app.
+
+d. Support/Contact
+When you contact us using the contact form provided on our website or by email, post, or telephone using the contact channels listed in the imprint, the data you provide (for example, your email address and your name as well as the content of your inquiry) will be stored by us in order to process and answer your questions or concerns or to provide the support you require when using the Smart4Health platform.
+We delete the data arising in this context after the storage is no longer necessary (usually after we fully answer your request), or restrict the processing if there are legal storage obligations. Depending on the content of your request, the legal basis for the processing described above is Art. 6 para. 1 subpara. 1 point (f) GDPR (processing is necessary to safeguard the legitimate interests of the controller) or Art. 6 para. 1 subpara. 1 point (b) GDPR (processing is necessary for the performance of a contract with the data subject) if you already have a user account with us and have queries regarding the use of the Smart4Health platform. The purpose of data processing is to process your inquiry. This will also constitute a legitimate interest in the processing of the data.
+
+e. Obligation to provide personal data
+If you wish to register for the Smart4Health platform or contact us, for example, using the contact channels listed in the imprint, you must provide the personal data required for registration and/or for processing and answering your inquiry. If you do not provide us with this data, it is not possible for us to create a user account for you or to process and answer your request. We will erase the data collected in this context after the storage is no longer necessary or restrict the processing if there are legal storage obligations.
+The legal basis is art. 6 para. 1 subpara. 1 point (b) and (f) GDPR. The purpose of data processing is to process your inquiry. This will also constitute a legitimate interest in the processing of the data.
+
+f. Non-existence of automated decision-making including profiling
+Please note that when using the Smart4Health platform and the Smart4Health functionalities, you will not be subject to any decision based exclusively on automated processing – including profiling – which has legal effect on you or significantly impairs you in a similar manner.
+
+5. Encrypted storage of your data in the Smart4Health platform, storage in Germany
+The data/documents uploaded by you to the Smart4Health platform and your personal health profile are encrypted end to end so that we cannot at any time take knowledge of or access the contents of the uploaded data/documents or your personal health profile. Only you have access to the data/documents uploaded by you and your personal health profile and can delete all or individual documents at any time using the functionalities provided in the user account. Your data and documents will also not be passed on or made available to third parties by us; however, you may share data/documents with your doctors if you wish to do so (see 4 b above).
+The data and documents in the Smart4Health platform are stored exclusively within Germany.
+
+6. Storage duration and deletion of data
+Even without a special request, we of course comply with our obligations to delete personal data (for example, pursuant to Art. 17 GDPR) and therefore only store data for as long as is necessary for the provision of the desired service or the respective purpose.
+We store data related to your user account for as long as you have a user account for the Smart4Health platform. Your user account will be deleted by us as soon as storage is no longer necessary, for example, after you have terminated the user relationship with us or have deleted your user account. You can of course edit and delete your uploaded data/documents and your personal health profile at any time, either in whole or in part, using the corresponding functionalities.
+If you withdraw your consent, we will erase your data immediately, unless we are obliged to further store it. In order to avoid an unintentional loss of your data, you have the possibility to retrieve the contents of your electronic health record in a common electronic format within 14 days. After the retrieval of the data by you and until the erasure of the data, the processing of the data will be restricted (blocking).
+
+7. Log files/Information provided by your browser
+If you only visit https://app.smart4health.eu for information purposes, i.e. if you do not register for the Smart4Health platform or contact us using the contact channels mentioned in the imprint, we only collect the data that your browser transmits to our server.
+This data is necessary to display https://app.smart4health.eu and to guarantee stability and security: IP address, date and time of the request, content of the request (specific page), access status/HTTP status code, amount of data transferred, website from which the request came, browser, operating system and its interface, language and version of the browser software. It is not possible for us to draw conclusions about individual persons on the basis of this data.
+This data is stored by us for technical security reasons, for example, to prevent attacks on our web server. After seven days at the latest, the data is made anonymous at domain level by shortening the IP address, so that it is no longer possible to establish a reference to the individual user. The legal basis for the processing described above is Art. 6 para. 1 subpara. 1 point (f) GDPR (processing is necessary to safeguard the legitimate interests of the controller).
+
+8. Use of cookies/tracking
+In addition to the aforementioned data, cookies are stored on your computer or mobile device when you use the Smart4Health platform using our web app. Cookies cannot execute programs or transfer viruses to your computer.
+
+a) Cookies for recognition
+With your consent, we use cookies for the purpose of recognizing you after your first visit to our web app, so that you are taken directly to the log-in page the next time you visit. Please note that the cookies used by us to recognize the user do not store any personal data and therefore do not allow any inference to your person. We have a legitimate interest in making our services and functionalities as user-friendly as possible for our users, which can be achieved by the functionality of the aforementioned cookies.
+
+The legal basis for the use of cookies is your consent (Art. 6 para. 1 subpara. 1 point (a) GDPR). You can revoke your consent at any time with effect for the future.
+
+b) Use of Matomo for analytic purposes
+With your consent, we use the technology of the third-party provider Matomo in our web app for analysis purposes. Matomo uses cookies that enable the recognition of your browser and an analysis of your use of our web app as well as your interaction with our service, for example, which parts/functions you view and use.
+For this purpose, no personal data from you is processed; the IP address of each user is anonymized immediately after processing and before its storage. The data collected with Matomo technology is processed exclusively on Smart4Health servers. The aforementioned tracking and analysis of your use of our products helps us to continuously optimize our product and improve your experience when using our web app.
+
+The legal basis for the use of Matomo is your consent (Art. 6 para. 1 subpara. 1 point (a) GDPR). You can revoke your consent at any time with effect for the future.
+
+c) Use of Sentry for troubleshooting
+In order to understand the source and causes of potential errors and crashes in our services, to gain the knowledge necessary to reproduce and resolve such crashes, and to provide our users with the best possible experience when using our services, we use, with your consent, the technology of our U.S.-based third-party service provider Sentry, which enables us to track errors in real time. Sentry is Privacy-Shield certified.
+In this context, and if you discover a bug or crash in our web app, user data, such as information about the device you are using and the time at which the bug or crash occurred will be collected and analyzed solely for the purpose of identifying the bug or crash and resolving it, and not for any other purpose, and then deleted once the bug or crash has been resolved.
+
+The legal basis for the use of Sentry is your consent (Art. 6 para. 1 subpara. 1 point (a) GDPR). You can revoke your consent at any time with effect for the future.
+You can also deactivate the option to save these cookies at any time in the settings of your browser and you can also delete existing cookies at any time.

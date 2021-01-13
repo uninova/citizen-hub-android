@@ -34,8 +34,8 @@ public class AboutFragment extends Fragment {
         String linkText = getString(R.string.about_contact_email);
         clickableTextLink.setText(Html.fromHtml(linkText));
         clickableTextLink.setMovementMethod(LinkMovementMethod.getInstance());
-        Button rpgdButton = (Button) result.findViewById(R.id.about_privacy_policy_button);
-        rpgdButton.setOnClickListener(new View.OnClickListener() {
+        Button privacyPolicyButton = (Button) result.findViewById(R.id.about_privacy_policy_button);
+        privacyPolicyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment());
