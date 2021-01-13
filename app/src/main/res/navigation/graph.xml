@@ -119,7 +119,7 @@
     <fragment
         android:id="@+id/license_of_use_fragment"
         android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
-        android:label="license_of_use_fragment" />
+        android:label="@string/fragment_license_of_use_label" />
     <fragment
         android:id="@+id/openSourceLicensesFragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"

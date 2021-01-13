@@ -57,4 +57,5 @@
     <string name="text_license_of_use_info">License of Use info</string>
     <string name="about_open_source_licenses">Open Source Licenses</string>
     <string name="open_source_licenses_fragment_button_text">Open Source License info</string>
+    <string name="fragment_license_of_use_label">Terms and conditions</string>
 </resources>
