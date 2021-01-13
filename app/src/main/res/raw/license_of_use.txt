@@ -1,0 +1,84 @@
+The Smart4Health platform enables the user-friendly and secure digital storage and administration of health data (hereinafter also: "platform"). This platform is provided by the nonprofit organisation D4L data4life gGmbH, Rudolf-Breitscheid-Straße 32, 14482 Potsdam (hereinafter: "we" or "provider"), one of the partners in the EU-funded project Smart4Health. For your (hereinafter: "you" or "user") use of the platform via our web app, the contractual provisions of the following terms of use apply:
+
+1. Registration and login, contractual relationship and user account
+
+
+1.1 The contract is concluded by our confirmation of your registration (registration).
+
+1.2 You must be at least 18 years old and have full legal capacity to register for our services.
+
+1.3 When registering, you must provide truthful, up-to-date and complete information and update it in case of changes.
+
+1.4 Only one user account may be maintained per person.
+
+1.5 The contractual relationship is personal and the user account is therefore non-transferable and non-heritable.
+
+1.6 If we terminate the contract with you and have prohibited a registration by the same person, a new registration is prohibited.
+
+
+2. Term and termination
+
+The contract is concluded for an indefinite period of time. The contract can be terminated by the user and the provider at any time with immediate effect.
+
+3. Use of the services, user obligations, prohibited behavior
+
+3.1 The Smart4Health platform is free of charge for you. We do not assume any guarantee or warranty for certain functionalities or a certain availability, and we reserve the right to change functionalities of our services, unless otherwise agreed, unreasonable for the user or prescribed by law.
+
+3.2 You must keep your access data secret and may not transmit it to third parties or have your user account used by third parties. Please inform us immediately if you notice any misuse.
+
+3.3 You may only use the Smart4Health web app for storing medical or health-related data and documents, and may only release or copy such documents for third parties (for example, in apps or services of third parties) if you are authorized to do so and do not infringe any rights of third parties. You are obliged to observe the statutory regulations when using the service. Furthermore and in particular, you may not use the services:
+
+- to store and/or transmit data, texts, images, files or other contents/materials that are illegal, harmful, threatening, abusive, harassing, defamatory or insulting, vulgar, obscene, hateful, racist or in any other way objectionable according to the relevant statutory provisions or in the opinion of Smart4Health and data4life or store and or transmit content/material that may cause harm to minors in any way, in particular pornographic, glorifying violence or that may be otherwise harmful to minors;
+
+- to store and/or transmit content that infringes the rights of third parties, in particular patents, trademarks, copyrights or ancillary copyrights, trade secrets, personal rights or property rights;
+
+- to store and/or transmit content which you are not entitled to pass on/disclose;
+
+- to store and/or transmit any material that contains software viruses or other information, files or programs that are designed or intended to interrupt, destroy or limit the functionality of any computer software or hardware or telecommunications devices;
+
+- for commercial or other business purposes, in particular not offer the Services for resale.
+
+- to store and/or transmit unsolicited advertising, promotional material, junk or bulk email or SMS ("spam"), chain letters, pyramid selling schemes or any other advertising;
+
+- to collect, store, or transmit personal data about other persons.
+
+3.4 You may not use the Smart4Health platform for business purposes without our prior consent.
+
+3.5 You are obliged to make a backup copy of your data yourself.
+
+3.6 We do not check the contents stored by you in advance. However, we reserve the right to block or delete these at any time, in particular if we become aware of a legal violation of a specific content or specific contents. Since the data and documents on the Smart4Health platform are encrypted end to end, such blockage or deletion shall require receipt of a corresponding notification of abuse, for example, from a law enforcement agency.
+
+
+4. Limitation of liability
+
+4.1 The provider is liable for contractual and other claims of the user only for damages of the user (1) which the provider, his legal representatives or vicarious agents have caused intentionally or grossly negligently, (2) from the injury to life, body or health, which is based on a breach of duty of the provider or one of its legal representatives or vicarious agents, (3) in cases of liability according to the German Product Liability Act, the assumption of a guarantee or damage that is due to fraudulent misrepresentation and (4) which have arisen as a result of a breach of an obligation, the fulfillment of which is essential for the proper execution of the contract and the observance of which the user regularly relies on and may rely on (so-called cardinal obligation or German „Kardinalpflicht“).
+
+4.2 In cases (1), (2), (3) of the preceding paragraph, the provider’s liability shall be unrestricted. In other cases the liability is limited to the foreseeable, contract-typical damage.
+
+4.3 In cases other than those mentioned in paragraphs 1 and 2 and notwithstanding the following paragraph, the liability of the provider is excluded irrespective of the legal grounds.
+
+4.4 The provisions of this limitation of liability do not change the legal burden of proof.
+
+4.5 The above limitations of liability shall apply accordingly to the personal liability of legal representatives, employees and vicarious agents of the provider.
+
+
+5. Change of the Terms of Use
+
+5.1 With your consent or if your consent is deemed to have been given pursuant to the following paragraph, we may amend the Terms of Use (for example, when we introduce new functionalities).
+
+5.2 If we wish to change the Terms of Use, we will notify you at least 6 weeks before the proposed effective date in so-called text form (for example, by email). If you do not object within 6 weeks after receipt of this notification in text form, your consent to the change shall be deemed given and the changes shall take effect at the announced time. We will refer to this consequence separately in the notification.
+
+5.3 Irrespective of the above provisions, we reserve the right to amend the Terms of Use with effect for the future, insofar as this does not affect essential provisions of the contractual relationship with the user and these amendments are necessary in order to take account of developments (for example, changes in the legal situation or supreme court rulings, fundamental changes in market conditions which lead to a disruption of the basis of business) which were not foreseeable by us and the non-consideration of which would lead to a fundamental disruption of the contractual relationship.
+
+
+6. Final provisions, miscellaneous
+
+6.1 There are no subsidiary agreements.
+
+6.2 Should individual provisions of these Terms of Use be or become invalid in whole or in part, the remainder of the contract shall remain valid. In this case, the invalid provision shall be replaced by the statutory provision.
+
+6.3 German law shall apply with the exclusion of the UN Convention on Contracts for the International Sale of Goods.
+
+6.4 If the user has no place of jurisdiction in Germany or is a merchant, the place of jurisdiction shall be Potsdam. A mandatory place of jurisdiction for consumers under EU law remains unaffected.
+
+6.5 The EU website for online dispute resolution can be found here: http://ec.europa.eu/consumers/odr/.
