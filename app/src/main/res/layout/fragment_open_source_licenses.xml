@@ -21,7 +21,8 @@
             android:padding="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/AppTheme.Summary.Item.TextView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 
