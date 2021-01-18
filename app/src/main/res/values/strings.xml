@@ -43,12 +43,13 @@
     <string name="location_disable_button">Don\'t turn on location</string>
     <string name="location_message">Location function not enabled.</string>
     <string name="location_refuse_button">Cancel</string>
-    <string name="about_contact_email">helpdesk@uninova.pt</string>
+    <string name="about_contact_email">"smart4health"@uninova.pt</string>
     <string name="about_developedBy"><![CDATA[Developed by]]></string>
     <string name="about_versioning">version: 0.1.0</string>
     <string name="about_smart4health_logo">smart4health_logo</string>
     <string name="about_kbz_logo">KBZ_Logo</string>
     <string name="about_european_commission_logo">EU commission logo</string>
+    <string name="about_european_commission_info">This work has received funding from smart4health - the European Union’s Horizon 2020 research and innovation programme under grant agreement No 826117</string>
     <string name="about_licenses_of_use">Terms and Conditions</string>
     <string name="about_privacy_policy_button">Privacy Policy</string>
     <string name="img_uninova_logo">uninova_logo</string>

@@ -6,84 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
+    <TextView
+        android:id="@+id/text_about_ce_info"
+        android:layout_width="391dp"
+        android:layout_height="74dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="@string/about_european_commission_info"
+        android:textAlignment="center"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_ec_logo"
+        app:layout_constraintVertical_bias="0.448" />
+
     <Button
         android:id="@+id/about_privacy_policy_button"
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="132dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_privacy_policy_button"
         android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintBottom_toTopOf="@+id/about_licenses_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_logo_uninova"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
 
     <Button
         android:id="@+id/about_licenses_button"
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="104dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_licenses_of_use"
         android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_contact"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
 
     <Button
         android:id="@+id/about_open_sources_button"
         android:layout_width="191dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
         android:text="@string/about_open_source_licenses"
         android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintBottom_toTopOf="@+id/text_about_clickable_contact"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
 
     <ImageView
         android:id="@+id/img_ec_logo"
         android:layout_width="217dp"
         android:layout_height="84dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/about_kbz_logo"
         android:src="@drawable/img_ec_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.277"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_contact"
+        app:layout_constraintVertical_bias="0.028" />
 
     <ImageView
         android:id="@+id/img_logo_kbz"
-        android:layout_width="173dp"
-        android:layout_height="84dp"
+        android:layout_width="151dp"
+        android:layout_height="87dp"
         android:layout_marginStart="222dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="212dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/img_logo_kbz"
         android:src="@drawable/img_kbz_logo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img_logo_uninova"
-        android:layout_width="180dp"
-        android:layout_height="99dp"
+        android:layout_width="181dp"
+        android:layout_height="81dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="212dp"
         android:layout_marginEnd="191dp"
         android:contentDescription="@string/img_uninova_logo"
         android:src="@drawable/img_uninova_logo"
@@ -126,23 +141,19 @@
         app:layout_constraintVertical_bias="0.215" />
 
     <TextView
-        android:id="@+id/text_about_clickable_contact"
+        android:id="@+id/text_about_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto_slab"
         android:text="@string/about_contact_email"
         android:textAlignment="center"
         android:textColorLink="@color/colorS4HLightBlue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintTop_toBottomOf="@+id/about_open_sources_button" />
 
     <TextView
         android:id="@+id/text_about_versioning"
