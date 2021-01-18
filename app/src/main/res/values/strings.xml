@@ -78,4 +78,11 @@
     <string name="layout_list_item_feature_unknown_feature">unknown feature</string>
     <string name="layout_nav_header_main_poweredby">Powered By</string>
     <string name="layout_nav_header_main_logo_content_description">Smart 4 Health icon</string>
+    <string name="fragment_device_search_location_warning_title">Citizen Hub can\'t scan for devices without location turned on</string>
+    <string name="fragment_device_search_location_open_settings_button">Open settings</string>
+    <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
+    <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
+    <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
+    <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
+    <string name="fragment_device_search_cancel_option">Cancel</string>
 </resources>

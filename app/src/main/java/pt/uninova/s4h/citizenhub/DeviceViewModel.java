@@ -1,13 +1,15 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 
 public class DeviceViewModel extends AndroidViewModel {
     private MutableLiveData<Device> device;
@@ -25,6 +27,14 @@ public class DeviceViewModel extends AndroidViewModel {
         return deviceList;
     }
 
+    public boolean isDevicePaired(Device device) {
+        List<Device> pairedDevices = deviceList.getValue();
+        if (pairedDevices != null) {
+            return deviceList.getValue().contains(device);
+        }
+        return false;
+    }
+
     public MutableLiveData<Device> getSelectedDevice() {
         return device;
     }
@@ -33,11 +43,11 @@ public class DeviceViewModel extends AndroidViewModel {
         this.device.postValue(device);
     }
 
-    public void apply(){
+    public void apply() {
         deviceRepository.add(device.getValue());
     }
 
-    public void delete(Device device){
+    public void delete(Device device) {
         deviceRepository.remove(device);
     }
 }
