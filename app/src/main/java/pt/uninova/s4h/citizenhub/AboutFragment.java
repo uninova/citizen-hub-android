@@ -31,7 +31,7 @@ public class AboutFragment extends Fragment {
 
         final View result = inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView clickableTextLink = result.findViewById(R.id.text_about_clickable_contact);
+        TextView clickableTextLink = result.findViewById(R.id.text_about_contact);
 
         String linkText = getString(R.string.about_contact_email);
 
