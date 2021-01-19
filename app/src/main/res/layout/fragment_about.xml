@@ -6,13 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
+    <ImageView
+        android:id="@+id/image_about_citizenhub_logo"
+        android:layout_width="316dp"
+        android:layout_height="123dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/img_citizenhub_logo"
+        app:layout_constraintEnd_toStartOf="@+id/text_about_versioning"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_about_versioning"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@+id/text_ab" />
+
     <TextView
         android:id="@+id/text_about_ce_info"
         style="@style/AppTheme.Summary.Item.TextView"
         android:layout_width="385dp"
         android:layout_height="76dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="@string/about_european_commission_info"
+        android:text="@string/fragment_about_european_commission_info"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="13sp"
@@ -30,7 +42,7 @@
         android:layout_marginTop="100dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
-        android:text="@string/about_privacy_policy_button"
+        android:text="@string/fragment_about_button_text_privacy_policy_button"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +56,7 @@
         android:layout_marginTop="12dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
-        android:text="@string/about_open_source_licenses"
+        android:text="@string/fragment_open_source_licenses_text_view_info"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +70,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/colorS4HGreyLight"
         android:padding="8dp"
-        android:text="@string/about_licenses_of_use"
+        android:text="@string/fragment_about_button_text_licenses_of_use"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +81,7 @@
         android:layout_width="217dp"
         android:layout_height="84dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="@string/about_kbz_logo"
+        android:contentDescription="@string/fragment_about_image_view__kbz_logo"
         android:src="@drawable/img_ec_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,50 +90,9 @@
         app:layout_constraintTop_toBottomOf="@+id/text_about_contact"
         app:layout_constraintVertical_bias="0.028" />
 
-    <ImageView
-        android:id="@+id/img_logo_kbz"
-        android:layout_width="151dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="222dp"
-        android:layout_marginTop="206dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/img_logo_kbz"
-        android:src="@drawable/img_kbz_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/img_logo_uninova"
-        android:layout_width="181dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="204dp"
-        android:layout_marginEnd="191dp"
-        android:contentDescription="@string/img_uninova_logo"
-        android:src="@drawable/img_uninova_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/img_about_logo_smart4health"
-        android:layout_width="209dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="101dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="101dp"
-        android:contentDescription="@string/about_smart4health_logo"
-        android:src="@drawable/img_s4h_logo_3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/text_about_1paragraph"
+        style="@style/AppTheme.Summary.Item.TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -137,8 +108,35 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
-        style="@style/AppTheme.Summary.Item.TextView"/>
+        app:layout_constraintVertical_bias="0.229" />
+
+    <ImageView
+        android:id="@+id/img_logo_kbz"
+        android:layout_width="151dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="222dp"
+        android:layout_marginTop="208dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/fragment_about_image_view_logo_kbz"
+        android:src="@drawable/img_kbz_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_logo_uninova"
+        android:layout_width="181dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="191dp"
+        android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
+        android:src="@drawable/img_uninova_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_about_contact"
@@ -160,20 +158,14 @@
         style="@style/AppTheme.Summary.Item.TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="@string/about_versioning"
+        android:text="@string/fragment_about_text_view_versioning"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_about_logo_smart4health"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
