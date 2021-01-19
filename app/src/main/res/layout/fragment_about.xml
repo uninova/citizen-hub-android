@@ -11,12 +11,11 @@
         android:layout_width="316dp"
         android:layout_height="123dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@+id/text_ab"
         android:src="@drawable/img_citizenhub_logo"
         app:layout_constraintEnd_toStartOf="@+id/text_about_versioning"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_about_versioning"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@+id/text_ab" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_about_ce_info"
@@ -113,28 +112,28 @@
     <ImageView
         android:id="@+id/img_logo_kbz"
         android:layout_width="151dp"
-        android:layout_height="87dp"
+        android:layout_height="81dp"
         android:layout_marginStart="222dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/fragment_about_image_view_logo_kbz"
         android:src="@drawable/img_kbz_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img_logo_uninova"
-        android:layout_width="181dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="191dp"
+        android:layout_width="148dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="190dp"
         android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
         android:src="@drawable/img_uninova_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.706"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
