@@ -22,75 +22,60 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private DeviceListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<DeviceListItem> deviceList;
-    private Application app;
-    private View resultView;
-    public static Device deviceForSettings;
+    private List<DeviceListItem> deviceList;
 
     private DeviceViewModel model;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.deviceList = new LinkedList<>();
+    }
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.fragment_device_list, menu);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        app = (Application) requireActivity().getApplication();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
-        resultView = result;
+        final View view = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
 
-        cleanList();
-        buildRecycleView(result);
+        buildRecycleView(view);
 
         setHasOptionsMenu(true);
 
-        return result;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        return view;
     }
 
     private void onDeviceUpdate(List<Device> devices) {
-        cleanList();
+        deviceList.clear();
+
         for (Device device : devices) {
             deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
         }
-        buildRecycleView(resultView);
+
+        buildRecycleView(requireView());
     }
 
-    private void cleanList() {
-        deviceList = new ArrayList<>();
-    }
-
-    private void buildRecycleView(View result) {
-        recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
+    private void buildRecycleView(View view) {
+        RecyclerView recyclerView =  view.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        DeviceListAdapter adapter = new DeviceListAdapter(deviceList);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -105,9 +90,8 @@ public class DeviceListFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
-                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
-                deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);
+                model.setDevice(deviceList.get(position).getDevice());
+                Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceUpdateConfigurationFragment());
             }
         });
     }
@@ -119,7 +103,6 @@ public class DeviceListFragment extends Fragment {
         }
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
         }
     };
 
@@ -128,6 +111,7 @@ public class DeviceListFragment extends Fragment {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
             Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

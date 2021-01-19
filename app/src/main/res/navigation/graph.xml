@@ -45,8 +45,8 @@
                 app:destination="@+id/device_search_fragment"/>
 
         <action
-            android:id="@+id/action_device_list_fragment_to_device_update_configuration_fragment"
-            app:destination="@+id/device_configuration_update_fragment"/>
+                android:id="@+id/action_device_list_fragment_to_device_update_configuration_fragment"
+                app:destination="@+id/device_configuration_update_fragment"/>
 
     </fragment>
 
@@ -57,13 +57,13 @@
             tools:layout="@layout/fragment_device_search">
 
         <action
-            android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
-            app:destination="@+id/device_configuration_add_fragment"/>
+                android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
+                app:destination="@+id/device_configuration_add_fragment"/>
 
         <action
-            android:id="@+id/action_device_search_fragment_to_device_list_fragment"
-            app:destination="@id/device_list_fragment"
-            app:popUpTo="@+id/device_list_fragment"/>
+                android:id="@+id/action_device_search_fragment_to_device_list_fragment"
+                app:destination="@id/device_list_fragment"
+                app:popUpTo="@+id/device_list_fragment"/>
 
     </fragment>
 
@@ -80,29 +80,29 @@
             android:name="pt.uninova.s4h.citizenhub.AboutFragment"
             android:label="@string/fragment_about_label"
             tools:layout="@layout/fragment_about"
-        />
+    />
 
     <fragment
-        android:id="@+id/device_configuration_add_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
-        android:label="Device Configuration"
-        tools:layout="@layout/fragment_about">
+            android:id="@+id/device_configuration_add_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
+            android:label="Device Configuration"
+            tools:layout="@layout/fragment_about">
 
         <action
-            android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
-            app:destination="@+id/device_list_fragment"/>
+                android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
+                app:destination="@+id/device_list_fragment"/>
 
     </fragment>
 
     <fragment
-        android:id="@+id/device_configuration_update_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragment"
-        android:label="Device Configuration"
-        tools:layout="@layout/fragment_about">
+            android:id="@+id/device_configuration_update_fragment"
+            android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragment"
+            android:label="Device Configuration"
+            tools:layout="@layout/fragment_about">
 
         <action
-            android:id="@+id/action_device_configuration_update_fragment_to_device_list_fragment"
-            app:destination="@+id/device_list_fragment"/>
+                android:id="@+id/action_device_configuration_update_fragment_to_device_list_fragment"
+                app:destination="@+id/device_list_fragment"/>
 
     </fragment>
 

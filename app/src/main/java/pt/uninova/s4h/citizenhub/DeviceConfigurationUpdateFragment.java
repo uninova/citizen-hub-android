@@ -5,18 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
-        final View result = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
+        deleteDevice = view.findViewById(R.id.buttonDelete);
+        updateDevice = view.findViewById(R.id.buttonConfiguration);
 
-        deleteDevice = result.findViewById(R.id.buttonDelete);
-        updateDevice = result.findViewById(R.id.buttonConfiguration);
-
-        setupViews(result);
+        setupViews(view);
 
         setupText();
 
@@ -24,18 +26,19 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
         setupFeatures();
 
-        updateDevice.setOnClickListener(view -> {
+        updateDevice.setOnClickListener(v -> {
             //TODO: Update Device Data
-            Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
+            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
 
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                model.delete(changedDevice);
+                model.delete(model.getSelectedDevice().getValue());
+
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }
         });
 
-        return result;
+        return view;
     }
 }

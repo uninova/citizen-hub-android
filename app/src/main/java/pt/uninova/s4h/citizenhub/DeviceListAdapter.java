@@ -9,13 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
 
-    private ArrayList<DeviceListItem> devicesList;
+    private List<DeviceListItem> devicesList;
     private OnItemClickListener listener;
 
-    public DeviceListAdapter(ArrayList<DeviceListItem> listDevices) {
+    public DeviceListAdapter(List<DeviceListItem> listDevices) {
         devicesList = listDevices;
     }
 

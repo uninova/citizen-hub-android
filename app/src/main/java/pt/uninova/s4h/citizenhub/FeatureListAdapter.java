@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -18,11 +19,12 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 class FeatureListAdapter extends BaseAdapter {
 
-    private ArrayList<FeatureListItem> data;
+    private List<FeatureListItem> data;
     private static LayoutInflater inflater = null;
 
-    public FeatureListAdapter(Context context, ArrayList<FeatureListItem> data) {
+    public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
