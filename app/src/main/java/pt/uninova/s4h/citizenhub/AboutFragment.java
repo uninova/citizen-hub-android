@@ -31,28 +31,16 @@ public class AboutFragment extends Fragment {
 
         Button privacyPolicyButton = result.findViewById(R.id.about_privacy_policy_button);
 
-        privacyPolicyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment());
-            }
-        });
+        privacyPolicyButton.setOnClickListener(
+                v -> Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment()));
 
         Button licenseOfUseButton = result.findViewById(R.id.about_licenses_button);
-        licenseOfUseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToLicenseOfUseFragment());
-            }
-        });
+        licenseOfUseButton.setOnClickListener(
+                v -> Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToLicenseOfUseFragment()));
 
         Button openSourceLicenses = result.findViewById(R.id.about_open_sources_button);
-        openSourceLicenses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToOpenSourceLicensesFragment());
-            }
-        });
+        openSourceLicenses.setOnClickListener(
+                v -> Navigation.findNavController(requireView()).navigate(AboutFragmentDirections.actionAboutFragmentToOpenSourceLicensesFragment()));
 
         return result;
     }
