@@ -6,6 +6,32 @@
             app:startDestination="@id/summary_fragment">
 
     <fragment
+        android:id="@+id/EntryPageFragment"
+        android:name="pt.uninova.s4h.citizenhub.EntryPageFragment"
+        android:label="@string/fragment_entry_fragment"
+        tools:layout="@layout/entry_fragment">
+        <action
+            android:id="@+id/action_EntryPageFragment_to_summary_fragment"
+            app:destination="@id/summary_fragment" />
+        <action
+            android:id="@+id/action_EntryPageFragment_to_presentation_fragment"
+            app:destination="@id/PresentationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PresentationFragment"
+        android:name="pt.uninova.s4h.citizenhub.PresentationFragment"
+        android:label="@string/fragment_presentation_fragment"
+        tools:layout="@layout/entry_fragment">
+        <action
+            android:id="@+id/action_EntryPageFragment_to_summary_fragment"
+            app:destination="@id/summary_fragment" />
+    </fragment>
+
+
+
+
+    <fragment
             android:id="@+id/summary_fragment"
             android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
             android:label="@string/fragment_summary_label"
