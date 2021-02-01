@@ -4,6 +4,7 @@
     <string name="fragment_device_search_label">Device Search...</string>
     <string name="fragment_device_detail_label">Device Detail</string>
     <string name="fragment_summary_label">Today\'s Activity</string>
+    <string name="fragment_entry_fragment">Entry Fragment</string>
     <string name="fragment_report_label">Daily Activity Reports</string>
     <string name="fragment_user_label">User Profile</string>
     <string name="fragment_about_label">About Smart4Health</string>
@@ -37,4 +38,5 @@
     <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
+    <string name="fragment_presentation_fragment">Presentation Fragment</string>
 </resources>
