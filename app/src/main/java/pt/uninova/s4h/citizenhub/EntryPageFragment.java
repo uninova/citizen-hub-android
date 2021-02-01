@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import java.io.File;
 
@@ -23,10 +24,10 @@ public class EntryPageFragment  extends Fragment {
     public void onEntry(){
         if(firstInteraction())
         {
-            //navigate presentation
+            Navigation.findNavController(requireView()).navigate(EntryPageFragmentDirections.actionEntryPageFragmentToPresentationFragment());
         }
         else {
-           // navigate login
+            Navigation.findNavController(requireView()).navigate(EntryPageFragmentDirections.actionEntryPageFragmentToSummaryFragment());
         }
     }
 
