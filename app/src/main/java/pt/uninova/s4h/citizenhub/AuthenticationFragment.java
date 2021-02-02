@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -30,16 +31,14 @@ public class AuthenticationFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         loginButton.setOnClickListener(v -> {
             Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(requireContext(), null);
             startActivityForResult(loginIntent, D4L_AUTH);
         });
 
         final Data4LifeClient client = Data4LifeClient.getInstance();
-
         client.isUserLoggedIn(new ResultListener<Boolean>() {
 
             @Override
@@ -57,6 +56,15 @@ public class AuthenticationFragment extends Fragment {
                 exception.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+
     }
 
 //        @Override
