@@ -27,7 +27,7 @@ public class EntryPageFragment  extends Fragment {
             Navigation.findNavController(requireView()).navigate(EntryPageFragmentDirections.actionEntryPageFragmentToPresentationFragment());
         }
         else {
-            Navigation.findNavController(requireView()).navigate(EntryPageFragmentDirections.actionEntryPageFragmentToSummaryFragment());
+            Navigation.findNavController(requireView()).navigate(EntryPageFragmentDirections.actionEntryPageFragmentToAuthenticationFragment());
         }
     }
 

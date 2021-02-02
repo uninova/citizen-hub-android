@@ -25,7 +25,7 @@ public class PresentationFragment extends Fragment {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Navigation.findNavController(requireView()).navigate(PresentationFragmentDirections.actionPresentationFragmentToSummaryFragment());
+                    Navigation.findNavController(requireView()).navigate(PresentationFragmentDirections.actionPresentationFragmentToAuthenticationFragment());
             }
         });
 
