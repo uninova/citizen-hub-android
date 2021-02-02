@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
 
     @Override
