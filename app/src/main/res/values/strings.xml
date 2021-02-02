@@ -21,7 +21,7 @@
     <string name="fragment_summary_image_view_calories_content_description">TODO</string>
     <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
     <string name="fragment_summary_text_view_heart_rate_text">Your average heart rate is %1$.2f.</string>
-    <string name="activity_lobby_button_login">Login</string>
+    <string name="fragment_authentication_button_login">Login</string>
     <string name="fragment_report_text_view_time_sitting_text">Time sitting: %1$.0f min</string>
     <string name="fragment_report_text_view_time_posture_text">Time with good posture: %1$.0f min</string>
     <string name="fragment_report_text_view_distance_text">Distance travelled: %1$.0f m</string>
@@ -41,4 +41,5 @@
     <string name="fragment_presentation_fragment">Presentation Fragment</string>
     <string name="fragment_presentation_text">Presentation</string>
     <string name="fragment_presentation_skip_button">Skip</string>
+    <string name="fragment_authentication_fragment">Log In</string>
 </resources>
