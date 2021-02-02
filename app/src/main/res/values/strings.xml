@@ -39,4 +39,6 @@
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
     <string name="fragment_presentation_fragment">Presentation Fragment</string>
+    <string name="fragment_presentation_text">Presentation</string>
+    <string name="fragment_presentation_skip_button">Skip</string>
 </resources>

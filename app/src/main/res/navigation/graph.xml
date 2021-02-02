@@ -24,7 +24,7 @@
         android:label="@string/fragment_presentation_fragment"
         tools:layout="@layout/entry_fragment">
         <action
-            android:id="@+id/action_EntryPageFragment_to_summary_fragment"
+            android:id="@+id/action_PresentationFragment_to_summary_fragment"
             app:destination="@id/summary_fragment" />
     </fragment>
 
