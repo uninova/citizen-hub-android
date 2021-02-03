@@ -4,7 +4,6 @@
     <string name="fragment_device_search_label">Device Search...</string>
     <string name="fragment_device_detail_label">Device Detail</string>
     <string name="fragment_summary_label">Today\'s Activity</string>
-    <string name="fragment_entry_fragment">Entry Fragment</string>
     <string name="fragment_report_label">Daily Activity Reports</string>
     <string name="fragment_user_label">User Profile</string>
     <string name="fragment_about_label">About Smart4Health</string>
@@ -21,7 +20,7 @@
     <string name="fragment_summary_image_view_calories_content_description">TODO</string>
     <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
     <string name="fragment_summary_text_view_heart_rate_text">Your average heart rate is %1$.2f.</string>
-    <string name="fragment_authentication_button_login">Login</string>
+    <string name="activity_lobby_button_login">Login</string>
     <string name="fragment_report_text_view_time_sitting_text">Time sitting: %1$.0f min</string>
     <string name="fragment_report_text_view_time_posture_text">Time with good posture: %1$.0f min</string>
     <string name="fragment_report_text_view_distance_text">Distance travelled: %1$.0f m</string>
@@ -38,8 +37,10 @@
     <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
-    <string name="fragment_presentation_fragment">Presentation Fragment</string>
-    <string name="fragment_presentation_text">Presentation</string>
-    <string name="fragment_presentation_skip_button">Skip</string>
-    <string name="fragment_authentication_fragment">Log In</string>
+    <string name="fragment_report_text_view_no_data">No daily activity data for</string>
+    <string name="fragment_report_text_view_got_data">Daily activity data for</string>
+    <string name="fragment_logout_label">Logout</string>
+    <string name="fragment_logout_textView_logOut_text">You will be logged out from the Smart4Health platform.\n\nYou won\'t be able to use Citizen Hub until you log in again.</string>
+    <string name="fragment_logout_button_logOut">Log out</string>
+    <string name="fragment_logout_imageView_s4h_contentDescription">Smart4Health</string>
 </resources>

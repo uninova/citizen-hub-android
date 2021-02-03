@@ -65,12 +65,6 @@
             tools:layout="@layout/fragment_report_detail"/>
 
     <fragment
-            android:id="@+id/user_fragment"
-            android:name="pt.uninova.s4h.citizenhub.UserFragment"
-            android:label="@string/fragment_user_label"
-            tools:layout="@layout/fragment_user"/>
-
-    <fragment
             android:id="@+id/device_list_fragment"
             android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
             android:label="@string/fragment_device_list_label"
@@ -125,6 +119,11 @@
 
     </fragment>
 
+    <fragment
+            android:id="@+id/logout_fragment"
+            android:name="pt.uninova.s4h.citizenhub.ui.logout.LogoutFragment"
+            android:label="@string/fragment_logout_label"
+            tools:layout="@layout/fragment_logout"  />
 
     <fragment
             android:id="@+id/about_fragment"
