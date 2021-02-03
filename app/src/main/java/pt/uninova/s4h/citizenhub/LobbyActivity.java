@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
@@ -17,26 +15,18 @@ public class LobbyActivity extends AppCompatActivity {
 
     private Button loginButton;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_lobby);
-
-        loginButton = findViewById(R.id.activity_lobby_button_login);
-
-        loginButton.setOnClickListener(v -> {
-            Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(getApplicationContext(), null);
-            startActivityForResult(loginIntent, D4L_AUTH);
-        });
-
+    private void authenticate() {
         final Data4LifeClient client = Data4LifeClient.getInstance();
 
         client.isUserLoggedIn(new ResultListener<Boolean>() {
-
             @Override
             public void onSuccess(Boolean value) {
                 if (value) {
-                    startMainActivity();
+                    final Intent intent = new Intent(LobbyActivity.this, MainActivity.class);
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    startActivity(intent);
+                    LobbyActivity.this.finish();
                 } else {
                     loginButton.setVisibility(View.VISIBLE);
                 }
@@ -55,16 +45,23 @@ public class LobbyActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == D4L_AUTH) {
-            if (resultCode == RESULT_OK) {
-                startMainActivity();
-            } else {
-                loginButton.setVisibility(View.VISIBLE);
-            }
+            authenticate();
         }
-
     }
 
-    private void startMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_lobby);
+
+        loginButton = findViewById(R.id.activity_lobby_button_login);
+
+        loginButton.setOnClickListener((View v) -> {
+            final Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(getApplicationContext(), null);
+
+            startActivityForResult(loginIntent, D4L_AUTH);
+        });
+
+        authenticate();
     }
 }
