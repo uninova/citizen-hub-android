@@ -30,7 +30,6 @@
     <string name="fragment_report_text_view_no_data">No daily activity data for</string>
     <string name="fragment_report_text_view_got_data">Daily activity data for</string>
     <string name="fragment_logout_label">Logout</string>
-
     <string name="fragment_logout_textView_logOut_text">You will be logged out from the Smart4Health platform.\n\nYou won\'t be able to use Citizen Hub until you log in again.</string>
     <string name="fragment_logout_button_logOut">Log out</string>
     <string name="fragment_logout_imageView_s4h_contentDescription">Smart4Health</string>
