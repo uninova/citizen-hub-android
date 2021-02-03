@@ -14,12 +14,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
-
-import java.time.LocalDate;
 
 
 public class MainActivity extends AppCompatActivity implements CitizenHubServiceBound {
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.user_fragment, R.id.device_list_fragment, R.id.about_fragment)
+                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.device_list_fragment, R.id.logout_fragment, R.id.about_fragment)
                         .setOpenableLayout(drawerLayout)
                         .build();
 
