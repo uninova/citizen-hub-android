@@ -1,8 +1,8 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +10,6 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
-import java.util.Objects;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
@@ -39,6 +36,8 @@ private Button loginButton;
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        authenticate();
+
     }
 
     @Override
@@ -55,14 +54,15 @@ private Button loginButton;
             @Override
             public void onSuccess(Boolean value) {
                 if (value) {
-                    final Intent intent = new Intent(getActivity(), MainActivity.class);
+                    final Activity activity = requireActivity();
+                    final Intent intent = new Intent(activity, MainActivity.class);
 //                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    requireActivity().startActivity(intent);
-                    requireActivity().finish();
+                    activity.startActivity(intent);
+                    activity.finish();
                 } else {
-                    loginButton.setVisibility(View.VISIBLE);
+                //    loginButton.setVisibility(View.VISIBLE);
                 }
             }
 

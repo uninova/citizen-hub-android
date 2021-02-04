@@ -24,43 +24,7 @@ import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
 public class LobbyActivity extends AppCompatActivity {
 
     private Button loginButton;
-    private NavController navController;
 
-//    private void authenticate() {
-//        final Data4LifeClient client = Data4LifeClient.getInstance();
-//
-//        client.isUserLoggedIn(new ResultListener<Boolean>() {
-//            @Override
-//            public void onSuccess(Boolean value) {
-//                if (value) {
-//                    final Intent intent = new Intent(LobbyActivity.this, MainActivity.class);
-//
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-//                    startActivity(intent);
-//                    LobbyActivity.this.finish();
-//                } else {
-//                    loginButton.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(D4LException exception) {
-//                loginButton.setVisibility(View.VISIBLE);
-//                exception.printStackTrace();
-//            }
-//        });
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-//            fragment.onActivityResult(requestCode, resultCode, data);
-//            if (requestCode == D4L_AUTH) {
-//                authenticate();
-//            }
-//        }
-//    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -74,16 +38,7 @@ public class LobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby);
         NavigationView navView = findViewById(R.id.nav_view);
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-//        loginButton = findViewById(R.id.fragment_authentication_button_login);
-//        loginButton.setVisibility(View.GONE);
-//        loginButton.setOnClickListener((View v) -> {
-//            final Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(getApplicationContext(), null);
-//
-//            startActivityForResult(loginIntent, D4L_AUTH);
-//        });
-
-//        authenticate();
     }
 }
