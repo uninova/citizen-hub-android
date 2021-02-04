@@ -11,10 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import java.util.Objects;
-
 public class PresentationFragment extends Fragment {
-
     private Button skipButton;
 
 
@@ -36,4 +33,5 @@ public class PresentationFragment extends Fragment {
             }
         });
     }
+
 }
