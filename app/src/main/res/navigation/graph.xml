@@ -3,49 +3,15 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/graph"
-            app:startDestination="@id/entry_page_fragment">
-
-    <fragment
-        android:id="@+id/entry_page_fragment"
-        android:name="pt.uninova.s4h.citizenhub.EntryPageFragment"
-        android:label="@string/fragment_entry_fragment"
-        tools:layout="@layout/entry_page_fragment">
-        <action
-            android:id="@+id/action_EntryPageFragment_to_authentication_fragment"
-            app:destination="@id/authentication_fragment" />
-        <action
-            android:id="@+id/action_EntryPageFragment_to_presentation_fragment"
-            app:destination="@id/presentation_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/presentation_fragment"
-        android:name="pt.uninova.s4h.citizenhub.PresentationFragment"
-        android:label="@string/fragment_presentation_fragment"
-        tools:layout="@layout/entry_page_fragment">
-        <action
-            android:id="@+id/action_PresentationFragment_to_authentication_fragment"
-            app:destination="@id/authentication_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/authentication_fragment"
-        android:name="pt.uninova.s4h.citizenhub.AuthenticationFragment"
-        android:label="@string/fragment_authentication_fragment"
-        tools:layout="@layout/authentication_fragment">
-        <action
-            android:id="@+id/action_PresentationFragment_to_summary_fragment"
-            app:destination="@id/summary_fragment" />
-    </fragment>
-
-
-
+            app:startDestination="@id/summary_fragment"
+            android:launchMode="singleTop">
 
     <fragment
             android:id="@+id/summary_fragment"
             android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
             android:label="@string/fragment_summary_label"
-            tools:layout="@layout/fragment_summary"/>
+            tools:layout="@layout/fragment_summary"
+        />
 
     <fragment
             android:id="@+id/report_master_fragment"

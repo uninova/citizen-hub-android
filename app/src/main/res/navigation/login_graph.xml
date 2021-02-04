@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/login_graph.xml"
+    app:startDestination="@id/entryPageFragment">
+
+    <fragment
+        android:id="@+id/entryPageFragment"
+        android:name="pt.uninova.s4h.citizenhub.EntryPageFragment"
+        android:label="EntryPageFragment">
+        <action
+            android:id="@+id/action_entryPageFragment_to_presentationFragment"
+            app:destination="@id/presentationFragment"
+            app:popUpTo="@id/presentationFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_entryPageFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="pt.uninova.s4h.citizenhub.AuthenticationFragment"
+        android:label="AuthenticationFragment">
+    <action
+        android:id="@+id/action_authentication_fragment_to_summary_fragment"
+        app:destination="@+id/graph"
+        app:popUpToInclusive="true"
+        app:popUpTo="@+id/summary_fragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/presentationFragment"
+        android:name="pt.uninova.s4h.citizenhub.PresentationFragment"
+        android:label="PresentationFragment" >
+        <action
+            android:id="@+id/action_presentationFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+    </fragment>
+
+</navigation>
