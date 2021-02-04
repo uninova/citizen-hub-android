@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.lobby;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import androidx.navigation.Navigation;
 import java.io.File;
 import java.io.IOException;
 
+import pt.uninova.s4h.citizenhub.PresentationFragmentDirections;
+import pt.uninova.s4h.citizenhub.R;
+
 public class PresentationFragment extends Fragment {
     private Button skipButton;
 
@@ -27,22 +30,20 @@ public class PresentationFragment extends Fragment {
             public void onClick(View v) {
                 final File file = new File(requireContext().getFilesDir(), "first.txt");
 
-                    boolean fileCreated = false;
+                boolean fileCreated = false;
 
-                    try {
-                        fileCreated = file.createNewFile();
-                    }
-                    catch (IOException ioe) {
-                        System.out.println("Error while creating empty file: " + ioe);
-                    }
+                try {
+                    fileCreated = file.createNewFile();
+                } catch (IOException ioe) {
+                    System.out.println("Error while creating empty file: " + ioe);
+                }
 
-                    if (fileCreated) {
-                        System.out.println("Created empty file: " + file.getPath());
-                    }
-                    else {
-                        System.out.println("Failed to create empty file: " + file.getPath());
-                    }
-                    Navigation.findNavController(requireView()).navigate(PresentationFragmentDirections.actionPresentationFragmentToAuthenticationFragment());
+                if (fileCreated) {
+                    System.out.println("Created empty file: " + file.getPath());
+                } else {
+                    System.out.println("Failed to create empty file: " + file.getPath());
+                }
+                Navigation.findNavController(requireView()).navigate(PresentationFragmentDirections.actionPresentationFragmentToAuthenticationFragment());
             }
         });
         return result;

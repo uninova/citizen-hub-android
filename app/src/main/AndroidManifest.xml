@@ -51,7 +51,7 @@
             />
 
         <activity
-                android:name=".LobbyActivity"
+                android:name=".ui.lobby.LobbyActivity"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:launchMode="singleTop"
             >

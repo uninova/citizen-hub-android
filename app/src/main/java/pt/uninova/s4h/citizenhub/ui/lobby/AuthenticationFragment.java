@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.lobby;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,11 +14,13 @@ import androidx.fragment.app.Fragment;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
+import pt.uninova.s4h.citizenhub.MainActivity;
+import pt.uninova.s4h.citizenhub.R;
 
 import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
 
 public class AuthenticationFragment extends Fragment {
-private Button loginButton;
+    private Button loginButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +32,8 @@ private Button loginButton;
 
             startActivityForResult(loginIntent, D4L_AUTH);
         });
-        return result;    }
+        return result;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ private Button loginButton;
                     activity.startActivity(intent);
                     activity.finish();
                 } else {
-                //    loginButton.setVisibility(View.VISIBLE);
+                    //    loginButton.setVisibility(View.VISIBLE);
                 }
             }
 

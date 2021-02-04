@@ -1,6 +1,5 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.lobby;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,8 @@ import androidx.navigation.Navigation;
 
 import java.io.File;
 
-import care.data4life.sdk.Data4LifeClient;
-import care.data4life.sdk.lang.D4LException;
-import care.data4life.sdk.listener.ResultListener;
+import pt.uninova.s4h.citizenhub.EntryFragmentDirections;
+import pt.uninova.s4h.citizenhub.R;
 
 public class EntryFragment extends Fragment {
 

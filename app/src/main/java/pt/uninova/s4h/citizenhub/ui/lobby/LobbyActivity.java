@@ -1,25 +1,15 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.lobby;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Objects;
-
-import care.data4life.sdk.Data4LifeClient;
-import care.data4life.sdk.lang.D4LException;
-import care.data4life.sdk.listener.ResultListener;
-
-import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
+import pt.uninova.s4h.citizenhub.R;
 
 public class LobbyActivity extends AppCompatActivity {
 

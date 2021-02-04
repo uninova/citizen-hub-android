@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/entryPageFragment"
-        android:name="pt.uninova.s4h.citizenhub.EntryFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.EntryFragment"
         android:label="EntryPageFragment">
         <action
             android:id="@+id/action_entryPageFragment_to_presentationFragment"
@@ -17,12 +17,12 @@
     </fragment>
     <fragment
         android:id="@+id/authenticationFragment"
-        android:name="pt.uninova.s4h.citizenhub.AuthenticationFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.AuthenticationFragment"
         android:label="AuthenticationFragment">
     </fragment>
     <fragment
         android:id="@+id/presentationFragment"
-        android:name="pt.uninova.s4h.citizenhub.PresentationFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.PresentationFragment"
         android:label="PresentationFragment" >
         <action
             android:id="@+id/action_presentationFragment_to_authenticationFragment"
