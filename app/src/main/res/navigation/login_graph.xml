@@ -5,13 +5,11 @@
 
     <fragment
         android:id="@+id/entryPageFragment"
-        android:name="pt.uninova.s4h.citizenhub.EntryPageFragment"
+        android:name="pt.uninova.s4h.citizenhub.EntryFragment"
         android:label="EntryPageFragment">
         <action
             android:id="@+id/action_entryPageFragment_to_presentationFragment"
             app:destination="@id/presentationFragment"
-            app:popUpTo="@id/presentationFragment"
-            app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_entryPageFragment_to_authenticationFragment"
@@ -21,11 +19,6 @@
         android:id="@+id/authenticationFragment"
         android:name="pt.uninova.s4h.citizenhub.AuthenticationFragment"
         android:label="AuthenticationFragment">
-    <action
-        android:id="@+id/action_authentication_fragment_to_summary_fragment"
-        app:destination="@+id/graph"
-        app:popUpToInclusive="true"
-        app:popUpTo="@+id/summary_fragment"/>
     </fragment>
     <fragment
         android:id="@+id/presentationFragment"
