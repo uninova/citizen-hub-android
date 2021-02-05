@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/login_graph.xml"
-    app:startDestination="@id/entryPageFragment">
+    app:startDestination="@id/presentationFragment">
 
-    <fragment
-        android:id="@+id/entryPageFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.lobby.EntryFragment"
-        android:label="EntryPageFragment">
-        <action
-            android:id="@+id/action_entryPageFragment_to_presentationFragment"
-            app:destination="@id/presentationFragment"
-            />
-        <action
-            android:id="@+id/action_entryPageFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
-    </fragment>
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.lobby.AuthenticationFragment"
