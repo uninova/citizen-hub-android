@@ -48,4 +48,8 @@
     <string name="fragment_authentication_button_login">Login</string>
     <string name="activity_splash_citizen_hub_text">CITIZEN HUB</string>
     <string name="activity_splash_citizen_hub_logo">Citizen hub logo</string>
+    <string name="fragment_pairing_guide_image_description">Pairing Guide Image</string>
+    <string name="fragment_pairing_guide_text">Pairing guide</string>
+    <string name="fragment_pairing_guide_button_skip_text">Skip</string>
+    <string name="fragment_pairing_guide_button_connect_text">Connect to a device</string>
 </resources>
