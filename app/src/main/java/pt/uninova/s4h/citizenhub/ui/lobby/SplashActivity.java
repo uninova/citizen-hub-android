@@ -14,7 +14,7 @@ import pt.uninova.s4h.citizenhub.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int splashTimeOut = 5000;
+    private static final int splashTimeOut = 2500;
     private ImageView logo;
 
     @Override
