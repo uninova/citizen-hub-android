@@ -12,7 +12,6 @@ import androidx.navigation.Navigation;
 
 import java.io.File;
 
-import pt.uninova.s4h.citizenhub.EntryFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 
 public class EntryFragment extends Fragment {

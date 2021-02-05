@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 import java.io.File;
 import java.io.IOException;
 
-import pt.uninova.s4h.citizenhub.PresentationFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 
 public class PresentationFragment extends Fragment {
