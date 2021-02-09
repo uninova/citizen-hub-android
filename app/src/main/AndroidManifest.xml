@@ -61,6 +61,13 @@
             />
 
         <activity
+            android:name=".ui.lobby.SlideActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            />
+
+
+        <activity
                 android:name=".ui.lobby.LobbyActivity"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:launchMode="singleTop"
