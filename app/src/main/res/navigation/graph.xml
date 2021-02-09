@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/graph"
-            app:startDestination="@id/pairingGuideFragment"
+            app:startDestination="@id/summary_fragment"
             android:launchMode="singleTop">
 
     <fragment
@@ -96,16 +96,5 @@
             android:name="pt.uninova.s4h.citizenhub.AboutFragment"
             android:label="@string/fragment_about_label"
             tools:layout="@layout/fragment_about"/>
-    <fragment
-        android:id="@+id/pairingGuideFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.lobby.PairingGuideFragment"
-        android:label="PairingGuideFragment" >
-        <action
-            android:id="@+id/action_pairingGuideFragment_to_summary_fragment"
-            app:destination="@id/summary_fragment" />
-        <action
-            android:id="@+id/action_pairingGuideFragment_to_device_list_fragment"
-            app:destination="@id/device_list_fragment" />
-    </fragment>
 
 </navigation>

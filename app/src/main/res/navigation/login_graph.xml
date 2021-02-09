@@ -6,8 +6,7 @@
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.lobby.AuthenticationFragment"
-        android:label="AuthenticationFragment">
-    </fragment>
+        android:label="AuthenticationFragment"/>
     <fragment
         android:id="@+id/presentationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.lobby.PresentationFragment"
@@ -16,5 +15,9 @@
             android:id="@+id/action_presentationFragment_to_authenticationFragment"
             app:destination="@id/authenticationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/pairingGuideFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.PairingGuideFragment"
+        android:label="PairingGuideFragment" />
 
 </navigation>

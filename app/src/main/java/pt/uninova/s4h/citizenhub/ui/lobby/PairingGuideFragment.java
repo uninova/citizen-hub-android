@@ -22,11 +22,11 @@ public class PairingGuideFragment extends Fragment {
         final Button pairDeviceButton = view.findViewById(R.id.fragment_authentication_button_to_search_devices);
 
         skipButton.setOnClickListener(v -> {
-            Navigation.findNavController(requireView()).navigate(PairingGuideFragmentDirections.actionPairingGuideFragmentToSummaryFragment());
+       //     Navigation.findNavController(requireView()).navigate(PairingGuideFragmentDirections.actionPairingGuideFragmentToSummaryFragment());
         });
 
         pairDeviceButton.setOnClickListener(v -> {
-            Navigation.findNavController(requireView()).navigate(PairingGuideFragmentDirections.actionPairingGuideFragmentToDeviceListFragment());
+            // Navigation.findNavController(requireView()).navigate(PairingGuideFragmentDirections.actionPairingGuideFragmentToDeviceListFragment());
         });
         return view;
     }
