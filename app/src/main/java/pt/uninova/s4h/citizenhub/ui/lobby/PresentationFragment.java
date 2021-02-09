@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.ui.lobby;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,16 @@ public class PresentationFragment extends Fragment {
         super.onStart();
         if(!firstInteraction()) {
             Navigation.findNavController(requireView()).navigate(PresentationFragmentDirections.actionPresentationFragmentToAuthenticationFragment());
+        }
+        else{
+            createEntryFile();
+            final Activity activity = requireActivity();
+            final Intent intent = new Intent(activity, SlideActivity.class);
+//                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            activity.startActivity(intent);
+            activity.finish();
         }
     }
 
