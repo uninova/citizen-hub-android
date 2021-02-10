@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,23 +16,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
+import java.util.Objects;
+
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-import java.time.LocalDate;
-import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity implements CitizenHubServiceBound {
-
-    boolean mBound = false;
-    private AppBarConfiguration appBarConfiguration;
-    private NavController navController;
-    private CitizenHubServiceBinder citizenHubServiceBinder;
-    private CitizenHubService citizenHubService;
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
@@ -51,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             mBound = false;
         }
     };
+    boolean mBound = false;
+    private AppBarConfiguration appBarConfiguration;
+    private NavController navController;
+    private CitizenHubServiceBinder citizenHubServiceBinder;
+    private CitizenHubService citizenHubService;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +118,15 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             for (Fragment fragment : fragments) {
                 fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.summary_fragment) {
+            moveTaskToBack(false);
+        } else {
+            navController.popBackStack();
         }
     }
 
