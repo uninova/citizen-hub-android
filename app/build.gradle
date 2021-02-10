@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "0.1.0"
 
+        buildConfigField "boolean", "DEVELOPER_MODE_NO_AUTHENTICATION", "false"
         def configFile = file(rootDir.absolutePath + "/d4lsdk-config.json")
         def config = new JsonSlurper().parseText(configFile.text)
 
@@ -31,9 +32,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "DEVELOPER_MODE_NO_AUTHENTICATION", "false"
+
         }
         debug {
             matchingFallbacks = ['release']
+            buildConfigField "boolean", "DEVELOPER_MODE_NO_AUTHENTICATION", "false"
+        }
+        debug_login{
+            initWith debug
+            buildConfigField "boolean", "DEVELOPER_MODE_NO_AUTHENTICATION", "true"
         }
     }
 

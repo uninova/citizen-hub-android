@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
+import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 
@@ -38,9 +39,17 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (BuildConfig.DEVELOPER_MODE_NO_AUTHENTICATION) {
+            final Activity activity = requireActivity();
+            final Intent intent = new Intent(activity, MainActivity.class);
+//                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        authenticate();
-
+            activity.startActivity(intent);
+            activity.finish();
+        } else {
+            authenticate();
+        }
     }
 
     @Override
