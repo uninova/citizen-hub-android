@@ -45,11 +45,16 @@
     <string name="fragment_logout_imageView_s4h_contentDescription">Smart4Health</string>
     <string name="fragment_presentation_text">Presentation</string>
     <string name="fragment_presentation_skip_button">Skip</string>
-    <string name="fragment_authentication_button_login">Login</string>
+    <string name="fragment_authentication_button_login">login</string>
     <string name="activity_splash_citizen_hub_text">CITIZEN HUB</string>
     <string name="activity_splash_citizen_hub_logo">Citizen hub logo</string>
     <string name="fragment_pairing_guide_image_description">Pairing Guide Image</string>
     <string name="fragment_pairing_guide_text">Pairing guide</string>
     <string name="fragment_pairing_guide_button_skip_text">Skip</string>
     <string name="fragment_pairing_guide_button_connect_text">Connect to a device</string>
+    <string name="authentication_fragment_text_login">login</string>
+    <string name="authentication_fragment_text_powered_by">powered by</string>
+    <string name="authentication_fragment_img_s4h_logo_image_content">img_s4h_logo</string>
+    <string name="authentication_fragment_orange_circular_shape">Orange circular Shape</string>
+    <string name="citizen_hub_logo_with_text">logo with text</string>
 </resources>

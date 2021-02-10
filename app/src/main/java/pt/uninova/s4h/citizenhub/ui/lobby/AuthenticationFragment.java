@@ -27,7 +27,7 @@ public class AuthenticationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View result = inflater.inflate(R.layout.fragment_authentication, container, false);
-        loginButton = result.findViewById(R.id.fragment_authentication_login_button);
+        loginButton = result.findViewById(R.id.authentication_fragment_login_button);
         loginButton.setOnClickListener((View v) -> {
             final Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(requireActivity(), null);
 
