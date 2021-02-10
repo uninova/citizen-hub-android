@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -40,7 +39,7 @@ public class SlideViewPagerAdapter extends PagerAdapter {
         View view=layoutInflater.inflate(R.layout.slide_screen,container,false);
 
 
-        ImageView logo=view.findViewById(R.id.logo);
+        ImageView logo = view.findViewById(R.id.authentication_fragment_img_s4h_logo_image_id);
 
         ImageView ind1=view.findViewById(R.id.ind1);
         ImageView ind2=view.findViewById(R.id.ind2);

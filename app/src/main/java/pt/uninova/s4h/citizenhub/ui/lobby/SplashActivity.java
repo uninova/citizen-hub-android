@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        logo = findViewById(R.id.logo);
+        logo = findViewById(R.id.authentication_fragment_img_s4h_logo_image_id);
 
         new Handler().postDelayed(new Runnable() {
             @Override
