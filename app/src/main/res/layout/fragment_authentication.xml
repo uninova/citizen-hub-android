@@ -30,7 +30,7 @@
         android:text="@string/fragment_authentication_button_login"
         android:textAllCaps="false"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="0sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
