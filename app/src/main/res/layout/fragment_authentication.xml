@@ -21,8 +21,8 @@
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
-        android:layout_width="157dp"
-        android:layout_height="70dp"
+        android:layout_width="87dp"
+        android:layout_height="41dp"
         android:layout_marginTop="385dp"
         android:background="@color/colorS4HGreyLight"
         android:drawableEnd="@drawable/ic_circle_orange"
@@ -31,7 +31,7 @@
         android:text="@string/fragment_authentication_button_login"
         android:textAllCaps="false"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="40sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
