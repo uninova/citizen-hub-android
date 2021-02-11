@@ -57,4 +57,11 @@
     <string name="authentication_fragment_img_s4h_logo_image_content">img_s4h_logo</string>
     <string name="authentication_fragment_orange_circular_shape">Orange circular Shape</string>
     <string name="citizen_hub_logo_with_text">logo with text</string>
+    <string name="slide_screen_skip">Skip</string>
+    <string name="slide_screen_welcome_text">Welcome to CitizenHub</string>
+    <string name="content_descrition_citizen_hub_logo_without_text">citizen hub logo without text</string>
+    <string name="content_descrition_splash_activity_ind_circle">TODO</string>
+    <string name="content_description_slide_screen_left_arrow">left arrow</string>
+    <string name="content_description_slide_screen_right_arrow">content description right arrow</string>
+    <string name="slide_screen_text_placeholder">placeholder for each layout</string>
 </resources>

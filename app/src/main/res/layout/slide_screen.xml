@@ -15,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.110000014"
+        android:contentDescription="@string/content_descrition_citizen_hub_logo_without_text"
         app:srcCompat="@drawable/citizen_hub_logo" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -28,7 +29,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to CitizenHub"
+        android:text="@string/slide_screen_welcome_text"
         android:textColor="@color/colorBlack"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -45,7 +46,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="45dp"
         android:gravity="center"
-        android:text="This is random text 1"
+        android:text="@string/slide_screen_text_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -58,7 +59,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_bg"
-        android:text="Skip"
+        android:text="@string/slide_screen_skip"
         android:textColor="@color/colorS4HGreyLight"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +76,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc"
+        android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
         app:srcCompat="@drawable/seleted" />
 
     <ImageView
@@ -88,7 +90,9 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ind1"
         app:layout_constraintTop_toTopOf="@+id/ind1"
+        android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
         app:srcCompat="@drawable/seleted" />
+
 
     <ImageView
         android:id="@+id/ind3"
@@ -99,7 +103,22 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ind2"
         app:layout_constraintTop_toTopOf="@+id/ind2"
+        android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
         app:srcCompat="@drawable/seleted" />
+
+    <ImageView
+        android:id="@+id/ind4"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
+        app:layout_constraintBottom_toBottomOf="@+id/ind3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ind3"
+        app:layout_constraintTop_toTopOf="@+id/ind3"
+        app:srcCompat="@drawable/seleted" />
+
 
     <ImageView
         android:id="@+id/back"
@@ -110,6 +129,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499"
+        android:contentDescription="@string/content_description_slide_screen_left_arrow"
         app:srcCompat="@drawable/ic_back" />
 
     <ImageView
@@ -120,6 +140,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/content_description_slide_screen_right_arrow"
         app:srcCompat="@drawable/ic_next" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
