@@ -7,23 +7,22 @@
 
     <ImageView
         android:id="@+id/citizen_hub_logo_with_text"
-        android:layout_width="342dp"
-        android:layout_height="208dp"
-        android:layout_marginTop="66dp"
+        android:layout_width="263dp"
+        android:layout_height="225dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="74dp"
         android:contentDescription="@string/citizen_hub_logo_with_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/img_citizen_hub_logo_with_text" />
+        app:srcCompat="@drawable/citizen_hub_logo" />
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
         android:layout_width="87dp"
         android:layout_height="41dp"
-        android:layout_marginTop="385dp"
+        android:layout_marginTop="448dp"
         android:background="@color/colorS4HGreyLight"
         android:drawableEnd="@drawable/ic_circle_orange"
         android:fontFamily="@font/primus_bold"
@@ -33,7 +32,7 @@
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,10 +56,23 @@
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.934"
         app:srcCompat="@drawable/img_s4h_logo" />
+
+    <TextView
+        android:id="@+id/citizen_hub_text_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/primus_bold"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/citizen_hub_logo_with_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
