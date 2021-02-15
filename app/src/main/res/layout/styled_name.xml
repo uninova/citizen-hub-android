@@ -1,0 +1,22 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/DarkBlue"
+            android:fontFamily="@font/primus"
+            android:text="Citizen" android:textSize="24sp"/>
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/Turquoise"
+            android:fontFamily="@font/primus"
+            android:text="HUB" android:textSize="24sp"/>
+
+</LinearLayout>

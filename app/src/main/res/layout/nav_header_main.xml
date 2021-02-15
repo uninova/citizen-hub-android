@@ -4,41 +4,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorS4HGreyLight"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        android:paddingTop="32dp"
+        android:paddingEnd="48dp">
 
-    <TextView
-            android:id="@+id/textView_smarty"
-            android:layout_width="match_parent"
+    <include
+            android:layout_gravity="end"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_slab"
-            android:paddingTop="27dp"
-            android:text="@string/app_name"
-            android:textColor="@color/colorS4HDarkBlue"
-            android:textSize="40sp"/>
-
-    <TextView
-            android:id="@+id/textView_smarty2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="powered by"
-            android:textColor="@color/colorS4HDarkBlue"
-            android:textSize="16sp"/>
-
-    <ImageView
-            android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:cropToPadding="false"
-            app:srcCompat="@drawable/img_s4h_logo"
-            android:contentDescription="TODO"/>
+            layout="@layout/styled_name"/>
 
 </LinearLayout>
