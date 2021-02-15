@@ -20,7 +20,7 @@
             android:scaleType="fitCenter" android:layout_marginTop="128dp"/>
 
     <TextView
-            android:fontFamily="@font/lato"
+            android:fontFamily="@font/neosanspro"
             android:id="@+id/textView_logOut"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
