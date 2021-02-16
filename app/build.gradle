@@ -84,7 +84,7 @@ dependencies {
         }
     }
 
-    implementation "care.data4life.hc-fhir-helper-sdk-kmp:fhir-helper-android:1.3.1"
+    implementation "care.data4life.hc-fhir-helper-sdk-kmp:fhir-helper-android:$d4lhelpersdk_version"
 
     // Material Calendar View
     implementation "com.github.prolificinteractive:material-calendarview:$materialcalendarview_version"
