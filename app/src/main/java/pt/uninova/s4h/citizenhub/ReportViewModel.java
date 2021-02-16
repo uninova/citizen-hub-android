@@ -7,14 +7,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import care.data4life.fhir.stu3.model.*;
+import care.data4life.fhir.r4.model.*;
 import care.data4life.sdk.Data4LifeClient;
+import care.data4life.sdk.SdkContract.Fhir4RecordClient;
+import care.data4life.sdk.call.Callback;
+import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.config.DataRestrictionException;
-import care.data4life.sdk.helpers.AttachmentBuilder;
-import care.data4life.sdk.helpers.DocumentReferenceBuilder;
-import care.data4life.sdk.helpers.PractitionerBuilder;
-import care.data4life.sdk.listener.ResultListener;
-import care.data4life.sdk.model.Record;
+import care.data4life.sdk.helpers.r4.AttachmentBuilder;
+import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
+import care.data4life.sdk.helpers.r4.PractitionerBuilder;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
@@ -258,9 +259,9 @@ public class ReportViewModel extends AndroidViewModel {
         }
     }
 
-    public void sendDetail(ResultListener<Record<DocumentReference>> resultListener) {
-        Data4LifeClient client = Data4LifeClient.getInstance();
-        LocalDateTime now = LocalDateTime.now();
+    public void sendDetail(Callback<Fhir4Record<DocumentReference>> callback) {
+        Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
+        final LocalDateTime now = LocalDateTime.now();
         List<Attachment> attachments = new ArrayList<>(1);
 
         byte[] data = createPdf();
@@ -281,19 +282,16 @@ public class ReportViewModel extends AndroidViewModel {
 
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
                 "Citizen Hub Daily Report " + detailDate.toString(),
-                new FhirInstant(
-                        new FhirDateTime(
-                                new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                                new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                                TimeZone.getDefault())),
-                CodeSystems.DocumentReferenceStatus.CURRENT,
+                CodeSystemDocumentReferenceStatus.CURRENT,
                 attachments,
                 getFakeDocumentReferenceType(),
                 getFakePractitioner(),
                 getFakePracticeSpeciality()
         );
 
-        client.createRecord(documentReference, resultListener);
+        documentReference.date = new FhirInstant(new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()), new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), 0, 0), TimeZone.getDefault()));
+
+        client.<DocumentReference>create(documentReference, new ArrayList<>(), callback);
     }
 
 

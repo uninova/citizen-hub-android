@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import care.data4life.fhir.stu3.model.DocumentReference;
+import care.data4life.fhir.r4.model.DocumentReference;
+import care.data4life.sdk.call.Callback;
+import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
-import care.data4life.sdk.listener.ResultListener;
-import care.data4life.sdk.model.Record;
 import org.jetbrains.annotations.NotNull;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -33,9 +33,9 @@ public class ReportDetailFragment extends Fragment {
 
         Button uploadPdfButton = view.findViewById(R.id.button);
         uploadPdfButton.setOnClickListener(v -> {
-            model.sendDetail(new ResultListener<Record<DocumentReference>>() {
+            model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
                 @Override
-                public void onSuccess(Record<DocumentReference> recAord) {
+                public void onSuccess(Fhir4Record<DocumentReference> recAord) {
                     requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show());
                 }
 
