@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_margin="10sp"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="212dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_margin="10sp"
+        android:gravity="center"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_margin="10sp"
+        android:gravity="center"
+        android:text="TextView"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_margin="10sp"
+        android:gravity="center"
+
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+
+        android:layout_margin="10sp"
+        android:gravity="center"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/background_logo"
+        android:layout_width="253dp"
+        android:layout_height="295dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginEnd="42dp"
+        android:alpha="0.3"
+        android:contentDescription="@string/pdf_layout_background_logo"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pdf_layout_title"
+        app:layout_constraintVertical_bias="0.437"
+        app:srcCompat="@drawable/citizen_hub_logo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="189dp"
+        android:layout_height="26dp"
+        android:layout_margin="10sp"
+        android:gravity="center"
+        android:text="TextView"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <TextView
+        android:id="@+id/pdf_layout_title"
+        android:layout_width="333dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_background_rounded_dark_blue"
+        android:drawablePadding="-70dp"
+        android:elegantTextHeight="false"
+        android:gravity="center"
+        android:text="Your Daily Report"
+        android:textAllCaps="false"
+        android:textColor="@color/colorS4HWhite"
+        app:drawableLeftCompat="@drawable/ic_citizen_hub_logo_white_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pdf_layout_results_title"
+        android:layout_width="333dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="132dp"
+        android:background="@drawable/button_background_rounded_dark_blue"
+        android:drawablePadding="-70dp"
+        android:elegantTextHeight="false"
+        android:gravity="center"
+        android:text="Today's Results: DD/MM/YYYY"
+        android:textAllCaps="false"
+        android:textColor="@color/colorS4HWhite"
+        app:drawableLeftCompat="@drawable/ic_daily_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pdf_layout_results_title"
+        app:layout_constraintGuide_end="482dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
