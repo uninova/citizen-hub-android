@@ -15,6 +15,7 @@ import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.config.DataRestrictionException;
 import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
+import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -285,7 +286,7 @@ public class ReportViewModel extends AndroidViewModel {
                 CodeSystemDocumentReferenceStatus.CURRENT,
                 attachments,
                 getFakeDocumentReferenceType(),
-                getFakePractitioner(),
+                getOrganization(),
                 getFakePracticeSpeciality()
         );
 
@@ -294,5 +295,29 @@ public class ReportViewModel extends AndroidViewModel {
         client.<DocumentReference>create(documentReference, new ArrayList<>(), callback);
     }
 
+    private CodeableConcept getOrganizationType() {
+        final Coding organizationType = new Coding();
+
+        organizationType.code = "edu";
+
+        final CodeableConcept codeableConcept = new CodeableConcept();
+
+        codeableConcept.coding = Collections.singletonList(organizationType);
+
+        return codeableConcept;
+    }
+
+    private Organization getOrganization() {
+        final Organization organization = OrganizationBuilder.buildWith(
+                getOrganizationType(),
+                "UNINOVA - Instituto de Desenvolvimento de Novas Tecnologias",
+                "Faculdade de Ciências e Tecnologia",
+                "2829-516",
+                "Caparica",
+                "(+351) 21 29 48 527",
+                "https://www.uninova.pt/");
+
+        return organization;
+    }
 
 }
