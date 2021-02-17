@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <size
+                android:width="36dp"
+                android:height="64dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="24dp"
+        android:drawable="@drawable/ic_heartbeat"
+        android:gravity="left"
+        android:left="24dp"
+        android:right="24dp"
+        android:top="24dp" />
+</layer-list>

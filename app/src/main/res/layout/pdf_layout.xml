@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="left"
-        app:constraint_referenced_ids="pdf_layout_title,textView8,textView7,textView11,textView10,textView9,barrier"
+        app:constraint_referenced_ids="pdf_layout_title,calories_text,heartbeat_text,distance_text,steps_text,time_sitting_text,barrier"
         tools:layout_editor_absoluteX="411dp" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -76,47 +76,51 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/time_sitting_text"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintBottom_toTopOf="@+id/steps_text"
+        app:layout_constraintTop_toBottomOf="@+id/calories_text"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/calories_text"
+        android:drawableLeft="@drawable/ic_calories_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:layout_constraintBottom_toTopOf="@+id/time_sitting_text"
+        app:layout_constraintTop_toBottomOf="@+id/heartbeat_text"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/steps_text"
+        android:drawableLeft="@drawable/ic_steps_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintBottom_toTopOf="@+id/distance_text"
+        app:layout_constraintTop_toBottomOf="@+id/time_sitting_text"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/distance_text"
         android:layout_width="328dp"
+        android:drawableLeft="@drawable/ic_distance_item"
         android:layout_height="36dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/steps_text"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/heartbeat_text"
+        android:drawableLeft="@drawable/ic_heartbeat_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintBottom_toTopOf="@+id/calories_text"
         app:layout_constraintTop_toBottomOf="@+id/pdf_layout_results_title"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
