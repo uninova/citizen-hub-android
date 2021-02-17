@@ -82,41 +82,41 @@
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/steps_text"
         app:layout_constraintTop_toBottomOf="@+id/calories_text"
+        app:drawableStartCompat="@drawable/ic_time_sitting_item"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
         android:id="@+id/calories_text"
-        android:drawableLeft="@drawable/ic_calories_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/time_sitting_text"
         app:layout_constraintTop_toBottomOf="@+id/heartbeat_text"
+        app:drawableStartCompat="@drawable/ic_calories_item"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
         android:id="@+id/steps_text"
-        android:drawableLeft="@drawable/ic_steps_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/distance_text"
         app:layout_constraintTop_toBottomOf="@+id/time_sitting_text"
+        app:drawableStartCompat="@drawable/ic_steps_item"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
         android:id="@+id/distance_text"
         android:layout_width="328dp"
-        android:drawableLeft="@drawable/ic_distance_item"
         android:layout_height="36dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/steps_text"
+        app:drawableStartCompat="@drawable/ic_distance_item"
         tools:layout_editor_absoluteX="39dp" />
 
     <TextView
         android:id="@+id/heartbeat_text"
-        android:drawableLeft="@drawable/ic_heartbeat_item"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:text="TextView"
@@ -124,6 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pdf_layout_results_title"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
+        app:drawableStartCompat="@drawable/ic_heartbeat_item"
         tools:layout_editor_absoluteX="39dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
