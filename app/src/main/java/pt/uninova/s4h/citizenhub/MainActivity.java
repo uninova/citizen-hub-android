@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -54,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         }
     };
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         PdfGenerator.getBuilder()
                 .setContext(MainActivity.this)
                 .fromLayoutXMLSource()
-                .fromLayoutXML(R.layout.pdf_layout, R.layout.pdf_layout)
+                .fromLayoutXML(R.layout.pdf_layout)
                 /* "fromLayoutXML()" takes array of layout resources.
                  * You can also invoke "fromLayoutXMLList()" method here which takes list of layout resources instead of array. */
                 .setDefaultPageSize(PdfGenerator.PageSize.A4)

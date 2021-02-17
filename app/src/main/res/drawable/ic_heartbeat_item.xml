@@ -11,7 +11,7 @@
         android:drawable="@drawable/ic_heartbeat"
         android:bottom="16dp"
         android:gravity="left"
-        android:left="16dp"
-        android:right="16dp"
+        android:left="8dp"
+        android:right="20dp"
         android:top="16dp" />
 </layer-list>
