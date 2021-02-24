@@ -3,8 +3,8 @@
     <item>
         <shape>
             <size
-                android:width="36dp"
-                android:height="64dp" />
+                android:width="9dp"
+                android:height="16dp" />
         </shape>
     </item>
     <item

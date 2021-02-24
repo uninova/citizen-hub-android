@@ -1,20 +1,38 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
-import android.graphics.*;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
+import android.os.Environment;
+
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import care.data4life.fhir.r4.model.*;
-import care.data4life.sdk.Data4LifeClient;
-import care.data4life.sdk.SdkContract.Fhir4RecordClient;
-import care.data4life.sdk.call.Callback;
-import care.data4life.sdk.call.Fhir4Record;
-import care.data4life.sdk.config.DataRestrictionException;
-import care.data4life.sdk.helpers.r4.AttachmentBuilder;
-import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import care.data4life.fhir.r4.model.CodeableConcept;
+import care.data4life.fhir.r4.model.Coding;
+import care.data4life.fhir.r4.model.Practitioner;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -23,16 +41,17 @@ import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.LocalDateInterval;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
 public class ReportViewModel extends AndroidViewModel {
 
     final private MeasurementRepository repository;
+
+
+    final private boolean testHeartBeat = true;
+    final private boolean testDistanceWalked = true;
+    final private boolean testStepsTaken = true;
+    final private boolean testCalories = true;
+    final private boolean testTimeSitting = true;
+
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
     final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
@@ -112,8 +131,9 @@ public class ReportViewModel extends AndroidViewModel {
         return scaledBitmap;
     }
 
-    public byte[] createPdf() {
+    public byte[] createPdf() throws IOException {
         PdfDocument document = new PdfDocument();
+        Resources res = getApplication().getResources();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
@@ -124,15 +144,33 @@ public class ReportViewModel extends AndroidViewModel {
 
         Paint titlePaint = new Paint();
 
+        titlePaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HWhite));
         titlePaint.setTextAlign(Paint.Align.LEFT);
         titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
         titlePaint.setTextSize(24);
 
         Paint textPaint = new Paint();
 
+        textPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HGreyLight));
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTypeface(Typeface.DEFAULT);
         textPaint.setTextSize(12);
+
+        Paint darkTextPaint = new Paint();
+        darkTextPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HBlack));
+        darkTextPaint.setTextAlign(Paint.Align.LEFT);
+        darkTextPaint.setTypeface(Typeface.DEFAULT);
+        darkTextPaint.setTextSize(12);
+
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HDarkBlue));
+        backgroundPaint.setAntiAlias(true);
+
+        Paint rectPaint = new Paint();
+        rectPaint.setStyle(Paint.Style.STROKE);
+        rectPaint.setStrokeWidth(3);
+        rectPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HDarkBlue));
 
         int y = 50;
         int x = 50;
@@ -141,17 +179,40 @@ public class ReportViewModel extends AndroidViewModel {
         options.inScaled = false;
         options.inDensity = 72;
 
-        Bitmap logo = BitmapFactory.decodeResource(getApplication().getResources(), R.drawable.img_s4h_logo_report, options);
+        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.citizen_hub_logo, options);
 
-        canvas.drawBitmap(logo, x, y, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.save();
+        canvas.translate(x + 20, 2);
+        canvas.scale(0.25f, 0.25f);
+        canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.restore();
+//        float aspectRatio = logo.getWidth() /
+//                (float) logo.getHeight();
+//        int height = 200;
+//        int width = Math.round(height * aspectRatio);
+//
+//        logo = Bitmap.createScaledBitmap(
+//                logo, width, height, false);
 
-        y += 80;
+        x += 60;
+        y += 120;
 
-        canvas.drawText("Citizen Hub Daily Report " + detailDate.toString(), x, y, titlePaint);
-        y += 40;
+        String content = "Your Daily Report: ";
+        RectF rect = new RectF(x - 30, y - 50, x + 430, y + 30);
+        canvas.drawRoundRect(rect, 15, 15, backgroundPaint);
+
+        canvas.drawText(content + detailDate.toString(), x + 70, y, titlePaint);
+        Drawable icon = res.getDrawable(R.drawable.ic_daily);
+        icon.setBounds(x - 10, y - 30, x + 40, y + 15);
+        icon.draw(canvas);
+//        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ic_daily_item);
+//        canvas.drawBitmap(bitmap, x-15, y, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        y += 50;
         x += 20;
 
         MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.HEART_RATE);
+
 
         if (measurementAggregate != null) {
             canvas.drawText("Average heart rate (bpm): " + decimalFormat.format(measurementAggregate.getAverage()), x, y, textPaint);
@@ -161,6 +222,101 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.drawText("Maximum heart rate (bpm): " + measurementAggregate.getMax(), x, y, textPaint);
             y += 20;
         }
+
+
+        if (testTimeSitting) {
+            Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
+            timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            timeSitting.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvas.drawText("Spent: " + " sitting", x + 100, y, darkTextPaint);
+            y += 20;
+            canvas.drawText("Spent " + " seated with good posture", x + 100, y, darkTextPaint);
+            y += 20;
+
+            y += 40;
+        }
+
+        if (testDistanceWalked) {
+
+            Drawable distanceWalked = res.getDrawable(R.drawable.ic_distance, null);
+            distanceWalked.setBounds(0, 0, distanceWalked.getIntrinsicWidth(), distanceWalked.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            distanceWalked.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvas.drawText("Total distance walked: " + " km", x + 100, y + 10, darkTextPaint);
+            y += 20;
+
+            y += 40;
+        }
+
+        if (testHeartBeat) {
+
+            y -= 10;
+
+            Drawable heartBeat = res.getDrawable(R.drawable.ic_heartbeat_item, null);
+            heartBeat.setBounds(0, 0, heartBeat.getIntrinsicWidth(), heartBeat.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x - 15, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            heartBeat.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvas.drawText("Average heart rate (bpm): ", x + 100, y, darkTextPaint);
+            y += 20;
+            canvas.drawText("Minimum heart rate (bpm): ", x + 100, y, darkTextPaint);
+            y += 20;
+            canvas.drawText("Maximum heart rate (bpm): ", x + 100, y, darkTextPaint);
+            y += 20;
+
+            y += 20;
+        }
+
+        if (testStepsTaken) {
+            Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
+            stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            stepsTaken.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvas.drawText("Steps taken: ", x + 100, y + 10, darkTextPaint);
+            y += 20;
+
+            y += 40;
+        }
+
+        if (testCalories) {
+            Drawable calories = res.getDrawable(R.drawable.ic_calories, null);
+            calories.setBounds(0, 0, calories.getIntrinsicWidth(), calories.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            calories.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvas.drawText("Estimated Calories burned:" + " calories", x + 100, y + 10, darkTextPaint);
+            y += 20;
+
+            y += 40;
+        }
+
+        RectF rectAround = new RectF(80, 120, 540, y);
+        canvas.drawRoundRect(rectAround, 15, 15, rectPaint);
+
 
         measurementAggregate = detailAggregates.get(MeasurementKind.STEPS);
 
@@ -200,6 +356,11 @@ public class ReportViewModel extends AndroidViewModel {
         }
 
         document.close();
+        String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/citizen.pdf";
+        FileOutputStream fos = new FileOutputStream(myFilePath);
+        fos.write(out.toByteArray());
+        fos.flush();
+        fos.close();
 
         return out.toByteArray();
     }
@@ -259,40 +420,40 @@ public class ReportViewModel extends AndroidViewModel {
         }
     }
 
-    public void sendDetail(Callback<Fhir4Record<DocumentReference>> callback) {
-        Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
-        final LocalDateTime now = LocalDateTime.now();
-        List<Attachment> attachments = new ArrayList<>(1);
-
-        byte[] data = createPdf();
-        Attachment attach = null;
-
-        try {
-            attach = AttachmentBuilder.buildWith(now.toString(),
-                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                            TimeZone.getDefault()),
-                    "application/pdf",
-                    data);
-        } catch (DataRestrictionException.UnsupportedFileType | DataRestrictionException.MaxDataSizeViolation unsupportedFileType) {
-            unsupportedFileType.printStackTrace();
-        }
-
-        attachments.add(attach);
-
-        DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                "Citizen Hub Daily Report " + detailDate.toString(),
-                CodeSystemDocumentReferenceStatus.CURRENT,
-                attachments,
-                getFakeDocumentReferenceType(),
-                getFakePractitioner(),
-                getFakePracticeSpeciality()
-        );
-
-        documentReference.date = new FhirInstant(new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()), new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), 0, 0), TimeZone.getDefault()));
-
-        client.<DocumentReference>create(documentReference, new ArrayList<>(), callback);
-    }
+//    public void sendDetail(Callback<Fhir4Record<DocumentReference>> callback) throws IOException {
+//        Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
+//        final LocalDateTime now = LocalDateTime.now();
+//        List<Attachment> attachments = new ArrayList<>(1);
+//
+//        byte[] data = createPdf();
+//        Attachment attach = null;
+//
+//        try {
+//            attach = AttachmentBuilder.buildWith(now.toString(),
+//                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
+//                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
+//                            TimeZone.getDefault()),
+//                    "application/pdf",
+//                    data);
+//        } catch (DataRestrictionException.UnsupportedFileType | DataRestrictionException.MaxDataSizeViolation unsupportedFileType) {
+//            unsupportedFileType.printStackTrace();
+//        }
+//
+//        attachments.add(attach);
+//
+//        DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
+//                "Citizen Hub Daily Report " + detailDate.toString(),
+//                CodeSystemDocumentReferenceStatus.CURRENT,
+//                attachments,
+//                getFakeDocumentReferenceType(),
+//                getFakePractitioner(),
+//                getFakePracticeSpeciality()
+//        );
+//
+//        documentReference.date = new FhirInstant(new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()), new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), 0, 0), TimeZone.getDefault()));
+//
+//        client.<DocumentReference>create(documentReference, new ArrayList<>(), callback);
+//    }
 
 
 }
