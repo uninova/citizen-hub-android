@@ -162,6 +162,13 @@ public class ReportViewModel extends AndroidViewModel {
         darkTextPaint.setTypeface(Typeface.DEFAULT);
         darkTextPaint.setTextSize(12);
 
+        Paint boldTextPaint = new Paint();
+        boldTextPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HBlack));
+        boldTextPaint.setTextAlign(Paint.Align.LEFT);
+        boldTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        boldTextPaint.setTextSize(12);
+
+
         Paint backgroundPaint = new Paint();
         backgroundPaint.setStyle(Paint.Style.FILL);
         backgroundPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HDarkBlue));
@@ -234,8 +241,9 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
+
+
             canvas.drawText("Spent: " + " sitting", x + 100, y, darkTextPaint);
-            y += 20;
             canvas.drawText("Spent " + " seated with good posture", x + 100, y, darkTextPaint);
             y += 20;
 
@@ -272,9 +280,14 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Average heart rate (bpm): ", x + 100, y, darkTextPaint);
+            canvas.drawText(res.getString(R.string.pdf_report_average_HR_text), x + 100, y, darkTextPaint);
+            double example = 2.0;
+            canvas.drawText(String.valueOf(example), x + 100 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)), y, boldTextPaint);
+            canvas.drawText(" bpm", x + 100 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)) + boldTextPaint.measureText(String.valueOf(example)), y, darkTextPaint);
+
             y += 20;
             canvas.drawText("Minimum heart rate (bpm): ", x + 100, y, darkTextPaint);
+            boldInFront(canvas, "Minimum heart rate (bpm):", "2.0", x + 100, y, darkTextPaint, boldTextPaint);
             y += 20;
             canvas.drawText("Maximum heart rate (bpm): ", x + 100, y, darkTextPaint);
             y += 20;
@@ -419,6 +432,18 @@ public class ReportViewModel extends AndroidViewModel {
             repository.obtainDates(peek, this::onDatesChanged);
         }
     }
+
+
+    public void boldInFront(Canvas canvas, String normal, String bold, float x, float y, Paint normalPaint, Paint boldPaint) {
+        canvas.drawText(normal, x, y, normalPaint);
+        canvas.drawText(" " + bold, x + normalPaint.measureText(normal), y, boldPaint);
+    }
+
+    public void boldBetween(Canvas canvas, String normal, String normal2, String bold, float x, float y, Paint normalPaint, Paint boldPaint) {
+        boldInFront(canvas, normal, bold, x, y, normalPaint, boldPaint);
+        canvas.drawText(normal2, x + normalPaint.measureText(normal + " ") + boldPaint.measureText(bold), y, normalPaint);
+    }
+
 
 //    public void sendDetail(Callback<Fhir4Record<DocumentReference>> callback) throws IOException {
 //        Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();

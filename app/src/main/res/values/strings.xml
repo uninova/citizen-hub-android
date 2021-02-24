@@ -44,4 +44,5 @@
     <string name="fragment_logout_button_logOut">Log out</string>
     <string name="fragment_logout_imageView_s4h_contentDescription">Smart4Health</string>
     <string name="pdf_layout_background_logo">background logo</string>
+    <string name="pdf_report_average_HR_text">Average heart rate (bpm): \</string>
 </resources>
