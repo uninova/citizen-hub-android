@@ -6,20 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import care.data4life.fhir.r4.model.DocumentReference;
-import care.data4life.sdk.call.Callback;
-import care.data4life.sdk.call.Fhir4Record;
-import care.data4life.sdk.lang.D4LException;
+
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.Map;
+
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import java.util.Map;
 
 public class ReportDetailFragment extends Fragment {
 
@@ -33,21 +32,28 @@ public class ReportDetailFragment extends Fragment {
 
         Button uploadPdfButton = view.findViewById(R.id.button);
         uploadPdfButton.setOnClickListener(v -> {
-            model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
-                @Override
-                public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                    requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show());
-                }
-
-                @Override
-                public void onError(D4LException exception) {
-                    requireActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
-                        exception.printStackTrace();
-                    });
-                }
-            });
+            try {
+                model.createPdf();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
+//        uploadPdfButton.setOnClickListener(v -> {
+//            model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
+//                @Override
+//                public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+//                    requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show());
+//                }
+//
+//                @Override
+//                public void onError(D4LException exception) {
+//                    requireActivity().runOnUiThread(() -> {
+//                        Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+//                        exception.printStackTrace();
+//                    });
+//                }
+//            });
+//        });
 
         return view;
     }
