@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        package="pt.uninova.s4h.citizenhub">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pt.uninova.s4h.citizenhub">
 
     <uses-feature
-            android:name="android.hardware.bluetooth_le"
+        android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -28,40 +27,40 @@
             <data android:scheme="https" />
         </intent>
         <intent>
-            <action android:name="android.intent.action.VIEW"/>
+            <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.APP_BROWSER"/>
+            <category android:name="android.intent.category.APP_BROWSER" />
 
-            <data android:scheme="https"/>
+            <data android:scheme="https" />
         </intent>
     </queries>
 
     <application
-            android:name=".CitizenHubApplication"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher"
-            android:supportsRtl="true"
+        android:name=".CitizenHubApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".LobbyActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
-        <activity
-                android:name=".MainActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
-                android:name=".LobbyActivity"
-                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-                android:name=".service.CitizenHubService"
-                android:exported="false"/>
+            android:name=".service.CitizenHubService"
+            android:exported="false" />
     </application>
 
 </manifest>
