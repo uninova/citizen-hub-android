@@ -184,6 +184,13 @@ public class ReportViewModel extends AndroidViewModel {
         rectFillPaint.setStrokeWidth(2);
         rectFillPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HTurquoise));
 
+        Paint ecInfoPaint = new Paint();
+        ecInfoPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HBlack));
+        ecInfoPaint.setTextAlign(Paint.Align.LEFT);
+        ecInfoPaint.setTypeface(Typeface.DEFAULT);
+        ecInfoPaint.setTextSize(8);
+
+
         int y = 50;
         int x = 50;
 
@@ -193,18 +200,23 @@ public class ReportViewModel extends AndroidViewModel {
 
         Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.citizen_hub_logo, options);
 
+
         canvas.save();
         canvas.translate(x + 80, 2);
         canvas.scale(0.25f, 0.25f);
         canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
-//        float aspectRatio = logo.getWidth() /
-//                (float) logo.getHeight();
-//        int height = 200;
-//        int width = Math.round(height * aspectRatio);
-//
-//        logo = Bitmap.createScaledBitmap(
-//                logo, width, height, false);
+
+
+        Bitmap ec_logo = BitmapFactory.decodeResource(res, R.drawable.ec_logo, options);
+        canvas.save();
+        canvas.translate(10, 790);
+        canvas.scale(0.04f, 0.04f);
+        canvas.drawBitmap(ec_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.restore();
+        canvas.drawText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
+        canvas.drawText("innovation programme under Grant agreement No 826117", x + 25, 821, ecInfoPaint);
+
 
         x += 60;
         y += 120;
