@@ -147,7 +147,7 @@ public class ReportViewModel extends AndroidViewModel {
         titlePaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HWhite));
         titlePaint.setTextAlign(Paint.Align.LEFT);
         titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
-        titlePaint.setTextSize(24);
+        titlePaint.setTextSize(18);
 
         Paint textPaint = new Paint();
 
@@ -177,7 +177,12 @@ public class ReportViewModel extends AndroidViewModel {
         Paint rectPaint = new Paint();
         rectPaint.setStyle(Paint.Style.STROKE);
         rectPaint.setStrokeWidth(3);
-        rectPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HDarkBlue));
+        rectPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HTurquoise));
+
+        Paint rectFillPaint = new Paint();
+        rectFillPaint.setStyle(Paint.Style.FILL);
+        rectFillPaint.setStrokeWidth(2);
+        rectFillPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HTurquoise));
 
         int y = 50;
         int x = 50;
@@ -189,7 +194,7 @@ public class ReportViewModel extends AndroidViewModel {
         Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.citizen_hub_logo, options);
 
         canvas.save();
-        canvas.translate(x + 20, 2);
+        canvas.translate(x + 80, 2);
         canvas.scale(0.25f, 0.25f);
         canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
@@ -204,13 +209,18 @@ public class ReportViewModel extends AndroidViewModel {
         x += 60;
         y += 120;
 
-        String content = "Your Daily Report: ";
-        RectF rect = new RectF(x - 30, y - 50, x + 430, y + 30);
-        canvas.drawRoundRect(rect, 15, 15, backgroundPaint);
+        String content = "Your Daily Report";
+        RectF rect = new RectF(x - 30, y - 50, x + 430, y + 15);
+        canvas.drawRoundRect(rect, 10, 10, backgroundPaint);
 
-        canvas.drawText(content + detailDate.toString(), x + 70, y, titlePaint);
+        canvas.drawText(content, x + 140, y - 15, titlePaint);
+        canvas.drawRect(80, 175, 540, 210, rectFillPaint);
+        canvas.drawText("Results of: " + detailDate.toString(), x + 120, y + 30, titlePaint);
+
+////2º titulo detailDate.toString()
+
         Drawable icon = res.getDrawable(R.drawable.ic_daily);
-        icon.setBounds(x - 10, y - 30, x + 40, y + 15);
+        icon.setBounds(x - 10, y - 40, x + 40, y);
         icon.draw(canvas);
 //        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ic_daily_item);
 //        canvas.drawBitmap(bitmap, x-15, y, new Paint(Paint.FILTER_BITMAP_FLAG));
@@ -243,8 +253,9 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
 
 
-            canvas.drawText("Spent: " + " sitting", x + 100, y, darkTextPaint);
-            canvas.drawText("Spent " + " seated with good posture", x + 100, y, darkTextPaint);
+            canvas.drawText("Spent: " + " sitting", x + 70, y, darkTextPaint);
+            y += 20;
+            canvas.drawText("Spent " + " seated with good posture", x + 70, y, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -261,7 +272,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Total distance walked: " + " km", x + 100, y + 10, darkTextPaint);
+            canvas.drawText("Total distance walked: " + " km", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -280,16 +291,16 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText(res.getString(R.string.pdf_report_average_HR_text), x + 100, y, darkTextPaint);
+            canvas.drawText(res.getString(R.string.pdf_report_average_HR_text), x + 70, y, darkTextPaint);
             double example = 2.0;
-            canvas.drawText(String.valueOf(example), x + 100 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)), y, boldTextPaint);
-            canvas.drawText(" bpm", x + 100 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)) + boldTextPaint.measureText(String.valueOf(example)), y, darkTextPaint);
+            canvas.drawText(String.valueOf(example), x + 70 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)), y, boldTextPaint);
+            canvas.drawText(" bpm", x + 70 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)) + boldTextPaint.measureText(String.valueOf(example)), y, darkTextPaint);
 
             y += 20;
-            canvas.drawText("Minimum heart rate (bpm): ", x + 100, y, darkTextPaint);
-            boldInFront(canvas, "Minimum heart rate (bpm):", "2.0", x + 100, y, darkTextPaint, boldTextPaint);
+            canvas.drawText("Minimum heart rate (bpm): ", x + 70, y, darkTextPaint);
+            boldInFront(canvas, "Minimum heart rate (bpm):", "2.0", x + 70, y, darkTextPaint, boldTextPaint);
             y += 20;
-            canvas.drawText("Maximum heart rate (bpm): ", x + 100, y, darkTextPaint);
+            canvas.drawText("Maximum heart rate (bpm): ", x + 70, y, darkTextPaint);
             y += 20;
 
             y += 20;
@@ -305,7 +316,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Steps taken: ", x + 100, y + 10, darkTextPaint);
+            canvas.drawText("Steps taken: ", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -321,15 +332,14 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Estimated Calories burned:" + " calories", x + 100, y + 10, darkTextPaint);
+            canvas.drawText("Estimated Calories burned:" + " calories", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
         }
 
-        RectF rectAround = new RectF(80, 120, 540, y);
-        canvas.drawRoundRect(rectAround, 15, 15, rectPaint);
-
+        RectF rectAround = new RectF(81, 205, 539, y);
+        canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
 
         measurementAggregate = detailAggregates.get(MeasurementKind.STEPS);
 
