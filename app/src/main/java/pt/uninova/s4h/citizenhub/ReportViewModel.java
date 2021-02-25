@@ -190,6 +190,12 @@ public class ReportViewModel extends AndroidViewModel {
         ecInfoPaint.setTypeface(Typeface.DEFAULT);
         ecInfoPaint.setTextSize(8);
 
+        Paint poweredByPaint = new Paint();
+
+        poweredByPaint.setColor(ContextCompat.getColor(getApplication(), R.color.colorS4HBlack));
+        poweredByPaint.setTextAlign(Paint.Align.LEFT);
+        poweredByPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        poweredByPaint.setTextSize(10);
 
         int y = 50;
         int x = 50;
@@ -216,6 +222,15 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.restore();
         canvas.drawText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
         canvas.drawText("innovation programme under Grant agreement No 826117", x + 25, 821, ecInfoPaint);
+
+        Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_report, options);
+        canvas.save();
+        canvas.translate(475, 801);
+        canvas.scale(0.35f, 0.35f);
+        canvas.drawBitmap(smart4Health_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.restore();
+
+        canvas.drawText("powered by", x + 365, 813, poweredByPaint);
 
 
         x += 60;
