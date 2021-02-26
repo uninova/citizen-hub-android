@@ -3,60 +3,54 @@ package pt.uninova.s4h.citizenhub.report;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class CanvasDrawHelper {
+import java.util.ArrayList;
+import java.util.List;
 
-    double xCoordinate = 0;
-    double yCoordinate = 0;
-    String text;
-    Paint paint;
+public class CanvasDrawHelper {
+    Canvas canvas;
+    List<DrawObject> drawingList;
+
 
     public CanvasDrawHelper(Canvas canvas) {
-        this.text = text;
-        this.paint = paint;
+        this.canvas = canvas;
+        drawingList = new ArrayList<DrawObject>();
     }
 
 
-    public CanvasDrawHelper(Canvas canvas, float x, float y) {
-        this.xCoordinate = x;
-        this.yCoordinate = y;
-        this.text = null;
-        this.paint = null;
+    public void addText(String text, float x, float y, Paint paint) {
+        DrawObject drawObject = new DrawObject(text, x, y, paint);
+        drawingList.add(drawObject);
     }
 
-    public void drawLine() {
+
+    public void addTextInFront(String text, Paint paint) {
+
+        DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
+
+        drawingList.add(new DrawObject(text, lastDrawObject.paint.measureText(lastDrawObject.text), lastDrawObject.yCoordinate, lastDrawObject.paint));
 
     }
 
-    public String getText() {
-        return text;
+    public void addNewLine(String text, float x, float spacing, Paint paint) {
+        DrawObject drawObject = new DrawObject(text, x, spacing, paint);
+        drawingList.add(drawObject);
     }
 
-    public void setText(String text) {
-        this.text = text;
+
+    public void addNewLine(String text, float spacing) {
+        DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
+        drawingList.add(new DrawObject(text, lastDrawObject.xCoordinate, spacing, lastDrawObject.paint));
     }
 
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
-    }
-
-    public double getXCoordinate() {
-        return xCoordinate;
-    }
-
-    public void setXCoordinate(double xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public double getYCoordinate() {
-        return yCoordinate;
-    }
-
-    public void setYCoordinate(double yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    public void draw() {
+        DrawObject drawObject = new DrawObject();
+        if (drawingList != null) {
+            for (int i = 0; i < drawingList.size(); i++) {
+                drawObject = drawingList.get(i);
+                canvas.drawText(drawObject.text, drawObject.xCoordinate, drawObject.yCoordinate, drawObject.paint);
+                drawObject.clearObject();
+            }
+        }
     }
 
 
