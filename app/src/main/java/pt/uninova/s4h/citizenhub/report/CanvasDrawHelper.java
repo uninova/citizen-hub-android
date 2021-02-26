@@ -53,5 +53,9 @@ public class CanvasDrawHelper {
         }
     }
 
+    public void clear() {
+        drawingList.clear();
+    }
+
 
 }
