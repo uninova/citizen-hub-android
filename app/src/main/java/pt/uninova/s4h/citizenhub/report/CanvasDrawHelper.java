@@ -31,15 +31,16 @@ public class CanvasDrawHelper {
 
     }
 
-    public void addNewLine(String text, float x, float spacing, Paint paint) {
-        DrawObject drawObject = new DrawObject(text, x, spacing, paint);
+    public void addNewLine(String text, float x, float verticalSpacing, Paint paint) {
+        DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
+        DrawObject drawObject = new DrawObject(text, x, verticalSpacing + lastDrawObject.getYCoordinate(), paint);
         drawingList.add(drawObject);
     }
 
 
-    public void addNewLine(String text, float spacing) {
+    public void addNewLine(String text, float verticalSpacing) {
         DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
-        drawingList.add(new DrawObject(text, lastDrawObject.xCoordinate, spacing, lastDrawObject.paint));
+        drawingList.add(new DrawObject(text, lastDrawObject.xCoordinate, verticalSpacing + lastDrawObject.getYCoordinate(), lastDrawObject.paint));
     }
 
     public void draw() {
