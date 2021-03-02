@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -24,19 +23,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import care.data4life.fhir.r4.model.CodeableConcept;
-import care.data4life.fhir.r4.model.Coding;
-import care.data4life.fhir.r4.model.Practitioner;
-import care.data4life.sdk.helpers.r4.PractitionerBuilder;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.report.CanvasWriter;
 import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.LocalDateInterval;
@@ -76,59 +71,6 @@ public class ReportViewModel extends AndroidViewModel {
         detailDate = LocalDate.now();
 
         peek();
-    }
-
-    static Practitioner getFakePractitioner() {
-        return PractitionerBuilder.buildWith(
-                "Bruce",
-                "Banner",
-                "Dr.",
-                "MD",
-                "Walvisbaai 3",
-                "2333ZA",
-                "Den helder",
-                "+31715269111",
-                "www.webpage.com");
-    }
-
-    static CodeableConcept getFakePracticeSpeciality() {
-        Coding coding = new Coding();
-        coding.code = "General Medicine";
-        coding.display = "General Medicine";
-        coding.system = "http://www.ihe.net/xds/connectathon/practiceSettingCodes";
-
-        CodeableConcept concept = new CodeableConcept();
-        concept.coding = Arrays.asList(coding);
-        return concept;
-    }
-
-    static CodeableConcept getFakeDocumentReferenceType() {
-        Coding coding = new Coding();
-        coding.code = "34108-1";
-        coding.display = "Outpatient Note";
-        coding.system = "http://loinc.org";
-
-        CodeableConcept concept = new CodeableConcept();
-        concept.coding = Arrays.asList(coding);
-        return concept;
-    }
-
-    public Bitmap resize(Bitmap bitmap, int newWidth, int newHeight) {
-        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
-
-        float ratioX = newWidth / (float) bitmap.getWidth();
-        float ratioY = newHeight / (float) bitmap.getHeight();
-        float middleX = newWidth / 2.0f;
-        float middleY = newHeight / 2.0f;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-
-        return scaledBitmap;
     }
 
     public byte[] createPdf() throws IOException {
@@ -220,8 +162,10 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.scale(0.04f, 0.04f);
         canvas.drawBitmap(ec_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
-        canvas.drawText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
-        canvas.drawText("innovation programme under Grant agreement No 826117", x + 25, 821, ecInfoPaint);
+        CanvasWriter canvasWriter = new CanvasWriter(canvas);
+        canvasWriter.addText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
+        canvasWriter.addNewLine("innovation programme under Grant agreement No 826117", 13);
+        canvasWriter.addText("powered by", x + 365, 813, poweredByPaint);
 
         Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_report, options);
         canvas.save();
@@ -230,8 +174,6 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.drawBitmap(smart4Health_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
 
-        canvas.drawText("powered by", x + 365, 813, poweredByPaint);
-
 
         x += 60;
         y += 120;
@@ -239,18 +181,14 @@ public class ReportViewModel extends AndroidViewModel {
         String content = "Your Daily Report";
         RectF rect = new RectF(x - 30, y - 50, x + 430, y + 15);
         canvas.drawRoundRect(rect, 10, 10, backgroundPaint);
-
-        canvas.drawText(content, x + 140, y - 15, titlePaint);
+        canvasWriter.addText("Results of: " + detailDate.toString(), x + 120, y + 30, titlePaint);
+        canvasWriter.addText(content, x + 140, y - 15, titlePaint);
         canvas.drawRect(80, 175, 540, 210, rectFillPaint);
-        canvas.drawText("Results of: " + detailDate.toString(), x + 120, y + 30, titlePaint);
 
-////2º titulo detailDate.toString()
 
         Drawable icon = res.getDrawable(R.drawable.ic_daily);
         icon.setBounds(x - 10, y - 40, x + 40, y);
         icon.draw(canvas);
-//        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ic_daily_item);
-//        canvas.drawBitmap(bitmap, x-15, y, new Paint(Paint.FILTER_BITMAP_FLAG));
 
         y += 50;
         x += 20;
@@ -279,10 +217,9 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-
-            canvas.drawText("Spent: " + " sitting", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Spent: " + " sitting", x + 70, y, darkTextPaint);
             y += 20;
-            canvas.drawText("Spent " + " seated with good posture", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Spent " + " seated with good posture", x + 70, y, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -299,7 +236,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Total distance walked: " + " km", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Total distance walked: " + " km", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -318,16 +255,16 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText(res.getString(R.string.pdf_report_average_HR_text), x + 70, y, darkTextPaint);
+            canvasWriter.addText(res.getString(R.string.pdf_report_average_HR_text), x + 70, y, darkTextPaint);
             double example = 2.0;
-            canvas.drawText(String.valueOf(example), x + 70 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)), y, boldTextPaint);
-            canvas.drawText(" bpm", x + 70 + darkTextPaint.measureText(res.getString(R.string.pdf_report_average_HR_text)) + boldTextPaint.measureText(String.valueOf(example)), y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + example, boldTextPaint);
+            canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
             y += 20;
-            canvas.drawText("Minimum heart rate (bpm): ", x + 70, y, darkTextPaint);
-            boldInFront(canvas, "Minimum heart rate (bpm):", "2.0", x + 70, y, darkTextPaint, boldTextPaint);
+            canvasWriter.addText("Minimum heart rate (bpm): ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(example), boldTextPaint);
             y += 20;
-            canvas.drawText("Maximum heart rate (bpm): ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Maximum heart rate (bpm): ", x + 70, y, darkTextPaint);
             y += 20;
 
             y += 20;
@@ -343,7 +280,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Steps taken: ", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Steps taken: ", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -359,7 +296,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvas.drawText("Estimated Calories burned:" + " calories", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Estimated Calories burned:" + " calories", x + 70, y + 10, darkTextPaint);
             y += 20;
 
             y += 40;
@@ -394,6 +331,8 @@ public class ReportViewModel extends AndroidViewModel {
         if (measurementAggregate != null) {
             canvas.drawText("Total time spent with good posture (min): " + measurementAggregate.getSum(), x, y, textPaint);
         }
+
+        canvasWriter.draw();
 
         document.finishPage(page);
 
@@ -469,18 +408,6 @@ public class ReportViewModel extends AndroidViewModel {
             repository.obtainDates(peek, this::onDatesChanged);
         }
     }
-
-
-    public void boldInFront(Canvas canvas, String normal, String bold, float x, float y, Paint normalPaint, Paint boldPaint) {
-        canvas.drawText(normal, x, y, normalPaint);
-        canvas.drawText(" " + bold, x + normalPaint.measureText(normal), y, boldPaint);
-    }
-
-    public void boldBetween(Canvas canvas, String normal, String normal2, String bold, float x, float y, Paint normalPaint, Paint boldPaint) {
-        boldInFront(canvas, normal, bold, x, y, normalPaint, boldPaint);
-        canvas.drawText(normal2, x + normalPaint.measureText(normal + " ") + boldPaint.measureText(bold), y, normalPaint);
-    }
-
 
 //    public void sendDetail(Callback<Fhir4Record<DocumentReference>> callback) throws IOException {
 //        Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
