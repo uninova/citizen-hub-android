@@ -367,7 +367,7 @@ public class ReportViewModel extends AndroidViewModel {
         }
 
         document.close();
-//            Apagar
+//            TODO delete before merging
         String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/citizen.pdf";
         FileOutputStream fos = new FileOutputStream(myFilePath);
         fos.write(out.toByteArray());
