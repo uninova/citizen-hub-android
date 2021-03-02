@@ -6,14 +6,22 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CanvasDrawHelper {
+public class CanvasWriter {
     Canvas canvas;
     List<DrawObject> drawingList;
+    float x = 0;
+    float y = 0;
 
 
-    public CanvasDrawHelper(Canvas canvas) {
+    public CanvasWriter(Canvas canvas, float x, float y) {
         this.canvas = canvas;
         drawingList = new ArrayList<DrawObject>();
+        this.x = x;
+        this.y = y;
+    }
+
+    public CanvasWriter(Canvas canvas) {
+        this(canvas, 0, 0);
     }
 
 
@@ -27,7 +35,7 @@ public class CanvasDrawHelper {
 
         DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
 
-        drawingList.add(new DrawObject(text, lastDrawObject.paint.measureText(lastDrawObject.text), lastDrawObject.yCoordinate, lastDrawObject.paint));
+        drawingList.add(new DrawObject(text, lastDrawObject.getPaint().measureText(lastDrawObject.getText()), lastDrawObject.getYCoordinate(), lastDrawObject.getPaint()));
 
     }
 
@@ -40,7 +48,7 @@ public class CanvasDrawHelper {
 
     public void addNewLine(String text, float verticalSpacing) {
         DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
-        drawingList.add(new DrawObject(text, lastDrawObject.xCoordinate, verticalSpacing + lastDrawObject.getYCoordinate(), lastDrawObject.paint));
+        drawingList.add(new DrawObject(text, lastDrawObject.getXCoordinate(), verticalSpacing + lastDrawObject.getYCoordinate(), lastDrawObject.getPaint()));
     }
 
     public void draw() {
@@ -48,8 +56,8 @@ public class CanvasDrawHelper {
         if (drawingList != null) {
             for (int i = 0; i < drawingList.size(); i++) {
                 drawObject = drawingList.get(i);
-                canvas.drawText(drawObject.text, drawObject.xCoordinate, drawObject.yCoordinate, drawObject.paint);
-                drawObject.clearObject();
+                //fazer gets
+                canvas.drawText(drawObject.getText(), drawObject.getXCoordinate(), drawObject.getYCoordinate(), drawObject.getPaint());
             }
         }
     }

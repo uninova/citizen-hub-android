@@ -3,10 +3,10 @@ package pt.uninova.s4h.citizenhub.report;
 import android.graphics.Paint;
 
 public class DrawObject {
-    float xCoordinate;
-    float yCoordinate;
-    String text;
-    Paint paint;
+    private float xCoordinate;
+    private float yCoordinate;
+    private String text;
+    private Paint paint;
 
     public DrawObject(String text, float xCoordinate, float yCoordinate, Paint paint) {
         this.xCoordinate = xCoordinate;
@@ -36,12 +36,6 @@ public class DrawObject {
         this.paint = drawObject.paint;
     }
 
-    public void clearObject() {
-        this.xCoordinate = 0;
-        this.yCoordinate = 0;
-        this.text = null;
-        this.paint = null;
-    }
 
     public float getXCoordinate() {
         return xCoordinate;
