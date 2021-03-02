@@ -35,7 +35,7 @@ public class CanvasWriter {
 
         DrawObject lastDrawObject = drawingList.get(drawingList.size() - 1);
 
-        drawingList.add(new DrawObject(text, lastDrawObject.getPaint().measureText(lastDrawObject.getText()), lastDrawObject.getYCoordinate(), lastDrawObject.getPaint()));
+        drawingList.add(new DrawObject(text, lastDrawObject.getXCoordinate() + lastDrawObject.getPaint().measureText(lastDrawObject.getText()), lastDrawObject.getYCoordinate(), paint));
 
     }
 
