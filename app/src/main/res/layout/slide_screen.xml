@@ -27,11 +27,12 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="268dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/slide_screen_welcome_text"
         android:textColor="@color/colorBlack"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -144,6 +145,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_next" />
+
+    <TextView
+        android:id="@+id/logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/primus_bold"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_img_s4h_logo_image_id" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

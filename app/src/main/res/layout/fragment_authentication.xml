@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/authentication_fragment_login_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:text="@string/authentication_fragment_login_text_view"
+        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/citizen_hub_logo_with_text"
         android:layout_width="263dp"
