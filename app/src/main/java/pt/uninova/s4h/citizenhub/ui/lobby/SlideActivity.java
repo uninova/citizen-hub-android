@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 import pt.uninova.s4h.citizenhub.R;
 
-public class SlideActivity extends AppCompatActivity {
+public class SlideActivity extends AppCompatActivity implements ViewPagerController {
 
     public static ViewPager viewPager;
     SlideViewPagerAdapter adapter;
@@ -21,6 +21,8 @@ public class SlideActivity extends AppCompatActivity {
     final long PERIOD_MS = 3500;
     int currentPage = 0;
     Timer timer;
+    Handler handler;
+    Runnable update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,9 @@ public class SlideActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        final Handler handler = new Handler();
-        final Runnable update = new Runnable() {
+        handler = new Handler();
+
+        update = new Runnable() {
             public void run() {
                 if (currentPage == 3) {
                     currentPage = 0;
@@ -67,5 +70,10 @@ public class SlideActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("slide", MODE_PRIVATE);
         return sharedPreferences.getBoolean("slide", false);
 
+    }
+
+    @Override
+    public void stopTimerTask() {
+        handler.removeCallbacks(update);
     }
 }
