@@ -2,6 +2,9 @@ package pt.uninova.s4h.citizenhub.ui.lobby;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +56,17 @@ public class SlideViewPagerAdapter extends PagerAdapter {
         ImageView next = view.findViewById(R.id.next);
         ImageView back = view.findViewById(R.id.back);
 
+        TextView logo_text_view = view.findViewById(R.id.logo_text);
+        Spannable word = new SpannableString("Citizen");
+
+        word.setSpan(new ForegroundColorSpan(ctx.getResources().getColor(R.color.colorS4HDarkBlue)), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        logo_text_view.setText(word);
+        Spannable wordTwo = new SpannableString("HUB");
+
+        wordTwo.setSpan(new ForegroundColorSpan(ctx.getResources().getColor(R.color.colorS4HTurquoise)), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        logo_text_view.append(wordTwo);
+
         Button btnGetStarted = view.findViewById(R.id.btnGetStarted);
         btnGetStarted.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, LobbyActivity.class);
@@ -72,9 +86,11 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind4.setImageResource(R.drawable.unselected);
 
                 title.setText("Welcome");
-                desc.setText("We appreciate your choice to use our app, swipe if you want to know better our features or skip to login");
+                desc.setText("Thank you for using CitizenHub");
                 back.setVisibility(View.GONE);
                 next.setVisibility(View.VISIBLE);
+                logo_text_view.setVisibility(View.VISIBLE);
+
                 break;
             case 1:
                 logo.setImageResource(R.drawable.ic_devices);
@@ -83,23 +99,27 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind3.setImageResource(R.drawable.unselected);
                 ind4.setImageResource(R.drawable.unselected);
 
-                title.setText("Connect to Devices");
-                desc.setText("Within our app we will make your life as easy as possible each time you desire to connect your device to another one");
+                title.setText("Connect Devices");
+                desc.setText("Simplifying different devices connection into one app");
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.VISIBLE);
+                logo_text_view.setVisibility(View.GONE);
+
                 break;
             case 2:
-                btnGetStarted.setText("Skip");
+                btnGetStarted.setText("Continue");
                 logo.setImageResource(R.drawable.ic_heartbeat);
                 ind1.setImageResource(R.drawable.unselected);
                 ind2.setImageResource(R.drawable.unselected);
                 ind3.setImageResource(R.drawable.seleted);
                 ind4.setImageResource(R.drawable.unselected);
 
-                title.setText("Real time data");
-                desc.setText("After pairing to a device you will be able to see the live data he measures from its compatible features. ");
+                title.setText("Real-time data");
+                desc.setText("Live visualisation and analytics on your health and wellbeing data!");
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.VISIBLE);
+                logo_text_view.setVisibility(View.GONE);
+
                 break;
             case 3:
                 btnGetStarted.setText("Continue");
@@ -110,9 +130,11 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind4.setImageResource(R.drawable.seleted);
 
                 title.setText("Smart4Health");
-                desc.setText("To use our application you are required to register in smart4health platform and login. ");
+                desc.setText("CitizenHub requires you to register and login in the Smart4Health platform. ");
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.GONE);
+                logo_text_view.setVisibility(View.GONE);
+
                 break;
 
 
