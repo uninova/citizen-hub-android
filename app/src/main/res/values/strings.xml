@@ -43,7 +43,7 @@
     <string name="location_disable_button">Don\'t turn on location</string>
     <string name="location_message">Location function not enabled.</string>
     <string name="location_refuse_button">Cancel</string>
-    <string name="about_contact_email">"smart4health"@uninova.pt</string>
+    <string name="about_contact_email">helpdesk@smart4health.eu</string>
     <string name="about_developedBy"><![CDATA[Developed by]]></string>
     <string name="fragment_about_text_view_versioning">version: 0.1.0</string>
     <string name="fragment_about_image_view_citizenhub_logo">Citizenhub logo</string>
