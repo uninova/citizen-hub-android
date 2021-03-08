@@ -20,6 +20,7 @@ import pt.uninova.s4h.citizenhub.R;
 public class SlideViewPagerAdapter extends PagerAdapter {
 
     Context ctx;
+    ViewPagerController viewPagerController;
 
     public SlideViewPagerAdapter(Context ctx) {
         this.ctx = ctx;
@@ -34,6 +35,7 @@ public class SlideViewPagerAdapter extends PagerAdapter {
     public int getCount() {
         return 3;
     }
+
 
     @NonNull
     @Override
@@ -68,13 +70,20 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
         Button btnGetStarted = view.findViewById(R.id.btnGetStarted);
         btnGetStarted.setOnClickListener(v -> {
+            viewPagerController.stopTimerTask();
             Intent intent = new Intent(ctx, LobbyActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
         });
-        next.setOnClickListener(v -> SlideActivity.viewPager.setCurrentItem(position + 1));
+        next.setOnClickListener(v -> {
+            viewPagerController.stopTimerTask();
+            SlideActivity.viewPager.setCurrentItem(position + 1);
+        });
 
-        back.setOnClickListener(v -> SlideActivity.viewPager.setCurrentItem(position - 1));
+        back.setOnClickListener(v -> {
+            viewPagerController.stopTimerTask();
+            SlideActivity.viewPager.setCurrentItem(position - 1);
+        });
 
         switch (position) {
             case 0:
