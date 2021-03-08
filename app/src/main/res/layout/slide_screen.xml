@@ -73,6 +73,7 @@
         android:id="@+id/ind1"
         android:layout_width="15dp"
         android:layout_height="15dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
         app:layout_constraintEnd_toStartOf="@+id/ind2"
@@ -107,21 +108,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ind2"
         app:layout_constraintTop_toTopOf="@+id/ind2"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/seleted" />
-
-    <ImageView
-        android:id="@+id/ind4"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
-        app:layout_constraintBottom_toBottomOf="@+id/ind3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ind3"
-        app:layout_constraintTop_toTopOf="@+id/ind3"
-        app:srcCompat="@drawable/seleted" />
-
 
     <ImageView
         android:id="@+id/back"

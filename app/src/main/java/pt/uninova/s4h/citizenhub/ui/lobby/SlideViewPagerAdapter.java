@@ -47,7 +47,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
         ImageView ind1 = view.findViewById(R.id.ind1);
         ImageView ind2 = view.findViewById(R.id.ind2);
         ImageView ind3 = view.findViewById(R.id.ind3);
-        ImageView ind4 = view.findViewById(R.id.ind4);
 
 
         TextView title = view.findViewById(R.id.title);
@@ -83,7 +82,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind1.setImageResource(R.drawable.seleted);
                 ind2.setImageResource(R.drawable.unselected);
                 ind3.setImageResource(R.drawable.unselected);
-                ind4.setImageResource(R.drawable.unselected);
 
                 title.setText("Welcome");
                 desc.setText("Thank you for using CitizenHub");
@@ -97,7 +95,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind1.setImageResource(R.drawable.unselected);
                 ind2.setImageResource(R.drawable.seleted);
                 ind3.setImageResource(R.drawable.unselected);
-                ind4.setImageResource(R.drawable.unselected);
 
                 title.setText("Connect Devices");
                 desc.setText("Simplifying different devices connection into one app");
@@ -112,12 +109,11 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind1.setImageResource(R.drawable.unselected);
                 ind2.setImageResource(R.drawable.unselected);
                 ind3.setImageResource(R.drawable.seleted);
-                ind4.setImageResource(R.drawable.unselected);
 
                 title.setText("Real-time data");
                 desc.setText("Live visualisation and analytics on your health and wellbeing data!");
                 back.setVisibility(View.VISIBLE);
-                next.setVisibility(View.VISIBLE);
+                next.setVisibility(View.GONE);
                 logo_text_view.setVisibility(View.GONE);
 
                 break;
