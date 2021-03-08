@@ -18,7 +18,7 @@ public class SlideActivity extends AppCompatActivity {
     public static ViewPager viewPager;
     SlideViewPagerAdapter adapter;
     final long DELAY_MS = 500;
-    final long PERIOD_MS = 2000;
+    final long PERIOD_MS = 5000;
     int currentPage = 0;
     Timer timer;
 
@@ -43,7 +43,7 @@ public class SlideActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         final Runnable update = new Runnable() {
             public void run() {
-                if (currentPage == 4) {
+                if (currentPage == 3) {
                     handler.removeCallbacks(this);
                 } else {
                     viewPager.setCurrentItem(currentPage++, true);
