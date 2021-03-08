@@ -43,8 +43,8 @@ public class SlideActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         final Runnable update = new Runnable() {
             public void run() {
-                if (currentPage == 3) {
-                    handler.removeCallbacks(this);
+                if (currentPage == 2) {
+                    currentPage = 0;
                 } else {
                     viewPager.setCurrentItem(currentPage++, true);
                 }
