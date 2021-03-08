@@ -32,7 +32,7 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @NonNull
@@ -121,22 +121,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 logo_text_view.setVisibility(View.GONE);
 
                 break;
-            case 3:
-                btnGetStarted.setText("Continue");
-                logo.setImageResource(R.drawable.img_s4h_logo_simple_version);
-                ind1.setImageResource(R.drawable.unselected);
-                ind2.setImageResource(R.drawable.unselected);
-                ind3.setImageResource(R.drawable.unselected);
-                ind4.setImageResource(R.drawable.seleted);
-
-                title.setText("Smart4Health");
-                desc.setText("CitizenHub requires you to register and login in the Smart4Health platform. ");
-                back.setVisibility(View.VISIBLE);
-                next.setVisibility(View.GONE);
-                logo_text_view.setVisibility(View.GONE);
-
-                break;
-
 
         }
 
