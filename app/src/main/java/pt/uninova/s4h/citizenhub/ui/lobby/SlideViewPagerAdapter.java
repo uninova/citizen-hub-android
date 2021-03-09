@@ -20,11 +20,18 @@ import pt.uninova.s4h.citizenhub.R;
 public class SlideViewPagerAdapter extends PagerAdapter {
 
     Context ctx;
-    ViewPagerController viewPagerController;
-
+    private final ViewPagerController viewPagerController;
     public SlideViewPagerAdapter(Context ctx) {
         this.ctx = ctx;
+        try {
+            this.viewPagerController = (ViewPagerController) ctx;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(ctx.toString()
+                    + " must implement ViewPagerController");
+        }
+
     }
+
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
@@ -42,7 +49,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         LayoutInflater layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slide_screen, container, false);
-
 
         ImageView logo = view.findViewById(R.id.authentication_fragment_img_s4h_logo_image_id);
 
@@ -70,19 +76,20 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
         Button btnGetStarted = view.findViewById(R.id.btnGetStarted);
         btnGetStarted.setOnClickListener(v -> {
-            viewPagerController.stopTimerTask();
+            this.viewPagerController.stopTimerTask();
             Intent intent = new Intent(ctx, LobbyActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
         });
         next.setOnClickListener(v -> {
-            viewPagerController.stopTimerTask();
+            this.viewPagerController.stopTimerTask();
             SlideActivity.viewPager.setCurrentItem(position + 1);
         });
 
         back.setOnClickListener(v -> {
-            viewPagerController.stopTimerTask();
+            this.viewPagerController.stopTimerTask();
             SlideActivity.viewPager.setCurrentItem(position - 1);
+
         });
 
         switch (position) {
@@ -135,9 +142,12 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
     }
 
+
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
+
+
 }
 

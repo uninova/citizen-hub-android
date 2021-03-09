@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -21,14 +22,27 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
     final long PERIOD_MS = 3500;
     int currentPage = 0;
     Timer timer;
-    Handler handler;
-    Runnable update;
+    ViewPagerController viewPagerController = (ViewPagerController) this;
+    Handler handler = new Handler();
+    Runnable update = new Runnable() {
+
+        public void run() {
+
+
+            if (currentPage == 3) {
+                currentPage = 0;
+            } else {
+                viewPager.setCurrentItem(currentPage++, true);
+            }
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide);
-
         viewPager = findViewById(R.id.viewpager);
         adapter = new SlideViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
@@ -41,29 +55,30 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
             editor.putBoolean("slide", true);
             editor.apply();
         }
+        StartTimer();
+    }
 
-        handler = new Handler();
-
-        update = new Runnable() {
-            public void run() {
-                if (currentPage == 3) {
-                    currentPage = 0;
-                } else {
-                    viewPager.setCurrentItem(currentPage++, true);
-                }
-            }
-        };
-
+    public void StartTimer() {
         timer = new Timer(); // This will create a new Thread
         timer.schedule(new TimerTask() { // task to be scheduled
             @Override
             public void run() {
                 handler.post(update);
+
             }
         }, DELAY_MS, PERIOD_MS);
-
-
     }
+
+    public void StopTimer() {
+        if (update != null) {
+            Log.d("entrou", "entrou");
+            timer.cancel();
+            handler.removeCallbacksAndMessages(null);
+            update = null;
+            handler = null;
+        }
+    }
+
 
     private boolean isOpenAlready() {
 
@@ -74,6 +89,7 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
 
     @Override
     public void stopTimerTask() {
-        handler.removeCallbacks(update);
+        StopTimer();
     }
+
 }
