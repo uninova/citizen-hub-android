@@ -66,4 +66,6 @@
     <string name="slide_screen_text_placeholder">placeholder for each layout</string>
     <string name="authentication_fragment_login_text_view">Your health and wellbeing data in one place</string>
     <string name="authentication_fragment_login_requirement_text">CitizenHub requires you to register and login in the Smart4Health platform.</string>
+    <string name="pdf_layout_background_logo">background logo</string>
+    <string name="pdf_report_average_HR_text">Average heart rate (bpm): \</string>
 </resources>
