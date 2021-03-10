@@ -49,7 +49,17 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/colorS4HDarkBlue</item>
         <item name="android:textSize">20sp</item>
+    </style>
+    <style name="AppTheme.About"  />
+    <style name="AppTheme.About.TextView" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">@color/colorS4HBlack</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingRight">40dp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
