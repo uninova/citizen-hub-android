@@ -1,30 +1,33 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import com.google.android.material.navigation.NavigationView;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+
+import java.util.List;
+
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
-
-import java.time.LocalDate;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements CitizenHubServiceBound {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
     private NavController navController;
     private CitizenHubServiceBinder citizenHubServiceBinder;
     private CitizenHubService citizenHubService;
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
@@ -50,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             mBound = false;
         }
     };
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +74,15 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.user_fragment, R.id.device_list_fragment, R.id.about_fragment)
+                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.device_list_fragment, R.id.logout_fragment, R.id.about_fragment)
                         .setOpenableLayout(drawerLayout)
                         .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+
     }
 
     @Override
@@ -80,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         super.onStart();
         Intent intent = new Intent(this, CitizenHubService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
     }
 
     @Override
