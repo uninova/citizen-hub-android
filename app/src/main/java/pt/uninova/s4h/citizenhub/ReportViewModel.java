@@ -10,7 +10,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
-import android.os.Environment;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
@@ -19,13 +18,13 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +40,7 @@ import care.data4life.fhir.r4.model.FhirDate;
 import care.data4life.fhir.r4.model.FhirDateTime;
 import care.data4life.fhir.r4.model.FhirInstant;
 import care.data4life.fhir.r4.model.FhirTime;
+import care.data4life.fhir.r4.model.Organization;
 import care.data4life.fhir.r4.model.Practitioner;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
@@ -354,7 +354,6 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
 
 
-
         canvasWriter.draw();
 
         document.finishPage(page);
@@ -368,12 +367,6 @@ public class ReportViewModel extends AndroidViewModel {
         }
 
         document.close();
-//            TODO delete before merging
-        String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/citizen.pdf";
-        FileOutputStream fos = new FileOutputStream(myFilePath);
-        fos.write(out.toByteArray());
-        fos.flush();
-        fos.close();
 
         return out.toByteArray();
     }
