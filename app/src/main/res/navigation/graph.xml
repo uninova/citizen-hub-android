@@ -93,6 +93,35 @@
             android:id="@+id/about_fragment"
             android:name="pt.uninova.s4h.citizenhub.AboutFragment"
             android:label="@string/fragment_about_label"
-            tools:layout="@layout/fragment_about"/>
+            tools:layout="@layout/fragment_about">
+        <action
+            android:id="@+id/action_about_fragment_to_privacy_policy_fragment"
+            app:destination="@+id/fragment_privacy_policy"
+            app:popUpTo="@+id/fragment_privacy_policy"/>
+
+        <action
+            android:id="@+id/action_about_fragment_to_license_of_use_fragment"
+            app:destination="@+id/license_of_use_fragment"
+            app:popUpTo="@+id/license_of_use_fragment"/>
+
+        <action
+            android:id="@+id/action_about_fragment_to_open_source_licenses_fragment"
+            app:destination="@+id/open_source_licenses_fragment"
+            app:popUpTo="@+id/open_source_licenses_fragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_privacy_policy"
+        android:name="pt.uninova.s4h.citizenhub.PrivacyPolicyFragment"
+        android:label="@string/fragment_privacy_policy_label"
+        tools:layout="@layout/fragment_privacy_policy" />
+    <fragment
+        android:id="@+id/license_of_use_fragment"
+        android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
+        android:label="@string/fragment_license_of_use_label" />
+    <fragment
+        android:id="@+id/open_source_licenses_fragment"
+        android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
+        android:label="Open source licenses" />
 
 </navigation>
