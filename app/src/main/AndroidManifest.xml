@@ -42,7 +42,7 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
-            android:theme="@style/CitizenTheme">
+            android:theme="@style/Theme.Citizen">
 
         <activity android:name=".MainActivity"/>
 

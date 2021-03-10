@@ -1,9 +1,19 @@
 <resources>
-    <style name="CitizenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Citizen" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/LightGrey</item>
+        <item name="toolbarStyle">@style/Widget.Citizen.Toolbar</item>
     </style>
+    <style name="Widget.Citizen.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.Citizen.Widget.Toolbar.Title</item>
+    </style>
+    <style name="TextAppearance.Citizen.Widget.Toolbar.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/primus</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/DarkBlue</item>
+    </style>
+
     <style name="Drawer">
         <item name="background">@color/LightGrey</item>
     </style>
@@ -14,18 +24,6 @@
     </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorS4HLightBlue</item>
-        <item name="colorPrimaryDark">@color/colorS4HDarkBlue</item>
-        <item name="colorAccent">@color/colorS4HTurquoise</item>
-    </style>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    <style name="LatoRegularForDrawerTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/neosanspro</item>
-        <item name="android:textSize">16sp</item>
     </style>
     <style name="AppTheme.Summary"/>
     <style name="AppTheme.Summary.Item">
