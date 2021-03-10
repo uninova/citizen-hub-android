@@ -43,4 +43,6 @@
     <string name="fragment_logout_textView_logOut_text">You will be logged out from the Smart4Health platform.\n\nYou won\'t be able to use Citizen Hub until you log in again.</string>
     <string name="fragment_logout_button_logOut">Log out</string>
     <string name="fragment_logout_imageView_s4h_contentDescription">Smart4Health</string>
+    <string name="pdf_layout_background_logo">background logo</string>
+    <string name="pdf_report_average_HR_text">Average heart rate (bpm): \</string>
 </resources>
