@@ -354,7 +354,6 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
 
 
-
         canvasWriter.draw();
 
         document.finishPage(page);

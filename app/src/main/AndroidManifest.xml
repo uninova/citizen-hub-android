@@ -45,17 +45,39 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".LobbyActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ui.lobby.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".MainActivity"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:launchMode="singleTop"
+            />
+
+        <activity
+            android:name=".ui.lobby.SlideActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            />
+
+
+        <activity
+                android:name=".ui.lobby.LobbyActivity"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:launchMode="singleTop"
+            >
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
         </activity>
 
         <service

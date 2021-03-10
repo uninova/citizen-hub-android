@@ -3,13 +3,15 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/graph"
-            app:startDestination="@id/summary_fragment">
+            app:startDestination="@id/summary_fragment"
+            android:launchMode="singleTop">
 
     <fragment
             android:id="@+id/summary_fragment"
             android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
             android:label="@string/fragment_summary_label"
-            tools:layout="@layout/fragment_summary"/>
+            tools:layout="@layout/fragment_summary"
+        />
 
     <fragment
             android:id="@+id/report_master_fragment"

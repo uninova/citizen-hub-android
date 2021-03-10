@@ -24,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
@@ -31,12 +32,6 @@ import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 
 public class MainActivity extends AppCompatActivity implements CitizenHubServiceBound {
-
-    boolean mBound = false;
-    private AppBarConfiguration appBarConfiguration;
-    private NavController navController;
-    private CitizenHubServiceBinder citizenHubServiceBinder;
-    private CitizenHubService citizenHubService;
     private final ServiceConnection connection = new ServiceConnection() {
 
         @Override
@@ -53,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             mBound = false;
         }
     };
+    boolean mBound = false;
+    private AppBarConfiguration appBarConfiguration;
+    private NavController navController;
+    private CitizenHubServiceBinder citizenHubServiceBinder;
+    private CitizenHubService citizenHubService;
+    private boolean doubleBackToExitPressedOnce;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         super.onStart();
         Intent intent = new Intent(this, CitizenHubService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -126,6 +128,15 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             for (Fragment fragment : fragments) {
                 fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.summary_fragment) {
+            moveTaskToBack(false);
+        } else {
+            navController.popBackStack();
         }
     }
 

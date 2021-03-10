@@ -1,59 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorS4HDarkBlue"
-    tools:context=".LobbyActivity">
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/fragment_authentication_button_login"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_rounded"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="@string/fragment_authentication_button_login"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="299dp"
-                android:layout_height="253dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/img_s4h_logo_addon_login" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="115dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/img_s4h_logo_3" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/activity_lobby_button_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/button_rounded"
-                android:fontFamily="@font/lato"
-                android:gravity="center"
-                android:text="@string/activity_lobby_button_login"
-                android:textColor="@color/colorS4HDarkBlue"
-                android:textSize="18sp"
-                android:visibility="gone" />
-        </LinearLayout>
 
-    </LinearLayout>
+            <fragment
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:navGraph="@navigation/login_graph" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/nav_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        app:headerLayout="@layout/nav_header_main"-->
+<!--        app:itemTextAppearance="@style/LatoRegularForDrawerTextViewStyle"-->
+<!--        app:menu="@menu/drawer">-->
+
+<!--    </com.google.android.material.navigation.NavigationView>-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

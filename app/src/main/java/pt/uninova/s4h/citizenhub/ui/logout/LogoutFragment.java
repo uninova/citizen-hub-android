@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.Callback;
-import pt.uninova.s4h.citizenhub.LobbyActivity;
+import pt.uninova.s4h.citizenhub.ui.lobby.LobbyActivity;
 import pt.uninova.s4h.citizenhub.R;
 
 public class LogoutFragment extends Fragment {
