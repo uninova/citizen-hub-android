@@ -6,17 +6,19 @@
         android:gravity="center">
 
     <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textColor="@color/DarkBlue"
-            android:fontFamily="@font/primus"
-            android:text="Citizen" android:textSize="24sp"/>
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/primus"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:text="Citizen"
+        android:textSize="24sp" />
 
     <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textColor="@color/Turquoise"
-            android:fontFamily="@font/primus"
-            android:text="HUB" android:textSize="24sp"/>
-
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/primus"
+        android:textColor="@color/colorS4HTurquoise"
+        android:text="HUB"
+        android:textSize="24sp" />
+    s
 </LinearLayout>
