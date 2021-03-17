@@ -34,12 +34,12 @@ public class SummaryFragment extends Fragment {
     }
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
-        final LinearLayout caloriesGroup = requireView().findViewById(R.id.calories_group);
-        final LinearLayout distanceGroup = requireView().findViewById(R.id.distance_group);
-        final LinearLayout heartrateGroup = requireView().findViewById(R.id.heartrate_group);
-        final LinearLayout postureGroup = requireView().findViewById(R.id.sitting_group);
-        final LinearLayout stepsGroup = requireView().findViewById(R.id.steps_group);
-        final LinearLayout noDataGroup = requireView().findViewById(R.id.no_data_group);
+        final LinearLayout caloriesGroup = requireView().findViewById(R.id.fragment_summary_layout_calories);
+        final LinearLayout distanceGroup = requireView().findViewById(R.id.fragment_summary_layout_distance);
+        final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
+        final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
+        final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout noDataGroup = requireView().findViewById(R.id.fragment_summary_layout_no_data);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
@@ -47,6 +47,12 @@ public class SummaryFragment extends Fragment {
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
+
+        final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
+        final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
+        final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
+        final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
+        final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
 
         if (dailySummary != null) {
             final MeasurementAggregate calories = dailySummary.get(MeasurementKind.CALORIES);
@@ -59,37 +65,57 @@ public class SummaryFragment extends Fragment {
             if (calories != null) {
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
                 caloriesGroup.setVisibility(View.VISIBLE);
+                caloriesTitle.setVisibility(View.VISIBLE);
             } else {
                 caloriesGroup.setVisibility(View.GONE);
+                caloriesTitle.setVisibility(View.GONE);
+
             }
 
             if (distance != null) {
                 distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_text, distance.getSum()));
                 distanceGroup.setVisibility(View.VISIBLE);
+                distanceTitle.setVisibility(View.VISIBLE);
+
             } else {
                 distanceGroup.setVisibility(View.GONE);
+                distanceTitle.setVisibility(View.GONE);
+
             }
 
             if (heartRate != null) {
                 heartRateTextView.setText(getString(R.string.fragment_summary_text_view_heart_rate_text, heartRate.getAverage()));
                 heartrateGroup.setVisibility(View.VISIBLE);
+                heartRateTitle.setVisibility(View.VISIBLE);
+
             } else {
                 heartrateGroup.setVisibility(View.GONE);
+                heartRateTitle.setVisibility(View.GONE);
             }
             postureGroup.setVisibility(View.VISIBLE);
+            postureTitle.setVisibility(View.VISIBLE);
+
 
             if (badPosture != null || goodPosture != null) {
                 postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, badPosture == null ? 0 : badPosture.getSum(), goodPosture == null ? 0 : goodPosture.getSum()));
                 postureGroup.setVisibility(View.VISIBLE);
+                postureTitle.setVisibility(View.VISIBLE);
+
             } else {
                 postureGroup.setVisibility(View.GONE);
+                postureTitle.setVisibility(View.GONE);
+
             }
 
             if (steps != null) {
                 stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
                 stepsGroup.setVisibility(View.VISIBLE);
+                stepsTitle.setVisibility(View.VISIBLE);
+
             } else {
                 stepsGroup.setVisibility(View.GONE);
+                stepsTitle.setVisibility(View.GONE);
+
             }
 
             if (calories == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
