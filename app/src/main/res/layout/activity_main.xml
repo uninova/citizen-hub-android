@@ -45,7 +45,8 @@
             app:headerLayout="@layout/nav_header_main"
             android:background="@color/LightGrey"
             app:itemTextAppearance="@style/MenuItem"
-            app:menu="@menu/drawer">
+        app:itemIconTint="@color/colorS4HDarkBlue"
+        app:menu="@menu/drawer">
 
         <TextView
                 android:layout_height="wrap_content"
