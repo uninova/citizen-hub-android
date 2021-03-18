@@ -1,15 +1,19 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import android.util.Log;
+
 import pt.uninova.s4h.citizenhub.persistence.*;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Observer;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class AgentOrchestrator {
 
+    private static final String TAG = "AgentOrchestrator";
     private static UUIDv5 NAMESPACE_GENERATOR;
 
     static {
@@ -30,6 +34,7 @@ public class AgentOrchestrator {
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
+        Log.d(TAG, "Entered"  );
 
         deviceRepository = new DeviceRepository(service.getApplication());
         featureRepository = new FeatureRepository(service.getApplication());
@@ -42,11 +47,14 @@ public class AgentOrchestrator {
             final Set<Device> found = new HashSet<>(devices.size());
 
             for (Device i : devices) {
+
                 found.add(i);
 
                 if (!deviceAgentMap.containsKey(i)) {
+
                     agentFactory.create(i, agent -> {
                         for (UUID j : agent.getPublicProtocolIds()) {
+
                             MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
 
                             p.getMeasurementObservers().add(measurementRepository::add);
