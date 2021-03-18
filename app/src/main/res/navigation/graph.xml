@@ -41,6 +41,9 @@
         <action
                 android:id="@+id/action_device_list_fragment_to_device_detail_fragment"
                 app:destination="@+id/device_detail_fragment"/>
+        <action
+            android:id="@+id/action_device_list_fragment_to_device_search_wearos_fragment"
+            app:destination="@+id/device_search_wearos_fragment"/>
 
     </fragment>
 
@@ -55,6 +58,22 @@
                 app:destination="@+id/device_add_fragment"/>
         <action
             android:id="@+id/action_device_search_fragment_to_device_list_fragment"
+            app:destination="@id/device_list_fragment"
+            app:popUpTo="@+id/device_list_fragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/device_search_wearos_fragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragmentWearOS"
+        android:label="@string/fragment_device_search_label"
+        tools:layout="@layout/fragment_device_search">
+
+        <action
+            android:id="@+id/action_device_search_wearos_fragment_to_device_add_fragment"
+            app:destination="@+id/device_add_fragment"/>
+        <action
+            android:id="@+id/action_device_search_wearos_fragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
             app:popUpTo="@+id/device_list_fragment"/>
 

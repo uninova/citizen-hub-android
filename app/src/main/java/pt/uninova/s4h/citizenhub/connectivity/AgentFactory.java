@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
@@ -25,27 +26,34 @@ public class AgentFactory {
     }
 
     public void create(Device device, Observer<Agent> observer) {
-        final BluetoothConnection connection = new BluetoothConnection();
 
-        connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
-            @Override
-            public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
-                if (value.getNewState() == BluetoothConnectionState.READY) {
-                    connection.removeConnectionStateChangeListener(this);
+        if (BluetoothAdapter.checkBluetoothAddress(device.getAddress()))
+        {
+            final BluetoothConnection connection = new BluetoothConnection();
 
-                    String name = connection.getDevice().getName();
+            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
+                @Override
+                public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+                    if (value.getNewState() == BluetoothConnectionState.READY) {
+                        connection.removeConnectionStateChangeListener(this);
 
-                    if (name != null && name.equals("HX-00043494")) {
-                        observer.onChanged(new HexoSkinAgent(connection));
-                    } else if (name != null && name.equals("MI Band 2")) {
-                        observer.onChanged(new MiBand2Agent(connection));
-                    } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
-                        observer.onChanged(new KbzPostureAgent(connection));
+                        String name = connection.getDevice().getName();
+
+                        if (name != null && name.equals("HX-00043494")) {
+                            observer.onChanged(new HexoSkinAgent(connection));
+                        } else if (name != null && name.equals("MI Band 2")) {
+                            observer.onChanged(new MiBand2Agent(connection));
+                        } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
+                            observer.onChanged(new KbzPostureAgent(connection));
+                        }
                     }
                 }
-            }
-        });
-
-        bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+            });
+                bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+        }
+        else
+        {
+            
+        }
     }
 }

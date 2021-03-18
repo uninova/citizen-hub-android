@@ -130,7 +130,6 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            //TODO dialog for search with Bluetooth or Wear OS
             new AlertDialog.Builder(getContext())
                     .setMessage("Please select one method of connection compatible with your device.")
                     .setTitle("Method of Connection")
@@ -138,7 +137,7 @@ public class DeviceListFragment extends Fragment {
                         Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
                         //paramDialogInterface.dismiss()
                     .setNegativeButton("Wear OS", (paramDialogInterface, paramInt) ->
-                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
+                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
                     .show();
         }
         return super.onOptionsItemSelected(item);
