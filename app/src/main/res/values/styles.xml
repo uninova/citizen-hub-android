@@ -54,7 +54,7 @@
     <style name="AppTheme.About"  />
     <style name="AppTheme.About.TextView" parent="Theme.AppCompat.DayNight">
         <item name="android:textColor">@color/colorS4HBlack</item>
-        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:fontFamily">@font/primus</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
