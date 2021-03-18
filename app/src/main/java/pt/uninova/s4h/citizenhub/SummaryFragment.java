@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +64,14 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
 
             if (calories != null) {
+                Log.d("SUMMARYCRL", "calorias" + " " + calories.getSum());
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
+                Log.d("SUMMARYCRL", "calorias visiveis");
                 caloriesGroup.setVisibility(View.VISIBLE);
                 caloriesTitle.setVisibility(View.VISIBLE);
             } else {
+
+                Log.d("SUMMARYCRL", "calorias invisiveis");
                 caloriesGroup.setVisibility(View.GONE);
                 caloriesTitle.setVisibility(View.GONE);
 
@@ -88,12 +93,16 @@ public class SummaryFragment extends Fragment {
                 heartrateGroup.setVisibility(View.VISIBLE);
                 heartRateTitle.setVisibility(View.VISIBLE);
 
+                Log.d("HEARTRATE", "HEARTRATE");
             } else {
                 heartrateGroup.setVisibility(View.GONE);
                 heartRateTitle.setVisibility(View.GONE);
             }
-            postureGroup.setVisibility(View.VISIBLE);
-            postureTitle.setVisibility(View.VISIBLE);
+
+
+//            Log.d("SUMMARYCRL", "COISA ESQUISITA?????");
+//            postureGroup.setVisibility(View.VISIBLE);
+//            postureTitle.setVisibility(View.VISIBLE);
 
 
             if (badPosture != null || goodPosture != null) {
@@ -120,8 +129,12 @@ public class SummaryFragment extends Fragment {
 
             if (calories == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
                 noDataTextView.setText("No activity data for today.");
+
+                Log.d("SUMMARYCRL", "NO DATAAA");
                 noDataGroup.setVisibility(View.VISIBLE); //TODO make own card
             } else {
+                Log.d("SUMMARYCRL", "DATAAAAA");
+
                 noDataGroup.setVisibility(View.GONE); //TODO all other gones
             }
         }
