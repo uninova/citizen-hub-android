@@ -43,16 +43,16 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            android:background="@color/LightGrey"
+            android:background="@color/colorS4HGreyLight"
             app:itemTextAppearance="@style/MenuItem"
         app:itemIconTint="@color/colorS4HDarkBlue"
         app:menu="@menu/drawer">
 
         <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@color/DarkBlue"
-                android:text="powered by"/>
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/colorS4HDarkBlue"
+            android:text="powered by" />
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
