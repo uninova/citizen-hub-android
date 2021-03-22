@@ -38,16 +38,6 @@
                 app:navGraph="@navigation/login_graph" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <com.google.android.material.navigation.NavigationView-->
-<!--        android:id="@+id/nav_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:fitsSystemWindows="true"-->
-<!--        app:headerLayout="@layout/nav_header_main"-->
-<!--        app:itemTextAppearance="@style/LatoRegularForDrawerTextViewStyle"-->
-<!--        app:menu="@menu/drawer">-->
 
-<!--    </com.google.android.material.navigation.NavigationView>-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="108dp"
-        android:fontFamily="@font/lato"
+        android:fontFamily="@font/neosanspro"
         android:gravity="center"
         android:text="Select a Day"
         android:textAlignment="center"

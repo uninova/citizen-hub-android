@@ -1,18 +1,30 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorS4HLightBlue</item>
-        <item name="colorPrimaryDark">@color/colorS4HDarkBlue</item>
-        <item name="colorAccent">@color/colorS4HTurquoise</item>
-    </style>
-    <style name="AppTheme.NoActionBar">
+    <style name="Theme.Citizen" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorS4HGreyLight</item>
+        <item name="toolbarStyle">@style/Widget.Citizen.Toolbar</item>
     </style>
-    <style name="LatoRegularForDrawerTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/lato</item>
+    <style name="Widget.Citizen.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.Citizen.Widget.Toolbar.Title</item>
+    </style>
+    <style name="TextAppearance.Citizen.Widget.Toolbar.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontFamily">@font/primus</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorS4HGreyLight</item>
+    </style>
+
+
+    <style name="Drawer">
+        <item name="background">@color/colorS4HGreyLight</item>
+    </style>
+    <style name="MenuItem" parent="Theme.Citizen">
+        <item name="android:fontFamily">@font/primus</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
     <style name="AppTheme.Summary"/>
     <style name="AppTheme.Summary.Item">
@@ -28,7 +40,8 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
     <style name="AppTheme.Summary.Item.TextView">
-        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/primus</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
@@ -42,12 +55,21 @@
     <style name="AppTheme.About"  />
     <style name="AppTheme.About.TextView" parent="Theme.AppCompat.DayNight">
         <item name="android:textColor">@color/colorS4HBlack</item>
-        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:fontFamily">@font/primus</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">40dp</item>
         <item name="android:paddingRight">40dp</item>
-        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.About.Button" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:textAppearance">@font/neosanspro</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@color/colorS4HGreyLight</item>
+        <item name="android:padding">8dp</item>
     </style>
 </resources>
