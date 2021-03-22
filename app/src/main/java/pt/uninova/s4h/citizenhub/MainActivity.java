@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
     @Override
     public void onBackPressed() {
+        NavController navController = ((NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
+
         if (Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.summary_fragment) {
             moveTaskToBack(false);
         } else {
