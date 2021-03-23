@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
         android:layout_width="250dp"
@@ -23,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.57" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <TextView
         android:id="@+id/title"
@@ -36,37 +37,41 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="45dp"
         android:gravity="center"
         android:text="@string/slide_screen_text_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
 
     <Button
         android:id="@+id/btnGetStarted"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"
         android:fontFamily="@font/primus_bold"
+        android:linksClickable="false"
         android:text="@string/slide_screen_skip"
         android:textAllCaps="false"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -74,13 +79,13 @@
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
         android:contentDescription="@string/content_descrition_splash_activity_ind_circle"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
         app:layout_constraintEnd_toStartOf="@+id/ind2"
         app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/desc"
         app:srcCompat="@drawable/seleted" />
 
     <ImageView
@@ -95,8 +100,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ind1"
         app:layout_constraintTop_toTopOf="@+id/ind1"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/seleted" />
-
 
     <ImageView
         android:id="@+id/ind3"
@@ -115,23 +120,24 @@
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="4dp"
         android:contentDescription="@string/content_description_slide_screen_left_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
+        app:layout_constraintVertical_bias="0.655"
         app:srcCompat="@drawable/ic_back" />
 
     <ImageView
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="4dp"
         android:contentDescription="@string/content_description_slide_screen_right_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.655"
         app:srcCompat="@drawable/ic_next" />
 
     <TextView
@@ -141,10 +147,11 @@
         android:fontFamily="@font/primus_bold"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_img_s4h_logo_image_id" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
