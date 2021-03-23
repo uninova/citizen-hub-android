@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/authentication_fragment_login_text_view2"
-        android:layout_width="307dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="32dp"
-        android:gravity="center"
-        android:text="@string/authentication_fragment_login_requirement_text"
-        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/citizen_hub_logo_with_text"
         android:layout_width="263dp"
@@ -34,11 +21,10 @@
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
-        android:layout_width="87dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="424dp"
-        android:layout_marginEnd="81dp"
+        android:layout_width="130dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="368dp"
+        android:layout_marginBottom="245dp"
         android:background="@android:color/transparent"
         android:drawableEnd="@drawable/ic_circle_orange"
         android:fontFamily="@font/primus_bold"
@@ -46,23 +32,12 @@
         android:text="@string/fragment_authentication_button_login"
         android:textAllCaps="false"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/authentication_fragment_login_text_view"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="@string/authentication_fragment_login_text_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_login_button" />
 
     <TextView
         android:id="@+id/authentication_fragment_text_powered_by"
