@@ -11,7 +11,7 @@
     <style name="TextAppearance.Citizen.Widget.Toolbar.Title" parent="TextAppearance.AppCompat.Title">
         <item name="fontFamily">@font/primus</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorS4HGreyLight</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
     </style>
 
 
