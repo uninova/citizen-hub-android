@@ -246,7 +246,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_top_darkblue"
-            android:text="    Kilocalories Burned"
+            android:text="    Average Heart Rate"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
             android:visibility="visible"
