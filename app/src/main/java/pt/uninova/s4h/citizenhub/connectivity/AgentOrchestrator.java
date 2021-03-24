@@ -16,6 +16,7 @@ import pt.uninova.util.UUIDv5;
 
 public class AgentOrchestrator {
 
+    private static final String TAG = "AgentOrchestrator";
     private static UUIDv5 NAMESPACE_GENERATOR;
 
     static {
@@ -53,11 +54,14 @@ public class AgentOrchestrator {
             final Set<Device> found = new HashSet<>(devices.size());
 
             for (Device i : devices) {
+
                 found.add(i);
 
                 if (!deviceAgentMap.containsKey(i)) {
+
                     agentFactory.create(i, agent -> {
                         for (UUID j : agent.getPublicProtocolIds()) {
+
                             MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
 
                             p.getMeasurementObservers().add(measurementRepository::add);

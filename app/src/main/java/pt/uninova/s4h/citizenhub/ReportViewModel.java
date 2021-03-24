@@ -447,6 +447,8 @@ public class ReportViewModel extends AndroidViewModel {
 
         attachments.add(attach);
 
+        //TODO this comment is temporary, do not apply this change
+        /**/
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
                 "Citizen Hub Daily Report " + detailDate.toString(),
                 CodeSystemDocumentReferenceStatus.CURRENT,
