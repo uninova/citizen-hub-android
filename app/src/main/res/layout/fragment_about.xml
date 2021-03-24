@@ -19,42 +19,27 @@
 
     <Button
         android:id="@+id/about_privacy_policy_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
+        style="@style/Widget.Citizen.Button"
         android:layout_marginTop="100dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
         android:text="@string/fragment_about_button_text_privacy_policy_button"
-        android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
 
     <Button
         android:id="@+id/about_open_sources_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
+        style="@style/Widget.Citizen.Button"
         android:layout_marginTop="12dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
         android:text="@string/fragment_open_source_licenses_text_view_info"
-        android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
 
     <Button
         android:id="@+id/about_licenses_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
+        style="@style/Widget.Citizen.Button"
         android:layout_marginTop="20dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
         android:text="@string/fragment_about_button_text_licenses_of_use"
-        android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
