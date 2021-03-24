@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -22,10 +23,10 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
     final long PERIOD_MS = 3500;
     int currentPage = 0;
     Timer timer;
-    ViewPagerController viewPagerController = (ViewPagerController) this;
+    ViewPagerController viewPagerController = this;
     Handler handler = new Handler();
     Runnable update = new Runnable() {
-
+        Button button;
         public void run() {
 
 
@@ -45,7 +46,10 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
         setContentView(R.layout.activity_slide);
         viewPager = findViewById(R.id.viewpager);
         adapter = new SlideViewPagerAdapter(this);
+        Button button = findViewById(R.id.btnGetStarted);
+
         viewPager.setAdapter(adapter);
+
         if (isOpenAlready()) {
             Intent intent = new Intent(SlideActivity.this, LobbyActivity.class);
             //     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -68,6 +72,7 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
             }
         }, DELAY_MS, PERIOD_MS);
     }
+
 
     public void StopTimer() {
         if (update != null) {

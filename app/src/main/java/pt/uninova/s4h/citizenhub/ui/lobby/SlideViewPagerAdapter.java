@@ -8,7 +8,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +20,7 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
     Context ctx;
     private final ViewPagerController viewPagerController;
+
     public SlideViewPagerAdapter(Context ctx) {
         this.ctx = ctx;
         try {
@@ -74,13 +74,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
         wordTwo.setSpan(new ForegroundColorSpan(ctx.getResources().getColor(R.color.colorS4HTurquoise)), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         logo_text_view.append(wordTwo);
 
-        Button btnGetStarted = view.findViewById(R.id.btnGetStarted);
-        btnGetStarted.setOnClickListener(v -> {
-            this.viewPagerController.stopTimerTask();
-            Intent intent = new Intent(ctx, LobbyActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            ctx.startActivity(intent);
-        });
         next.setOnClickListener(v -> {
             this.viewPagerController.stopTimerTask();
             SlideActivity.viewPager.setCurrentItem(position + 1);
@@ -120,7 +113,6 @@ public class SlideViewPagerAdapter extends PagerAdapter {
 
                 break;
             case 2:
-                btnGetStarted.setText("Continue");
                 logo.setImageResource(R.drawable.ic_heartbeat);
                 ind1.setImageResource(R.drawable.unselected);
                 ind2.setImageResource(R.drawable.unselected);
@@ -148,6 +140,12 @@ public class SlideViewPagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
+    public void continueButtonPressed() {
+        this.viewPagerController.stopTimerTask();
+        Intent intent = new Intent(ctx, LobbyActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(intent);
+    }
 
 }
 
