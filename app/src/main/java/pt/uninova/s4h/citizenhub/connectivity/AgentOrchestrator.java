@@ -1,15 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import android.util.Log;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.persistence.*;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
-import pt.uninova.util.messaging.Observer;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 public class AgentOrchestrator {
 
@@ -36,12 +39,17 @@ public class AgentOrchestrator {
         this.service = service;
         Log.d(TAG, "Entered"  );
 
+
         deviceRepository = new DeviceRepository(service.getApplication());
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
 
         deviceAgentMap = new HashMap<>();
+
+//        PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
+//        placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
+//        placeboAllProtocol.enable();
 
         deviceRepository.getAll().observe(service, devices -> {
             final Set<Device> found = new HashSet<>(devices.size());

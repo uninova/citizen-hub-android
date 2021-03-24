@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/login_graph.xml"
+    app:startDestination="@id/presentationFragment">
+
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.AuthenticationFragment"
+        android:label="AuthenticationFragment"/>
+    <fragment
+        android:id="@+id/presentationFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.PresentationFragment"
+        android:label="PresentationFragment" >
+        <action
+            android:id="@+id/action_presentationFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pairingGuideFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.lobby.PairingGuideFragment"
+        android:label="PairingGuideFragment" />
+
+</navigation>
