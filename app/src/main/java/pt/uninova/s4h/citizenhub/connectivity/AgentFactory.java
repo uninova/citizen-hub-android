@@ -33,6 +33,7 @@ public class AgentFactory {
     public void create(Device device, Observer<Agent> observer) {
 
         if (BluetoothAdapter.checkBluetoothAddress(device.getAddress()))
+
         {
             final BluetoothConnection connection = new BluetoothConnection();
 
@@ -54,7 +55,8 @@ public class AgentFactory {
                     }
                 }
             });
-                bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+
+            bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
         }
         else //TODO could be other than wearOS
         {
