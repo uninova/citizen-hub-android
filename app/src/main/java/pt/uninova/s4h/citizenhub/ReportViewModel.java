@@ -199,12 +199,12 @@ public class ReportViewModel extends AndroidViewModel {
         options.inScaled = false;
         options.inDensity = 72;
 
-        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.citizen_hub_logo, options);
+        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.img_citizen_hub_logo_with_text, options);
 
 
         canvas.save();
-        canvas.translate(x + 80, 2);
-        canvas.scale(0.25f, 0.25f);
+        canvas.translate(x + 175, 2);
+        canvas.scale(0.45f, 0.45f);
         canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
 
