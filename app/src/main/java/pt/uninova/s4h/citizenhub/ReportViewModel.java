@@ -267,7 +267,7 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
-        measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
+        measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
 
         if (measurementAggregate != null) {
 
