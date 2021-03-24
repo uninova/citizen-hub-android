@@ -13,9 +13,47 @@
         android:layout_marginTop="16dp"
         android:contentDescription="@+id/text_ab"
         android:src="@drawable/img_citizenhub_logo"
-        app:layout_constraintEnd_toStartOf="@+id/text_about_versioning"
-        app:layout_constraintStart_toEndOf="@+id/text_about_versioning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/about_privacy_policy_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="100dp"
+        android:text="@string/fragment_about_button_text_privacy_policy_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
+
+    <Button
+        android:id="@+id/about_open_sources_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="12dp"
+        android:text="@string/fragment_open_source_licenses_text_view_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
+
+    <Button
+        android:id="@+id/about_licenses_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="20dp"
+        android:text="@string/fragment_about_button_text_licenses_of_use"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
+
+    <ImageView
+        android:id="@+id/img_ec_logo"
+        android:layout_width="203dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/fragment_about_image_view__kbz_logo"
+        android:src="@drawable/img_ec_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_contact" />
 
     <TextView
         android:id="@+id/text_about_ce_info"
@@ -31,63 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_ec_logo"
-        app:layout_constraintVertical_bias="0.407" />
-
-    <Button
-        android:id="@+id/about_privacy_policy_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
-        android:text="@string/fragment_about_button_text_privacy_policy_button"
-        android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
-
-    <Button
-        android:id="@+id/about_open_sources_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
-        android:text="@string/fragment_open_source_licenses_text_view_info"
-        android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
-
-    <Button
-        android:id="@+id/about_licenses_button"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@color/colorS4HGreyLight"
-        android:padding="8dp"
-        android:text="@string/fragment_about_button_text_licenses_of_use"
-        android:textColor="@color/colorS4HDarkBlue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
-
-    <ImageView
-        android:id="@+id/img_ec_logo"
-        android:layout_width="217dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/fragment_about_image_view__kbz_logo"
-        android:src="@drawable/img_ec_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_contact"
-        app:layout_constraintVertical_bias="0.028" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/text_about_1paragraph"
@@ -113,27 +95,23 @@
         android:id="@+id/img_logo_kbz"
         android:layout_width="151dp"
         android:layout_height="81dp"
-        android:layout_marginStart="222dp"
-        android:layout_marginTop="216dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="212dp"
         android:contentDescription="@string/fragment_about_image_view_logo_kbz"
         android:src="@drawable/img_kbz_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_logo_uninova"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img_logo_uninova"
         android:layout_width="148dp"
         android:layout_height="61dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="224dp"
-        android:layout_marginEnd="190dp"
+        android:layout_marginTop="220dp"
         android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
         android:src="@drawable/img_uninova_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.706"
+        app:layout_constraintEnd_toStartOf="@+id/img_logo_kbz"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -163,8 +141,10 @@
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

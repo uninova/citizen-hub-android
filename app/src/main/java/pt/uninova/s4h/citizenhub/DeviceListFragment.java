@@ -1,7 +1,10 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -127,7 +130,15 @@ public class DeviceListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
+            new AlertDialog.Builder(getContext())
+                    .setMessage("Please select one method of connection compatible with your device.")
+                    .setTitle("Method of Connection")
+                    .setPositiveButton("Bluetooth", (paramDialogInterface, paramInt) ->
+                        Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
+                        //paramDialogInterface.dismiss()
+                    .setNegativeButton("Wear OS", (paramDialogInterface, paramInt) ->
+                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }

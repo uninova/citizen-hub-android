@@ -5,11 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".SummaryFragment"
         tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:id="@+id/fragment_summary_text_view_no_data"
+            style="@style/AppTheme.Summary.Item.TextView"
+            android:layout_marginTop="280dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/fragment_report_text_view_no_data_summary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/sittingTextView"
@@ -22,7 +33,7 @@
             android:text="    Sitting with Good Posture"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_posture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -37,7 +48,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_bottom_outline_darkblue"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/caloriesTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -73,34 +84,13 @@
             android:text="    Steps Taken"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_steps"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_distance" />
 
-        <LinearLayout
-            android:id="@+id/fragment_summary_layout_no_data"
-            style="@style/AppTheme.Summary.Item"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_heart_rate">
-
-            <TextView
-                android:id="@+id/fragment_summary_text_view_no_data"
-                style="@style/AppTheme.Summary.Item.TextView"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:text="@string/fragment_report_text_view_no_data_summary" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_distance"
@@ -110,6 +100,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_bottom_outline_darkblue"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/stepsTakenTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -148,7 +139,7 @@
             android:text="    Kilocalories Burned"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_calories"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -163,7 +154,8 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_bottom_outline_darkblue"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_no_data"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -198,7 +190,7 @@
             android:text="    Distance Walked"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_distance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -213,6 +205,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_bottom_outline_darkblue"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/heartrateTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -246,10 +239,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_top_darkblue"
-            android:text="    Kilocalories Burned"
+            android:text="    Average Heart Rate"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_heart_rate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -264,7 +257,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/rounded_bottom_outline_darkblue"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/distanceWalkedTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

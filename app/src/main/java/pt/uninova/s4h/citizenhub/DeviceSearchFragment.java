@@ -222,7 +222,7 @@ public class DeviceSearchFragment extends Fragment {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
 
-                deviceForSettings = new Device(deviceList.get(position).getName(),
+                DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
                         deviceList.get(position).getAddress(), null, null);
             }
 
