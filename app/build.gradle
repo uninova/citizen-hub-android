@@ -69,6 +69,13 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
+    // WearOS
+    implementation 'com.google.android.support:wearable:2.5.0'
+    implementation 'androidx.wear:wear:1.0.0'
+    implementation 'com.google.android.gms:play-services-wearable:17.0.0'
+    compileOnly 'com.google.android.wearable:wearable:2.5.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+
     // Navigation
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
