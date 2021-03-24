@@ -37,7 +37,6 @@ public class AgentOrchestrator {
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
-        Log.d(TAG, "Entered"  );
 
 
         deviceRepository = new DeviceRepository(service.getApplication());
