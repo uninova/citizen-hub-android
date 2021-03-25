@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,8 +29,10 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
-    private TextView infoTextView_timeSitting, infoTextView_timePosture, infoTextView_distance, infoTextView_steps,
-            infoTextView_calories, infoTextView_heartrate, infoTextView_day;
+    private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
+    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal;
+    private TextView heartRateTitle, caloriesTitle, distanceTitle, stepsTitle;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,39 +72,109 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null)
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null
                     ? R.string.fragment_report_text_view_title_no_data
-                    : R.string.fragment_report_text_view_title;
+                    : R.string.fragment_report_text_view_title);
 
-            infoTextView_day.setText(getString(titleResId, model.getDetailDate().toString()));
 
-            if (badPosture != null && goodPosture != null) {
-                infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitting_text, badPosture.getSum()));
-                infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));
+//            int day = model.getDetailDate().getDayOfMonth();
+//            String month = model.getDetailDate().getMonth().toString();
+//            int year = model.getDetailDate().getYear();
+//            String dayMonth=day + " " + month;
+//            infoTextView_day.setText(dayMonth);
+//           infoTextView_year.setText(year);
+//
+//            if (badPosture != null && goodPosture != null) {
+//                infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitting_text, badPosture.getSum()));
+//                infoTextView_timePosture.setText(getString(R.string.fragment_report_text_view_time_posture_text, goodPosture.getSum()));
+//            } else {
+//                infoTextView_timeSitting.setVisibility(View.GONE);
+//                infoTextView_timePosture.setVisibility(View.GONE);
+//            }
+
+            if (distance == null && steps == null && heartRate == null && calories == null) {
+                getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
-                infoTextView_timeSitting.setVisibility(View.GONE);
-                infoTextView_timePosture.setVisibility(View.GONE);
+                getInfoTextView_noData.setVisibility(View.GONE);
             }
 
-            if (distance != null)
-                infoTextView_distance.setText(getString(R.string.fragment_report_text_view_distance_text, distance.getSum()));
-            else
-                infoTextView_distance.setVisibility(View.GONE);
+            if (distance != null) {
+//                infoTextView_distance.setText(getString(R.string.fragment_report_text_view_distance_text, distance.getSum()));
+//                distanceTitle.setVisibility(View.VISIBLE);
+//            distanceTotal.setVisibility(View.VISIBLE);
+                if (distanceGroup != null) {
+                    distanceGroup.setVisibility(View.VISIBLE);
+                }
+                distanceTotal.setText(String.valueOf(distance.getSum()));
+            } else {
+//                distanceTitle.setVisibility(View.GONE);
+//                distanceTotal.setVisibility(View.GONE);
+                if (distanceGroup != null) {
+                    distanceGroup.setVisibility(View.GONE);
+                }
+            }
+            if (steps != null) {
+                if (stepsGroup != null) {
+                    stepsGroup.setVisibility(View.VISIBLE);
+                }
+                stepsTotal.setText(String.valueOf(steps.getSum()));
+//                stepsTitle.setVisibility(View.VISIBLE);
+//                stepsTotal.setVisibility(View.VISIBLE);
+            }
+//                infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, steps.getSum()));
+            else {
+//                infoTextView_steps.setVisibility(View.GONE);
+                if (stepsGroup != null) {
 
-            if (steps != null)
-                infoTextView_steps.setText(getString(R.string.fragment_report_text_view_steps_text, steps.getSum()));
-            else
-                infoTextView_steps.setVisibility(View.GONE);
+                    stepsGroup.setVisibility(View.GONE);
 
-            if (calories != null)
-                infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, calories.getSum()));
-            else
-                infoTextView_calories.setVisibility(View.GONE);
+                }
+//                stepsTitle.setVisibility(View.GONE);
+//                stepsTotal.setVisibility(View.GONE);
+            }
+            if (calories != null) {
+                if (caloriesGroup != null) {
+                    caloriesGroup.setVisibility(View.VISIBLE);
+                }
+                caloriesTotal.setText(String.valueOf(calories.getSum()));
+//                caloriesTitle.setVisibility(View.VISIBLE);
+//                caloriesTitle.setVisibility(View.VISIBLE);
+            }
+//                infoTextView_calories.setText(getString(R.string.fragment_report_text_view_calories_text, calories.getSum()));
+            else {
+                if (caloriesGroup != null) {
 
-            if (heartRate != null)
-                infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
-            else
-                infoTextView_heartrate.setVisibility(View.GONE);
+                    caloriesGroup.setVisibility(View.GONE);
+                }
+
+//                caloriesTitle.setVisibility(View.GONE);
+//                caloriesTotal.setVisibility(View.GONE);
+            }
+//                infoTextView_calories.setVisibility(View.GONE);
+
+            if (heartRate != null) {
+                if (heartRateGroup != null) {
+                    heartRateGroup.setVisibility(View.VISIBLE);
+                }
+                heartRateAvg.setText(String.valueOf(heartRate.getAverage()));
+                heartRateMax.setText(String.valueOf(heartRate.getMax()));
+                heartRateMin.setText(String.valueOf(heartRate.getMin()));
+//                heartRateTitle.setVisibility(View.VISIBLE);
+//                heartRateMax.setVisibility(View.VISIBLE);
+//                heartRateMin.setVisibility(View.VISIBLE);
+//                heartRateAvg.setVisibility(View.VISIBLE);
+            }
+//                infoTextView_heartrate.setText(getString(R.string.fragment_report_text_view_heartrate_text, heartRate.getAverage()));
+            else {
+                if (heartRateGroup != null) {
+                    heartRateGroup.setVisibility(View.GONE);
+                }
+//                heartRateTitle.setVisibility(View.GONE);
+//                heartRateMax.setVisibility(View.GONE);
+//                heartRateMin.setVisibility(View.GONE);
+//                heartRateAvg.setVisibility(View.GONE);
+            }
+//                infoTextView_heartrate.setVisibility(View.GONE);
 
             /*
             infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitting_text, 100.0));
@@ -121,13 +194,28 @@ public class ReportDetailFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
 
         infoTextView_day = view.findViewById(R.id.fragment_report_detail_text_view_day);
-        infoTextView_timePosture = view.findViewById(R.id.fragment_report_detail_text_view_time_posture);
-        infoTextView_timeSitting = view.findViewById(R.id.fragment_report_detail_text_view_time_sitting);
-        infoTextView_distance = view.findViewById(R.id.fragment_report_detail_text_view_distance);
-        infoTextView_steps = view.findViewById(R.id.fragment_report_detail_text_view_steps);
-        infoTextView_calories = view.findViewById(R.id.fragment_report_detail_text_view_calories);
-        infoTextView_heartrate = view.findViewById(R.id.fragment_report_detail_text_view_heartrate);
-
+        infoTextView_year = view.findViewById(R.id.fragment_report_detail_text_view_year);
+//        infoTextView_timePosture = view.findViewById(R.id.fragment_report_detail_text_view_time_posture);
+//        infoTextView_timeSitting = view.findViewById(R.id.fragment_report_detail_text_view_time_sitting);
+//        infoTextView_distance = view.findViewById(R.id.fragment_report_detail_text_view_distance);
+//        infoTextView_steps = view.findViewById(R.id.fragment_report_detail_text_view_steps);
+//        infoTextView_calories = view.findViewById(R.id.fragment_report_detail_text_view_calories);
+//        infoTextView_heartrate = view.findViewById(R.id.fragment_report_detail_text_view_heartrate);
+        heartRateTitle = view.findViewById(R.id.HeartRateTitle);
+        caloriesTitle = view.findViewById(R.id.caloriesTitle);
+        stepsTitle = view.findViewById(R.id.StepsTitle);
+        distanceTitle = view.findViewById(R.id.DistanceTitle);
+        heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
+        heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
+        heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
+        distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
+        caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
+        stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
+        heartRateGroup = view.findViewById(R.id.hearRateGroup);
+        caloriesGroup = view.findViewById(R.id.caloriesGroup);
+        stepsGroup = view.findViewById(R.id.stepsGroup);
+        distanceGroup = view.findViewById(R.id.distanceGroup);
+        getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
 
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
