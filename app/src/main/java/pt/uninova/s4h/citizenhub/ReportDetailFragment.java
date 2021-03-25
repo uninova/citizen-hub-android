@@ -77,12 +77,12 @@ public class ReportDetailFragment extends Fragment {
                     : R.string.fragment_report_text_view_title);
 
 
-//            int day = model.getDetailDate().getDayOfMonth();
-//            String month = model.getDetailDate().getMonth().toString();
-//            int year = model.getDetailDate().getYear();
-//            String dayMonth=day + " " + month;
-//            infoTextView_day.setText(dayMonth);
-//           infoTextView_year.setText(year);
+            String day = String.valueOf(model.getDetailDate().getDayOfMonth());
+            String month = model.getDetailDate().getMonth().toString();
+            String year = String.valueOf(model.getDetailDate().getYear());
+            String dayMonth = day + " " + month;
+            infoTextView_day.setText(dayMonth);
+            infoTextView_year.setText(year);
 //
 //            if (badPosture != null && goodPosture != null) {
 //                infoTextView_timeSitting.setText(getString(R.string.fragment_report_text_view_time_sitting_text, badPosture.getSum()));
@@ -217,7 +217,6 @@ public class ReportDetailFragment extends Fragment {
         distanceGroup = view.findViewById(R.id.distanceGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
-
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
     }
 }
