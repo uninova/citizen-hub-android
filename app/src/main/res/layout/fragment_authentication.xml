@@ -31,17 +31,14 @@
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
-        android:layout_width="87dp"
-        android:layout_height="41dp"
+
         android:layout_marginTop="424dp"
         android:background="@android:color/transparent"
-        android:drawableEnd="@drawable/ic_circle_orange"
-        android:fontFamily="@font/primus_bold"
-        android:paddingHorizontal="5dp"
+        style="@style/Widget.Citizen.Button"
+        android:includeFontPadding="false"
         android:text="@string/fragment_authentication_button_login"
         android:textAllCaps="false"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="20sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="@+id/authentication_fragment_login_text_view"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/authentication_fragment_login_text_view"

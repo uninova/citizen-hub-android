@@ -21,7 +21,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.List;
 import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         NavController navController = ((NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
         NavigationView navView = findViewById(R.id.nav_view);
-
+        navView.setItemIconTintList(null);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         appBarConfiguration =

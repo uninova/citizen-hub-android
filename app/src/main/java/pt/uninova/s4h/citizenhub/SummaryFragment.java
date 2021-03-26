@@ -39,14 +39,13 @@ public class SummaryFragment extends Fragment {
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
-        final LinearLayout noDataGroup = requireView().findViewById(R.id.fragment_summary_layout_no_data);
+        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
-        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
@@ -119,9 +118,9 @@ public class SummaryFragment extends Fragment {
             if (calories == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
                 noDataTextView.setText("No activity data for today.");
 
-                noDataGroup.setVisibility(View.VISIBLE); //TODO make own card
+                noDataTextView.setVisibility(View.VISIBLE); //TODO make own card
             } else {
-                noDataGroup.setVisibility(View.GONE); //TODO all other gones
+                noDataTextView.setVisibility(View.GONE); //TODO all other gones
             }
         }
     }

@@ -199,12 +199,12 @@ public class ReportViewModel extends AndroidViewModel {
         options.inScaled = false;
         options.inDensity = 72;
 
-        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.citizen_hub_logo, options);
+        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.img_citizen_hub_logo_with_text, options);
 
 
         canvas.save();
-        canvas.translate(x + 80, 2);
-        canvas.scale(0.25f, 0.25f);
+        canvas.translate(x + 175, 2);
+        canvas.scale(0.45f, 0.45f);
         canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
 
@@ -260,14 +260,15 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("Spent: " + " sitting", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Spent: " + measurementAggregate.getSum() + " sitting", x + 70, y, darkTextPaint);
             y += 20;
             canvasWriter.addText("Spent " + " seated with good posture", x + 70, y, darkTextPaint);
+            //TODO
             y += 20;
 
             y += 40;
         }
-        measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
+        measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
 
         if (measurementAggregate != null) {
 
@@ -280,7 +281,10 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText("Total distance walked: " + " km", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Total distance walked: ", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
+            canvasWriter.addTextInFront(" km", darkTextPaint);
+
             y += 20;
 
             y += 40;
@@ -306,11 +310,15 @@ public class ReportViewModel extends AndroidViewModel {
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Minimum heart rate (bpm): ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Minimum heart rate: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate.getMin()), boldTextPaint);
+            canvasWriter.addTextInFront(" bpm", darkTextPaint);
+
             y += 20;
             canvasWriter.addText("Maximum heart rate (bpm): ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate.getMax()), boldTextPaint);
+            canvasWriter.addTextInFront(" bpm", darkTextPaint);
+
             y += 20;
 
             y += 20;
@@ -328,6 +336,8 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
             canvasWriter.addText("Steps taken: ", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
+
             y += 20;
 
             y += 40;
@@ -344,7 +354,10 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText("Estimated Calories burned:" + " calories", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Estimated Calories burned:", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
+            canvasWriter.addTextInFront(" calories", darkTextPaint);
+
             y += 20;
 
             y += 40;
@@ -447,6 +460,8 @@ public class ReportViewModel extends AndroidViewModel {
 
         attachments.add(attach);
 
+        //TODO this comment is temporary, do not apply this change
+        /**/
         DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
                 "Citizen Hub Daily Report " + detailDate.toString(),
                 CodeSystemDocumentReferenceStatus.CURRENT,

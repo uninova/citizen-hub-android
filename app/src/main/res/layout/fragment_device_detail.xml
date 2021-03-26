@@ -25,10 +25,9 @@
 
     <Button
         android:id="@+id/button_deviceDetail_forgetDevice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.Citizen.Button"
         android:layout_marginBottom="232dp"
-        android:text="Forget Device"
+        android:text="forget device"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -3,47 +3,58 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.bluetooth.BluetoothManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
-
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
 
-import java.util.Objects;
-
-import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 
-public class CitizenHubService extends LifecycleService {
 
+import java.util.Date;
+import java.util.Objects;
+import java.util.Random;
+
+public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
+
+    boolean mBound = false;
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
     private AgentOrchestrator agentOrchestrator;
     private NotificationManager notificationManager;
-    private final String ACTION_STOP_SERVICE = "STOP";
+    private WearOSMessageService wearOSMessageService;
+    private WearOSServiceBinder wearOSServiceBinder;
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            WearOSServiceBinder binder = (WearOSServiceBinder) service;
+            wearOSMessageService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
 
     public CitizenHubService() {
         super();
     }
 
     private Notification buildNotification() {
-
-        Intent stopSelf = new Intent(this, MainActivity.class);
-        stopSelf.setAction(ACTION_STOP_SERVICE);
-
-        PendingIntent pStopSelf = PendingIntent
-                .getService(this, 0, stopSelf
-                        , PendingIntent.FLAG_CANCEL_CURRENT);
-
-
         return new NotificationCompat.Builder(this, Objects.requireNonNull(CitizenHubService.class.getCanonicalName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
-                .addAction(R.mipmap.ic_launcher, "Close", pStopSelf)
                 .build();
     }
 
@@ -59,6 +70,11 @@ public class CitizenHubService extends LifecycleService {
         return agentOrchestrator;
     }
 
+    public WearOSMessageService getWearOSMessageService(){
+
+        return wearOSMessageService;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         super.onBind(intent);
@@ -70,14 +86,19 @@ public class CitizenHubService extends LifecycleService {
     public void onCreate() {
         super.onCreate();
 
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannel();
 
         startForeground(1, buildNotification());
+        wearOSMessageService = new WearOSMessageService();
+
 
         agentOrchestrator = new AgentOrchestrator(this);
+
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
     }
+
 
     @Override
     public void onDestroy() {
@@ -88,22 +109,11 @@ public class CitizenHubService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        createNotificationChannel();
-
-        startForeground(1, buildNotification());
-
-        agentOrchestrator = new AgentOrchestrator(this);
-        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
-            stopForegroundService();
-        }
         return START_STICKY;
     }
 
-    private void stopForegroundService() {
-        stopForeground(true);
-        stopSelf();
+    @Override
+    public WearOSMessageService getService() {
+        return wearOSMessageService;
     }
 }
