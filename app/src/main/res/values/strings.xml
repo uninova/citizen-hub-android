@@ -55,7 +55,7 @@
     <string name="fragment_search_dialog_location_open_settings">Open location settings</string>
     <string name="fragment_search_dialog_location_cancel">Cancel</string>
     <string name="layout_activity_lobby_contentDescription_lines">Design with blue lines.</string>
-    <string name="layout_activity_lobby_contentDescription_logo">Smart 4 Health logo.</string>
+    <string name="layout_activity_lobby_contentDescription_logo">Smart4Health logo.</string>
     <string name="layout_activity_add_device_name">Name</string>
     <string name="layout_activity_add_device_address">Address</string>
     <string name="layout_activity_add_device_priority">Priority: </string>
