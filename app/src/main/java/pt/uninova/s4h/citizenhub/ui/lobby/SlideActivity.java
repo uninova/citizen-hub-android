@@ -22,10 +22,8 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
     final long PERIOD_MS = 3500;
     int currentPage = 0;
     Timer timer;
-    ViewPagerController viewPagerController = (ViewPagerController) this;
     Handler handler = new Handler();
     Runnable update = new Runnable() {
-
         public void run() {
 
 
@@ -45,10 +43,12 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
         setContentView(R.layout.activity_slide);
         viewPager = findViewById(R.id.viewpager);
         adapter = new SlideViewPagerAdapter(this);
+
         viewPager.setAdapter(adapter);
+
         if (isOpenAlready()) {
             Intent intent = new Intent(SlideActivity.this, LobbyActivity.class);
-            //     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
             SharedPreferences.Editor editor = getSharedPreferences("slide", MODE_PRIVATE).edit();
@@ -68,6 +68,7 @@ public class SlideActivity extends AppCompatActivity implements ViewPagerControl
             }
         }, DELAY_MS, PERIOD_MS);
     }
+
 
     public void StopTimer() {
         if (update != null) {
