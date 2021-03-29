@@ -144,7 +144,7 @@ public class DeviceSearchFragment extends Fragment {
         } else {
             hasStartedEnableBluetoothActivity = true;
             new AlertDialog.Builder(getContext())
-                    .setMessage(R.string.fragment_device_search_cancel_option)
+                    .setMessage(R.string.fragment_device_search_bluetooth_not_enabled_title)
                     .setPositiveButton(R.string.fragment_device_search_bluetooth_open_settings_button, (paramDialogInterface, paramInt) -> {
                         requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         paramDialogInterface.dismiss();
