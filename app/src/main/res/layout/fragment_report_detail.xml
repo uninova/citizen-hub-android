@@ -191,6 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
+            style="@style/Widget.Citizen.Button"
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
             android:visibility="visible"
