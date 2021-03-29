@@ -21,6 +21,7 @@
             android:fontFamily="@font/primus"
             android:paddingVertical="20dp"
             android:text="@string/fragment_report_text_view_no_data_summary"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +39,6 @@
             android:text="Steps"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/CaloriesTotalVal" />
 
@@ -48,6 +47,7 @@
             style="@style/ReportDetailValueType"
             android:tag="steps"
             android:text="Total Steps: "
+            android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/CaloriesTotalVal"
             app:layout_constraintTop_toBottomOf="@+id/StepsTitle" />
@@ -66,43 +66,43 @@
             android:id="@+id/stepsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="StepsTotalVal,fragment_report_detail_steps_total,StepsTitle" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/caloriesGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="CaloriesTotalVal,caloriesTitle,fragment_report_detail_calories_total" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/distanceGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="fragment_report_detail_distance_total,DistanceTotalVal,DistanceTitle" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/hearRateGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="HeartRateMinVal,fragment_report_detail_heart_rate_min,fragment_report_detail_heart_rate_average,HeartRateAvgVal,fragment_report_detail_heart_rate_max,HeartRateMaxVal,HeartRateTitle" />
 
         <TextView
             android:id="@+id/fragment_report_detail_text_view_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
-            android:fontFamily="@font/neo_sans_pro_bold"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/primus_bold"
             android:text="10 June"
             android:textAlignment="center"
             android:textColor="@color/colorS4HDarkBlue"
             android:textSize="20sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,7 +110,7 @@
             android:id="@+id/fragment_report_detail_text_view_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/primus_bold"
+            android:fontFamily="@font/primus"
             android:text="2021"
             android:textAlignment="center"
             android:textColor="@color/colorS4HOrange"
@@ -118,44 +118,6 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@+id/fragment_report_detail_text_view_day"
             app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_day" />
-
-        <TextView
-            android:id="@+id/fragment_report_detail_recorded"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="160dp"
-            android:background="@drawable/button_rounded_right_side"
-            android:fontFamily="@font/neo_sans_pro_bold"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="2dp"
-            android:text="Recorded"
-            android:textAlignment="center"
-            android:textColor="@color/colorS4HWhite"
-            android:textSize="15sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/fragment_report_detail_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/button_rounded_right_side"
-            android:fontFamily="@font/neo_sans_pro_bold"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="2dp"
-            android:text="Daily Report"
-            android:textAlignment="center"
-            android:textColor="@color/colorS4HWhite"
-            android:textSize="30sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/HeartRateTitle"
@@ -166,8 +128,6 @@
             android:tag="heartrate"
             android:text="Heart Rate"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:layout_goneMarginStart="100dp" />
@@ -181,17 +141,15 @@
             android:tag="distance"
             android:text="Distance"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/HeartRateMinVal" />
 
         <Button
             android:id="@+id/button"
+            style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            style="@style/Widget.Citizen.Button"
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
             android:visibility="visible"
@@ -206,6 +164,7 @@
             style="@style/ReportDetailValueType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorS4HGreen"
             android:tag="heartrate"
             android:text="Maximum Value:"
             android:visibility="visible"
@@ -217,6 +176,7 @@
             style="@style/ReportDetailValueType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorS4HOrange"
             android:tag="heartrate"
             android:text="Minimum Value:"
             android:visibility="visible"
@@ -227,6 +187,7 @@
             android:id="@+id/fragment_report_detail_heart_rate_max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/ReportDetailValue"
             android:layout_marginStart="8dp"
             android:tag="heartrate"
             android:text="0"
@@ -242,23 +203,29 @@
             style="@style/ReportDetailValueType"
             android:tag="heartrate"
             android:text="Average:"
+            android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_recorded"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toBottomOf="@+id/HeartRateTitle" />
 
         <TextView
             android:id="@+id/fragment_report_detail_heart_rate_average"
             style="@style/ReportDetailValue"
+            android:layout_marginStart="12dp"
             android:tag="heartrate"
             android:text="0"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/HeartRateMaxVal"
-            app:layout_constraintStart_toEndOf="@+id/HeartRateMaxVal" />
+            app:layout_constraintStart_toEndOf="@+id/HeartRateMaxVal"
+            app:layout_constraintTop_toTopOf="@+id/HeartRateMaxVal"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/fragment_report_detail_heart_rate_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/ReportDetailValue"
+
             android:layout_marginStart="8dp"
             android:tag="heartrate"
             android:text="0"
@@ -273,6 +240,7 @@
             android:id="@+id/DistanceTotalVal"
             style="@style/ReportDetailValueType"
             android:tag="distance"
+            android:textColor="@color/colorS4HTurquoise"
             android:text="Total Distance: "
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/HeartRateMinVal"
@@ -292,6 +260,7 @@
             style="@style/ReportDetailValueType"
             android:tag="calories"
             android:text="Total Calories: "
+            android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
             app:layout_constraintTop_toBottomOf="@+id/caloriesTitle" />
@@ -316,7 +285,6 @@
             android:text="Calories"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/StepsTitle"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DistanceTotalVal" />
 
@@ -331,8 +299,15 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="182dp"
+            app:layout_constraintGuide_begin="88dp"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="36dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
