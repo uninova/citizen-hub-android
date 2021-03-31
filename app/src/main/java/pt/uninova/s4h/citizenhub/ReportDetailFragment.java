@@ -77,7 +77,50 @@ public class ReportDetailFragment extends Fragment {
 
 
             String day = String.valueOf(model.getDetailDate().getDayOfMonth());
-            String month = model.getDetailDate().getMonth().toString();
+            int monthInt = model.getDetailDate().getMonthValue();
+            String month;
+            switch (monthInt) {
+                case 1:
+                    month = getString(R.string.date_month_01);
+                    break;
+                case 2:
+                    month = getString(R.string.date_month_02);
+                    break;
+                case 3:
+                    month = getString(R.string.date_month_03);
+                    break;
+                case 4:
+                    month = getString(R.string.date_month_04);
+                    break;
+                case 5:
+                    month = getString(R.string.date_month_05);
+                    break;
+                case 6:
+                    month = getString(R.string.date_month_06);
+                    break;
+                case 7:
+                    month = getString(R.string.date_month_07);
+                    break;
+                case 8:
+                    month = getString(R.string.date_month_08);
+                    break;
+                case 9:
+                    month = getString(R.string.date_month_09);
+                    break;
+                case 10:
+                    month = getString(R.string.date_month_10);
+                    break;
+                case 11:
+                    month = getString(R.string.date_month_11);
+                    break;
+                case 12:
+                    month = getString(R.string.date_month_12);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + monthInt);
+            }
+
+
             String year = String.valueOf(model.getDetailDate().getYear());
             String dayMonth = day + " " + month;
             infoTextView_day.setText(dayMonth);
@@ -116,8 +159,7 @@ public class ReportDetailFragment extends Fragment {
                     caloriesGroup.setVisibility(View.VISIBLE);
                 }
                 caloriesTotal.setText(String.valueOf(calories.getSum()));
-            }
-            else {
+            } else {
                 if (caloriesGroup != null) {
 
                     caloriesGroup.setVisibility(View.GONE);
@@ -132,8 +174,7 @@ public class ReportDetailFragment extends Fragment {
                 heartRateAvg.setText(String.format("%.1f", heartRate.getAverage()));
                 heartRateMax.setText(String.valueOf(heartRate.getMax()));
                 heartRateMin.setText(String.valueOf(heartRate.getMin()));
-            }
-            else {
+            } else {
                 if (heartRateGroup != null) {
                     heartRateGroup.setVisibility(View.GONE);
                 }
