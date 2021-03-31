@@ -7,6 +7,8 @@
     <string name="fragment_device_search_location_open_settings_button">Open settings</string>
     <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
     <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
+    <string name="fragment_device_search_bluetooth_disable_button">Don\'t turn on bluetooth</string>
+    <string name="fragment_device_search_bluetooth_refuse_enabling">Cancel</string>
     <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
