@@ -90,4 +90,5 @@
     <string name="authentication_fragment_login_requirement_text">CitizenHub requires you to register and login in the Smart4Health platform.</string>
     <string name="pdf_layout_background_logo">background logo</string>
     <string name="pdf_report_average_HR_text">Average heart rate (bpm): \</string>
+<!--    TODO strings  do mês date_month_01 - January(...)-->
 </resources>
