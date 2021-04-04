@@ -20,5 +20,4 @@
         android:textColor="@color/colorS4HTurquoise"
         android:text="HUB"
         android:textSize="24sp" />
-    s
 </LinearLayout>
