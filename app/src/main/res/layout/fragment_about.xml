@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/image_about_citizenhub_logo"
-        android:layout_width="122dp"
-        android:layout_height="76dp"
+        android:layout_width="207dp"
+        android:layout_height="125dp"
         android:layout_marginTop="32dp"
         android:contentDescription="@+id/text_ab"
         android:src="@drawable/ic_logo_citizen_hub_text"
