@@ -262,6 +262,5 @@ public class DeviceSearchFragment extends Fragment {
         super.onResume();
 
         checkPermissions();
-
     }
 }
