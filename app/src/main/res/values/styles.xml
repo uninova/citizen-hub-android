@@ -42,15 +42,39 @@
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
+    <style name="ReportDetailTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button_rounded_right_side</item>
+        <item name="android:fontFamily">@font/primus</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">20sp</item>
     </style>
-    <style name="AppTheme.Summary"/>
+
+    <style name="ReportDetailUnits">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="AppTheme.Summary" />
+
     <style name="AppTheme.Summary.Item">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:padding">10dp</item>
     </style>
+
     <style name="AppTheme.Summary.Item.ImageView">
         <item name="android:gravity">center</item>
         <item name="android:layout_height">match_parent</item>
@@ -90,4 +114,25 @@
         <item name="android:background">@color/colorS4HGreyLight</item>
         <item name="android:padding">8dp</item>
     </style>
+
+    <style name="ReportDetailValueType">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+
+    </style>
+
+    <style name="ReportDetailValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+
+
 </resources>
