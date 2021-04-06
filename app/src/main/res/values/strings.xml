@@ -7,6 +7,8 @@
     <string name="fragment_device_search_location_open_settings_button">Open settings</string>
     <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
     <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
+    <string name="fragment_device_search_bluetooth_disable_button">Don\'t turn on bluetooth</string>
+    <string name="fragment_device_search_bluetooth_refuse_enabling">Cancel</string>
     <string name="fragment_device_search_bluetooth_open_settings_button">Open settings</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
@@ -90,4 +92,19 @@
     <string name="authentication_fragment_login_requirement_text">CitizenHub requires you to register and login in the Smart4Health platform.</string>
     <string name="pdf_layout_background_logo">background logo</string>
     <string name="pdf_report_average_HR_text">Average heart rate (bpm): \</string>
+    <string name="date_month_01">January</string>
+    <string name="date_month_02">February</string>
+    <string name="date_month_03">March</string>
+    <string name="date_month_04">April</string>
+    <string name="date_month_05">May</string>
+    <string name="date_month_06">June</string>
+    <string name="date_month_07">July</string>
+    <string name="date_month_08">August</string>
+    <string name="date_month_09">September</string>
+    <string name="date_month_10">October</string>
+    <string name="date_month_11">November</string>
+    <string name="date_month_12">December</string>
+
+
+    <!--    TODO strings  do mês date_month_01 - January(...)-->
 </resources>

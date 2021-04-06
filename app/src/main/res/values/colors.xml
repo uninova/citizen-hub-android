@@ -17,4 +17,5 @@
     <color name="colorS4HGreyMedium">#8b9ca7</color>
     <color name="colorS4HLightGreyVariant">#EEEEEE</color>
     <color name="colorS4HDarkGreyVariant">#333333</color>
+    <color name="colorS4HGreen">#58BF36</color>
 </resources>
