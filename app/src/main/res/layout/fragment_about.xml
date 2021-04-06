@@ -6,23 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
+
     <ImageView
         android:id="@+id/image_about_citizenhub_logo"
-        android:layout_width="316dp"
-        android:layout_height="123dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="207dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="@+id/text_ab"
-        android:src="@drawable/img_citizenhub_logo"
+        android:src="@drawable/ic_logo_citizen_hub_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/about_privacy_policy_button"
         style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="99dp"
+        android:layout_marginBottom="257dp"
         android:text="@string/fragment_about_button_text_privacy_policy_button"
         android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/about_licenses_button"
         app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
 
@@ -30,7 +34,7 @@
         android:id="@+id/text_about_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/primus"
         android:text="@string/about_contact_email"
         android:textAlignment="center"
@@ -39,13 +43,12 @@
         app:layout_constraintBottom_toTopOf="@+id/text_about_ce_info"
         app:layout_constraintEnd_toEndOf="@+id/about_open_sources_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/about_open_sources_button"
-        app:layout_constraintTop_toBottomOf="@+id/about_open_sources_button" />
+        app:layout_constraintStart_toStartOf="@+id/about_open_sources_button" />
 
     <Button
         android:id="@+id/about_licenses_button"
         style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/fragment_about_button_text_licenses_of_use"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +59,7 @@
     <Button
         android:id="@+id/about_open_sources_button"
         style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/fragment_open_source_licenses_text_view_info"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,22 +101,17 @@
     <TextView
         android:id="@+id/text_about_1paragraph"
         style="@style/AppTheme.Summary.Item.TextView"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/neosanspro"
         android:text="@string/about_developedBy"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229" />
+        app:layout_constraintTop_toBottomOf="@+id/text_about_versioning" />
 
     <ImageView
         android:id="@+id/img_logo_kbz"
@@ -145,22 +143,22 @@
         style="@style/AppTheme.Summary.Item.TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:fontFamily="@font/neosanspro"
         android:text="@string/fragment_about_text_view_versioning"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="20sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/image_about_citizenhub_logo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
