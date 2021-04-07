@@ -52,24 +52,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="right"
             android:orientation="vertical">
 
-            <ImageView
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="right"
-                android:adjustViewBounds="true"
-                android:scaleType="fitEnd"
-                android:src="@drawable/ic_side_logo" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+
+                android:fontFamily="@font/primus_bold"
+                android:text="@string/authentication_fragment_text_powered_by"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="4.3pt"
+                android:translationX="20dp"
+                android:translationY="210dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="40dp"
+                    android:layout_weight="0.99"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:src="@drawable/img_s4h_logo" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_side_logo" />
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@color/colorS4HDarkBlue"
-            android:text="powered by" />
+
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
