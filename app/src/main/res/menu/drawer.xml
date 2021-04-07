@@ -16,8 +16,8 @@
             android:id="@+id/group_configuration">
         <item
                 android:id="@+id/device_list_fragment"
-                android:icon="@drawable/ic_device_list_fragment"
-                android:title="@string/fragment_device_list_label"/>
+            android:icon="@drawable/ic_devices"
+            android:title="@string/fragment_device_list_label"/>
     </group>
 
     <group
