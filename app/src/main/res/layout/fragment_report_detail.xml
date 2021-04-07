@@ -38,7 +38,7 @@
             android:tag="steps"
             android:text="Steps"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/uploadButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/CaloriesTotalVal" />
 
@@ -68,28 +68,28 @@
             android:id="@+id/stepsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="StepsTotalVal,fragment_report_detail_steps_total,StepsTitle,stepsUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/caloriesGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="CaloriesTotalVal,caloriesTitle,fragment_report_detail_calories_total,caloriesUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/distanceGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="fragment_report_detail_distance_total,DistanceTotalVal,DistanceTitle,distanceUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/hearRateGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="HeartRateMinVal,fragment_report_detail_heart_rate_min,fragment_report_detail_heart_rate_average,HeartRateAvgVal,fragment_report_detail_heart_rate_max,HeartRateMaxVal,HeartRateTitle,bpmTextView1,bpmTextView2,bpmTextView3" />
 
         <TextView
@@ -145,7 +145,7 @@
             app:layout_constraintTop_toBottomOf="@+id/HeartRateMinVal" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/uploadButton"
             style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -153,6 +153,21 @@
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/StepsTitle" />
+
+        <Button
+            android:id="@+id/viewPdfButton"
+            style="@style/Widget.Citizen.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="View pdf on platform"
+            android:textAlignment="center"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
