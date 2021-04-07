@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:contentDescription="@string/activity_splash_citizen_hub_logo"
         android:src="@drawable/ic_logo"
         app:layout_constraintBottom_toBottomOf="parent"
