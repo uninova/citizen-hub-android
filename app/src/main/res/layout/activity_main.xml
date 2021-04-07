@@ -38,13 +38,13 @@
 
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="216.945dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        android:background="@color/colorS4HGreyLight"
-        app:itemTextAppearance="@style/MenuItem"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            android:background="@color/colorS4HGreyLight"
+            app:itemTextAppearance="@style/MenuItem"
         app:itemIconTint="@color/colorS4HDarkBlue"
         app:menu="@menu/drawer">
 

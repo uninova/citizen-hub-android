@@ -10,6 +10,7 @@
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginBottom="32dp"
+        android:textSize="6pt"
         android:gravity="center"
         android:text="@string/authentication_fragment_login_requirement_text"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
@@ -31,14 +32,12 @@
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
-
         android:layout_marginTop="424dp"
         android:background="@android:color/transparent"
         style="@style/Widget.Citizen.Button"
         android:includeFontPadding="false"
         android:text="@string/fragment_authentication_button_login"
         android:textAllCaps="false"
-        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="@+id/authentication_fragment_login_text_view"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/authentication_fragment_login_text_view"
@@ -49,6 +48,7 @@
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textSize="6pt"
         android:gravity="center"
         android:text="@string/authentication_fragment_login_text_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +66,7 @@
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/primus_bold"
         android:text="@string/authentication_fragment_text_powered_by"
+        android:textSize="4.3pt"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +92,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/primus_bold"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="50sp"
+        android:textSize="17pt"
         app:layout_constraintEnd_toEndOf="@+id/authentication_fragment_login_text_view2"
         app:layout_constraintStart_toStartOf="@+id/authentication_fragment_login_text_view2"
         app:layout_constraintTop_toBottomOf="@+id/citizen_hub_logo_with_text" />
