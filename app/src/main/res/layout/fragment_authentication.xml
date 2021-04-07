@@ -33,6 +33,7 @@
     <Button
         android:id="@+id/authentication_fragment_login_button"
         android:layout_marginTop="424dp"
+        android:layout_width="70dp"
         android:background="@android:color/transparent"
         style="@style/Widget.Citizen.Button"
         android:includeFontPadding="false"

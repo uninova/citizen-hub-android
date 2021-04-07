@@ -22,11 +22,11 @@
     <string name="menu_fragment_device_list_search_title">Search</string>
     <string name="fragment_summary_image_view_posture_content_description">TODO</string>
     <string name="fragment_summary_text_view_posture_text">%1$.0fm sitting %2$.0fm with good posture.</string>
-    <string name="fragment_summary_text_view_distance_text">%1$.0f m!</string>
+    <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_image_view_distance_content_description">TODO</string>
     <string name="fragment_summary_image_view_steps_content_description">TODO</string>
-    <string name="fragment_summary_text_view_steps_text">%1$.0f</string>
-    <string name="fragment_summary_text_view_calories_text">%1$.0f </string>
+    <string name="fragment_summary_text_view_steps_text">%1$.0f steps</string>
+    <string name="fragment_summary_text_view_calories_text">%1$.0f calories</string>
     <string name="fragment_summary_image_view_calories_content_description">TODO</string>
     <string name="fragment_summary_image_view_heart_rate_content_description">TODO</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
