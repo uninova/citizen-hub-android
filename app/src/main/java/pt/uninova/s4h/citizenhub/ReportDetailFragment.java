@@ -198,26 +198,25 @@ public class ReportDetailFragment extends Fragment {
                 heartRateAvg.setText(String.format("%.1f", heartRate.getAverage()));
                 heartRateMax.setText(String.valueOf(heartRate.getMax()));
                 heartRateMin.setText(String.valueOf(heartRate.getMin()));
-            } else {
-                if (heartRateGroup != null) {
-                    heartRateGroup.setVisibility(View.GONE);
-                }
+            } else if (heartRateGroup != null) {
+                heartRateGroup.setVisibility(View.GONE);
+            }
+
 
                 if (badPosture != null || goodPosture != null) {
                     if (postureGroup != null) {
                         postureGroup.setVisibility(View.VISIBLE);
-                        if (goodPosture != null) {
-                            okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
-                        }
-                        if (badPosture != null) {
-                            notOkPostureTotal.setText(String.format("%1.0f", badPosture.getSum()));
-                        }
+                    }
+                    if (goodPosture != null) {
+                        okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
+                    }
+                    if (badPosture != null) {
+                        notOkPostureTotal.setText(String.format("%1.0f", badPosture.getSum()));
                     }
                 } else {
                     postureGroup.setVisibility(View.GONE);
                 }
 
-            }
 
         });
     }

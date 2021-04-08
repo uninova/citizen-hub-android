@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal" />
+            app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal,notOkPostureUnitsTextView,okPostureUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/stepsGroup"
@@ -147,6 +147,22 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_day" />
 
         <TextView
+            android:id="@+id/notOkPostureUnitsTextView"
+            style="@style/ReportDetailUnits"
+            android:text="s"
+            app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
+            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+            app:layout_constraintTop_toTopOf="@+id/notOkPostureValokPostureVal" />
+
+        <TextView
+            android:id="@+id/okPostureUnitsTextView"
+            style="@style/ReportDetailUnits"
+            android:text="s"
+            app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
+            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+            app:layout_constraintTop_toTopOf="@+id/okPostureVal" />
+
+        <TextView
             android:id="@+id/HeartRateTitle"
             style="@style/ReportDetailTitle"
             android:paddingHorizontal="15dp"
@@ -177,6 +193,7 @@
             android:layout_marginTop="32dp"
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
+            app:layout_constraintBaseline_toBaselineOf="parent"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -451,7 +468,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
             app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
             app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
