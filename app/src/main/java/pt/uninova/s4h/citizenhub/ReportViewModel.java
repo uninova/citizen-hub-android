@@ -290,7 +290,7 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
             canvasWriter.addText("Total distance walked: ", x + 70, y + 10, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
-            canvasWriter.addTextInFront(" km", darkTextPaint);
+            canvasWriter.addTextInFront(" m", darkTextPaint);
 
             y += 20;
 
