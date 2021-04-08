@@ -204,7 +204,7 @@ public class ReportViewModel extends AndroidViewModel {
 
         canvas.save();
         canvas.translate(x + 175, 2);
-        canvas.scale(0.45f, 0.45f);
+        canvas.scale(0.85f, 0.85f);
         canvas.drawBitmap(logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
 
@@ -260,14 +260,14 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("OK: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Posture OK: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
             canvasWriter.addTextInFront(" s", darkTextPaint);
 
             y += 20;
 
             if (measurementAggregate1 != null) {
-                canvasWriter.addText("Not OK: ", x + 70, y, darkTextPaint);
+                canvasWriter.addText("Posture not OK: ", x + 70, y, darkTextPaint);
                 canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate1.getSum()), boldTextPaint);
                 canvasWriter.addTextInFront(" s", darkTextPaint);
                 y += 20;
