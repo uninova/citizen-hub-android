@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.placebo.PlaceboAllProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
@@ -46,9 +47,9 @@ public class AgentOrchestrator {
 
         deviceAgentMap = new HashMap<>();
 
-//        PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
-//        placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
-//        placeboAllProtocol.enable();
+        PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
+        placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
+        placeboAllProtocol.enable();
 
         deviceRepository.getAll().observe(service, devices -> {
             final Set<Device> found = new HashSet<>(devices.size());
