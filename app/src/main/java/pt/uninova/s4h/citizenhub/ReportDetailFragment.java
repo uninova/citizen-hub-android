@@ -46,7 +46,7 @@ public class ReportDetailFragment extends Fragment {
         viewPdfButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://auth-staging.smart4health.eu";
+                String url = "https://app-staging.smart4health.eu";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
