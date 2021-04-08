@@ -32,8 +32,8 @@ public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
-    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup;
+    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
     private boolean isSucess;
 
     @Override
@@ -203,6 +203,20 @@ public class ReportDetailFragment extends Fragment {
                     heartRateGroup.setVisibility(View.GONE);
                 }
 
+                if (badPosture != null || goodPosture != null) {
+                    if (postureGroup != null) {
+                        postureGroup.setVisibility(View.VISIBLE);
+                        if (goodPosture != null) {
+                            okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
+                        }
+                        if (badPosture != null) {
+                            notOkPostureTotal.setText(String.format("%2$.0f", badPosture.getSum()));
+                        }
+                    }
+                } else {
+                    postureGroup.setVisibility(View.GONE);
+                }
+
             }
 
         });
@@ -222,6 +236,9 @@ public class ReportDetailFragment extends Fragment {
         distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
+        okPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_ok);
+        notOkPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_not_ok);
+        postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
