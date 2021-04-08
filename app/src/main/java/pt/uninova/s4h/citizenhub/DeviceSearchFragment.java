@@ -188,6 +188,9 @@ public class DeviceSearchFragment extends Fragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
         scanner.start((address, name) -> {
             buildRecycleView(requireView());
+            if (address.equals("0C:B2:B7:39:99:63"))
+                name = "Posture Sensor";
+
             Device device = new Device(name, address, null, null);
             if (!model.isDevicePaired(device)) {
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
@@ -262,6 +265,5 @@ public class DeviceSearchFragment extends Fragment {
         super.onResume();
 
         checkPermissions();
-
     }
 }

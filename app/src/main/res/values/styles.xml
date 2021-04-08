@@ -134,5 +134,14 @@
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
     </style>
 
-
+    <style name="DialogSwitch">
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="colorControlActivated">@color/colorS4HDarkBlue</item>
+        <item name="colorSwitchThumbNormal">@color/colorS4HDarkBlue</item>
+        <item name="android:colorForeground">@color/colorS4HDarkBlue</item>
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/primus</item>
+    </style>
 </resources>

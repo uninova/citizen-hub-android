@@ -20,13 +20,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/primus"
             android:paddingVertical="20dp"
-            android:textSize="5.9pt"
             android:text="@string/fragment_report_text_view_no_data_summary"
+            android:textSize="5.9pt"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
 
         <TextView
             android:id="@+id/StepsTitle"
@@ -40,13 +41,30 @@
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/uploadButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CaloriesTotalVal" />
+            app:layout_constraintTop_toBottomOf="@+id/CaloriesTotalVal"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <TextView
+            android:id="@+id/postureTitle"
+            style="@style/ReportDetailTitle"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:tag="posture"
+            android:text="Posture"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/uploadButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/StepsTotalVal"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/StepsTotalVal"
             style="@style/ReportDetailValueType"
-            android:tag="steps"
             android:layout_marginTop="32dp"
+            android:tag="steps"
             android:text="Total Steps: "
             android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
@@ -65,6 +83,13 @@
 
 
         <androidx.constraintlayout.widget.Group
+            android:id="@+id/postureGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal,notOkPostureUnitsTextView,okPostureUnitsTextView" />
+
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/stepsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,21 +100,21 @@
             android:id="@+id/caloriesGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="CaloriesTotalVal,caloriesTitle,fragment_report_detail_calories_total,caloriesUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/distanceGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="fragment_report_detail_distance_total,DistanceTotalVal,DistanceTitle,distanceUnitsTextView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/hearRateGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="HeartRateMinVal,fragment_report_detail_heart_rate_min,fragment_report_detail_heart_rate_average,HeartRateAvgVal,fragment_report_detail_heart_rate_max,HeartRateMaxVal,HeartRateTitle,bpmTextView1,bpmTextView2,bpmTextView3" />
 
         <TextView
@@ -122,6 +147,22 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_day" />
 
         <TextView
+            android:id="@+id/notOkPostureUnitsTextView"
+            style="@style/ReportDetailUnits"
+            android:text="s"
+            app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
+            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+            app:layout_constraintTop_toTopOf="@+id/notOkPostureVal" />
+
+        <TextView
+            android:id="@+id/okPostureUnitsTextView"
+            style="@style/ReportDetailUnits"
+            android:text="s"
+            app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
+            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+            app:layout_constraintTop_toTopOf="@+id/okPostureVal" />
+
+        <TextView
             android:id="@+id/HeartRateTitle"
             style="@style/ReportDetailTitle"
             android:paddingHorizontal="15dp"
@@ -149,30 +190,26 @@
             style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/StepsTitle" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/viewPdfButton"
             style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="View pdf on platform"
+            android:text="View PDF on platform"
             android:textAlignment="center"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/StepsTitle" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/HeartRateAvgVal"
@@ -185,6 +222,62 @@
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/HeartRateMaxVal"
             app:layout_constraintTop_toBottomOf="@+id/HeartRateMaxVal" />
+
+        <TextView
+            android:id="@+id/stepsUnitsTextView"
+            style="@style/ReportDetailUnits"
+            android:text="steps"
+            app:layout_constraintBottom_toBottomOf="@+id/StepsTotalVal"
+            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+            app:layout_constraintTop_toTopOf="@+id/StepsTotalVal" />
+
+        <TextView
+            android:id="@+id/okPostureVal"
+            style="@style/ReportDetailValueType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:tag="posture"
+            android:text="OK:"
+            android:textColor="@color/colorS4HTurquoise"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintTop_toBottomOf="@+id/postureTitle" />
+
+        <TextView
+            android:id="@+id/notOkPostureVal"
+            style="@style/ReportDetailValueType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:tag="posture"
+            android:text="Not OK:"
+            android:textColor="@color/colorS4HTurquoise"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/uploadButton"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintTop_toBottomOf="@+id/okPostureVal" />
+
+        <TextView
+            android:id="@+id/fragment_report_total_time_posture_ok"
+            style="@style/ReportDetailValue"
+            android:tag="posture"
+            android:text="0"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
+            app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+            app:layout_constraintTop_toTopOf="@+id/okPostureVal" />
+
+        <TextView
+            android:id="@+id/fragment_report_total_time_posture_not_ok"
+            style="@style/ReportDetailValue"
+            android:tag="posture"
+            android:text="0"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
+            app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+            app:layout_constraintTop_toTopOf="@+id/notOkPostureVal" />
+
 
         <TextView
             android:id="@+id/HeartRateMinVal"
@@ -215,9 +308,9 @@
         <TextView
             android:id="@+id/HeartRateMaxVal"
             style="@style/ReportDetailValueType"
+            android:layout_marginTop="32dp"
             android:tag="heartrate"
             android:text="Average:"
-            android:layout_marginTop="32dp"
             android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
@@ -251,8 +344,8 @@
         <TextView
             android:id="@+id/DistanceTotalVal"
             style="@style/ReportDetailValueType"
-            android:tag="distance"
             android:layout_marginTop="32dp"
+            android:tag="distance"
             android:text="Total Distance: "
             android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
@@ -272,9 +365,9 @@
         <TextView
             android:id="@+id/CaloriesTotalVal"
             style="@style/ReportDetailValueType"
-            android:tag="calories"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
+            android:tag="calories"
             android:text="Total Calories: "
             android:textColor="@color/colorS4HTurquoise"
             android:visibility="visible"
@@ -371,15 +464,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
             app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
             app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal" />
-
-        <TextView
-            android:id="@+id/stepsUnitsTextView"
-            style="@style/ReportDetailUnits"
-            android:text="steps"
-            app:layout_constraintBottom_toBottomOf="@+id/StepsTotalVal"
-            app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-            app:layout_constraintTop_toTopOf="@+id/StepsTotalVal" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
