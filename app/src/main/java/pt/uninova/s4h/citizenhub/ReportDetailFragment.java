@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,18 +34,40 @@ public class ReportDetailFragment extends Fragment {
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup;
+    private boolean isSucess;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
+        Button uploadPdfButton = view.findViewById(R.id.uploadButton);
+        Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
 
-        Button uploadPdfButton = view.findViewById(R.id.button);
+
+        viewPdfButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://auth-staging.smart4health.eu";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                uploadPdfButton.setVisibility(View.VISIBLE);
+                viewPdfButton.setVisibility(View.GONE);
+            }
+        });
+
+
         uploadPdfButton.setOnClickListener(v -> {
+
             try {
                 model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
                     @Override
                     public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                        requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show());
+                        requireActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    viewPdfButton.setVisibility(View.VISIBLE);
+                                    uploadPdfButton.setVisibility(View.GONE);
+                                }
+                        );
                     }
 
                     @Override
@@ -58,9 +82,9 @@ public class ReportDetailFragment extends Fragment {
                 e.printStackTrace();
             }
         });
-
         return view;
     }
+
 
     private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
