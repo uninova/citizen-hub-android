@@ -152,7 +152,7 @@
             android:text="s"
             app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
             app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-            app:layout_constraintTop_toTopOf="@+id/notOkPostureValokPostureVal" />
+            app:layout_constraintTop_toTopOf="@+id/notOkPostureVal" />
 
         <TextView
             android:id="@+id/okPostureUnitsTextView"
@@ -190,10 +190,8 @@
             style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="Smart4Health PDF upload"
             android:textAlignment="center"
-            app:layout_constraintBaseline_toBaselineOf="parent"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -205,11 +203,9 @@
             style="@style/Widget.Citizen.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="View PDF on platform"
             android:textAlignment="center"
             android:visibility="gone"
-            app:layout_constraintBaseline_toBaselineOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

@@ -260,11 +260,16 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("OK: " + measurementAggregate.getSum() + " s", x + 70, y, darkTextPaint);
+            canvasWriter.addText("OK: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
+            canvasWriter.addTextInFront(" s", darkTextPaint);
+
             y += 20;
 
             if (measurementAggregate1 != null) {
-                canvasWriter.addText("Not OK: " + measurementAggregate1.getSum() + " s", x + 70, y, darkTextPaint);
+                canvasWriter.addText("Not OK: ", x + 70, y, darkTextPaint);
+                canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate1.getSum()), boldTextPaint);
+                canvasWriter.addTextInFront(" s", darkTextPaint);
                 y += 20;
             }
             y += 40;
