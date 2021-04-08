@@ -165,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:text="View pdf on platform"
+            android:text="View PDF on platform"
             android:textAlignment="center"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

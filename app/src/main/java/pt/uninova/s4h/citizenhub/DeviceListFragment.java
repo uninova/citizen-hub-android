@@ -114,8 +114,8 @@ public class DeviceListFragment extends Fragment {
             public void onClick(View view) {
                 //check if wearOS and BT are checked
                 if (bluetoothButton.isChecked() && wearOSButton.isChecked()) {
-                    //TODO this is only showing wearOS when both selected, because the search is not yet combined
-                    Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment());
+                    //TODO this is only showing bluetooth when both selected, because the search is not yet combined
+                    Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
                     dialog.dismiss();
                 }
                 else if (bluetoothButton.isChecked()){

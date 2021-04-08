@@ -28,7 +28,7 @@ android:visibility="visible">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/connectedTitle"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3"
             app:layout_constraintBottom_toTopOf="@+id/searchButton" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -42,21 +42,9 @@ android:visibility="visible">
             android:scrollbars="vertical"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toTopOf="@id/searchButton"
-            app:layout_constraintTop_toBottomOf="@+id/connectedTitle"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3"
             android:clipToPadding="false"
             />
-
-        <TextView
-            android:id="@+id/connectedTitle"
-            style="@style/ReportDetailTitle"
-            android:layout_marginTop="5dp"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="5dp"
-            android:text="Connected"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:layout_goneMarginStart="100dp" />
 
         <Button
             android:id="@+id/searchButton"

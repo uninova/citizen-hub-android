@@ -65,20 +65,23 @@ public class SummaryFragment extends Fragment {
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
                 caloriesGroup.setVisibility(View.VISIBLE);
                 caloriesTitle.setVisibility(View.VISIBLE);
+                caloriesTextView.setVisibility(View.VISIBLE);
             } else {
                 caloriesGroup.setVisibility(View.GONE);
                 caloriesTitle.setVisibility(View.GONE);
-
+                caloriesTextView.setVisibility(View.GONE);
             }
 
             if (distance != null) {
                 distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_text, distance.getSum()));
                 distanceGroup.setVisibility(View.VISIBLE);
                 distanceTitle.setVisibility(View.VISIBLE);
+                distanceTextView.setVisibility(View.VISIBLE);
 
             } else {
                 distanceGroup.setVisibility(View.GONE);
                 distanceTitle.setVisibility(View.GONE);
+                distanceTextView.setVisibility(View.GONE);
 
             }
 
@@ -86,21 +89,26 @@ public class SummaryFragment extends Fragment {
                 heartRateTextView.setText(getString(R.string.fragment_summary_text_view_heart_rate_text, heartRate.getAverage()));
                 heartrateGroup.setVisibility(View.VISIBLE);
                 heartRateTitle.setVisibility(View.VISIBLE);
+                heartRateTextView.setVisibility(View.VISIBLE);
 
             } else {
                 heartrateGroup.setVisibility(View.GONE);
                 heartRateTitle.setVisibility(View.GONE);
+                heartRateTextView.setVisibility(View.GONE);
+
             }
 
 
             if (badPosture != null || goodPosture != null) {
-                postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, badPosture == null ? 0 : badPosture.getSum(), goodPosture == null ? 0 : goodPosture.getSum()));
+                postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, goodPosture == null ? 0 : goodPosture.getSum(), badPosture == null ? 0 : badPosture.getSum()));
                 postureGroup.setVisibility(View.VISIBLE);
                 postureTitle.setVisibility(View.VISIBLE);
+                postureTextView.setVisibility(View.VISIBLE);
 
             } else {
                 postureGroup.setVisibility(View.GONE);
                 postureTitle.setVisibility(View.GONE);
+                postureTextView.setVisibility(View.GONE);
 
             }
 
@@ -108,10 +116,12 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
                 stepsGroup.setVisibility(View.VISIBLE);
                 stepsTitle.setVisibility(View.VISIBLE);
+                stepsTextView.setVisibility(View.VISIBLE);
 
             } else {
                 stepsGroup.setVisibility(View.GONE);
                 stepsTitle.setVisibility(View.GONE);
+                stepsTextView.setVisibility(View.GONE);
 
             }
 
