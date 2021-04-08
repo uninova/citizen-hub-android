@@ -36,6 +36,7 @@ public class MeasurementRepository {
     }
 
     public LiveData<Map<MeasurementKind, MeasurementAggregate>> getDailyAggregate(LocalDate localDate) {
+        System.out.println();
         if (dailyAggregateMap.containsKey(localDate)) {
             return dailyAggregateMap.get(localDate);
         } else {

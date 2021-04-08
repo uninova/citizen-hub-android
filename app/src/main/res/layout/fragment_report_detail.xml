@@ -179,7 +179,7 @@
             <TextView
                 android:id="@+id/notOkPostureUnitsTextView"
                 style="@style/ReportDetailUnits"
-                android:text="s"
+                android:text=""
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
@@ -188,7 +188,7 @@
             <TextView
                 android:id="@+id/okPostureUnitsTextView"
                 style="@style/ReportDetailUnits"
-                android:text="s"
+                android:text=""
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"

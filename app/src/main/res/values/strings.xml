@@ -21,7 +21,9 @@
     <string name="menu_fragment_device_list_title">Search</string>
     <string name="menu_fragment_device_list_search_title">Search</string>
     <string name="fragment_summary_image_view_posture_content_description">TODO</string>
-    <string name="fragment_summary_text_view_posture_text">%1$.0fs OK\n%2$.0fs not OK</string>
+
+    <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s not OK</string>
+
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_image_view_distance_content_description">TODO</string>
     <string name="fragment_summary_image_view_steps_content_description">TODO</string>

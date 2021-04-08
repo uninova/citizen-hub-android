@@ -2,46 +2,15 @@ package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Typeface;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
-
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
-import care.data4life.fhir.r4.model.Attachment;
-import care.data4life.fhir.r4.model.CodeSystemDocumentReferenceStatus;
-import care.data4life.fhir.r4.model.CodeableConcept;
-import care.data4life.fhir.r4.model.Coding;
-import care.data4life.fhir.r4.model.DocumentReference;
-import care.data4life.fhir.r4.model.FhirDate;
-import care.data4life.fhir.r4.model.FhirDateTime;
-import care.data4life.fhir.r4.model.FhirInstant;
-import care.data4life.fhir.r4.model.FhirTime;
-import care.data4life.fhir.r4.model.Organization;
-import care.data4life.fhir.r4.model.Practitioner;
+import care.data4life.fhir.r4.model.*;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
@@ -58,6 +27,13 @@ import pt.uninova.s4h.citizenhub.report.CanvasWriter;
 import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.LocalDateInterval;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 public class ReportViewModel extends AndroidViewModel {
@@ -125,6 +101,22 @@ public class ReportViewModel extends AndroidViewModel {
         return concept;
     }
 
+    private String secondsToString(int value) {
+        int seconds = value;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
+    }
 
     public byte[] createPdf() throws IOException {
         PdfDocument document = new PdfDocument();
@@ -261,15 +253,13 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
 
             canvasWriter.addText("Posture OK: ", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
-            canvasWriter.addTextInFront(" s", darkTextPaint);
+            canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate.getSum().intValue()), boldTextPaint);
 
             y += 20;
 
             if (measurementAggregate1 != null) {
                 canvasWriter.addText("Posture not OK: ", x + 70, y, darkTextPaint);
-                canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate1.getSum()), boldTextPaint);
-                canvasWriter.addTextInFront(" s", darkTextPaint);
+                canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate1.getSum().intValue()), boldTextPaint);
                 y += 20;
             }
             y += 40;
