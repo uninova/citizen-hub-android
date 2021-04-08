@@ -33,7 +33,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
-    final private static String channelName = "HEART_RATE";
+    final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
 
     final String TAG = "WearOSHeartRateProtocol";
     private final WearOSConnection wearOSConnection;
@@ -50,7 +50,7 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
             public void onChange(double value, Date timestamp) {
 
                     getMeasurementDispatcher().dispatch(new Measurement(timestamp, MeasurementKind.HEART_RATE, value));
-                    Log.d(TAG, "dispatch " + timestamp + " and " + value);
+                    //Log.d(TAG, "dispatch " + timestamp + " and " + value);
                 }
 
         });

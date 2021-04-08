@@ -15,7 +15,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.steps");
-    final private static String channelName = "STEPS";
+    final private static MeasurementKind channelName = MeasurementKind.STEPS;
     private static final String TAG = "WearOSStepsProtocol";
     private final WearOSConnection wearOSConnection;
 
