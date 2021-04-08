@@ -150,7 +150,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -210,7 +210,7 @@ public class ReportDetailFragment extends Fragment {
                             okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
                         }
                         if (badPosture != null) {
-                            notOkPostureTotal.setText(String.format("%2$.0f", badPosture.getSum()));
+                            notOkPostureTotal.setText(String.format("%1.0f", badPosture.getSum()));
                         }
                     }
                 } else {
