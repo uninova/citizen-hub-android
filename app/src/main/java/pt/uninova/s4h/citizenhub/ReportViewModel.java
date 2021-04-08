@@ -248,7 +248,7 @@ public class ReportViewModel extends AndroidViewModel {
 
 
         MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
-
+        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.BAD_POSTURE);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -260,14 +260,16 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("Spent: " + measurementAggregate.getSum() + " sitting", x + 70, y, darkTextPaint);
-            y += 20;
-            canvasWriter.addText("Spent " + " seated with good posture", x + 70, y, darkTextPaint);
-            //TODO
+            canvasWriter.addText("OK: " + measurementAggregate.getSum() + " s", x + 70, y, darkTextPaint);
             y += 20;
 
+            if (measurementAggregate1 != null) {
+                canvasWriter.addText("Not OK: " + measurementAggregate1.getSum() + " s", x + 70, y, darkTextPaint);
+                y += 20;
+            }
             y += 40;
         }
+
         measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
 
         if (measurementAggregate != null) {
