@@ -32,8 +32,8 @@ public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
-    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup;
+    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
     private boolean isSucess;
 
     @Override
@@ -150,7 +150,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -198,12 +198,25 @@ public class ReportDetailFragment extends Fragment {
                 heartRateAvg.setText(String.format("%.1f", heartRate.getAverage()));
                 heartRateMax.setText(String.valueOf(heartRate.getMax()));
                 heartRateMin.setText(String.valueOf(heartRate.getMin()));
-            } else {
-                if (heartRateGroup != null) {
-                    heartRateGroup.setVisibility(View.GONE);
+            } else if (heartRateGroup != null) {
+                heartRateGroup.setVisibility(View.GONE);
+            }
+
+
+                if (badPosture != null || goodPosture != null) {
+                    if (postureGroup != null) {
+                        postureGroup.setVisibility(View.VISIBLE);
+                    }
+                    if (goodPosture != null) {
+                        okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
+                    }
+                    if (badPosture != null) {
+                        notOkPostureTotal.setText(String.format("%1.0f", badPosture.getSum()));
+                    }
+                } else {
+                    postureGroup.setVisibility(View.GONE);
                 }
 
-            }
 
         });
     }
@@ -222,6 +235,9 @@ public class ReportDetailFragment extends Fragment {
         distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
+        okPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_ok);
+        notOkPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_not_ok);
+        postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
