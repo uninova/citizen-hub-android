@@ -134,7 +134,7 @@ public class DeviceListFragment extends Fragment {
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
         for (Device device : devices) {
-            deviceList.add(new DeviceListItem(device, R.drawable.ic_devices, R.drawable.ic_settings));
+            deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_connected, R.drawable.ic_settings_off));
         }
         buildRecycleView(resultView);
     }
