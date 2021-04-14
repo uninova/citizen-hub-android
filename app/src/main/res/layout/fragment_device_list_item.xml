@@ -6,7 +6,8 @@
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="15dp"
+    app:cardPreventCornerOverlap="true"
     app:cardBackgroundColor="@color/white">
 
 
@@ -14,9 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:layout_margin="4dp"
         android:focusable="true"
-        android:background="@drawable/item_background"
+        android:background="@drawable/device_item_outline_medium_dark"
         android:foreground="?android:attr/selectableItemBackground"
         >
 
