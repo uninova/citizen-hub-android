@@ -48,10 +48,11 @@ public class AgentOrchestrator {
         deviceAgentMap = new HashMap<>();
 
 
+        /*
         PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
         placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
         placeboAllProtocol.enable();
-
+        */
 
         deviceRepository.getAll().observe(service, devices -> {
             final Set<Device> found = new HashSet<>(devices.size());
