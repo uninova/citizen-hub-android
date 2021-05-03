@@ -26,6 +26,7 @@ public class MeasurementRepository {
     }
 
     public void add(Measurement measurement) {
+        System.out.println(">>> " + measurement.getKind() + " : " + measurement.getValue());
         CitizenHubDatabase.executorService().execute(() -> {
             measurementDao.insert(measurement);
         });

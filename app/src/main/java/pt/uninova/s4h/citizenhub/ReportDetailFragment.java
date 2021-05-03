@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +33,6 @@ public class ReportDetailFragment extends Fragment {
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
     private boolean isSucess;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
@@ -43,7 +43,8 @@ public class ReportDetailFragment extends Fragment {
         viewPdfButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://app-staging.smart4health.eu";
+                String url = "https://app.smart4health.eu";
+                //String url = "https://app-staging.smart4health.eu";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
