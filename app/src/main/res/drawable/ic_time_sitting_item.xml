@@ -8,8 +8,8 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_time_sitting"
         android:bottom="16dp"
+        android:drawable="@drawable/ic_time_sitting"
         android:gravity="left"
         android:left="16dp"
         android:right="16dp"

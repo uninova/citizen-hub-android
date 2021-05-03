@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="@string/fragment_logout_imageView_s4h_contentDescription"
+        android:contentDescription="@string/content_description_fragment_logout_imageView_s4h"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_s4h_logo"
+        app:srcCompat="@drawable/img_s4h_logo_png"
         android:scaleType="fitCenter"
         android:layout_marginTop="128dp" />
 

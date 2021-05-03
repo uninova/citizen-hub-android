@@ -11,14 +11,14 @@
         android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:contentDescription="@string/content_descrition_citizen_hub_logo_without_text"
+        android:contentDescription="@string/content_description_citizen_hub_logo_without_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.110000014"
-        app:srcCompat="@drawable/citizen_hub_logo" />
+        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -84,7 +84,7 @@
         app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/seleted" />
+        app:srcCompat="@drawable/shape_seleted_oval" />
 
     <ImageView
         android:id="@+id/ind2"
@@ -99,7 +99,7 @@
         app:layout_constraintStart_toEndOf="@+id/ind1"
         app:layout_constraintTop_toTopOf="@+id/ind1"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/seleted" />
+        app:srcCompat="@drawable/shape_seleted_oval" />
 
     <ImageView
         android:id="@+id/ind3"
@@ -112,7 +112,7 @@
         app:layout_constraintStart_toEndOf="@+id/ind2"
         app:layout_constraintTop_toTopOf="@+id/ind2"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/seleted" />
+        app:srcCompat="@drawable/shape_seleted_oval" />
 
     <ImageView
         android:id="@+id/back"
@@ -124,7 +124,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.655"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back_arrow" />
 
     <ImageView
         android:id="@+id/next"
@@ -136,7 +136,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.655"
-        app:srcCompat="@drawable/ic_next" />
+        app:srcCompat="@drawable/ic_next_arrow" />
 
     <TextView
         android:id="@+id/logo_text"

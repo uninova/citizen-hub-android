@@ -61,7 +61,7 @@
                 android:layout_gravity="bottom"
 
                 android:fontFamily="@font/primus_bold"
-                android:text="@string/authentication_fragment_text_powered_by"
+                android:text="@string/fragment_authentication_text_powered_by"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="4.3pt"
                 android:translationX="20dp"
@@ -81,14 +81,14 @@
                     android:layout_weight="0.99"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
-                    android:src="@drawable/img_s4h_logo" />
+                    android:src="@drawable/img_s4h_logo_png" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_weight="1"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_side_logo" />
+                    android:src="@drawable/ic_citizen_hub_logo_side" />
 
 
             </LinearLayout>

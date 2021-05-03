@@ -16,7 +16,7 @@
         android:padding="8dp"
         android:layout_margin="4dp"
         android:focusable="true"
-        android:background="@drawable/item_background"
+        android:background="@drawable/button_background_white_7dp"
         android:foreground="?android:attr/selectableItemBackground"
         >
 
