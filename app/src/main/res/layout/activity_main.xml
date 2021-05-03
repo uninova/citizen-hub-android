@@ -81,6 +81,7 @@
                     android:layout_weight="0.99"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
+                    android:contentDescription="@string/content_description_activity_main_img_s4h_logo"
                     android:src="@drawable/img_s4h_logo_png" />
 
                 <ImageView
@@ -88,6 +89,7 @@
                     android:layout_height="250dp"
                     android:layout_weight="1"
                     android:scaleType="fitEnd"
+                    android:contentDescription="@string/content_description_activity_main_side_logo"
                     android:src="@drawable/ic_citizen_hub_logo_side" />
 
 

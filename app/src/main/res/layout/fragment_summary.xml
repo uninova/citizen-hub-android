@@ -66,7 +66,7 @@
             android:background="@drawable/button_rounded_top_darkblue_14dp"
             android:text="    Steps Taken"
             android:textColor="@color/colorS4HWhite"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_steps"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +122,7 @@
             android:background="@drawable/button_rounded_top_darkblue_14dp"
             android:text="    Kilocalories Burned"
             android:textColor="@color/colorS4HWhite"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_calories"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +152,7 @@
                 android:layout_marginStart="10dp"
                 android:adjustViewBounds="true"
                 android:scaleType="center"
+                android:contentDescription="@string/content_description_fragment_summary_ic_heartbeat"
                 app:srcCompat="@drawable/ic_heartbeat" />
 
             <TextView
@@ -174,7 +175,7 @@
             android:background="@drawable/button_rounded_top_darkblue_14dp"
             android:text="    Distance Walked"
             android:textColor="@color/colorS4HWhite"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_distance"
             app:layout_constraintEnd_toEndOf="parent"
@@ -207,6 +208,7 @@
                 android:layout_marginRight="40dp"
                 android:adjustViewBounds="true"
                 android:scaleType="center"
+                android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
                 app:srcCompat="@drawable/ic_calories" />
 
             <TextView
@@ -227,7 +229,7 @@
             android:background="@drawable/button_rounded_top_darkblue_14dp"
             android:text="    Average Heart Rate"
             android:textColor="@color/colorS4HWhite"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_heart_rate"
             app:layout_constraintEnd_toEndOf="parent"
@@ -245,7 +247,7 @@
             android:background="@drawable/button_rounded_top_darkblue_14dp"
             android:text="    Posture"
             android:textColor="@color/colorS4HWhite"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_posture"
             app:layout_constraintEnd_toEndOf="parent"

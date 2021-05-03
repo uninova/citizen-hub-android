@@ -104,4 +104,11 @@
     <string name="slide_screen_skip">continue</string>
     <string name="slide_screen_text_placeholder">placeholder for each layout</string>
     <string name="slide_screen_welcome_text">Welcome</string>
+    <string name="content_description_activity_main_img_s4h_logo">TODO</string>
+    <string name="content_description_fragment_device_list_item_image_device">TODO</string>
+    <string name="content_description_fragment_report_master_logo">TODO</string>
+    <string name="content_description_fragment_summary_ic_heartbeat">TODO</string>
+    <string name="content_description_activity_main_side_logo">TODO</string>
+    <string name="content_description_fragment_device_list_item_img_settings">TODO</string>
+    <string name="content_description_fragment_summary_img_caloriess">TODO</string>
 </resources>
