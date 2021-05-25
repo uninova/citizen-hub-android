@@ -94,4 +94,10 @@ public class AgentOrchestrator {
             }
         }
     }
+
+    public void close() {
+        for (Device i : deviceAgentMap.keySet()) {
+            deviceAgentMap.get(i).disable();
+        }
+    }
 }
