@@ -1,15 +1,16 @@
 buildscript {
     ext {
-        desugar_version = '1.0.10'
+        desugar_version = '1.1.1'
 
         appcompat_version = '1.2.0'
-        constraintlayout_version = '2.0.1'
-        lifecycle_version = '2.2.0'
-        navigation_version = '2.3.0'
+        constraintlayout_version = '2.0.4'
+        lifecycle_version = '2.3.0'
+        navigation_version = '2.3.3'
         recyclerview_version = '1.1.0'
-        room_version = '2.2.5'
+        room_version = '2.2.6'
 
-        d4lsdk_version = '1.7.3'
+        d4lsdk_version = '1.9.0'
+        d4lhelpersdk_version = '1.4.1'
         materialcalendarview_version = '2.0.1'
     }
 
@@ -20,7 +21,7 @@ buildscript {
 
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.1.2'
     }
 }
 
@@ -32,22 +33,22 @@ allprojects {
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-util-sdk-kmp")
             credentials {
-                username = project.findProperty("github.username") as String
-                password = project.findProperty("github.token") as String
+                username = project.findProperty("github.username")
+                password = project.findProperty("github.token")
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-fhir-sdk-java")
             credentials {
-                username = project.findProperty("github.username") as String
-                password = project.findProperty("github.token") as String
+                username = project.findProperty("github.username")
+                password = project.findProperty("github.token")
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-fhir-helper-sdk-kmp")
             credentials {
-                username = project.findProperty("github.username") as String
-                password = project.findProperty("github.token") as String
+                username = project.findProperty("github.username")
+                password = project.findProperty("github.token")
             }
         }
     }
@@ -58,5 +59,5 @@ task clean(type: Delete) {
 }
 
 tasks.named("wrapper") {
-    gradleVersion = "6.5.1"
+    gradleVersion = "6.8.2"
 }

@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/nav_host_fragment"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_height="match_parent"
@@ -30,20 +30,73 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:defaultNavHost="true"
-                    app:navGraph="@navigation/graph"/>
+                    app:navGraph="@navigation/graph"
+                    app:defaultNavHost="true"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:itemTextAppearance="@style/LatoRegularForDrawerTextViewStyle"
-            app:menu="@menu/drawer"/>
+            android:background="@color/colorS4HGreyLight"
+            app:itemTextAppearance="@style/MenuItem"
+        app:itemIconTint="@color/colorS4HDarkBlue"
+        app:menu="@menu/drawer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+
+                android:fontFamily="@font/primus_bold"
+                android:text="@string/authentication_fragment_text_powered_by"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:textSize="4.3pt"
+                android:translationX="20dp"
+                android:translationY="210dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="40dp"
+                    android:layout_weight="0.99"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:src="@drawable/img_s4h_logo" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_side_logo" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

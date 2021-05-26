@@ -31,6 +31,8 @@ public class KbzPostureAgent extends BluetoothAgent {
             getProtocol(i).disable();
         }
 
+        getConnection().close();
+
         setState(AgentState.DISABLED);
     }
 

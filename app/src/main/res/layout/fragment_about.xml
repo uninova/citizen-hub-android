@@ -1,66 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
-    <TextView
-        android:id="@+id/text_about_1paragraph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Developed by UNINOVA, under the H2020 Smart4Health project"
-        android:textAlignment="center"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/image_about_citizenhub_logo"
+        android:layout_width="207dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@+id/text_ab"
+        android:src="@drawable/ic_logo_citizen_hub_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.263" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/about_privacy_policy_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="99dp"
+        android:layout_marginBottom="257dp"
+        android:text="@string/fragment_about_button_text_privacy_policy_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/about_licenses_button"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
 
     <TextView
-        android:id="@+id/text_about_2paragraph"
-        android:layout_width="match_parent"
+        android:id="@+id/text_about_contact"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="https://www.smart4health.eu/"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/primus"
+        android:text="@string/about_contact_email"
         android:textAlignment="center"
         android:textColorLink="@color/colorS4HLightBlue"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="5.5pt"
+        app:layout_constraintBottom_toTopOf="@+id/text_about_ce_info"
+        app:layout_constraintEnd_toEndOf="@+id/about_open_sources_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/about_open_sources_button" />
+
+    <Button
+        android:id="@+id/about_licenses_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="4dp"
+        android:text="@string/fragment_about_button_text_licenses_of_use"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph"
-        app:layout_constraintVertical_bias="0.143" />
+        app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
+
+    <Button
+        android:id="@+id/about_open_sources_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_marginTop="4dp"
+        android:text="@string/fragment_open_source_licenses_text_view_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
+
+    <ImageView
+        android:id="@+id/img_ec_logo"
+        android:layout_width="90dp"
+        android:layout_height="47dp"
+
+        android:contentDescription="@string/fragment_about_image_view__kbz_logo"
+        android:src="@drawable/img_ec_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/text_about_ce_info"
+        app:layout_constraintEnd_toStartOf="@+id/text_about_ce_info"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_about_ce_info" />
 
     <TextView
-        android:id="@+id/text_about_3paragraph"
-        android:layout_width="match_parent"
+        android:id="@+id/text_about_ce_info"
+        style="@style/AppTheme.Summary.Item.TextView"
+        android:layout_width="289dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="The project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 826117"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/neosanspro"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/fragment_about_european_commission_info"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="20sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_ec_logo" />
+
+    <TextView
+        android:id="@+id/text_about_1paragraph"
+        style="@style/AppTheme.Summary.Item.TextView"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/neosanspro"
+        android:text="@string/about_developedBy"
+        android:textAlignment="center"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="9pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_2paragraph"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintTop_toBottomOf="@+id/text_about_versioning" />
+
+    <ImageView
+        android:id="@+id/img_logo_kbz"
+        android:layout_width="151dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="6dp"
+        android:contentDescription="@string/fragment_about_image_view_logo_kbz"
+        android:src="@drawable/img_kbz_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/img_logo_uninova"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_logo_uninova"
+        app:layout_constraintTop_toTopOf="@+id/img_logo_uninova" />
+
+    <ImageView
+        android:id="@+id/img_logo_uninova"
+        android:layout_width="148dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
+        android:src="@drawable/img_uninova_logo"
+        app:layout_constraintEnd_toStartOf="@+id/img_logo_kbz"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
+
+    <TextView
+        android:id="@+id/text_about_versioning"
+        style="@style/AppTheme.Summary.Item.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/neosanspro"
+        android:text="@string/fragment_about_text_view_versioning"
+        android:textAlignment="center"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="5.5pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_about_citizenhub_logo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

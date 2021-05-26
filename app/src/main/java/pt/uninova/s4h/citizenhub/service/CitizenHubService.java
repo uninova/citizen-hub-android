@@ -4,28 +4,48 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
-public class CitizenHubService extends LifecycleService {
+public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
 
+    boolean mBound = false;
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
     private AgentOrchestrator agentOrchestrator;
     private NotificationManager notificationManager;
+    private WearOSMessageService wearOSMessageService;
+    private WearOSServiceBinder wearOSServiceBinder;
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            WearOSServiceBinder binder = (WearOSServiceBinder) service;
+            wearOSMessageService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
 
     public CitizenHubService() {
         super();
@@ -50,6 +70,11 @@ public class CitizenHubService extends LifecycleService {
         return agentOrchestrator;
     }
 
+    public WearOSMessageService getWearOSMessageService(){
+
+        return wearOSMessageService;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         super.onBind(intent);
@@ -61,17 +86,24 @@ public class CitizenHubService extends LifecycleService {
     public void onCreate() {
         super.onCreate();
 
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannel();
 
         startForeground(1, buildNotification());
+        wearOSMessageService = new WearOSMessageService();
 
+        System.out.println("ONCREATEONCREATEONCREATEONCREATE");
         agentOrchestrator = new AgentOrchestrator(this);
+
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
     }
 
+
     @Override
     public void onDestroy() {
+        agentOrchestrator.close();
+
         super.onDestroy();
     }
 
@@ -82,4 +114,8 @@ public class CitizenHubService extends LifecycleService {
         return START_STICKY;
     }
 
+    @Override
+    public WearOSMessageService getService() {
+        return wearOSMessageService;
+    }
 }

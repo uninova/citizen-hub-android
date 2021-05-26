@@ -1,15 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.s4h.citizenhub.persistence.*;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
-import pt.uninova.util.messaging.Observer;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class AgentOrchestrator {
 
+    private static final String TAG = "AgentOrchestrator";
     private static UUIDv5 NAMESPACE_GENERATOR;
 
     static {
@@ -38,15 +41,25 @@ public class AgentOrchestrator {
 
         deviceAgentMap = new HashMap<>();
 
+
+        /*
+        PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
+        placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
+        placeboAllProtocol.enable();
+        */
+
         deviceRepository.getAll().observe(service, devices -> {
             final Set<Device> found = new HashSet<>(devices.size());
-
+            System.out.println("=== Change in device list ===");
             for (Device i : devices) {
+                System.out.println("== " + i.getName() + ":" + i.getAddress() + " ==");
                 found.add(i);
 
                 if (!deviceAgentMap.containsKey(i)) {
+                    System.out.println("= First time found =");
                     agentFactory.create(i, agent -> {
                         for (UUID j : agent.getPublicProtocolIds()) {
+
                             MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
 
                             p.getMeasurementObservers().add(measurementRepository::add);
@@ -59,6 +72,7 @@ public class AgentOrchestrator {
                 }
             }
 
+            System.out.println("=== Done ===");
             trimAgents(found);
         });
     }
@@ -78,6 +92,12 @@ public class AgentOrchestrator {
 
                 deviceAgentMap.remove(i);
             }
+        }
+    }
+
+    public void close() {
+        for (Device i : deviceAgentMap.keySet()) {
+            deviceAgentMap.get(i).disable();
         }
     }
 }

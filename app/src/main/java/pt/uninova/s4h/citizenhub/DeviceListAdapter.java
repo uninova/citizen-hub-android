@@ -29,7 +29,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @NonNull
     @Override
     public DeviceListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_device_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_device_list_item,parent,false);
         DeviceListViewHolder hol = new DeviceListViewHolder(v, listener);
         return hol;
     }
@@ -37,10 +37,10 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @Override
     public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position) {
         DeviceListItem currentItem = devicesList.get(position);
-        holder.textTitle.setText(currentItem.getmTextTitle());
-        holder.textDescription.setText(currentItem.getmTextDescription());
-        holder.image.setImageResource(currentItem.getmImageResource());
-        holder.imageSettings.setImageResource(currentItem.getmImageSettings());
+        holder.textTitle.setText(currentItem.getName());
+        holder.textDescription.setText(currentItem.getAddress());
+        holder.image.setImageResource(currentItem.getImageResource());
+        holder.imageSettings.setImageResource(currentItem.getImageSettings());
     }
 
     @Override

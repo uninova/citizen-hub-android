@@ -15,20 +15,20 @@
     <group
             android:id="@+id/group_configuration">
         <item
-                android:id="@+id/user_fragment"
-                android:icon="@drawable/ic_user_fragment"
-                android:title="@string/fragment_user_label"/>
-        <item
                 android:id="@+id/device_list_fragment"
-                android:icon="@drawable/ic_device_list_fragment"
-                android:title="@string/fragment_device_list_label"/>
+            android:icon="@drawable/ic_devices"
+            android:title="@string/fragment_device_list_label"/>
     </group>
 
     <group
             android:id="@+id/group_system">
         <item
+                android:id="@+id/logout_fragment"
+                android:icon="@drawable/ic_logout_24px"
+                android:title="@string/fragment_logout_label"/>
+        <item
                 android:id="@+id/about_fragment"
-                android:icon="@drawable/ic_about_fragment"
-                android:title="@string/fragment_about_label"/>
+            android:icon="@drawable/ic_about"
+            android:title="@string/fragment_about_label"/>
     </group>
 </menu>
