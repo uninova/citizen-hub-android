@@ -11,7 +11,7 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 2
+        versionCode 3
         versionName "0.2.1"
 
         buildConfigField "boolean", "DEVELOPER_MODE_NO_AUTHENTICATION", "false"
