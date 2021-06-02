@@ -13,32 +13,5 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         layout="@layout/styled_name" />
-    <TextView
-            android:id="@+id/textView_smarty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_slab"
-            android:paddingTop="27dp"
-            android:text="@string/app_name"
-            android:textColor="@color/colorS4HDarkBlue"
-            android:textSize="40sp"/>
-
-    <TextView
-            android:id="@+id/textView_smarty2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/layout_nav_header_main_poweredby"
-            android:textColor="@color/colorS4HDarkBlue"
-            android:textSize="16sp"/>
-
-    <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:cropToPadding="false"
-            app:srcCompat="@drawable/img_s4h_logo"
-            android:contentDescription="@string/layout_nav_header_main_logo_content_description"/>
 
 </LinearLayout>

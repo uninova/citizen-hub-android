@@ -1,13 +1,10 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -33,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
@@ -49,27 +44,38 @@ public class DeviceListFragment extends Fragment {
     public static Device deviceForSettings;
     private Button searchDevices;
     TextView noDevices;
-    private List<DeviceListItem> deviceList;
 
     private DeviceViewModel model;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        this.deviceList = new LinkedList<>();
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.fragment_device_list, menu);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+        }
+    };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (Application) requireActivity().getApplication();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_device_list, container, false);
+        final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
+        resultView = result;
 
         searchDevices = result.findViewById(R.id.searchButton);
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
@@ -77,7 +83,8 @@ public class DeviceListFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
 
-        buildRecycleView(view);
+        cleanList();
+        buildRecycleView(result);
 
         setHasOptionsMenu(false); //shows Action Bar menu button
 
@@ -88,11 +95,17 @@ public class DeviceListFragment extends Fragment {
             }
         });
 
-        return view;
+        return result;
     }
 
-    private void showConnectedDialog (View result) {
-        final Dialog dialog = new Dialog (getContext());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+    }
+
+    private void showConnectedDialog(View result) {
+        final Dialog dialog = new Dialog(getContext());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -119,6 +132,7 @@ public class DeviceListFragment extends Fragment {
                 }
                 else if (wearOSButton.isChecked()) {
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment());
+
                     dialog.dismiss();
                 }
                 else {
@@ -131,20 +145,22 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void onDeviceUpdate(List<Device> devices) {
-        deviceList.clear();
-
+        cleanList();
         for (Device device : devices) {
             deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
         }
-
-        buildRecycleView(requireView());
+        buildRecycleView(resultView);
     }
 
-    private void buildRecycleView(View view) {
-        RecyclerView recyclerView =  view.findViewById(R.id.recyclerView_devicesList);
+    private void cleanList() {
+        deviceList = new ArrayList<>();
+    }
+
+    private void buildRecycleView(View result) {
+        recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        DeviceListAdapter adapter = new DeviceListAdapter(deviceList);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new DeviceListAdapter(deviceList);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -153,8 +169,7 @@ public class DeviceListFragment extends Fragment {
 
         if (deviceList.isEmpty()) {
             noDevices.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             noDevices.setVisibility(View.INVISIBLE);
         }
 
@@ -167,21 +182,12 @@ public class DeviceListFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceUpdateConfigurationFragment());
+                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
+                deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);
             }
         });
     }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -195,10 +201,8 @@ public class DeviceListFragment extends Fragment {
                             Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
                     .show();
         }*/
-        if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
-        }
-
         return super.onOptionsItemSelected(item);
     }
+
+
 }

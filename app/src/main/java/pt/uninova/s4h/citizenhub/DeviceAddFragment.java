@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
@@ -31,7 +31,7 @@ public class DeviceAddFragment extends Fragment {
 
         addDevice.setOnClickListener(view -> {
             model.apply();
-            Navigation.findNavController(getView()).navigate(DeviceAddFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
+            //Navigation.findNavController(requireView()).navigate(DeviceAddFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
         });
 
         TextView detailText = result.findViewById(R.id.text_add_fragment);
