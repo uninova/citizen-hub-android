@@ -12,7 +12,6 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -22,25 +21,22 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceSearchFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_CODE = 77;
     private static final int FEATURE_BLUETOOTH_STATE = 78;
-
+    LayoutInflater localInflater;
+    ViewGroup localContainer;
     private DeviceListAdapter adapter;
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    public static Device deviceForSettings;
     private BluetoothScanner scanner;
-    LayoutInflater localInflater;
-    ViewGroup localContainer;
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
     private boolean hasStartedEnableLocationActivity = false;
@@ -208,8 +204,8 @@ public class DeviceSearchFragment extends Fragment {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result) {
-        RecyclerView recyclerView = result.findViewById(R.id.recyclerView_searchList);
+    private void buildRecycleView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
@@ -223,10 +219,7 @@ public class DeviceSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
-
-                DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
             }
 
             @Override

@@ -5,57 +5,43 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="@color/white">
-
-
+    android:layout_marginTop="8dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
         android:layout_margin="4dp"
         android:focusable="true"
-        android:background="@drawable/item_background"
-        android:foreground="?android:attr/selectableItemBackground"
-        >
-
-        <ImageView
-            android:id="@+id/image_view_settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/layout_activity_example_device_item_content_description_settings"
-            android:padding="2dp"
-            app:srcCompat="@drawable/ic_settings" />
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/layout_activity_example_device_item_title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:maxLines="1"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/image_device"
             android:ellipsize="end"
-            android:paddingStart="10dp"/>
+            android:fontFamily="@font/roboto_slab"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:text="@string/layout_activity_example_devicesearch_item_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-         <TextView
+        <TextView
             android:id="@+id/text_view_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_title"
-             android:layout_toEndOf="@id/image_device"
-            android:text="@string/layout_activity_example_device_item_title"
-             android:paddingStart="10dp"
-             />
+            android:layout_toEndOf="@id/image_device"
+            android:fontFamily="@font/roboto_slab"
+            android:paddingStart="10dp"
+            android:text="@string/layout_activity_example_devicesearch_item_description" />
 
         <ImageView
             android:id="@+id/image_device"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:contentDescription="@string/layout_activity_example_device_item_content_description_device"
+            android:contentDescription="@string/layout_activity_example_devicesearch_item_content_description_device"
             android:padding="2dp"
             app:srcCompat="@drawable/ic_watch" />
 
