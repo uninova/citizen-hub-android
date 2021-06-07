@@ -182,9 +182,10 @@ public class DeviceListFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
+                model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceDetailFragment());
-                deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);
+                /*deviceForSettings = new Device(deviceList.get(position).getName(),
+                        deviceList.get(position).getAddress(), null, null);*/
             }
         });
     }

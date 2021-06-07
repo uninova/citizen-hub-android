@@ -12,10 +12,7 @@ Gradle must be able to find the properties `github.username` and `github.token` 
 
 For instance, the following could be added to `~/.gradle/gradle.properties`:
 
-```
-github.username=<username>
-github.token=<token>
-```
+
 
 #### Data4Life SDK Endpoint Configuration
 

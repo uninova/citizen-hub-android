@@ -42,10 +42,8 @@
 
         <action
             android:id="@+id/action_device_list_fragment_to_device_detail_fragment"
-            app:destination="@+id/device_detail_fragment" />
-        <action
-            android:id="@+id/action_device_list_fragment_to_device_update_configuration_fragment"
             app:destination="@+id/device_configuration_update_fragment" />
+
         <action
             android:id="@+id/action_device_list_fragment_to_device_search_wearos_fragment"
             app:destination="@+id/device_search_wearos_fragment" />
@@ -76,12 +74,12 @@
         tools:layout="@layout/fragment_device_search">
 
         <action
-            android:id="@+id/action_device_search_wearos_fragment_to_device_add_fragment"
-            app:destination="@+id/device_add_fragment"/>
-        <action
             android:id="@+id/action_device_search_wearos_fragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
             app:popUpTo="@+id/device_list_fragment"/>
+        <action
+            android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
+            app:destination="@+id/device_configuration_add_fragment"/>
 
     </fragment>
 
@@ -97,7 +95,7 @@
             android:id="@+id/device_configuration_add_fragment"
             android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
             android:label="Device Configuration"
-            tools:layout="@layout/fragment_about">
+            tools:layout="@layout/fragment_device_configuration_add">
 
         <action
                 android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"

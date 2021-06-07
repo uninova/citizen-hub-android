@@ -156,7 +156,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchWearosFragmentToDeviceAddFragment());
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
 
                 DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
                         deviceList.get(position).getAddress(), null, null);
