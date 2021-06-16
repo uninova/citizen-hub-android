@@ -28,9 +28,6 @@ public interface FeatureDao {
     @Query("SELECT * FROM feature WHERE device_address =:address")
     List<Feature> getAll(String address);
 
-    @Query("SELECT * FROM feature WHERE uuid =:feature_uuid")
-    Feature get(String feature_uuid);
-
     @Query("SELECT * FROM feature")
     LiveData<List<Feature>> getAllLive();
 

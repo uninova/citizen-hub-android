@@ -24,14 +24,6 @@ public class FeatureRepository {
         return featureDao.getAll(address);
     }
 
-    public List<Feature> getAllSpecific(String feature_address) {
-        return featureDao.getAll(feature_address);
-    }
-
-    public Feature get(String uuid) {
-        return featureDao.get(uuid);
-    }
-
     public LiveData<List<Feature>> getAllLive() {
         return featureDao.getAllLive();
     }
