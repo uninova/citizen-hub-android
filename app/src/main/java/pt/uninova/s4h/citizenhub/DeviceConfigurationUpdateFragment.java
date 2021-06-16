@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import java.util.Objects;
+
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
         deleteDevice = view.findViewById(R.id.buttonDelete);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
 
@@ -22,11 +25,12 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
         setupText();
 
-        testingFillFeatures();
+//        testingFillFeatures();
 
-        setupFeatures();
-
+        setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
         updateDevice.setOnClickListener(v -> {
+            setFeaturesState(model.getSelectedAgent());
+
             //TODO: Update Device Data
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });

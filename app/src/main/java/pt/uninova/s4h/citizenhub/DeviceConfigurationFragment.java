@@ -1,23 +1,21 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.Application;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class DeviceConfigurationFragment extends Fragment {
 
@@ -27,8 +25,6 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView nameDevice;
     protected TextView addressDevice;
     protected ListView listViewFeatures;
-
-    protected Set<MeasurementKind> featuresDevice;
     protected List<FeatureListItem> featuresList;
 
     protected void setupViews(View result) {
@@ -45,24 +41,37 @@ public class DeviceConfigurationFragment extends Fragment {
         addressDevice.setText(getString(R.string.fragment_configuration_text_view_address, device.getAddress()));
     }
 
-    protected void setupFeatures() {
+    protected void setupFeatures(Agent agent) {
+
         featuresList = new ArrayList<>();
 
-        for (MeasurementKind feature : featuresDevice) {
+        for (MeasurementKind feature : agent.getSupportedMeasurements()) {
             if (MeasurementKind.find(feature.getId()) != null) {
                 featuresList.add(new FeatureListItem(feature));
             }
         }
 
-        listViewFeatures.setAdapter(new FeatureListAdapter(getContext(), featuresList));
+        listViewFeatures.setAdapter(new FeatureListAdapter(requireContext(), featuresList));
     }
 
-    protected void testingFillFeatures() //TODO this is only for testing
-    {
-        featuresDevice = new HashSet<>();
-        featuresDevice.add(MeasurementKind.STEPS);
-        featuresDevice.add(MeasurementKind.HEART_RATE);
+
+    //
+    protected void setFeaturesState(Agent agent) {
+        for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
+            if (listViewFeatures.getAdapter().isEnabled(i)) {
+                agent.enableMeasurement(featuresList.get(i).getMeasurementKind());
+            } else {
+                agent.disableMeasurement(featuresList.get(i).getMeasurementKind());
+            }
+        }
     }
+
+//    protected void testingFillFeatures() //TODO this is only for testing
+//    {
+//        featuresDevice = new HashSet<>();
+//        featuresDevice.add(MeasurementKind.STEPS);
+//        featuresDevice.add(MeasurementKind.HEART_RATE);
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
