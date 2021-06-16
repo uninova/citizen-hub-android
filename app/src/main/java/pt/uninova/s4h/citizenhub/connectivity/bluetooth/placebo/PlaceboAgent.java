@@ -1,15 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.placebo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class PlaceboAgent extends BluetoothAgent {
 
@@ -35,5 +38,38 @@ public class PlaceboAgent extends BluetoothAgent {
     @Override
     public void enable() {
 
+    }
+
+    @Override
+    public List<MeasurementKind> getSupportedMeasurements() {
+
+        List<MeasurementKind> measurementKindList = new ArrayList<>();
+        measurementKindList.add(MeasurementKind.HEART_RATE);
+        measurementKindList.add(MeasurementKind.DISTANCE);
+        measurementKindList.add(MeasurementKind.ACTIVITY);
+        measurementKindList.add(MeasurementKind.STEPS);
+        measurementKindList.add(MeasurementKind.STEPS_PER_MINUTE);
+        measurementKindList.add(MeasurementKind.CALORIES);
+
+        return measurementKindList;
+    }
+
+    @Override
+    public void enableMeasurement(MeasurementKind measurementKind) {
+
+        switch (measurementKind) {
+            case HEART_RATE:
+                getProtocol(MiBand2HeartRateProtocol.ID).enable();
+                break;
+            case ACTIVITY:
+            case STEPS:
+            case STEPS_PER_MINUTE:
+            case DISTANCE:
+            case CADENCE:
+            case CALORIES:
+                getProtocol(MiBand2DistanceProtocol.ID).enable();
+            default:
+                break;
+        }
     }
 }

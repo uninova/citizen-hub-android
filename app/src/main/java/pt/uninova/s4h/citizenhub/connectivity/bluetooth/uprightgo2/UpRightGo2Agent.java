@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,6 +13,7 @@ import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
 public class UpRightGo2Agent extends BluetoothAgent {
@@ -55,5 +58,28 @@ public class UpRightGo2Agent extends BluetoothAgent {
         });
 
         protocol.enable();
+    }
+
+    @Override
+    public List<MeasurementKind> getSupportedMeasurements() {
+        List<MeasurementKind> measurementKindList = new ArrayList<>();
+        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
+        measurementKindList.add(MeasurementKind.BAD_POSTURE);
+
+        return measurementKindList;
+    }
+
+    @Override
+    public void enableMeasurement(MeasurementKind measurementKind) {
+        switch (measurementKind) {
+            case GOOD_POSTURE:
+            case BAD_POSTURE:
+
+                getProtocol(UpRightGo2Agent.ID).enable();
+            case UNKNOWN:
+                break;
+            default:
+                break;
+        }
     }
 }
