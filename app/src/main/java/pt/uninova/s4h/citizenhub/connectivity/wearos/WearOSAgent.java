@@ -1,26 +1,16 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.Wearable;
-
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 
 public class WearOSAgent extends AbstractAgent {
@@ -56,6 +46,42 @@ public class WearOSAgent extends AbstractAgent {
         getProtocol(WearOSHeartRateProtocol.ID).enable();
         getProtocol(WearOSStepsProtocol.ID).enable();
 
+    }
+
+    @Override
+    public List<MeasurementKind> getSupportedMeasurements() {
+        List<MeasurementKind> measurementKindList = new ArrayList<>();
+        measurementKindList.add(MeasurementKind.HEART_RATE);
+        measurementKindList.add(MeasurementKind.STEPS);
+        measurementKindList.add(MeasurementKind.STEPS_PER_MINUTE);
+
+        return measurementKindList;
+    }
+
+    @Override
+    public void enableMeasurement(MeasurementKind measurementKind) {
+
+        switch (measurementKind) {
+            case HEART_RATE:
+                setState(AgentState.ENABLED);
+                getProtocol(WearOSHeartRateProtocol.ID).enable();
+                break;
+            case ACTIVITY:
+            case STEPS:
+            case STEPS_PER_MINUTE:
+            case DISTANCE:
+                setState(AgentState.ENABLED);
+                getProtocol(WearOSStepsProtocol.ID).enable();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+        //TODO
     }
 
 }

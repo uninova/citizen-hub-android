@@ -7,13 +7,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.Objects;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceViewModel extends AndroidViewModel {
-    private MutableLiveData<Device> device;
-    private LiveData<List<Device>> deviceList;
+    private final MutableLiveData<Device> device;
+    private final LiveData<List<Device>> deviceList;
     final private DeviceRepository deviceRepository;
 
     public DeviceViewModel(Application application) {
@@ -39,8 +43,22 @@ public class DeviceViewModel extends AndroidViewModel {
         return device;
     }
 
+    public Agent getSelectedAgent() {
+        Agent agent = ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
+        if (agent == null) throw new NullPointerException();
+        return agent;
+    }
+
     public void setDevice(Device device) {
         this.device.postValue(device);
+    }
+
+    public void getDeviceFeatures(Device device) {
+        ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device).getSupportedMeasurements();
+    }
+
+    public void enableDeviceFeature(MeasurementKind measurementKind) {
+        Objects.requireNonNull(((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue())).enableMeasurement(measurementKind);
     }
 
     public void apply() {
