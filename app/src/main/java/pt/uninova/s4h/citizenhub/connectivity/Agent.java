@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.util.messaging.Observer;
-
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Observer;
 
 public interface Agent {
 
@@ -21,6 +23,20 @@ public interface Agent {
 
     Set<Observer<StateChangedMessage<AgentState>>> getObservers();
 
+    List<MeasurementKind> getSupportedMeasurements();
+
+    void enableMeasurement(MeasurementKind measurementKind);
+
+    void disableMeasurement(MeasurementKind measurementKind);
+
     AgentState getState();
 
+    //List<BluetoothGattService> getDeviceFeatures();
+
+    //getStateObserver para o agente - desligar   completamente o agente
+    //observer de measurementkind  e getMeasurementKindObserver
+
+
+    // Set/List<MeasurementKind> getsupportedMeasurements(MeasurementKind)
+    //enable/remove
 }
