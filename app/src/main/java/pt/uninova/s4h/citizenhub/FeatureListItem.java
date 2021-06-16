@@ -3,7 +3,7 @@ package pt.uninova.s4h.citizenhub;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class FeatureListItem {
-    private MeasurementKind measurementKind;
+        private MeasurementKind measurementKind;
     private boolean active;
 
     public FeatureListItem(MeasurementKind measurementKind)
@@ -32,4 +32,10 @@ public class FeatureListItem {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public void enable() {
+        //Objects.requireNonNull(((CitizenHubServiceBound) application).getService().getAgentOrchestrator().getDeviceAgentMap().get(device)).enableMeasurement(getMeasurementKind());
+    }
+
+    //
 }

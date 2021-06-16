@@ -1,14 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 public class AgentOrchestrator {
 
@@ -63,6 +67,7 @@ public class AgentOrchestrator {
                             MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
 
                             p.getMeasurementObservers().add(measurementRepository::add);
+                            //TODO filter the protocols we want to enable
                         }
 
                         agent.enable();
@@ -75,6 +80,10 @@ public class AgentOrchestrator {
             System.out.println("=== Done ===");
             trimAgents(found);
         });
+    }
+
+    public Map<Device, Agent> getDeviceAgentMap() {
+        return deviceAgentMap;
     }
 
     public static UUIDv5 namespaceGenerator() {
