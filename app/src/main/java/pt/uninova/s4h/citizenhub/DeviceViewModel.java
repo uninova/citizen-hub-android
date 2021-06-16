@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Activity;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -43,8 +44,8 @@ public class DeviceViewModel extends AndroidViewModel {
         return device;
     }
 
-    public Agent getSelectedAgent() {
-        Agent agent = ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
+    public Agent getSelectedAgent(Activity activity) {
+        Agent agent = ((CitizenHubServiceBound) activity).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
         if (agent == null) throw new NullPointerException();
         return agent;
     }

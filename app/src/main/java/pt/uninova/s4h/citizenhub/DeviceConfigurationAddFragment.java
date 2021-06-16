@@ -24,14 +24,13 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
         setupText();
 
-//        testingFillFeatures();
-
-        setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
+        //setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
 
         connectDevice.setOnClickListener(v -> {
             model.apply();
-            setFeaturesState(model.getSelectedAgent());
-            //TODO: set features, DB?
+            setFeaturesState(model.getSelectedAgent(requireActivity()));
+            setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
+
 
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
         });

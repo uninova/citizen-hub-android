@@ -41,7 +41,7 @@
             app:destination="@+id/device_search_fragment" />
 
         <action
-            android:id="@+id/action_device_list_fragment_to_device_detail_fragment"
+            android:id="@+id/action_device_list_fragment_to_device_configuration_update_fragment"
             app:destination="@+id/device_configuration_update_fragment" />
 
         <action

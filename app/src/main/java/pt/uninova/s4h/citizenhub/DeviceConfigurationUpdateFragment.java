@@ -28,8 +28,9 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //        testingFillFeatures();
 
         setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
+
         updateDevice.setOnClickListener(v -> {
-            setFeaturesState(model.getSelectedAgent());
+            setFeaturesState(model.getSelectedAgent(requireActivity()));
 
             //TODO: Update Device Data
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
@@ -38,7 +39,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 model.delete(model.getSelectedDevice().getValue());
-
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }
         });

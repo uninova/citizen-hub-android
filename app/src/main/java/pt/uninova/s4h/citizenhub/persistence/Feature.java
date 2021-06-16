@@ -5,12 +5,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "feature", primaryKeys = {"device_address", "kind_id"}, foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
+@Entity(tableName = "feature", foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
 public class Feature {
+    @PrimaryKey
     @NonNull
     private String device_address;
     @ColumnInfo(name = "kind_id")

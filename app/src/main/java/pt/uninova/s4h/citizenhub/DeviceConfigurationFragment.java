@@ -27,17 +27,6 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView addressDevice;
     protected ListView listViewFeatures;
     protected List<FeatureListItem> featuresList;
-    final DeviceViewModel model;
-    final Device device;
-    final private FeatureRepository featureRepository;
-
-    public DeviceConfigurationFragment() {
-        this.model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        this.device = model.getSelectedDevice().getValue();
-
-        this.featureRepository = new FeatureRepository(requireActivity().getApplication());
-
-    }
 
     protected void setupViews(View result) {
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
@@ -46,6 +35,9 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void setupText() {
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+
         nameDevice.setText(getString(R.string.fragment_configuration_text_view_name, device.getName()));
         addressDevice.setText(getString(R.string.fragment_configuration_text_view_address, device.getAddress()));
     }
@@ -63,27 +55,24 @@ public class DeviceConfigurationFragment extends Fragment {
         listViewFeatures.setAdapter(new FeatureListAdapter(requireContext(), featuresList));
     }
 
-
-    //
     protected void setFeaturesState(Agent agent) {
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+        FeatureRepository featureRepository = new FeatureRepository(requireActivity().getApplication());
+
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             if (listViewFeatures.getAdapter().isEnabled(i)) {
                 agent.enableMeasurement(featuresList.get(i).getMeasurementKind());
+                assert device != null;
                 featureRepository.add(device.getAddress(), featuresList.get(i).getMeasurementKind());
 
             } else {
                 agent.disableMeasurement(featuresList.get(i).getMeasurementKind());
+                assert device != null;
                 featureRepository.remove(device.getAddress(), featuresList.get(i).getMeasurementKind());
             }
         }
     }
-
-//    protected void testingFillFeatures() //TODO this is only for testing
-//    {
-//        featuresDevice = new HashSet<>();
-//        featuresDevice.add(MeasurementKind.STEPS);
-//        featuresDevice.add(MeasurementKind.HEART_RATE);
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
