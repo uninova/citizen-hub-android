@@ -20,6 +20,12 @@ public class FeatureRepository {
         });
     }
 
+    public void add(String device_address, MeasurementKind measurementKind) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            featureDao.insert(new Feature(device_address, measurementKind));
+        });
+    }
+
     public List<Feature> getAll(String address) {
         return featureDao.getAll(address);
     }
@@ -31,6 +37,12 @@ public class FeatureRepository {
     public void remove(Feature feature) {
         CitizenHubDatabase.executorService().execute(() -> {
             featureDao.delete(feature);
+        });
+    }
+
+    public void remove(String device_address, MeasurementKind measurementKind) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            featureDao.delete(new Feature(device_address, measurementKind));
         });
     }
 
