@@ -28,6 +28,10 @@ public class HexoSkinAgent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public HexoSkinAgent() {
+        super(null, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 

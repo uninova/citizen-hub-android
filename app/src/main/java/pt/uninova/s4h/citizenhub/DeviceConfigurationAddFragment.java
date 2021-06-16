@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import java.util.Objects;
-
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
-
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 
     @Override
@@ -23,13 +19,11 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         setupViews(view);
 
         setupText();
-
-        //setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
+        getSupportedFeatures(model.getSelectedDevice().getValue().getName());
 
         connectDevice.setOnClickListener(v -> {
             model.apply();
             setFeaturesState(model.getSelectedAgent(requireActivity()));
-            setupFeatures(Objects.requireNonNull(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().get(model.getSelectedDevice().getValue())));
 
 
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());

@@ -20,6 +20,12 @@ public abstract class AbstractAgent implements Agent {
 
     private AgentState state;
 
+    private AbstractAgent() {
+        this.protocolMap = null;
+        this.id = null;
+        this.stateChangedDispatcher = null;
+    }
+
     protected AbstractAgent(UUID id) {
         this(id, new HashMap<>());
     }
@@ -30,6 +36,7 @@ public abstract class AbstractAgent implements Agent {
 
         stateChangedDispatcher = new Dispatcher<>();
     }
+
 
     public Set<Observer<StateChangedMessage<AgentState>>> getObservers() {
         return stateChangedDispatcher.getObservers();

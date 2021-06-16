@@ -31,6 +31,10 @@ public class MiBand2Agent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public MiBand2Agent() {
+        super(ID, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 

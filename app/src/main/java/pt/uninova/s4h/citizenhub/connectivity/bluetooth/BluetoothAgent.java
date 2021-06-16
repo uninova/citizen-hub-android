@@ -17,6 +17,11 @@ public abstract class BluetoothAgent extends AbstractAgent {
         this.connection = connection;
     }
 
+    private BluetoothAgent() {
+        super(null, null);
+        this.connection = null;
+    }
+
     protected BluetoothConnection getConnection() {
         return connection;
     }

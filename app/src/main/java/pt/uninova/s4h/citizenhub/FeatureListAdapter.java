@@ -39,6 +39,16 @@ class FeatureListAdapter extends BaseAdapter {
         return vi;
     }
 
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;

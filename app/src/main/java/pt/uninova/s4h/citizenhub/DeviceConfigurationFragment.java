@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceConfigurationFragment extends Fragment {
 
@@ -42,17 +44,28 @@ public class DeviceConfigurationFragment extends Fragment {
         addressDevice.setText(getString(R.string.fragment_configuration_text_view_address, device.getAddress()));
     }
 
-    protected void setupFeatures(Agent agent) {
+    protected void getSupportedFeatures(String deviceName) {
+        final AgentOrchestrator agentOrchestrator = new AgentOrchestrator(((CitizenHubServiceBound) getActivity()).getService());
 
         featuresList = new ArrayList<>();
 
-        for (MeasurementKind feature : agent.getSupportedMeasurements()) {
+        for (MeasurementKind feature : agentOrchestrator.getSupportedFeatures(deviceName)) {
             if (MeasurementKind.find(feature.getId()) != null) {
                 featuresList.add(new FeatureListItem(feature));
             }
         }
 
         listViewFeatures.setAdapter(new FeatureListAdapter(requireContext(), featuresList));
+    }
+
+    protected void loadFeatureState() {
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+        FeatureRepository featureRepository = new FeatureRepository(requireActivity().getApplication());
+        List<MeasurementKind> enabledFeatures = featureRepository.getAllFeatures(device.getAddress());
+        for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
+            listViewFeatures.setItemChecked(i, enabledFeatures.contains(listViewFeatures.getAdapter().getItem(i)));
+        }
     }
 
     protected void setFeaturesState(Agent agent) {

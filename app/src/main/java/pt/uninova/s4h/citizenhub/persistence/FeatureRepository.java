@@ -57,4 +57,8 @@ public class FeatureRepository {
             featureDao.update(feature);
         });
     }
+
+    public List<MeasurementKind> getAllFeatures(String address) {
+        return featureDao.getAllFeatures(address);
+    }
 }

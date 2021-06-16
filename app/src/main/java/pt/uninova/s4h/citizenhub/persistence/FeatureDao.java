@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public interface FeatureDao {
 
     @Query("SELECT * FROM feature WHERE device_address =:address")
     List<Feature> getAll(String address);
+
+    @Query("SELECT kind_id as measurementKind FROM feature WHERE device_address =:address")
+    @TypeConverters(MeasurementKindTypeConverter.class)
+    List<MeasurementKind> getAllFeatures(String address);
 
     @Query("SELECT * FROM feature")
     LiveData<List<Feature>> getAllLive();
