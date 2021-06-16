@@ -1,57 +1,49 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-@Entity(tableName = "feature", foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
+import org.jetbrains.annotations.NotNull;
+
+@Entity(tableName = "feature", primaryKeys = {"device_address", "kind_id"}, foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
 public class Feature {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @NonNull
     private String device_address;
-    private String uuid;
-    private int state; // TODO enum e typeconverter
+    @ColumnInfo(name = "kind_id")
+    @TypeConverters(MeasurementKindTypeConverter.class)
+    @NonNull
+    private MeasurementKind kind;
 
     @Ignore
     public Feature() {
+        device_address = null;
+        kind = null;
     }
 
-    public Feature(int id, String device_address, String uuid) {
-        this.id = id;
+    public Feature(@NotNull String device_address, @NotNull MeasurementKind kind) {
         this.device_address = device_address;
-        // this.uuid = uuid;
+        this.kind = kind;
     }
 
-    public int getId() {
-        return id;
+    @NotNull
+    public MeasurementKind getKind() {
+        return kind;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setKind(@NotNull MeasurementKind kind) {
+        this.kind = kind;
     }
 
+    @NotNull
     public String getDevice_address() {
         return device_address;
     }
 
     public void setDevice_address(String device_address) {
         this.device_address = this.device_address;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 }
