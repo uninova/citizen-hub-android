@@ -45,7 +45,7 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void getSupportedFeatures(String deviceName) {
-        final AgentOrchestrator agentOrchestrator = new AgentOrchestrator(((CitizenHubServiceBound) getActivity()).getService());
+        final AgentOrchestrator agentOrchestrator = new AgentOrchestrator(((CitizenHubServiceBound) requireActivity()).getService());
 
         featuresList = new ArrayList<>();
 
@@ -64,7 +64,10 @@ public class DeviceConfigurationFragment extends Fragment {
         FeatureRepository featureRepository = new FeatureRepository(requireActivity().getApplication());
         List<MeasurementKind> enabledFeatures = featureRepository.getAllFeatures(device.getAddress());
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
-            listViewFeatures.setItemChecked(i, enabledFeatures.contains(listViewFeatures.getAdapter().getItem(i)));
+            for (int j = 0; j < enabledFeatures.size(); j++) {
+                if (listViewFeatures.getAdapter().getItem(i) == enabledFeatures.get(j))
+                    listViewFeatures.setItemChecked(i, true);
+            }
         }
     }
 
