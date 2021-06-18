@@ -16,18 +16,16 @@ public class FeatureRepository {
 
     public void add(Feature feature) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.insert(feature);
+            featureDao.insert(new Feature(feature.getDevice_address(), feature.getKind()));
         });
     }
 
-    public void add(String device_address, MeasurementKind measurementKind) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.insert(new Feature(device_address, measurementKind));
-        });
-    }
-
-    public List<Feature> getAll(String address) {
-        return featureDao.getAll(address);
+    public List<MeasurementKind> getKindsFromDevice(String address) {
+        try {
+            return featureDao.getKindsFromDevice(address);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public LiveData<List<Feature>> getAllLive() {
@@ -56,9 +54,5 @@ public class FeatureRepository {
         CitizenHubDatabase.executorService().execute(() -> {
             featureDao.update(feature);
         });
-    }
-
-    public List<MeasurementKind> getAllFeatures(String address) {
-        return featureDao.getAllFeatures(address);
     }
 }

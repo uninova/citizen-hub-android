@@ -31,7 +31,7 @@ public interface FeatureDao {
 
     @Query("SELECT kind_id as measurementKind FROM feature WHERE device_address =:address")
     @TypeConverters(MeasurementKindTypeConverter.class)
-    List<MeasurementKind> getAllFeatures(String address);
+    List<MeasurementKind> getKindsFromDevice(String address);
 
     @Query("SELECT * FROM feature")
     LiveData<List<Feature>> getAllLive();

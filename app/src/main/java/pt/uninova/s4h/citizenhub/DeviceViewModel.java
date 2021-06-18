@@ -45,6 +45,8 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public Agent getSelectedAgent(Activity activity) {
+        //  Agent agent = ((CitizenHubServiceBound) activity).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
+
         Agent agent = ((CitizenHubServiceBound) activity).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
         if (agent == null) throw new NullPointerException();
         return agent;

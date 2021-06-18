@@ -23,8 +23,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
         connectDevice.setOnClickListener(v -> {
             model.apply();
-            setFeaturesState(model.getSelectedAgent(requireActivity()));
-
+            //   setFeaturesState(model.getSelectedAgent(requireActivity()));
+            saveFeaturesChosen();
 
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
         });

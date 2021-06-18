@@ -16,7 +16,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
@@ -29,6 +29,10 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView addressDevice;
     protected ListView listViewFeatures;
     protected List<FeatureListItem> featuresList;
+    private List<MeasurementKind> enabledFeatures;
+    //    private MutableLiveData<List<MeasurementKind>> enabledFeatures;
+    private FeatureViewModel featuresModel;
+
 
     protected void setupViews(View result) {
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
@@ -59,14 +63,44 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void loadFeatureState() {
+        final AgentOrchestrator agentOrchestrator = new AgentOrchestrator(((CitizenHubServiceBound) requireActivity()).getService());
+
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
-        FeatureRepository featureRepository = new FeatureRepository(requireActivity().getApplication());
-        List<MeasurementKind> enabledFeatures = featureRepository.getAllFeatures(device.getAddress());
+        FeatureViewModel featuresModel = new ViewModelProvider(requireActivity()).get(FeatureViewModel.class);
+
+        enabledFeatures = featuresModel.getKindsFromDevice(device.getAddress());
+        if (enabledFeatures != null && enabledFeatures.size() != 0) {
+            for (MeasurementKind feature : enabledFeatures) {
+                if (MeasurementKind.find(feature.getId()) != null) {
+                    featuresList.add(new FeatureListItem(feature, true));
+                }
+            }
+        } else {
+            featuresList = new ArrayList<>();
+            for (MeasurementKind feature : agentOrchestrator.getSupportedFeatures(device.getName())) {
+                if (MeasurementKind.find(feature.getId()) != null) {
+                    featuresList.add(new FeatureListItem(feature, false));
+                }
+            }
+        }
+        listViewFeatures.setAdapter(new FeatureListAdapter(requireContext(), featuresList));
+
+    }
+
+
+    protected void saveFeaturesChosen() {
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+        final FeatureViewModel featureViewModel = new ViewModelProvider(requireActivity()).get(FeatureViewModel.class);
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
-            for (int j = 0; j < enabledFeatures.size(); j++) {
-                if (listViewFeatures.getAdapter().getItem(i) == enabledFeatures.get(j))
-                    listViewFeatures.setItemChecked(i, true);
+            if (listViewFeatures.getAdapter().isEnabled(i)) {
+                assert device != null;
+//                featureViewModel.setFeature(new Feature(device.getAddress(),featuresList.get(i).getMeasurementKind()));
+                featureViewModel.apply((new Feature(device.getAddress(), featuresList.get(i).getMeasurementKind())));
+            } else {
+                assert device != null;
+                featureViewModel.delete(new Feature(device.getAddress(), featuresList.get(i).getMeasurementKind()));
             }
         }
     }
@@ -74,18 +108,20 @@ public class DeviceConfigurationFragment extends Fragment {
     protected void setFeaturesState(Agent agent) {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
-        FeatureRepository featureRepository = new FeatureRepository(requireActivity().getApplication());
-
+        final FeatureViewModel featureViewModel = new ViewModelProvider(requireActivity()).get(FeatureViewModel.class);
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             if (listViewFeatures.getAdapter().isEnabled(i)) {
                 agent.enableMeasurement(featuresList.get(i).getMeasurementKind());
                 assert device != null;
-                featureRepository.add(device.getAddress(), featuresList.get(i).getMeasurementKind());
+//                featureViewModel.setFeature(new Feature(device.getAddress(),featuresList.get(i).getMeasurementKind()));
+                featureViewModel.apply(new Feature(device.getAddress(), featuresList.get(i).getMeasurementKind()));
+
+                // featureRepository.add(device.getAddress(), featuresList.get(i).getMeasurementKind());
 
             } else {
                 agent.disableMeasurement(featuresList.get(i).getMeasurementKind());
                 assert device != null;
-                featureRepository.remove(device.getAddress(), featuresList.get(i).getMeasurementKind());
+                featureViewModel.delete(new Feature(device.getAddress(), featuresList.get(i).getMeasurementKind()));
             }
         }
     }
@@ -93,7 +129,21 @@ public class DeviceConfigurationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+        featuresModel = new ViewModelProvider(requireActivity()).get(FeatureViewModel.class);
+
 
     }
 
+    private void onFeatureUpdate(List<Feature> features) {
+        cleanList();
+        for (Feature feature : features) {
+            featuresList.add(new FeatureListItem(feature.getKind(), true));
+        }
+    }
+
+    private void cleanList() {
+        featuresList = new ArrayList<>();
+    }
 }

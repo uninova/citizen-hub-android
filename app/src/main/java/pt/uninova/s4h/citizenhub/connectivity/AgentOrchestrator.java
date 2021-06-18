@@ -134,12 +134,12 @@ public class AgentOrchestrator {
         return getSupportedFeatures(device.getName());
     }
 
-    public List<Feature> getEnabledFeatures(String device_address) {
-        return featureRepository.getAll(device_address);
+    public List<MeasurementKind> getEnabledFeatures(String device_address) {
+        return featureRepository.getKindsFromDevice(device_address);
     }
 
     public List<Feature> getEnabledFeatures(Device device) {
-        return getEnabledFeatures(device.getAddress());
+        return getEnabledFeatures(device);
     }
 
     public Map<Device, Agent> getDeviceAgentMap() {

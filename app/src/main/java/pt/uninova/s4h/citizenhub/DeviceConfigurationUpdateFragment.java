@@ -24,6 +24,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
 
         updateDevice.setOnClickListener(v -> {
+
             setFeaturesState(model.getSelectedAgent(requireActivity()));
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
@@ -37,4 +38,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
         return view;
     }
+
+
 }
