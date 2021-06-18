@@ -27,12 +27,16 @@ class FeatureListAdapter extends BaseAdapter {
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
         Switch nameSwitch = vi.findViewById(R.id.switchFeature);
+        final FeatureListItem feature = data.get(position);
+        if (feature.isActive()) {
+            data.get(position).setActive(true);
+        }
         nameSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 data.get(position).setActive(isChecked);
             }
         });
-        TextView text = (TextView) vi.findViewById(R.id.textFeature);
+        TextView text = vi.findViewById(R.id.textFeature);
         String lastString = capitalizeString(data.get(position).getMeasurementKind().toString().toLowerCase().replace("_", " "));
         text.setText(lastString);
 

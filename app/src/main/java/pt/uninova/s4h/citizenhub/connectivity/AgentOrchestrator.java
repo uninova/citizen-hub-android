@@ -38,7 +38,7 @@ public class AgentOrchestrator {
     private final MeasurementRepository measurementRepository;
     private final AgentFactory agentFactory;
 
-    private final Map<Device, Agent> deviceAgentMap;
+    private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
@@ -47,8 +47,6 @@ public class AgentOrchestrator {
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
-
-        deviceAgentMap = new HashMap<>();
 
 
         /*

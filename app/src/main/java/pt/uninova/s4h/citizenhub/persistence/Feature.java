@@ -10,7 +10,9 @@ import androidx.room.TypeConverters;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "feature", foreignKeys = @ForeignKey(entity = Device.class, parentColumns = "address", childColumns = "device_address"))
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "feature", foreignKeys = @ForeignKey(onDelete = CASCADE, entity = Device.class, parentColumns = "address", childColumns = "device_address"))
 public class Feature {
     @PrimaryKey
     @NonNull
