@@ -132,8 +132,20 @@ public class DeviceConfigurationFragment extends Fragment {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
         featuresModel = new ViewModelProvider(requireActivity()).get(FeatureViewModel.class);
+        this.featuresList = new ArrayList<>();
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadFeatureState();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cleanList();
     }
 
     private void onFeatureUpdate(List<Feature> features) {
