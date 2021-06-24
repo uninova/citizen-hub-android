@@ -17,9 +17,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         setupViews(view);
-
         setupText();
-        getSupportedFeatures(model.getSelectedDevice().getValue().getName());
+        loadFeatureState();
 
         connectDevice.setOnClickListener(v -> {
             model.apply();

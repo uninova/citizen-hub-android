@@ -24,22 +24,23 @@ class FeatureListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
         Switch nameSwitch = vi.findViewById(R.id.switchFeature);
         switchListener = new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // System.out.println(isChecked + " "+ position+ " "+data.get(position).isActive());
                 data.get(position).setActive(isChecked);
+                notifyDataSetChanged();
+                // System.out.println(isChecked + " "+ position+ " "+data.get(position).isActive());
             }
         };
+        nameSwitch.setOnCheckedChangeListener(null);
+        // System.out.println(position+" "+ data.get(position).getMeasurementKind()+" "+data.get(position).isActive());
+        nameSwitch.setChecked(data.get(position).isActive());
         nameSwitch.setOnCheckedChangeListener(switchListener);
-        if (data.get(position).isActive()) {
-            nameSwitch.setOnCheckedChangeListener(null);
-            nameSwitch.setChecked(true);
-            nameSwitch.setOnCheckedChangeListener(switchListener);
-        }
-
 
         TextView text = vi.findViewById(R.id.textFeature);
         String lastString = capitalizeString(data.get(position).getMeasurementKind().toString().toLowerCase().replace("_", " "));
@@ -48,20 +49,16 @@ class FeatureListAdapter extends BaseAdapter {
         return vi;
     }
 
-    private boolean isChecked;
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void updateResults(List<FeatureListItem> results) {
+        data.clear();
+        data.addAll(results);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -69,9 +66,9 @@ class FeatureListAdapter extends BaseAdapter {
         return data.size();
     }
 
-
+    @Override
     public Object getItem(int position) {
-        return data.indexOf(position);
+        return data.get(position);
     }
 
     @Override
@@ -86,11 +83,11 @@ class FeatureListAdapter extends BaseAdapter {
     public static String capitalizeString(String string) {
         String[] arr = string.split(" ");
         StringBuffer sb = new StringBuffer();
-
         for (int i = 0; i < arr.length; i++) {
             sb.append(Character.toUpperCase(arr[i].charAt(0)))
                     .append(arr[i].substring(1)).append(" ");
         }
         return sb.toString().trim();
         }
+
 }

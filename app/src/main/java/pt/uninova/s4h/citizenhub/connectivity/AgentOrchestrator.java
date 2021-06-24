@@ -116,6 +116,8 @@ public class AgentOrchestrator {
         });
     }
 
+    //TODO usar agentFactory(address) ->connect (connectionType), criar enum para connectionType, Inteface para usar o connectionType e imeplements
+
     public List<MeasurementKind> getSupportedFeatures(String device_name) {
         if (device_name != null && device_name.equals("HX-00043494")) {
             return new HexoSkinAgent().getSupportedMeasurements();
@@ -132,9 +134,6 @@ public class AgentOrchestrator {
         return getSupportedFeatures(device.getName());
     }
 
-    public List<MeasurementKind> getEnabledFeatures(String device_address) {
-        return featureRepository.getKindsFromDevice(device_address);
-    }
 
     public List<Feature> getEnabledFeatures(Device device) {
         return getEnabledFeatures(device);

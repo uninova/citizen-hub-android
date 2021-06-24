@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import pt.uninova.util.messaging.Observer;
+
 public class FeatureRepository {
     private final FeatureDao featureDao;
 
@@ -20,13 +22,10 @@ public class FeatureRepository {
         });
     }
 
-    public List<MeasurementKind> getKindsFromDevice(String address) {
-        try {
-            return featureDao.getKindsFromDevice(address);
-        } catch (Exception e) {
-            return null;
-        }
+    public void obtainKindsFromDevice(String address, Observer<List<MeasurementKind>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(featureDao.getKindsFromDevice(address)));
     }
+
 
     public LiveData<List<Feature>> getAllLive() {
         return featureDao.getAllLive();

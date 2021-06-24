@@ -16,16 +16,11 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         deleteDevice = view.findViewById(R.id.buttonDelete);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
-
         setupViews(view);
-
         setupText();
-        loadFeatureState();
-
-
+        setListViewFeaturesAdapter();
         updateDevice.setOnClickListener(v -> {
-
-            setFeaturesState(model.getSelectedAgent(requireActivity()));
+            setFeaturesState();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
 
