@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ class FeatureListAdapter extends BaseAdapter {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
-        Switch nameSwitch = vi.findViewById(R.id.switchFeature);
+        SwitchCompat nameSwitch = (SwitchCompat) vi.findViewById(R.id.switchFeature);
         switchListener = new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // System.out.println(isChecked + " "+ position+ " "+data.get(position).isActive());
@@ -56,9 +57,13 @@ class FeatureListAdapter extends BaseAdapter {
     }
 
     public void updateResults(List<FeatureListItem> results) {
-        data.clear();
-        data.addAll(results);
-        this.notifyDataSetChanged();
+        if (data != null) {
+            data.clear();
+        }
+        if (results != null) {
+            data.addAll(results);
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override
