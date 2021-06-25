@@ -23,9 +23,7 @@ public class UprightGoAgent extends BluetoothAgent {
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
-
         protocolMap.put(UprightGoProtocol.ID, new UprightGoProtocol(connection));
-
         return protocolMap;
     }
 
@@ -34,27 +32,22 @@ public class UprightGoAgent extends BluetoothAgent {
         for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
-
         getConnection().close();
-
         setState(AgentState.DISABLED);
     }
 
     @Override
     public void enable() {
         UprightGoProtocol protocol = (UprightGoProtocol) getProtocol(UprightGoProtocol.ID);
-
         protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
             @Override
             public void onChanged(StateChangedMessage<ProtocolState> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
-                    pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo.UprightGoAgent.this.setState(AgentState.ENABLED);
-
+                    UprightGoAgent.this.setState(AgentState.ENABLED);
                     protocol.getObservers().remove(this);
                 }
             }
         });
-
         protocol.enable();
     }
 }
