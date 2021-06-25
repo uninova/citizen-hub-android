@@ -1,17 +1,29 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import android.bluetooth.*;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.util.Pair;
 import pt.uninova.util.Triple;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-public class BluetoothConnection extends BluetoothGattCallback {
+public class BluetoothConnection extends BluetoothGattCallback implements Connection {
 
     public final static UUID ORG_BLUETOOTH_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
 
@@ -337,5 +349,10 @@ public class BluetoothConnection extends BluetoothGattCallback {
                 gatt.writeDescriptor(descriptor);
             }
         });
+    }
+
+    @Override
+    public ConnectionKind getConnectionKind() {
+        return ConnectionKind.BLUETOOTH;
     }
 }

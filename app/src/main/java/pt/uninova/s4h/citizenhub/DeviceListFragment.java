@@ -68,7 +68,7 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (Application) requireActivity().getApplication();
+        app = requireActivity().getApplication();
 
     }
 
@@ -82,7 +82,7 @@ public class DeviceListFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-
+        //TODO não aceder à db, ir buscar ao Orchestrator
         cleanList();
         buildRecycleView(result);
 
@@ -157,7 +157,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void buildRecycleView(View result) {
-        recyclerView = (RecyclerView) result.findViewById(R.id.recyclerView_devicesList);
+        recyclerView = result.findViewById(R.id.recyclerView_devicesList);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
