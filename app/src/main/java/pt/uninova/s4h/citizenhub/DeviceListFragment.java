@@ -195,16 +195,6 @@ public class DeviceListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       /* if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            new AlertDialog.Builder(getContext())
-                    .setMessage("Please select one method of connection compatible with your device.")
-                    .setTitle("Method of Connection")
-                    .setPositiveButton("Bluetooth", (paramDialogInterface, paramInt) ->
-                        Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
-                    .setNegativeButton("Wear OS", (paramDialogInterface, paramInt) ->
-                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
-                    .show();
-        }*/
         return super.onOptionsItemSelected(item);
     }
 
