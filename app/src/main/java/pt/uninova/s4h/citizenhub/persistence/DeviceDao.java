@@ -1,7 +1,11 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.*;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -21,9 +25,10 @@ public interface DeviceDao {
     void deleteAll();
 
     @Query("SELECT * FROM device")
-    LiveData<List<Device>> getAll();
+    List<Device> getAll();
 
     @Query("SELECT * FROM device WHERE address =:deviceAddress")
     Device get(String deviceAddress);
+
 
 }

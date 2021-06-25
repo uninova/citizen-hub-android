@@ -2,8 +2,6 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 import pt.uninova.util.messaging.Observer;
@@ -31,12 +29,13 @@ public class DeviceRepository {
         }
     }
 
-    public LiveData<List<Device>> getAll() {
-        return deviceDao.getAll();
-    }
 
     public void obtain(String address, Observer<Device> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.get(address)));
+    }
+
+    public void obtainAll(Observer<List<Device>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.getAll()));
     }
 
     public void remove(Device device) {

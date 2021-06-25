@@ -1,25 +1,27 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Objects;
 
-@Entity(tableName = "device")
+@Entity(tableName = "device", primaryKeys = {"device_address", "connection_kind"})
 public class Device {
 
     private String name;
-    @PrimaryKey
     @NonNull
     private String address;
-    private String type;
+    @ColumnInfo(name = "connection_kind")
+    @TypeConverters(ConnectionKindTypeConverter.class)
+    private int connectionKind;
     private String state;
 
     @Ignore
     public Device() {
-
+        address = null;
     }
 
     @Override
@@ -35,10 +37,10 @@ public class Device {
         return Objects.hash(address);
     }
 
-    public Device(String name, String address, String type, String state) {
+    public Device(String name, String address, int connectionKind, String state) {
         this.name = name;
         this.address = address;
-        this.type = type;
+        this.connectionKind = connectionKind;
         this.state = state;
     }
 
@@ -58,12 +60,12 @@ public class Device {
         this.address = address;
     }
 
-    public String getType() {
-        return type;
+    public int getConnectionKind() {
+        return connectionKind;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setConnectionKind(int connectionKind) {
+        this.connectionKind = connectionKind;
     }
 
     public String getState() {

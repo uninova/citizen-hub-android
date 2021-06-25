@@ -2,7 +2,12 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 
 import android.os.Handler;
 import android.os.Looper;
-import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Date;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
@@ -11,19 +16,11 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
-import static android.os.Looper.getMainLooper;
-
 public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.distance");
 
-    final private static UUID UUID_SERVICE = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
+    final public static UUID UUID_SERVICE = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
     final private static UUID UUID_CHARACTERISTIC_STEPS = UUID.fromString("00000007-0000-3512-2118-0009af100700");
 
     private Integer lastSteps;

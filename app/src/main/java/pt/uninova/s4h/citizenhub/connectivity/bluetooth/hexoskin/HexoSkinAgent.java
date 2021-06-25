@@ -24,7 +24,7 @@ public class HexoSkinAgent extends BluetoothAgent {
 //
 //            ));
 
-    public HexoSkinAgent(BluetoothConnection connection) {
+    public HexoSkinAgent(BluetoothConnection connection, String name) {
         super(ID, createProtocols(connection), connection);
     }
 
@@ -92,5 +92,10 @@ public class HexoSkinAgent extends BluetoothAgent {
             default:
                 break;
         }
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
