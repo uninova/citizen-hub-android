@@ -26,7 +26,6 @@ public interface Agent {
     List<MeasurementKind> getSupportedMeasurements();
 
     void enableMeasurement(MeasurementKind measurementKind);
-
     void disableMeasurement(MeasurementKind measurementKind);
 
     AgentState getState();

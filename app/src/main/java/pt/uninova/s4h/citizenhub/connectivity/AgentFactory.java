@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
 
@@ -32,10 +34,13 @@ public class AgentFactory {
     private final CitizenHubService service;
     private final BluetoothManager bluetoothManager;
     private final HashMap<ConnectionKind, String> connectionManager = new LinkedHashMap<>();
+    private final DeviceRepository deviceRepository;
 
     public AgentFactory(CitizenHubService service) {
         this.service = service;
         bluetoothManager = (BluetoothManager) service.getSystemService(BLUETOOTH_SERVICE);
+        deviceRepository = new DeviceRepository(service.getApplication());
+
     }
 
     public void create(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
@@ -66,7 +71,12 @@ public class AgentFactory {
 //                    String name = device.getName();
 
 //                    if (name != null) {
-                    observer.onChanged(new WearOSAgent(wearOSConnection));
+                    try {
+                        observer.onChanged(new WearOSAgent(wearOSConnection));
+                        deviceRepository.add(new Device("wearOS", wearOSConnection.getAddress(), ConnectionKind.WEAROS.getId(), null));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 //                }
                 }
             }
@@ -102,10 +112,19 @@ public class AgentFactory {
                 }
             });
 
-            bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress()).connectGatt(service, true, connection);
+            try {
+                BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
+                bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+                deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
+    }
+
 
 //    public void create(Device device, Observer<Agent> observer) {
 //
@@ -155,5 +174,3 @@ public class AgentFactory {
 //            });
 //        }
 //    }
-
-}

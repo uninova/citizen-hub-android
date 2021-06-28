@@ -2,14 +2,13 @@ package pt.uninova.s4h.citizenhub.connectivity;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
@@ -37,8 +36,10 @@ public class AgentOrchestrator {
     private final FeatureRepository featureRepository;
     private final MeasurementRepository measurementRepository;
     private final AgentFactory agentFactory;
-
+    private List<Agent> agentList;
     private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
+
+    //TODO ao criar um agent mete o device na db
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
@@ -47,8 +48,23 @@ public class AgentOrchestrator {
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
+        deviceRepository.obtainAll(value -> {
+            for (Device i : value
+            ) {
+                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
+                    agent.enable();
+                    featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
+                        for (MeasurementKind measurementKind : measurementKinds
+                        ) {
+                            agent.enableMeasurement(measurementKind);
+                        }
+                    });
 
+                }, i);
 
+            }
+
+        });
         /*
         PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
         placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
@@ -86,34 +102,35 @@ public class AgentOrchestrator {
         */
 
 
-        deviceRepository.getAll().observe(service, devices -> {
-            final Set<Device> found = new HashSet<>(devices.size());
-            System.out.println("=== Change in device list ===");
-            for (Device i : devices) {
-                System.out.println("== " + i.getName() + ":" + i.getAddress() + " ==");
-                found.add(i);
-
-                if (!deviceAgentMap.containsKey(i)) {
-                    System.out.println("= First time found =");
-                    agentFactory.create(i, agent -> {
-                        for (UUID j : agent.getPublicProtocolIds()) {
-
-                            MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
-
-                            p.getMeasurementObservers().add(measurementRepository::add);
-                            //TODO filter the protocols we want to enable
-                        }
-
-                        agent.enable();
-
-                        deviceAgentMap.put(i, agent);
-                    });
-                }
-            }
-
-            System.out.println("=== Done ===");
-            trimAgents(found);
-        });
+        //TODO Nao usar livedata (getall)
+//        deviceRepository.obtainAll(value -> (devices) -> {
+//            final Set<Device> found = ;
+//            System.out.println("=== Change in device list ===");
+//            for (Device i : devices) {
+//                System.out.println("== " + i.getName() + ":" + i.getAddress() + " ==");
+//                found.add(i);
+//
+//                if (!deviceAgentMap.containsKey(i)) {
+//                    System.out.println("= First time found =");
+//                    agentFactory.create(ConnectionKind.BLUETOOTH,i, agent -> {
+//                        for (UUID j : getDeviceAgentMap().get(i).getPublicProtocolIds()) {
+//
+//                            MeasuringProtocol p = (MeasuringProtocol) agent.getProtocol(j);
+//
+//                            p.getMeasurementObservers().add(measurementRepository::add);
+//                            //TODO filter the protocols we want to enable
+//                        }
+//
+//                        agent.enable();
+//
+//                        deviceAgentMap.put(i, agent);
+//                    });
+//                }
+//            }
+//
+//            System.out.println("=== Done ===");
+//            trimAgents(found);
+//        });
     }
 
     //TODO usar agentFactory(address) ->connect (connectionType), criar enum para connectionType, Inteface para usar o connectionType e imeplements
@@ -166,4 +183,6 @@ public class AgentOrchestrator {
             deviceAgentMap.get(i).disable();
         }
     }
+
+
 }
