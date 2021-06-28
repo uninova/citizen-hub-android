@@ -20,6 +20,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRate
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSAgent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
@@ -46,16 +47,16 @@ public class AgentFactory {
                 bluetoothFactory(device.getAddress(), observer);
                 break;
             case WEAROS:
-                wearOsFactory(device, observer);
+                wearOsFactory(device.getAddress(), observer);
                 break;
         }
 
     }
 
-    private void wearOsFactory(Device device, Observer<Agent> observer) {
-        connectionManager.put(ConnectionKind.WEAROS, device.getAddress());
+    private void wearOsFactory(String address, Observer<Agent> observer) {
+        connectionManager.put(ConnectionKind.WEAROS, address);
 
-        WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(device.getAddress(), service);
+        WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address, service);
         wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState>>() {
             @Override
             public void onChanged(StateChangedMessage<WearOSConnectionState> value) {
@@ -63,11 +64,11 @@ public class AgentFactory {
 
                     wearOSConnection.removeConnectionStateChangeListener(this);
 
-                    String name = device.getName();
+//                    String name = device.getName();
 
-                    if (name != null) {
-                        observer.onChanged(new WearOSAgent(wearOSConnection));
-                    }
+//                    if (name != null) {
+                    observer.onChanged(new WearOSAgent(wearOSConnection));
+//                }
                 }
             }
         });

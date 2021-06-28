@@ -31,6 +31,8 @@ public interface Agent {
 
     AgentState getState();
 
+    String getName();
+
     //List<BluetoothGattService> getDeviceFeatures();
 
     //getStateObserver para o agente - desligar   completamente o agente

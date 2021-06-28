@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.util.Pair;
 import pt.uninova.util.Triple;
 import pt.uninova.util.messaging.Dispatcher;
@@ -354,5 +355,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     @Override
     public ConnectionKind getConnectionKind() {
         return ConnectionKind.BLUETOOTH;
+    }
+
+    @Override
+    public String getAddress() {
+        return getDevice().getAddress();
     }
 }
