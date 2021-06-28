@@ -55,7 +55,6 @@ public class AgentFactory {
 
     private void wearOsFactory(String address, Observer<Agent> observer) {
         connectionManager.put(ConnectionKind.WEAROS, address);
-
         WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address, service);
         wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState>>() {
             @Override
