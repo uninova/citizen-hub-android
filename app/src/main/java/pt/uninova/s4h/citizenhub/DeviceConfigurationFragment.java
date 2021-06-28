@@ -47,11 +47,11 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected List<FeatureListItem> getSupportedFeatures() {
-        return model.getSupportedFeatures(agentOrchestrator);
+        return model.getSupportedFeatures();
     }
 
     protected List<FeatureListItem> getEnabledFeatures() {
-        return model.getEnabledFeatures(agentOrchestrator);
+        return model.getEnabledFeatures();
     }
 
 //    protected List<FeatureListItem> setEnabledFeatures(){

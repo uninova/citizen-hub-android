@@ -46,7 +46,7 @@ public class DeviceViewModel extends AndroidViewModel {
     public List<FeatureListItem> getSupportedFeatures() {
 
         List<FeatureListItem> supportedFeaturesList = new ArrayList<>();
-        for (MeasurementKind feature :)){
+        for (MeasurementKind feature : getSelectedAgent().getSupportedMeasurements()) {
             if (MeasurementKind.find(feature.getId()) != null) {
                 supportedFeaturesList.add(new FeatureListItem(feature));
             }
@@ -61,7 +61,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
             final Set<MeasurementKind> enabledFeaturesSet = new HashSet<>(enabledFeatures);
 
-            for (MeasurementKind feature : agentOrchestrator.getSupportedFeatures(device.getValue().getName())) {
+            for (MeasurementKind feature : getSelectedAgent().getSupportedMeasurements()) {//(device.getValue().getName())) {
 
                 featureList.add(new FeatureListItem(feature, enabledFeaturesSet.contains(feature)));
 
@@ -127,7 +127,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     private void setDeviceList(List<Device> deviceList) {
-        this.deviceList.post;
+        this.deviceList.addAll(deviceList);
     }
 
     public void getDeviceFeatures(Device device) {
