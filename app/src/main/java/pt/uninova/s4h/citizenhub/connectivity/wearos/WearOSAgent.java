@@ -84,5 +84,10 @@ public class WearOSAgent extends AbstractAgent {
         //TODO
     }
 
+    @Override
+    public String getName() {
+        return "wearOS";
+    }
+
 }
 
