@@ -82,4 +82,9 @@ public class UpRightGo2Agent extends BluetoothAgent {
                 break;
         }
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

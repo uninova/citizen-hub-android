@@ -72,4 +72,9 @@ public class PlaceboAgent extends BluetoothAgent {
                 break;
         }
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

@@ -127,4 +127,9 @@ public class MiBand2Agent extends BluetoothAgent {
                 break;
         }
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

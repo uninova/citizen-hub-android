@@ -87,4 +87,9 @@ public class KbzPostureAgent extends BluetoothAgent {
                 break;
         }
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }
