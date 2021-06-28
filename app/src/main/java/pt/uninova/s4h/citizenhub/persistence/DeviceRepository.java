@@ -38,6 +38,14 @@ public class DeviceRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.getAll()));
     }
 
+    public List<Device> getAllWithConnectionKind(ConnectionKind connectionKind) {
+        try {
+            return deviceDao.getAllWithConnectionKind(connectionKind);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void remove(Device device) {
         CitizenHubDatabase.executorService().execute(() -> {
             deviceDao.delete(device);

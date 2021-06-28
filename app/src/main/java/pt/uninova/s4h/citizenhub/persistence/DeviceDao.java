@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
 import java.util.List;
@@ -31,4 +32,7 @@ public interface DeviceDao {
     Device get(String deviceAddress);
 
 
+    @Query("SELECT * FROM device WHERE connection_kind=:connectionKind")
+    @TypeConverters(ConnectionKindTypeConverter.class)
+    List<Device> getAllWithConnectionKind(ConnectionKind connectionKind);
 }
