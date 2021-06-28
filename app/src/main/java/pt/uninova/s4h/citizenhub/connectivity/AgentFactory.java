@@ -101,7 +101,7 @@ public class AgentFactory {
                         if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
                                 connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
                                 connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) && name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-                            observer.onChanged(new HexoSkinAgent(connection, name));
+                            observer.onChanged(new HexoSkinAgent(connection));
                         } else if ((connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
                                 connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) && name.startsWith("Mi")) {
                             observer.onChanged(new MiBand2Agent(connection));

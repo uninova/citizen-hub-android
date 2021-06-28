@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -15,16 +17,8 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class HexoSkinAgent extends BluetoothAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
-//    final private static  List<MeasurementKind> measurementKindList = Collections.unmodifiableList(Arrays.asList(
-//            MeasurementKind.HEART_RATE,
-//            MeasurementKind.RESPIRATION_RATE,
-//            MeasurementKind.INSPIRATION,
-//            MeasurementKind.EXPIRATION,
-//            MeasurementKind.CADENCE,
-//
-//            ));
 
-    public HexoSkinAgent(BluetoothConnection connection, String name) {
+    public HexoSkinAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
     }
 
@@ -44,11 +38,18 @@ public class HexoSkinAgent extends BluetoothAgent {
 
     @Override
     public void disable() {
+        for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
+            getProtocol(i).disable();
+        }
+
+        getConnection().close();
+
+        setState(AgentState.DISABLED);
     }
 
     @Override
     public void enable() {
-        //TODO setState enable
+        setState(AgentState.ENABLED);
     }
 
 
@@ -89,6 +90,29 @@ public class HexoSkinAgent extends BluetoothAgent {
             case CADENCE:
             case CALORIES:
                 getProtocol(HexoSkinAccelerometerProtocol.ID).enable();
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+        switch (measurementKind) {
+            case HEART_RATE:
+                getProtocol(HexoSkinHeartRateProtocol.ID).enable();
+                break;
+            case RESPIRATION_RATE:
+            case INSPIRATION:
+            case EXPIRATION:
+                getProtocol(HexoSkinRespirationProtocol.ID).disable();
+                break;
+            case ACTIVITY:
+            case STEPS:
+            case STEPS_PER_MINUTE:
+            case DISTANCE:
+            case CADENCE:
+            case CALORIES:
+                getProtocol(HexoSkinAccelerometerProtocol.ID).disable();
             default:
                 break;
         }
