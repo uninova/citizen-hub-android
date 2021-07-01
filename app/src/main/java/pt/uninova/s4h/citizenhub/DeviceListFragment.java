@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceListFragment extends Fragment {
 
@@ -46,6 +47,7 @@ public class DeviceListFragment extends Fragment {
     TextView noDevices;
 
     private DeviceViewModel model;
+
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
@@ -69,7 +71,20 @@ public class DeviceListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
+        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
+            System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
+            ) {
+//                model.setDevice(device);
+//                model.apply();
+                System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
 
+                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
+                adapter.updateResults(deviceList);
+                adapter.notifyDataSetChanged();
+
+            }
+        }
     }
 
     @Override
@@ -81,9 +96,24 @@ public class DeviceListFragment extends Fragment {
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+//        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
+            System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
+            ) {
+//                model.setDevice(device);
+//                model.apply();
+                System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
+
+                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
+                adapter.updateResults(deviceList);
+                adapter.notifyDataSetChanged();
+
+            }
+        }
         //TODO não aceder à db, ir buscar ao Orchestrator
         cleanList();
+
         buildRecycleView(result);
 
         setHasOptionsMenu(false); //shows Action Bar menu button
@@ -102,6 +132,7 @@ public class DeviceListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
     }
 
     private void showConnectedDialog(View result) {

@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -21,11 +22,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 public class DeviceSearchFragment extends Fragment {
 
@@ -55,7 +58,9 @@ public class DeviceSearchFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+
+        // model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+        //We only to get device's on demand
 
         cleanList();
         buildRecycleView(result);
@@ -187,10 +192,11 @@ public class DeviceSearchFragment extends Fragment {
             if (address.equals("0C:B2:B7:39:99:63"))
                 name = "Posture Sensor";
 
-            Device device = new Device(name, address, null, null);
+            Device device = new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null);
             if (!model.isDevicePaired(device)) {
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
                 adapter.notifyItemInserted(0);
+//                adapter.updateResults(deviceList);
             }
         });
     }

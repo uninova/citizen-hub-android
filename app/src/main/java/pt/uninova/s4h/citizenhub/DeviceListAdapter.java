@@ -5,15 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
 
-    private List<DeviceListItem> devicesList;
+    private final List<DeviceListItem> devicesList;
     private OnItemClickListener listener;
 
     public DeviceListAdapter(List<DeviceListItem> listDevices) {
@@ -22,15 +22,28 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+
         void onSettingsClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listen){listener = listen;}
+    public void updateResults(List<DeviceListItem> results) {
+        if (devicesList != null) {
+            devicesList.clear();
+        }
+        if (results != null) {
+            devicesList.addAll(results);
+            this.notifyDataSetChanged();
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listen) {
+        listener = listen;
+    }
 
     @NonNull
     @Override
     public DeviceListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_device_list_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_device_list_item, parent, false);
         DeviceListViewHolder hol = new DeviceListViewHolder(v, listener);
         return hol;
     }
