@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,8 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 
-public class AgentOrchestrator {
+public class
+AgentOrchestrator {
 
     private static final String TAG = "AgentOrchestrator";
     private static UUIDv5 NAMESPACE_GENERATOR;
@@ -53,6 +55,8 @@ public class AgentOrchestrator {
             ) {
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
                     agent.enable();
+                    deviceAgentMap.put(i, agent);
+                    System.out.println("TAMANHO DEVICE AGENT MAP" + deviceAgentMap.size());
                     featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                         for (MeasurementKind measurementKind : measurementKinds
                         ) {
@@ -147,6 +151,13 @@ public class AgentOrchestrator {
         return null;
     }
 
+    public void addDeviceToMap(Device device) {
+        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), agent -> {
+            agent.enable();
+            deviceAgentMap.put(device, agent);
+        }, device);
+    }
+
     public List<MeasurementKind> getSupportedFeatures(Device device) {
         return getSupportedFeatures(device.getName());
     }
@@ -158,6 +169,12 @@ public class AgentOrchestrator {
 
     public Map<Device, Agent> getDeviceAgentMap() {
         return deviceAgentMap;
+    }
+
+    public List<Device> getDevicesFromMap() {
+        List<Device> devicesList = new ArrayList<>();
+        deviceAgentMap.forEach((device, agent) -> devicesList.add(device));
+        return devicesList;
     }
 
     public static UUIDv5 namespaceGenerator() {

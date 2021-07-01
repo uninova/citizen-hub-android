@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Objects;
 
-@Entity(tableName = "device", primaryKeys = {"device_address", "connection_kind"})
+@Entity(tableName = "device", primaryKeys = {"address"})
 public class Device {
 
     private String name;

@@ -108,17 +108,17 @@ public class AgentFactory {
                         } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                             observer.onChanged(new KbzPostureAgent(connection));
                         }
+                        try {
+                            BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
+                            bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
+                            deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
 
-            try {
-                BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
-                bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
-                deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
         }
 
