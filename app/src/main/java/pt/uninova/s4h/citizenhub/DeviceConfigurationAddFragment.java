@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 
     @Override
@@ -21,6 +24,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         loadFeatureState();
 
         connectDevice.setOnClickListener(v -> {
+            AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
+            agentOrchestrator.addDeviceToMap(model.getSelectedDevice().getValue());
             model.apply();
             //   setFeaturesState(model.getSelectedAgent(requireActivity()));
             saveFeaturesChosen();
