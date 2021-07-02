@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity(tableName = "device", primaryKeys = {"address"})
 public class Device {
-
+    //TODO state passar a type para guardar o tipo de agente
     private String name;
     @NonNull
     private String address;
