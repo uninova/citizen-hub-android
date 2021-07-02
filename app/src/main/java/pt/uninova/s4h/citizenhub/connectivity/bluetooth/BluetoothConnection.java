@@ -190,6 +190,8 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
+        System.out.println("ONCONNECTIONSTATE" + " " + status + " " + newState);
+
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 if (this.gatt == null) {

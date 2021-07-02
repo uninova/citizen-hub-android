@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 
 import java.util.HashMap;
@@ -9,16 +8,12 @@ import java.util.LinkedHashMap;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAccelerometerProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinRespirationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSAgent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -71,14 +66,13 @@ public class AgentFactory {
 //                    String name = device.getName();
 
 //                    if (name != null) {
-                    try {
-                        observer.onChanged(new WearOSAgent(wearOSConnection));
-                        deviceRepository.add(new Device("wearOS", wearOSConnection.getAddress(), ConnectionKind.WEAROS.getId(), null));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-//                }
+//                    try {
+//                        observer.onChanged(new WearOSAgent(wearOSConnection));
+//                        deviceRepository.add(new Device("wearOS", wearOSConnection.getAddress(), ConnectionKind.WEAROS.getId(), null));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
                 }
+//                }
             }
         });
     }
@@ -93,14 +87,18 @@ public class AgentFactory {
             connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
                 @Override
                 public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+                    System.out.println("ONCHANGED" + " " + value.getNewState());
+
                     if (value.getNewState() == BluetoothConnectionState.READY) {
                         connection.removeConnectionStateChangeListener(this);
 
                         String name = connection.getDevice().getName();
-
-                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
-                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
-                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) && name.startsWith("HX")) { // && name.equals("HX-00043494")) {
+                        System.out.println("ONCHANGED NAME" + "" + name);
+//                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
+//                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
+//                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
+                        if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
+                            System.out.println("HEXOSKINNNNN");
                             observer.onChanged(new HexoSkinAgent(connection));
                         } else if ((connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
                                 connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) && name.startsWith("Mi")) {
@@ -108,22 +106,26 @@ public class AgentFactory {
                         } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                             observer.onChanged(new KbzPostureAgent(connection));
                         }
-                        try {
-                            BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
-                            bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
-                            deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+
+
+//                            deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                     }
+
                 }
             });
-
+            System.out.println("antes connect");
+//            BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
+            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+            System.out.println("depois connect");
 
         }
 
     }
-    }
+}
 
 
 //    public void create(Device device, Observer<Agent> observer) {

@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +49,12 @@ AgentOrchestrator {
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
+        System.out.println("qualquercoisa");
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
+                System.out.println("Antes create" + deviceAgentMap.size());
+
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
@@ -67,6 +69,7 @@ AgentOrchestrator {
                 }, i);
 
             }
+            System.out.println("Depois create" + deviceAgentMap.size());
 
         });
         /*
@@ -171,10 +174,11 @@ AgentOrchestrator {
         return deviceAgentMap;
     }
 
-    public List<Device> getDevicesFromMap() {
-        List<Device> devicesList = new ArrayList<>();
-        deviceAgentMap.forEach((device, agent) -> devicesList.add(device));
-        return devicesList;
+    public Set<Device> getDevicesFromMap() {
+        System.out.println("Sized" + " " + deviceAgentMap.size());
+//        List<Device> devicesList = new ArrayList<>();
+//        deviceAgentMap.forEach((device, agent) -> devicesList.add(device));
+        return deviceAgentMap.keySet();
     }
 
     public static UUIDv5 namespaceGenerator() {
