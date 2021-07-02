@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
@@ -30,7 +31,6 @@ public class DeviceViewModel extends AndroidViewModel {
     private final LiveData<List<Feature>> featureList;
     final private FeatureRepository featureRepository;
 
-
     public DeviceViewModel(Application application) {
         super(application);
         deviceRepository = new DeviceRepository(application);
@@ -43,10 +43,13 @@ public class DeviceViewModel extends AndroidViewModel {
         featureList = featureRepository.getAllLive();
     }
 
-    public List<FeatureListItem> getSupportedFeatures() {
+    public List<FeatureListItem> getSupportedFeatures(AgentOrchestrator agentOrchestrator) {
 
         List<FeatureListItem> supportedFeaturesList = new ArrayList<>();
-        for (MeasurementKind feature : getSelectedAgent().getSupportedMeasurements()) {
+
+        for (MeasurementKind feature : agentOrchestrator.getSupportedFeatures(Objects.requireNonNull(device.getValue()))) {
+
+//        for (MeasurementKind feature : getSelectedAgent().getSupportedMeasurements()) {
             if (MeasurementKind.find(feature.getId()) != null) {
                 supportedFeaturesList.add(new FeatureListItem(feature));
             }
@@ -55,13 +58,13 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
 
-    public List<FeatureListItem> getEnabledFeatures() {
+    public List<FeatureListItem> getEnabledFeatures(AgentOrchestrator agentOrchestrator) {
         List<FeatureListItem> featureList = new ArrayList<>();
         obtainKindsFromDevice(device.getValue().getAddress(), enabledFeatures -> {
 
             final Set<MeasurementKind> enabledFeaturesSet = new HashSet<>(enabledFeatures);
 
-            for (MeasurementKind feature : getSelectedAgent().getSupportedMeasurements()) {//(device.getValue().getName())) {
+            for (MeasurementKind feature : getSelectedAgent(agentOrchestrator).getSupportedMeasurements()) {//(device.getValue().getName())) {
 
                 featureList.add(new FeatureListItem(feature, enabledFeaturesSet.contains(feature)));
 
@@ -114,10 +117,10 @@ public class DeviceViewModel extends AndroidViewModel {
         return device;
     }
 
-    public Agent getSelectedAgent() {
-        //  Agent agent = ((CitizenHubServiceBound) activity).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
+    public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {
+        Agent agent = agentOrchestrator.getDeviceAgentMap().get(device.getValue());
 
-        Agent agent = ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
+//        Agent agent = ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
         if (agent == null) throw new NullPointerException();
         return agent;
     }
@@ -144,6 +147,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void delete(Device device) {
         deviceRepository.remove(device);
+
         //TODO
     }
 }

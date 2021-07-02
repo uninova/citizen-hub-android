@@ -20,6 +20,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         devicesList = listDevices;
     }
 
+
     public interface OnItemClickListener {
         void onItemClick(int position);
 

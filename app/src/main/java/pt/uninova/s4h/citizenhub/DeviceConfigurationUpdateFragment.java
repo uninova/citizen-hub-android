@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
     @Override
@@ -16,6 +19,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         deleteDevice = view.findViewById(R.id.buttonDelete);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
+        AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
+
         setupViews(view);
         setupText();
         setListViewFeaturesAdapter();
@@ -27,6 +32,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 model.delete(model.getSelectedDevice().getValue());
+
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }
         });

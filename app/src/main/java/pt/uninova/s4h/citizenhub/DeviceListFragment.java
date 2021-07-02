@@ -67,25 +67,17 @@ public class DeviceListFragment extends Fragment {
         }
     };
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
-        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
-            System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
-            ) {
-//                model.setDevice(device);
-//                model.apply();
-                System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
+        deviceList = new ArrayList<>();
+        cleanList();
+        System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 
-                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-                adapter.updateResults(deviceList);
-                adapter.notifyDataSetChanged();
-
-            }
-        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +88,7 @@ public class DeviceListFragment extends Fragment {
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
 //        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
             System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
@@ -106,15 +99,18 @@ public class DeviceListFragment extends Fragment {
                 System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
 
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-                adapter.updateResults(deviceList);
-                adapter.notifyDataSetChanged();
+                System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
+                if (adapter != null) // it works second time and later
+                    adapter.notifyDataSetChanged();
+                else
+                    buildRecycleView(result);
+//                adapter.updateResults(deviceList);
 
             }
         }
         //TODO não aceder à db, ir buscar ao Orchestrator
-        cleanList();
-
-        buildRecycleView(result);
+//        cleanList();
+        System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
 
         setHasOptionsMenu(false); //shows Action Bar menu button
 
@@ -187,17 +183,19 @@ public class DeviceListFragment extends Fragment {
         deviceList = new ArrayList<>();
     }
 
+
     private void buildRecycleView(View result) {
         recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
+        System.out.println("TAMANHO DEVICE LIST 3" + deviceList.size());
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        System.out.println("Lista vazia?" + " " + deviceList.isEmpty());
         if (deviceList.isEmpty()) {
             noDevices.setVisibility(View.VISIBLE);
         } else {
@@ -214,7 +212,7 @@ public class DeviceListFragment extends Fragment {
             @Override
             public void onSettingsClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(getView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
+                Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
                 /*deviceForSettings = new Device(deviceList.get(position).getName(),
                         deviceList.get(position).getAddress(), null, null);*/
             }
