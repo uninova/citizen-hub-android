@@ -78,7 +78,6 @@ public class DeviceListFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
