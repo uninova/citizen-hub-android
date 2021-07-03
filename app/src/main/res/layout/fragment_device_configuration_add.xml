@@ -40,6 +40,21 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp">
 
+            <ProgressBar
+                android:id="@+id/add_pprogressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorS4HLightBlue"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/buttonConfiguration"
+                app:layout_constraintEnd_toStartOf="@+id/buttonConfiguration"
+                app:layout_constraintTop_toTopOf="@id/buttonConfiguration"
+                tools:targetApi="lollipop" />
+
             <Button
                 android:id="@+id/buttonConfiguration"
                 android:layout_width="wrap_content"
