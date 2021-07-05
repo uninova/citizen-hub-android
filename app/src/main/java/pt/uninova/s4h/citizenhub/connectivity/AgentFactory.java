@@ -30,12 +30,12 @@ public class AgentFactory {
     private final BluetoothManager bluetoothManager;
     private final HashMap<ConnectionKind, String> connectionManager = new LinkedHashMap<>();
     private final DeviceRepository deviceRepository;
+    AgentListener agentListener;
 
     public AgentFactory(CitizenHubService service) {
         this.service = service;
         bluetoothManager = (BluetoothManager) service.getSystemService(BLUETOOTH_SERVICE);
         deviceRepository = new DeviceRepository(service.getApplication());
-
     }
 
     public void create(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
@@ -87,9 +87,12 @@ public class AgentFactory {
             connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
                 @Override
                 public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+
+
                     System.out.println("ONCHANGED" + " " + value.getNewState());
 
                     if (value.getNewState() == BluetoothConnectionState.READY) {
+                        agentListener.OnConnectingDevice(connection.getDevice(), );
                         connection.removeConnectionStateChangeListener(this);
 
                         String name = connection.getDevice().getName();
