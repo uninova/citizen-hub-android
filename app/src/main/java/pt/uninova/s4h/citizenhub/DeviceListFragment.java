@@ -19,6 +19,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -31,11 +34,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
+import pt.uninova.s4h.citizenhub.connectivity.AgentNotification;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-public class DeviceListFragment extends Fragment implements AgentListener {
+public class DeviceListFragment extends Fragment
+//        implements AgentListener
+{
 
 
     private RecyclerView recyclerView;
@@ -47,9 +52,10 @@ public class DeviceListFragment extends Fragment implements AgentListener {
     public static Device deviceForSettings;
     private Button searchDevices;
     TextView noDevices;
-
+    public static MutableLiveData<DeviceListItem> asd;
     private DeviceViewModel model;
-
+    Device device;
+    private LiveData<List<DeviceListItem>> listLiveData;
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
@@ -69,7 +75,6 @@ public class DeviceListFragment extends Fragment implements AgentListener {
         }
     };
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,14 @@ public class DeviceListFragment extends Fragment implements AgentListener {
         cleanList();
         System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 
+        //        asd = new
+//        asd.observe(this, new Observer<DeviceListItem>() {
+//            @Override
+//            public void onChanged(DeviceListItem deviceListItem) {
+//            deviceList.add(deviceListItem);
+//            adapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     @Override
@@ -89,6 +102,8 @@ public class DeviceListFragment extends Fragment implements AgentListener {
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        AgentNotification agentNotification = new AgentNotification();
+
 
 //        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
@@ -109,6 +124,29 @@ public class DeviceListFragment extends Fragment implements AgentListener {
 
             }
         }
+        agentNotification.agentAddEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
+            @Override
+            public void onChanged(DeviceListItem deviceListItem) {
+                if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
+                    device = deviceListItem.getDevice();
+                    deviceList.add(new DeviceListItem(device));
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        agentNotification.agentRemoveEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
+            @Override
+            public void onChanged(DeviceListItem deviceListItem) {
+                if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
+                    device = deviceListItem.getDevice();
+                    deviceList.remove(new DeviceListItem(device));
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
         //TODO não aceder à db, ir buscar ao Orchestrator
 //        cleanList();
         System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
@@ -235,20 +273,4 @@ public class DeviceListFragment extends Fragment implements AgentListener {
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void OnConnectingDevice(Device device) {
-        deviceList.add(new DeviceListItem(device));
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public boolean OnSuccessConnection(Device device) {
-        return true;
-    }
-
-    @Override
-    public boolean OnFailedConnection(Device device) {
-        return false;
-    }
 }

@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,19 +34,20 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             saveFeaturesChosen();
 //            ProgressButton progressButton = new ProgressButton(getContext(), v);
 //            progressButton.StartProgress();
-            Handler handler = new Handler();
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
-
-                }
-            }, 10000);
+//            Handler handler = new Handler();
+            Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
         });
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+//
+//                }
+//            }, 10000);
+//        });
 
         return view;
+
     }
-
-
 }
+

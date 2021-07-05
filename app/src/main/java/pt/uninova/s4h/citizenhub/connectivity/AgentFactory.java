@@ -1,8 +1,10 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -30,12 +32,40 @@ public class AgentFactory {
     private final BluetoothManager bluetoothManager;
     private final HashMap<ConnectionKind, String> connectionManager = new LinkedHashMap<>();
     private final DeviceRepository deviceRepository;
-    AgentListener agentListener;
 
     public AgentFactory(CitizenHubService service) {
         this.service = service;
         bluetoothManager = (BluetoothManager) service.getSystemService(BLUETOOTH_SERVICE);
         deviceRepository = new DeviceRepository(service.getApplication());
+    }
+
+    public void destroy(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
+        switch (connectionKind) {
+
+            case UNKNOWN:
+            case BLUETOOTH:
+                bluetoothFactoryDestroy(device.getAddress(), observer);
+                break;
+            case WEAROS:
+//                wearOsFactory(device.getAddress(), observer);
+                break;
+        }
+    }
+
+    private void bluetoothFactoryDestroy(String address, Observer<Agent> observer) {
+        if (BluetoothAdapter.checkBluetoothAddress(address))
+            unpairDevice(bluetoothManager.getAdapter().getRemoteDevice(address));
+        //TODO we remove from the list but the unpair is not succesfull
+    }
+
+    private void unpairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("removeBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void create(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
@@ -80,35 +110,36 @@ public class AgentFactory {
     private void bluetoothFactory(String address, Observer<Agent> observer) {
         if (BluetoothAdapter.checkBluetoothAddress(address))
             connectionManager.put(ConnectionKind.BLUETOOTH, address);
-
         {
-            final BluetoothConnection connection = new BluetoothConnection();
+            {
+                final BluetoothConnection connection = new BluetoothConnection();
 
-            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
-                @Override
-                public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
+                    @Override
+                    public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
 
 
-                    System.out.println("ONCHANGED" + " " + value.getNewState());
+                        System.out.println("ONCHANGED" + " " + value.getNewState());
 
-                    if (value.getNewState() == BluetoothConnectionState.READY) {
-                        agentListener.OnConnectingDevice(connection.getDevice(), );
-                        connection.removeConnectionStateChangeListener(this);
+                        if (value.getNewState() == BluetoothConnectionState.READY) {
+                            connection.removeConnectionStateChangeListener(this);
 
-                        String name = connection.getDevice().getName();
-                        System.out.println("ONCHANGED NAME" + "" + name);
+                            String name = connection.getDevice().getName();
+                            System.out.println("ONCHANGED NAME" + "" + name);
+                            AgentNotification agentNotification = new AgentNotification();
+                            agentNotification.agentAddEvent(new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null));
 //                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
 //                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
 //                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
-                        if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-                            System.out.println("HEXOSKINNNNN");
-                            observer.onChanged(new HexoSkinAgent(connection));
-                        } else if ((connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
-                                connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) && name.startsWith("Mi")) {
-                            observer.onChanged(new MiBand2Agent(connection));
-                        } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
-                            observer.onChanged(new KbzPostureAgent(connection));
-                        }
+                            if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
+                                System.out.println("HEXOSKINNNNN");
+                                observer.onChanged(new HexoSkinAgent(connection));
+                            } else if ((connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
+                                    connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) && name.startsWith("Mi")) {
+                                observer.onChanged(new MiBand2Agent(connection));
+                            } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
+                                observer.onChanged(new KbzPostureAgent(connection));
+                            }
 //                        try {
 
 
@@ -116,17 +147,18 @@ public class AgentFactory {
 //                        } catch (Exception e) {
 //                            e.printStackTrace();
 //                        }
-                    }
+                        }
 
-                }
-            });
-            System.out.println("antes connect");
+                    }
+                });
+                System.out.println("antes connect");
 //            BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
-            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
-            System.out.println("depois connect");
+                bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+                System.out.println("depois connect");
+
+            }
 
         }
-
     }
 }
 

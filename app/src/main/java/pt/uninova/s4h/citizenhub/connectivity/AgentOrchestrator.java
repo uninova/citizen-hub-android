@@ -23,6 +23,7 @@ AgentOrchestrator {
 
     private static final String TAG = "AgentOrchestrator";
     private static UUIDv5 NAMESPACE_GENERATOR;
+    private static AgentListener agentListener;
 
     static {
         try {
@@ -44,7 +45,6 @@ AgentOrchestrator {
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
-
         deviceRepository = new DeviceRepository(service.getApplication());
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
@@ -54,7 +54,7 @@ AgentOrchestrator {
             for (Device i : value
             ) {
                 System.out.println("Antes create" + deviceAgentMap.size());
-
+//                agentListener.OnConnectingDevice(i);
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
@@ -72,6 +72,8 @@ AgentOrchestrator {
             System.out.println("Depois create" + deviceAgentMap.size());
 
         });
+
+
         /*
         PlaceboAllProtocol placeboAllProtocol = new PlaceboAllProtocol(null);
         placeboAllProtocol.getMeasurementObservers().add(measurementRepository::add);
@@ -142,6 +144,7 @@ AgentOrchestrator {
 
     //TODO usar agentFactory(address) ->connect (connectionType), criar enum para connectionType, Inteface para usar o connectionType e imeplements
 
+
     public List<MeasurementKind> getSupportedFeatures(String device_name) {
         if (device_name != null && device_name.equals("HX-00043494")) {
             return new HexoSkinAgent().getSupportedMeasurements();
@@ -159,6 +162,11 @@ AgentOrchestrator {
             agent.enable();
             deviceAgentMap.put(device, agent);
         }, device);
+    }
+
+    public void deleteDeviceFromMap(Device device) {
+        agentFactory.destroy(ConnectionKind.BLUETOOTH, Agent::disable, device);
+        getDeviceAgentMap().remove(device);
     }
 
     public List<MeasurementKind> getSupportedFeatures(Device device) {
