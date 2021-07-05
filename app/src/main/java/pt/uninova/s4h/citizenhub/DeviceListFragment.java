@@ -1,13 +1,10 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -138,7 +134,7 @@ public class DeviceListFragment extends Fragment {
     private void onDeviceUpdate(List<Device> devices) {
         cleanList();
         for (Device device : devices) {
-            deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
+            deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_connected, R.drawable.ic_settings_off));
         }
         buildRecycleView(resultView);
     }
