@@ -9,11 +9,16 @@ public class DeviceListItem {
     private int imageSettings;
     private Device device;
 
-    public DeviceListItem( Device device,int imageResource, int imageSettings)
-    {
+    public DeviceListItem(Device device, int imageResource, int imageSettings) {
         this.imageResource = imageResource;
         this.device = device;
         this.imageSettings = imageSettings;
+    }
+
+    public DeviceListItem(Device device) {
+        this.imageResource = R.drawable.ic_watch,
+        this.device = device;
+        this.imageSettings = R.drawable.ic_settings;
     }
 
     public int getImageResource() {
