@@ -31,10 +31,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-public class DeviceListFragment extends Fragment {
+public class DeviceListFragment extends Fragment implements AgentListener {
+
 
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
@@ -234,4 +236,19 @@ public class DeviceListFragment extends Fragment {
     }
 
 
+    @Override
+    public void OnConnectingDevice(Device device) {
+        deviceList.add(new DeviceListItem(device));
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean OnSuccessConnection(Device device) {
+        return true;
+    }
+
+    @Override
+    public boolean OnFailedConnection(Device device) {
+        return false;
+    }
 }
