@@ -102,10 +102,10 @@ public class DeviceListFragment extends Fragment
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        AgentNotification agentNotification = new AgentNotification();
 
-
-//        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+        if (adapter == null) {
+            buildRecycleView(result);
+        }
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
             System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
@@ -118,12 +118,14 @@ public class DeviceListFragment extends Fragment
                 System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
                 if (adapter != null) // it works second time and later
                     adapter.notifyDataSetChanged();
-                else
-                    buildRecycleView(result);
-//                adapter.updateResults(deviceList);
-
             }
         }
+
+        AgentNotification agentNotification = new AgentNotification();
+
+
+//        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
+
         agentNotification.agentAddEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
             @Override
             public void onChanged(DeviceListItem deviceListItem) {
@@ -235,11 +237,7 @@ public class DeviceListFragment extends Fragment
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         System.out.println("Lista vazia?" + " " + deviceList.isEmpty());
-        if (deviceList.isEmpty()) {
-            noDevices.setVisibility(View.VISIBLE);
-        } else {
-            noDevices.setVisibility(View.INVISIBLE);
-        }
+        emptyListCheck();
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -257,6 +255,27 @@ public class DeviceListFragment extends Fragment
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        emptyListCheck();
+
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        else {
+            buildRecycleView(requireView());
+        }
+    }
+
+    public void emptyListCheck() {
+        if (deviceList.isEmpty()) {
+            noDevices.setVisibility(View.VISIBLE);
+        } else {
+            noDevices.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
