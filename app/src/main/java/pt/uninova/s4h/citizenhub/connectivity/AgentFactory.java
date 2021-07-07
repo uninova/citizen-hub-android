@@ -126,8 +126,8 @@ public class AgentFactory {
 
                             String name = connection.getDevice().getName();
                             System.out.println("ONCHANGED NAME" + "" + name);
-                            AgentNotification agentNotification = new AgentNotification();
-                            agentNotification.agentAddEvent(new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null));
+//                            AgentNotification agentNotification = new AgentNotification();
+//                            agentNotification.agentAddEvent(new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null));
 //                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
 //                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
 //                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&

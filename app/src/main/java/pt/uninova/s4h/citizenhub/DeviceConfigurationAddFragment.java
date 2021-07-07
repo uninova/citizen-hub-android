@@ -28,7 +28,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
             agentOrchestrator.addDeviceToMap(model.getSelectedDevice().getValue());
             model.apply();
-            progressBar.setVisibility(View.VISIBLE);
+//            progressBar.setVisibility(View.VISIBLE);
             connectDevice.setText("Please wait...");
             //   setFeaturesState(model.getSelectedAgent(requireActivity()));
             saveFeaturesChosen();
