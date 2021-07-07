@@ -99,7 +99,7 @@ public class HexoSkinAgent extends BluetoothAgent {
     public void disableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case HEART_RATE:
-                getProtocol(HexoSkinHeartRateProtocol.ID).enable();
+                getProtocol(HexoSkinHeartRateProtocol.ID).disable();
                 break;
             case RESPIRATION_RATE:
             case INSPIRATION:

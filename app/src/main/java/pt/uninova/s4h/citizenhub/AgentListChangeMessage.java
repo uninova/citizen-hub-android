@@ -4,7 +4,7 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
-public class AgentListChangeMessage<A> {
+public class AgentListChangeMessage {
 
     final private List<Device> deviceList;
 
@@ -12,7 +12,7 @@ public class AgentListChangeMessage<A> {
         this.deviceList = devices;
     }
 
-    public <A> List<Device> getDeviceList() {
+    public List<Device> getDeviceList() {
         return deviceList;
     }
 }

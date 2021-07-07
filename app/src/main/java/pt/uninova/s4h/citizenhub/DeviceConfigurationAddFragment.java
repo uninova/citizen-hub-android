@@ -14,7 +14,6 @@ import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
@@ -26,10 +25,10 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         loadFeatureState();
         connectDevice.setOnClickListener(v -> {
             AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
-            agentOrchestrator.addDeviceToMap(model.getSelectedDevice().getValue());
+            agentOrchestrator.addDevice(model.getSelectedDevice().getValue());
             model.apply();
 //            progressBar.setVisibility(View.VISIBLE);
-            connectDevice.setText("Please wait...");
+//            connectDevice.setText("Please wait...");
             //   setFeaturesState(model.getSelectedAgent(requireActivity()));
             saveFeaturesChosen();
 //            ProgressButton progressButton = new ProgressButton(getContext(), v);

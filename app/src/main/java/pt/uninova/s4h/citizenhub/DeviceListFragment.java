@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
@@ -122,7 +123,7 @@ public class DeviceListFragment extends Fragment
 
             }
         }
-
+        Activity activity = requireActivity();
         ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
             System.out.println("AGENT_TAMANHO" + "-----------------------------------" + value.getDeviceList().size());
             System.out.println(" DEVICE_LIST_TAMANHO" + "-----------------------------------" + deviceList.size());
@@ -131,12 +132,7 @@ public class DeviceListFragment extends Fragment
                 deviceList.add(new DeviceListItem(device));
             }
 
-            requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
+            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
 
         });
 //                listLiveData.getValue().add(new DeviceListItem(device));

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.AgentListChangeMessage;
-import pt.uninova.s4h.citizenhub.AgentListEvent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -45,20 +44,18 @@ AgentOrchestrator {
     private final AgentFactory agentFactory;
     private List<Agent> agentList;
     private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
-    private final Dispatcher<AgentListChangeMessage<AgentListEvent>> eventMessageDispatcher;
-    private final AgentListEvent agentListEvent;
+    private final Dispatcher<AgentListChangeMessage> eventMessageDispatcher;
     private List<Device> devices;
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
         devices = new ArrayList<>();
         //TODO ao criar um agent mete o device na db
-        agentListEvent = new AgentListEvent(getDevicesFromMap());
         deviceRepository = new DeviceRepository(service.getApplication());
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
-        eventMessageDispatcher = new Dispatcher<AgentListChangeMessage<AgentListEvent>>();
+        eventMessageDispatcher = new Dispatcher<>();
         System.out.println("qualquercoisa");
         deviceRepository.obtainAll(value -> {
             for (Device i : value
@@ -170,38 +167,37 @@ AgentOrchestrator {
         return null;
     }
 
-    public void addAgentEventListener(Observer<AgentListChangeMessage<AgentListEvent>> listener) {
+    public void addAgentEventListener(Observer<AgentListChangeMessage> listener) {
         eventMessageDispatcher.getObservers().add(listener);
     }
 
     private void agentEventNotification(List<Device> deviceList) {
-        eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(deviceList));
+        eventMessageDispatcher.dispatch(new AgentListChangeMessage(deviceList));
     }
 
 
     //addAgentListObserver
 
-    public void addDeviceToMap(Device device) {
-
-
+    public void addDevice(Device device) {
+        deviceAgentMap.put(device, null);
+        devices = getDevicesFromMap();
+        eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
         agentFactory.create(ConnectionKind.find(device.getConnectionKind()), agent -> {
             agent.enable();
-            devices = getDevicesFromMap();
-            devices.add(device);
-            agentEventNotification(devices);
-            eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(devices));
             deviceAgentMap.put(device, agent);
+            devices = getDevicesFromMap();
         }, device);
+
     }
 
     public void deleteDeviceFromMap(Device device) {
+        Agent agent = deviceAgentMap.get(device);
+        deviceAgentMap.remove(device);
+        agent.disable();
+        agent.getObservers().clear();
+        //TODO fazer close
         devices = getDevicesFromMap();
-        devices.remove(device);
-
-        agentEventNotification(devices);
-        eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(devices));
-        agentFactory.destroy(ConnectionKind.BLUETOOTH, Agent::disable, device);
-        getDeviceAgentMap().remove(device);
+        eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
     }
 
     public List<MeasurementKind> getSupportedFeatures(Device device) {
