@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,9 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -34,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.AgentNotification;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
@@ -55,7 +53,8 @@ public class DeviceListFragment extends Fragment
     public static MutableLiveData<DeviceListItem> asd;
     private DeviceViewModel model;
     Device device;
-    private LiveData<List<DeviceListItem>> listLiveData;
+    private MutableLiveData<List<DeviceListItem>> listLiveData;
+//    private Dispatcher<StateChangedMessage<AgentListEvent>> eventMessageDispatcher;
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
@@ -80,8 +79,13 @@ public class DeviceListFragment extends Fragment
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
         deviceList = new ArrayList<>();
-        cleanList();
-        System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+//        cleanList();
+        System.out.println("ONCREATEEEEEEEEEEEEEEEEEE");
+
+        System.out.println(" DEVICE_LIST_TAMANHO" + "..........................." + deviceList.size());
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+//        eventMessageDispatcher = new Dispatcher<>();
 
         //        asd = new
 //        asd.observe(this, new Observer<DeviceListItem>() {
@@ -102,57 +106,86 @@ public class DeviceListFragment extends Fragment
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
+//        listLiveData= new MutableLiveData<>();
         if (adapter == null) {
             buildRecycleView(result);
         }
-        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
+
+        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
+
+
             System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
             ) {
-//                model.setDevice(device);
-//                model.apply();
-                System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
+                deviceList.add(new DeviceListItem(device));
+                adapter.notifyDataSetChanged();
 
-                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-                System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
-                if (adapter != null) // it works second time and later
-                    adapter.notifyDataSetChanged();
             }
         }
 
-        AgentNotification agentNotification = new AgentNotification();
+        ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
+            System.out.println("AGENT_TAMANHO" + "-----------------------------------" + value.getDeviceList().size());
+            System.out.println(" DEVICE_LIST_TAMANHO" + "-----------------------------------" + deviceList.size());
+            deviceList.clear();
+            for (Device device : value.getDeviceList()) {
+                deviceList.add(new DeviceListItem(device));
+            }
+
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        });
+//                listLiveData.getValue().add(new DeviceListItem(device));
+//
+//
+////                listLiveData.postValue(deviceList);
+////                model.setDevice(device);
+////                model.apply();
+//                    System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
+//
+//                    deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
+//                    System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
+//                    if (adapter != null) // it works second time and later
+//                        adapter.notifyDataSetChanged();
+//                }
+//            }
+
+//            AgentNotification agentNotification = new AgentNotification();
 
 
 //        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-
-        agentNotification.agentAddEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
-            @Override
-            public void onChanged(DeviceListItem deviceListItem) {
-                if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
-                    device = deviceListItem.getDevice();
-                    deviceList.add(new DeviceListItem(device));
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-
-        agentNotification.agentRemoveEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
-            @Override
-            public void onChanged(DeviceListItem deviceListItem) {
-                if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
-                    device = deviceListItem.getDevice();
-                    deviceList.remove(new DeviceListItem(device));
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
+//
+//            agentNotification.agentAddEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
+//                @Override
+//                public void onChanged(DeviceListItem deviceListItem) {
+//                    if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
+//                        device = deviceListItem.getDevice();
+//                        deviceList.add(new DeviceListItem(device));
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                }
+//            });
+//
+//            agentNotification.agentRemoveEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
+//                @Override
+//                public void onChanged(DeviceListItem deviceListItem) {
+//                    if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
+//                        device = deviceListItem.getDevice();
+//                        deviceList.remove(new DeviceListItem(device));
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                }
+//            });
 
 
         //TODO não aceder à db, ir buscar ao Orchestrator
 //        cleanList();
         System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
-
+        buildRecycleView(result);
         setHasOptionsMenu(false); //shows Action Bar menu button
 
         searchDevices.setOnClickListener(new View.OnClickListener() {
@@ -193,17 +226,14 @@ public class DeviceListFragment extends Fragment
                     //TODO this is only showing bluetooth when both selected, because the search is not yet combined
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
                     dialog.dismiss();
-                }
-                else if (bluetoothButton.isChecked()){
+                } else if (bluetoothButton.isChecked()) {
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
                     dialog.dismiss();
-                }
-                else if (wearOSButton.isChecked()) {
+                } else if (wearOSButton.isChecked()) {
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment());
 
                     dialog.dismiss();
-                }
-                else {
+                } else {
                     //does nothing, nothing was selected
                 }
             }
@@ -227,7 +257,7 @@ public class DeviceListFragment extends Fragment
 
     private void buildRecycleView(View result) {
         recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-//        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
         System.out.println("TAMANHO DEVICE LIST 3" + deviceList.size());
@@ -266,6 +296,13 @@ public class DeviceListFragment extends Fragment
         else {
             buildRecycleView(requireView());
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     public void emptyListCheck() {

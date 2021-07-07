@@ -106,6 +106,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public boolean isDevicePaired(Device device) {
+        //TODO ir buscar ao orchestrator
         List<Device> pairedDevices = deviceList;
         if (pairedDevices != null) {
             return deviceList.contains(device);
@@ -143,11 +144,12 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void apply() {
         deviceRepository.add(device.getValue());
+        deviceList.add(device.getValue());
     }
 
     public void delete(Device device) {
         deviceRepository.remove(device);
-
+        deviceList.remove(device);
         //TODO
     }
 }

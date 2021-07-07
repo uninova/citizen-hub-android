@@ -1,11 +1,14 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pt.uninova.s4h.citizenhub.AgentListChangeMessage;
+import pt.uninova.s4h.citizenhub.AgentListEvent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -17,6 +20,8 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
+import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.util.messaging.Observer;
 
 public class
 AgentOrchestrator {
@@ -40,24 +45,32 @@ AgentOrchestrator {
     private final AgentFactory agentFactory;
     private List<Agent> agentList;
     private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
-
-    //TODO ao criar um agent mete o device na db
+    private final Dispatcher<AgentListChangeMessage<AgentListEvent>> eventMessageDispatcher;
+    private final AgentListEvent agentListEvent;
+    private List<Device> devices;
 
     public AgentOrchestrator(CitizenHubService service) {
         this.service = service;
+        devices = new ArrayList<>();
+        //TODO ao criar um agent mete o device na db
+        agentListEvent = new AgentListEvent(getDevicesFromMap());
         deviceRepository = new DeviceRepository(service.getApplication());
         featureRepository = new FeatureRepository(service.getApplication());
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
+        eventMessageDispatcher = new Dispatcher<AgentListChangeMessage<AgentListEvent>>();
         System.out.println("qualquercoisa");
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
                 System.out.println("Antes create" + deviceAgentMap.size());
 //                agentListener.OnConnectingDevice(i);
+
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
+                    devices.add(i);
+                    agentEventNotification(devices);
                     System.out.println("TAMANHO DEVICE AGENT MAP" + deviceAgentMap.size());
                     featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                         for (MeasurementKind measurementKind : measurementKinds
@@ -157,14 +170,36 @@ AgentOrchestrator {
         return null;
     }
 
+    public void addAgentEventListener(Observer<AgentListChangeMessage<AgentListEvent>> listener) {
+        eventMessageDispatcher.getObservers().add(listener);
+    }
+
+    private void agentEventNotification(List<Device> deviceList) {
+        eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(deviceList));
+    }
+
+
+    //addAgentListObserver
+
     public void addDeviceToMap(Device device) {
+
+
         agentFactory.create(ConnectionKind.find(device.getConnectionKind()), agent -> {
             agent.enable();
+            devices = getDevicesFromMap();
+            devices.add(device);
+            agentEventNotification(devices);
+            eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(devices));
             deviceAgentMap.put(device, agent);
         }, device);
     }
 
     public void deleteDeviceFromMap(Device device) {
+        devices = getDevicesFromMap();
+        devices.remove(device);
+
+        agentEventNotification(devices);
+        eventMessageDispatcher.dispatch(new AgentListChangeMessage<AgentListEvent>(devices));
         agentFactory.destroy(ConnectionKind.BLUETOOTH, Agent::disable, device);
         getDeviceAgentMap().remove(device);
     }
@@ -182,11 +217,11 @@ AgentOrchestrator {
         return deviceAgentMap;
     }
 
-    public Set<Device> getDevicesFromMap() {
+    public List<Device> getDevicesFromMap() {
         System.out.println("Sized" + " " + deviceAgentMap.size());
-//        List<Device> devicesList = new ArrayList<>();
-//        deviceAgentMap.forEach((device, agent) -> devicesList.add(device));
-        return deviceAgentMap.keySet();
+        List<Device> deviceMap = new ArrayList<>();
+        deviceAgentMap.forEach((device, agent) -> deviceMap.add(device));
+        return deviceMap;
     }
 
     public static UUIDv5 namespaceGenerator() {
