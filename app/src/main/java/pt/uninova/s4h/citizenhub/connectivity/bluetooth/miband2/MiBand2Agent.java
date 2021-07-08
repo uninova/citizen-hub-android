@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -99,6 +100,7 @@ public class MiBand2Agent extends BluetoothAgent {
         switch (measurementKind) {
             case HEART_RATE:
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(MiBand2HeartRateProtocol.ID)).getMeasurementObservers().clear();
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
@@ -106,6 +108,7 @@ public class MiBand2Agent extends BluetoothAgent {
             case CADENCE:
             case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(MiBand2DistanceProtocol.ID)).getMeasurementObservers().clear();
             default:
                 break;
         }
