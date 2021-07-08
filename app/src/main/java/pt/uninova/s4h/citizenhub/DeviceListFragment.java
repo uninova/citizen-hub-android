@@ -75,6 +75,7 @@ public class DeviceListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
         deviceList = new ArrayList<>();
+
         System.out.println("ONCREATEEEEEEEEEEEEEEEEEE");
 
         System.out.println(" DEVICE_LIST_TAMANHO" + "..........................." + deviceList.size());
@@ -97,11 +98,13 @@ public class DeviceListFragment extends Fragment {
         }
 
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
+            deviceList.clear();
 
 
             System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
             ) {
+
                 deviceList.add(new DeviceListItem(device));
                 adapter.notifyDataSetChanged();
 
