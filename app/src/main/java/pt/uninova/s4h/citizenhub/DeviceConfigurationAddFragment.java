@@ -26,6 +26,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         connectDevice.setOnClickListener(v -> {
             AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
             agentOrchestrator.addDevice(model.getSelectedDevice().getValue());
+
             model.apply();
 //            progressBar.setVisibility(View.VISIBLE);
 //            connectDevice.setText("Please wait...");
@@ -34,16 +35,10 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 //            ProgressButton progressButton = new ProgressButton(getContext(), v);
 //            progressButton.StartProgress();
 //            Handler handler = new Handler();
+
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
         });
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
-//
-//                }
-//            }, 10000);
-//        });
+
 
         return view;
 

@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -101,11 +102,13 @@ public class DeviceConfigurationFragment extends Fragment {
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             System.out.println(i + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive());
             if (((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive()) {
-                assert model.getSelectedDevice() != null;
                 System.out.println(i);
 //                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
                 //                featureViewModel.setFeature(new Feature(device.getAddress(),featuresList.get(i).getMeasurementKind()));
-                model.apply((new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind())));
+
+
+                model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
+
             } else {
                 assert model.getSelectedDevice() != null;
                 System.out.println(i + " " + "not checked");
@@ -120,18 +123,28 @@ public class DeviceConfigurationFragment extends Fragment {
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             if (((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive()) {
                 //update
-                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
+//                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
+//                agentOrchestrator.enableMeasurement(model.getSelectedDevice().getValue(),((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
 
 //                model.getSelectedAgent(requireActivity()).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
+                agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue()).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
+
                 assert model.getSelectedDevice() != null;
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
             } else {
                 //              model.getSelectedAgent(requireActivity()).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
                 assert model.getSelectedDevice() != null;
+
                 Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
             }
         }
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                agentOrchestrator.enableObservers(model.getSelectedDevice().getValue());
+            }
+        });
     }
 
     @Override
