@@ -85,14 +85,12 @@ public class WearOSAgent extends AbstractAgent {
             case HEART_RATE:
                 setState(AgentState.ENABLED);
                 getProtocol(WearOSHeartRateProtocol.ID).disable();
-                break;
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
                 setState(AgentState.ENABLED);
                 getProtocol(WearOSStepsProtocol.ID).disable();
-                break;
             default:
                 break;
         }

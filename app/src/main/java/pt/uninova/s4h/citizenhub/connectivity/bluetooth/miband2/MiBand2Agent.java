@@ -87,7 +87,7 @@ public class MiBand2Agent extends BluetoothAgent {
 //                }
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
-            case ACTIVITY:
+                case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
@@ -97,6 +97,7 @@ public class MiBand2Agent extends BluetoothAgent {
 //                    auth.enable();
 //                }
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
+                break;
             default:
                 break;
         }
@@ -112,7 +113,6 @@ public class MiBand2Agent extends BluetoothAgent {
 //                    auth.enable();
 //                }
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
-                break;
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
@@ -126,6 +126,7 @@ public class MiBand2Agent extends BluetoothAgent {
             default:
                 break;
         }
+
     }
 
     @Override
