@@ -37,32 +37,12 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-public class DeviceListFragment extends Fragment
-//        implements AgentListener
-{
+public class DeviceListFragment extends Fragment {
 
-
-    private RecyclerView recyclerView;
-    private DeviceListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<DeviceListItem> deviceList;
-    private Application app;
-    private View resultView;
     public static Device deviceForSettings;
-    private Button searchDevices;
-    TextView noDevices;
     public static MutableLiveData<DeviceListItem> asd;
-    private DeviceViewModel model;
+    TextView noDevices;
     Device device;
-    private MutableLiveData<List<DeviceListItem>> listLiveData;
-//    private Dispatcher<StateChangedMessage<AgentListEvent>> eventMessageDispatcher;
-
-    @Override
-    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_device_list, menu);
-    }
-
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -74,28 +54,33 @@ public class DeviceListFragment extends Fragment
             int position = viewHolder.getAdapterPosition();
         }
     };
+    private RecyclerView recyclerView;
+    private DeviceListAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<DeviceListItem> deviceList;
+    private Application app;
+    private View resultView;
+    private Button searchDevices;
+    private DeviceViewModel model;
+    private MutableLiveData<List<DeviceListItem>> listLiveData;
+
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_device_list, menu);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
         deviceList = new ArrayList<>();
-//        cleanList();
         System.out.println("ONCREATEEEEEEEEEEEEEEEEEE");
 
         System.out.println(" DEVICE_LIST_TAMANHO" + "..........................." + deviceList.size());
         if (adapter != null)
             adapter.notifyDataSetChanged();
-//        eventMessageDispatcher = new Dispatcher<>();
 
-        //        asd = new
-//        asd.observe(this, new Observer<DeviceListItem>() {
-//            @Override
-//            public void onChanged(DeviceListItem deviceListItem) {
-//            deviceList.add(deviceListItem);
-//            adapter.notifyDataSetChanged();
-//            }
-//        });
     }
 
     @Override
@@ -107,7 +92,6 @@ public class DeviceListFragment extends Fragment
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-//        listLiveData= new MutableLiveData<>();
         if (adapter == null) {
             buildRecycleView(result);
         }
@@ -135,51 +119,8 @@ public class DeviceListFragment extends Fragment
             activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
 
         });
-//                listLiveData.getValue().add(new DeviceListItem(device));
-//
-//
-////                listLiveData.postValue(deviceList);
-////                model.setDevice(device);
-////                model.apply();
-//                    System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
-//
-//                    deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-//                    System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
-//                    if (adapter != null) // it works second time and later
-//                        adapter.notifyDataSetChanged();
-//                }
-//            }
-
-//            AgentNotification agentNotification = new AgentNotification();
-
-
-//        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-//
-//            agentNotification.agentAddEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
-//                @Override
-//                public void onChanged(DeviceListItem deviceListItem) {
-//                    if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
-//                        device = deviceListItem.getDevice();
-//                        deviceList.add(new DeviceListItem(device));
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }
-//            });
-//
-//            agentNotification.agentRemoveEvent(device).observe(getViewLifecycleOwner(), new Observer<DeviceListItem>() {
-//                @Override
-//                public void onChanged(DeviceListItem deviceListItem) {
-//                    if (deviceListItem.getDevice() != null && deviceListItem.getAddress() != null) {
-//                        device = deviceListItem.getDevice();
-//                        deviceList.remove(new DeviceListItem(device));
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }
-//            });
-
 
         //TODO não aceder à db, ir buscar ao Orchestrator
-//        cleanList();
         System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
         buildRecycleView(result);
         setHasOptionsMenu(false); //shows Action Bar menu button
@@ -208,12 +149,10 @@ public class DeviceListFragment extends Fragment
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_connection);
 
-        //initialize Views and Buttons
         Switch wearOSButton = dialog.findViewById(R.id.wearOSButton);
         Switch bluetoothButton = dialog.findViewById(R.id.bluetoothButton);
         Button submitButton = dialog.findViewById(R.id.submitButton);
 
-        //submitting selection
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -276,8 +215,6 @@ public class DeviceListFragment extends Fragment
             public void onSettingsClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
-                /*deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);*/
             }
         });
     }
@@ -312,16 +249,7 @@ public class DeviceListFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       /* if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            new AlertDialog.Builder(getContext())
-                    .setMessage("Please select one method of connection compatible with your device.")
-                    .setTitle("Method of Connection")
-                    .setPositiveButton("Bluetooth", (paramDialogInterface, paramInt) ->
-                        Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
-                    .setNegativeButton("Wear OS", (paramDialogInterface, paramInt) ->
-                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
-                    .show();
-        }*/
+
         return super.onOptionsItemSelected(item);
     }
 

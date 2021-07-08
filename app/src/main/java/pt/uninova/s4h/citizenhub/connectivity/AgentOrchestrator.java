@@ -83,6 +83,10 @@ AgentOrchestrator {
         });
     }
 
+    public static UUIDv5 namespaceGenerator() {
+        return NAMESPACE_GENERATOR;
+    }
+
     public List<MeasurementKind> getSupportedFeatures(String device_name) {
         if (device_name != null && device_name.equals("HX-00043494")) {
             return new HexoSkinAgent().getSupportedMeasurements();
@@ -95,18 +99,6 @@ AgentOrchestrator {
 
     public void addAgentEventListener(Observer<AgentListChangeMessage> listener) {
         eventMessageDispatcher.getObservers().add(listener);
-    }
-
-    private void agentEventNotification(List<Device> deviceList) {
-        eventMessageDispatcher.dispatch(new AgentListChangeMessage(deviceList));
-    }
-
-
-    //addAgentListObserver
-
-    public void enableProtocol(Device device, Protocol protocol) {
-
-        Objects.requireNonNull(deviceAgentMap.get(device)).getProtocol(protocol.getId()).enable();
     }
 
     public void addDevice(Device device) {
@@ -167,7 +159,6 @@ AgentOrchestrator {
         return getSupportedFeatures(device.getName());
     }
 
-
     public List<Feature> getEnabledFeatures(Device device) {
         return getEnabledFeatures(device);
     }
@@ -176,16 +167,11 @@ AgentOrchestrator {
         return deviceAgentMap;
     }
 
-
     public List<Device> getDevicesFromMap() {
         System.out.println("Sized" + " " + deviceAgentMap.size());
         List<Device> deviceMap = new ArrayList<>();
         deviceAgentMap.forEach((device, agent) -> deviceMap.add(device));
         return deviceMap;
-    }
-
-    public static UUIDv5 namespaceGenerator() {
-        return NAMESPACE_GENERATOR;
     }
 
     private void trimAgents(Set<Device> devices) {

@@ -62,9 +62,6 @@ public class MiBand2Agent extends BluetoothAgent {
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
                 setState(AgentState.ENABLED);
-                //TODO tirar
-//                getProtocol(MiBand2HeartRateProtocol.ID).enable();
-//                getProtocol(MiBand2DistanceProtocol.ID).enable();
             }
         });
 
@@ -78,40 +75,29 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
-//        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection());
 
         switch (measurementKind) {
             case HEART_RATE:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
-                case ACTIVITY:
+            case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
             case CADENCE:
             case CALORIES:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
                 break;
             default:
                 break;
         }
 
-        //    public void enable(MeasurementKind) {}
     }
 
     @Override
     public void disableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case HEART_RATE:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
             case ACTIVITY:
             case STEPS:
@@ -119,9 +105,6 @@ public class MiBand2Agent extends BluetoothAgent {
             case DISTANCE:
             case CADENCE:
             case CALORIES:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2DistanceProtocol.ID).disable();
             default:
                 break;

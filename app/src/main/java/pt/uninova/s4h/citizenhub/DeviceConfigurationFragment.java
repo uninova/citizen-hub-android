@@ -31,8 +31,6 @@ public class DeviceConfigurationFragment extends Fragment {
     protected List<FeatureListItem> featuresList;
     private AgentOrchestrator agentOrchestrator;
     private DeviceViewModel model;
-    //    private MutableLiveData<List<MeasurementKind>> enabledFeatures;
-
 
     protected void setupViews(View result) {
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
@@ -56,26 +54,8 @@ public class DeviceConfigurationFragment extends Fragment {
         return model.getEnabledFeatures(((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator());
     }
 
-//    protected List<FeatureListItem> setEnabledFeatures(){
-//        for (FeatureListItem feature:getEnabledFeatures()
-//             ) {
-//            if(featuresList.contains(feature)){
-//                featuresList.get(featuresList.indexOf(feature)).setActive(true);
-//            }
-//
-//        }
-//        return featuresList;
-//    }
-
 
     public void setListViewFeaturesAdapter() {
-//        List<Feature> featureListItems = model.getAll().getValue();
-//        for(int i =0;i<listViewFeatures.getAdapter().getCount();i++){
-//                if(featureList.contains(((FeatureListItem) listViewFeatures.getAdapter()).getMeasurementKind())){
-//
-//                }
-//            }
-//        }
 
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getEnabledFeatures());
         listViewFeatures.setAdapter(adapter);
@@ -83,13 +63,6 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void loadFeatureState() {
-//            List<Feature> featureListItem = new LinkedList<>();
-//            featureListItem.addAll(model.getAll().getValue());
-//            for(int i =0;i<featureListItem.size();i++)
-//            if(featureListItem.contains( ((FeatureListItem) listViewFeatures.getAdapter()).getMeasurementKind())) {
-//                ((FeatureListItem) listViewFeatures.getAdapter()).setActive(true);
-//                listViewFeatures.getAdapter()
-//            }
 
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
         listViewFeatures.setAdapter(adapter);
@@ -97,15 +70,11 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
 
-
     protected void saveFeaturesChosen() {
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             System.out.println(i + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive());
             if (((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive()) {
                 System.out.println(i);
-//                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
-                //                featureViewModel.setFeature(new Feature(device.getAddress(),featuresList.get(i).getMeasurementKind()));
-
 
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
 
@@ -114,7 +83,6 @@ public class DeviceConfigurationFragment extends Fragment {
                 System.out.println(i + " " + "not checked");
 
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
-//                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
             }
         }
     }
@@ -122,17 +90,12 @@ public class DeviceConfigurationFragment extends Fragment {
     protected void setFeaturesState() {
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
             if (((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive()) {
-                //update
-//                Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
-//                agentOrchestrator.enableMeasurement(model.getSelectedDevice().getValue(),((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
 
-//                model.getSelectedAgent(requireActivity()).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
                 agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue()).enableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
 
                 assert model.getSelectedDevice() != null;
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
             } else {
-                //              model.getSelectedAgent(requireActivity()).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
                 assert model.getSelectedDevice() != null;
 
                 Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());

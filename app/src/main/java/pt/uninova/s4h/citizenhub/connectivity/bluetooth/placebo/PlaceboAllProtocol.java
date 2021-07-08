@@ -1,15 +1,16 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.placebo;
 
 import android.os.Handler;
+
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
 
 import static android.os.Looper.getMainLooper;
 

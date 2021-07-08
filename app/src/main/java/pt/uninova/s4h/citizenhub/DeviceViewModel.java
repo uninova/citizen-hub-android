@@ -24,12 +24,11 @@ import pt.uninova.util.messaging.Observer;
 
 public class DeviceViewModel extends AndroidViewModel {
     private final MutableLiveData<Device> device;
-    private List<Device> deviceList;
     final private DeviceRepository deviceRepository;
-
     private final MutableLiveData<Feature> feature;
     private final LiveData<List<Feature>> featureList;
     final private FeatureRepository featureRepository;
+    private List<Device> deviceList;
 
     public DeviceViewModel(Application application) {
         super(application);
@@ -121,7 +120,6 @@ public class DeviceViewModel extends AndroidViewModel {
     public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {
         Agent agent = agentOrchestrator.getDeviceAgentMap().get(device.getValue());
 
-//        Agent agent = ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue());
         if (agent == null) throw new NullPointerException();
         return agent;
     }

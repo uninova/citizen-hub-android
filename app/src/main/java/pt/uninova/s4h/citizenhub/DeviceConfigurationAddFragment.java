@@ -28,13 +28,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             agentOrchestrator.addDevice(model.getSelectedDevice().getValue());
 
             model.apply();
-//            progressBar.setVisibility(View.VISIBLE);
-//            connectDevice.setText("Please wait...");
-            //   setFeaturesState(model.getSelectedAgent(requireActivity()));
+
             saveFeaturesChosen();
-//            ProgressButton progressButton = new ProgressButton(getContext(), v);
-//            progressButton.StartProgress();
-//            Handler handler = new Handler();
 
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
         });

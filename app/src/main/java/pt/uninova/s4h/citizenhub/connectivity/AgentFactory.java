@@ -100,7 +100,6 @@ public class AgentFactory {
 //                    } catch (Exception e) {
 //                        e.printStackTrace();
                 }
-//                }
             }
         });
     }
@@ -124,8 +123,7 @@ public class AgentFactory {
 
                             String name = connection.getDevice().getName();
                             System.out.println("ONCHANGED NAME" + "" + name);
-//                            AgentNotification agentNotification = new AgentNotification();
-//                            agentNotification.agentAddEvent(new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null));
+
 //                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
 //                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
 //                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
@@ -138,18 +136,10 @@ public class AgentFactory {
                             } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                                 observer.onChanged(new KbzPostureAgent(connection));
                             }
-//                        try {
-
-
-//                            deviceRepository.add(new Device(device.getName(), address, ConnectionKind.BLUETOOTH.getId(), null));
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
                         }
                     }
                 });
                 System.out.println("antes connect");
-//            BluetoothDevice device = bluetoothManager.getAdapter().getRemoteDevice(connection.getDevice().getAddress());
                 bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
                 System.out.println("depois connect");
 
@@ -158,53 +148,3 @@ public class AgentFactory {
         }
     }
 }
-
-
-//    public void create(Device device, Observer<Agent> observer) {
-//
-//        if (BluetoothAdapter.checkBluetoothAddress(device.getAddress()))
-//
-//        {
-//            final BluetoothConnection connection = new BluetoothConnection();
-//
-//            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
-//                @Override
-//                public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
-//                    if (value.getNewState() == BluetoothConnectionState.READY) {
-//                        connection.removeConnectionStateChangeListener(this);
-//
-//                        String name = connection.getDevice().getName();
-//
-//                        if (name != null && name.equals("HX-00043494")) {
-//                            observer.onChanged(new HexoSkinAgent(connection));
-//                        } else if (name != null && name.equals("MI Band 2")) {
-//                            observer.onChanged(new MiBand2Agent(connection));
-//                        } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
-//                            observer.onChanged(new KbzPostureAgent(connection));
-//                        }
-//                    }
-//                }
-//            });
-//
-//            bluetoothManager.getAdapter().getRemoteDevice(device.getAddress()).connectGatt(service, true, connection);
-//        }
-//        else //TODO could be other than wearOS
-//        {
-//            WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(device.getAddress(), service);
-//            wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState>>() {
-//                @Override
-//                public void onChanged(StateChangedMessage<WearOSConnectionState> value) {
-//                    if (value.getNewState() == WearOSConnectionState.READY) {
-//
-//                        wearOSConnection.removeConnectionStateChangeListener(this);
-//
-//                        String name = device.getName();
-//
-//                        if (name != null) {
-//                            observer.onChanged(new WearOSAgent(wearOSConnection));
-//                        }
-//                    }
-//                }
-//            });
-//        }
-//    }

@@ -26,18 +26,11 @@ public interface Agent {
     List<MeasurementKind> getSupportedMeasurements();
 
     void enableMeasurement(MeasurementKind measurementKind);
+
     void disableMeasurement(MeasurementKind measurementKind);
 
     AgentState getState();
 
     String getName();
 
-    //List<BluetoothGattService> getDeviceFeatures();
-
-    //getStateObserver para o agente - desligar   completamente o agente
-    //observer de measurementkind  e getMeasurementKindObserver
-
-
-    // Set/List<MeasurementKind> getsupportedMeasurements(MeasurementKind)
-    //enable/remove
 }
