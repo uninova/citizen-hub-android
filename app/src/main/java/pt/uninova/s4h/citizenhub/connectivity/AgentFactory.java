@@ -136,7 +136,7 @@ public class AgentFactory {
                                 observer.onChanged(new MiBand2Agent(connection));
                             } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                                 observer.onChanged(new KbzPostureAgent(connection));
-                            } else if (name.startsWith("UprightGo2")){
+                            } else if (name.startsWith("UprightGO2")){
                                 observer.onChanged(new UpRightGo2Agent(connection));
                             }
                         }

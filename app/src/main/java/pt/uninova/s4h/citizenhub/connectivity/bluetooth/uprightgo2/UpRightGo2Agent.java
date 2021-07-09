@@ -44,6 +44,9 @@ public class UpRightGo2Agent extends BluetoothAgent {
 
     @Override
     public void enable() {
+        if (getState() == AgentState.ENABLED)
+            return;
+
         UpRightGo2Protocol protocol = (UpRightGo2Protocol) getProtocol(UpRightGo2Protocol.ID);
 
         protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
@@ -71,12 +74,14 @@ public class UpRightGo2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
+        if (getState() == AgentState.ENABLED)
+            return;
         switch (measurementKind) {
             case GOOD_POSTURE:
             case BAD_POSTURE:
+                enable();
 
-                getProtocol(UpRightGo2Agent.ID).enable();
-            case UNKNOWN:
+                case UNKNOWN:
                 break;
             default:
                 break;

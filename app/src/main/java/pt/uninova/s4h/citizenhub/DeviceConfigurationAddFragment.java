@@ -5,11 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
@@ -19,24 +18,31 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         ProgressBar progressBar = view.findViewById(R.id.add_pprogressBar);
+        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
+        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         setupViews(view);
         setupText();
-        loadFeatureState();
-        connectDevice.setOnClickListener(v -> {
-            AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
-            agentOrchestrator.addDevice(model.getSelectedDevice().getValue());
 
-            model.apply();
+        model.createAgent(service, agent -> {
+            agentOrchestrator.add(model.getSelectedDevice().getValue(), agent);
 
-            saveFeaturesChosen();
+            requireActivity().runOnUiThread(() -> {
+                loadFeatureState();
+                connectDevice.setOnClickListener(v -> {
 
-            Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                    model.apply();
+
+                    saveFeaturesChosen();
+
+                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                });
+
+            });
         });
 
-
         return view;
-
     }
 }
 

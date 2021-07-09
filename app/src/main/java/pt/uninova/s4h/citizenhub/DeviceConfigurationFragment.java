@@ -107,12 +107,6 @@ public class DeviceConfigurationFragment extends Fragment {
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
             }
         }
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                agentOrchestrator.enableObservers(model.getSelectedDevice().getValue());
-            }
-        });
     }
 
     @Override
