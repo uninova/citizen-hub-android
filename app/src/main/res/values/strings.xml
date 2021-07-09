@@ -23,9 +23,7 @@
     <string name="menu_fragment_device_list_title">Search</string>
     <string name="menu_fragment_device_list_search_title">Search</string>
     <string name="fragment_summary_image_view_posture_content_description">TODO</string>
-
     <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s not OK</string>
-
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_image_view_distance_content_description">TODO</string>
     <string name="fragment_summary_image_view_steps_content_description">TODO</string>
@@ -155,4 +153,21 @@
     <string name="layout_list_item_feature_unknown_feature">unknown feature</string>
     <string name="layout_nav_header_main_poweredby">Powered By</string>
     <string name="layout_nav_header_main_logo_content_description">Smart 4 Health icon</string>
+    <string-array name="spinner_uprightgo2_interval">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="spinner_uprightgo2_pattern">
+        <item>Long</item>
+        <item>Medium</item>
+        <item>Short</item>
+        <item>Ramp up</item>
+        <item>Knock knock</item>
+        <item>Heartbeat</item>
+        <item>Tuk tuk</item>
+        <item>Ecstatic</item>
+        <item>Muzzle</item>
+    </string-array>
 </resources>

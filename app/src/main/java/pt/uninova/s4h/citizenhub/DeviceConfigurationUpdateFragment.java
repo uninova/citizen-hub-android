@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -19,6 +20,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         deleteDevice = view.findViewById(R.id.buttonDelete);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
+        advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
+        enableAdvancedConfigurations();
         AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
 
         setupViews(view);
@@ -28,7 +31,9 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             setFeaturesState();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
-
+        advancedDevice.setOnClickListener(v -> {
+            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment());
+        });
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 model.delete(model.getSelectedDevice().getValue());
@@ -38,6 +43,17 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         });
 
         return view;
+    }
+
+    //TODO change from device name to proper detection of the sensors with Advanced Settings
+    protected void enableAdvancedConfigurations()
+    {
+        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+        if(device.getName().equals("MI Band 2")) //miband just for testing, todo change this back to UprightGo2
+            advancedDevice.setVisibility(View.VISIBLE);
+        else
+            advancedDevice.setVisibility(View.GONE);
     }
 
 

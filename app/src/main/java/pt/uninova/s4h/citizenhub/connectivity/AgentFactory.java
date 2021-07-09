@@ -100,8 +100,8 @@ public class AgentFactory {
                         if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
                             System.out.println("HEXOSKINNNNN");
                             observer.onChanged(new HexoSkinAgent(connection));
-                        } else if ((connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
-                                connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) && name.startsWith("Mi")) {
+                        } else if (/*(connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
+                                connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) &&*/ name.startsWith("MI")) {
                             observer.onChanged(new MiBand2Agent(connection));
                         } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                             observer.onChanged(new KbzPostureAgent(connection));

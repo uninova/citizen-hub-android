@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
+import android.preference.PreferenceManager;
+
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
@@ -54,6 +56,7 @@ public class UpRightGo2Protocol extends BluetoothMeasuringProtocol {
     private MeasurementKind lastBodyPosition;
     private MeasurementKind lastPosture;
     private LocalDateTime lastTimestamp;
+    public Boolean vibration;
     /* this may be helpful for testing, otherwise ignore
     private byte[] vibrationAngle6= {0x06,0x2c,0x01,0x01,0x01,0x02,0x64,0x00};
      */
@@ -68,6 +71,7 @@ public class UpRightGo2Protocol extends BluetoothMeasuringProtocol {
         //setting up the vibration (initial), configure as needed
         //write
         connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC, vibrationON);
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC, vibrationOFF);
         connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
                 vibrationMessage(1, 5, true, 0, 3));
 
