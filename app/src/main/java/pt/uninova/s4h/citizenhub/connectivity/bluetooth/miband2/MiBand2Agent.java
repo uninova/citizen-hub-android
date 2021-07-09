@@ -76,6 +76,7 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
+        enable();
 
         switch (measurementKind) {
             case HEART_RATE:

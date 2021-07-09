@@ -60,6 +60,7 @@ AgentOrchestrator {
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
+                deviceAgentMap.put(i,null);
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);

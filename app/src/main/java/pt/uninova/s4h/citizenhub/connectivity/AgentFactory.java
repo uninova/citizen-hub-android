@@ -14,6 +14,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -135,6 +136,8 @@ public class AgentFactory {
                                 observer.onChanged(new MiBand2Agent(connection));
                             } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                                 observer.onChanged(new KbzPostureAgent(connection));
+                            } else if (name.startsWith("UprightGo2")){
+                                observer.onChanged(new UpRightGo2Agent(connection));
                             }
                         }
                     }

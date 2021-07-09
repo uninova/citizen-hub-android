@@ -191,7 +191,7 @@ public class DeviceSearchFragment extends Fragment {
 
             Device device = new Device(name, address, ConnectionKind.BLUETOOTH.getId(), null);
             if (!model.isDevicePaired(device)) {
-                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
+                deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
                 adapter.notifyItemInserted(0);
 //                adapter.updateResults(deviceList);
             }
