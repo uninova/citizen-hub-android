@@ -68,10 +68,12 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
+        getMeasurementObservers().clear();
     }
 
     @Override
     public void enable() {
+        setState(ProtocolState.ENABLED);
         getConnection().enableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 

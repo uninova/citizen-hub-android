@@ -126,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         if (Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.summary_fragment) {
             moveTaskToBack(false);
+        } else if ((Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.device_list_fragment)
+        ) {
+            moveTaskToBack(false);
         } else {
             navController.popBackStack();
         }

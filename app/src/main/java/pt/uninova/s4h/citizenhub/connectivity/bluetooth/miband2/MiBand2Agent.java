@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -62,9 +63,6 @@ public class MiBand2Agent extends BluetoothAgent {
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
                 setState(AgentState.ENABLED);
-                //TODO tirar
-//                getProtocol(MiBand2HeartRateProtocol.ID).enable();
-//                getProtocol(MiBand2DistanceProtocol.ID).enable();
             }
         });
 
@@ -78,13 +76,9 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
-//        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection());
 
         switch (measurementKind) {
             case HEART_RATE:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
@@ -93,39 +87,32 @@ public class MiBand2Agent extends BluetoothAgent {
             case DISTANCE:
             case CADENCE:
             case CALORIES:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
+                break;
             default:
                 break;
         }
 
-        //    public void enable(MeasurementKind) {}
     }
 
     @Override
     public void disableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case HEART_RATE:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
-                break;
+                ((MeasuringProtocol) getProtocol(MiBand2HeartRateProtocol.ID)).getMeasurementObservers().clear();
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
             case CADENCE:
             case CALORIES:
-//                if (auth.getState()==ProtocolState.DISABLED){
-//                    auth.enable();
-//                }
                 getProtocol(MiBand2DistanceProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(MiBand2DistanceProtocol.ID)).getMeasurementObservers().clear();
             default:
                 break;
         }
+
     }
 
     @Override

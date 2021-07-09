@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -83,6 +84,7 @@ public class HexoSkinAgent extends BluetoothAgent {
             case EXPIRATION:
                 getProtocol(HexoSkinRespirationProtocol.ID).enable();
                 break;
+
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
@@ -90,6 +92,7 @@ public class HexoSkinAgent extends BluetoothAgent {
             case CADENCE:
             case CALORIES:
                 getProtocol(HexoSkinAccelerometerProtocol.ID).enable();
+                break;
             default:
                 break;
         }
@@ -99,13 +102,16 @@ public class HexoSkinAgent extends BluetoothAgent {
     public void disableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case HEART_RATE:
-                getProtocol(HexoSkinHeartRateProtocol.ID).enable();
+                getProtocol(HexoSkinHeartRateProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(HexoSkinHeartRateProtocol.ID)).getMeasurementObservers().clear();
                 break;
             case RESPIRATION_RATE:
             case INSPIRATION:
             case EXPIRATION:
                 getProtocol(HexoSkinRespirationProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(HexoSkinRespirationProtocol.ID)).getMeasurementObservers().clear();
                 break;
+
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
@@ -113,6 +119,9 @@ public class HexoSkinAgent extends BluetoothAgent {
             case CADENCE:
             case CALORIES:
                 getProtocol(HexoSkinAccelerometerProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(HexoSkinAccelerometerProtocol.ID)).getMeasurementObservers().clear();
+                break;
+
             default:
                 break;
         }

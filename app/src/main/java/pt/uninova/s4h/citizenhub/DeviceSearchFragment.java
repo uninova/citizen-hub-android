@@ -59,9 +59,6 @@ public class DeviceSearchFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
-        // model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-        //We only to get device's on demand
-
         cleanList();
         buildRecycleView(result);
 

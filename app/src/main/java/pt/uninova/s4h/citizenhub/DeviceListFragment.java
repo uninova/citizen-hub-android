@@ -1,7 +1,9 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -36,25 +39,10 @@ import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private DeviceListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<DeviceListItem> deviceList;
-    private Application app;
-    private View resultView;
     public static Device deviceForSettings;
-    private Button searchDevices;
+    public static MutableLiveData<DeviceListItem> asd;
     TextView noDevices;
-
-    private DeviceViewModel model;
-
-
-    @Override
-    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_device_list, menu);
-    }
-
+    Device device;
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -66,15 +54,33 @@ public class DeviceListFragment extends Fragment {
             int position = viewHolder.getAdapterPosition();
         }
     };
+    private RecyclerView recyclerView;
+    private DeviceListAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<DeviceListItem> deviceList;
+    private Application app;
+    private View resultView;
+    private Button searchDevices;
+    private DeviceViewModel model;
+    private MutableLiveData<List<DeviceListItem>> listLiveData;
 
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_device_list, menu);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = requireActivity().getApplication();
         deviceList = new ArrayList<>();
-        cleanList();
-        System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+
+        System.out.println("ONCREATEEEEEEEEEEEEEEEEEE");
+
+        System.out.println(" DEVICE_LIST_TAMANHO" + "..........................." + deviceList.size());
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
 
     }
 
@@ -87,30 +93,39 @@ public class DeviceListFragment extends Fragment {
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        if (adapter == null) {
+            buildRecycleView(result);
+        }
 
-//        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size() > 0) {
+        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
+            deviceList.clear();
+
+
             System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
             ) {
-//                model.setDevice(device);
-//                model.apply();
-                System.out.println("TAMANHO DEVICE AGENT MAP" + ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap().size());
 
-                deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-                System.out.println("TAMANHO DEVICE LIST 1" + deviceList.size());
-                if (adapter != null) // it works second time and later
-                    adapter.notifyDataSetChanged();
-                else
-                    buildRecycleView(result);
-//                adapter.updateResults(deviceList);
+                deviceList.add(new DeviceListItem(device));
+                adapter.notifyDataSetChanged();
 
             }
         }
-        //TODO não aceder à db, ir buscar ao Orchestrator
-//        cleanList();
-        System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
+        Activity activity = requireActivity();
+        ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
+            System.out.println("AGENT_TAMANHO" + "-----------------------------------" + value.getDeviceList().size());
+            System.out.println(" DEVICE_LIST_TAMANHO" + "-----------------------------------" + deviceList.size());
+            deviceList.clear();
+            for (Device device : value.getDeviceList()) {
+                deviceList.add(new DeviceListItem(device));
+            }
 
+            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
+
+        });
+
+        //TODO não aceder à db, ir buscar ao Orchestrator
+        System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
+        buildRecycleView(result);
         setHasOptionsMenu(false); //shows Action Bar menu button
 
         searchDevices.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +152,10 @@ public class DeviceListFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_connection);
 
-        //initialize Views and Buttons
         Switch wearOSButton = dialog.findViewById(R.id.wearOSButton);
         Switch bluetoothButton = dialog.findViewById(R.id.bluetoothButton);
         Button submitButton = dialog.findViewById(R.id.submitButton);
 
-        //submitting selection
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,17 +164,14 @@ public class DeviceListFragment extends Fragment {
                     //TODO this is only showing bluetooth when both selected, because the search is not yet combined
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
                     dialog.dismiss();
-                }
-                else if (bluetoothButton.isChecked()){
+                } else if (bluetoothButton.isChecked()) {
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment());
                     dialog.dismiss();
-                }
-                else if (wearOSButton.isChecked()) {
+                } else if (wearOSButton.isChecked()) {
                     Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment());
 
                     dialog.dismiss();
-                }
-                else {
+                } else {
                     //does nothing, nothing was selected
                 }
             }
@@ -185,7 +195,7 @@ public class DeviceListFragment extends Fragment {
 
     private void buildRecycleView(View result) {
         recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-//        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
         System.out.println("TAMANHO DEVICE LIST 3" + deviceList.size());
@@ -195,11 +205,7 @@ public class DeviceListFragment extends Fragment {
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         System.out.println("Lista vazia?" + " " + deviceList.isEmpty());
-        if (deviceList.isEmpty()) {
-            noDevices.setVisibility(View.VISIBLE);
-        } else {
-            noDevices.setVisibility(View.INVISIBLE);
-        }
+        emptyListCheck();
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -212,26 +218,42 @@ public class DeviceListFragment extends Fragment {
             public void onSettingsClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
-                /*deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);*/
             }
         });
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-       /* if (item.getItemId() == R.id.menu_fragment_device_list_search) {
-            new AlertDialog.Builder(getContext())
-                    .setMessage("Please select one method of connection compatible with your device.")
-                    .setTitle("Method of Connection")
-                    .setPositiveButton("Bluetooth", (paramDialogInterface, paramInt) ->
-                        Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchFragment()))
-                    .setNegativeButton("Wear OS", (paramDialogInterface, paramInt) ->
-                            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceSearchWearosFragment()))
-                    .show();
-        }*/
-        return super.onOptionsItemSelected(item);
+    public void onResume() {
+        super.onResume();
+        emptyListCheck();
+
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        else {
+            buildRecycleView(requireView());
+        }
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
+    public void emptyListCheck() {
+        if (deviceList.isEmpty()) {
+            noDevices.setVisibility(View.VISIBLE);
+        } else {
+            noDevices.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

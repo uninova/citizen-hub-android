@@ -36,10 +36,12 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
+        getMeasurementObservers().clear();
     }
 
     @Override
     public void enable() {
+        setState(ProtocolState.ENABLED);
         getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }
 
