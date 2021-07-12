@@ -59,7 +59,7 @@ AgentOrchestrator {
             for (Device i : value
             ) {
                 deviceAgentMap.put(i,null);
-                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), agent -> {
+                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), i, agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
                     devices.add(i);
@@ -74,7 +74,7 @@ AgentOrchestrator {
                             }
                         }
                     });
-                }, i);
+                });
             }
             System.out.println("After create" + deviceAgentMap.size());
         });
@@ -106,12 +106,12 @@ AgentOrchestrator {
         deviceAgentMap.put(device, null);
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
-        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), agent -> {
+        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), device, agent -> {
             agent.enable();
             deviceAgentMap.put(device, agent);
             devices = getDevicesFromMap();
 
-        }, device);
+        });
 
     }
 

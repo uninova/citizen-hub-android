@@ -38,7 +38,7 @@ public class AgentFactory {
         deviceRepository = new DeviceRepository(service.getApplication());
     }
 
-    public void destroy(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
+    public void destroy(ConnectionKind connectionKind, Device device, Observer<Agent> observer) {
         switch (connectionKind) {
 
             case UNKNOWN:
@@ -69,15 +69,17 @@ public class AgentFactory {
     //deixar so 1 para cada protocolo e dar nome aos protocolo;
     // testar testar testar
 
-    //TODO roda dentada
+    //roda dentada
+
     //TODO CREATE COM DEVICE = NAO SABE O QUE É
     //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
     //TODO criar create que sabemos o que é com agentType +
+
     //TODO passar os observers sempre para o fim
 
     //usar so addresses
 //TODO nao saber o que é
-    public void create(ConnectionKind connectionKind, Observer<Agent> observer, Device device) {
+    public void create(ConnectionKind connectionKind, Device device, Observer<Agent> observer) {
 
         switch (connectionKind) {
 
