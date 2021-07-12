@@ -66,9 +66,7 @@ public class UpRightGo2Agent extends BluetoothAgent {
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
-        measurementKindList.add(MeasurementKind.BAD_POSTURE);
-
+        measurementKindList.add(MeasurementKind.POSTURE);
         return measurementKindList;
     }
 
@@ -77,8 +75,7 @@ public class UpRightGo2Agent extends BluetoothAgent {
         if (getState() == AgentState.ENABLED)
             return;
         switch (measurementKind) {
-            case GOOD_POSTURE:
-            case BAD_POSTURE:
+            case POSTURE:
                 enable();
 
                 case UNKNOWN:

@@ -45,11 +45,7 @@ public class PlaceboAgent extends BluetoothAgent {
 
         List<MeasurementKind> measurementKindList = new ArrayList<>();
         measurementKindList.add(MeasurementKind.HEART_RATE);
-        measurementKindList.add(MeasurementKind.DISTANCE);
         measurementKindList.add(MeasurementKind.ACTIVITY);
-        measurementKindList.add(MeasurementKind.STEPS);
-        measurementKindList.add(MeasurementKind.STEPS_PER_MINUTE);
-        measurementKindList.add(MeasurementKind.CALORIES);
 
         return measurementKindList;
     }
@@ -62,11 +58,6 @@ public class PlaceboAgent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
             default:
                 break;
