@@ -67,6 +67,8 @@ public class AgentFactory {
         }
     }
     //TODO deixar so 1 para cada protocolo e dar nome aos protocolos
+
+
     //TODO testar testar testar
     //TODO roda dentada
     //TODO CREATE COM DEVICE = NAO SABE O QUE É

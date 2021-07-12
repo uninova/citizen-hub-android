@@ -19,7 +19,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.distance");
-
+    final public static String name = MiBand2DistanceProtocol.class.getSimpleName();
     final public static UUID UUID_SERVICE = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
     final private static UUID UUID_CHARACTERISTIC_STEPS = UUID.fromString("00000007-0000-3512-2118-0009af100700");
 

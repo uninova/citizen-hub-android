@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
-import android.preference.PreferenceManager;
-
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
@@ -21,6 +19,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class UpRightGo2Protocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2.raw");
+    final public static String name = UpRightGo2Protocol.class.getSimpleName();
     final public static UUID MEASUREMENTS_SERVICE = UUID.fromString("0000bac0-0000-1000-8000-00805f9b34fb"); //bac0
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
     final private static UUID RAW_CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4

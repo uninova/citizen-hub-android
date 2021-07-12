@@ -2,7 +2,10 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 
 import android.os.Handler;
 import android.os.Looper;
-import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
+
+import java.util.Date;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
@@ -12,16 +15,10 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
-import static android.os.Looper.getMainLooper;
-
 public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
-
+    final public static String name = MiBand2HeartRateProtocol.class.getSimpleName();
     public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");

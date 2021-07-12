@@ -18,7 +18,7 @@ import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkin
 public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.respiration");
-
+    final public static String name = HexoSkinRespirationProtocol.class.getSimpleName();
     public static final UUID RESPIRATION_SERVICE_UUID = UUID.fromString("3b55c581-bc19-48f0-bd8c-b522796f8e24");
     public static final UUID RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("9bc730c3-8cc0-4d87-85bc-573d6304403c");
 
