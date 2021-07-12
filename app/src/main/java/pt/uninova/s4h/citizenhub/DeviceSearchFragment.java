@@ -227,6 +227,8 @@ public class DeviceSearchFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
+                model.setDevice(deviceList.get(position).getDevice());
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
             }
         });
     }
