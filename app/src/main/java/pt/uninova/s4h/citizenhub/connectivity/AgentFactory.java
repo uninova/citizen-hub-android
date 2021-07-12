@@ -68,7 +68,6 @@ public class AgentFactory {
     // passar os observers sempre para o fim
     //roda dentada
     //usar so addresses
-    //TODO CREATE COM DEVICE = NAO SABE O QUE É
     //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
     //TODO criar create que sabemos o que é com agentType +
 
