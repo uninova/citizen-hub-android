@@ -66,10 +66,9 @@ public class AgentFactory {
             e.printStackTrace();
         }
     }
-    //TODO deixar so 1 para cada protocolo e dar nome aos protocolos
+    //deixar so 1 para cada protocolo e dar nome aos protocolo;
+    // testar testar testar
 
-
-    //TODO testar testar testar
     //TODO roda dentada
     //TODO CREATE COM DEVICE = NAO SABE O QUE É
     //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
