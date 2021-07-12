@@ -97,14 +97,6 @@ public class AgentFactory {
 
                     wearOSConnection.removeConnectionStateChangeListener(this);
 
-//                    String name = device.getName();
-
-//                    if (name != null) {
-//                    try {
-//                        observer.onChanged(new WearOSAgent(wearOSConnection));
-//                        deviceRepository.add(new Device("wearOS", wearOSConnection.getAddress(), ConnectionKind.WEAROS.getId(), null));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
                 }
             }
         });
@@ -121,9 +113,6 @@ public class AgentFactory {
                     @Override
                     public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
 
-
-                        System.out.println("ONCHANGED" + " " + value.getNewState());
-
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
 
@@ -134,23 +123,20 @@ public class AgentFactory {
 //                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
 //                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
                             if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-                                System.out.println("HEXOSKINNNNN");
+
                                 observer.onChanged(new HexoSkinAgent(connection));
                             } else if (/*(connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
                                     connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) &&*/ name.startsWith("MI")) {
                                 observer.onChanged(new MiBand2Agent(connection));
                             } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
                                 observer.onChanged(new KbzPostureAgent(connection));
-                            } else if (name.startsWith("UprightGO2")){
+                            } else if (name.startsWith("UprightGO2")) {
                                 observer.onChanged(new UpRightGo2Agent(connection));
                             }
                         }
                     }
                 });
-                System.out.println("antes connect");
                 bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
-                System.out.println("depois connect");
-
             }
 
         }

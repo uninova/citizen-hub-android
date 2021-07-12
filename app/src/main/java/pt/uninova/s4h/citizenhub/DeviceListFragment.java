@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -42,7 +40,6 @@ public class DeviceListFragment extends Fragment {
     public static Device deviceForSettings;
     public static MutableLiveData<DeviceListItem> asd;
     TextView noDevices;
-    Device device;
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -58,11 +55,8 @@ public class DeviceListFragment extends Fragment {
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<DeviceListItem> deviceList;
-    private Application app;
-    private View resultView;
     private Button searchDevices;
     private DeviceViewModel model;
-    private MutableLiveData<List<DeviceListItem>> listLiveData;
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
@@ -73,12 +67,8 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = requireActivity().getApplication();
         deviceList = new ArrayList<>();
 
-        System.out.println("ONCREATEEEEEEEEEEEEEEEEEE");
-
-        System.out.println(" DEVICE_LIST_TAMANHO" + "..........................." + deviceList.size());
         if (adapter != null)
             adapter.notifyDataSetChanged();
 
@@ -87,7 +77,6 @@ public class DeviceListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
-        resultView = result;
 
         searchDevices = result.findViewById(R.id.searchButton);
         noDevices = result.findViewById(R.id.fragment_device_list_no_data);
@@ -100,20 +89,14 @@ public class DeviceListFragment extends Fragment {
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
             deviceList.clear();
 
-
-            System.out.println("ENTROUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
             for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
             ) {
-
                 deviceList.add(new DeviceListItem(device));
                 adapter.notifyDataSetChanged();
-
             }
         }
         Activity activity = requireActivity();
         ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
-            System.out.println("AGENT_TAMANHO" + "-----------------------------------" + value.getDeviceList().size());
-            System.out.println(" DEVICE_LIST_TAMANHO" + "-----------------------------------" + deviceList.size());
             deviceList.clear();
             for (Device device : value.getDeviceList()) {
                 deviceList.add(new DeviceListItem(device));
@@ -123,8 +106,6 @@ public class DeviceListFragment extends Fragment {
 
         });
 
-        //TODO não aceder à db, ir buscar ao Orchestrator
-        System.out.println("TAMANHO DEVICE LIST 2" + deviceList.size());
         buildRecycleView(result);
         setHasOptionsMenu(false); //shows Action Bar menu button
 
@@ -179,13 +160,6 @@ public class DeviceListFragment extends Fragment {
         dialog.show();
     }
 
-    private void onDeviceUpdate(List<Device> devices) {
-        cleanList();
-        for (Device device : devices) {
-            deviceList.add(new DeviceListItem(device, R.drawable.ic_watch, R.drawable.ic_settings));
-        }
-        buildRecycleView(resultView);
-    }
 
     private void cleanList() {
         deviceList = new ArrayList<>();
@@ -197,13 +171,11 @@ public class DeviceListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
-        System.out.println("TAMANHO DEVICE LIST 3" + deviceList.size());
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        System.out.println("Lista vazia?" + " " + deviceList.isEmpty());
         emptyListCheck();
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);

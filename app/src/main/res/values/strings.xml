@@ -153,6 +153,9 @@
     <string name="layout_list_item_feature_unknown_feature">unknown feature</string>
     <string name="layout_nav_header_main_poweredby">Powered By</string>
     <string name="layout_nav_header_main_logo_content_description">Smart 4 Health icon</string>
+    <string name="about_page_emailTo_string">helpdesk@smart4health.eu</string>
+    <string name="about_page_string_email_subject">CitizenHub: Issue Report</string>
+    <string name="about_page_email_Intent">Send mail…</string>
     <string-array name="spinner_uprightgo2_interval">
         <item>5</item>
         <item>15</item>

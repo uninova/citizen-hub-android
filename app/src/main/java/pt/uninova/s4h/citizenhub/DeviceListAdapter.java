@@ -20,14 +20,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         devicesList = listDevices;
     }
 
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-
-        void onSettingsClick(int position);
-    }
-
-    public void updateResults(List<DeviceListItem> results) {
+    private void updateResults(List<DeviceListItem> results) {
         if (devicesList != null) {
             devicesList.clear();
         }
@@ -63,6 +56,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         return devicesList.size();
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+        void onSettingsClick(int position);
+    }
+
     public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView textTitle;
@@ -72,23 +71,23 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         public DeviceListViewHolder(@NonNull View itemView, final OnItemClickListener listen) {
             super(itemView);
             image = itemView.findViewById(R.id.image_device);
-            textTitle =itemView.findViewById(R.id.text_view_title);
-            textDescription =itemView.findViewById(R.id.text_view_description);
+            textTitle = itemView.findViewById(R.id.text_view_title);
+            textDescription = itemView.findViewById(R.id.text_view_description);
             imageSettings = itemView.findViewById(R.id.image_view_settings);
 
             itemView.setOnClickListener(view -> {
-                if(listen != null) {
+                if (listen != null) {
                     int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         listen.onItemClick(position);
                     }
                 }
             });
 
             imageSettings.setOnClickListener(view -> {
-                if(listen != null) {
+                if (listen != null) {
                     int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         listen.onSettingsClick(position);
                     }
                 }

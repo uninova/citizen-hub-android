@@ -60,14 +60,14 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
 
-    public void setListViewFeaturesAdapter() {
+    public void loadEnabledFeatures() {
 
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getEnabledFeatures());
         listViewFeatures.setAdapter(adapter);
         adapter.updateResults(getEnabledFeatures());
     }
 
-    protected void loadFeatureState() {
+    protected void loadSupportedFeatures() {
 
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
         listViewFeatures.setAdapter(adapter);
@@ -84,8 +84,6 @@ public class DeviceConfigurationFragment extends Fragment {
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
             } else {
                 assert model.getSelectedDevice() != null;
-                System.out.println(i + " " + "not checked");
-
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
             }
         }
@@ -104,13 +102,10 @@ public class DeviceConfigurationFragment extends Fragment {
                 assert model.getSelectedDevice() != null;
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
 
-                System.out.println("FEATURES_ACTIVAS" + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
             } else {
                 assert model.getSelectedDevice() != null;
 
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
-                System.out.println("FEATURES_DESACTIVADAS" + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
-
             }
         }
     }
@@ -132,13 +127,6 @@ public class DeviceConfigurationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         cleanList();
-    }
-
-    private void onFeatureUpdate(List<Feature> features) {
-        cleanList();
-        for (Feature feature : features) {
-            featuresList.add(new FeatureListItem(feature.getKind(), true));
-        }
     }
 
     private void cleanList() {

@@ -31,7 +31,6 @@ public class DeviceAddFragment extends Fragment {
 
         addDevice.setOnClickListener(view -> {
             model.apply();
-            //Navigation.findNavController(requireView()).navigate(DeviceAddFragmentDirections.actionDeviceAddFragmentToDeviceListFragment());
         });
 
         TextView detailText = result.findViewById(R.id.text_add_fragment);

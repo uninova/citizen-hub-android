@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -19,7 +18,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        ProgressBar progressBar = view.findViewById(R.id.add_pprogressBar);
         CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
         AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
 
@@ -31,7 +29,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             agentOrchestrator.add(model.getSelectedDevice().getValue(), agent);
 
             requireActivity().runOnUiThread(() -> {
-                loadFeatureState();
+                loadSupportedFeatures();
                 connectDevice.setOnClickListener(v -> {
                     agent.enable();
                     model.apply();

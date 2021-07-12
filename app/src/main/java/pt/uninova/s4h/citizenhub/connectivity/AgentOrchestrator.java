@@ -58,7 +58,7 @@ AgentOrchestrator {
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
-                deviceAgentMap.put(i,null);
+                deviceAgentMap.put(i, null);
                 agentFactory.create(ConnectionKind.find(i.getConnectionKind()), i.getAddress(), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
@@ -139,7 +139,6 @@ AgentOrchestrator {
     }
 
     public List<Device> getDevicesFromMap() {
-        System.out.println("Sized" + " " + deviceAgentMap.size());
         List<Device> deviceMap = new ArrayList<>();
         deviceAgentMap.forEach((device, agent) -> deviceMap.add(device));
         return deviceMap;
