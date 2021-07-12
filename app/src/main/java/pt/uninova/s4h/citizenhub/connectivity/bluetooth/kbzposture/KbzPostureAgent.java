@@ -64,10 +64,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.SITTING);
-        measurementKindList.add(MeasurementKind.STANDING);
-        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
-        measurementKindList.add(MeasurementKind.BAD_POSTURE);
+        measurementKindList.add(MeasurementKind.POSTURE);
 
         return measurementKindList;
     }
@@ -76,10 +73,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     public void enableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
 
-            case GOOD_POSTURE:
-            case BAD_POSTURE:
-            case SITTING:
-            case STANDING:
+            case POSTURE:
                 getProtocol(KbzRawProtocol.ID).enable();
             case UNKNOWN:
                 break;

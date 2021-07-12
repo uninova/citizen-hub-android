@@ -70,7 +70,7 @@ public class HexoSkinAgent extends BluetoothAgent {
             case HEART_RATE:
                 getProtocol(HexoSkinHeartRateProtocol.ID).enable();
                 break;
-            case EXPIRATION:
+            case RESPIRATION_RATE:
                 getProtocol(HexoSkinRespirationProtocol.ID).enable();
                 break;
             case ACTIVITY:
