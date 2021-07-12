@@ -73,7 +73,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
-        getMeasurementObservers().clear();
+        getConnection().disableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
 
     }
 
