@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -31,7 +33,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             requireActivity().runOnUiThread(() -> {
                 loadFeatureState();
                 connectDevice.setOnClickListener(v -> {
-
+                    agent.enable();
                     model.apply();
 
                     saveFeaturesChosen();

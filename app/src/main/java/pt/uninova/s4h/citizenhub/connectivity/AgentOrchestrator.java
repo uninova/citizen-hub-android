@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import android.os.AsyncTask;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,15 +66,13 @@ AgentOrchestrator {
                     featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                         for (UUID j : agent.getPublicProtocolIds()) {
                             ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-
-                            for (MeasurementKind measurementKind : measurementKinds
-                            ) {
-                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
-                                }
+                        }
+                        for (MeasurementKind measurementKind : measurementKinds
+                        ) {
+                            if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
+                                getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
                             }
                         }
-
                     });
                 }, i);
             }
@@ -119,29 +115,6 @@ AgentOrchestrator {
 
     }
 
-    public void enableObservers(Device device) {
-        featureRepository.obtainKindsFromDevice(device.getAddress(), measurementKinds -> {
-
-            Agent agent = deviceAgentMap.get(device);
-
-            if (agent.getObservers() != null)
-                agent.getObservers().clear();
-            for (UUID j : agent.getPublicProtocolIds()) {
-                for (MeasurementKind measurementKind : measurementKinds
-                ) {
-                    if (agent.getSupportedMeasurements().contains(measurementKind)) {
-
-                        agent.enableMeasurement(measurementKind);
-                        if (agent.getProtocol(j).getState() == ProtocolState.ENABLED) {
-                            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-                        } else
-                            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().clear();
-                    }
-                }
-            }
-
-        });
-    }
 
     public void deleteDeviceFromMap(Device device) {
         Agent agent = deviceAgentMap.get(device);

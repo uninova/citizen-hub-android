@@ -233,7 +233,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         final Triple<UUID, UUID, UUID> key = descriptorKey(descriptor);
-
+        System.out.println("DESCRIPTOR_WRITE" + " " + descriptor.getUuid().toString() + " " + status);
         if (descriptorListenerMap.containsKey(key)) {
             for (DescriptorListener i : descriptorListenerMap.get(key)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
