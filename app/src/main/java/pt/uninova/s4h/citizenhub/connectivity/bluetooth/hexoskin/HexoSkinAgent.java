@@ -58,13 +58,6 @@ public class HexoSkinAgent extends BluetoothAgent {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
         measurementKindList.add(MeasurementKind.HEART_RATE);
         measurementKindList.add(MeasurementKind.RESPIRATION_RATE);
-        measurementKindList.add(MeasurementKind.INSPIRATION);
-        measurementKindList.add(MeasurementKind.EXPIRATION);
-        measurementKindList.add(MeasurementKind.CADENCE);
-        measurementKindList.add(MeasurementKind.DISTANCE);
-        measurementKindList.add(MeasurementKind.STEPS);
-        measurementKindList.add(MeasurementKind.STEPS_PER_MINUTE);
-        measurementKindList.add(MeasurementKind.CALORIES);
         measurementKindList.add(MeasurementKind.ACTIVITY);
 
         return measurementKindList;
@@ -77,17 +70,10 @@ public class HexoSkinAgent extends BluetoothAgent {
             case HEART_RATE:
                 getProtocol(HexoSkinHeartRateProtocol.ID).enable();
                 break;
-            case RESPIRATION_RATE:
-            case INSPIRATION:
             case EXPIRATION:
                 getProtocol(HexoSkinRespirationProtocol.ID).enable();
                 break;
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(HexoSkinAccelerometerProtocol.ID).enable();
                 break;
             default:
@@ -102,17 +88,9 @@ public class HexoSkinAgent extends BluetoothAgent {
                 getProtocol(HexoSkinHeartRateProtocol.ID).disable();
                 break;
             case RESPIRATION_RATE:
-            case INSPIRATION:
-            case EXPIRATION:
                 getProtocol(HexoSkinRespirationProtocol.ID).disable();
                 break;
-
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(HexoSkinAccelerometerProtocol.ID).disable();
                 break;
 
