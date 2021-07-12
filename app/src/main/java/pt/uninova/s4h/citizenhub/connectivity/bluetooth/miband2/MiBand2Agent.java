@@ -22,11 +22,8 @@ public class MiBand2Agent extends BluetoothAgent {
 
     final private static List<MeasurementKind> measurementKindList = Collections.unmodifiableList(Arrays.asList(
             MeasurementKind.HEART_RATE,
-            MeasurementKind.DISTANCE,
-            MeasurementKind.ACTIVITY,
-            MeasurementKind.STEPS,
-            MeasurementKind.STEPS_PER_MINUTE,
-            MeasurementKind.CALORIES));
+            MeasurementKind.ACTIVITY
+    ));
 
     public MiBand2Agent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
@@ -83,11 +80,6 @@ public class MiBand2Agent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
                 break;
             default:
@@ -103,11 +95,6 @@ public class MiBand2Agent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
                 ((MeasuringProtocol) getProtocol(MiBand2HeartRateProtocol.ID)).getMeasurementObservers().clear();
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).disable();
                 ((MeasuringProtocol) getProtocol(MiBand2DistanceProtocol.ID)).getMeasurementObservers().clear();
             default:
