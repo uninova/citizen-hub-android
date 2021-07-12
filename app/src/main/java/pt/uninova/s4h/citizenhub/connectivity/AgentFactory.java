@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 
 import java.lang.reflect.Method;
@@ -18,7 +17,6 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Age
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
@@ -38,29 +36,28 @@ public class AgentFactory {
         deviceRepository = new DeviceRepository(service.getApplication());
     }
 
-    public void destroy(ConnectionKind connectionKind, Device device, Observer<Agent> observer) {
+    public void destroy(ConnectionKind connectionKind, String address, Observer<Agent> observer) {
         switch (connectionKind) {
 
             case UNKNOWN:
             case BLUETOOTH:
-                bluetoothFactoryDestroy(device.getAddress(), observer);
+                bluetoothFactoryDestroy(address, observer);
                 break;
             case WEAROS:
-//                wearOsFactory(device.getAddress(), observer);
+//                wearOsFactory(address, observer);
                 break;
         }
     }
 
     private void bluetoothFactoryDestroy(String address, Observer<Agent> observer) {
         if (BluetoothAdapter.checkBluetoothAddress(address))
-            unpairDevice(bluetoothManager.getAdapter().getRemoteDevice(address));
-        //TODO we remove from the list but the unpair is not succesfull
+            unpairDevice(address);
     }
 
-    private void unpairDevice(BluetoothDevice device) {
+    private void unpairDevice(String address) {
         try {
-            Method method = device.getClass().getMethod("removeBond", (Class[]) null);
-            method.invoke(device, (Object[]) null);
+            Method method = bluetoothManager.getAdapter().getRemoteDevice(address).getClass().getMethod("removeBond", (Class[]) null);
+            method.invoke(bluetoothManager.getAdapter().getRemoteDevice(address), (Object[]) null);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,27 +65,24 @@ public class AgentFactory {
     }
     //deixar so 1 para cada protocolo e dar nome aos protocolo;
     // testar testar testar
-
+    // passar os observers sempre para o fim
     //roda dentada
-
+    //usar so addresses
     //TODO CREATE COM DEVICE = NAO SABE O QUE É
     //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
     //TODO criar create que sabemos o que é com agentType +
 
-    //TODO passar os observers sempre para o fim
 
-    //usar so addresses
-//TODO nao saber o que é
-    public void create(ConnectionKind connectionKind, Device device, Observer<Agent> observer) {
+    public void create(ConnectionKind connectionKind, String address, Observer<Agent> observer) {
 
         switch (connectionKind) {
 
             case UNKNOWN:
             case BLUETOOTH:
-                bluetoothFactory(device.getAddress(), observer);
+                bluetoothFactory(address, observer);
                 break;
             case WEAROS:
-                wearOsFactory(device.getAddress(), observer);
+                wearOsFactory(address, observer);
                 break;
         }
 

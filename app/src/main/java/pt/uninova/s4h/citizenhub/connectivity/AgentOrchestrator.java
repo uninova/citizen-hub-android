@@ -59,7 +59,7 @@ AgentOrchestrator {
             for (Device i : value
             ) {
                 deviceAgentMap.put(i,null);
-                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), i, agent -> {
+                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), i.getAddress(), agent -> {
                     agent.enable();
                     deviceAgentMap.put(i, agent);
                     devices.add(i);
@@ -106,7 +106,7 @@ AgentOrchestrator {
         deviceAgentMap.put(device, null);
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
-        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), device, agent -> {
+        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), device.getAddress(), agent -> {
             agent.enable();
             deviceAgentMap.put(device, agent);
             devices = getDevicesFromMap();
