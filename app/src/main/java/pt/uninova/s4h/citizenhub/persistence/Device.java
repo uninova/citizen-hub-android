@@ -17,7 +17,8 @@ public class Device {
     @ColumnInfo(name = "connection_kind")
     @TypeConverters(ConnectionKindTypeConverter.class)
     private int connectionKind;
-    private String state;
+    private String state; //desired state
+    //agent_type -ID do agent
 
     @Ignore
     public Device() {
