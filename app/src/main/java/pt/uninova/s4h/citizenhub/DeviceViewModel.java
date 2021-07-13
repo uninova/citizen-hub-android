@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
@@ -27,6 +28,9 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 import pt.uninova.util.messaging.Observer;
+
+import static pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.ACTIVE;
+import static pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.INACTIVE;
 
 public class DeviceViewModel extends AndroidViewModel {
     private final MutableLiveData<Device> device;
@@ -45,6 +49,18 @@ public class DeviceViewModel extends AndroidViewModel {
         featureRepository = new FeatureRepository(application);
         feature = new MutableLiveData<>();
         featureList = featureRepository.getAllLive();
+    }
+
+    public List<Device> getAllActive() {
+        return deviceRepository.getWithState(AgentStateAnnotation.StateAnnotation.class.cast(ACTIVE));
+    }
+
+    public List<Device> getAllInactive() {
+        return deviceRepository.getWithState(AgentStateAnnotation.StateAnnotation.class.cast(INACTIVE));
+    }
+
+    public List<Device> getWithAgent(String type) {
+        return deviceRepository.getWithAgent(type);
     }
 
     public List<FeatureListItem> getSupportedFeatures(AgentOrchestrator agentOrchestrator) {
