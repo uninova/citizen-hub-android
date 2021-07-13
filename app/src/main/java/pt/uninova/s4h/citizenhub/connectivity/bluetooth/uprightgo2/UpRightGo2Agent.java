@@ -24,6 +24,10 @@ public class UpRightGo2Agent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public UpRightGo2Agent() {
+        super(ID, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 

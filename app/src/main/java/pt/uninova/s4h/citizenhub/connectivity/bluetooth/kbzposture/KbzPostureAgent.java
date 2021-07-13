@@ -24,6 +24,10 @@ public class KbzPostureAgent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public KbzPostureAgent() {
+        super(ID, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 

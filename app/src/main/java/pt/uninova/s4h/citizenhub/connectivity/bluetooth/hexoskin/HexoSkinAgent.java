@@ -17,13 +17,12 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class HexoSkinAgent extends BluetoothAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
-
     public HexoSkinAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
     }
 
     public HexoSkinAgent() {
-        super(null, null, null);
+        super(ID, null, null);
     }
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
