@@ -67,12 +67,12 @@ AgentOrchestrator {
                     devices.add(i);
                     featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                         for (UUID j : agent.getPublicProtocolIds()) {
+                            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
+
                             for (MeasurementKind measurementKind : measurementKinds
                             ) {
                                 if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
                                     getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
-                                    ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-
                                 }
                             }
                         }
@@ -102,6 +102,10 @@ AgentOrchestrator {
         eventMessageDispatcher.getObservers().add(listener);
     }
 
+    public void add(Device device, Agent agent) {
+        deviceAgentMap.put(device, agent);
+    }
+
     public void addDevice(Device device) {
         deviceAgentMap.put(device, null);
         devices = getDevicesFromMap();
@@ -110,13 +114,6 @@ AgentOrchestrator {
             agent.enable();
             deviceAgentMap.put(device, agent);
             devices = getDevicesFromMap();
-
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    enableObservers(device);
-                }
-            });
 
         }, device);
 

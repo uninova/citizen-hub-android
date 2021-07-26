@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import pt.uninova.util.messaging.Observer;
 
 public class UprightGoAgent extends BluetoothAgent {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
 
     public UprightGoAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
@@ -34,6 +35,7 @@ public class UprightGoAgent extends BluetoothAgent {
 
         return protocolMap;
     }
+
     @Override
     public void disable() {
         for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
@@ -64,13 +66,27 @@ public class UprightGoAgent extends BluetoothAgent {
 
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
-        //TODO
-        return null;
+        List<MeasurementKind> measurementKindList = new ArrayList<>();
+        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
+        measurementKindList.add(MeasurementKind.BAD_POSTURE);
+
+        return measurementKindList;
     }
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
-        //TODO
+        if (getState() == AgentState.ENABLED)
+            return;
+        switch (measurementKind) {
+            case GOOD_POSTURE:
+            case BAD_POSTURE:
+                enable();
+
+                case UNKNOWN:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
