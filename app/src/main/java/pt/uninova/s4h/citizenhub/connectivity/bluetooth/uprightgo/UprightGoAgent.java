@@ -1,6 +1,5 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,75 +15,67 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
-public class UpRightGo2Agent extends BluetoothAgent {
+public class UprightGoAgent extends BluetoothAgent {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo");
 
-    public UpRightGo2Agent(BluetoothConnection connection) {
+    public UprightGoAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
     }
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
-
-        System.out.println("FSL - Got here to posture agent");
-        protocolMap.put(UpRightGo2Protocol.ID, new UpRightGo2Protocol(connection));
+        //Posture
+        protocolMap.put(UprightGoPostureProtocol.ID, new UprightGoPostureProtocol(connection));
+        //Vibration Settings
+        protocolMap.put(UprightGoPostureProtocol.ID, new UprightGoVibrationProtocol(connection));
+        //Calibration
+        protocolMap.put(UprightGoPostureProtocol.ID, new UprightGoCalibrationProtocol(connection));
 
         return protocolMap;
     }
-
     @Override
     public void disable() {
         for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
-
+        getConnection().close();
         setState(AgentState.DISABLED);
     }
 
     @Override
     public void enable() {
-        UpRightGo2Protocol protocol = (UpRightGo2Protocol) getProtocol(UpRightGo2Protocol.ID);
-
-        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
+        UprightGoPostureProtocol protocolPosture = (UprightGoPostureProtocol) getProtocol(UprightGoPostureProtocol.ID);
+        UprightGoPostureProtocol protocolVibration = (UprightGoPostureProtocol) getProtocol(UprightGoVibrationProtocol.ID);
+        UprightGoPostureProtocol protocolCalibration = (UprightGoPostureProtocol) getProtocol(UprightGoCalibrationProtocol.ID);
+        protocolPosture.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
             @Override
             public void onChanged(StateChangedMessage<ProtocolState> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
-                    UpRightGo2Agent.this.setState(AgentState.ENABLED);
-
-                    protocol.getObservers().remove(this);
+                    UprightGoAgent.this.setState(AgentState.ENABLED);
+                    protocolPosture.getObservers().remove(this);
                 }
             }
         });
-
-        protocol.enable();
+        protocolPosture.enable();
+        protocolCalibration.enable();
+        protocolVibration.enable();
     }
 
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
-        List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
-        measurementKindList.add(MeasurementKind.BAD_POSTURE);
-
-        return measurementKindList;
+        //TODO
+        return null;
     }
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind) {
-        switch (measurementKind) {
-            case GOOD_POSTURE:
-            case BAD_POSTURE:
-
-                getProtocol(UpRightGo2Agent.ID).enable();
-            case UNKNOWN:
-                break;
-            default:
-                break;
-        }
+        //TODO
     }
 
     @Override
     public String getName() {
+        //TODO
         return null;
     }
 }

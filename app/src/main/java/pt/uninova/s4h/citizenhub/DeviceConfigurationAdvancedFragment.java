@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Protocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo.UprightGoPostureProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
