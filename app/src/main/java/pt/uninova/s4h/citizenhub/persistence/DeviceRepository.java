@@ -6,8 +6,6 @@ import java.util.List;
 
 import pt.uninova.util.messaging.Observer;
 
-import static pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.StateAnnotation;
-
 public class DeviceRepository {
 
     private final DeviceDao deviceDao;
@@ -65,7 +63,7 @@ public class DeviceRepository {
         });
     }
 
-    public List<Device> getWithState(StateAnnotation state) {
+    public List<Device> getWithState(StateKind state) {
         try {
             return deviceDao.getWithState(state);
         } catch (Exception e) {

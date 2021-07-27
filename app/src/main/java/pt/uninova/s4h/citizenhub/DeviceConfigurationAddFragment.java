@@ -24,12 +24,14 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         setupViews(view);
         setupText();
-
         model.createAgent(service, agent -> {
             agentOrchestrator.add(model.getSelectedDevice().getValue(), agent);
-
+            if (model.getSelectedDevice().getValue().getAgentType() != null) {
+                loadSupportedFeatures();
+            }
             requireActivity().runOnUiThread(() -> {
                 loadSupportedFeatures();
+
                 connectDevice.setOnClickListener(v -> {
                     agent.enable();
                     model.apply();

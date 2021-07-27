@@ -10,8 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.StateAnnotation;
-
 @Entity(tableName = "device", primaryKeys = {"address"})
 public class Device {
     //TODO state passar a type para guardar o tipo de agente
@@ -20,8 +18,9 @@ public class Device {
     private String address;
     @ColumnInfo(name = "connection_kind")
     @TypeConverters(ConnectionKindTypeConverter.class)
-    private int connectionKind;
-    private StateAnnotation state; //desired state
+    private ConnectionKind connectionKind;
+    @TypeConverters(StateKindTypeConverter.class)
+    private StateKind state; //desired state
     @ColumnInfo(name = "type")
     private String agentType;
     //agent_type -ID do agent
@@ -44,7 +43,7 @@ public class Device {
         return Objects.hash(address);
     }
 
-    public Device(String name, String address, int connectionKind, StateAnnotation state, String agentType) {
+    public Device(String name, String address, ConnectionKind connectionKind, StateKind state, String agentType) {
         this.name = name;
         this.address = address;
         this.connectionKind = connectionKind;
@@ -69,19 +68,19 @@ public class Device {
         this.address = address;
     }
 
-    public int getConnectionKind() {
+    public ConnectionKind getConnectionKind() {
         return connectionKind;
     }
 
-    public void setConnectionKind(int connectionKind) {
+    public void setConnectionKind(ConnectionKind connectionKind) {
         this.connectionKind = connectionKind;
     }
 
-    public StateAnnotation getState() {
+    public StateKind getState() {
         return state;
     }
 
-    public void setState(StateAnnotation state) {
+    public void setState(StateKind state) {
         this.state = state;
     }
 

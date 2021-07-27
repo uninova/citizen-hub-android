@@ -10,8 +10,6 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.StateAnnotation;
-
 @Dao
 public interface DeviceDao {
 
@@ -38,8 +36,9 @@ public interface DeviceDao {
     @TypeConverters(ConnectionKindTypeConverter.class)
     List<Device> getAllWithConnectionKind(ConnectionKind connectionKind);
 
-    @Query("SELECT * FROM device WHERE state=:state")
-    List<Device> getWithState(StateAnnotation state);
+    @Query("SELECT * FROM device WHERE state=:stateKind")
+    @TypeConverters(StateKindTypeConverter.class)
+    List<Device> getWithState(StateKind stateKind);
 
     @Query("SELECT * FROM device WHERE type=:type")
     List<Device> getWithAgent(String type);
