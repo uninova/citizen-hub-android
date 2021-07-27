@@ -29,20 +29,20 @@ public class WearOSAgent extends AbstractAgent {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
 
-            protocolMap.put(WearOSHeartRateProtocol.ID, new WearOSHeartRateProtocol(wearOSConnection));
-            protocolMap.put(WearOSStepsProtocol.ID, new WearOSStepsProtocol(wearOSConnection));
+        protocolMap.put(WearOSHeartRateProtocol.ID, new WearOSHeartRateProtocol(wearOSConnection, WearOSAgent.class));
+        protocolMap.put(WearOSStepsProtocol.ID, new WearOSStepsProtocol(wearOSConnection, WearOSAgent.class));
 
         return protocolMap;
     }
 
     @Override
     public void disable() {
-        setState(AgentState.DISABLED);
+        setState(AgentState.DISABLED, this.getClass());
     }
 
     @Override
     public void enable() {
-        setState(AgentState.ENABLED);
+        setState(AgentState.ENABLED, this.getClass());
         //  getProtocol(WearOSHeartRateProtocol.ID).enable();
         //getProtocol(WearOSStepsProtocol.ID).enable();
 
@@ -63,14 +63,14 @@ public class WearOSAgent extends AbstractAgent {
 
         switch (measurementKind) {
             case HEART_RATE:
-                setState(AgentState.ENABLED);
+                setState(AgentState.ENABLED, this.getClass());
                 getProtocol(WearOSHeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
-                setState(AgentState.ENABLED);
+                setState(AgentState.ENABLED, this.getClass());
                 getProtocol(WearOSStepsProtocol.ID).enable();
                 break;
             default:
@@ -83,13 +83,13 @@ public class WearOSAgent extends AbstractAgent {
     public void disableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case HEART_RATE:
-                setState(AgentState.ENABLED);
+                setState(AgentState.ENABLED, this.getClass());
                 getProtocol(WearOSHeartRateProtocol.ID).disable();
             case ACTIVITY:
             case STEPS:
             case STEPS_PER_MINUTE:
             case DISTANCE:
-                setState(AgentState.ENABLED);
+                setState(AgentState.ENABLED, this.getClass());
                 getProtocol(WearOSStepsProtocol.ID).disable();
             default:
                 break;

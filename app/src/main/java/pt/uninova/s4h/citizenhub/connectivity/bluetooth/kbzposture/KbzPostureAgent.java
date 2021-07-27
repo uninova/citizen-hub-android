@@ -31,9 +31,14 @@ public class KbzPostureAgent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection));
+        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection, KbzPostureAgent.class));
 
         return protocolMap;
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, this.getClass());
     }
 
     @Override
@@ -51,9 +56,9 @@ public class KbzPostureAgent extends BluetoothAgent {
     public void enable() {
         KbzRawProtocol protocol = (KbzRawProtocol) getProtocol(KbzRawProtocol.ID);
 
-        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
+        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState, Class<?>>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState> value) {
+            public void onChanged(StateChangedMessage<ProtocolState, Class<?>> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
                     KbzPostureAgent.this.setState(AgentState.ENABLED);
 

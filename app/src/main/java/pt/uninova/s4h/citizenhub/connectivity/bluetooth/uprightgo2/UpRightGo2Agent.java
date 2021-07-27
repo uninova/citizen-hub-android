@@ -32,9 +32,14 @@ public class UpRightGo2Agent extends BluetoothAgent {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
         System.out.println("FSL - Got here to posture agent");
-        protocolMap.put(UpRightGo2Protocol.ID, new UpRightGo2Protocol(connection));
+        protocolMap.put(UpRightGo2Protocol.ID, new UpRightGo2Protocol(connection, UpRightGo2Agent.class));
 
         return protocolMap;
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, UpRightGo2Agent.class);
     }
 
     @Override
@@ -53,9 +58,9 @@ public class UpRightGo2Agent extends BluetoothAgent {
 
         UpRightGo2Protocol protocol = (UpRightGo2Protocol) getProtocol(UpRightGo2Protocol.ID);
 
-        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
+        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState, Class<?>>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState> value) {
+            public void onChanged(StateChangedMessage<ProtocolState, Class<?>> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
                     UpRightGo2Agent.this.setState(AgentState.ENABLED);
 

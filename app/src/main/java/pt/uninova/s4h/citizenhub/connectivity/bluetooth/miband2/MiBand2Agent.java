@@ -36,8 +36,8 @@ public class MiBand2Agent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection));
+        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, MiBand2Agent.class));
+        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, MiBand2Agent.class));
 
         return protocolMap;
     }
@@ -55,7 +55,7 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection());
+        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), MiBand2Agent.class);
 
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
@@ -101,6 +101,11 @@ public class MiBand2Agent extends BluetoothAgent {
                 break;
         }
 
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, this.getClass());
     }
 
     @Override

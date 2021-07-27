@@ -18,19 +18,19 @@ public class HexoSkinAgent extends BluetoothAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
     public HexoSkinAgent(BluetoothConnection connection) {
-        super(ID, createProtocols(connection), connection);
+        super(ID, createProtocols(connection, HexoSkinAgent.class), connection);
     }
 
     public HexoSkinAgent() {
         super(ID, null, null);
     }
 
-    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
+    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection, Class<?> agent) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(HexoSkinHeartRateProtocol.ID, new HexoSkinHeartRateProtocol(connection));
-        protocolMap.put(HexoSkinAccelerometerProtocol.ID, new HexoSkinAccelerometerProtocol(connection));
-        protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection));
+        protocolMap.put(HexoSkinHeartRateProtocol.ID, new HexoSkinHeartRateProtocol(connection, agent));
+        protocolMap.put(HexoSkinAccelerometerProtocol.ID, new HexoSkinAccelerometerProtocol(connection, agent));
+        protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection, agent));
 
         return protocolMap;
     }
@@ -100,6 +100,12 @@ public class HexoSkinAgent extends BluetoothAgent {
 
     @Override
     public String getName() {
-        return null;
+        return "HexoSkinAgent";
     }
+
+    @Override
+    protected void setState(AgentState value) {
+        super.setState(value, HexoSkinAgent.class);
+    }
+
 }
