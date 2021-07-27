@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -33,7 +34,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
-    private final Dispatcher<StateChangedMessage<BluetoothConnectionState>> stateChangedMessageDispatcher;
+    private final Dispatcher<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> stateChangedMessageDispatcher;
 
     private BluetoothGatt gatt;
 
@@ -59,7 +60,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         characteristicListenerMap.get(key).add(listener);
     }
 
-    public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState>> listener) {
+    public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
         stateChangedMessageDispatcher.getObservers().add(listener);
     }
 
@@ -301,7 +302,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         }
     }
 
-    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState>> listener) {
+    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
+        stateChangedMessageDispatcher.getObservers().remove(listener);
+    }
+
+    public void removeConnectionStateChangeObserver(Observer<StateChangedMessage<BluetoothConnectionState, Agent>> listener) {
         stateChangedMessageDispatcher.getObservers().remove(listener);
     }
 
@@ -325,7 +330,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
             this.state = value;
 
-            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue));
+            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, this));
         }
     }
 
