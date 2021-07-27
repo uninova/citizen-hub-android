@@ -17,7 +17,6 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
@@ -25,12 +24,10 @@ import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 import pt.uninova.util.messaging.Observer;
-
-import static pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.ACTIVE;
-import static pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.INACTIVE;
 
 public class DeviceViewModel extends AndroidViewModel {
     private final MutableLiveData<Device> device;
@@ -52,11 +49,11 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public List<Device> getAllActive() {
-        return deviceRepository.getWithState(AgentStateAnnotation.StateAnnotation.class.cast(ACTIVE));
+        return deviceRepository.getWithState(StateKind.ACTIVE);
     }
 
     public List<Device> getAllInactive() {
-        return deviceRepository.getWithState(AgentStateAnnotation.StateAnnotation.class.cast(INACTIVE));
+        return deviceRepository.getWithState(StateKind.INACTIVE);
     }
 
     public List<Device> getWithAgent(String type) {
@@ -117,6 +114,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public void attachObservers(Agent agent, MeasurementRepository measurementRepository) {
+
         for (UUID j : agent.getPublicProtocolIds()) {
             ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
 
@@ -140,6 +138,7 @@ public class DeviceViewModel extends AndroidViewModel {
     public MutableLiveData<Device> getSelectedDevice() {
         return device;
     }
+
 
     public void createAgent(CitizenHubService service, Observer<Agent> observer) {
         AgentFactory factory = new AgentFactory(service);
