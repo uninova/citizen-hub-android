@@ -19,8 +19,15 @@ public class PlaceboAllProtocol extends AbstractMeasuringProtocol {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
     final public static String name = PlaceboAllProtocol.class.getSimpleName();
 
-    public PlaceboAllProtocol(BluetoothConnection connection) {
-        super(ID);
+    private Class<?> agent;
+
+    public PlaceboAllProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, agent);
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override

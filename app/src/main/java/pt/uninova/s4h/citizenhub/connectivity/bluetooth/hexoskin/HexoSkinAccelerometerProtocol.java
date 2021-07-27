@@ -22,9 +22,10 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     public static final UUID ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("75246a26-237a-4863-aca6-09b639344f43");
 
     private int lastStepCount;
+    private Class<?> agent;
 
-    public HexoSkinAccelerometerProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
         lastStepCount = 0;
 
@@ -68,6 +69,11 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 }
             }
         });
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override

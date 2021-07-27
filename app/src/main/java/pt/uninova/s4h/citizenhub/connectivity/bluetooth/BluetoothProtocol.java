@@ -1,18 +1,15 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import pt.uninova.s4h.citizenhub.connectivity.AbstractProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.util.messaging.Observer;
-
 import java.util.UUID;
+
+import pt.uninova.s4h.citizenhub.connectivity.AbstractProtocol;
 
 public abstract class BluetoothProtocol extends AbstractProtocol {
 
     final private BluetoothConnection connection;
 
-    protected BluetoothProtocol(UUID id, BluetoothConnection connection) {
-        super(id);
+    protected BluetoothProtocol(UUID id, BluetoothConnection connection, Class<?> agent) {
+        super(id, agent);
 
         this.connection = connection;
     }

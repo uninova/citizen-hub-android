@@ -19,8 +19,10 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
-    public HexoSkinHeartRateProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    private Class<?> agent;
+
+    public HexoSkinHeartRateProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
 
         setState(ProtocolState.DISABLED);
 
@@ -31,6 +33,11 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
                 getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) value[1]));
             }
         });
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override

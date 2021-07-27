@@ -59,9 +59,15 @@ public class UpRightGo2Protocol extends BluetoothMeasuringProtocol {
     /* this may be helpful for testing, otherwise ignore
     private byte[] vibrationAngle6= {0x06,0x2c,0x01,0x01,0x01,0x02,0x64,0x00};
      */
+    private Class<?> agent;
 
-    public UpRightGo2Protocol(BluetoothConnection connection) {
-        super(ID, connection);
+    public UpRightGo2Protocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     private void attachObservers() {

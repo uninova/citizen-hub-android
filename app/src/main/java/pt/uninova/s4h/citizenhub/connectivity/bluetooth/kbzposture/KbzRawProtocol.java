@@ -32,8 +32,15 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
     private MeasurementKind lastPosture;
     private LocalDateTime lastTimestamp;
 
-    public KbzRawProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    private Class<?> agent;
+
+    public KbzRawProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     private void attachObservers() {

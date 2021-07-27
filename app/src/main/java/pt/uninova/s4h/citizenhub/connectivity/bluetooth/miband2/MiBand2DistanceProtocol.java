@@ -27,8 +27,10 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
     private Double lastDistance;
     private Double lastCalories;
 
-    public MiBand2DistanceProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    private Class<?> agent;
+
+    public MiBand2DistanceProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
 
         setState(ProtocolState.DISABLED);
 
@@ -69,6 +71,11 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                 lastCalories = calories;
             }
         });
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override

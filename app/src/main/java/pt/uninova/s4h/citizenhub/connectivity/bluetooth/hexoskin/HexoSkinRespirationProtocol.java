@@ -22,8 +22,10 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
     public static final UUID RESPIRATION_SERVICE_UUID = UUID.fromString("3b55c581-bc19-48f0-bd8c-b522796f8e24");
     public static final UUID RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("9bc730c3-8cc0-4d87-85bc-573d6304403c");
 
-    public HexoSkinRespirationProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    private Class<?> agent;
+
+    public HexoSkinRespirationProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID) {
@@ -63,6 +65,11 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                 }
             }
         });
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override
