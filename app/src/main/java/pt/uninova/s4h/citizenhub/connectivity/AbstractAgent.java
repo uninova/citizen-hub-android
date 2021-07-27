@@ -16,7 +16,7 @@ public abstract class AbstractAgent implements Agent {
 
     final private Map<UUID, Protocol> protocolMap;
 
-    final private Dispatcher<StateChangedMessage<AgentState>> stateChangedDispatcher;
+    final private Dispatcher<StateChangedMessage<AgentState, Class<?>>> stateChangedDispatcher;
 
     private AgentState state;
 
@@ -38,7 +38,7 @@ public abstract class AbstractAgent implements Agent {
     }
 
 
-    public Set<Observer<StateChangedMessage<AgentState>>> getObservers() {
+    public Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers() {
         return stateChangedDispatcher.getObservers();
     }
 
@@ -76,13 +76,13 @@ public abstract class AbstractAgent implements Agent {
         return state;
     }
 
-    protected void setState(AgentState value) {
+    protected void setState(AgentState value, Class<?> agent) {
         if (state != value) {
             final AgentState oldState = state;
 
             state = value;
 
-            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState));
+            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
         }
     }
 }

@@ -21,7 +21,7 @@ public interface Agent {
 
     Set<UUID> getPublicProtocolIds(ProtocolState state);
 
-    Set<Observer<StateChangedMessage<AgentState>>> getObservers();
+    Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers();
 
     List<MeasurementKind> getSupportedMeasurements();
 

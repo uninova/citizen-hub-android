@@ -19,6 +19,7 @@ import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Dispatcher;
@@ -43,6 +44,9 @@ AgentOrchestrator {
     private final FeatureRepository featureRepository;
     private final MeasurementRepository measurementRepository;
     private final AgentFactory agentFactory;
+    private final static Observer<StateChangedMessage<AgentState, Class<?>>> observer = value -> {
+
+    };
     private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
     private final Dispatcher<AgentListChangeMessage> eventMessageDispatcher;
     private List<Device> devices;
@@ -55,12 +59,44 @@ AgentOrchestrator {
         measurementRepository = new MeasurementRepository(service.getApplication());
         agentFactory = new AgentFactory(service);
         eventMessageDispatcher = new Dispatcher<>();
+
+//        ((CitizenHubServiceBound) getService().getAgentOrchestrator().addAgentEventListener(value -> {
+//            deviceList.clear();
+//            for (Device device : value.getDeviceList()) {
+//                deviceList.add(new DeviceListItem(device));
+//            }
+//
+//            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
+//
+//        });
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
-                deviceAgentMap.put(i, null);
-                agentFactory.create(ConnectionKind.find(i.getConnectionKind()), i.getAddress(), agent -> {
+                if (i.getAgentType() != null) {
+                    agentFactory.create(i.getAddress(), i.getAgentType(), agent -> {
+                        agent.enable();
+                        agent.getObservers().add(observer);
+                        deviceAgentMap.put(i, agent);
+                        devices.add(i);
+                        featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
+                            for (UUID j : agent.getPublicProtocolIds()) {
+                                ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
+                            }
+                            for (MeasurementKind measurementKind : measurementKinds
+                            ) {
+                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
+                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
+                                }
+                            }
+                        });
+                    });
+
+                }
+                agentFactory.create(i.getConnectionKind(), i.getAddress(), agent -> {
                     agent.enable();
+                    i.setConnectionKind(ConnectionKind.BLUETOOTH);
+                    i.setState(StateKind.INACTIVE);
+                    i.setAgentType(agent.getName());
                     deviceAgentMap.put(i, agent);
                     devices.add(i);
                     featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
@@ -106,7 +142,7 @@ AgentOrchestrator {
         deviceAgentMap.put(device, null);
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
-        agentFactory.create(ConnectionKind.find(device.getConnectionKind()), device.getAddress(), agent -> {
+        agentFactory.create(device.getConnectionKind(), device.getAddress(), agent -> {
             agent.enable();
             deviceAgentMap.put(device, agent);
             devices = getDevicesFromMap();

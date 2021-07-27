@@ -3,11 +3,12 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
@@ -19,11 +20,10 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Age
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
-import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation;
-import pt.uninova.s4h.citizenhub.persistence.AgentStateAnnotation.StateAnnotation;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
 
@@ -87,6 +87,11 @@ public class AgentFactory {
     //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
     //TODO criar create que sabemos o que é com agentType +
 
+    public void create(String address, String agentType, Observer<Agent> observer) {
+
+        bluetoothFactory(address, agentType, observer);
+
+    }
 
     public void create(ConnectionKind connectionKind, String address, Observer<Agent> observer) {
 
@@ -103,12 +108,55 @@ public class AgentFactory {
 
     }
 
+    public Agent createAgent(String agentType, BluetoothConnection connection) {
+        Agent agent;
+
+        Class<?> c = null;
+        try {
+            c = Class.forName(agentType);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Constructor<?> cons = null;
+        try {
+            cons = c.getConstructor(String.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Object object = null;
+        try {
+            object = cons.newInstance(connection);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        agent = ((Agent) object);
+//        //Todo tentar por numa variavel
+//        switch (agentType) {
+//            case "HexoSkinAgent":
+//                agent = new HexoSkinAgent(connection);
+//                break;
+//            case "KbzPostureAgent":
+//                agent = new KbzPostureAgent(connection);
+//                break;
+//            case "MiBand2Agent":
+//                agent = new MiBand2Agent(connection);
+//                break;
+//            case "UpRightGo2Agent":
+//                agent = new UpRightGo2Agent(connection);
+//                break;
+//            default:
+//                return null;
+//        }
+        return agent;
+
+    }
+
     private void wearOsFactory(String address, Observer<Agent> observer) {
         connectionManager.put(ConnectionKind.WEAROS, address);
         WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address, service);
-        wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState>>() {
+        wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState, Agent>>() {
             @Override
-            public void onChanged(StateChangedMessage<WearOSConnectionState> value) {
+            public void onChanged(StateChangedMessage<WearOSConnectionState, Agent> value) {
                 if (value.getNewState() == WearOSConnectionState.READY) {
 
                     wearOSConnection.removeConnectionStateChangeListener(this);
@@ -118,43 +166,48 @@ public class AgentFactory {
         });
     }
 
-    private Agent create(String address, String agentName, Observer<Agent> observer) {
-        Agent agent = null;
+
+    private void bluetoothFactory(String address, String agentName, Observer<Agent> observer) {
         final BluetoothConnection connection = new BluetoothConnection();
+        Device device = deviceRepository.get(address);
 
-        List<Device> deviceList = deviceRepository.getWithAgent(agentName);
-        for (Device device : deviceList
-        ) {
-            if (getAgentList().contains(device.getAgentType())) {
-                switch (device.getAgentType()) {
-                    case "HexoSkinAgent":
+        connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+            @Override
+            public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
-                        agent = new HexoSkinAgent();
-                        break;
-                    case "KbzPostureAgent":
-                        agent = new KbzPostureAgent();
-                        break;
-                    case "MiBand2Agent":
-                        agent = new MiBand2Agent();
-                        break;
-                    case "UpRightGo2Agent":
-                        agent = new UpRightGo2Agent();
-                        break;
-                    default:
-                        return null;
+                if (value.getNewState() == BluetoothConnectionState.CONNECTED) {
+                    device.setState(StateKind.INACTIVE);
+
+                    connection.removeConnectionStateChangeListener(this);  //remove?
                 }
-                device.setState(StateAnnotation.class.cast(AgentStateAnnotation.INACTIVE));
-                deviceRepository.update(device);
 
-                try {
-                    bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
-                    //TODO onReady passar a active
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (value.getNewState() == BluetoothConnectionState.DISCONNECTED) {
+                    device.setState(StateKind.DISABLED); // if user choses to disconnect// it's just inactive.
+                    connection.removeConnectionStateChangeListener(this);
                 }
+
+                if (value.getNewState() == BluetoothConnectionState.READY) {
+                    device.setState(StateKind.ACTIVE);
+                    connection.removeConnectionStateChangeListener(this);
+                }
+                observer.onChanged(createAgent(agentName, connection));
+
+
             }
+
+        });
+
+        device.setState(StateKind.INACTIVE);
+        deviceRepository.update(device);
+
+        try {
+            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
-        return agent;
+        deviceRepository.update(device);
     }
 
     private void bluetoothFactory(String address, Observer<Agent> observer) {
@@ -162,12 +215,13 @@ public class AgentFactory {
             connectionManager.put(ConnectionKind.BLUETOOTH, address);
         {
             {
-                deviceRepository.get(address).setState(StateAnnotation.class.cast(AgentStateAnnotation.INACTIVE));
+//                deviceRepository.get(address).setState(StateKind.INACTIVE.getId());
+//                deviceRepository.get(address).setConnectionKind(ConnectionKind.BLUETOOTH.getId());
                 final BluetoothConnection connection = new BluetoothConnection();
 
-                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState>>() {
+                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState> value) {
+                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
@@ -179,7 +233,7 @@ public class AgentFactory {
 //                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
 //                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
                             if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-                                deviceRepository.get(address).setAgentType(HexoSkinAgent.class.getSimpleName());
+//                                deviceRepository.get(address).setAgentType(HexoSkinAgent.class.getSimpleName());
                                 observer.onChanged(new HexoSkinAgent(connection));
                             } else if (/*(connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
                                     connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) &&*/ name.startsWith("MI")) {
@@ -192,8 +246,8 @@ public class AgentFactory {
                                 deviceRepository.get(address).setAgentType(UpRightGo2Protocol.class.getSimpleName());
                                 observer.onChanged(new UpRightGo2Agent(connection));
                             }
-                            deviceRepository.get(address).setState(StateAnnotation.class.cast(AgentStateAnnotation.ACTIVE));
-                            deviceRepository.update(deviceRepository.get(address));
+//                            deviceRepository.get(address).setState(StateKind.ACTIVE.getId());
+//                            deviceRepository.update(deviceRepository.get(address));
                         }
                     }
                 });
@@ -202,4 +256,9 @@ public class AgentFactory {
 
         }
     }
+
+//    Class<?> clazz = Class.forName(className);
+//    Constructor<?> ctor = clazz.getConstructor(String.class);
+//    Object object = ctor.newInstance(new Object[] { ctorArgument });
+// em ultimo caso fazer classe estatica mapa que retorna agentes
 }

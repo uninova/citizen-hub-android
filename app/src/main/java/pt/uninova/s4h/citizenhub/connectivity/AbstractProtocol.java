@@ -1,28 +1,30 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
-
 import java.io.Closeable;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.util.messaging.Observer;
+
 public abstract class AbstractProtocol implements Closeable, Protocol {
 
     final private UUID id;
-    final private Dispatcher<StateChangedMessage<ProtocolState>> stateChangedDispatcher;
+    final private Dispatcher<StateChangedMessage<ProtocolState, Class<?>>> stateChangedDispatcher;
 
     private ProtocolState state;
+    private Class<?> agent;
 
-    protected AbstractProtocol(UUID id) {
+    protected AbstractProtocol(UUID id, Class<?> agent) {
         this.id = id;
-
+        this.agent = agent;
         stateChangedDispatcher = new Dispatcher<>();
     }
 
     @Override
     public void close() {
         stateChangedDispatcher.close();
+        //limpar memoria do agent
     }
 
     @Override
@@ -41,8 +43,20 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
     }
 
     @Override
-    public Set<Observer<StateChangedMessage<ProtocolState>>> getObservers() {
+    public Set<Observer<StateChangedMessage<ProtocolState, Class<?>>>> getObservers() {
         return stateChangedDispatcher.getObservers();
+    }
+
+    public Dispatcher<StateChangedMessage<ProtocolState, Class<?>>> getStateChangedDispatcher() {
+        return stateChangedDispatcher;
+    }
+
+    public Class<?> getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Class<?> agent) {
+        this.agent = agent;
     }
 
     @Override
@@ -55,8 +69,8 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
             final ProtocolState oldState = state;
 
             state = value;
+            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
 
-            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState));
         }
     }
 }
