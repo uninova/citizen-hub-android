@@ -1,21 +1,22 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.util.messaging.Observer;
+
 
 public class WearOSConnection /*extends AbstractProtocol */ {
     private static final String TAG = "WearOSConnection";
     private final String address;
-    private final Dispatcher<StateChangedMessage<WearOSConnectionState>> stateChangedMessageDispatcher;
+    private final Dispatcher<StateChangedMessage<WearOSConnectionState, Agent>> stateChangedMessageDispatcher;
     private final Map<MeasurementKind, Set<ChannelListener>> channelListenerMap;
     private WearOSConnectionState state;
 
@@ -31,11 +32,11 @@ public class WearOSConnection /*extends AbstractProtocol */ {
         return address;
     }
 
-    public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState>> listener) {
+    public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
         stateChangedMessageDispatcher.getObservers().add(listener);
     }
 
-    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState>> listener) {
+    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
         stateChangedMessageDispatcher.getObservers().remove(listener);
     }
 
@@ -86,7 +87,7 @@ public class WearOSConnection /*extends AbstractProtocol */ {
 
             this.state = value;
 
-            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue));
+            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, new WearOSAgent(this)));
         }
     }
 

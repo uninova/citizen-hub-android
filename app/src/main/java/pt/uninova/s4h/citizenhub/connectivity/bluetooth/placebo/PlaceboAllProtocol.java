@@ -1,24 +1,33 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.placebo;
 
 import android.os.Handler;
+
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
 import static android.os.Looper.getMainLooper;
 
 public class PlaceboAllProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.heartrate");
+    final public static String name = PlaceboAllProtocol.class.getSimpleName();
 
-    public PlaceboAllProtocol(BluetoothConnection connection) {
-        super(ID);
+    private Class<?> agent;
+
+    public PlaceboAllProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, agent);
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     @Override

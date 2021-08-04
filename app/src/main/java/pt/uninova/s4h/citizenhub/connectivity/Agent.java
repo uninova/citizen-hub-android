@@ -1,9 +1,11 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.util.messaging.Observer;
-
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Observer;
 
 public interface Agent {
 
@@ -19,8 +21,16 @@ public interface Agent {
 
     Set<UUID> getPublicProtocolIds(ProtocolState state);
 
-    Set<Observer<StateChangedMessage<AgentState>>> getObservers();
+    Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers();
+
+    List<MeasurementKind> getSupportedMeasurements();
+
+    void enableMeasurement(MeasurementKind measurementKind);
+
+    void disableMeasurement(MeasurementKind measurementKind);
 
     AgentState getState();
+
+    String getName();
 
 }

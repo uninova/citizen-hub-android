@@ -14,8 +14,9 @@ For instance, the following could be added to `~/.gradle/gradle.properties`:
 
 ```
 github.username=<username>
-github.token=<token>
+github.toke=<token>
 ```
+
 
 #### Data4Life SDK Endpoint Configuration
 

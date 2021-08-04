@@ -1,10 +1,12 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
-import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-
 import java.util.Map;
 import java.util.UUID;
+
+import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public abstract class BluetoothAgent extends AbstractAgent {
 
@@ -16,8 +18,19 @@ public abstract class BluetoothAgent extends AbstractAgent {
         this.connection = connection;
     }
 
+    private BluetoothAgent() {
+        super(null, null);
+        this.connection = null;
+    }
+
     protected BluetoothConnection getConnection() {
         return connection;
     }
 
+    @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+
+    }
+
+    protected abstract void setState(AgentState value);
 }

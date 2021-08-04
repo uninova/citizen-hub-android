@@ -1,17 +1,31 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import android.bluetooth.*;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.util.Pair;
 import pt.uninova.util.Triple;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-public class BluetoothConnection extends BluetoothGattCallback {
+public class BluetoothConnection extends BluetoothGattCallback implements Connection {
 
     public final static UUID ORG_BLUETOOTH_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
 
@@ -20,7 +34,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
-    private final Dispatcher<StateChangedMessage<BluetoothConnectionState>> stateChangedMessageDispatcher;
+    private final Dispatcher<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> stateChangedMessageDispatcher;
 
     private BluetoothGatt gatt;
 
@@ -46,7 +60,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
         characteristicListenerMap.get(key).add(listener);
     }
 
-    public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState>> listener) {
+    public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
         stateChangedMessageDispatcher.getObservers().add(listener);
     }
 
@@ -177,6 +191,8 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
+        System.out.println("ONCONNECTIONSTATE" + " " + status + " " + newState);
+
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 if (this.gatt == null) {
@@ -218,7 +234,6 @@ public class BluetoothConnection extends BluetoothGattCallback {
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         final Triple<UUID, UUID, UUID> key = descriptorKey(descriptor);
-
         if (descriptorListenerMap.containsKey(key)) {
             for (DescriptorListener i : descriptorListenerMap.get(key)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -287,7 +302,11 @@ public class BluetoothConnection extends BluetoothGattCallback {
         }
     }
 
-    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState>> listener) {
+    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
+        stateChangedMessageDispatcher.getObservers().remove(listener);
+    }
+
+    public void removeConnectionStateChangeObserver(Observer<StateChangedMessage<BluetoothConnectionState, Agent>> listener) {
         stateChangedMessageDispatcher.getObservers().remove(listener);
     }
 
@@ -311,7 +330,7 @@ public class BluetoothConnection extends BluetoothGattCallback {
 
             this.state = value;
 
-            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue));
+            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, this));
         }
     }
 
@@ -337,5 +356,15 @@ public class BluetoothConnection extends BluetoothGattCallback {
                 gatt.writeDescriptor(descriptor);
             }
         });
+    }
+
+    @Override
+    public ConnectionKind getConnectionKind() {
+        return ConnectionKind.BLUETOOTH;
+    }
+
+    @Override
+    public String getAddress() {
+        return getDevice().getAddress();
     }
 }

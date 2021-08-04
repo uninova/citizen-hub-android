@@ -27,20 +27,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 public class DeviceSearchFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_CODE = 77;
     private static final int FEATURE_BLUETOOTH_STATE = 78;
-
+    LayoutInflater localInflater;
+    ViewGroup localContainer;
     private DeviceListAdapter adapter;
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    public static Device deviceForSettings;
     private BluetoothScanner scanner;
-    LayoutInflater localInflater;
-    ViewGroup localContainer;
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
     private boolean hasStartedEnableLocationActivity = false;
@@ -59,7 +59,6 @@ public class DeviceSearchFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
 
         cleanList();
         buildRecycleView(result);
@@ -191,10 +190,11 @@ public class DeviceSearchFragment extends Fragment {
             if (address.equals("0C:B2:B7:39:99:63"))
                 name = "Posture Sensor";
 
-            Device device = new Device(name, address, null, null);
+            Device device = new Device(name, address, ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
             if (!model.isDevicePaired(device)) {
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
                 adapter.notifyItemInserted(0);
+//                adapter.updateResults(deviceList);
             }
         });
     }
@@ -208,8 +208,8 @@ public class DeviceSearchFragment extends Fragment {
         deviceList = new ArrayList<>();
     }
 
-    private void buildRecycleView(View result) {
-        RecyclerView recyclerView = result.findViewById(R.id.recyclerView_searchList);
+    private void buildRecycleView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
@@ -223,14 +223,13 @@ public class DeviceSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddFragment());
-
-                DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
             }
 
             @Override
             public void onSettingsClick(int position) {
+                model.setDevice(deviceList.get(position).getDevice());
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
             }
         });
     }

@@ -18,12 +18,14 @@ import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkin
 public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.respiration");
+    final public static String name = HexoSkinRespirationProtocol.class.getSimpleName();
+    public static final UUID RESPIRATION_SERVICE_UUID = UUID.fromString("3b55c581-bc19-48f0-bd8c-b522796f8e24");
+    public static final UUID RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("9bc730c3-8cc0-4d87-85bc-573d6304403c");
 
-    private static UUID RESPIRATION_SERVICE_UUID = UUID.fromString("3b55c581-bc19-48f0-bd8c-b522796f8e24");
-    private static UUID RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("9bc730c3-8cc0-4d87-85bc-573d6304403c");
+    private Class<?> agent;
 
-    public HexoSkinRespirationProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    public HexoSkinRespirationProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID) {
@@ -66,12 +68,21 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
     }
 
     @Override
+    public Class<?> getAgent() {
+        return agent;
+    }
+
+    @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
+        getConnection().disableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
+
     }
 
     @Override
     public void enable() {
+        System.out.println("RESPIRATION_ENABLED");
+        setState(ProtocolState.ENABLED);
         getConnection().enableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 

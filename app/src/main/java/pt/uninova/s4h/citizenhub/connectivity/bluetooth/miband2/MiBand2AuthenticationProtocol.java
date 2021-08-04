@@ -1,37 +1,48 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.*;
-import pt.uninova.util.messaging.Observer;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.UUID;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothProtocol;
+
 public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
 
     final private static UUID XIAOMI_MIBAND2_SERVICE_AUTH = UUID.fromString("0000fee1-0000-1000-8000-00805f9b34fb");
     final private static UUID XIAOMI_MIBAND2_CHARACTERISTIC_AUTH = UUID.fromString("00000009-0000-3512-2118-0009af100700");
+    final public static String name = MiBand2AuthenticationProtocol.class.getSimpleName();
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.authentication");
 
     private final SecureRandom keyGenerator;
     private final byte[] key;
 
-    public MiBand2AuthenticationProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    private Class<?> agent;
+
+    public MiBand2AuthenticationProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
 
         keyGenerator = new SecureRandom();
         key = new byte[16];
+    }
+
+    @Override
+    public Class<?> getAgent() {
+        return agent;
     }
 
     private void attachObservers() {

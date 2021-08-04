@@ -19,10 +19,10 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     private static final String TAG = "WearOSStepsProtocol";
     private final WearOSConnection wearOSConnection;
 
-    protected WearOSStepsProtocol(WearOSConnection connection) {
-        super(ID);
-        wearOSConnection= connection;
-        Log.d(TAG, "Entered"  );
+    protected WearOSStepsProtocol(WearOSConnection connection, Class<?> agent) {
+        super(ID, agent);
+        wearOSConnection = connection;
+        Log.d(TAG, "Entered");
 
         connection.addChannelListener(new BaseChannelListener(channelName) {
             @Override

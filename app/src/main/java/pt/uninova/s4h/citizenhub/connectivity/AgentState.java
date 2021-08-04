@@ -1,6 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 public enum AgentState {
-    DISABLED,
+    DISABLED, //TODO inactive, active, disabled
     ENABLED
 }

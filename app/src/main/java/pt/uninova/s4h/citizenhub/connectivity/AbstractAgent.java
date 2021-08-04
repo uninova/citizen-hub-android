@@ -1,9 +1,14 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
-
-import java.util.*;
 
 public abstract class AbstractAgent implements Agent {
 
@@ -11,9 +16,15 @@ public abstract class AbstractAgent implements Agent {
 
     final private Map<UUID, Protocol> protocolMap;
 
-    final private Dispatcher<StateChangedMessage<AgentState>> stateChangedDispatcher;
+    final private Dispatcher<StateChangedMessage<AgentState, Class<?>>> stateChangedDispatcher;
 
     private AgentState state;
+
+    private AbstractAgent() {
+        this.protocolMap = null;
+        this.id = null;
+        this.stateChangedDispatcher = null;
+    }
 
     protected AbstractAgent(UUID id) {
         this(id, new HashMap<>());
@@ -26,7 +37,8 @@ public abstract class AbstractAgent implements Agent {
         stateChangedDispatcher = new Dispatcher<>();
     }
 
-    public Set<Observer<StateChangedMessage<AgentState>>> getObservers() {
+
+    public Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers() {
         return stateChangedDispatcher.getObservers();
     }
 
@@ -64,13 +76,13 @@ public abstract class AbstractAgent implements Agent {
         return state;
     }
 
-    protected void setState(AgentState value) {
+    protected void setState(AgentState value, Class<?> agent) {
         if (state != value) {
             final AgentState oldState = state;
 
             state = value;
 
-            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState));
+            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
         }
     }
 }

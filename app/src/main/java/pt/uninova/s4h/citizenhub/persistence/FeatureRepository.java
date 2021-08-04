@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import pt.uninova.util.messaging.Observer;
+
 public class FeatureRepository {
     private final FeatureDao featureDao;
 
@@ -16,21 +18,14 @@ public class FeatureRepository {
 
     public void add(Feature feature) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.insert(feature);
+            featureDao.insert(new Feature(feature.getDevice_address(), feature.getKind()));
         });
     }
 
-    public List<Feature> getAll(String address) {
-        return featureDao.getAll(address);
+    public void obtainKindsFromDevice(String address, Observer<List<MeasurementKind>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(featureDao.getKindsFromDevice(address)));
     }
 
-    public List<Feature> getAllSpecific(String feature_address) {
-        return featureDao.getAll(feature_address);
-    }
-
-    public Feature get(String uuid) {
-        return featureDao.get(uuid);
-    }
 
     public LiveData<List<Feature>> getAllLive() {
         return featureDao.getAllLive();
@@ -39,6 +34,12 @@ public class FeatureRepository {
     public void remove(Feature feature) {
         CitizenHubDatabase.executorService().execute(() -> {
             featureDao.delete(feature);
+        });
+    }
+
+    public void remove(String device_address, MeasurementKind measurementKind) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            featureDao.delete(new Feature(device_address, measurementKind));
         });
     }
 

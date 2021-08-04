@@ -9,13 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,13 +16,19 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 
 public class DeviceSearchFragmentWearOS extends Fragment {
@@ -55,8 +54,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-
+        // model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
         cleanList();
         buildRecycleView(result);
 
@@ -128,7 +126,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeName, nodeId, null, null);
+        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS, StateKind.INACTIVE, null);
         deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
         adapter.notifyItemInserted(0);
     }
@@ -156,10 +154,10 @@ public class DeviceSearchFragmentWearOS extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchWearosFragmentToDeviceAddFragment());
+                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
 
                 DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), null, null);
+                        deviceList.get(position).getAddress(), ConnectionKind.WEAROS, StateKind.INACTIVE, null);
             }
 
             @Override
