@@ -30,6 +30,12 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void disable() {
+        for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
+            getProtocol(i).disable();
+        }
+
+        getConnection().close();
+
         setState(AgentState.DISABLED);
     }
 

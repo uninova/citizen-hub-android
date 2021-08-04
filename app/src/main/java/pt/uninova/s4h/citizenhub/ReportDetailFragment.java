@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,24 +10,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Map;
-
 import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
+import org.jetbrains.annotations.NotNull;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class ReportDetailFragment extends Fragment {
 
@@ -35,7 +33,6 @@ public class ReportDetailFragment extends Fragment {
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
     private boolean isSucess;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
@@ -46,12 +43,13 @@ public class ReportDetailFragment extends Fragment {
         viewPdfButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://app-staging.smart4health.eu";
+                String url = "https://app.smart4health.eu";
+                //String url = "https://app-staging.smart4health.eu";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
-                uploadPdfButton.setVisibility(View.VISIBLE);
-                viewPdfButton.setVisibility(View.GONE);
+//                uploadPdfButton.setVisibility(View.VISIBLE);
+//                viewPdfButton.setVisibility(View.GONE);
             }
         });
 
@@ -85,6 +83,23 @@ public class ReportDetailFragment extends Fragment {
         return view;
     }
 
+
+    private String secondsToString(int value) {
+        int seconds = value;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
+    }
 
     private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
@@ -203,19 +218,29 @@ public class ReportDetailFragment extends Fragment {
             }
 
 
-                if (badPosture != null || goodPosture != null) {
-                    if (postureGroup != null) {
-                        postureGroup.setVisibility(View.VISIBLE);
-                    }
-                    if (goodPosture != null) {
-                        okPostureTotal.setText(String.format("%1$.0f", goodPosture.getSum()));
-                    }
-                    if (badPosture != null) {
-                        notOkPostureTotal.setText(String.format("%1.0f", badPosture.getSum()));
-                    }
-                } else {
-                    postureGroup.setVisibility(View.GONE);
+            if (badPosture != null || goodPosture != null) {
+                if (postureGroup != null) {
+                    postureGroup.setVisibility(View.VISIBLE);
                 }
+
+                int gp = 0;
+
+                if (goodPosture != null) {
+                    gp = goodPosture.getSum().intValue();
+                }
+
+                okPostureTotal.setText(secondsToString(gp));
+
+                int bp = 0;
+
+                if (badPosture != null) {
+                    bp = badPosture.getSum().intValue();
+                }
+
+                notOkPostureTotal.setText(secondsToString(bp));
+            } else {
+                postureGroup.setVisibility(View.GONE);
+            }
 
 
         });

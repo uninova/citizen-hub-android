@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import java.util.Map;
-
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+
+import java.util.Map;
 
 public class SummaryFragment extends Fragment {
 
@@ -31,6 +29,23 @@ public class SummaryFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
+    }
+
+    private String secondsToString(int value) {
+        int seconds = value;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
     }
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
@@ -100,7 +115,10 @@ public class SummaryFragment extends Fragment {
 
 
             if (badPosture != null || goodPosture != null) {
-                postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, goodPosture == null ? 0 : goodPosture.getSum(), badPosture == null ? 0 : badPosture.getSum()));
+                int gp = goodPosture == null ? 0 : goodPosture.getSum().intValue();
+                int bp = badPosture == null ? 0 : badPosture.getSum().intValue();
+
+                postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, secondsToString(gp), secondsToString(bp)));
                 postureGroup.setVisibility(View.VISIBLE);
                 postureTitle.setVisibility(View.VISIBLE);
                 postureTextView.setVisibility(View.VISIBLE);

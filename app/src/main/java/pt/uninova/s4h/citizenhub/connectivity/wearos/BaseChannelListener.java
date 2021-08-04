@@ -1,19 +1,21 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
 public class BaseChannelListener implements ChannelListener {
 
-    final private String name;
+    final private MeasurementKind name;
 
 
-    public BaseChannelListener(String name) {
+    public BaseChannelListener(MeasurementKind name) {
         this.name = name;
 
     }
     @Override
-    public String getChannelName() {
+    public MeasurementKind getChannelName() {
         return name;
     }
 

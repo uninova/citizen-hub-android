@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
     android:layout_marginTop="8dp"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="15dp"
+    app:cardPreventCornerOverlap="true"
     app:cardBackgroundColor="@color/white">
 
 
@@ -14,50 +15,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:layout_margin="4dp"
         android:focusable="true"
-        android:background="@drawable/button_background_white_7dp"
+        android:background="@drawable/device_item_outline_medium_dark"
         android:foreground="?android:attr/selectableItemBackground"
         >
 
         <ImageView
             android:id="@+id/image_view_settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
             android:padding="2dp"
             app:srcCompat="@drawable/ic_settings"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/content_description_fragment_device_list_item_img_settings" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fragment_device_list_item_text_title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:maxLines="1"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/image_device"
+            android:layout_marginTop="0dp"
             android:layout_toEndOf="@id/image_device"
             android:ellipsize="end"
-            android:paddingStart="10dp"/>
+            android:fontFamily="@font/neosanspro"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:text="Title"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-         <TextView
+        <TextView
             android:id="@+id/text_view_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view_title"
-             android:layout_toEndOf="@id/image_device"
-             android:text="@string/fragment_device_list_item_text_description"
-             android:paddingStart="10dp"
-             />
+            android:layout_alignBottom="@+id/image_device"
+            android:layout_toEndOf="@id/image_device"
+            android:fontFamily="@font/neosanspro"
+            android:paddingStart="10dp"
+            android:paddingTop="3.5dp"
+            android:text="Description" />
 
         <ImageView
             android:id="@+id/image_device"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            android:contentDescription="@string/content_description_fragment_device_list_item_image_device"
-            app:srcCompat="@drawable/ic_watch" />
+            app:srcCompat="@drawable/ic_devices" />
 
 
     </RelativeLayout>

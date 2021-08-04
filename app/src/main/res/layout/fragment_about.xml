@@ -135,20 +135,19 @@
         app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
 
     <TextView
-        android:id="@+id/text_about_versioning"
-        style="@style/AppTheme.Summary.Item.TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/neosanspro"
-        android:text="@string/fragment_about_text_view_versioning"
-        android:textAlignment="center"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="5.5pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_about_citizenhub_logo" />
-
+            android:id="@+id/text_about_versioning"
+            style="@style/AppTheme.Summary.Item.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/neosanspro"
+            android:text="@string/versionName"
+            android:textAlignment="center"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="5.5pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_about_citizenhub_logo"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
