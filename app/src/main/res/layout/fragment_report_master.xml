@@ -11,8 +11,9 @@
         android:layout_width="320dp"
         android:layout_height="320dp"
         android:scaleType="fitEnd"
-        android:src="@drawable/ic_side_logo_color"
+        android:src="@drawable/ic_citizen_hub_logo_side_color"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/content_description_fragment_report_master_logo"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -23,7 +24,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/neosanspro"
         android:gravity="center"
-        android:text="Select a Day"
+        android:text="@string/fragment_report_master_select_a_day"
         android:textAlignment="center"
         android:textColor="@color/colorS4HDarkBlue"
         android:textSize="30sp"

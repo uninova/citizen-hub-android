@@ -12,7 +12,7 @@
         android:layout_marginBottom="32dp"
         android:textSize="6pt"
         android:gravity="center"
-        android:text="@string/authentication_fragment_login_requirement_text"
+        android:text="@string/fragment_authentication_login_requirement_text"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/citizen_hub_logo" />
+        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
 
     <Button
         android:id="@+id/authentication_fragment_login_button"
@@ -51,7 +51,7 @@
         android:layout_marginTop="32dp"
         android:textSize="6pt"
         android:gravity="center"
-        android:text="@string/authentication_fragment_login_text_view"
+        android:text="@string/fragment_authentication_login_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
         android:layout_marginEnd="307dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/primus_bold"
-        android:text="@string/authentication_fragment_text_powered_by"
+        android:text="@string/fragment_authentication_text_powered_by"
         android:textSize="4.3pt"
         android:textColor="@color/colorS4HDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
@@ -77,7 +77,7 @@
         android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
         android:layout_width="281dp"
         android:layout_height="61dp"
-        android:contentDescription="@string/authentication_fragment_img_s4h_logo_image_content"
+        android:contentDescription="@string/fragment_authentication_img_s4h_logo_image_content"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.934"
-        app:srcCompat="@drawable/img_s4h_logo" />
+        app:srcCompat="@drawable/img_s4h_logo_png" />
 
     <TextView
         android:id="@+id/citizen_hub_text_logo"
