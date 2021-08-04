@@ -191,7 +191,7 @@ public class ReportViewModel extends AndroidViewModel {
         options.inScaled = false;
         options.inDensity = 72;
 
-        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.img_citizen_hub_logo_with_text, options);
+        Bitmap logo = BitmapFactory.decodeResource(res, R.drawable.img_citizen_hub_logo_text, options);
 
 
         canvas.save();
@@ -201,7 +201,7 @@ public class ReportViewModel extends AndroidViewModel {
         canvas.restore();
 
 
-        Bitmap ec_logo = BitmapFactory.decodeResource(res, R.drawable.ec_logo, options);
+        Bitmap ec_logo = BitmapFactory.decodeResource(res, R.drawable.img_ec_logo_png, options);
         canvas.save();
         canvas.translate(10, 790);
         canvas.scale(0.04f, 0.04f);
@@ -212,7 +212,7 @@ public class ReportViewModel extends AndroidViewModel {
         canvasWriter.addNewLine("innovation programme under Grant agreement No 826117", 13);
         canvasWriter.addText("powered by", x + 365, 813, poweredByPaint);
 
-        Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_report, options);
+        Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_transparent_png, options);
         canvas.save();
         canvas.translate(475, 801);
         canvas.scale(0.35f, 0.35f);

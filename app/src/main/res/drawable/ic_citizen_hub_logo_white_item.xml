@@ -12,7 +12,7 @@
     </item>
     <item
         android:bottom="24dp"
-        android:drawable="@drawable/ic_citizen_hub_logo_white_2"
+        android:drawable="@drawable/ic_citizen_hub_logo_white"
         android:gravity="left"
         android:left="24dp"
         android:right="24dp"

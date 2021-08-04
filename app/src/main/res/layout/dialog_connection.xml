@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_background">
+    android:background="@drawable/dialog_background_greylight_30dp">
 
     <TextView
         android:id="@+id/dialogTitle_search"
@@ -11,7 +11,7 @@
         android:layout_marginTop="13dp"
         android:paddingHorizontal="15dp"
         android:paddingVertical="5dp"
-        android:text="Method of Connection"
+        android:text="@string/dialog_connection_search_title"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/dialogText_search"
         style="@style/AppTheme.Summary.Item.TextView"
-        android:text="Please select the methods of connection\n compatible with your device:"
+        android:text="@string/dialog_connection_search_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
     <TextView
         android:id="@+id/bluetoothText"
         android:theme="@style/DialogSwitch"
-        android:text="Bluetooth"
+        android:text="@string/dialog_connection_bluetooth_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -72,7 +72,7 @@
     <TextView
         android:id="@+id/wearOSText"
         android:theme="@style/DialogSwitch"
-        android:text="WearOS"
+        android:text="@string/dialog_connection_wearos_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -89,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Search"
+        android:text="@string/dialog_connection_button_submit"
         android:textAlignment="center"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"

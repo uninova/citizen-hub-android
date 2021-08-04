@@ -8,8 +8,8 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_distance"
         android:bottom="16dp"
+        android:drawable="@drawable/ic_distance"
         android:gravity="left"
         android:left="16dp"
         android:right="16dp"
