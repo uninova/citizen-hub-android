@@ -207,7 +207,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
 
                             }
                         })
-                        .setIcon(R.drawable.img_citizen_hub_logo)
+                        .setIcon(R.drawable.img_citizen_hub_logo_png)
                         .show();
             }
         });
