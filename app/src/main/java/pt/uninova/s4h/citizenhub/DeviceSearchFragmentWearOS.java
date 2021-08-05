@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 
 public class DeviceSearchFragmentWearOS extends Fragment {
@@ -125,7 +126,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS.getId(), null);
+        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS, StateKind.INACTIVE, null);
         deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
         adapter.notifyItemInserted(0);
     }
@@ -156,7 +157,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
                 Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
 
                 DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), ConnectionKind.WEAROS.getId(), null);
+                        deviceList.get(position).getAddress(), ConnectionKind.WEAROS, StateKind.INACTIVE, null);
             }
 
             @Override

@@ -22,11 +22,8 @@ public class MiBand2Agent extends BluetoothAgent {
 
     final private static List<MeasurementKind> measurementKindList = Collections.unmodifiableList(Arrays.asList(
             MeasurementKind.HEART_RATE,
-            MeasurementKind.DISTANCE,
-            MeasurementKind.ACTIVITY,
-            MeasurementKind.STEPS,
-            MeasurementKind.STEPS_PER_MINUTE,
-            MeasurementKind.CALORIES));
+            MeasurementKind.ACTIVITY
+    ));
 
     public MiBand2Agent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
@@ -39,8 +36,8 @@ public class MiBand2Agent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection));
+        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, MiBand2Agent.class));
+        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, MiBand2Agent.class));
 
         return protocolMap;
     }
@@ -58,7 +55,7 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection());
+        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), MiBand2Agent.class);
 
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
@@ -83,11 +80,6 @@ public class MiBand2Agent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
                 break;
             default:
@@ -103,17 +95,17 @@ public class MiBand2Agent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).disable();
                 ((MeasuringProtocol) getProtocol(MiBand2HeartRateProtocol.ID)).getMeasurementObservers().clear();
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).disable();
                 ((MeasuringProtocol) getProtocol(MiBand2DistanceProtocol.ID)).getMeasurementObservers().clear();
             default:
                 break;
         }
 
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, this.getClass());
     }
 
     @Override

@@ -35,4 +35,12 @@ public interface DeviceDao {
     @Query("SELECT * FROM device WHERE connection_kind=:connectionKind")
     @TypeConverters(ConnectionKindTypeConverter.class)
     List<Device> getAllWithConnectionKind(ConnectionKind connectionKind);
+
+    @Query("SELECT * FROM device WHERE state=:stateKind")
+    @TypeConverters(StateKindTypeConverter.class)
+    List<Device> getWithState(StateKind stateKind);
+
+    @Query("SELECT * FROM device WHERE type=:type")
+    List<Device> getWithAgent(String type);
+
 }

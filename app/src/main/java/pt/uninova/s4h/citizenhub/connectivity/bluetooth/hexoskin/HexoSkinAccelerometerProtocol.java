@@ -17,15 +17,16 @@ import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkin
 public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin.accelerometer");
+    final public static String name = HexoSkinAccelerometerProtocol.class.getSimpleName();
     public static final UUID ACCELEROMETER_SERVICE_UUID = UUID.fromString("bdc750c7-2649-4fa8-abe8-fbf25038cda3");
     public static final UUID ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("75246a26-237a-4863-aca6-09b639344f43");
 
     private int lastStepCount;
+    private Class<?> agent;
 
-    public HexoSkinAccelerometerProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
-
         lastStepCount = 0;
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID) {
@@ -71,9 +72,14 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     }
 
     @Override
+    public Class<?> getAgent() {
+        return agent;
+    }
+
+    @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
-        getMeasurementObservers().clear();
+        getConnection().disableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
 
     }
 

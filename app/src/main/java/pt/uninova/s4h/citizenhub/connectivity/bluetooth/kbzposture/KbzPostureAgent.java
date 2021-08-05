@@ -24,12 +24,21 @@ public class KbzPostureAgent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public KbzPostureAgent() {
+        super(ID, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection));
+        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection, KbzPostureAgent.class));
 
         return protocolMap;
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, this.getClass());
     }
 
     @Override
@@ -47,9 +56,9 @@ public class KbzPostureAgent extends BluetoothAgent {
     public void enable() {
         KbzRawProtocol protocol = (KbzRawProtocol) getProtocol(KbzRawProtocol.ID);
 
-        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
+        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState, Class<?>>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState> value) {
+            public void onChanged(StateChangedMessage<ProtocolState, Class<?>> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
                     KbzPostureAgent.this.setState(AgentState.ENABLED);
 
@@ -64,10 +73,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.SITTING);
-        measurementKindList.add(MeasurementKind.STANDING);
-        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
-        measurementKindList.add(MeasurementKind.BAD_POSTURE);
+        measurementKindList.add(MeasurementKind.POSTURE);
 
         return measurementKindList;
     }
@@ -76,10 +82,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     public void enableMeasurement(MeasurementKind measurementKind) {
         switch (measurementKind) {
 
-            case GOOD_POSTURE:
-            case BAD_POSTURE:
-            case SITTING:
-            case STANDING:
+            case POSTURE:
                 getProtocol(KbzRawProtocol.ID).enable();
             case UNKNOWN:
                 break;

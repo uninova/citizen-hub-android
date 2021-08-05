@@ -1,9 +1,9 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import pt.uninova.util.messaging.Observer;
-
 import java.util.Set;
 import java.util.UUID;
+
+import pt.uninova.util.messaging.Observer;
 
 public interface Protocol {
 
@@ -13,7 +13,7 @@ public interface Protocol {
 
     UUID getId();
 
-    Set<Observer<StateChangedMessage<ProtocolState>>> getObservers();
+    Set<Observer<StateChangedMessage<ProtocolState, Class<?>>>> getObservers();
 
     ProtocolState getState();
 

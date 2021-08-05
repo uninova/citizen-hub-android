@@ -38,10 +38,10 @@ public class AboutFragment extends Fragment {
             public void onClick(View v) {
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"helpdesk@smart4health.eu"});
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "CitizenHub: Issue Report");
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.about_page_emailTo_string)});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.about_page_string_email_subject));
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
-                requireContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                requireContext().startActivity(Intent.createChooser(emailIntent, getString(R.string.about_page_email_Intent)));
             }
         });
 

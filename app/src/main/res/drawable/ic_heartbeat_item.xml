@@ -8,8 +8,8 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_heartbeat"
         android:bottom="16dp"
+        android:drawable="@drawable/ic_heartbeat"
         android:gravity="left"
         android:left="8dp"
         android:right="20dp"

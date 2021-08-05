@@ -24,6 +24,10 @@ public class UprightGoAgent extends BluetoothAgent {
         super(ID, createProtocols(connection), connection);
     }
 
+    public UpRightGo2Agent() {
+        super(ID, null, null);
+    }
+
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
         //Posture
@@ -34,6 +38,11 @@ public class UprightGoAgent extends BluetoothAgent {
         protocolMap.put(UprightGoPostureProtocol.ID, new UprightGoCalibrationProtocol(connection));
 
         return protocolMap;
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value, UpRightGo2Agent.class);
     }
 
     @Override
@@ -52,7 +61,7 @@ public class UprightGoAgent extends BluetoothAgent {
         UprightGoPostureProtocol protocolCalibration = (UprightGoPostureProtocol) getProtocol(UprightGoCalibrationProtocol.ID);
         protocolPosture.getObservers().add(new Observer<StateChangedMessage<ProtocolState>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState> value) {
+            public void onChanged(StateChangedMessage<ProtocolState, Class<?>> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
                     UprightGoAgent.this.setState(AgentState.ENABLED);
                     protocolPosture.getObservers().remove(this);
@@ -67,9 +76,7 @@ public class UprightGoAgent extends BluetoothAgent {
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.GOOD_POSTURE);
-        measurementKindList.add(MeasurementKind.BAD_POSTURE);
-
+        measurementKindList.add(MeasurementKind.POSTURE);
         return measurementKindList;
     }
 
@@ -78,8 +85,7 @@ public class UprightGoAgent extends BluetoothAgent {
         if (getState() == AgentState.ENABLED)
             return;
         switch (measurementKind) {
-            case GOOD_POSTURE:
-            case BAD_POSTURE:
+            case POSTURE:
                 enable();
 
                 case UNKNOWN:

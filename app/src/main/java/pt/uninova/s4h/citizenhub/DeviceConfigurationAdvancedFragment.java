@@ -34,11 +34,23 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
+import pt.uninova.s4h.citizenhub.persistence.Device;
 
 
-public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment{
+public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment {
 
     private ProgressDialog dialog;
+    //TODO just for testing purposes, delete later
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -54,9 +66,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         setupText();
 
-        //TODO display features (from DB?)
-        //for now, we'll force this with framelayout/inflate ViewStub
-       enableAdvancedConfigurations(view);
+        enableAdvancedConfigurations(view);
 
         advancedOKDevice.setOnClickListener(v -> {
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAdvancedFragmentDirections.actionDeviceConfigurationAdvancedFragmentToDeviceConfigurationUpdateFragment());
@@ -66,11 +76,10 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
     }
 
     //TODO change from device name to proper detection of the sensor with Advanced Settings
-    protected void enableAdvancedConfigurations(View view)
-    {
+    protected void enableAdvancedConfigurations(View view) {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
-        if(device.getName().equals("MI Band 2")) { //miband just for testing, todo change this back to UprightGo2
+        if (device.getName().equals("MI Band 2")) { //miband just for testing, todo change this back to UprightGo2
             /*
             - Posture Correction Vibration ON/OFF
             - Vibration Angle (1 (strict) to 6 (relaxed))
@@ -88,12 +97,11 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         }
     }
 
-    protected  void loadAdvancedConfigurationUprightGo2(View view){
+    protected void loadAdvancedConfigurationUprightGo2(View view) {
         //TODO Where to get them?
     }
 
-    protected void setupAdvancedConfigurationsUprightGo2(View view)
-    {
+    protected void setupAdvancedConfigurationsUprightGo2(View view) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         ///TODO the listeners ARE NOT SET yet, missing where to save/get them
@@ -105,13 +113,10 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         postureCorrectionVibration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
-                {
+                if (isChecked) {
                     editor.putBoolean("Posture Correction Vibration", true);
                     editor.apply();
-                }
-                else
-                {
+                } else {
                     editor.putBoolean("Posture Correction Vibration", false);
                     editor.apply();
                 }
@@ -123,17 +128,19 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         correctionAngle.incrementProgressBy(1);
         correctionAngle.setProgress(0);
         correctionAngle.setProgress(sharedPreferences.
-                getInt("Vibration Angle",-1));
-        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+                getInt("Vibration Angle", -1));
+        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 editor.putInt("Vibration Angle", correctionAngle.getProgress());
                 //TODO add + 1 when sending config. message
                 editor.apply();
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -141,11 +148,12 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         //Vibration Interval (5, 15, 30 or 60 seconds)
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
-        spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 editor.putInt("Vibration Interval", spinnerInterval.getSelectedItemPosition());
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //do a default thingy
@@ -155,11 +163,12 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         // 5 (heartbeat), 6 (tuk tuk), 7 (ecstatic), 8 (muzzle))
         Spinner spinnerPattern = view.findViewById(R.id.spinnerVibrationPattern);
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
-        spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 editor.putInt("Vibration Pattern", spinnerPattern.getSelectedItemPosition());
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //do a default thingy
@@ -174,17 +183,19 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         correctionStrength.incrementProgressBy(1);
         correctionStrength.setProgress(0);
         correctionStrength.setProgress(sharedPreferences.
-                getInt("Vibration Strength",-1));
-        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+                getInt("Vibration Strength", -1));
+        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 editor.putInt("Vibration Strength", correctionStrength.getProgress());
                 //TODO add + 1 when sending config. message
                 editor.apply();
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -201,9 +212,9 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //TODO calibrate and animate
-                                dialog = ProgressDialog.show(getContext(),"","Calibrating, Please wait...", false);
+                                dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
 
-                                handler.sendMessageDelayed(new Message(),2500);
+                                handler.sendMessageDelayed(new Message(), 2500);
 
                             }
                         })
@@ -212,17 +223,4 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             }
         });
     }
-
-    //TODO just for testing purposes, delete later
-    private final Handler handler = new Handler()
-    {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
-            }
-        }
-    };
 }

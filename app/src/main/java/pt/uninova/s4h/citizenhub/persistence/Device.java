@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 @Entity(tableName = "device", primaryKeys = {"address"})
@@ -16,8 +18,12 @@ public class Device {
     private String address;
     @ColumnInfo(name = "connection_kind")
     @TypeConverters(ConnectionKindTypeConverter.class)
-    private int connectionKind;
-    private String state;
+    private ConnectionKind connectionKind;
+    @TypeConverters(StateKindTypeConverter.class)
+    private StateKind state; //desired state
+    @ColumnInfo(name = "type")
+    private String agentType;
+    //agent_type -ID do agent
 
     @Ignore
     public Device() {
@@ -37,11 +43,12 @@ public class Device {
         return Objects.hash(address);
     }
 
-    public Device(String name, String address, int connectionKind, String state) {
+    public Device(String name, String address, ConnectionKind connectionKind, StateKind state, String agentType) {
         this.name = name;
         this.address = address;
         this.connectionKind = connectionKind;
         this.state = state;
+        this.agentType = agentType;
     }
 
     public String getName() {
@@ -52,6 +59,7 @@ public class Device {
         this.name = name;
     }
 
+    @NotNull
     public String getAddress() {
         return address;
     }
@@ -60,20 +68,27 @@ public class Device {
         this.address = address;
     }
 
-    public int getConnectionKind() {
+    public ConnectionKind getConnectionKind() {
         return connectionKind;
     }
 
-    public void setConnectionKind(int connectionKind) {
+    public void setConnectionKind(ConnectionKind connectionKind) {
         this.connectionKind = connectionKind;
     }
 
-    public String getState() {
+    public StateKind getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(StateKind state) {
         this.state = state;
     }
 
+    public String getAgentType() {
+        return agentType;
+    }
+
+    public void setAgentType(String agentType) {
+        this.agentType = agentType;
+    }
 }

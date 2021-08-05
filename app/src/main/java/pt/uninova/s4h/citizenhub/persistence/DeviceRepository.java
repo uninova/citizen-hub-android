@@ -62,4 +62,20 @@ public class DeviceRepository {
             deviceDao.update(device);
         });
     }
+
+    public List<Device> getWithState(StateKind state) {
+        try {
+            return deviceDao.getWithState(state);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<Device> getWithAgent(String type) {
+        try {
+            return deviceDao.getWithAgent(type);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

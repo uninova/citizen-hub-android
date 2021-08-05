@@ -1,18 +1,33 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.*;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.Feature;
+import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 import pt.uninova.util.messaging.Observer;
-
-import java.util.*;
 
 public class DeviceViewModel extends AndroidViewModel {
     private final MutableLiveData<Device> device;
@@ -31,6 +46,18 @@ public class DeviceViewModel extends AndroidViewModel {
         featureRepository = new FeatureRepository(application);
         feature = new MutableLiveData<>();
         featureList = featureRepository.getAllLive();
+    }
+
+    public List<Device> getAllActive() {
+        return deviceRepository.getWithState(StateKind.ACTIVE);
+    }
+
+    public List<Device> getAllInactive() {
+        return deviceRepository.getWithState(StateKind.INACTIVE);
+    }
+
+    public List<Device> getWithAgent(String type) {
+        return deviceRepository.getWithAgent(type);
     }
 
     public List<FeatureListItem> getSupportedFeatures(AgentOrchestrator agentOrchestrator) {
@@ -77,12 +104,22 @@ public class DeviceViewModel extends AndroidViewModel {
         this.feature.postValue(feature);
     }
 
-    public void apply(Feature feature) {
+    public void apply(Feature feature, AgentOrchestrator agentOrchestrator) {
+        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind());
         featureRepository.add(feature);
     }
 
     public void delete(Feature feature) {
         featureRepository.remove(feature);
+    }
+
+    public void attachObservers(Agent agent, MeasurementRepository measurementRepository) {
+
+        for (UUID j : agent.getPublicProtocolIds()) {
+            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
+
+
+        }
     }
 
     public List<Device> getDevices() {
@@ -102,10 +139,11 @@ public class DeviceViewModel extends AndroidViewModel {
         return device;
     }
 
+
     public void createAgent(CitizenHubService service, Observer<Agent> observer) {
         AgentFactory factory = new AgentFactory(service);
 
-        factory.create(ConnectionKind.BLUETOOTH, observer, device.getValue());
+        factory.create(ConnectionKind.BLUETOOTH, device.getValue().getAddress(), observer);
     }
 
     public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {

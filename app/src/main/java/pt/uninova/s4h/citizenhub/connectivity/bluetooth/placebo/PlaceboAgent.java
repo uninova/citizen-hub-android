@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
@@ -25,8 +26,8 @@ public class PlaceboAgent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection));
+        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, PlaceboAgent.class));
+        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, PlaceboAgent.class));
 
         return protocolMap;
     }
@@ -45,11 +46,7 @@ public class PlaceboAgent extends BluetoothAgent {
 
         List<MeasurementKind> measurementKindList = new ArrayList<>();
         measurementKindList.add(MeasurementKind.HEART_RATE);
-        measurementKindList.add(MeasurementKind.DISTANCE);
         measurementKindList.add(MeasurementKind.ACTIVITY);
-        measurementKindList.add(MeasurementKind.STEPS);
-        measurementKindList.add(MeasurementKind.STEPS_PER_MINUTE);
-        measurementKindList.add(MeasurementKind.CALORIES);
 
         return measurementKindList;
     }
@@ -62,11 +59,6 @@ public class PlaceboAgent extends BluetoothAgent {
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();
                 break;
             case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-            case CADENCE:
-            case CALORIES:
                 getProtocol(MiBand2DistanceProtocol.ID).enable();
             default:
                 break;
@@ -76,5 +68,10 @@ public class PlaceboAgent extends BluetoothAgent {
     @Override
     public String getName() {
         return null;
+    }
+
+    @Override
+    protected void setState(AgentState value) {
+        setState(value);
     }
 }
