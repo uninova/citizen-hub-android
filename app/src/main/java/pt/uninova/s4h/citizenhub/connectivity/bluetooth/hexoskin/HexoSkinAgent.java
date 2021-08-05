@@ -1,11 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
@@ -14,9 +8,12 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
+import java.util.*;
+
 public class HexoSkinAgent extends BluetoothAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
+
     public HexoSkinAgent(BluetoothConnection connection) {
         super(ID, createProtocols(connection, HexoSkinAgent.class), connection);
     }

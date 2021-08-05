@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
@@ -6,6 +6,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
@@ -15,9 +16,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
-public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
+public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo.posture");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2.posture");
     final public static UUID MEASUREMENTS_SERVICE = UUID.fromString("0000bac0-0000-1000-8000-00805f9b34fb"); //bac0
     final private static UUID POSTURE_CORRECTION = UUID.fromString("0000bac3-0000-1000-8000-00805f9b34fb"); //bac3
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
@@ -70,8 +71,8 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
     //posture, therefore using only the sensor evaluation (considering its current calibration)
     private Boolean ignoreSensorEvaluation = true; //similar to ignoreAccValues
 
-    public UprightGoPostureProtocol(BluetoothConnection connection) {
-        super(ID, connection);
+    public UprightGo2PostureProtocol(BluetoothConnection connection, Class<?> agent) {
+        super(ID, connection, agent);
     }
 
     private void attachObservers() {
@@ -85,11 +86,11 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
         });
 
         //setting up accelerometer measurements
-        if(connection.hasService(MEASUREMENTS_SERVICE)) {
+        if (connection.hasService(MEASUREMENTS_SERVICE)) {
             connection.enableNotifications(MEASUREMENTS_SERVICE, CHARACTERISTIC);
         }
         //setting up sensor evaluation of good posture (posture correction)
-        if(connection.hasService(MEASUREMENTS_SERVICE)) {
+        if (connection.hasService(MEASUREMENTS_SERVICE)) {
             connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
         }
 
@@ -97,8 +98,7 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, CHARACTERISTIC) {
             @Override
             public void onChange(byte[] value) {
-                if (ignoreAccValues)
-                {
+                if (ignoreAccValues) {
                     updateCurrentPostureValues(connection);
                     return;
                 }
@@ -109,9 +109,9 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
                 String s = Arrays.toString(bytes);
 
                 final short[] parsed_sh = new short[]{
-                        (short) ((byteBuffer.get(1)<<8)+byteBuffer.get(0)),
-                        (short) ((byteBuffer.get(3)<<8)+byteBuffer.get(2)),
-                        (short) ((byteBuffer.get(5)<<8)+byteBuffer.get(4))
+                        (short) ((byteBuffer.get(1) << 8) + byteBuffer.get(0)),
+                        (short) ((byteBuffer.get(3) << 8) + byteBuffer.get(2)),
+                        (short) ((byteBuffer.get(5) << 8) + byteBuffer.get(4))
                 };
 
                 //this is here for testing, can be called anytime for current Vibration settings
@@ -139,43 +139,43 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
             }
         });
         //handle sensor evaluation of good posture
-        connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE,POSTURE_CORRECTION){
-             @Override
-             public void onChange(byte[] value) {
-                 if (ignoreSensorEvaluation)
-                     return;
+        connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
+                                                 @Override
+                                                 public void onChange(byte[] value) {
+                                                     if (ignoreSensorEvaluation)
+                                                         return;
 
-                 final LocalDateTime now = LocalDateTime.now();
+                                                     final LocalDateTime now = LocalDateTime.now();
 
-                 byte[] bytes = value;
-                 ByteBuffer byteBuffer = ByteBuffer.wrap(bytes).asReadOnlyBuffer();
-                 String s = Arrays.toString(bytes);
+                                                     byte[] bytes = value;
+                                                     ByteBuffer byteBuffer = ByteBuffer.wrap(bytes).asReadOnlyBuffer();
+                                                     String s = Arrays.toString(bytes);
 
-                 final double[] parsed = new double[]{
-                         byteBuffer.get(0),byteBuffer.get(1),byteBuffer.get(2)
-                 };
+                                                     final double[] parsed = new double[]{
+                                                             byteBuffer.get(0), byteBuffer.get(1), byteBuffer.get(2)
+                                                     };
 
-                 //System.out.println("Result: " + s + parsed[0] + "|" + parsed[1] + "|" + parsed[2]);
+                                                     //System.out.println("Result: " + s + parsed[0] + "|" + parsed[1] + "|" + parsed[2]);
 
-                 if (isGoodPosture_Sensor(parsed[1])) { //new reading is good posture
-                     if (lastPosture != null) {
-                         final Duration duration = Duration.between(lastTimestamp, now);
-                         getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
-                     } else { //if no previous reading
-                         lastPosture = MeasurementKind.GOOD_POSTURE;
-                     }
-                 } else { //new reading is bad posture
-                     if (lastPosture !=null) {
-                         final Duration duration = Duration.between(lastTimestamp, now);
-                         getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
-                     } else { //if no previous reading
-                         lastPosture = MeasurementKind.BAD_POSTURE;
-                     }
-                 }
-                 System.out.println(lastPosture.toString());
-                 lastTimestamp = now;
-             }
-         }
+                                                     if (isGoodPosture_Sensor(parsed[1])) { //new reading is good posture
+                                                         if (lastPosture != null) {
+                                                             final Duration duration = Duration.between(lastTimestamp, now);
+                                                             getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
+                                                         } else { //if no previous reading
+                                                             lastPosture = MeasurementKind.GOOD_POSTURE;
+                                                         }
+                                                     } else { //new reading is bad posture
+                                                         if (lastPosture != null) {
+                                                             final Duration duration = Duration.between(lastTimestamp, now);
+                                                             getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
+                                                         } else { //if no previous reading
+                                                             lastPosture = MeasurementKind.BAD_POSTURE;
+                                                         }
+                                                     }
+                                                     System.out.println(lastPosture.toString());
+                                                     lastTimestamp = now;
+                                                 }
+                                             }
         );
     }
 
@@ -196,13 +196,12 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
         super.enable();
     }
 
-    private void updateCurrentPostureValues(BluetoothConnection connection)
-    {
+    private void updateCurrentPostureValues(BluetoothConnection connection) {
         //to update posture values, because the sensor only does it when something changes (notification)
         //these cycles must be changed/simplified later
-        for(int i=0; i<connection.getServices().size();i++) {
+        for (int i = 0; i < connection.getServices().size(); i++) {
             for (int j = 0; j < connection.getServices().get(i).getCharacteristics().size(); j++) {
-                if(connection.getServices().get(i).getCharacteristics().get(j).getValue() != null && connection.getServices().get(i).getCharacteristics().get(j).getUuid().equals(POSTURE_CORRECTION)) {
+                if (connection.getServices().get(i).getCharacteristics().get(j).getValue() != null && connection.getServices().get(i).getCharacteristics().get(j).getUuid().equals(POSTURE_CORRECTION)) {
                     byte[] bytes2 = connection.getServices().get(i).getCharacteristics().get(j).getValue();
                     ByteBuffer byteBuffer2 = ByteBuffer.wrap(bytes2).asReadOnlyBuffer();
                     final double[] parsed2 = new double[]{
@@ -216,8 +215,7 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
         }
     }
 
-    private void countTimePosture(double value)
-    {
+    private void countTimePosture(double value) {
         final LocalDateTime now = LocalDateTime.now();
 
         if (isGoodPosture_Sensor(value)) {
@@ -243,12 +241,12 @@ public class UprightGoPostureProtocol extends BluetoothMeasuringProtocol {
     //still undefined
     private boolean isGoodPosture_Accelerometer(double acc1, double acc2, double acc3) {
         int threshold_acc1 = 0, threshold_acc2 = -200, threshold_acc3;
-        return acc2>threshold_acc2;
+        return acc2 > threshold_acc2;
         //change this condition to consider Good Posture, after calibration
     }
+
     //definition of good posture by the sensor defined settings
-    private boolean isGoodPosture_Sensor(double posture)
-    {
+    private boolean isGoodPosture_Sensor(double posture) {
         //here only the good posture is tested, but the sensor also provides information
         //of when it's vibrating, etc... This can also be included later in the UI
         if (posture == 0) //good

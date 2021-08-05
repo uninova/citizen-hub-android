@@ -22,18 +22,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo.UprightGoPostureProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
 
