@@ -2,22 +2,13 @@ package pt.uninova.s4h.citizenhub.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UpRightGo2Protocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -26,6 +17,13 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 import static android.content.Context.BLUETOOTH_SERVICE;
 
@@ -38,9 +36,9 @@ public class AgentFactory {
 
     public AgentFactory(CitizenHubService service) {
         this.service = service;
+
         bluetoothManager = (BluetoothManager) service.getSystemService(BLUETOOTH_SERVICE);
         deviceRepository = new DeviceRepository(service.getApplication());
-
     }
 
     public HashSet<String> getAgentList() {
@@ -213,52 +211,31 @@ public class AgentFactory {
     private void bluetoothFactory(String address, Observer<Agent> observer) {
         if (BluetoothAdapter.checkBluetoothAddress(address))
             connectionManager.put(ConnectionKind.BLUETOOTH, address);
-        {
-            {
-//                deviceRepository.get(address).setState(StateKind.INACTIVE.getId());
-//                deviceRepository.get(address).setConnectionKind(ConnectionKind.BLUETOOTH.getId());
-                final BluetoothConnection connection = new BluetoothConnection();
+        final BluetoothConnection connection = new BluetoothConnection();
 
-                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                    @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+        connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+            @Override
+            public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
-                        if (value.getNewState() == BluetoothConnectionState.READY) {
-                            connection.removeConnectionStateChangeListener(this);
+                if (value.getNewState() == BluetoothConnectionState.READY) {
+                    connection.removeConnectionStateChangeListener(this);
 
-                            String name = connection.getDevice().getName();
-                            System.out.println("ONCHANGED NAME" + "" + name);
+                    final String name = connection.getDevice().getName();
+                    final String address = connection.getDevice().getAddress();
 
-//                        if ((connection.getServices().contains(HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE) &&
-//                                connection.getServices().contains(HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID) &&
-//                                connection.getServices().contains(HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID)) &&
-                            if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-//                                deviceRepository.get(address).setAgentType(HexoSkinAgent.class.getSimpleName());
-                                observer.onChanged(new HexoSkinAgent(connection));
-                            } else if (/*(connection.getServices().contains(MiBand2DistanceProtocol.UUID_SERVICE) &&
-                                    connection.getServices().contains(MiBand2HeartRateProtocol.UUID_SERVICE_HEART_RATE)) &&*/ name.startsWith("MI")) {
-                                deviceRepository.get(address).setAgentType(MiBand2Agent.class.getSimpleName());
-                                observer.onChanged(new MiBand2Agent(connection));
-                            } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
-                                deviceRepository.get(address).setAgentType(KbzPostureAgent.class.getSimpleName());
-                                observer.onChanged(new KbzPostureAgent(connection));
-                            } else if (name.startsWith("UprightGO2")) {
-                                deviceRepository.get(address).setAgentType(UpRightGo2Protocol.class.getSimpleName());
-                                observer.onChanged(new UpRightGo2Agent(connection));
-                            }
-//                            deviceRepository.get(address).setState(StateKind.ACTIVE.getId());
-//                            deviceRepository.update(deviceRepository.get(address));
-                        }
+                    if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
+                        observer.onChanged(new HexoSkinAgent(connection));
+                    } else if (name.startsWith("MI")) {
+                        observer.onChanged(new MiBand2Agent(connection));
+                    } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
+                        observer.onChanged(new KbzPostureAgent(connection));
+                    } else if (name.startsWith("UprightGO2")) {
+                        observer.onChanged(new UprightGo2Agent(connection));
                     }
-                });
-                bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+                }
             }
+        });
 
-        }
+        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
     }
-
-//    Class<?> clazz = Class.forName(className);
-//    Constructor<?> ctor = clazz.getConstructor(String.class);
-//    Object object = ctor.newInstance(new Object[] { ctorArgument });
-// em ultimo caso fazer classe estatica mapa que retorna agentes
 }
