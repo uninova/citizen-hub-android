@@ -72,6 +72,9 @@ AgentOrchestrator {
         deviceRepository.obtainAll(value -> {
             for (Device i : value
             ) {
+                System.out.println(
+                        "HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeee" + i.getConnectionKind() + " "
+                + i.getName() + " " + i.getAgentType());
                 if (i.getAgentType() != null) {
                     agentFactory.create(i.getAddress(), i.getAgentType(), agent -> {
                         agent.enable();
@@ -94,7 +97,7 @@ AgentOrchestrator {
                 }
                 agentFactory.create(i.getConnectionKind(), i.getAddress(), agent -> {
                     agent.enable();
-                    i.setConnectionKind(ConnectionKind.BLUETOOTH);
+                    //i.setConnectionKind(ConnectionKind.BLUETOOTH);
                     i.setState(StateKind.INACTIVE);
                     i.setAgentType(agent.getName());
                     deviceAgentMap.put(i, agent);

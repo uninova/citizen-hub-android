@@ -9,6 +9,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAge
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
+import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSAgent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnectionState;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -86,8 +87,12 @@ public class AgentFactory {
     //TODO criar create que sabemos o que é com agentType +
 
     public void create(String address, String agentType, Observer<Agent> observer) {
-
-        bluetoothFactory(address, agentType, observer);
+        if (agentType.equals(WearOSAgent.class.getSimpleName())) {
+            wearOsFactory(address, observer);
+        }
+        else {
+            bluetoothFactory(address, agentType, observer);
+        }
 
     }
 
@@ -128,25 +133,7 @@ public class AgentFactory {
             e.printStackTrace();
         }
         agent = ((Agent) object);
-//        //Todo tentar por numa variavel
-//        switch (agentType) {
-//            case "HexoSkinAgent":
-//                agent = new HexoSkinAgent(connection);
-//                break;
-//            case "KbzPostureAgent":
-//                agent = new KbzPostureAgent(connection);
-//                break;
-//            case "MiBand2Agent":
-//                agent = new MiBand2Agent(connection);
-//                break;
-//            case "UpRightGo2Agent":
-//                agent = new UpRightGo2Agent(connection);
-//                break;
-//            default:
-//                return null;
-//        }
         return agent;
-
     }
 
     private void wearOsFactory(String address, Observer<Agent> observer) {
@@ -156,7 +143,7 @@ public class AgentFactory {
             @Override
             public void onChanged(StateChangedMessage<WearOSConnectionState, Agent> value) {
                 if (value.getNewState() == WearOSConnectionState.READY) {
-
+                    observer.onChanged(new WearOSAgent(wearOSConnection));
                     wearOSConnection.removeConnectionStateChangeListener(this);
 
                 }

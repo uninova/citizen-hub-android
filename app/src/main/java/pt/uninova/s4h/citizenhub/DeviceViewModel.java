@@ -140,10 +140,10 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
 
-    public void createAgent(CitizenHubService service, Observer<Agent> observer) {
+    public void createAgent(CitizenHubService service, ConnectionKind connectionKind, Observer<Agent> observer) {
         AgentFactory factory = new AgentFactory(service);
 
-        factory.create(ConnectionKind.BLUETOOTH, device.getValue().getAddress(), observer);
+        factory.create(connectionKind, device.getValue().getAddress(), observer);
     }
 
     public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {

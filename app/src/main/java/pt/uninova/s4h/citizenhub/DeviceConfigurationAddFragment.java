@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import java.util.Objects;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -30,7 +32,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setText("Loading device features...");
 
-        model.createAgent(service, agent -> {
+        model.createAgent(service, Objects.requireNonNull(model.getSelectedDevice().getValue()).getConnectionKind(), agent -> {
             agentOrchestrator.add(model.getSelectedDevice().getValue(), agent);
             if (model.getSelectedDevice().getValue().getAgentType() != null) {
                 loadSupportedFeatures();
