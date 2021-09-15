@@ -21,7 +21,7 @@ buildscript {
 
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.2'
     }
 }
 
@@ -56,8 +56,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-tasks.named("wrapper") {
-    gradleVersion = "6.8.2"
 }
