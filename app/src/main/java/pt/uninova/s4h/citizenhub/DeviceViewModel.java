@@ -104,22 +104,13 @@ public class DeviceViewModel extends AndroidViewModel {
         this.feature.postValue(feature);
     }
 
-    public void apply(Feature feature, AgentOrchestrator agentOrchestrator) {
-        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind());
+    public void apply(Feature feature, AgentOrchestrator agentOrchestrator, MeasurementRepository measurementRepository) {
+        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurementRepository::add);
         featureRepository.add(feature);
     }
 
     public void delete(Feature feature) {
         featureRepository.remove(feature);
-    }
-
-    public void attachObservers(Agent agent, MeasurementRepository measurementRepository) {
-
-        for (UUID j : agent.getPublicProtocolIds()) {
-            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-
-
-        }
     }
 
     public List<Device> getDevices() {
@@ -157,17 +148,6 @@ public class DeviceViewModel extends AndroidViewModel {
         this.device.postValue(device);
     }
 
-    private void setDeviceList(List<Device> deviceList) {
-        this.deviceList.addAll(deviceList);
-    }
-
-    public void getDeviceFeatures(Device device) {
-        ((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device).getSupportedMeasurements();
-    }
-
-    public void enableDeviceFeature(MeasurementKind measurementKind) {
-        Objects.requireNonNull(((CitizenHubServiceBound) getApplication()).getService().getAgentOrchestrator().getDeviceAgentMap().get(device.getValue())).enableMeasurement(measurementKind);
-    }
 
     public void apply() {
         deviceRepository.add(device.getValue());
