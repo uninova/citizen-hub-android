@@ -3,6 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.util.messaging.Dispatcher;
@@ -12,11 +13,11 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
 
     private final Dispatcher<Measurement> measurementDispatcher;
 
-    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Class<?> agent) {
+    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, BluetoothAgent agent) {
         this(id, connection, new Dispatcher<>(), agent);
     }
 
-    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Dispatcher<Measurement> dispatcher, Class<?> agent) {
+    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Dispatcher<Measurement> dispatcher, BluetoothAgent agent) {
         super(id, connection, agent);
 
         measurementDispatcher = dispatcher;

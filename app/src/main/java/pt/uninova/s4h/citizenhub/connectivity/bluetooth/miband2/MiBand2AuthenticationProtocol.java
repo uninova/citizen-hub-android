@@ -33,16 +33,11 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
 
     private Class<?> agent;
 
-    public MiBand2AuthenticationProtocol(BluetoothConnection connection, Class<?> agent) {
+    public MiBand2AuthenticationProtocol(BluetoothConnection connection, MiBand2Agent agent) {
         super(ID, connection, agent);
 
         keyGenerator = new SecureRandom();
         key = new byte[16];
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     private void attachObservers() {
@@ -106,10 +101,6 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
                 }
             }
         });
-    }
-
-    private void detachObservers() {
-
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface Protocol {
 
     UUID getId();
 
-    Set<Observer<StateChangedMessage<ProtocolState, Class<?>>>> getObservers();
+    Set<Observer<StateChangedMessage<ProtocolState, ? extends Agent>>> getObservers();
 
     ProtocolState getState();
 

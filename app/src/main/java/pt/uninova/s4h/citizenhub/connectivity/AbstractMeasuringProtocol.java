@@ -11,7 +11,7 @@ public abstract class AbstractMeasuringProtocol extends AbstractProtocol impleme
 
     final private Dispatcher<Measurement> measurementDispatcher;
 
-    protected AbstractMeasuringProtocol(UUID id, Class<?> agent) {
+    protected AbstractMeasuringProtocol(UUID id, Agent agent) {
         super(id, agent);
 
         measurementDispatcher = new Dispatcher<>();

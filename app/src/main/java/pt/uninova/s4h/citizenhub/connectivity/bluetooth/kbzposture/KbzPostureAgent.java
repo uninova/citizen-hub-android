@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
@@ -31,19 +34,14 @@ public class KbzPostureAgent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(KbzRawProtocol.ID, new KbzRawProtocol(connection, KbzPostureAgent.class));
+        protocolMap.put(KbzRawProtocol.ID, null);
 
         return protocolMap;
     }
 
     @Override
-    protected void setState(AgentState value) {
-        setState(value, this.getClass());
-    }
-
-    @Override
     public void disable() {
-        for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
+        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
 
@@ -56,9 +54,9 @@ public class KbzPostureAgent extends BluetoothAgent {
     public void enable() {
         KbzRawProtocol protocol = (KbzRawProtocol) getProtocol(KbzRawProtocol.ID);
 
-        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState, Class<?>>>() {
+        protocol.getObservers().add(new Observer<StateChangedMessage<ProtocolState, ? extends Agent>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState, Class<?>> value) {
+            public void onChanged(StateChangedMessage<ProtocolState, ? extends Agent> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
                     KbzPostureAgent.this.setState(AgentState.ENABLED);
 
@@ -79,20 +77,26 @@ public class KbzPostureAgent extends BluetoothAgent {
     }
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind) {
-        switch (measurementKind) {
+    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+        MeasuringProtocol protocol = null;
 
-            case POSTURE:
-                getProtocol(KbzRawProtocol.ID).enable();
-            case UNKNOWN:
-                break;
-            default:
-                break;
+        if (measurementKind == MeasurementKind.POSTURE) {
+            protocol = new KbzRawProtocol(this.getConnection(), this);
+        }
+
+        if (protocol != null) {
+            protocol.getMeasurementObservers().add(observer);
+            enableProtocol(protocol.getId(), protocol);
         }
     }
 
     @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+        //TODO
+    }
+
+    @Override
     public String getName() {
-        return null;
+        return "KBZ Posture";
     }
 }

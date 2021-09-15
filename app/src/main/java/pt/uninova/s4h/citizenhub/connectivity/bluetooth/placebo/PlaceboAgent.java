@@ -13,7 +13,9 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Observer;
 
 public class PlaceboAgent extends BluetoothAgent {
 
@@ -26,8 +28,8 @@ public class PlaceboAgent extends BluetoothAgent {
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, PlaceboAgent.class));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, PlaceboAgent.class));
+        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, null));
+        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, null));
 
         return protocolMap;
     }
@@ -51,9 +53,13 @@ public class PlaceboAgent extends BluetoothAgent {
         return measurementKindList;
     }
 
-    @Override
-    public void enableMeasurement(MeasurementKind measurementKind) {
 
+    @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+
+    }
+
+    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
         switch (measurementKind) {
             case HEART_RATE:
                 getProtocol(MiBand2HeartRateProtocol.ID).enable();

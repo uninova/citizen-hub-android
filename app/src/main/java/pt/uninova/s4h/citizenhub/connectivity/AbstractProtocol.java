@@ -4,18 +4,19 @@ import java.io.Closeable;
 import java.util.Set;
 import java.util.UUID;
 
+import care.data4life.fhir.r4.model.Age;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 public abstract class AbstractProtocol implements Closeable, Protocol {
 
     final private UUID id;
-    final private Dispatcher<StateChangedMessage<ProtocolState, Class<?>>> stateChangedDispatcher;
+    final private Dispatcher<StateChangedMessage<ProtocolState, ? extends Agent>> stateChangedDispatcher;
 
     private ProtocolState state;
-    private Class<?> agent;
+    private Agent agent;
 
-    protected AbstractProtocol(UUID id, Class<?> agent) {
+    protected AbstractProtocol(UUID id, Agent agent) {
         this.id = id;
         this.agent = agent;
         stateChangedDispatcher = new Dispatcher<>();
@@ -43,20 +44,16 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
     }
 
     @Override
-    public Set<Observer<StateChangedMessage<ProtocolState, Class<?>>>> getObservers() {
+    public Set<Observer<StateChangedMessage<ProtocolState, ? extends Agent>>> getObservers() {
         return stateChangedDispatcher.getObservers();
     }
 
-    public Dispatcher<StateChangedMessage<ProtocolState, Class<?>>> getStateChangedDispatcher() {
+    public Dispatcher<StateChangedMessage<ProtocolState, ? extends Agent>> getStateChangedDispatcher() {
         return stateChangedDispatcher;
     }
 
-    public Class<?> getAgent() {
+    public Agent getAgent() {
         return agent;
-    }
-
-    public void setAgent(Class<?> agent) {
-        this.agent = agent;
     }
 
     @Override
@@ -70,7 +67,6 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
 
             state = value;
             stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
-
         }
     }
 }

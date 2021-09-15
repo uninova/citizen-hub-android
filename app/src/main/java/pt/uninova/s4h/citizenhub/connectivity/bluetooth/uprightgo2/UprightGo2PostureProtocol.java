@@ -71,7 +71,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     //posture, therefore using only the sensor evaluation (considering its current calibration)
     private Boolean ignoreSensorEvaluation = true; //similar to ignoreAccValues
 
-    public UprightGo2PostureProtocol(BluetoothConnection connection, Class<?> agent) {
+    public UprightGo2PostureProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
         super(ID, connection, agent);
     }
 

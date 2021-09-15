@@ -15,7 +15,7 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
     private byte[] vibrationON = {0x00, 0x00};
     private byte[] vibrationOFF = {0x01, 0x01};
 
-    public UprightGo2VibrationProtocol(BluetoothConnection connection, Class<?> agent) {
+    public UprightGo2VibrationProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
         super(ID, connection, agent);
     }
 

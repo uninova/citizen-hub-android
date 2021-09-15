@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
@@ -32,15 +33,8 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
     private MeasurementKind lastPosture;
     private LocalDateTime lastTimestamp;
 
-    private Class<?> agent;
-
-    public KbzRawProtocol(BluetoothConnection connection, Class<?> agent) {
+    public KbzRawProtocol(BluetoothConnection connection, BluetoothAgent agent) {
         super(ID, connection, agent);
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     private void attachObservers() {

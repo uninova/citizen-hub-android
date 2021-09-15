@@ -2,11 +2,14 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Observer;
 
 import java.util.*;
 
@@ -15,26 +18,26 @@ public class HexoSkinAgent extends BluetoothAgent {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
 
     public HexoSkinAgent(BluetoothConnection connection) {
-        super(ID, createProtocols(connection, HexoSkinAgent.class), connection);
+        super(ID, createProtocols(connection), connection);
     }
 
     public HexoSkinAgent() {
         super(ID, null, null);
     }
 
-    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection, Class<?> agent) {
+    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(HexoSkinHeartRateProtocol.ID, new HexoSkinHeartRateProtocol(connection, agent));
-        protocolMap.put(HexoSkinAccelerometerProtocol.ID, new HexoSkinAccelerometerProtocol(connection, agent));
-        protocolMap.put(HexoSkinRespirationProtocol.ID, new HexoSkinRespirationProtocol(connection, agent));
+        protocolMap.put(HexoSkinHeartRateProtocol.ID, null);
+        protocolMap.put(HexoSkinAccelerometerProtocol.ID, null);
+        protocolMap.put(HexoSkinRespirationProtocol.ID, null);
 
         return protocolMap;
     }
 
     @Override
     public void disable() {
-        for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
+        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
 
@@ -61,19 +64,24 @@ public class HexoSkinAgent extends BluetoothAgent {
 
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind) {
+    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+        MeasuringProtocol protocol = null;
+
         switch (measurementKind) {
             case HEART_RATE:
-                getProtocol(HexoSkinHeartRateProtocol.ID).enable();
+                protocol = new HexoSkinHeartRateProtocol(this.getConnection(), this);
                 break;
             case RESPIRATION_RATE:
-                getProtocol(HexoSkinRespirationProtocol.ID).enable();
+                protocol = new HexoSkinRespirationProtocol(this.getConnection(), this);
                 break;
             case ACTIVITY:
-                getProtocol(HexoSkinAccelerometerProtocol.ID).enable();
+                protocol = new HexoSkinAccelerometerProtocol(this.getConnection(), this);
                 break;
-            default:
-                break;
+        }
+
+        if (protocol != null) {
+            enableProtocol(protocol.getId(), protocol);
+            protocol.getMeasurementObservers().add(observer);
         }
     }
 
@@ -97,12 +105,7 @@ public class HexoSkinAgent extends BluetoothAgent {
 
     @Override
     public String getName() {
-        return "HexoSkinAgent";
-    }
-
-    @Override
-    protected void setState(AgentState value) {
-        super.setState(value, HexoSkinAgent.class);
+        return "HexoSkin";
     }
 
 }

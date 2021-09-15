@@ -13,7 +13,7 @@ public class UprightGo2CalibrationProtocol extends BluetoothMeasuringProtocol {
     final private static UUID TRIGGER_CALIBRATION = UUID.fromString("0000bac1-0000-1000-8000-00805f9b34fb"); //bac1
     private byte[] calibrationTrigger = {0x00};
 
-    public UprightGo2CalibrationProtocol(BluetoothConnection connection, Class<?> agent) {
+    public UprightGo2CalibrationProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
         super(ID, connection, agent);
     }
 

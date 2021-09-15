@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
@@ -25,7 +26,7 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
     private Class<?> agent;
 
-    public MiBand2HeartRateProtocol(BluetoothConnection connection, Class<?> agent) {
+    public MiBand2HeartRateProtocol(BluetoothConnection connection, MiBand2Agent agent) {
         super(ID, connection, agent);
 
         setState(ProtocolState.DISABLED);
@@ -73,17 +74,18 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
     }
 
     @Override
-    public Class<?> getAgent() {
-        return agent;
-    }
-
-    @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
     }
 
     @Override
     public void enable() {
-        getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
+        if (this.getAgent().getState() == AgentState.ENABLED) {
+            System.out.println("TURN IT ON!");
+            getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
+        } else {
+            System.out.println("NOCANDO!");
+            //TODO LISTEN WHEN READY THEN TURN ON
+        }
     }
 }

@@ -17,12 +17,12 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
     final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
 
     final String TAG = "WearOSHeartRateProtocol";
-    private final WearOSConnection wearOSConnection;
+    private final WearOSConnection connection;
 
 
-    protected WearOSHeartRateProtocol(WearOSConnection connection, Class<?> agent) {
+    protected WearOSHeartRateProtocol(WearOSConnection connection, WearOSAgent agent) {
         super(ID, agent);
-        wearOSConnection = connection;
+        this.connection = connection;
 
         Log.d(TAG, "Entered");
 
@@ -32,7 +32,7 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
                 getMeasurementDispatcher().dispatch(new Measurement(timestamp, MeasurementKind.HEART_RATE, value));
                 //Log.d(TAG, "dispatch " + timestamp + " and " + value);
-                }
+            }
 
         });
     }
@@ -46,7 +46,6 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
     @Override
     public void enable() {
         setState(ProtocolState.ENABLED);
-
     }
 
 }

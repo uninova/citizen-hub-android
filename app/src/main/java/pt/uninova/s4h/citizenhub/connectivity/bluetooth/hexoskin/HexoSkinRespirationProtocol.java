@@ -24,7 +24,7 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     private Class<?> agent;
 
-    public HexoSkinRespirationProtocol(BluetoothConnection connection, Class<?> agent) {
+    public HexoSkinRespirationProtocol(BluetoothConnection connection, HexoSkinAgent agent) {
         super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
 
@@ -65,11 +65,6 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
                 }
             }
         });
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     @Override
