@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "feature", primaryKeys = {"device_address", "kind_id"}, foreignKeys = @ForeignKey(onDelete = CASCADE, entity = Device.class, parentColumns = "address", childColumns = "device_address"))
+@Entity(tableName = "feature", primaryKeys = {"device_address", "kind_id"}/*, foreignKeys = @ForeignKey(onDelete = CASCADE, entity = Device.class, parentColumns = "address", childColumns = "device_address")*/)
 public class Feature {
     @NonNull
     private String device_address;
