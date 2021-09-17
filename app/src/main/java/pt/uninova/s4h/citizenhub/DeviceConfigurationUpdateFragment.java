@@ -47,7 +47,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     protected void enableAdvancedConfigurations() {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
-        if (device.getName().equals("MI Band 2"))
+        if (device.getName().equals("UprightGO2"))
             advancedDevice.setVisibility(View.VISIBLE);
         else
             advancedDevice.setVisibility(View.GONE);

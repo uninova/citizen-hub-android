@@ -21,7 +21,7 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 
     private Class<?> agent;
 
-    public HexoSkinHeartRateProtocol(BluetoothConnection connection, Class<?> agent) {
+    public HexoSkinHeartRateProtocol(BluetoothConnection connection, HexoSkinAgent agent) {
         super(ID, connection, agent);
 
         setState(ProtocolState.DISABLED);
@@ -33,11 +33,6 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
                 getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) value[1]));
             }
         });
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     @Override

@@ -7,14 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.util.messaging.Observer;
 
 public class MiBand2Agent extends BluetoothAgent {
 
@@ -25,26 +30,31 @@ public class MiBand2Agent extends BluetoothAgent {
             MeasurementKind.ACTIVITY
     ));
 
+    final private static UUID[] protocols = {
+            MiBand2HeartRateProtocol.ID,
+            MiBand2DistanceProtocol.ID
+    };
+
     public MiBand2Agent(BluetoothConnection connection) {
-        super(ID, createProtocols(connection), connection);
+        super(ID, createProtocols(), connection);
     }
 
     public MiBand2Agent() {
         super(ID, null, null);
     }
 
-    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
+    private static Map<UUID, Protocol> createProtocols() {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
 
-        protocolMap.put(MiBand2HeartRateProtocol.ID, new MiBand2HeartRateProtocol(connection, MiBand2Agent.class));
-        protocolMap.put(MiBand2DistanceProtocol.ID, new MiBand2DistanceProtocol(connection, MiBand2Agent.class));
+        protocolMap.put(MiBand2HeartRateProtocol.ID, null);
+        protocolMap.put(MiBand2DistanceProtocol.ID, null);
 
         return protocolMap;
     }
 
     @Override
     public void disable() {
-        for (UUID i : getPublicProtocolIds(ProtocolState.ENABLED)) {
+        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
 
@@ -55,7 +65,7 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), MiBand2Agent.class);
+        MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), this);
 
         auth.getObservers().add(value -> {
             if (value.getNewState() == ProtocolState.ENABLED) {
@@ -72,20 +82,35 @@ public class MiBand2Agent extends BluetoothAgent {
     }
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind) {
-        enable();
+    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+        if (getState() != AgentState.ENABLED) {
+            final Observer<StateChangedMessage<AgentState, ? extends Agent>> stateObserver = message -> {
+                if (message.getNewState() == AgentState.ENABLED) {
+                    getObservers().remove(observer);
+                    enableMeasurement(measurementKind, observer);
+                }
+            };
+
+            this.getObservers().add(stateObserver);
+
+            return;
+        }
+
+        MeasuringProtocol protocol = null;
 
         switch (measurementKind) {
             case HEART_RATE:
-                getProtocol(MiBand2HeartRateProtocol.ID).enable();
+                protocol = new MiBand2HeartRateProtocol(this.getConnection(), this);
                 break;
             case ACTIVITY:
-                getProtocol(MiBand2DistanceProtocol.ID).enable();
-                break;
-            default:
+                protocol = new MiBand2DistanceProtocol(this.getConnection(), this);
                 break;
         }
 
+        if (protocol != null) {
+            enableProtocol(protocol.getId(), protocol);
+            protocol.getMeasurementObservers().add(observer);
+        }
     }
 
     @Override
@@ -104,12 +129,7 @@ public class MiBand2Agent extends BluetoothAgent {
     }
 
     @Override
-    protected void setState(AgentState value) {
-        setState(value, this.getClass());
-    }
-
-    @Override
     public String getName() {
-        return null;
+        return "MI Band 2";
     }
 }

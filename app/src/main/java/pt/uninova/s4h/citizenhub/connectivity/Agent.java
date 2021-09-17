@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
@@ -17,15 +18,13 @@ public interface Agent {
 
     Protocol getProtocol(UUID protocolId);
 
-    Set<UUID> getPublicProtocolIds();
+    Set<UUID> getProtocolIds(ProtocolState state);
 
-    Set<UUID> getPublicProtocolIds(ProtocolState state);
-
-    Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers();
+    Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getObservers();
 
     List<MeasurementKind> getSupportedMeasurements();
 
-    void enableMeasurement(MeasurementKind measurementKind);
+    void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer);
 
     void disableMeasurement(MeasurementKind measurementKind);
 

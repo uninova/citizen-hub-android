@@ -27,10 +27,4 @@ public abstract class BluetoothAgent extends AbstractAgent {
         return connection;
     }
 
-    @Override
-    public void disableMeasurement(MeasurementKind measurementKind) {
-
-    }
-
-    protected abstract void setState(AgentState value);
 }

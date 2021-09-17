@@ -17,11 +17,11 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.steps");
     final private static MeasurementKind channelName = MeasurementKind.STEPS;
     private static final String TAG = "WearOSStepsProtocol";
-    private final WearOSConnection wearOSConnection;
+    private final WearOSConnection connection;
 
-    protected WearOSStepsProtocol(WearOSConnection connection, Class<?> agent) {
+    protected WearOSStepsProtocol(WearOSConnection connection, WearOSAgent agent) {
         super(ID, agent);
-        wearOSConnection = connection;
+        this.connection = connection;
         Log.d(TAG, "Entered");
 
         connection.addChannelListener(new BaseChannelListener(channelName) {
@@ -32,14 +32,5 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
                 Log.d(TAG, "dispatch " + timestamp + " and " + value);
             }
         });
-    }
-
-    public void disable() {
-        setState(ProtocolState.DISABLED);
-    }
-
-
-    public void enable(double value, Timestamp timestamp) {
-        setState(ProtocolState.ENABLED);
     }
 }

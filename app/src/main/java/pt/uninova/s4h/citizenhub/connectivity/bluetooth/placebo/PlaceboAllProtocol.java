@@ -21,13 +21,8 @@ public class PlaceboAllProtocol extends AbstractMeasuringProtocol {
 
     private Class<?> agent;
 
-    public PlaceboAllProtocol(BluetoothConnection connection, Class<?> agent) {
+    public PlaceboAllProtocol(BluetoothConnection connection, PlaceboAgent agent) {
         super(ID, agent);
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     @Override

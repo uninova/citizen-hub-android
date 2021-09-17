@@ -22,7 +22,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import pt.uninova.s4h.citizenhub.persistence.Device;
 
 

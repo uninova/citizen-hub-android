@@ -76,12 +76,12 @@ public class DeviceConfigurationFragment extends Fragment {
 
 
     protected void saveFeaturesChosen() {
+        System.out.println("DeviceConfigurationFragment.saveFeaturesChosen");
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
-            System.out.println(i + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive());
+            System.out.println(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind().toString() + " " + i + " " + ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive());
             if (((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).isActive()) {
                 System.out.println(i);
-                model.attachObservers(model.getSelectedAgent(agentOrchestrator), new MeasurementRepository(requireActivity().getApplication()));
-                model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
+                model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator, new MeasurementRepository(requireActivity().getApplication()));
             } else {
                 assert model.getSelectedDevice() != null;
                 model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
@@ -100,7 +100,7 @@ public class DeviceConfigurationFragment extends Fragment {
 
 
                 assert model.getSelectedDevice() != null;
-                model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
+                model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator, new MeasurementRepository(requireActivity().getApplication()));
 
             } else {
                 assert model.getSelectedDevice() != null;

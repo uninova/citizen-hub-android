@@ -8,7 +8,7 @@ public abstract class BluetoothProtocol extends AbstractProtocol {
 
     final private BluetoothConnection connection;
 
-    protected BluetoothProtocol(UUID id, BluetoothConnection connection, Class<?> agent) {
+    protected BluetoothProtocol(UUID id, BluetoothConnection connection, BluetoothAgent agent) {
         super(id, agent);
 
         this.connection = connection;

@@ -70,6 +70,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
     }
 
     private void checkWearOSPackage(PackageManager packageManager){
+        /*
         try {
             packageManager.getPackageInfo("com.google.android.wearable.app", PackageManager.GET_META_DATA);
             System.out.println("WearOS App is installed!");
@@ -83,6 +84,8 @@ public class DeviceSearchFragmentWearOS extends Fragment {
                             Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchWearosFragmentToDeviceListFragment()))
                     .show();
         }
+
+         */
     }
 
     private GoogleApiClient getGoogleApiClient(Context context) {

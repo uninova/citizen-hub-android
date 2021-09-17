@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
@@ -7,30 +7,29 @@ import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
 import java.util.*;
 
-public class HexoSkinAgent extends BluetoothAgent {
+public class UprightGo2Agent extends BluetoothAgent {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
 
-    public HexoSkinAgent(BluetoothConnection connection) {
+    public UprightGo2Agent(BluetoothConnection connection) {
         super(ID, createProtocols(connection), connection);
-    }
-
-    public HexoSkinAgent() {
-        super(ID, null, null);
     }
 
     private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
         final Map<UUID, Protocol> protocolMap = new HashMap<>();
-
-        protocolMap.put(HexoSkinHeartRateProtocol.ID, null);
-        protocolMap.put(HexoSkinAccelerometerProtocol.ID, null);
-        protocolMap.put(HexoSkinRespirationProtocol.ID, null);
+        //Posture
+        protocolMap.put(UprightGo2PostureProtocol.ID, null);
+        //Vibration Settings
+        protocolMap.put(UprightGo2CalibrationProtocol.ID, null);
+        //Calibration
+        protocolMap.put(UprightGo2VibrationProtocol.ID, null);
 
         return protocolMap;
     }
@@ -40,9 +39,7 @@ public class HexoSkinAgent extends BluetoothAgent {
         for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
             getProtocol(i).disable();
         }
-
         getConnection().close();
-
         setState(AgentState.DISABLED);
     }
 
@@ -51,61 +48,34 @@ public class HexoSkinAgent extends BluetoothAgent {
         setState(AgentState.ENABLED);
     }
 
-
     @Override
     public List<MeasurementKind> getSupportedMeasurements() {
         List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.HEART_RATE);
-        measurementKindList.add(MeasurementKind.RESPIRATION_RATE);
-        measurementKindList.add(MeasurementKind.ACTIVITY);
-
+        measurementKindList.add(MeasurementKind.POSTURE);
         return measurementKindList;
     }
-
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
         MeasuringProtocol protocol = null;
 
-        switch (measurementKind) {
-            case HEART_RATE:
-                protocol = new HexoSkinHeartRateProtocol(this.getConnection(), this);
-                break;
-            case RESPIRATION_RATE:
-                protocol = new HexoSkinRespirationProtocol(this.getConnection(), this);
-                break;
-            case ACTIVITY:
-                protocol = new HexoSkinAccelerometerProtocol(this.getConnection(), this);
-                break;
+        if (measurementKind == MeasurementKind.POSTURE) {
+            protocol = new UprightGo2PostureProtocol(this.getConnection(), this);
         }
 
         if (protocol != null) {
-            enableProtocol(protocol.getId(), protocol);
             protocol.getMeasurementObservers().add(observer);
+            enableProtocol(protocol.getId(), protocol);
         }
     }
 
     @Override
     public void disableMeasurement(MeasurementKind measurementKind) {
-        switch (measurementKind) {
-            case HEART_RATE:
-                getProtocol(HexoSkinHeartRateProtocol.ID).disable();
-                break;
-            case RESPIRATION_RATE:
-                getProtocol(HexoSkinRespirationProtocol.ID).disable();
-                break;
-            case ACTIVITY:
-                getProtocol(HexoSkinAccelerometerProtocol.ID).disable();
-                break;
 
-            default:
-                break;
-        }
     }
 
     @Override
     public String getName() {
-        return "HexoSkin";
+        return "UprightGO2";
     }
-
 }

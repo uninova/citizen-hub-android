@@ -44,7 +44,7 @@ AgentOrchestrator {
     private final FeatureRepository featureRepository;
     private final MeasurementRepository measurementRepository;
     private final AgentFactory agentFactory;
-    private final static Observer<StateChangedMessage<AgentState, Class<?>>> observer = value -> {
+    private final static Observer<StateChangedMessage<AgentState, ? extends Agent>> observer = value -> {
 
     };
     private final Map<Device, Agent> deviceAgentMap = new HashMap<>();
@@ -60,74 +60,45 @@ AgentOrchestrator {
         agentFactory = new AgentFactory(service);
         eventMessageDispatcher = new Dispatcher<>();
 
-//        ((CitizenHubServiceBound) getService().getAgentOrchestrator().addAgentEventListener(value -> {
-//            deviceList.clear();
-//            for (Device device : value.getDeviceList()) {
-//                deviceList.add(new DeviceListItem(device));
-//            }
-//
-//            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
-//
-//        });
         deviceRepository.obtainAll(value -> {
-            for (Device i : value
-            ) {
+            for (Device i : value) {
+                System.out.println(i.getConnectionKind() + " " + i.getName() + " " + i.getAgentType());
+
                 if (i.getAgentType() != null) {
                     agentFactory.create(i.getAddress(), i.getAgentType(), agent -> {
                         agent.enable();
-                        agent.getObservers().add(observer);
                         deviceAgentMap.put(i, agent);
                         devices.add(i);
                         featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
-                            for (UUID j : agent.getPublicProtocolIds()) {
-                                ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-                            }
-                            for (MeasurementKind measurementKind : measurementKinds
-                            ) {
+                            for (MeasurementKind measurementKind : measurementKinds) {
                                 if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
+                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
                                 }
                             }
                         });
                     });
-
-                }
-                agentFactory.create(i.getConnectionKind(), i.getAddress(), agent -> {
-                    agent.enable();
-                    i.setConnectionKind(ConnectionKind.BLUETOOTH);
-                    i.setState(StateKind.INACTIVE);
-                    i.setAgentType(agent.getName());
-                    deviceAgentMap.put(i, agent);
-                    devices.add(i);
-                    featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
-                        for (UUID j : agent.getPublicProtocolIds()) {
-                            ((MeasuringProtocol) agent.getProtocol(j)).getMeasurementObservers().add(measurementRepository::add);
-                        }
-                        for (MeasurementKind measurementKind : measurementKinds
-                        ) {
-                            if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                getDeviceAgentMap().get(i).enableMeasurement(measurementKind);
+                } else {
+                    agentFactory.create(i.getConnectionKind(), i.getAddress(), agent -> {
+                        agent.enable();
+                        deviceAgentMap.put(i, agent);
+                        devices.add(i);
+                        featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
+                            for (MeasurementKind measurementKind : measurementKinds) {
+                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
+                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
+                                }
                             }
-                        }
+                        });
                     });
-                });
+                }
             }
+
             System.out.println("After create" + deviceAgentMap.size());
         });
     }
 
     public static UUIDv5 namespaceGenerator() {
         return NAMESPACE_GENERATOR;
-    }
-
-    public List<MeasurementKind> getSupportedFeatures(String device_name) {
-        if (device_name != null && device_name.equals("HX-00043494")) {
-            return new HexoSkinAgent().getSupportedMeasurements();
-        } else if (device_name != null && device_name.equals("MI Band 2")) {
-            return new MiBand2Agent().getSupportedMeasurements();
-
-        }
-        return null;
     }
 
     public void addAgentEventListener(Observer<AgentListChangeMessage> listener) {
@@ -146,11 +117,8 @@ AgentOrchestrator {
             agent.enable();
             deviceAgentMap.put(device, agent);
             devices = getDevicesFromMap();
-
         });
-
     }
-
 
     public void deleteDeviceFromMap(Device device) {
         Agent agent = deviceAgentMap.get(device);
@@ -160,10 +128,6 @@ AgentOrchestrator {
         //TODO fazer close
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
-    }
-
-    public List<MeasurementKind> getSupportedFeatures(Device device) {
-        return getSupportedFeatures(device.getName());
     }
 
     public List<Feature> getEnabledFeatures(Device device) {
@@ -198,10 +162,5 @@ AgentOrchestrator {
         for (Device i : deviceAgentMap.keySet()) {
             deviceAgentMap.get(i).disable();
         }
-    }
-
-
-    public void enableMeasurement(Device value, MeasurementKind measurementKind) {
-        Objects.requireNonNull(getDeviceAgentMap().get(value)).enableMeasurement(measurementKind);
     }
 }

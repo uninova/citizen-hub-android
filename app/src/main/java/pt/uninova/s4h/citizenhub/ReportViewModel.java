@@ -5,17 +5,19 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
+
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import care.data4life.fhir.r4.model.*;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
-import care.data4life.sdk.config.DataRestrictionException;
+import care.data4life.sdk.helpers.lang.DataRestrictionException;
 import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
@@ -451,8 +453,8 @@ public class ReportViewModel extends AndroidViewModel {
                             TimeZone.getDefault()),
                     "application/pdf",
                     data);
-        } catch (DataRestrictionException.UnsupportedFileType | DataRestrictionException.MaxDataSizeViolation unsupportedFileType) {
-            unsupportedFileType.printStackTrace();
+        } catch (DataRestrictionException.MaxDataSizeViolation | DataRestrictionException.UnsupportedFileType maxDataSizeViolation) {
+            maxDataSizeViolation.printStackTrace();
         }
 
         attachments.add(attach);

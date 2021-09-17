@@ -16,7 +16,7 @@ public abstract class AbstractAgent implements Agent {
 
     final private Map<UUID, Protocol> protocolMap;
 
-    final private Dispatcher<StateChangedMessage<AgentState, Class<?>>> stateChangedDispatcher;
+    final private Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
 
     private AgentState state;
 
@@ -37,8 +37,12 @@ public abstract class AbstractAgent implements Agent {
         stateChangedDispatcher = new Dispatcher<>();
     }
 
+    protected void enableProtocol(UUID protocolId, Protocol protocol) {
+        this.protocolMap.put(protocolId, protocol);
+        protocol.enable();
+    }
 
-    public Set<Observer<StateChangedMessage<AgentState, Class<?>>>> getObservers() {
+    public Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getObservers() {
         return stateChangedDispatcher.getObservers();
     }
 
@@ -52,12 +56,8 @@ public abstract class AbstractAgent implements Agent {
         return protocolMap.get(protocolId);
     }
 
-    public Set<UUID> getPublicProtocolIds() {
-        return Collections.unmodifiableSet(protocolMap.keySet());
-    }
-
     @Override
-    public Set<UUID> getPublicProtocolIds(ProtocolState state) {
+    public Set<UUID> getProtocolIds(ProtocolState state) {
         final Set<UUID> res = new HashSet<>();
 
         for (UUID i : protocolMap.keySet()) {
@@ -76,13 +76,13 @@ public abstract class AbstractAgent implements Agent {
         return state;
     }
 
-    protected void setState(AgentState value, Class<?> agent) {
+    protected void setState(AgentState value) {
         if (state != value) {
             final AgentState oldState = state;
 
             state = value;
 
-            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
+            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, this));
         }
     }
 }

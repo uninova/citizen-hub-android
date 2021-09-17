@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_s4h_logo_png"
+        app:srcCompat="@drawable/img_s4h_logo_transparent_png"
         android:scaleType="fitCenter"
         android:layout_marginTop="128dp" />
 

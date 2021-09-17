@@ -24,7 +24,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     private int lastStepCount;
     private Class<?> agent;
 
-    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, Class<?> agent) {
+    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, HexoSkinAgent agent) {
         super(ID, connection, agent);
         setState(ProtocolState.DISABLED);
         lastStepCount = 0;
@@ -69,11 +69,6 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 }
             }
         });
-    }
-
-    @Override
-    public Class<?> getAgent() {
-        return agent;
     }
 
     @Override
