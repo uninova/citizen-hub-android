@@ -9,8 +9,8 @@ buildscript {
         recyclerview_version = '1.2.1'
         room_version = '2.3.0'
 
-        d4lsdk_version = '1.9.0'
-        d4lhelpersdk_version = '1.4.1'
+        d4lsdk_version = '1.15.1'
+        d4lhelpersdk_version = '1.7.1'
         materialcalendarview_version = '2.0.1'
     }
 
