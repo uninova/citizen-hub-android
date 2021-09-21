@@ -5,21 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.AgentListChangeMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Dispatcher;
@@ -124,7 +118,7 @@ AgentOrchestrator {
         Agent agent = deviceAgentMap.get(device);
         deviceAgentMap.remove(device);
         agent.disable();
-        agent.getObservers().clear();
+        agent.getStateObservers().clear();
         //TODO fazer close
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
