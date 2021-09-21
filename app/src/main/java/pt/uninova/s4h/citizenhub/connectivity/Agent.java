@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,24 +11,28 @@ public interface Agent {
 
     void disable();
 
+    void disableMeasurement(MeasurementKind measurementKind);
+
+    void disableProtocol(Protocol protocol);
+
     void enable();
-
-    UUID getId();
-
-    Protocol getProtocol(UUID protocolId);
-
-    Set<UUID> getProtocolIds(ProtocolState state);
-
-    Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getObservers();
-
-    List<MeasurementKind> getSupportedMeasurements();
 
     void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer);
 
-    void disableMeasurement(MeasurementKind measurementKind);
+    void enableProtocol(Protocol protocol);
+
+    UUID getId();
+
+    String getName();
+
+    Protocol getProtocol(UUID protocolId);
 
     AgentState getState();
 
-    String getName();
+    Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getStateObservers();
+
+    Set<MeasurementKind> getSupportedMeasurements();
+
+    Set<UUID> getSupportedProtocolsIds();
 
 }
