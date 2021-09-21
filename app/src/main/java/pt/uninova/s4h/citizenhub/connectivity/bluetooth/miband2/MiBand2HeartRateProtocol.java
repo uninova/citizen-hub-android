@@ -23,9 +23,7 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
     public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
-
-    private Class<?> agent;
-
+    
     public MiBand2HeartRateProtocol(BluetoothConnection connection, MiBand2Agent agent) {
         super(ID, connection, agent);
 
