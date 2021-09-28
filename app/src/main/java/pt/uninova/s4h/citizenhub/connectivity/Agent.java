@@ -9,6 +9,8 @@ import pt.uninova.util.messaging.Observer;
 
 public interface Agent {
 
+    void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
+
     void disable();
 
     void disableMeasurement(MeasurementKind measurementKind);
@@ -29,10 +31,9 @@ public interface Agent {
 
     AgentState getState();
 
-    Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getStateObservers();
-
     Set<MeasurementKind> getSupportedMeasurements();
 
     Set<UUID> getSupportedProtocolsIds();
 
+    void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
 }

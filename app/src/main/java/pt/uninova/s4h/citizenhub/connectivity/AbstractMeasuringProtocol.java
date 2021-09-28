@@ -17,13 +17,17 @@ public abstract class AbstractMeasuringProtocol extends AbstractProtocol impleme
         measurementDispatcher = new Dispatcher<>();
     }
 
+    @Override
+    public void addMeasurementObserver(Observer<Measurement> observer) {
+        this.measurementDispatcher.addObserver(observer);
+    }
+
     protected Dispatcher<Measurement> getMeasurementDispatcher() {
         return measurementDispatcher;
     }
 
     @Override
-    public Set<Observer<Measurement>> getMeasurementObservers() {
-        return measurementDispatcher.getObservers();
+    public void removeMeasurementObserver(Observer<Measurement> observer) {
+        this.measurementDispatcher.removeObserver(observer);
     }
-
 }

@@ -10,6 +10,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -35,21 +36,25 @@ public class MiBand2Agent extends BluetoothAgent {
         super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
     }
 
-    @Override
-    public void enable() {
+    private void authorize() {
         final MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), this);
 
-        auth.getObservers().add(new Observer<StateChangedMessage<ProtocolState, ? extends Agent>>() {
+        auth.addStateObserver(new Observer<StateChangedMessage<ProtocolState, ? extends Protocol>>() {
             @Override
-            public void onChanged(StateChangedMessage<ProtocolState, ? extends Agent> value) {
+            public void observe(StateChangedMessage<ProtocolState, ? extends Protocol> value) {
                 if (value.getNewState() == ProtocolState.ENABLED) {
-                    auth.getObservers().remove(this);
                     MiBand2Agent.this.setState(AgentState.ENABLED);
+                    auth.removeStateObserver(this);
                 }
             }
         });
 
         auth.enable();
+    }
+
+    @Override
+    public void enable() {
+        authorize();
     }
 
     @Override
@@ -67,21 +72,6 @@ public class MiBand2Agent extends BluetoothAgent {
         }
 
         return null;
-    }
-
-    @Override
-    public void disableMeasurement(MeasurementKind measurementKind) {
-        switch (measurementKind) {
-            case HEART_RATE:
-                getProtocol(MiBand2HeartRateProtocol.ID).disable();
-                ((MeasuringProtocol) getProtocol(MiBand2HeartRateProtocol.ID)).getMeasurementObservers().clear();
-            case ACTIVITY:
-                getProtocol(MiBand2DistanceProtocol.ID).disable();
-                ((MeasuringProtocol) getProtocol(MiBand2DistanceProtocol.ID)).getMeasurementObservers().clear();
-            default:
-                break;
-        }
-
     }
 
     @Override

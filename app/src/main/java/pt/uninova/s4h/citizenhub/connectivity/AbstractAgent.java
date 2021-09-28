@@ -37,6 +37,11 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
+    public void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+        this.stateChangedDispatcher.addObserver(observer);
+    }
+
+    @Override
     public void disable() {
         for (final MeasurementKind i : this.measurementMap.keySet()) {
             disableMeasurement(i);
@@ -56,7 +61,6 @@ public abstract class AbstractAgent implements Agent {
         if (protocol != null) {
             this.measurementMap.remove(measurementKind);
             disableProtocol(protocol);
-            protocol.getMeasurementObservers().clear();
         }
     }
 
@@ -68,7 +72,6 @@ public abstract class AbstractAgent implements Agent {
         if (currentProtocol != null && currentProtocol == protocol) {
             protocolMap.remove(protocolId);
             protocol.disable();
-            protocol.getObservers().clear();
         }
     }
 
@@ -80,12 +83,13 @@ public abstract class AbstractAgent implements Agent {
     @Override
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
         if (getState() != AgentState.ENABLED) {
-            this.getStateObservers().add(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+            this.addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+
                 @Override
-                public void onChanged(StateChangedMessage<AgentState, ? extends Agent> message) {
+                public void observe(StateChangedMessage<AgentState, ? extends Agent> message) {
                     if (message.getNewState() == AgentState.ENABLED) {
-                        AbstractAgent.this.getStateObservers().remove(this);
                         AbstractAgent.this.enableMeasurement(measurementKind, observer);
+                        removeStateObserver(this);
                     }
                 }
             });
@@ -97,7 +101,7 @@ public abstract class AbstractAgent implements Agent {
 
         if (protocol != null) {
             this.measurementMap.put(measurementKind, protocol);
-            protocol.getMeasurementObservers().add(observer);
+            protocol.addMeasurementObserver(observer);
             enableProtocol(protocol);
         }
     }
@@ -150,10 +154,6 @@ public abstract class AbstractAgent implements Agent {
         return state;
     }
 
-    @Override
-    public Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getStateObservers() {
-        return stateChangedDispatcher.getObservers();
-    }
 
     @Override
     public Set<MeasurementKind> getSupportedMeasurements() {
@@ -163,6 +163,11 @@ public abstract class AbstractAgent implements Agent {
     @Override
     public Set<UUID> getSupportedProtocolsIds() {
         return this.supportedProtocolsIds;
+    }
+
+    @Override
+    public void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+        this.stateChangedDispatcher.removeObserver(observer);
     }
 
     protected void setState(AgentState value) {

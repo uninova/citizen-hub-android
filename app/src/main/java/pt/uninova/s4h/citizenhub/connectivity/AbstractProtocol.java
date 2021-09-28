@@ -12,7 +12,7 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
     private final UUID id;
     private final Agent agent;
 
-    private final Dispatcher<StateChangedMessage<ProtocolState, ? extends Agent>> stateChangedDispatcher;
+    private final Dispatcher<StateChangedMessage<ProtocolState, ? extends Protocol>> stateChangedDispatcher;
 
     private ProtocolState state;
 
@@ -22,6 +22,11 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
 
         this.stateChangedDispatcher = new Dispatcher<>();
         this.state = ProtocolState.DISABLED;
+    }
+
+    @Override
+    public void addStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer) {
+        this.stateChangedDispatcher.addObserver(observer);
     }
 
     @Override
@@ -44,11 +49,6 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
         return id;
     }
 
-    @Override
-    public Set<Observer<StateChangedMessage<ProtocolState, ? extends Agent>>> getObservers() {
-        return stateChangedDispatcher.getObservers();
-    }
-
     public Agent getAgent() {
         return agent;
     }
@@ -58,12 +58,17 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
         return state;
     }
 
+    @Override
+    public void removeStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer) {
+        this.stateChangedDispatcher.removeObserver(observer);
+    }
+
     protected void setState(ProtocolState value) {
         if (state != value) {
             final ProtocolState oldState = state;
 
             state = value;
-            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, agent));
+            stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, this));
         }
     }
 }

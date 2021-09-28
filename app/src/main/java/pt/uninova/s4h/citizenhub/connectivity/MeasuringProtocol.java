@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface MeasuringProtocol extends Protocol {
 
-    Set<Observer<Measurement>> getMeasurementObservers();
+    void addMeasurementObserver(Observer<Measurement> observer);
+
+    void removeMeasurementObserver(Observer<Measurement> observer);
 
 }

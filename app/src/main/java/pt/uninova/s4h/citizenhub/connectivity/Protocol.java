@@ -7,14 +7,16 @@ import pt.uninova.util.messaging.Observer;
 
 public interface Protocol {
 
+    void addStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer);
+
     void disable();
 
     void enable();
 
     UUID getId();
 
-    Set<Observer<StateChangedMessage<ProtocolState, ? extends Agent>>> getObservers();
-
     ProtocolState getState();
+
+    void removeStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer);
 
 }

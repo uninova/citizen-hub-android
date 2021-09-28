@@ -65,9 +65,7 @@ AgentOrchestrator {
                         devices.add(i);
                         featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                             for (MeasurementKind measurementKind : measurementKinds) {
-                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
-                                }
+                                agent.enableMeasurement(measurementKind, measurement -> measurementRepository.add(measurement));
                             }
                         });
                     });
@@ -78,9 +76,7 @@ AgentOrchestrator {
                         devices.add(i);
                         featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                             for (MeasurementKind measurementKind : measurementKinds) {
-                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
-                                }
+                                agent.enableMeasurement(measurementKind, measurement -> measurementRepository.add(measurement));
                             }
                         });
                     });
@@ -96,7 +92,7 @@ AgentOrchestrator {
     }
 
     public void addAgentEventListener(Observer<AgentListChangeMessage> listener) {
-        eventMessageDispatcher.getObservers().add(listener);
+        eventMessageDispatcher.addObserver(listener);
     }
 
     public void add(Device device, Agent agent) {
@@ -118,7 +114,6 @@ AgentOrchestrator {
         Agent agent = deviceAgentMap.get(device);
         deviceAgentMap.remove(device);
         agent.disable();
-        agent.getStateObservers().clear();
         //TODO fazer close
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
