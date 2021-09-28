@@ -60,7 +60,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
-        stateChangedMessageDispatcher.getObservers().add(listener);
+        stateChangedMessageDispatcher.addObserver(listener);
     }
 
     public void addDescriptorListener(DescriptorListener listener) {
@@ -302,7 +302,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
-        stateChangedMessageDispatcher.getObservers().remove(listener);
+        stateChangedMessageDispatcher.removeObserver(listener);
     }
 
     public void removeDescriptorListener(DescriptorListener listener) {
