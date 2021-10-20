@@ -7,6 +7,7 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
@@ -19,7 +20,7 @@ public class StandardProtocolHeartRate extends BluetoothMeasuringProtocol {
     private static UUID UUID_HEARTRATE_SERVICE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb"); //180d
     private static UUID UUID_HEARTRATE_CHARACTERISTIC = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb"); //2a37
 
-    public StandardProtocolHeartRate(BluetoothConnection connection, UprightGo2Agent agent) {
+    public StandardProtocolHeartRate(BluetoothConnection connection, BluetoothAgent agent) {
         super(ID, connection, agent);
     }
 
