@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
@@ -59,7 +60,7 @@ public class AgentFactory {
                 bluetoothFactoryDestroy(address, observer);
                 break;
             case WEAROS:
-//                wearOsFactory(address, observer);
+                //wearOsFactory(address, observer);
                 break;
         }
     }
@@ -78,13 +79,6 @@ public class AgentFactory {
             e.printStackTrace();
         }
     }
-    //deixar so 1 para cada protocolo e dar nome aos protocolo;
-    // testar testar testar
-    // passar os observers sempre para o fim
-    //roda dentada
-    //usar so addresses
-    //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
-    //TODO criar create que sabemos o que é com agentType +
 
     public void create(String address, String agentType, Observer<Agent> observer) {
         if (agentType.equals(WearOSAgent.class.getSimpleName())) {
@@ -186,7 +180,7 @@ public class AgentFactory {
         deviceRepository.update(device);
 
         try {
-            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection, 2);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,11 +212,12 @@ public class AgentFactory {
                         observer.onChanged(new KbzPostureAgent(connection));
                     } else if (name.startsWith("UprightGO2")) {
                         observer.onChanged(new UprightGo2Agent(connection));
-                    }
+                    } else if (name.startsWith("S4H")) {
+                    observer.onChanged(new HealthHubAgent(connection));
+                }
                 }
             }
         });
-
-        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection, 2);
     }
 }
