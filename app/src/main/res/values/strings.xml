@@ -249,4 +249,5 @@
         <item>Ecstatic</item>
         <item>Muzzle</item>
     </string-array>
+    <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
 </resources>
