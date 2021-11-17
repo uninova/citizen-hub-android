@@ -28,7 +28,9 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
         //connection.writeCharacteristic(VIBRATION_SERVICE,VIBRATION_CHARACTERISTIC,vibrationOFF);
         //write vibration parameters/settings
         connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
-                vibrationMessage(1, 5, false, 5, 3));
+                vibrationMessage(1, 15, false, 0, 3));
+
+        System.out.println("ENTERED VIBRATION PROTOCOL!");
     }
 
     @Override
@@ -43,7 +45,7 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
     }
 
     private byte[] vibrationMessage(int angle, int interval, boolean showPattern, int pattern, int strength) {
-        byte[] message = new byte[8];
+        byte[] message = new byte[15];
 
         //angle: can be 1 to 6, 1 is the most strict, 6 is the most relaxed
         if (angle < 1 || angle > 6) { //default: 1
@@ -90,6 +92,13 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
         message[5] = 0x02;
         message[6] = 0x64;
         message[7] = 0x00;
+        message[8] = 0x12;
+        message[9] = 0x16;
+        message[10] = 0x01;
+        message[11] = 0x13;
+        message[12] = 0x06;
+        message[13] = 0x2c;
+        message[14] = 0x01;
 
         return message;
     }

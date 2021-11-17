@@ -57,21 +57,27 @@ public class UprightGo2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
-        MeasuringProtocol protocol = null;
+        MeasuringProtocol protocolPosture = null;
 
         if (measurementKind == MeasurementKind.POSTURE) {
-            protocol = new UprightGo2PostureProtocol(this.getConnection(), this);
+            protocolPosture = new UprightGo2PostureProtocol(this.getConnection(), this);
         }
 
-        if (protocol != null) {
-            protocol.getMeasurementObservers().add(observer);
-            enableProtocol(protocol.getId(), protocol);
+        if (protocolPosture != null) {
+            protocolPosture.getMeasurementObservers().add(observer);
+            enableProtocol(protocolPosture.getId(), protocolPosture);
         }
     }
 
     @Override
     public void disableMeasurement(MeasurementKind measurementKind) {
+        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
+            getProtocol(i).disable();
+        }
 
+        getConnection().close();
+
+        setState(AgentState.DISABLED);
     }
 
     @Override

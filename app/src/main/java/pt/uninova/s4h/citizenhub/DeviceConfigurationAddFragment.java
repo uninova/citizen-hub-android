@@ -1,11 +1,18 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -16,6 +23,19 @@ import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
+
+    private ProgressDialog dialog;
+    //TODO just for testing purposes, delete later
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,12 +63,28 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                     DeviceConfigurationAddFragment.this.loadSupportedFeatures();
 
                     connectDevice.setOnClickListener(v -> {
+
                         agent.enable();
                         model.apply();
 
                         DeviceConfigurationAddFragment.this.saveFeaturesChosen();
 
-                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Sensor Calibration")
+                                .setMessage("ATTENTION: Before pressing Calibrate, please ensure you are sitting and have" +
+                                        " your back straight.")
+                                .setPositiveButton("Calibrate", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //TODO calibrate and animate
+                                        dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
+
+                                        handler.sendMessageDelayed(new Message(), 2500);
+                                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                                    }
+                                })
+                                .setIcon(R.drawable.img_citizen_hub_logo_png)
+                                .show();
                     });
 
                     progressBar.setVisibility(View.INVISIBLE);

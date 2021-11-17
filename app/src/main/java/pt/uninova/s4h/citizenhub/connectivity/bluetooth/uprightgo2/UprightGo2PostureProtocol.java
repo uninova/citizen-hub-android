@@ -22,6 +22,16 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     final public static UUID MEASUREMENTS_SERVICE = UUID.fromString("0000bac0-0000-1000-8000-00805f9b34fb"); //bac0
     final private static UUID POSTURE_CORRECTION = UUID.fromString("0000bac3-0000-1000-8000-00805f9b34fb"); //bac3
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
+    //calibration UUID's
+    final private static UUID TRIGGER_CALIBRATION = UUID.fromString("0000bac1-0000-1000-8000-00805f9b34fb"); //bac1
+    //vibration UUID's
+    final private static UUID VIBRATION_SERVICE = UUID.fromString("0000bab0-0000-1000-8000-00805f9b34fb"); //bab0
+    final private static UUID VIBRATION_INTERVAL_CHARACTERISTIC = UUID.fromString("0000bab2-0000-1000-8000-00805f9b34fb"); //bab2
+    final private static UUID VIBRATION_CHARACTERISTIC = UUID.fromString("0000bab5-0000-1000-8000-00805f9b34fb"); //bab5
+    //byte codes
+    private byte[] calibrationTrigger = {0x00};
+    private byte[] vibrationON = {0x00, 0x00};
+    private byte[] vibrationOFF = {0x01, 0x01};
 
     /*
     ALL KNOWN SERVICES
@@ -43,7 +53,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         Vibration Status | Posture OK or NOT OK | Correcting Posture
         0x00 0x00 0x00 - Good Posture, not vibrating
         0x01 0x01 0x00 - Bad Posture, not vibrating (in countdown to vibrating)
-        0x02 0x01 0x00 - Bad Posture, vibrating
+        0x02 0x01 0x01 - Bad Posture, vibrating
         0x00 0x00 0x01 - Good Posture, User corrected position while vibrating, so the vibration
         was interrupted
         BAC4 -> Accelerometer Raw Data (acc1,acc2,acc3)
@@ -93,6 +103,20 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         if (connection.hasService(MEASUREMENTS_SERVICE)) {
             connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
         }
+        System.out.println("ENTERED POSTURE PROTOCOL!");
+
+        connection.writeCharacteristic(MEASUREMENTS_SERVICE, TRIGGER_CALIBRATION, calibrationTrigger);
+        System.out.println("JUST DID CALIBRATION!");
+        //IF CALIBRATION IS DONE WRONG (flat device), it does not DETECT BAD POSTURE (in any position)
+
+        //setting up the vibration (initial), configure as needed
+        //write vibration on
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC, vibrationON);
+        //connection.writeCharacteristic(VIBRATION_SERVICE,VIBRATION_CHARACTERISTIC,vibrationOFF);
+        //write vibration parameters/settings
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
+                vibrationMessage(1, 5, true, 6, 3));
+        System.out.println("JUST DID VIBRATION SETTINGS!");
 
         //handle new accelerometer measurements
         connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, CHARACTERISTIC) {
@@ -253,5 +277,64 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
             return true;
         else //bad, posture == 1
             return false;
+    }
+
+    private byte[] vibrationMessage(int angle, int interval, boolean showPattern, int pattern, int strength) {
+        byte[] message = new byte[15];
+
+        //angle: can be 1 to 6, 1 is the most strict, 6 is the most relaxed
+        if (angle < 1 || angle > 6) { //default: 1
+            message[0] = 0x01;
+        } else {
+            message[0] = (byte) angle;
+        }
+        //interval: can be 5, 15, 30 or 60 seconds
+        if (interval == 5) {
+            message[1] = 0x32;
+            message[2] = 0x00;
+        } else if (interval == 15) {
+            message[1] = (byte) 0x96;
+            message[2] = 0x00;
+        } else if (interval == 30) {
+            message[1] = 0x2c;
+            message[2] = 0x01;
+        } else if (interval == 60) {
+            message[1] = 0x58;
+            message[2] = 0x02;
+        } else { //default: 5 seconds
+            message[1] = 0x32;
+            message[2] = 0x00;
+        }
+        //pattern: 2 numbers
+        //0-only setup pattern, 8-sensor vibrates pattern and setup (used in upright app settings)
+        //0-long,1-medium,2-short,3-rampup,4-knockknock,5-heartbeat,6-tuktuk,7-ecstatic,8-muzzle
+        if (showPattern) {
+            message[3] = (byte) (((byte) 0x80) + pattern);
+        } else {
+            message[3] = (byte) (((byte) 0x00) + pattern);
+        }
+        //strength: 1 to 3, vibration strength, 1 -> gentle, 2 -> medium, 3 -> strong
+        if (strength == 1) {
+            message[4] = 0x46;
+        } else if (strength == 2) {
+            message[4] = 0x23;
+        } else if (strength == 3) {
+            message[4] = 0x01;
+        } else { //default: 1
+            message[4] = 0x46;
+        }
+        //still undefined here, same for all, complete later if needed TODO
+        message[5] = 0x02;
+        message[6] = 0x64;
+        message[7] = 0x00;
+        message[8] = 0x12;
+        message[9] = 0x16;
+        message[10] = 0x01;
+        message[11] = 0x13;
+        message[12] = 0x06;
+        message[13] = 0x2c;
+        message[14] = 0x01;
+
+        return message;
     }
 }

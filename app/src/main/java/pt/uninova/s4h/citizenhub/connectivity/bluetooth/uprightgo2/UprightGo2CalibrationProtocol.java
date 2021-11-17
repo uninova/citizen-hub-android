@@ -21,6 +21,7 @@ public class UprightGo2CalibrationProtocol extends BluetoothMeasuringProtocol {
         final BluetoothConnection connection = getConnection();
         //calibrate for current position (current position is considered good posture)
         connection.writeCharacteristic(MEASUREMENTS_SERVICE, TRIGGER_CALIBRATION, calibrationTrigger);
+        System.out.println("ENTERED CALIBRATION PROTOCOL!");
     }
 
     @Override

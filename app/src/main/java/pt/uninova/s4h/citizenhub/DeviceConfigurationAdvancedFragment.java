@@ -67,7 +67,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
     protected void enableAdvancedConfigurations(View view) {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
-        if (device.getName().equals("MI Band 2")) { //miband just for testing, todo change this back to UprightGo2
+        if (device.getName().equals("UprightGO2")) { //miband just for testing, todo change this back to UprightGo2
             /*
             - Posture Correction Vibration ON/OFF
             - Vibration Angle (1 (strict) to 6 (relaxed))
@@ -183,6 +183,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
