@@ -37,6 +37,8 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public abstract MeasurementDao measurementDao();
 
     public abstract FeatureDao featureDao();
+
+    public abstract MedExDao medExDao();
 }
 
 
