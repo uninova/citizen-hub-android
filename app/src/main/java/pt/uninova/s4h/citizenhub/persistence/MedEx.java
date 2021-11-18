@@ -18,18 +18,46 @@ public class MedEx {
     @ColumnInfo(name = "kind_id")
     @TypeConverters(MeasurementKindTypeConverter.class)
     private MeasurementKind kind;
-    private Double value;
+    private Integer repetitions;
+    private Long trainingLength;
+    private Double score;
 
     @Ignore
-    public MedEx(Date timestamp, MeasurementKind kind, Double value) {
-        this(null, timestamp, kind, value);
+    public MedEx(Date timestamp, MeasurementKind kind,Integer repetitions, Long trainingLength, Double score) {
+        this(null, timestamp, kind,repetitions,trainingLength, score);
     }
 
-    public MedEx(Integer id, Date timestamp, MeasurementKind kind, Double value) {
+    public Integer getRepetitions() {
+        return repetitions;
+    }
+
+    public void setRepetitions(Integer repetitions) {
+        this.repetitions = repetitions;
+    }
+
+    public Long getTrainingLength() {
+        return trainingLength;
+    }
+
+    public void setTrainingLength(Long trainingLength) {
+        this.trainingLength = trainingLength;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
+    public MedEx(Integer id, Date timestamp, MeasurementKind kind, Integer repetitions, Long trainingLength, Double score) {
         this.id = id;
         this.timestamp = timestamp;
         this.kind = kind;
-        this.value = value;
+        this.repetitions = repetitions;
+        this.trainingLength = trainingLength;
+        this.score = score;
     }
 
     public Integer getId() {
@@ -54,14 +82,6 @@ public class MedEx {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
     }
 
 }
