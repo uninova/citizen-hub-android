@@ -8,23 +8,20 @@ import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@Entity(tableName = "measurement")
+@Entity(tableName = "medEx")
 public class MedEx {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
     @TypeConverters({EpochTypeConverter.class})
     private Date timestamp;
-    @ColumnInfo(name = "kind_id")
-    @TypeConverters(MeasurementKindTypeConverter.class)
-    private MeasurementKind kind;
     private Integer repetitions;
     private Long trainingLength;
     private Double score;
 
     @Ignore
-    public MedEx(Date timestamp, MeasurementKind kind,Integer repetitions, Long trainingLength, Double score) {
-        this(null, timestamp, kind,repetitions,trainingLength, score);
+    public MedEx(Date timestamp,Integer repetitions, Long trainingLength, Double score) {
+        this(null, timestamp,repetitions,trainingLength, score);
     }
 
     public Integer getRepetitions() {
@@ -51,10 +48,9 @@ public class MedEx {
         this.score = score;
     }
 
-    public MedEx(Integer id, Date timestamp, MeasurementKind kind, Integer repetitions, Long trainingLength, Double score) {
+    public MedEx(Integer id, Date timestamp, Integer repetitions, Long trainingLength, Double score) {
         this.id = id;
         this.timestamp = timestamp;
-        this.kind = kind;
         this.repetitions = repetitions;
         this.trainingLength = trainingLength;
         this.score = score;
@@ -66,14 +62,6 @@ public class MedEx {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public MeasurementKind getKind() {
-        return kind;
-    }
-
-    public void setKind(MeasurementKind kind) {
-        this.kind = kind;
     }
 
     public Date getTimestamp() {
