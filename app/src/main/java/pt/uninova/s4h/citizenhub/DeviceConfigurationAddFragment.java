@@ -79,6 +79,10 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                                         //TODO calibrate and animate
                                         dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
 
+                                        //agent.getProtocol(AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2.posture.calibration")).enable();
+
+
+
                                         handler.sendMessageDelayed(new Message(), 2500);
                                         Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
                                     }

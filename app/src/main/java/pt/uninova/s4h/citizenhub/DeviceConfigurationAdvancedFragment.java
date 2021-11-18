@@ -22,7 +22,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2PostureProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 
 public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment {
@@ -54,7 +63,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         setupText();
 
-        enableAdvancedConfigurations(view);
+        enableAdvancedConfigurations(view, model);
 
         advancedOKDevice.setOnClickListener(v -> {
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAdvancedFragmentDirections.actionDeviceConfigurationAdvancedFragmentToDeviceConfigurationUpdateFragment());
@@ -64,8 +73,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
     }
 
     //TODO change from device name to proper detection of the sensor with Advanced Settings
-    protected void enableAdvancedConfigurations(View view) {
-        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+    protected void enableAdvancedConfigurations(View view, DeviceViewModel model) {
         final Device device = model.getSelectedDevice().getValue();
         if (device.getName().equals("UprightGO2")) { //miband just for testing, todo change this back to UprightGo2
             /*
@@ -81,7 +89,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_advanced_uprightgo2);
             deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
             loadAdvancedConfigurationUprightGo2(deviceAdvancedSettingsInflated);
-            setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
+            setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
         }
     }
 
@@ -89,7 +97,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         //TODO Where to get them?
     }
 
-    protected void setupAdvancedConfigurationsUprightGo2(View view) {
+    protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         ///TODO the listeners ARE NOT SET yet, missing where to save/get them
@@ -191,6 +199,10 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         });
         // Perform Calibration (Trigger)
         Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
+
+        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
+        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
@@ -200,11 +212,15 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
                         .setPositiveButton("Calibrate", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                //testar disable do measurmente e protocolo
+                                agentOrchestrator.getDeviceAgentMap().get(device).getProtocol(UprightGo2CalibrationProtocol.ID).enable();
+
+
                                 //TODO calibrate and animate
                                 dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
 
                                 handler.sendMessageDelayed(new Message(), 2500);
-
                             }
                         })
                         .setIcon(R.drawable.img_citizen_hub_logo_png)

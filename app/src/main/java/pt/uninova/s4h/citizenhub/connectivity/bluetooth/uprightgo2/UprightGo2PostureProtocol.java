@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
@@ -91,7 +92,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, CHARACTERISTIC) {
             @Override
             public void onWrite(byte[] value) {
-                System.out.println("GETTING VALUE: " + value);
+                //System.out.println("GETTING VALUE: " + value);
             }
         });
 
@@ -158,7 +159,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
                         lastPosture = MeasurementKind.BAD_POSTURE;
                     }
                 }
-                System.out.println(lastPosture.toString());
+                //System.out.println(lastPosture.toString());
                 lastTimestamp = now;
             }
         });
@@ -196,7 +197,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
                                                              lastPosture = MeasurementKind.BAD_POSTURE;
                                                          }
                                                      }
-                                                     System.out.println(lastPosture.toString());
+                                                     //System.out.println(lastPosture.toString());
                                                      lastTimestamp = now;
                                                  }
                                              }
@@ -205,7 +206,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        super.disable();
+        setState(ProtocolState.DISABLED);
     }
 
     @Override
@@ -220,7 +221,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         super.enable();
     }
 
-    private void updateCurrentPostureValues(BluetoothConnection connection) {
+    public void updateCurrentPostureValues(BluetoothConnection connection) {
         //to update posture values, because the sensor only does it when something changes (notification)
         //these cycles must be changed/simplified later
         for (int i = 0; i < connection.getServices().size(); i++) {
@@ -231,8 +232,8 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
                     final double[] parsed2 = new double[]{
                             byteBuffer2.get(0), byteBuffer2.get(1), byteBuffer2.get(2)
                     };
-                    System.out.println("This is from the sensor posture evaluation: " +
-                            parsed2[0] + "|" + parsed2[1] + "|" + parsed2[2]);
+                    //System.out.println("This is from the sensor posture evaluation: " +
+                    //        parsed2[0] + "|" + parsed2[1] + "|" + parsed2[2]);
                     countTimePosture(parsed2[1]);
                 }
             }
@@ -257,7 +258,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
                 lastPosture = MeasurementKind.BAD_POSTURE;
             }
         }
-        System.out.println(lastPosture.toString());
+        //System.out.println(lastPosture.toString());
         lastTimestamp = now;
     }
 

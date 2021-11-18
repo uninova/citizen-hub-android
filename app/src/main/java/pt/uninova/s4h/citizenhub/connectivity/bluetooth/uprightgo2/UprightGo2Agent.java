@@ -7,7 +7,10 @@ import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
@@ -57,27 +60,38 @@ public class UprightGo2Agent extends BluetoothAgent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
-        MeasuringProtocol protocolPosture = null;
+        MeasuringProtocol protocol = null;
+        MeasuringProtocol protocolCalibration = null;
 
-        if (measurementKind == MeasurementKind.POSTURE) {
-            protocolPosture = new UprightGo2PostureProtocol(this.getConnection(), this);
+        switch (measurementKind) {
+            case POSTURE:
+                //protocol = new UprightGo2PostureProtocol(this.getConnection(), this);
+                protocolCalibration = new UprightGo2CalibrationProtocol(this.getConnection(), this);
+                break;
         }
 
-        if (protocolPosture != null) {
-            protocolPosture.getMeasurementObservers().add(observer);
-            enableProtocol(protocolPosture.getId(), protocolPosture);
+        if (protocol != null) {
+            protocol.getMeasurementObservers().add(observer);
+            enableProtocol(protocol.getId(), protocol);
+        }
+        if (protocolCalibration != null) {
+            protocolCalibration.getMeasurementObservers().add(observer);
+            enableProtocol(protocolCalibration.getId(), protocolCalibration);
         }
     }
 
     @Override
     public void disableMeasurement(MeasurementKind measurementKind) {
-        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
-            getProtocol(i).disable();
+
+        switch (measurementKind) {
+            case POSTURE:
+                getProtocol(UprightGo2PostureProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(UprightGo2PostureProtocol.ID)).getMeasurementObservers().clear();
+                getProtocol(UprightGo2CalibrationProtocol.ID).disable();
+                ((MeasuringProtocol) getProtocol(UprightGo2CalibrationProtocol.ID)).getMeasurementObservers().clear();
+            default:
+                break;
         }
-
-        getConnection().close();
-
-        setState(AgentState.DISABLED);
     }
 
     @Override
