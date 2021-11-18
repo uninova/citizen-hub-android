@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
@@ -20,9 +21,11 @@ public interface MedExDao {
     @Delete
     void delete(MedEx medEx);
 
+    @Query("DELETE FROM medex")
     void deleteAll();
 
-    List<MedEx> getAll();
+    @Query("SELECT * FROM medex")
+    List<Measurement> getAll();
 
 
 }
