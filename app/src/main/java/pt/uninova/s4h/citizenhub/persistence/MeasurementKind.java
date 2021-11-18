@@ -19,7 +19,8 @@ public enum MeasurementKind {
     CADENCE(12),
     SITTING(13),
     STANDING(14),
-    POSTURE(15);
+    POSTURE(15),
+    MEDEX(16);
 
     private static final Map<Integer, MeasurementKind> LOOKUP = new HashMap<>(MeasurementKind.values().length);
 
