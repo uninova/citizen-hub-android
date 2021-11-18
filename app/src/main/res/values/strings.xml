@@ -232,6 +232,7 @@
     <string name="slide_screen_welcome_text">Welcome</string>
     <string name="styled_citizen_text_first_word">Citizen</string>
     <string name="styled_citizen_text_second_word">HUB</string>
+    <string name="fragment_medex_label">MedEx</string>
     <string-array name="spinner_uprightgo2_interval">
         <item>5</item>
         <item>15</item>

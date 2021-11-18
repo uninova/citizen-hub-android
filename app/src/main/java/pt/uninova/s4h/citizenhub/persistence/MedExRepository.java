@@ -45,9 +45,7 @@ public class MedExRepository {
     }
 
     public void update(MedEx medEx) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            medExDao.update(medEx);
-        });
+        CitizenHubDatabase.executorService().execute(() -> medExDao.update(medEx));
     }
 
 }
