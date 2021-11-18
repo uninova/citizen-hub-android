@@ -21,4 +21,33 @@ public class MedExRepository {
         dailyAggregateMap = new HashMap<>();
     }
 
+
+    public void add(MedEx medEx) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            medExDao.insert(new MedEx(medEx.getId(), medEx.getTimestamp(), medEx.getRepetitions(), medEx.getTrainingLength(), medEx.getScore()));
+        });
+    }
+
+    public void remove(MedEx medEx) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            medExDao.delete(medEx);
+        });
+    }
+
+    public void remove(Integer id, MedEx medEx) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            medExDao.delete(new MedEx(medEx.getId(), medEx.getTimestamp(), medEx.getRepetitions(), medEx.getTrainingLength(), medEx.getScore()));
+        });
+    }
+
+    public void removeAll() {
+        CitizenHubDatabase.executorService().execute(medExDao::deleteAll);
+    }
+
+    public void update(MedEx medEx) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            medExDao.update(medEx);
+        });
+    }
+
 }
