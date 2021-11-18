@@ -31,6 +31,12 @@
             tools:layout="@layout/fragment_report_detail"/>
 
     <fragment
+        android:id="@+id/medex_fragment"
+        android:name="pt.uninova.s4h.citizenhub.MedExFragment"
+        android:label="MedExFragment"
+        tools:layout="@layout/fragment_medex"/>
+
+    <fragment
             android:id="@+id/device_list_fragment"
             android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
             android:label="@string/fragment_device_list_label"
@@ -173,5 +179,6 @@
         android:id="@+id/open_source_licenses_fragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
         android:label="Open source licenses" />
+
 
 </navigation>

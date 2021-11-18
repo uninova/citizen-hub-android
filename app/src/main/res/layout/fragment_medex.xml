@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/authenticationFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/medex_fragment_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/medex_fragment_explanation_textview"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/citizen_hub_logo_with_text" />
+
+    <ImageView
+        android:id="@+id/citizen_hub_logo_with_text"
+        android:layout_width="263dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="56dp"
+        android:contentDescription="@string/citizen_hub_logo_with_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
+
+
+    <Button
+        android:id="@+id/medex_fragment_search_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_width="100dp"
+        android:layout_marginTop="28dp"
+        android:background="@android:color/transparent"
+        android:includeFontPadding="false"
+        android:text="@string/fragment_medex_button_search"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/medex_fragment_explanation_textview2"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/medex_fragment_explanation_textview2"
+        app:layout_constraintTop_toBottomOf="@+id/medex_fragment_text_view" />
+
+    <TextView
+        android:id="@+id/medex_fragment_explanation_textview2"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:text="@string/medex_fragment_explanation2"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medex_fragment_search_button" />
+
+    <TextView
+        android:id="@+id/citizen_hub_text_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/primus_bold"
+        android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="17pt"
+        app:layout_constraintEnd_toStartOf="@+id/medex_fragment_text_view"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/citizen_hub_logo_with_text" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
