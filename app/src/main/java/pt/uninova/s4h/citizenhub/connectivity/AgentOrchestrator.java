@@ -5,21 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.AgentListChangeMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Dispatcher;
@@ -71,9 +65,7 @@ AgentOrchestrator {
                         devices.add(i);
                         featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                             for (MeasurementKind measurementKind : measurementKinds) {
-                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
-                                }
+                                agent.enableMeasurement(measurementKind, measurement -> measurementRepository.add(measurement));
                             }
                         });
                     });
@@ -84,9 +76,7 @@ AgentOrchestrator {
                         devices.add(i);
                         featureRepository.obtainKindsFromDevice(i.getAddress(), measurementKinds -> {
                             for (MeasurementKind measurementKind : measurementKinds) {
-                                if (getDeviceAgentMap().get(i).getSupportedMeasurements().contains(measurementKind)) {
-                                    getDeviceAgentMap().get(i).enableMeasurement(measurementKind, measurementRepository::add);
-                                }
+                                agent.enableMeasurement(measurementKind, measurement -> measurementRepository.add(measurement));
                             }
                         });
                     });
@@ -102,7 +92,7 @@ AgentOrchestrator {
     }
 
     public void addAgentEventListener(Observer<AgentListChangeMessage> listener) {
-        eventMessageDispatcher.getObservers().add(listener);
+        eventMessageDispatcher.addObserver(listener);
     }
 
     public void add(Device device, Agent agent) {
@@ -124,8 +114,6 @@ AgentOrchestrator {
         Agent agent = deviceAgentMap.get(device);
         deviceAgentMap.remove(device);
         agent.disable();
-        agent.getObservers().clear();
-        //TODO fazer close
         devices = getDevicesFromMap();
         eventMessageDispatcher.dispatch(new AgentListChangeMessage(devices));
     }

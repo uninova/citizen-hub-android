@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 
@@ -14,15 +15,8 @@ public class UprightGo2CalibrationProtocol extends BluetoothMeasuringProtocol {
     final private static UUID TRIGGER_CALIBRATION = UUID.fromString("0000bac1-0000-1000-8000-00805f9b34fb"); //bac1
     private byte[] calibrationTrigger = {0x00};
 
-    public UprightGo2CalibrationProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
-        super(ID, connection, agent);
-    }
-
-    private void attachObservers() {
-        final BluetoothConnection connection = getConnection();
-        //calibrate for current position (current position is considered good posture)
-        connection.writeCharacteristic(MEASUREMENTS_SERVICE, TRIGGER_CALIBRATION, calibrationTrigger);
-        System.out.println("CALIBRATION DONE");
+    public UprightGo2CalibrationProtocol(UprightGo2Agent agent) {
+        super(ID, agent.getConnection(), agent);
     }
 
     @Override
@@ -32,7 +26,10 @@ public class UprightGo2CalibrationProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void enable() {
-        attachObservers();
+        final BluetoothConnection connection = getConnection();
+        //calibrate for current position (current position is considered good posture)
+        connection.writeCharacteristic(MEASUREMENTS_SERVICE, TRIGGER_CALIBRATION, calibrationTrigger);
+
         super.enable();
     }
 }

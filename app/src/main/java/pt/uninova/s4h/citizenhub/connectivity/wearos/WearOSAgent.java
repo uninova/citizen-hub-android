@@ -1,43 +1,38 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2DistanceProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2HeartRateProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
 
 
 public class WearOSAgent extends AbstractAgent {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear");
-    private static final String TAG = "WearOSAgent";
+
+    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            MeasurementKind.ACTIVITY,
+            MeasurementKind.HEART_RATE
+    )));
+
+    static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            WearOSHeartRateProtocol.ID,
+            WearOSStepsProtocol.ID
+    )));
 
     final private WearOSConnection connection;
 
     public WearOSAgent(WearOSConnection connection) {
-        super(ID, createProtocols());
+        super(ID, supportedProtocolsIds, supportedMeasurementKinds);
 
         this.connection = connection;
-    }
-
-    private static Map<UUID, Protocol> createProtocols() {
-        final Map<UUID, Protocol> protocolMap = new HashMap<>();
-
-        protocolMap.put(WearOSHeartRateProtocol.ID, null);
-        protocolMap.put(WearOSStepsProtocol.ID, null);
-
-        return protocolMap;
     }
 
     @Override
@@ -53,55 +48,20 @@ public class WearOSAgent extends AbstractAgent {
     }
 
     @Override
-    public List<MeasurementKind> getSupportedMeasurements() {
-        List<MeasurementKind> measurementKindList = new ArrayList<>();
-
-        measurementKindList.add(MeasurementKind.HEART_RATE);
-        measurementKindList.add(MeasurementKind.ACTIVITY);
-
-        return measurementKindList;
+    public Set<MeasurementKind> getSupportedMeasurements() {
+        return supportedMeasurementKinds;
     }
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
-        if (getState() != AgentState.ENABLED) {
-            System.out.println("NAPODESER!");
-            //TODO ADD LISTENER FOR WHEN STATE CHANGES AND ENABLE
-            return;
-        }
-
-        MeasuringProtocol protocol = null;
-
-        switch (measurementKind) {
-            case HEART_RATE:
-                protocol = new WearOSHeartRateProtocol(this.connection, this);
-                break;
+    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
+        switch (kind) {
             case ACTIVITY:
-                protocol = new WearOSStepsProtocol(this.connection, this);
-                break;
-        }
-
-        if (protocol != null) {
-            enableProtocol(protocol.getId(), protocol);
-            protocol.getMeasurementObservers().add(observer);
-        }
-    }
-
-    @Override
-    public void disableMeasurement(MeasurementKind measurementKind) {
-        switch (measurementKind) {
+                return new WearOSStepsProtocol(this.connection, this);
             case HEART_RATE:
-                setState(AgentState.DISABLED);
-                getProtocol(WearOSHeartRateProtocol.ID).disable();
-            case ACTIVITY:
-            case STEPS:
-            case STEPS_PER_MINUTE:
-            case DISTANCE:
-                setState(AgentState.DISABLED);
-                getProtocol(WearOSStepsProtocol.ID).disable();
-            default:
-                break;
+                return new WearOSHeartRateProtocol(this.connection, this);
         }
+
+        return null;
     }
 
     @Override

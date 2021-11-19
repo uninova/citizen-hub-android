@@ -9,14 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
@@ -26,7 +23,6 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 import pt.uninova.util.messaging.Observer;
 
 public class DeviceViewModel extends AndroidViewModel {
@@ -105,7 +101,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public void apply(Feature feature, AgentOrchestrator agentOrchestrator, MeasurementRepository measurementRepository) {
-        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurementRepository::add);
+        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurement -> measurementRepository.add(measurement));
         featureRepository.add(feature);
     }
 

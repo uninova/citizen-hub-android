@@ -16,7 +16,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
@@ -61,7 +60,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
-        stateChangedMessageDispatcher.getObservers().add(listener);
+        stateChangedMessageDispatcher.addObserver(listener);
     }
 
     public void addDescriptorListener(DescriptorListener listener) {
@@ -191,7 +190,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
-        System.out.println("ONCONNECTIONSTATE" + " " + status + " " + newState);
+        System.out.println("BluetoothConnection.onConnectionStateChange status=" + status + " newState=" + newState);
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
@@ -303,11 +302,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void removeConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
-        stateChangedMessageDispatcher.getObservers().remove(listener);
-    }
-
-    public void removeConnectionStateChangeObserver(Observer<StateChangedMessage<BluetoothConnectionState, Agent>> listener) {
-        stateChangedMessageDispatcher.getObservers().remove(listener);
+        stateChangedMessageDispatcher.removeObserver(listener);
     }
 
     public void removeDescriptorListener(DescriptorListener listener) {

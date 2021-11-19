@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 
@@ -14,37 +16,46 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
     final private static UUID VIBRATION_CHARACTERISTIC = UUID.fromString("0000bab5-0000-1000-8000-00805f9b34fb"); //bab5
     private byte[] vibrationON = {0x00, 0x00};
     private byte[] vibrationOFF = {0x01, 0x01};
+    //UprightGO2 default values for vibration
+    private boolean vibration = false;
+    private int angle = 2;
+    private int interval = 5;
+    private boolean showPattern = false;
+    private int pattern = 0;
+    private int strength = 2;
 
-    public UprightGo2VibrationProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
-        super(ID, connection, agent);
-    }
-
-    private void attachObservers() {
-        final BluetoothConnection connection = getConnection();
-
-        //setting up the vibration (initial), configure as needed
-        //write vibration on
-        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC, vibrationON);
-        //connection.writeCharacteristic(VIBRATION_SERVICE,VIBRATION_CHARACTERISTIC,vibrationOFF);
-        //write vibration parameters/settings
-        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
-                vibrationMessage(1, 15, false, 0, 3));
-
-        System.out.println("ENTERED VIBRATION PROTOCOL!");
+    public UprightGo2VibrationProtocol(UprightGo2Agent agent, boolean vibration, int angle, int interval, boolean showPattern, int pattern, int strength) {
+        super(ID, agent.getConnection(), agent);
+        this.vibration = vibration;
+        this.angle = angle;
+        this.interval = interval;
+        this.showPattern = showPattern;
+        this.pattern = pattern;
+        this.strength = strength;
     }
 
     @Override
-    public void disable() {
-        super.disable();
+    public void disable(){setState(ProtocolState.DISABLED);
     }
 
     @Override
     public void enable() {
-        attachObservers();
+        final BluetoothConnection connection = getConnection();
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC,vibrationEnabled(vibration));
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
+                vibrationSettings(angle, interval, showPattern, pattern, strength));
         super.enable();
     }
 
-    private byte[] vibrationMessage(int angle, int interval, boolean showPattern, int pattern, int strength) {
+    private byte[] vibrationEnabled (boolean vibration){
+        if(vibration)
+            return vibrationON;
+        else{
+            return vibrationOFF;
+        }
+    }
+
+    private byte[] vibrationSettings(int angle, int interval, boolean showPattern, int pattern, int strength) {
         byte[] message = new byte[15];
 
         //angle: can be 1 to 6, 1 is the most strict, 6 is the most relaxed
