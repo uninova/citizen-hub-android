@@ -268,7 +268,7 @@ public class ReportDetailFragment extends Fragment {
         stepsGroup = view.findViewById(R.id.stepsGroup);
         distanceGroup = view.findViewById(R.id.distanceGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
-        model.obtainSummary(this::onSummaryChanged);
+        model.obtainSummary(value -> onSummaryChanged(value));
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
     }
 }

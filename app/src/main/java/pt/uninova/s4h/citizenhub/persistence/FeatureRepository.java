@@ -23,7 +23,7 @@ public class FeatureRepository {
     }
 
     public void obtainKindsFromDevice(String address, Observer<List<MeasurementKind>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(featureDao.getKindsFromDevice(address)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(featureDao.getKindsFromDevice(address)));
     }
 
 

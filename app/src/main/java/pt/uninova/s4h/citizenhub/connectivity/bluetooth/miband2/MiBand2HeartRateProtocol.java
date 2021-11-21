@@ -9,12 +9,15 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Observer;
 
 public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
@@ -23,8 +26,6 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
     public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
-
-    private Class<?> agent;
 
     public MiBand2HeartRateProtocol(BluetoothConnection connection, MiBand2Agent agent) {
         super(ID, connection, agent);
@@ -75,17 +76,11 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        getConnection().disableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }
 
     @Override
     public void enable() {
-        if (this.getAgent().getState() == AgentState.ENABLED) {
-            System.out.println("TURN IT ON!");
-            getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
-        } else {
-            System.out.println("NOCANDO!");
-            //TODO LISTEN WHEN READY THEN TURN ON
-        }
+        getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }
 }

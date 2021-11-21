@@ -1,77 +1,49 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
 
-import java.util.*;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class UprightGo2Agent extends BluetoothAgent {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
+    static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
+
+    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            MeasurementKind.POSTURE
+    )));
+
+    static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            UprightGo2PostureProtocol.ID,
+            UprightGo2CalibrationProtocol.ID,
+            UprightGo2VibrationProtocol.ID
+    )));
 
     public UprightGo2Agent(BluetoothConnection connection) {
-        super(ID, createProtocols(connection), connection);
+        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
     }
 
-    private static Map<UUID, Protocol> createProtocols(BluetoothConnection connection) {
-        final Map<UUID, Protocol> protocolMap = new HashMap<>();
-        //Posture
-        protocolMap.put(UprightGo2PostureProtocol.ID, null);
-        //Vibration Settings
-        protocolMap.put(UprightGo2CalibrationProtocol.ID, null);
-        //Calibration
-        protocolMap.put(UprightGo2VibrationProtocol.ID, null);
 
-        return protocolMap;
+    @Override
+    public Set<MeasurementKind> getSupportedMeasurements() {
+        return supportedMeasurementKinds;
     }
 
     @Override
-    public void disable() {
-        for (UUID i : getProtocolIds(ProtocolState.ENABLED)) {
-            getProtocol(i).disable();
-        }
-        getConnection().close();
-        setState(AgentState.DISABLED);
-    }
-
-    @Override
-    public void enable() {
-        setState(AgentState.ENABLED);
-    }
-
-    @Override
-    public List<MeasurementKind> getSupportedMeasurements() {
-        List<MeasurementKind> measurementKindList = new ArrayList<>();
-        measurementKindList.add(MeasurementKind.POSTURE);
-        return measurementKindList;
-    }
-
-    @Override
-    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
-        MeasuringProtocol protocol = null;
-
-        if (measurementKind == MeasurementKind.POSTURE) {
-            protocol = new UprightGo2PostureProtocol(this.getConnection(), this);
+    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
+        if (kind == MeasurementKind.POSTURE) {
+            return new UprightGo2PostureProtocol(this.getConnection(), this);
         }
 
-        if (protocol != null) {
-            protocol.getMeasurementObservers().add(observer);
-            enableProtocol(protocol.getId(), protocol);
-        }
-    }
-
-    @Override
-    public void disableMeasurement(MeasurementKind measurementKind) {
-
+        return null;
     }
 
     @Override

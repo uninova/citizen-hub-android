@@ -24,8 +24,18 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
     }
 
     @Override
+    public void addMeasurementObserver(Observer<Measurement> observer) {
+        this.measurementDispatcher.addObserver(observer);
+    }
+
+    @Override
     public void close() {
         super.close();
+    }
+
+    @Override
+    public void clearMeasurementObservers() {
+        measurementDispatcher.close();
     }
 
     protected Dispatcher<Measurement> getMeasurementDispatcher() {
@@ -33,8 +43,7 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
     }
 
     @Override
-    public Set<Observer<Measurement>> getMeasurementObservers() {
-        return measurementDispatcher.getObservers();
+    public void removeMeasurementObserver(Observer<Measurement> observer) {
+        this.measurementDispatcher.removeObserver(observer);
     }
-
 }

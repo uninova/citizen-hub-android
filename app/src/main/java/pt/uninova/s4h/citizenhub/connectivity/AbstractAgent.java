@@ -1,49 +1,131 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 public abstract class AbstractAgent implements Agent {
 
-    final private UUID id;
-
-    final private Map<UUID, Protocol> protocolMap;
-
-    final private Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
+    private final UUID id;
 
     private AgentState state;
 
-    private AbstractAgent() {
-        this.protocolMap = null;
-        this.id = null;
-        this.stateChangedDispatcher = null;
-    }
+    private final Set<UUID> supportedProtocolsIds;
+    private final Set<MeasurementKind> supportedMeasurements;
 
-    protected AbstractAgent(UUID id) {
-        this(id, new HashMap<>());
-    }
+    private final Map<UUID, Protocol> protocolMap;
+    private final Map<MeasurementKind, MeasuringProtocol> measurementMap;
 
-    protected AbstractAgent(UUID id, Map<UUID, Protocol> protocolMap) {
-        this.protocolMap = protocolMap;
+    private final Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
+
+    protected AbstractAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements) {
         this.id = id;
 
-        stateChangedDispatcher = new Dispatcher<>();
+        this.supportedProtocolsIds = supportedProtocolsIds;
+        this.supportedMeasurements = supportedMeasurements;
+
+        this.protocolMap = new HashMap<>(supportedProtocolsIds.size());
+        this.measurementMap = new HashMap<>(supportedMeasurements.size());
+
+        this.stateChangedDispatcher = new Dispatcher<>();
     }
 
-    protected void enableProtocol(UUID protocolId, Protocol protocol) {
-        this.protocolMap.put(protocolId, protocol);
+    @Override
+    public void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+        this.stateChangedDispatcher.addObserver(observer);
+    }
+
+    @Override
+    public void disable() {
+        for (final MeasurementKind i : this.measurementMap.keySet()) {
+            disableMeasurement(i);
+        }
+
+        for (final Protocol i : this.protocolMap.values()) {
+            disableProtocol(i);
+        }
+
+        setState(AgentState.DISABLED);
+    }
+
+    @Override
+    public void disableMeasurement(MeasurementKind measurementKind) {
+        final MeasuringProtocol protocol = this.measurementMap.get(measurementKind);
+
+        if (protocol != null) {
+            this.measurementMap.remove(measurementKind);
+            protocol.clearMeasurementObservers();
+            disableProtocol(protocol);
+        }
+    }
+
+    @Override
+    public void disableProtocol(Protocol protocol) {
+        final UUID protocolId = protocol.getId();
+        final Protocol currentProtocol = protocolMap.get(protocolId);
+
+        if (currentProtocol != null && currentProtocol == protocol) {
+            protocolMap.remove(protocolId);
+            protocol.disable();
+        }
+    }
+
+    @Override
+    public void enable() {
+        setState(AgentState.ENABLED);
+    }
+
+    @Override
+    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+        if (getState() != AgentState.ENABLED) {
+            this.addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+
+                @Override
+                public void observe(StateChangedMessage<AgentState, ? extends Agent> message) {
+                    if (message.getNewState() == AgentState.ENABLED) {
+                        AbstractAgent.this.enableMeasurement(measurementKind, observer);
+                        removeStateObserver(this);
+                    }
+                }
+            });
+
+            return;
+        }
+
+        final MeasuringProtocol protocol = getMeasuringProtocol(measurementKind);
+
+        if (protocol != null) {
+            this.measurementMap.put(measurementKind, protocol);
+            protocol.addMeasurementObserver(observer);
+            enableProtocol(protocol);
+        }
+    }
+
+    @Override
+    public void enableProtocol(Protocol protocol) {
+        final UUID protocolId = protocol.getId();
+
+        if (!supportedProtocolsIds.contains(protocolId)) {
+            return;
+        }
+
+        final Protocol currentProtocol = protocolMap.get(protocolId);
+
+        if (currentProtocol == null || currentProtocol != protocol) {
+            protocolMap.put(protocolId, protocol);
+        }
+
+        if (currentProtocol != null) {
+            disableProtocol(currentProtocol);
+        }
+
         protocol.enable();
-    }
-
-    public Set<Observer<StateChangedMessage<AgentState, ? extends Agent>>> getObservers() {
-        return stateChangedDispatcher.getObservers();
     }
 
     @Override
@@ -53,27 +135,40 @@ public abstract class AbstractAgent implements Agent {
 
     @Override
     public Protocol getProtocol(UUID protocolId) {
-        return protocolMap.get(protocolId);
-    }
+        final Protocol protocol = protocolMap.get(protocolId);
 
-    @Override
-    public Set<UUID> getProtocolIds(ProtocolState state) {
-        final Set<UUID> res = new HashSet<>();
-
-        for (UUID i : protocolMap.keySet()) {
-            final Protocol protocol = protocolMap.get(i);
-
-            if (protocol != null && protocol.getState() == state) {
-                res.add(i);
+        if (protocol == null) {
+            if (supportedProtocolsIds.contains(protocolId)) {
+                return null; //TODO Add exceptions
             }
-        }
 
-        return res;
+            return null; //TODO Add factory method
+        } else {
+            return protocol;
+        }
     }
+
+    protected abstract MeasuringProtocol getMeasuringProtocol(MeasurementKind kind);
 
     @Override
     public AgentState getState() {
         return state;
+    }
+
+
+    @Override
+    public Set<MeasurementKind> getSupportedMeasurements() {
+        return this.supportedMeasurements;
+    }
+
+    @Override
+    public Set<UUID> getSupportedProtocolsIds() {
+        return this.supportedProtocolsIds;
+    }
+
+    @Override
+    public void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+        this.stateChangedDispatcher.removeObserver(observer);
     }
 
     protected void setState(AgentState value) {
