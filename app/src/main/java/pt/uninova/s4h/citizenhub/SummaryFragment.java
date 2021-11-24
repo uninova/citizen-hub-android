@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Map;
+
 import pt.uninova.s4h.citizenhub.persistence.LumbarAggregate;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import java.util.Map;
 
 public class SummaryFragment extends Fragment {
 
@@ -31,7 +33,7 @@ public class SummaryFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
-        model.getLumbarSummary().observe(getViewLifecycleOwner(),this::onLumbarSummaryUpdate);
+        model.getLumbarSummary().observe(getViewLifecycleOwner(), this::onLumbarSummaryUpdate);
     }
 
     private String secondsToString(int value) {
@@ -51,7 +53,18 @@ public class SummaryFragment extends Fragment {
         return result.equals("") ? "0s" : result;
     }
 
-    private void onLumbarSummaryUpdate(Map<MeasurementKind, LumbarAggregate> lumbarSummary){
+    private void onLumbarSummaryUpdate(Map<MeasurementKind, LumbarAggregate> lumbarSummary) {
+        //final LinearLayout lumbarExtensionTrainingGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training);
+        if (lumbarSummary != null) {
+            new LumbarExtensionTraining(lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING).getTimestamp(),
+                    lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING).getRepetitions(),
+                    lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING).getTrainingLength(),
+                    lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING).getScore());
+        }
+        if (lumbarSummary != null) {
+            final LumbarAggregate lumbarAggregate = lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
+        }
+
 
     }
 

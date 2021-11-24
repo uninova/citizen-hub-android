@@ -15,7 +15,7 @@
     <group
             android:id="@+id/group_configuration">
         <item
-            android:id="@+id/medex_fragment"
+            android:id="@+id/lumbar_extension_training_fragment"
             android:icon="@android:drawable/ic_dialog_email"
             android:title="@string/fragment_medex_label" />
         <item
