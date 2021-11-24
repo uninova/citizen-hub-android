@@ -82,7 +82,6 @@ public class DeviceSearchFragment extends Fragment {
 
         } else {
             startScan();
-
         }
     }
 

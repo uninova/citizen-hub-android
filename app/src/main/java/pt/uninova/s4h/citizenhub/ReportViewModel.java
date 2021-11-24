@@ -55,7 +55,7 @@ public class ReportViewModel extends AndroidViewModel {
         super(application);
 
         repository = new MeasurementRepository(application);
-
+        //add query to medex Repository
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         dateBoundsLive = new MediatorLiveData<>();
 
@@ -361,6 +361,8 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
+
+        //TODO ADD MEDEX
 
         RectF rectAround = new RectF(81, 205, 539, y);
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);

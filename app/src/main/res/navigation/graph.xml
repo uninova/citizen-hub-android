@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/medex_fragment"
-        android:name="pt.uninova.s4h.citizenhub.MedExFragment"
+        android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingFragment"
         android:label="MedExFragment"
         tools:layout="@layout/fragment_medex"/>
 

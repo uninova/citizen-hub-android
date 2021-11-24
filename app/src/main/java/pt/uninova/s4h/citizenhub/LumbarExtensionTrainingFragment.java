@@ -16,13 +16,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-public class MedExFragment extends Fragment {
+public class LumbarExtensionTrainingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_medex, container, false);
 
         AlertDialog.Builder medExDialogBuilder = new AlertDialog.Builder(getContext());
-        medExDialogBuilder.setTitle("MedEx");
+        medExDialogBuilder.setTitle("LumbarExtensionTraining");
 
         View medexDialogView = getLayoutInflater().inflate(R.layout.dialog_dont_show_message_again, null);
         CheckBox medexCheckBox = medexDialogView.findViewById(R.id.checkBox);
