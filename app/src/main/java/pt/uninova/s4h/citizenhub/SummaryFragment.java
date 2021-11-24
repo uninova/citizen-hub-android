@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import pt.uninova.s4h.citizenhub.persistence.LumbarAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
@@ -29,6 +31,7 @@ public class SummaryFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
+        model.getLumbarSummary().observe(getViewLifecycleOwner(),this::onLumbarSummaryUpdate);
     }
 
     private String secondsToString(int value) {
@@ -46,6 +49,10 @@ public class SummaryFragment extends Fragment {
         String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
 
         return result.equals("") ? "0s" : result;
+    }
+
+    private void onLumbarSummaryUpdate(Map<MeasurementKind, LumbarAggregate> lumbarSummary){
+
     }
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
