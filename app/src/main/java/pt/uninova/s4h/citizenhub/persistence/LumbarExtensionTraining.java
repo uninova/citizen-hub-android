@@ -1,15 +1,15 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity(tableName = "medEx")
-public class MedEx {
+@Entity(tableName = "lumbar_training")
+public class LumbarExtensionTraining {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
@@ -20,9 +20,18 @@ public class MedEx {
     private Double score;
 
     @Ignore
-    public MedEx(Date timestamp,Integer repetitions, Long trainingLength, Double score) {
+    public LumbarExtensionTraining(Date timestamp, Integer repetitions, Long trainingLength, Double score) {
         this(null, timestamp,repetitions,trainingLength, score);
     }
+
+    public LumbarExtensionTraining(Integer id, Date timestamp, Integer repetitions, Long trainingLength, Double score) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.repetitions = repetitions;
+        this.trainingLength=trainingLength;
+        this.score=score;
+    }
+
 
     public Integer getRepetitions() {
         return repetitions;
@@ -48,13 +57,7 @@ public class MedEx {
         this.score = score;
     }
 
-    public MedEx(Integer id, Date timestamp, Integer repetitions, Long trainingLength, Double score) {
-        this.id = id;
-        this.timestamp = timestamp;
-        this.repetitions = repetitions;
-        this.trainingLength = trainingLength;
-        this.score = score;
-    }
+    //remove date
 
     public Integer getId() {
         return id;
@@ -71,5 +74,4 @@ public class MedEx {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-
 }

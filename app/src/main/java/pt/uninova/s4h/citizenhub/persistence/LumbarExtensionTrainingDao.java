@@ -10,22 +10,22 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface MedExDao {
+public interface LumbarExtensionTrainingDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(MedEx medEx);
+    void insert(LumbarExtensionTraining lumbarExtensionTraining);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(MedEx medEx);
+    void update(LumbarExtensionTraining lumbarExtensionTraining);
 
     @Delete
-    void delete(MedEx medEx);
+    void delete(LumbarExtensionTraining lumbarExtensionTraining);
 
-    @Query("DELETE FROM medex")
+    @Query("DELETE FROM lumbar_training")
     void deleteAll();
 
-    @Query("SELECT * FROM medex")
-    List<Measurement> getAll();
+    @Query("SELECT * FROM lumbar_training")
+    List<LumbarExtensionTraining> getAll();
 
 
 }
