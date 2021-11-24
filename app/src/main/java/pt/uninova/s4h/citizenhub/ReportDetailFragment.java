@@ -30,8 +30,9 @@ public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
-    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
+    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
+    lumbarRepetitions,lumbarTrainingLength,lumbarScore;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup,lumbarExtensionTrainingGroup;
     private boolean isSucess;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,9 +109,10 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
         final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
+        final MeasurementAggregate lumbarExtensionTraining = value.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining ==null
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -165,7 +167,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null &&lumbarExtensionTraining==null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -217,6 +219,16 @@ public class ReportDetailFragment extends Fragment {
                 heartRateGroup.setVisibility(View.GONE);
             }
 
+            if(lumbarExtensionTraining!=null){
+                if (lumbarExtensionTrainingGroup != null) {
+                    lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
+                }
+                //TODO get length,rep,score
+                else if (lumbarExtensionTrainingGroup!=null){
+                    lumbarExtensionTrainingGroup.setVisibility(View.GONE);
+                }
+                }
+
 
             if (badPosture != null || goodPosture != null) {
                 if (postureGroup != null) {
@@ -262,11 +274,15 @@ public class ReportDetailFragment extends Fragment {
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
         okPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_ok);
         notOkPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_not_ok);
+        lumbarTrainingLength=view.findViewById(R.id.fragment_report_lumbar_extension_training_length_total);
+        lumbarRepetitions=view.findViewById(R.id.fragment_report_lumbar_extension_training_repetitions_total);
+        lumbarScore=view.findViewById(R.id.fragment_report_lumbar_extension_training_score_total);
         postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
         distanceGroup = view.findViewById(R.id.distanceGroup);
+        lumbarExtensionTrainingGroup=view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);

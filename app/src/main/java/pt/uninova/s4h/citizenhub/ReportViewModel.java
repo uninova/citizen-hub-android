@@ -22,6 +22,7 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
@@ -41,7 +42,7 @@ import java.util.*;
 public class ReportViewModel extends AndroidViewModel {
 
     final private MeasurementRepository repository;
-
+    final private LumbarExtensionTrainingRepository lumbarTrainingRepository;
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
     final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
@@ -55,12 +56,12 @@ public class ReportViewModel extends AndroidViewModel {
         super(application);
 
         repository = new MeasurementRepository(application);
-        //add query to medex Repository
+        lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
+
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         dateBoundsLive = new MediatorLiveData<>();
 
         dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
