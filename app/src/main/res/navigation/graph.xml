@@ -31,10 +31,14 @@
             tools:layout="@layout/fragment_report_detail"/>
 
     <fragment
-        android:id="@+id/medex_fragment"
+        android:id="@+id/lumbar_extension_training_fragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingFragment"
-        android:label="MedExFragment"
-        tools:layout="@layout/fragment_medex"/>
+        android:label="LumbarExtensionTrainingFragment"
+        tools:layout="@layout/fragment_lumbar_extension_training">
+        <action
+            android:id="@+id/action_lumbar_extension_training_fragment_to_lumbarExtensionTrainingSearchFragment"
+            app:destination="@id/lumbarExtensionTrainingSearchFragment" />
+    </fragment>
 
     <fragment
             android:id="@+id/device_list_fragment"
@@ -179,6 +183,10 @@
         android:id="@+id/open_source_licenses_fragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
         android:label="Open source licenses" />
+    <fragment
+        android:id="@+id/lumbarExtensionTrainingSearchFragment"
+        android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingSearchFragment"
+        android:label="LumbarExtensionTrainingSearchFragment" />
 
 
 </navigation>

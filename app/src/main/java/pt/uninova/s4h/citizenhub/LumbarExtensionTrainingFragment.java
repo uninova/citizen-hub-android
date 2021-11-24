@@ -10,16 +10,19 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 public class LumbarExtensionTrainingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_medex, container, false);
+        final View view = inflater.inflate(R.layout.fragment_lumbar_extension_training, container, false);
+
+        Button searchButton = requireView().findViewById(R.id.medex_fragment_search_button);
 
         AlertDialog.Builder medExDialogBuilder = new AlertDialog.Builder(getContext());
         medExDialogBuilder.setTitle("LumbarExtensionTraining");
@@ -50,6 +53,14 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         } else {
             mDialog.show();
         }
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(LumbarExtensionTrainingFragment.this.requireView()).navigate(LumbarExtensionTrainingFragmentDirections.actionLumbarExtensionTrainingFragmentToLumbarExtensionTrainingSearchFragment());
+
+            }
+        });
 
 
 //        final Button medExButton = view.findViewById(R.id.medex_fragment_button);

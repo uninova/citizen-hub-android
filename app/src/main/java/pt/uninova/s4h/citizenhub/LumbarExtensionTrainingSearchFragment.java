@@ -1,6 +1,9 @@
 package pt.uninova.s4h.citizenhub;
 
-public class LumbarExtensionTrainingSearchFragment {
+public class LumbarExtensionTrainingSearchFragment extends DeviceSearchFragment{
+
+
+
 
     //TODOLumbarExtensionTraining
 
