@@ -76,7 +76,7 @@ public class LumbarExtensionTrainingRepository {
 
             lumbarAggregateMap.put(localDate, data);
 
-            data.addSource(lumbarExtensionTrainingDao.getAggregate(localDate,localDate.plusDays(1)), aggregates -> {
+            data.addSource(lumbarExtensionTrainingDao.getAggregateLive(localDate,localDate.plusDays(1)), aggregates -> {
                 data.postValue(mapAggregates(aggregates));
             });
 
