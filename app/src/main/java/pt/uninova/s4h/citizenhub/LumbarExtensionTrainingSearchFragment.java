@@ -8,6 +8,7 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +20,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
     private static final UUID LUMBARTRAINING_UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
     private static final UUID LUMBARTRAINING_UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
-    //    private static final UUID LUMBARTRAINING_UUID_DESCRIPTOR = UUID.fromString("5a46791b");
+
     public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
@@ -42,6 +48,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     ViewGroup localContainer;
     private DeviceListAdapter adapter;
     private ArrayList<DeviceListItem> deviceList;
+    private boolean alreadyConnected = false;
     private DeviceViewModel model;
     private BluetoothScanner scanner;
     private BluetoothScannerListener listener;
@@ -67,8 +74,10 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         cleanList();
-        buildRecycleView(result);
+
         startFilteredScan();
+        buildRecycleView(result);
+
         return result;
     }
 
@@ -84,32 +93,45 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
 
+            if (!alreadyConnected) {
+                buildRecycleView(requireView());
 
-            try {
-                bluetoothManager.getAdapter().getRemoteDevice(result.getDevice().getAddress()).connectGatt(getContext(), true, connection);
+                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
+               if (!model.isDevicePaired(device)) {
+                   deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
+                   adapter.notifyItemInserted(0);
+               }
 
-            } catch (Exception e) {
-                e.printStackTrace();
 
-            }
+                alreadyConnected = true;
+                try {
+                    bluetoothManager.getAdapter().getRemoteDevice(result.getDevice().getAddress()).connectGatt(getContext(), true, connection);
 
-            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                @Override
-                public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-                    if (value.getNewState() == BluetoothConnectionState.READY) {
-                        connection.removeConnectionStateChangeListener(this);
-
-                        final String name = connection.getDevice().getName();
-                        final String address = connection.getDevice().getAddress();
-
-                        connection.enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
-                    }
                 }
 
-            });
-        }
+                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+                    @Override
+                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
+                        if (value.getNewState() == BluetoothConnectionState.READY) {
+                            connection.removeConnectionStateChangeListener(this);
+                            connection.enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
+                            connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
+                                @Override
+                                public void onChange(byte[] value) {
+                                    Log.d("heartrate", Arrays.toString(value));
+                                }
+                            });
+                        }
+
+                    }
+
+                });
+            }
+        }
 
     };
 
@@ -142,6 +164,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+//        deviceList.add(new DeviceListItem(new Device("ola","1234", ConnectionKind.MEDEX,null,null)));
         adapter = new DeviceListAdapter(deviceList);
 
         recyclerView.setLayoutManager(layoutManager);
