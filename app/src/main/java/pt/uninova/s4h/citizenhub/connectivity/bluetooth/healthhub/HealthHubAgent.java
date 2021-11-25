@@ -59,8 +59,10 @@ public class HealthHubAgent extends BluetoothAgent {
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
         MeasuringProtocol protocol = null;
 
+        //still HeartRate for testing purposes
         if (measurementKind == MeasurementKind.HEART_RATE) {
-            protocol = new StandardProtocolHeartRate(this.getConnection(), this);
+            //protocol = new StandardProtocolHeartRate(this.getConnection(), this);
+            protocol = new HealthHubTrainingFeedbackProtocol(this.getConnection(), this);
         }
 
         if (protocol != null) {
