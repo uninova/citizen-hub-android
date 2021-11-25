@@ -18,11 +18,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 public class LumbarExtensionTrainingFragment extends Fragment {
+    private Button searchButton;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_lumbar_extension_training, container, false);
-
-        Button searchButton = requireView().findViewById(R.id.medex_fragment_search_button);
+        searchButton = view.findViewById(R.id.medex_fragment_search_button);
 
         AlertDialog.Builder medExDialogBuilder = new AlertDialog.Builder(getContext());
         medExDialogBuilder.setTitle("LumbarExtensionTraining");
@@ -30,12 +33,18 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         View medexDialogView = getLayoutInflater().inflate(R.layout.dialog_dont_show_message_again, null);
         CheckBox medexCheckBox = medexDialogView.findViewById(R.id.checkBox);
 
-        TextView text = (TextView)medexDialogView.findViewById(R.id.dialog_text);
+        TextView text = (TextView) medexDialogView.findViewById(R.id.dialog_text);
         text.setMovementMethod(LinkMovementMethod.getInstance());
 
 //        medExDialogBuilder.setMessage(R.string.medex_fragment_dialog_textview);
         medExDialogBuilder.setView(medexDialogView);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(LumbarExtensionTrainingFragment.this.requireView()).navigate(LumbarExtensionTrainingFragmentDirections.actionLumbarExtensionTrainingFragmentToLumbarExtensionTrainingSearchFragment());
 
+            }
+        });
         medExDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -50,17 +59,12 @@ public class LumbarExtensionTrainingFragment extends Fragment {
 
         if (getDialogStatus()) {
             mDialog.hide();
+
+
         } else {
             mDialog.show();
         }
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(LumbarExtensionTrainingFragment.this.requireView()).navigate(LumbarExtensionTrainingFragmentDirections.actionLumbarExtensionTrainingFragmentToLumbarExtensionTrainingSearchFragment());
-
-            }
-        });
 
 
 //        final Button medExButton = view.findViewById(R.id.medex_fragment_button);

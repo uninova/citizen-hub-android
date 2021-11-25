@@ -55,7 +55,6 @@ public class DeviceSearchFragment extends Fragment {
 
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
-
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
