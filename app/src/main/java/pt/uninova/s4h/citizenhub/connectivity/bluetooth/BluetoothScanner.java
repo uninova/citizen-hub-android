@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.security.auth.callback.Callback;
 
 public class BluetoothScanner extends ScanCallback {
 
@@ -53,10 +56,10 @@ public class BluetoothScanner extends ScanCallback {
         return listener != null;
     }
 
-    public synchronized void startWithFilter(BluetoothScannerListener listener,ParcelUuid serviceUUID) {
+    public synchronized void startWithFilter(BluetoothScannerListener listener, ParcelUuid serviceUUID, ScanCallback scanCallback) {
         if (!isScanning()) {
             this.listener = listener;
-            scanner.startScan(buildScanFilters(serviceUUID),buildScanSettings(),this );
+            scanner.startScan(buildScanFilters(serviceUUID),buildScanSettings(),scanCallback);
         }
     }
 
