@@ -97,10 +97,10 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 buildRecycleView(requireView());
 
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
-               if (!model.isDevicePaired(device)) {
-                   deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
-                   adapter.notifyItemInserted(0);
-               }
+                if (!model.isDevicePaired(device)) {
+                    deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
+                    adapter.notifyItemInserted(0);
+                }
 
 
                 alreadyConnected = true;
