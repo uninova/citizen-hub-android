@@ -232,7 +232,7 @@
     <string name="slide_screen_welcome_text">Welcome</string>
     <string name="styled_citizen_text_first_word">Citizen</string>
     <string name="styled_citizen_text_second_word">HUB</string>
-    <string name="fragment_medex_label">MedEx</string>
+    <string name="fragment_lumbar_extension_training_label">Lumbar Extension Training</string>
     <string name="medex_fragment_explanation_textview">Press the button below to find the machine you trained on.</string>
     <string name="fragment_medex_button_search">search</string>
     <string name="medex_fragment_explanation2">If you are not a medex user or want to hide this content, you can always change it in the settings.</string>
