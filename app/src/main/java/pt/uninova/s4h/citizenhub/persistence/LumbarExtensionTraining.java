@@ -5,7 +5,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity(tableName = "lumbar_training")
@@ -21,15 +20,15 @@ public class LumbarExtensionTraining {
 
     @Ignore
     public LumbarExtensionTraining(Date timestamp, Integer repetitions, Long trainingLength, Double score) {
-        this(null, timestamp,repetitions,trainingLength, score);
+        this(null, timestamp, repetitions, trainingLength, score);
     }
 
     public LumbarExtensionTraining(Integer id, Date timestamp, Integer repetitions, Long trainingLength, Double score) {
         this.id = id;
         this.timestamp = timestamp;
         this.repetitions = repetitions;
-        this.trainingLength=trainingLength;
-        this.score=score;
+        this.trainingLength = trainingLength;
+        this.score = score;
     }
 
 
