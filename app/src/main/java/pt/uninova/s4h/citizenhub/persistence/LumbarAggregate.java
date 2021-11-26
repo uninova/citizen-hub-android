@@ -1,27 +1,26 @@
-    package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence;
 
-    import androidx.room.TypeConverters;
+import androidx.room.TypeConverters;
 
-    import java.time.LocalDateTime;
-    import java.util.Date;
+import java.util.Date;
 
-    public class LumbarAggregate {
+public class LumbarAggregate {
     private MeasurementKind measurementKind = MeasurementKind.LUMBAR_EXTENSION_TRAINING;
-        @TypeConverters({EpochTypeConverter.class})
-        private Date timestamp;
+    @TypeConverters({EpochTypeConverter.class})
+    private Date timestamp;
     private Integer repetitions;
     private Long trainingLength;
     private Double score;
 
-        public Date getTimestamp() {
-            return timestamp;
-        }
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-        public void setTimestamp(Date timestamp) {
-            this.timestamp = timestamp;
-        }
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-        public Integer getRepetitions() {
+    public Integer getRepetitions() {
         return repetitions;
     }
 

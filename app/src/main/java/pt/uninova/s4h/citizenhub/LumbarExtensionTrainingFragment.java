@@ -21,7 +21,6 @@ public class LumbarExtensionTrainingFragment extends Fragment {
     private Button searchButton;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_lumbar_extension_training, container, false);
@@ -64,7 +63,6 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         } else {
             mDialog.show();
         }
-
 
 
 //        final Button medExButton = view.findViewById(R.id.medex_fragment_button);

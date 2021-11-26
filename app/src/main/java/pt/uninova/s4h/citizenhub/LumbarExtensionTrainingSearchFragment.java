@@ -34,14 +34,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
@@ -223,7 +221,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            System.out.println("BIIIIIIIIIIIIIIIIIIIIIING");
+
             if (!alreadyConnected) {
                 buildRecycleView(requireView());
 
@@ -236,9 +234,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
                     public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-                        System.out.println("onChanged");
+
                         if (value.getNewState() == BluetoothConnectionState.READY) {
-                            System.out.println("Ready");
                             connection.removeConnectionStateChangeListener(this);
                             LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
                             connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {

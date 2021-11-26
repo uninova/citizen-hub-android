@@ -32,6 +32,5 @@ public interface LumbarExtensionTrainingDao {
 
     @Query("SELECT * FROM lumbar_training WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
-
     LiveData<List<LumbarAggregate>> getAggregateLive(LocalDate from, LocalDate to);
 }

@@ -10,9 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pt.uninova.util.Pair;
-import pt.uninova.util.messaging.Observer;
-
 public class LumbarExtensionTrainingRepository {
 
     private final LumbarExtensionTrainingDao lumbarExtensionTrainingDao;
@@ -76,7 +73,7 @@ public class LumbarExtensionTrainingRepository {
 
             lumbarAggregateMap.put(localDate, data);
 
-            data.addSource(lumbarExtensionTrainingDao.getAggregateLive(localDate,localDate.plusDays(1)), aggregates -> {
+            data.addSource(lumbarExtensionTrainingDao.getAggregateLive(localDate, localDate.plusDays(1)), aggregates -> {
                 data.postValue(mapAggregates(aggregates));
             });
 
@@ -84,8 +81,6 @@ public class LumbarExtensionTrainingRepository {
             return data;
         }
     }
-
-
 
 
 }
