@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanCallback;
@@ -27,8 +28,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -41,6 +44,8 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
@@ -95,7 +100,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
     private void startFilteredScan() {
         connection = new BluetoothConnection();
-        scanner.startWithFilter(listener, new ParcelUuid(UUID_SERVICE_HEART_RATE), scanCallback);
+        scanner.startWithFilter(listener, new ParcelUuid(LUMBARTRAINING_UUID_SERVICE), scanCallback);
 
     }
 
@@ -218,7 +223,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-
+            System.out.println("BIIIIIIIIIIIIIIIIIIIIIING");
             if (!alreadyConnected) {
                 buildRecycleView(requireView());
 
@@ -228,37 +233,43 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                     adapter.notifyItemInserted(0);
                 }
 
+                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+                    @Override
+                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+                        System.out.println("onChanged");
+                        if (value.getNewState() == BluetoothConnectionState.READY) {
+                            System.out.println("Ready");
+                            connection.removeConnectionStateChangeListener(this);
+                            LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
+                            connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
+                                @Override
+                                public void onRead(byte[] value) {
+                                    ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
+                                    final double[] parsed = new double[]{
+                                            byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
+                                    };
+                                    double heartRate = parsed[1];
+                                    System.out.println("Heart Rate is: " + heartRate + " bpm");
+                                }
+                            });
+                            connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
 
+                        }
+
+                    }
+
+                });
                 alreadyConnected = true;
                 try {
-                    bluetoothManager.getAdapter().getRemoteDevice(result.getDevice().getAddress()).connectGatt(getContext(), true, connection);
+                    System.out.println("Connecting");
+                    bluetoothManager.getAdapter().getRemoteDevice(result.getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
 
                 } catch (Exception e) {
                     e.printStackTrace();
 
                 }
 
-                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                    @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
-                        if (value.getNewState() == BluetoothConnectionState.READY) {
-                            connection.removeConnectionStateChangeListener(this);
-
-                            Agent agent = new HealthHubAgent(connection);
-                            agent.enable();
-                            connection.enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
-                            connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
-                                @Override
-                                public void onChange(byte[] value) {
-                                    Log.d("heartrate", Arrays.toString(value));
-                                }
-                            });
-                        }
-
-                    }
-
-                });
             }
         }
 
