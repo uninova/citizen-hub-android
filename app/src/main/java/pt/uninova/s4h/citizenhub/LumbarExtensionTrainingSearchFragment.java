@@ -41,6 +41,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
@@ -247,13 +248,19 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                             Agent agent = new HealthHubAgent(connection);
                             agent.enable();
-                            connection.enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
-                            connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
+                            agent.enableMeasurement(MeasurementKind.HEART_RATE, new Observer<Measurement>() {
                                 @Override
-                                public void onChange(byte[] value) {
-                                    Log.d("heartrate", Arrays.toString(value));
+                                public void onChanged(Measurement value) {
+                                    Log.d("heartrate", value.getValue().toString());
                                 }
                             });
+//                            connection.enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
+//                            connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
+//                                @Override
+//                                public void onChange(byte[] value) {
+//                                    Log.d("heartrate", Arrays.toString(value));
+//                                }
+//                            });
                         }
 
                     }
