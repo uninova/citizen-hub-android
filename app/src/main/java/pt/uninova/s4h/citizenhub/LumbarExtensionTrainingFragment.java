@@ -27,7 +27,7 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         searchButton = view.findViewById(R.id.medex_fragment_search_button);
 
         AlertDialog.Builder medExDialogBuilder = new AlertDialog.Builder(getContext());
-        medExDialogBuilder.setTitle("LumbarExtensionTraining");
+        medExDialogBuilder.setTitle("Lumbar Extension Training");
 
         View medexDialogView = getLayoutInflater().inflate(R.layout.dialog_dont_show_message_again, null);
         CheckBox medexCheckBox = medexDialogView.findViewById(R.id.checkBox);
