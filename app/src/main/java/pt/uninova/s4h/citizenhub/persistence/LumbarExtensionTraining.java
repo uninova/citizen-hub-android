@@ -14,21 +14,21 @@ public class LumbarExtensionTraining {
     private Integer id;
     @TypeConverters({EpochTypeConverter.class})
     private Date timestamp;
-    private Integer repetitions;
     private Long trainingLength;
     private Double score;
+    private Integer repetitions;
 
     @Ignore
     public LumbarExtensionTraining(Date timestamp, Integer repetitions, Long trainingLength, Double score) {
-        this(null, timestamp, repetitions, trainingLength, score);
+        this(null, timestamp,trainingLength,score ,repetitions);
     }
 
-    public LumbarExtensionTraining(Integer id, Date timestamp, Integer repetitions, Long trainingLength, Double score) {
+    public LumbarExtensionTraining(Integer id, Date timestamp, Long trainingLength, Double score, Integer repetitions) {
         this.id = id;
         this.timestamp = timestamp;
-        this.repetitions = repetitions;
         this.trainingLength = trainingLength;
         this.score = score;
+        this.repetitions = repetitions;
     }
 
 
@@ -55,8 +55,6 @@ public class LumbarExtensionTraining {
     public void setScore(Double score) {
         this.score = score;
     }
-
-    //remove date
 
     public Integer getId() {
         return id;

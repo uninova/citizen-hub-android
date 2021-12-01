@@ -26,7 +26,7 @@ public class LumbarExtensionTrainingRepository {
 
     public void add(LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getRepetitions(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore()));
+            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(),lumbarExtensionTraining.getTrainingLength(),  lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
         });
     }
 
@@ -38,7 +38,7 @@ public class LumbarExtensionTrainingRepository {
 
     public void remove(Integer id, LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getRepetitions(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore()));
+            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(),lumbarExtensionTraining.getTrainingLength(),  lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
         });
     }
 

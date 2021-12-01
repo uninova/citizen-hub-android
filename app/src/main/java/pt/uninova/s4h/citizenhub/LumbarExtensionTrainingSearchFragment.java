@@ -14,7 +14,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -43,8 +40,6 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
@@ -231,41 +226,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                     adapter.notifyItemInserted(0);
                 }
 
-                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                    @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-
-                        if (value.getNewState() == BluetoothConnectionState.READY) {
-                            connection.removeConnectionStateChangeListener(this);
-                            LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
-                            connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
-                                @Override
-                                public void onRead(byte[] value) {
-                                    ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
-                                    final double[] parsed = new double[]{
-                                            byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
-                                    };
-                                    double heartRate = parsed[1];
-                                    System.out.println("Heart Rate is: " + heartRate + " bpm");
-                                }
-                            });
-                            connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
-
-                        }
-
-                    }
-
-                });
-                alreadyConnected = true;
-                try {
-                    System.out.println("Connecting");
-                    bluetoothManager.getAdapter().getRemoteDevice(result.getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
-
 
             }
         }
@@ -314,11 +274,47 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
+
+                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+                    @Override
+                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+
+                        if (value.getNewState() == BluetoothConnectionState.READY) {
+                            connection.removeConnectionStateChangeListener(this);
+                            LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
+                            connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
+                                @Override
+                                public void onRead(byte[] value) {
+                                    ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
+                                    final double[] parsed = new double[]{
+                                            byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
+                                    };
+                                    double heartRate = parsed[1];
+                                    System.out.println("Heart Rate is: " + heartRate + " bpm");
+                                }
+                            });
+                            connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
+
+                        }
+
+                    }
+
+                });
+                alreadyConnected = true;
+                try {
+                    System.out.println("Connecting");
+                    bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
             public void onSettingsClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
+                onItemClick(position);
             }
         });
     }
