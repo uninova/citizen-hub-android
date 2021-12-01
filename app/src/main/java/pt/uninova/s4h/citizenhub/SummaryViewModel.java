@@ -4,7 +4,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import pt.uninova.s4h.citizenhub.persistence.LumbarAggregate;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class SummaryViewModel extends AndroidViewModel {
 
     private final LiveData<Map<MeasurementKind, MeasurementAggregate>> dailySummary;
-    private final LiveData<Map<MeasurementKind, LumbarAggregate>> lumbarSummary;
+    private final LumbarExtensionTraining lumbarSummary;
 
     private final MeasurementRepository repository;
     private final LumbarExtensionTrainingRepository lumbarRepository;
@@ -28,14 +27,14 @@ public class SummaryViewModel extends AndroidViewModel {
         lumbarRepository = new LumbarExtensionTrainingRepository(application);
 
         dailySummary = repository.getCurrentDailyAggregate();
-        lumbarSummary = lumbarRepository.getDailyAggregate(LocalDate.now());
+        lumbarSummary = lumbarRepository.getLumbarTraining(LocalDate.now());
     }
 
     public LiveData<Map<MeasurementKind, MeasurementAggregate>> getDailySummary() {
         return dailySummary;
     }
 
-    public LiveData<Map<MeasurementKind,LumbarAggregate>> getLumbarSummary(){
+    public LumbarExtensionTraining getLumbarSummary(){
         return lumbarSummary;
     }
 

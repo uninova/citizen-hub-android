@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
-import java.util.Objects;
 
-import pt.uninova.s4h.citizenhub.persistence.LumbarAggregate;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
