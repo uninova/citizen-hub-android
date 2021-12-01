@@ -304,6 +304,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 try {
                     System.out.println("Connecting");
                     bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
+                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
 
                 } catch (Exception e) {
                     e.printStackTrace();

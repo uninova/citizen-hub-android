@@ -187,7 +187,11 @@
         android:id="@+id/lumbarExtensionTrainingSearchFragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingSearchFragment"
         android:label="LumbarExtensionTrainingSearchFragment"
-        tools:layout="@layout/fragment_device_search"/>
+        tools:layout="@layout/fragment_device_search">
+        <action
+            android:id="@+id/action_lumbarExtensionTrainingSearchFragment_to_summary_fragment"
+            app:destination="@id/summary_fragment" />
+    </fragment>
 
 
 </navigation>
