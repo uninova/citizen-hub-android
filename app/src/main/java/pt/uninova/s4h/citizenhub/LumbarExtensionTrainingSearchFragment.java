@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -41,6 +42,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
@@ -70,7 +72,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private BluetoothGatt gatt;
     private BluetoothConnection connection;
     private ProgressBar simpleProgressBar;
-
+    private LumbarExtensionTrainingRepository lumbarRepository;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
@@ -78,11 +80,13 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         localInflater = inflater;
         localContainer = container;
 
+
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
         scanner = new BluetoothScanner(bluetoothManager);
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
+        lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         cleanList();
@@ -302,6 +306,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                             byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
                                     };
                                     double heartRate = parsed[1];
+
+                                //TODO lumbarRepository.add(new LumbarExtensionTraining(timestamp,trainingLength,score,repetitions));
+
                                     System.out.println("Heart Rate is: " + heartRate + " bpm");
                                 }
                             });

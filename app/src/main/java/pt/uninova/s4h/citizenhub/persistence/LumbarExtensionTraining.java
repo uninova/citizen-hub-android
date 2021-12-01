@@ -19,7 +19,7 @@ public class LumbarExtensionTraining {
     private Integer repetitions;
 
     @Ignore
-    public LumbarExtensionTraining(Date timestamp, Integer repetitions, Long trainingLength, Double score) {
+    public LumbarExtensionTraining(Date timestamp, Long trainingLength, Double score, Integer repetitions) {
         this(null, timestamp,trainingLength,score ,repetitions);
     }
 
