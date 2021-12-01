@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +12,18 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class SummaryFragment extends Fragment {
 
     private SummaryViewModel model;
+    private LumbarExtensionTraining lumbarSummary;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class SummaryFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
-//        model.getLumbarSummary().observe(getViewLifecycleOwner(), this::onLumbarSummaryUpdate);
+        lumbarSummary = model.getLumbarSummary();
     }
 
     private String secondsToString(int value) {
@@ -72,6 +78,7 @@ public class SummaryFragment extends Fragment {
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout lumbarGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training_extension);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
@@ -79,14 +86,17 @@ public class SummaryFragment extends Fragment {
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
+        final TextView repetitionsTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar);
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
+        final TextView lumbarTitle = requireView().findViewById(R.id.lumbarTextView);
 
         if (dailySummary != null) {
+
             final MeasurementAggregate calories = dailySummary.get(MeasurementKind.CALORIES);
             final MeasurementAggregate distance = dailySummary.get(MeasurementKind.DISTANCE);
             final MeasurementAggregate heartRate = dailySummary.get(MeasurementKind.HEART_RATE);
@@ -94,11 +104,29 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate goodPosture = dailySummary.get(MeasurementKind.GOOD_POSTURE);
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
 
+
+            if(lumbarSummary!=null){
+
+                final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
+                final double lumbarScore = lumbarSummary.getScore();
+                final int lumbarRepetitions = lumbarSummary.getRepetitions();
+
+                lumbarGroup.setVisibility(VISIBLE);
+                lumbarTitle.setVisibility(VISIBLE);
+                repetitionsTextView.setVisibility(VISIBLE);
+
+            }
+            else{
+                lumbarGroup.setVisibility(View.GONE);
+                lumbarTitle.setVisibility(View.GONE);
+                repetitionsTextView.setVisibility(View.GONE);
+            }
+
             if (calories != null) {
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
-                caloriesGroup.setVisibility(View.VISIBLE);
-                caloriesTitle.setVisibility(View.VISIBLE);
-                caloriesTextView.setVisibility(View.VISIBLE);
+                caloriesGroup.setVisibility(VISIBLE);
+                caloriesTitle.setVisibility(VISIBLE);
+                caloriesTextView.setVisibility(VISIBLE);
             } else {
                 caloriesGroup.setVisibility(View.GONE);
                 caloriesTitle.setVisibility(View.GONE);
@@ -107,9 +135,9 @@ public class SummaryFragment extends Fragment {
 
             if (distance != null) {
                 distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_text, distance.getSum()));
-                distanceGroup.setVisibility(View.VISIBLE);
-                distanceTitle.setVisibility(View.VISIBLE);
-                distanceTextView.setVisibility(View.VISIBLE);
+                distanceGroup.setVisibility(VISIBLE);
+                distanceTitle.setVisibility(VISIBLE);
+                distanceTextView.setVisibility(VISIBLE);
 
             } else {
                 distanceGroup.setVisibility(View.GONE);
@@ -120,9 +148,9 @@ public class SummaryFragment extends Fragment {
 
             if (heartRate != null) {
                 heartRateTextView.setText(getString(R.string.fragment_summary_text_view_heart_rate_text, heartRate.getAverage()));
-                heartrateGroup.setVisibility(View.VISIBLE);
-                heartRateTitle.setVisibility(View.VISIBLE);
-                heartRateTextView.setVisibility(View.VISIBLE);
+                heartrateGroup.setVisibility(VISIBLE);
+                heartRateTitle.setVisibility(VISIBLE);
+                heartRateTextView.setVisibility(VISIBLE);
 
             } else {
                 heartrateGroup.setVisibility(View.GONE);
@@ -137,9 +165,9 @@ public class SummaryFragment extends Fragment {
                 int bp = badPosture == null ? 0 : badPosture.getSum().intValue();
 
                 postureTextView.setText(getString(R.string.fragment_summary_text_view_posture_text, secondsToString(gp), secondsToString(bp)));
-                postureGroup.setVisibility(View.VISIBLE);
-                postureTitle.setVisibility(View.VISIBLE);
-                postureTextView.setVisibility(View.VISIBLE);
+                postureGroup.setVisibility(VISIBLE);
+                postureTitle.setVisibility(VISIBLE);
+                postureTextView.setVisibility(VISIBLE);
 
             } else {
                 postureGroup.setVisibility(View.GONE);
@@ -150,21 +178,20 @@ public class SummaryFragment extends Fragment {
 
             if (steps != null) {
                 stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
-                stepsGroup.setVisibility(View.VISIBLE);
-                stepsTitle.setVisibility(View.VISIBLE);
-                stepsTextView.setVisibility(View.VISIBLE);
+                stepsGroup.setVisibility(VISIBLE);
+                stepsTitle.setVisibility(VISIBLE);
+                stepsTextView.setVisibility(VISIBLE);
 
             } else {
                 stepsGroup.setVisibility(View.GONE);
                 stepsTitle.setVisibility(View.GONE);
                 stepsTextView.setVisibility(View.GONE);
-
             }
 
             if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
                 noDataTextView.setText("No activity data for today.");
 
-                noDataTextView.setVisibility(View.VISIBLE); //TODO make own card
+                noDataTextView.setVisibility(VISIBLE); //TODO make own card
             } else {
                 noDataTextView.setVisibility(View.GONE); //TODO all other gones
             }

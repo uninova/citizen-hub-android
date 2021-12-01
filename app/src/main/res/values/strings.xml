@@ -247,6 +247,8 @@
     <string name="fragment_report_lumbar_extension_training_score_textview">Score</string>
     <string name="fragment_report_lumbar_training_score_value">0</string>
     <string name="fragment_report_detail_lumbar_training_score_units" />
+    <string name="fragment_summary_layout_lumbar_training_extension">Lumbar Extension Training</string>
+    <string name="lumbar_icon">Lumbar Icon</string>
     <string-array name="spinner_uprightgo2_interval">
         <item>5</item>
         <item>15</item>
