@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -27,7 +29,8 @@ public class SummaryViewModel extends AndroidViewModel {
         lumbarRepository = new LumbarExtensionTrainingRepository(application);
 
         dailySummary = repository.getCurrentDailyAggregate();
-        lumbarSummary = lumbarRepository.getLumbarTraining(LocalDate.now());
+
+        lumbarSummary =lumbarRepository.getLumbarTraining(LocalDate.now());
     }
 
     public LiveData<Map<MeasurementKind, MeasurementAggregate>> getDailySummary() {

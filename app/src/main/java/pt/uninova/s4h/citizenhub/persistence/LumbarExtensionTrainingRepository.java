@@ -48,6 +48,11 @@ public class LumbarExtensionTrainingRepository {
     }
 
    public LumbarExtensionTraining getLumbarTraining(LocalDate localDate){
-       return lumbarExtensionTrainingDao.getLumbarTraining( localDate, localDate.plusDays(1));
+       try {
+           return lumbarExtensionTrainingDao.getLumbarTraining( localDate, localDate.plusDays(1));
+
+       } catch (Exception e) {
+           return null;
+       }
    }
 }
