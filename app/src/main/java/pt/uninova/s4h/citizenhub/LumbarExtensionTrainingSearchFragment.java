@@ -17,8 +17,10 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -67,6 +69,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private boolean hasStartedEnableBluetoothActivity = false;
     private BluetoothGatt gatt;
     private BluetoothConnection connection;
+    private ProgressBar simpleProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -88,11 +91,18 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         buildRecycleView(result);
 
         return result;
+
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        simpleProgressBar = requireView().findViewById(R.id.progressBar);
+    }
 
     private void startFilteredScan() {
         connection = new BluetoothConnection();
+
         scanner.startWithFilter(listener, new ParcelUuid(LUMBARTRAINING_UUID_SERVICE), scanCallback);
 
     }
@@ -113,6 +123,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
         } else {
             startFilteredScan();
+
         }
     }
 
@@ -274,6 +285,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
+                simpleProgressBar.setVisibility(View.VISIBLE);
 
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
@@ -304,6 +316,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 try {
                     System.out.println("Connecting");
                     bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
+                    simpleProgressBar.setVisibility(View.GONE);
+
                     Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
 
                 } catch (Exception e) {
