@@ -14,19 +14,16 @@ public class LumbarExtensionTrainingRepository {
 
     private final LumbarExtensionTrainingDao lumbarExtensionTrainingDao;
 
-    private final Map<LocalDate, LiveData<Map<MeasurementKind, LumbarAggregate>>> lumbarAggregateMap;
-
     public LumbarExtensionTrainingRepository(Application application) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         lumbarExtensionTrainingDao = citizenHubDatabase.lumbarExtensionTrainingDao();
-        lumbarAggregateMap = new HashMap<>();
     }
 
 
     public void add(LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(),lumbarExtensionTraining.getTrainingLength(),  lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
+            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
         });
     }
 
@@ -38,7 +35,7 @@ public class LumbarExtensionTrainingRepository {
 
     public void remove(Integer id, LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(),lumbarExtensionTraining.getTrainingLength(),  lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
+            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
         });
     }
 
@@ -50,37 +47,7 @@ public class LumbarExtensionTrainingRepository {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(lumbarExtensionTraining));
     }
 
-    private Map<MeasurementKind, LumbarAggregate> mapAggregates(List<LumbarAggregate> aggregates) {
-        final Map<MeasurementKind, LumbarAggregate> aggregateMap = new HashMap<>(aggregates.size());
-
-        for (LumbarAggregate i : aggregates) {
-            aggregateMap.put(i.getMeasurementKind(), i);
-        }
-
-        return aggregateMap;
-    }
-
-    public LiveData<Map<MeasurementKind, LumbarAggregate>> getCurrentDailyAggregate() {
-        return getDailyAggregate(LocalDate.now());
-    }
-
-    public LiveData<Map<MeasurementKind, LumbarAggregate>> getDailyAggregate(LocalDate localDate) {
-        System.out.println();
-        if (lumbarAggregateMap.containsKey(localDate)) {
-            return lumbarAggregateMap.get(localDate);
-        } else {
-            final MediatorLiveData<Map<MeasurementKind, LumbarAggregate>> data = new MediatorLiveData<>();
-
-            lumbarAggregateMap.put(localDate, data);
-
-            data.addSource(lumbarExtensionTrainingDao.getAggregateLive(localDate, localDate.plusDays(1)), aggregates -> {
-                data.postValue(mapAggregates(aggregates));
-            });
-
-
-            return data;
-        }
-    }
-
-
+   public LumbarExtensionTraining getLumbarTraining(LocalDate localDate){
+       return lumbarExtensionTrainingDao.getLumbarTraining( localDate, localDate.plusDays(1));
+   }
 }
