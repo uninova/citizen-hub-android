@@ -305,20 +305,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                                     System.out.println("Heart Rate is: " + heartRate + " bpm");
                                 }
-
-                                @Override
-                                public void onChange(byte[] value) {
-                                    super.onChange(value);
-                                    ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
-                                    final double[] parsed = new double[]{
-                                            byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
-                                    };
-                                    double heartRate = parsed[1];
-
-                                    //TODO lumbarRepository.add(new LumbarExtensionTraining(timestamp,trainingLength,score,repetitions));
-
-                                    System.out.println("Heart Rate is: " + heartRate + " bpm");
-                                }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
 

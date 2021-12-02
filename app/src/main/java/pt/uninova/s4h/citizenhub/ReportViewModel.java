@@ -2,7 +2,12 @@ package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 
@@ -12,7 +17,31 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import care.data4life.fhir.r4.model.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
+
+import care.data4life.fhir.r4.model.Attachment;
+import care.data4life.fhir.r4.model.CodeSystemDocumentReferenceStatus;
+import care.data4life.fhir.r4.model.CodeableConcept;
+import care.data4life.fhir.r4.model.Coding;
+import care.data4life.fhir.r4.model.DocumentReference;
+import care.data4life.fhir.r4.model.FhirDate;
+import care.data4life.fhir.r4.model.FhirDateTime;
+import care.data4life.fhir.r4.model.FhirInstant;
+import care.data4life.fhir.r4.model.FhirTime;
+import care.data4life.fhir.r4.model.Organization;
+import care.data4life.fhir.r4.model.Practitioner;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
@@ -31,13 +60,6 @@ import pt.uninova.s4h.citizenhub.report.CanvasWriter;
 import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.LocalDateInterval;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
 
 
 public class ReportViewModel extends AndroidViewModel {
@@ -363,8 +385,8 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
-        LumbarExtensionTraining lumbarTraining =lumbarTrainingRepository.getLumbarTraining(LocalDate.now());
-        if(lumbarTraining!=null){
+        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now());
+        if (lumbarTraining != null) {
 
             Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);
             lumbar.setBounds(0, 0, lumbar.getIntrinsicWidth(), lumbar.getIntrinsicHeight());

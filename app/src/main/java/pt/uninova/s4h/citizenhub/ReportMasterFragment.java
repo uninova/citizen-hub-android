@@ -4,19 +4,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 import org.jetbrains.annotations.NotNull;
-import pt.uninova.util.time.LocalDateInterval;
 
 import java.time.LocalDate;
 import java.util.Set;
+
+import pt.uninova.util.time.LocalDateInterval;
 
 public class ReportMasterFragment extends Fragment {
 
@@ -60,14 +64,12 @@ public class ReportMasterFragment extends Fragment {
         final LocalDate lower = boundaries.getLower();
         final LocalDate upper = boundaries.getUpper();
 
-        if (lower != null)
-        {
+        if (lower != null) {
             calendarView.state().edit()
                     .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), 1))
                     .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
                     .commit();
-        }
-        else {
+        } else {
             calendarView.state().edit()
                     .setMinimumDate(CalendarDay.today())
                     .setMaximumDate(CalendarDay.today())
