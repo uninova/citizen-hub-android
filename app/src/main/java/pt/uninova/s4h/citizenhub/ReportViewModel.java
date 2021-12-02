@@ -22,6 +22,7 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -362,8 +363,38 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
+        LumbarExtensionTraining lumbarTraining =lumbarTrainingRepository.getLumbarTraining(LocalDate.now());
+        if(lumbarTraining!=null){
 
-        //TODO ADD MEDEX
+            Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);
+            lumbar.setBounds(0, 0, lumbar.getIntrinsicWidth(), lumbar.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x - 15, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            lumbar.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText(("Training Length:"), x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addTextInFront(" s", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Score: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getScore()), boldTextPaint);
+            canvasWriter.addTextInFront(" %", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Repetitions ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
+            canvasWriter.addTextInFront(" reps", darkTextPaint);
+
+
+            y += 20;
+
+            y += 40;
+
+        }
 
         RectF rectAround = new RectF(81, 205, 539, y);
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
