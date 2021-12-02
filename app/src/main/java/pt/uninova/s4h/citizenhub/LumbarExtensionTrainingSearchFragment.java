@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -42,19 +41,16 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
-    private static final UUID LUMBARTRAINING_UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
-    private static final UUID LUMBARTRAINING_UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
-
     public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
-
+    private static final UUID LUMBARTRAINING_UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
+    private static final UUID LUMBARTRAINING_UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
     private static final int PERMISSIONS_REQUEST_CODE = 77;
     private static final int FEATURE_BLUETOOTH_STATE = 78;
     LayoutInflater localInflater;
@@ -72,7 +68,27 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private BluetoothGatt gatt;
     private BluetoothConnection connection;
     private ProgressBar simpleProgressBar;
+    private final ScanCallback scanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+
+            if (!alreadyConnected) {
+                buildRecycleView(requireView());
+
+                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
+                if (!model.isDevicePaired(device)) {
+                    deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
+                    adapter.notifyItemInserted(0);
+                }
+
+
+            }
+        }
+
+    };
     private LumbarExtensionTrainingRepository lumbarRepository;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
@@ -209,7 +225,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 PERMISSIONS_REQUEST_CODE);
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -226,27 +241,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-    private final ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-
-            if (!alreadyConnected) {
-                buildRecycleView(requireView());
-
-                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
-                if (!model.isDevicePaired(device)) {
-                    deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
-                    adapter.notifyItemInserted(0);
-                }
-
-
-            }
-        }
-
-    };
-
 
     @Override
     public void onDestroyView() {
@@ -307,7 +301,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                     };
                                     double heartRate = parsed[1];
 
-                                //TODO lumbarRepository.add(new LumbarExtensionTraining(timestamp,trainingLength,score,repetitions));
+                                    //TODO lumbarRepository.add(new LumbarExtensionTraining(timestamp,trainingLength,score,repetitions));
 
                                     System.out.println("Heart Rate is: " + heartRate + " bpm");
                                 }

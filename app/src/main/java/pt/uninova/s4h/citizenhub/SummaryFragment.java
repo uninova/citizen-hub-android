@@ -55,21 +55,6 @@ public class SummaryFragment extends Fragment {
         return result.equals("") ? "0s" : result;
     }
 
-//    private void onLumbarSummaryUpdate(Map<MeasurementKind, LumbarAggregate> lumbarSummary) {
-//        //final LinearLayout lumbarExtensionTrainingGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training);
-//        if (lumbarSummary != null) {
-//            new LumbarExtensionTraining(Objects.requireNonNull(lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING)).getTimestamp(),
-//                    Objects.requireNonNull(lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING)).getRepetitions(),
-//                    Objects.requireNonNull(lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING)).getTrainingLength(),
-//                    Objects.requireNonNull(lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING)).getScore());
-//        }
-//        if (lumbarSummary != null) {
-//            final LumbarAggregate lumbarAggregate = lumbarSummary.get(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
-//        }
-//
-//
-//    }
-
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
         final LinearLayout caloriesGroup = requireView().findViewById(R.id.fragment_summary_layout_calories);
         final LinearLayout distanceGroup = requireView().findViewById(R.id.fragment_summary_layout_distance);
@@ -103,19 +88,18 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
 
 
-            if(lumbarSummary!=null){
+            if (lumbarSummary != null) {
 
                 final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
                 final double lumbarScore = lumbarSummary.getScore();
                 final int lumbarRepetitions = lumbarSummary.getRepetitions();
-                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text,lumbarTrainingLength,lumbarScore,lumbarRepetitions));
+                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, lumbarTrainingLength, lumbarScore, lumbarRepetitions));
                 //TODO review %'s
                 lumbarGroup.setVisibility(VISIBLE);
                 lumbarTitle.setVisibility(VISIBLE);
                 lumbarTextView.setVisibility(VISIBLE);
 
-            }
-            else{
+            } else {
                 lumbarGroup.setVisibility(View.GONE);
                 lumbarTitle.setVisibility(View.GONE);
                 lumbarTextView.setVisibility(View.GONE);

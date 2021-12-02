@@ -20,7 +20,7 @@ public class LumbarExtensionTraining {
 
     @Ignore
     public LumbarExtensionTraining(Date timestamp, Long trainingLength, Double score, Integer repetitions) {
-        this(null, timestamp,trainingLength,score ,repetitions);
+        this(null, timestamp, trainingLength, score, repetitions);
     }
 
     public LumbarExtensionTraining(Integer id, Date timestamp, Long trainingLength, Double score, Integer repetitions) {

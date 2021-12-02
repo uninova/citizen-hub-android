@@ -32,7 +32,7 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         View medexDialogView = getLayoutInflater().inflate(R.layout.dialog_dont_show_message_again, null);
         CheckBox medexCheckBox = medexDialogView.findViewById(R.id.checkBox);
 
-        TextView text = (TextView) medexDialogView.findViewById(R.id.dialog_text);
+        TextView text = medexDialogView.findViewById(R.id.dialog_text);
         text.setMovementMethod(LinkMovementMethod.getInstance());
 
 //        medExDialogBuilder.setMessage(R.string.medex_fragment_dialog_textview);
