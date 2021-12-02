@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.w3c.dom.Text;
-
 import java.util.Map;
 
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
@@ -86,7 +84,7 @@ public class SummaryFragment extends Fragment {
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
-        final TextView repetitionsTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar);
+        final TextView lumbarTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar_text);
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
@@ -110,16 +108,17 @@ public class SummaryFragment extends Fragment {
                 final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
                 final double lumbarScore = lumbarSummary.getScore();
                 final int lumbarRepetitions = lumbarSummary.getRepetitions();
-
+                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text,lumbarTrainingLength,lumbarScore,lumbarRepetitions));
+                //TODO review %'s
                 lumbarGroup.setVisibility(VISIBLE);
                 lumbarTitle.setVisibility(VISIBLE);
-                repetitionsTextView.setVisibility(VISIBLE);
+                lumbarTextView.setVisibility(VISIBLE);
 
             }
             else{
                 lumbarGroup.setVisibility(View.GONE);
                 lumbarTitle.setVisibility(View.GONE);
-                repetitionsTextView.setVisibility(View.GONE);
+                lumbarTextView.setVisibility(View.GONE);
             }
 
             if (calories != null) {

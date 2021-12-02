@@ -15,14 +15,14 @@
         <TextView
             android:id="@+id/fragment_summary_text_view_no_data"
             style="@style/AppTheme.Summary.Item.TextView"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="276dp"
             android:gravity="center|center_horizontal|center_vertical"
             android:text="@string/fragment_report_text_view_no_data_summary"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_steps"
@@ -266,7 +266,6 @@
             android:id="@+id/fragment_summary_layout_lumbar_training_extension"
             style="@style/AppTheme.Summary.Item"
             android:layout_width="350dp"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/button_rounded_bottom_outline_darkblue_14dp"
@@ -275,12 +274,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lumbarTextView">
+            app:layout_constraintTop_toBottomOf="@id/lumbarTextView">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_lumbar"
                 style="@style/AppTheme.Summary.Item.ImageView"
                 android:layout_height="55dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/lumbar_icon"
@@ -288,13 +288,15 @@
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_heartbeat" />
 
+
             <TextView
-                android:id="@+id/fragment_summary_text_view_lumbar"
+                android:id="@+id/fragment_summary_text_view_lumbar_text"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:layout_width="220dp"
-                android:layout_height="55dp"
-                android:text="Repetitions"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_summary_text_view_lumbar_text"
                 android:visibility="gone" />
+
 
         </LinearLayout>
 
