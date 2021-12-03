@@ -94,7 +94,7 @@ public class SummaryFragment extends Fragment {
                 final double lumbarScore = lumbarSummary.getScore();
                 final int lumbarRepetitions = lumbarSummary.getRepetitions();
                 lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, lumbarTrainingLength, lumbarScore, lumbarRepetitions));
-                //TODO review %'s
+
                 lumbarGroup.setVisibility(VISIBLE);
                 lumbarTitle.setVisibility(VISIBLE);
                 lumbarTextView.setVisibility(VISIBLE);
