@@ -41,6 +41,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
@@ -296,14 +297,38 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                 @Override
                                 public void onRead(byte[] value) {
                                     ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
+
+                                    //for timestamp
+                                    byte[] timestampByteArray = new byte[4];
+                                    System.arraycopy(value, 0, timestampByteArray, 0, 4);
+                                    ByteBuffer timestampByteBuffer = ByteBuffer.wrap(timestampByteArray).asReadOnlyBuffer();
+                                    int timestampEpoch = timestampByteBuffer.getInt();
+                                    java.util.Date timestamp = new java.util.Date((long) timestampEpoch * 1000);
+                                    System.out.println("Timestamp was: " + timestamp);
+                                    System.out.println("Timestamp long (epoch) is " + (long) timestampEpoch);
+
+                                    //for training length
                                     final double[] parsed = new double[]{
-                                            byteBuffer.get(0) & 0xFF, byteBuffer.get(1)
+                                            byteBuffer.get(4) & 0xFF,
+                                            byteBuffer.get(5) & 0xFF,
+                                            byteBuffer.get(6) & 0xFF,
+                                            byteBuffer.get(7) & 0xFF,
+                                            byteBuffer.get(8) & 0xFF,
+                                            byteBuffer.get(9) & 0xFF
                                     };
-                                    double heartRate = parsed[1];
+                                    System.out.println("Training Length was: " + (int) parsed[0] + "h " + (int) parsed[1] + "m " + (int) parsed[2] + "s");
+                                    long trainingLength = (int) (parsed[0] * 60 * 60) + (int) (parsed[1] * 60) + (int) parsed[2]; //milliseconds
+                                    System.out.println("Training Length long is " + trainingLength);
 
-                                    //TODO lumbarRepository.add(new LumbarExtensionTraining(timestamp,trainingLength,score,repetitions));
+                                    //for score
+                                    Double score = parsed[3] + parsed[4] * 0.01;
+                                    System.out.println("Score was: " + score + "%");
 
-                                    System.out.println("Heart Rate is: " + heartRate + " bpm");
+                                    //for repetitions
+                                    int repetitions = (int) parsed[5];
+                                    System.out.println("Repetetions were: " + repetitions);
+
+                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, trainingLength, score, repetitions));
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
