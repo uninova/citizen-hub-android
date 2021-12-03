@@ -296,38 +296,47 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                 @Override
                                 public void onRead(byte[] value) {
                                     ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
+                                    System.out.println(byteBuffer);
 
-                                    //for timestamp
-                                    byte[] timestampByteArray = new byte[4];
-                                    System.arraycopy(value, 0, timestampByteArray, 0, 4);
-                                    ByteBuffer timestampByteBuffer = ByteBuffer.wrap(timestampByteArray).asReadOnlyBuffer();
-                                    int timestampEpoch = timestampByteBuffer.getInt();
-                                    java.util.Date timestamp = new java.util.Date((long) timestampEpoch * 1000);
-                                    System.out.println("Timestamp was: " + timestamp);
-                                    System.out.println("Timestamp long (epoch) is " + (long) timestampEpoch);
-
-                                    //for training length
-                                    final double[] parsed = new double[]{
-                                            byteBuffer.get(4) & 0xFF,
-                                            byteBuffer.get(5) & 0xFF,
-                                            byteBuffer.get(6) & 0xFF,
-                                            byteBuffer.get(7) & 0xFF,
-                                            byteBuffer.get(8) & 0xFF,
-                                            byteBuffer.get(9) & 0xFF
-                                    };
-                                    System.out.println("Training Length was: " + (int) parsed[0] + "h " + (int) parsed[1] + "m " + (int) parsed[2] + "s");
-                                    long trainingLength = (int) (parsed[0] * 60 * 60) + (int) (parsed[1] * 60) + (int) parsed[2]; //milliseconds
-                                    System.out.println("Training Length long is " + trainingLength);
-
-                                    //for score
-                                    Double score = parsed[3] + parsed[4] * 0.01;
-                                    System.out.println("Score was: " + score + "%");
-
-                                    //for repetitions
-                                    int repetitions = (int) parsed[5];
-                                    System.out.println("Repetetions were: " + repetitions);
-
-                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, trainingLength, score, repetitions));
+                                    int timestamp = byteBuffer.getInt();
+                                    System.out.println("Timestamp: " + timestamp);
+                                    int length = byteBuffer.getInt();
+                                    System.out.println("Length: " + length);
+                                    float score = byteBuffer.getFloat();
+                                    System.out.println("Score: " + score);
+                                    int repetitions = byteBuffer.getInt();
+                                    System.out.println("Repetitions: " + repetitions);
+//                                    //for timestamp
+//                                    byte[] timestampByteArray = new byte[4];
+//                                    System.arraycopy(value, 0, timestampByteArray, 0, 4);
+//                                    ByteBuffer timestampByteBuffer = ByteBuffer.wrap(timestampByteArray).asReadOnlyBuffer();
+//                                    int timestampEpoch = timestampByteBuffer.getInt();
+//                                    java.util.Date timestamp = new java.util.Date((long) timestampEpoch * 1000);
+//                                    System.out.println("Timestamp was: " + timestamp);
+//                                    System.out.println("Timestamp long (epoch) is " + (long) timestampEpoch);
+//
+//                                    //for training length
+//                                    final double[] parsed = new double[]{
+//                                            byteBuffer.get(4) & 0xFF,
+//                                            byteBuffer.get(5) & 0xFF,
+//                                            byteBuffer.get(6) & 0xFF,
+//                                            byteBuffer.get(7) & 0xFF,
+//                                            byteBuffer.get(8) & 0xFF,
+//                                            byteBuffer.get(9) & 0xFF
+//                                    };
+//                                    System.out.println("Training Length was: " + (int) parsed[0] + "h " + (int) parsed[1] + "m " + (int) parsed[2] + "s");
+//                                    long trainingLength = (int) (parsed[0] * 60 * 60) + (int) (parsed[1] * 60) + (int) parsed[2]; //milliseconds
+//                                    System.out.println("Training Length long is " + trainingLength);
+//
+//                                    //for score
+//                                    Double score = parsed[3] + parsed[4] * 0.01;
+//                                    System.out.println("Score was: " + score + "%");
+//
+//                                    //for repetitions
+//                                    int repetitions = (int) parsed[5];
+//                                    System.out.println("Repetetions were: " + repetitions);
+//
+                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions));
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
