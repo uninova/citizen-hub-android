@@ -77,17 +77,16 @@ public class SummaryFragment extends Fragment {
         return result.equals("") ? "0s" : result;
     }
 
-    public String MillisToHrMinSec(long milliseconds) {
-        final long dy = TimeUnit.MILLISECONDS.toDays(milliseconds);
-        final long hr = TimeUnit.MILLISECONDS.toHours(milliseconds)
-                - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(milliseconds));
-        final long min = TimeUnit.MILLISECONDS.toMinutes(milliseconds)
-                - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(milliseconds));
-        final long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds)
-                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds));
-        final long ms = TimeUnit.MILLISECONDS.toMillis(milliseconds)
-                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(milliseconds));
-        return (String.format("%d Hours %d Minutes %d Seconds %d Milliseconds", hr, min, sec, ms));
+    public String calculateTime(long seconds) {
+        int day = (int) TimeUnit.SECONDS.toDays(seconds);
+        long hours = TimeUnit.SECONDS.toHours(seconds) -
+                TimeUnit.DAYS.toHours(day);
+        long minute = TimeUnit.SECONDS.toMinutes(seconds) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.SECONDS.toHours(seconds));
+        long second = TimeUnit.SECONDS.toSeconds(seconds) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(seconds));
+        return (String.format("%d Hours %d Minutes %d Seconds", hours, minute, second));
+
     }
 
 
