@@ -192,7 +192,8 @@
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">Your average heart rate is %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s not OK</string>
-    <string name="fragment_summary_text_view_lumbar_text">Duration: %02d h %02d m %02d s\nScore: %2$.0f %\n Repetitions: %3$.0f</string>
+    <string name="fragment_summary_text_view_lumbar_text">Duration: %1$s h %2$d m %3$d s\nScore: %4$.2f %%\n Repetitions: %5$s</string>
+    <!-- <string name="fragment_summary_text_view_lumbar_text">Duration: %1$s s\nScore: %2$.2f %%\n Repetitions: %3$d</string> -->
     <string name="fragment_summary_text_view_steps_text">%1$.0f steps</string>
     <string name="fragment_user_label">User Profile</string>
     <string name="layout_activity_add_device_address">Address</string>

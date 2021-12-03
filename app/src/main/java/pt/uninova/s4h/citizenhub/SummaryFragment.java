@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
 
+import pt.uninova.s4h.citizenhub.persistence.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -87,13 +88,12 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate goodPosture = dailySummary.get(MeasurementKind.GOOD_POSTURE);
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
 
-
             if (lumbarSummary != null) {
 
                 final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
                 final double lumbarScore = lumbarSummary.getScore();
                 final int lumbarRepetitions = lumbarSummary.getRepetitions();
-                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, lumbarTrainingLength, lumbarScore, lumbarRepetitions));
+                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, String.valueOf(lumbarTrainingLength), lumbarScore, lumbarRepetitions));
 
                 lumbarGroup.setVisibility(VISIBLE);
                 lumbarTitle.setVisibility(VISIBLE);

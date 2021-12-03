@@ -272,7 +272,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        deviceList.add(new DeviceListItem(new Device("ola","1234", ConnectionKind.MEDEX,null,null)));
         adapter = new DeviceListAdapter(deviceList);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -332,11 +331,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
-
                         }
-
                     }
-
                 });
                 alreadyConnected = true;
                 try {
