@@ -2,6 +2,8 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import java.time.LocalDate;
 
 public class LumbarExtensionTrainingRepository {
@@ -41,12 +43,7 @@ public class LumbarExtensionTrainingRepository {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(lumbarExtensionTraining));
     }
 
-    public LumbarExtensionTraining getLumbarTraining(LocalDate localDate) {
-        try {
-            return lumbarExtensionTrainingDao.getLumbarTraining(localDate, localDate.plusDays(1));
-
-        } catch (Exception e) {
-            return null;
-        }
+    public LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate localDate) {
+        return lumbarExtensionTrainingDao.getLumbarTraining(localDate, localDate.plusDays(1));
     }
 }

@@ -17,19 +17,15 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 public class SummaryViewModel extends AndroidViewModel {
 
     private final LiveData<Map<MeasurementKind, MeasurementAggregate>> dailySummary;
-    private final LumbarExtensionTraining lumbarSummary;
-
-    private final MeasurementRepository repository;
-    private final LumbarExtensionTrainingRepository lumbarRepository;
+    private final LiveData<LumbarExtensionTraining> lumbarSummary;
 
     public SummaryViewModel(Application application) {
         super(application);
 
-        repository = new MeasurementRepository(application);
-        lumbarRepository = new LumbarExtensionTrainingRepository(application);
+        MeasurementRepository repository = new MeasurementRepository(application);
+        LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(application);
 
         dailySummary = repository.getCurrentDailyAggregate();
-
         lumbarSummary = lumbarRepository.getLumbarTraining(LocalDate.now());
     }
 
@@ -37,8 +33,7 @@ public class SummaryViewModel extends AndroidViewModel {
         return dailySummary;
     }
 
-    public LumbarExtensionTraining getLumbarSummary() {
+    public LiveData<LumbarExtensionTraining> getLumbarExtensionTraining() {
         return lumbarSummary;
     }
-
 }

@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -31,5 +32,7 @@ public interface LumbarExtensionTrainingDao {
 
     @Query(value = "SELECT * FROM lumbar_training WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
-    LumbarExtensionTraining getLumbarTraining(LocalDate from, LocalDate to);
+    LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate from, LocalDate to);
+
+
 }
