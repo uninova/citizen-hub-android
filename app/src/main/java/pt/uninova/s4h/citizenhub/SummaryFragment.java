@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import pt.uninova.s4h.citizenhub.persistence.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -37,6 +37,7 @@ public class SummaryFragment extends Fragment {
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         lumbarSummary = model.getLumbarSummary();
+
     }
 
     private String secondsToString(int value) {
@@ -55,6 +56,20 @@ public class SummaryFragment extends Fragment {
 
         return result.equals("") ? "0s" : result;
     }
+
+    public String MillisToHrMinSec(long milliseconds) {
+        final long dy = TimeUnit.MILLISECONDS.toDays(milliseconds);
+        final long hr = TimeUnit.MILLISECONDS.toHours(milliseconds)
+                - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(milliseconds));
+        final long min = TimeUnit.MILLISECONDS.toMinutes(milliseconds)
+                - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(milliseconds));
+        final long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds)
+                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds));
+        final long ms = TimeUnit.MILLISECONDS.toMillis(milliseconds)
+                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(milliseconds));
+        return (String.format("%d Hours %d Minutes %d Seconds %d Milliseconds", hr, min, sec, ms));
+    }
+
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
         final LinearLayout caloriesGroup = requireView().findViewById(R.id.fragment_summary_layout_calories);
@@ -93,7 +108,7 @@ public class SummaryFragment extends Fragment {
                 final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
                 final double lumbarScore = lumbarSummary.getScore();
                 final int lumbarRepetitions = lumbarSummary.getRepetitions();
-                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, String.valueOf(lumbarTrainingLength), lumbarScore, lumbarRepetitions));
+                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, MillisToHrMinSec(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
 
                 lumbarGroup.setVisibility(VISIBLE);
                 lumbarTitle.setVisibility(VISIBLE);
