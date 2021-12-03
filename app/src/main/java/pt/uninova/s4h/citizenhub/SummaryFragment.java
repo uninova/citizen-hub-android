@@ -22,7 +22,6 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class SummaryFragment extends Fragment {
 
     private SummaryViewModel model;
-    private LumbarExtensionTraining lumbarSummary;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,8 +35,29 @@ public class SummaryFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
-        lumbarSummary = model.getLumbarSummary();
+        model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
+    }
 
+    private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
+        final LinearLayout lumbarGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training_extension);
+        final TextView lumbarTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar_text);
+        final TextView lumbarTitle = requireView().findViewById(R.id.lumbarTextView);
+
+        if (lumbarExtensionTraining != null) {
+            final int lumbarTrainingLength = lumbarExtensionTraining.getTrainingLength();
+            final float lumbarScore = lumbarExtensionTraining.getScore();
+            final int lumbarRepetitions = lumbarExtensionTraining.getRepetitions();
+
+            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
+
+            lumbarGroup.setVisibility(View.VISIBLE);
+            lumbarTitle.setVisibility(View.VISIBLE);
+            lumbarTextView.setVisibility(View.VISIBLE);
+        } else {
+            lumbarGroup.setVisibility(View.GONE);
+            lumbarTitle.setVisibility(View.GONE);
+            lumbarTextView.setVisibility(View.GONE);
+        }
     }
 
     private String secondsToString(int value) {
@@ -77,7 +97,6 @@ public class SummaryFragment extends Fragment {
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
-        final LinearLayout lumbarGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training_extension);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
@@ -85,14 +104,13 @@ public class SummaryFragment extends Fragment {
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
-        final TextView lumbarTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar_text);
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
-        final TextView lumbarTitle = requireView().findViewById(R.id.lumbarTextView);
+
 
         if (dailySummary != null) {
 
@@ -103,22 +121,6 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate goodPosture = dailySummary.get(MeasurementKind.GOOD_POSTURE);
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
 
-            if (lumbarSummary != null) {
-
-                final Long lumbarTrainingLength = lumbarSummary.getTrainingLength();
-                final double lumbarScore = lumbarSummary.getScore();
-                final int lumbarRepetitions = lumbarSummary.getRepetitions();
-                lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, MillisToHrMinSec(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
-
-                lumbarGroup.setVisibility(VISIBLE);
-                lumbarTitle.setVisibility(VISIBLE);
-                lumbarTextView.setVisibility(VISIBLE);
-
-            } else {
-                lumbarGroup.setVisibility(View.GONE);
-                lumbarTitle.setVisibility(View.GONE);
-                lumbarTextView.setVisibility(View.GONE);
-            }
 
             if (calories != null) {
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
