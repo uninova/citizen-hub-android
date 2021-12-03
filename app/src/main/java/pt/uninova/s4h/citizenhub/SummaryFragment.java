@@ -65,7 +65,7 @@ public class SummaryFragment extends Fragment {
                 TimeUnit.HOURS.toMinutes(TimeUnit.SECONDS.toHours(seconds));
         long second = TimeUnit.SECONDS.toSeconds(seconds) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(seconds));
-        return (String.format("%d Hours %d Minutes %d Seconds %d Milliseconds", hours, minute, second));
+        return (String.format("%d Hours %d Minutes %d Seconds", hours, minute, second));
 
     }
 
