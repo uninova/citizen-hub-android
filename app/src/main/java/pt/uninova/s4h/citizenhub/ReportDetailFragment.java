@@ -229,18 +229,17 @@ public class ReportDetailFragment extends Fragment {
             LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
             try {
-                lumbarExtensionTraining = lumbarRepository.getLumbarTraining(LocalDate.now());
+                lumbarExtensionTraining = lumbarRepository.getLumbarTraining(LocalDate.now()).getValue();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (lumbarExtensionTraining != null) {
                 if (lumbarExtensionTrainingGroup != null) {
-                    lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTraining.getTrainingLength()));
-                    lumbarScore.setText(String.valueOf(lumbarExtensionTraining.getScore().doubleValue()));
-                    lumbarRepetitions.setText(String.valueOf(lumbarExtensionTraining.getRepetitions().intValue()));
                     lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
-
                 }
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTraining.getTrainingLength()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTraining.getScore().doubleValue()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTraining.getRepetitions().intValue()));
             } else {
                 lumbarExtensionTrainingGroup.setVisibility(View.GONE);
             }

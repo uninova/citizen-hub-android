@@ -69,7 +69,6 @@ public class ReportViewModel extends AndroidViewModel {
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
     final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
-
     final private Set<Pair<Integer, Integer>> peekedMonths;
 
     private LocalDate detailDate;
@@ -80,7 +79,6 @@ public class ReportViewModel extends AndroidViewModel {
 
         repository = new MeasurementRepository(application);
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
-
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         dateBoundsLive = new MediatorLiveData<>();
 
@@ -385,7 +383,7 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
-        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now());
+        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
         if (lumbarTraining != null) {
 
             Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);

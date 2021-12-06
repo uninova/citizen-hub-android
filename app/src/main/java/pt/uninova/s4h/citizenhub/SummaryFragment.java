@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 public class SummaryFragment extends Fragment {
 
     private SummaryViewModel model;
+    private boolean lumbar = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,27 +38,35 @@ public class SummaryFragment extends Fragment {
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
+
     }
 
     private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
         final LinearLayout lumbarGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training_extension);
         final TextView lumbarTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar_text);
         final TextView lumbarTitle = requireView().findViewById(R.id.lumbarTextView);
+        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         if (lumbarExtensionTraining != null) {
+            lumbar = true;
+
             final int lumbarTrainingLength = lumbarExtensionTraining.getTrainingLength();
             final float lumbarScore = lumbarExtensionTraining.getScore();
             final int lumbarRepetitions = lumbarExtensionTraining.getRepetitions();
-
+            noDataTextView.setVisibility(GONE);
             lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
 
             lumbarGroup.setVisibility(View.VISIBLE);
             lumbarTitle.setVisibility(View.VISIBLE);
             lumbarTextView.setVisibility(View.VISIBLE);
+
         } else {
+            lumbar = false;
+
             lumbarGroup.setVisibility(View.GONE);
             lumbarTitle.setVisibility(View.GONE);
             lumbarTextView.setVisibility(View.GONE);
+
         }
     }
 
@@ -96,7 +106,6 @@ public class SummaryFragment extends Fragment {
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
-        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
@@ -109,6 +118,7 @@ public class SummaryFragment extends Fragment {
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
+        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
 
         if (dailySummary != null) {
@@ -187,7 +197,7 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setVisibility(View.GONE);
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && lumbar == false) {
                 noDataTextView.setText("No activity data for today.");
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card

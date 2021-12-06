@@ -30,7 +30,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -43,6 +45,9 @@ import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
@@ -69,6 +74,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private BluetoothGatt gatt;
     private BluetoothConnection connection;
     private ProgressBar simpleProgressBar;
+    private LumbarExtensionTrainingRepository lumbarRepository;
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -88,7 +94,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         }
 
     };
-    private LumbarExtensionTrainingRepository lumbarRepository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -104,6 +109,18 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+
+        //testing
+//        lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90));
+        MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
+        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.HEART_RATE, 70.0));
+        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.STEPS, 1000.0));
+        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.RESPIRATION_RATE, 3.0));
+        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.BAD_POSTURE, 730.0));
+        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.SITTING, 700.0));
+
+        //
+
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         cleanList();
