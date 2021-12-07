@@ -83,6 +83,7 @@ public class ReportViewModel extends AndroidViewModel {
         dateBoundsLive = new MediatorLiveData<>();
 
         dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
+        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(),this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -489,6 +490,7 @@ public class ReportViewModel extends AndroidViewModel {
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
             repository.obtainDates(peek, this::onDatesChanged);
+            lumbarTrainingRepository.obtainDates(peek);
         }
     }
 
@@ -553,5 +555,4 @@ public class ReportViewModel extends AndroidViewModel {
 
         return organization;
     }
-
 }

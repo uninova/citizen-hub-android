@@ -17,27 +17,22 @@ public class LumbarExtensionTraining {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
     @TypeConverters({EpochTypeConverter.class})
-    private LocalDateTime timestamp;
+    private Date timestamp;
     private Integer trainingLength;
     private Float score;
     private Integer repetitions;
 
     @Ignore
-    public LumbarExtensionTraining(Integer timestamp, Integer trainingLength, Float score, Integer repetitions) {
-        this(EpochTypeConverter.toLocalDateTime(timestamp), trainingLength, score, repetitions);
-    }
-
-    @Ignore
     public LumbarExtensionTraining(Long timestamp, Integer trainingLength, Float score, Integer repetitions) {
-        this(EpochTypeConverter.toLocalDateTime(timestamp), trainingLength, score, repetitions);
+        this(EpochTypeConverter.toDate(timestamp), trainingLength, score, repetitions);
     }
 
     @Ignore
-    public LumbarExtensionTraining(LocalDateTime timestamp, Integer trainingLength, Float score, Integer repetitions) {
+    public LumbarExtensionTraining(Date timestamp, Integer trainingLength, Float score, Integer repetitions) {
         this(null, timestamp, trainingLength, score, repetitions);
     }
 
-    public LumbarExtensionTraining(Integer id, LocalDateTime timestamp, Integer trainingLength, Float score, Integer repetitions) {
+    public LumbarExtensionTraining(Integer id, Date timestamp, Integer trainingLength, Float score, Integer repetitions) {
         this.id = id;
         this.timestamp = timestamp;
         this.trainingLength = trainingLength;
@@ -78,11 +73,11 @@ public class LumbarExtensionTraining {
         this.id = id;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 }

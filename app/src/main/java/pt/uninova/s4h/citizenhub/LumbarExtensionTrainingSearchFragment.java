@@ -28,9 +28,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.TypeConverters;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -43,6 +46,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
@@ -111,13 +115,14 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
         //testing
-//        lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90));
         MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
         measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.HEART_RATE, 70.0));
+
         measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.STEPS, 1000.0));
         measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.RESPIRATION_RATE, 3.0));
         measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.BAD_POSTURE, 730.0));
         measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.SITTING, 700.0));
+        lumbarRepository.add(new LumbarExtensionTraining(Date.from(Instant.now()), 93838, (float) 99.9, 90));
 
         //
 
@@ -353,7 +358,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 //                                    int repetitions = (int) parsed[5];
 //                                    System.out.println("Repetetions were: " + repetitions);
 //
-                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions));
+                                    lumbarRepository.add(new LumbarExtensionTraining(EpochTypeConverter.toDate((long)timestamp), length, score, repetitions));
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);

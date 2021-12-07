@@ -12,6 +12,8 @@ import androidx.room.Update;
 import java.time.LocalDate;
 import java.util.List;
 
+import pt.uninova.util.time.LocalDateInterval;
+
 @Dao
 public interface LumbarExtensionTrainingDao {
 
@@ -33,6 +35,14 @@ public interface LumbarExtensionTrainingDao {
     @Query(value = "SELECT * FROM lumbar_training WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
     LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate from, LocalDate to);
+
+    @Query("SELECT MIN(timestamp) AS lower, MAX(timestamp) AS upper FROM measurement;")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<LocalDateInterval> getDateBoundsLive();
+
+    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND timestamp < :to")
+    @TypeConverters(EpochTypeConverter.class)
+    List<LocalDate> getDates(LocalDate from, LocalDate to);
 
 
 }

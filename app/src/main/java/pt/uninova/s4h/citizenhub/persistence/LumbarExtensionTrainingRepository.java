@@ -5,6 +5,11 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import pt.uninova.util.Pair;
+import pt.uninova.util.messaging.Observer;
+import pt.uninova.util.time.LocalDateInterval;
 
 public class LumbarExtensionTrainingRepository {
 
@@ -45,5 +50,17 @@ public class LumbarExtensionTrainingRepository {
 
     public LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate localDate) {
         return lumbarExtensionTrainingDao.getLumbarTraining(localDate, localDate.plusDays(1));
+    }
+
+    public LiveData<LocalDateInterval> getDateBounds() {
+        return lumbarExtensionTrainingDao.getDateBoundsLive();
+    }
+    public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
+            final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
+
+            observer.onChanged(lumbarExtensionTrainingDao.getDates(from, to));
+        });
     }
 }
