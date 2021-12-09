@@ -17,27 +17,34 @@ public class LumbarExtensionTraining {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
     @TypeConverters({EpochTypeConverter.class})
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private Integer trainingLength;
     private Float score;
     private Integer repetitions;
+    private Integer weight;
 
     @Ignore
-    public LumbarExtensionTraining(Long timestamp, Integer trainingLength, Float score, Integer repetitions) {
-        this(EpochTypeConverter.toDate(timestamp), trainingLength, score, repetitions);
+    public LumbarExtensionTraining(Integer timestamp, Integer trainingLength, Float score, Integer repetitions, Integer weight) {
+        this(EpochTypeConverter.toLocalDateTime(timestamp), trainingLength, score, repetitions,weight);
     }
 
     @Ignore
-    public LumbarExtensionTraining(Date timestamp, Integer trainingLength, Float score, Integer repetitions) {
-        this(null, timestamp, trainingLength, score, repetitions);
+    public LumbarExtensionTraining(Long timestamp, Integer trainingLength, Float score, Integer repetitions, Integer weight) {
+        this(EpochTypeConverter.toLocalDateTime(timestamp), trainingLength, score, repetitions,weight);
     }
 
-    public LumbarExtensionTraining(Integer id, Date timestamp, Integer trainingLength, Float score, Integer repetitions) {
+    @Ignore
+    public LumbarExtensionTraining(LocalDateTime timestamp, Integer trainingLength, Float score, Integer repetitions, Integer weight) {
+        this(null, timestamp, trainingLength, score, repetitions, weight);
+    }
+
+    public LumbarExtensionTraining(Integer id, LocalDateTime timestamp, Integer trainingLength, Float score, Integer repetitions, Integer weight) {
         this.id = id;
         this.timestamp = timestamp;
         this.trainingLength = trainingLength;
         this.score = score;
         this.repetitions = repetitions;
+        this.weight = weight;
     }
 
 
@@ -73,11 +80,19 @@ public class LumbarExtensionTraining {
         this.id = id;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }
