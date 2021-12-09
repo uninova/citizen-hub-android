@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import care.data4life.fhir.r4.model.DocumentReference;
@@ -38,10 +37,8 @@ public class ReportDetailFragment extends Fragment {
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
-            lumbarRepetitions, lumbarTrainingLength, lumbarScore;
-    private LumbarExtensionTrainingRepository lumbarRepository;
+            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight;
     private LumbarExtensionTraining lumbarExtensionTraining;
-    private LumbarExtensionTraining lumbarTraining;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup;
     private boolean isSucess;
 
@@ -112,24 +109,7 @@ public class ReportDetailFragment extends Fragment {
 
         return result.equals("") ? "0s" : result;
     }
-    private void onLumbarChanged (LumbarExtensionTraining lumbarExtensionTraining){
 
-
-        if (lumbarTraining != null) {
-            System.out.println("lol");
-            if (lumbarExtensionTrainingGroup != null) {
-                System.out.println("group !=null");
-                lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
-            }
-            System.out.println("writting stuff");
-            lumbarTrainingLength.setText(String.valueOf(lumbarTraining.getTrainingLength()));
-            lumbarScore.setText(String.valueOf(lumbarTraining.getScore()));
-            lumbarRepetitions.setText(String.valueOf(lumbarTraining.getRepetitions()));
-        } else {
-            System.out.println("nope, null here");
-            lumbarExtensionTrainingGroup.setVisibility(View.GONE);
-        }
-    }
     private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distance = value.get(MeasurementKind.DISTANCE);
@@ -246,6 +226,20 @@ public class ReportDetailFragment extends Fragment {
                 heartRateGroup.setVisibility(View.GONE);
             }
 
+
+            if (lumbarExtensionTraining != null) {
+                if (lumbarExtensionTrainingGroup != null) {
+                    lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
+                }
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTraining.getTrainingLength()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTraining.getScore()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTraining.getRepetitions()));
+                lumbarWeight.setText(String.valueOf(lumbarExtensionTraining.getWeight()));
+            } else {
+                lumbarExtensionTrainingGroup.setVisibility(View.GONE);
+            }
+
+
             if (badPosture != null || goodPosture != null) {
                 if (postureGroup != null) {
                     postureGroup.setVisibility(View.VISIBLE);
@@ -302,13 +296,12 @@ public class ReportDetailFragment extends Fragment {
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
-         lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+        LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+
         try {
-            lumbarTraining = lumbarRepository.getLumbarTraining(LocalDate.now()).getValue();
+            lumbarExtensionTraining = lumbarRepository.getLumbarTraining(LocalDate.now()).getValue();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.getLumbar(this::onSummaryChanged);
-
     }
 }

@@ -83,7 +83,7 @@ public class ReportViewModel extends AndroidViewModel {
         dateBoundsLive = new MediatorLiveData<>();
 
         dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(),this::onDateBoundsChanged);
+        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -146,6 +146,7 @@ public class ReportViewModel extends AndroidViewModel {
     public byte[] createPdf() throws IOException {
         PdfDocument document = new PdfDocument();
         Resources res = getApplication().getResources();
+        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
@@ -384,7 +385,6 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
-        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
         if (lumbarTraining != null) {
 
             Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);
@@ -406,10 +406,14 @@ public class ReportViewModel extends AndroidViewModel {
             canvasWriter.addTextInFront(" %", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Repetitions ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Repetitions: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
             canvasWriter.addTextInFront(" reps", darkTextPaint);
 
+            y += 20;
+            canvasWriter.addText("Weight: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getWeight()), boldTextPaint);
+            canvasWriter.addTextInFront(" kg", darkTextPaint);
 
             y += 20;
 
@@ -468,6 +472,7 @@ public class ReportViewModel extends AndroidViewModel {
         });
     }
 
+
     private void onDatesChanged(List<LocalDate> dates) {
         if (dates.size() > 0) {
             Set<LocalDate> localDates = availableReportsLive.getValue();
@@ -490,7 +495,7 @@ public class ReportViewModel extends AndroidViewModel {
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
             repository.obtainDates(peek, this::onDatesChanged);
-            lumbarTrainingRepository.obtainDates(peek);
+//            lumbarTrainingRepository.obtainDates(peek,this::onDatesChanged);
         }
     }
 
@@ -555,4 +560,5 @@ public class ReportViewModel extends AndroidViewModel {
 
         return organization;
     }
+
 }
