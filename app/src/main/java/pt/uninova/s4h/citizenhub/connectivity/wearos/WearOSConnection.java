@@ -33,11 +33,11 @@ public class WearOSConnection /*extends AbstractProtocol */ {
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
-        stateChangedMessageDispatcher.getObservers().add(listener);
+        stateChangedMessageDispatcher.addObserver(listener);
     }
 
     public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
-        stateChangedMessageDispatcher.getObservers().remove(listener);
+        stateChangedMessageDispatcher.removeObserver(listener);
     }
 
 

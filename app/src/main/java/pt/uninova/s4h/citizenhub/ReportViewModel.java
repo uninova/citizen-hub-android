@@ -468,7 +468,7 @@ public class ReportViewModel extends AndroidViewModel {
         repository.obtainDailyAggregate(detailDate, value -> {
             detailAggregates = value;
 
-            observer.onChanged(value);
+            observer.observe(value);
         });
     }
 
@@ -494,8 +494,7 @@ public class ReportViewModel extends AndroidViewModel {
 
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
-            repository.obtainDates(peek, this::onDatesChanged);
-//            lumbarTrainingRepository.obtainDates(peek,this::onDatesChanged);
+            repository.obtainDates(peek, dates -> onDatesChanged(dates));
         }
     }
 

@@ -31,11 +31,11 @@ public class DeviceRepository {
 
 
     public void obtain(String address, Observer<Device> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.get(address)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.get(address)));
     }
 
     public void obtainAll(Observer<List<Device>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.onChanged(deviceDao.getAll()));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.getAll()));
     }
 
     public List<Device> getAllWithConnectionKind(ConnectionKind connectionKind) {

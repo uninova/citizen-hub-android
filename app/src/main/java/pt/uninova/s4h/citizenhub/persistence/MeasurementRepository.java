@@ -26,7 +26,7 @@ public class MeasurementRepository {
     }
 
     public void add(Measurement measurement) {
-        System.out.println(">>> " + measurement.getKind() + " : " + measurement.getValue());
+        System.out.println("MeasurementRepository.add kind=" + measurement.getKind() + " value=" + measurement.getValue());
         CitizenHubDatabase.executorService().execute(() -> {
             measurementDao.insert(measurement);
         });
@@ -73,7 +73,7 @@ public class MeasurementRepository {
         CitizenHubDatabase.executorService().execute(() -> {
             final List<MeasurementAggregate> aggregates = measurementDao.getAggregate(localDate, localDate.plusDays(1));
 
-            observer.onChanged(mapAggregates(aggregates));
+            observer.observe(mapAggregates(aggregates));
         });
     }
 
@@ -83,7 +83,7 @@ public class MeasurementRepository {
             final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
             System.out.println(" MEASUREMENTT OBTAIN DATES " + measurementDao.getDates(from,to));
 
-            observer.onChanged(measurementDao.getDates(from, to));
+            observer.observe(measurementDao.getDates(from, to));
         });
     }
 

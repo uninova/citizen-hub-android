@@ -37,6 +37,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 model.delete(model.getSelectedDevice().getValue());
                 AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
                 agentOrchestrator.deleteDeviceFromMap(model.getSelectedDevice().getValue());
+
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }
         });

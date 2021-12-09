@@ -294,7 +294,7 @@ public class ReportDetailFragment extends Fragment {
         distanceGroup = view.findViewById(R.id.distanceGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
-        model.obtainSummary(this::onSummaryChanged);
+        model.obtainSummary(value -> onSummaryChanged(value));
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 

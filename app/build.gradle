@@ -11,8 +11,8 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 5
-        versionName "0.3.1"
+        versionCode 6
+        versionName "0.4.0"
 
         buildConfigField "boolean", "DEV_MODE_NO_AUTH", "false"
         def configFile = file(rootDir.absolutePath + "/d4lsdk-config.json")
