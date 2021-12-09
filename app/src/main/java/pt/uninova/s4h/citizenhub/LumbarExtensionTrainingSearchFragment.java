@@ -28,14 +28,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.TypeConverters;
 
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.JulianFields;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -112,19 +114,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         scanner = new BluetoothScanner(bluetoothManager);
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
-        lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
-        //testing
-        MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
-        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.HEART_RATE, 70.0));
 
-        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.STEPS, 1000.0));
-        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.RESPIRATION_RATE, 3.0));
-        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.BAD_POSTURE, 730.0));
-        measurementRepository.add(new Measurement(Date.from(Instant.now()), MeasurementKind.SITTING, 700.0));
-        lumbarRepository.add(new LumbarExtensionTraining(Date.from(Instant.now()), 93838, (float) 99.9, 90));
 
-        //
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
@@ -141,6 +133,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         simpleProgressBar = requireView().findViewById(R.id.progressBar);
+        lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+
+
     }
 
     private void startFilteredScan() {
@@ -328,6 +323,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                     System.out.println("Score: " + score);
                                     int repetitions = byteBuffer.getInt();
                                     System.out.println("Repetitions: " + repetitions);
+                                    int weight = byteBuffer.getInt();
+                                    System.out.println("Weight: " + weight);
 //                                    //for timestamp
 //                                    byte[] timestampByteArray = new byte[4];
 //                                    System.arraycopy(value, 0, timestampByteArray, 0, 4);
@@ -358,7 +355,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 //                                    int repetitions = (int) parsed[5];
 //                                    System.out.println("Repetetions were: " + repetitions);
 //
-                                    lumbarRepository.add(new LumbarExtensionTraining(EpochTypeConverter.toDate((long)timestamp), length, score, repetitions));
+                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions,weight));
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
