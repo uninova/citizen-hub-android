@@ -24,7 +24,12 @@ public class LumbarExtensionTrainingRepository {
 
     public void add(LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
+            lumbarExtensionTrainingDao.insert(new LumbarExtensionTraining(lumbarExtensionTraining.getId(),
+                    lumbarExtensionTraining.getTimestamp(),
+                    lumbarExtensionTraining.getTrainingLength(),
+                    lumbarExtensionTraining.getScore(),
+                    lumbarExtensionTraining.getRepetitions(),
+                    lumbarExtensionTraining.getWeight()));
         });
     }
 
@@ -36,7 +41,7 @@ public class LumbarExtensionTrainingRepository {
 
     public void remove(Integer id, LumbarExtensionTraining lumbarExtensionTraining) {
         CitizenHubDatabase.executorService().execute(() -> {
-            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions()));
+            lumbarExtensionTrainingDao.delete(new LumbarExtensionTraining(lumbarExtensionTraining.getId(), lumbarExtensionTraining.getTimestamp(), lumbarExtensionTraining.getTrainingLength(), lumbarExtensionTraining.getScore(), lumbarExtensionTraining.getRepetitions(),lumbarExtensionTraining.getWeight()));
         });
     }
 
@@ -53,13 +58,15 @@ public class LumbarExtensionTrainingRepository {
     }
 
     public LiveData<LocalDateInterval> getDateBounds() {
+        System.out.println(" LUMBAR GET DATE BOUNDS " + lumbarExtensionTrainingDao.getDateBoundsLive().getValue());
         return lumbarExtensionTrainingDao.getDateBoundsLive();
     }
+
     public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
             final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
-
+            System.out.println(" LUMBAR OBTAIN DATES " + lumbarExtensionTrainingDao.getDates(from,to));
             observer.onChanged(lumbarExtensionTrainingDao.getDates(from, to));
         });
     }

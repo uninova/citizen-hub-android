@@ -171,6 +171,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragment_report_lumbar_extension_training_repetitions" />
 
             <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight"
+                style="@style/ReportDetailValueType"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_extension_training_weight_textview"
+                android:textColor="#00796B"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_lumbar_extension_training_score" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight_value"
+                style="@style/ReportDetailValue"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_training_weight_value"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_weight"
+                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight" />
+
+
+            <TextView
                 android:id="@+id/fragment_report_lumbar_extension_training_length_total"
                 style="@style/ReportDetailValue"
                 android:tag="@string/lumbar_extension_training"
@@ -221,6 +243,8 @@
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_repetitions_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_repetitions_total" />
 
+
+
             <TextView
                 android:id="@+id/fragment_report_lumbar_extension_training_score_units"
                 style="@style/ReportDetailUnits"
@@ -228,6 +252,14 @@
                 android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_score_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_score_total" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_lumbar_training_weight_units"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_weight_value"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight_value" />
 
 
             <androidx.constraintlayout.widget.Group
