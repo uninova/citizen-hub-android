@@ -64,12 +64,17 @@ public class ReportMasterFragment extends Fragment {
         final LocalDate lower = boundaries.getLower();
         final LocalDate upper = boundaries.getUpper();
 
+
         if (lower != null) {
+            System.out.println("CALENDAR BOUNDARIES lower!=null" + " LOWER " + lower + " UPPER " + upper);
+
             calendarView.state().edit()
                     .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), 1))
                     .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
                     .commit();
         } else {
+            System.out.println("CALENDAR BOUNDARIES lower ==null" + " UPPER " + upper);
+
             calendarView.state().edit()
                     .setMinimumDate(CalendarDay.today())
                     .setMaximumDate(CalendarDay.today())
