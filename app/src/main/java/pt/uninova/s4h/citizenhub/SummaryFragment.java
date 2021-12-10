@@ -54,7 +54,7 @@ public class SummaryFragment extends Fragment {
             final float lumbarScore = lumbarExtensionTraining.getScore();
             final int lumbarRepetitions = lumbarExtensionTraining.getRepetitions();
             noDataTextView.setVisibility(GONE);
-            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
+            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions),String.valueOf(lumbarExtensionTraining.getWeight())));
 
             lumbarGroup.setVisibility(View.VISIBLE);
             lumbarTitle.setVisibility(View.VISIBLE);
