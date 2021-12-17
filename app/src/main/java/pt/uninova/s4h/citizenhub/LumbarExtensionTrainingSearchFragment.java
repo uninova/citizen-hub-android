@@ -266,6 +266,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
+        if(connection!=null)
+        connection.close();
+
     }
 
 
@@ -275,6 +278,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
+        if(connection!=null)
+            connection.close();
     }
 
 
@@ -304,8 +309,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-
+                    public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
                             LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
@@ -356,6 +360,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 //                                    System.out.println("Repetetions were: " + repetitions);
 //
                                     lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions,weight));
+                                    connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE,LUMBARTRAINING_UUID_CHARACTERISTIC);
+                                    connection.close();
+
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
