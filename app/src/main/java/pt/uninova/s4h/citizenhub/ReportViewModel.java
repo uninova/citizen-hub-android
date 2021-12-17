@@ -468,7 +468,7 @@ public class ReportViewModel extends AndroidViewModel {
         repository.obtainDailyAggregate(detailDate, value -> {
             detailAggregates = value;
 
-            observer.onChanged(value);
+            observer.observe(value);
         });
     }
 
