@@ -20,7 +20,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         devicesList = listDevices;
     }
 
-    private void updateResults(List<DeviceListItem> results) {
+    void updateResults(List<DeviceListItem> results) {
         if (devicesList != null) {
             devicesList.clear();
         }

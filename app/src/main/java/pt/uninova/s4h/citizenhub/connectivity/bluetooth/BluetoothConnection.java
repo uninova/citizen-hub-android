@@ -251,7 +251,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         super.onServicesDiscovered(gatt, status);
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
-            setState(BluetoothConnectionState.READY);
+             setState(BluetoothConnectionState.READY);
         }
 
         next();

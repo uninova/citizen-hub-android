@@ -10,29 +10,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
+
 import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
-import org.jetbrains.annotations.NotNull;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
-    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup;
+    private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
+            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight;
+    private LumbarExtensionTraining lumbarExtensionTraining;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup;
     private boolean isSucess;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
@@ -110,7 +119,7 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -165,7 +174,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -218,6 +227,19 @@ public class ReportDetailFragment extends Fragment {
             }
 
 
+            if (lumbarExtensionTraining != null) {
+                if (lumbarExtensionTrainingGroup != null) {
+                    lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
+                }
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTraining.getTrainingLength()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTraining.getScore()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTraining.getRepetitions()));
+                lumbarWeight.setText(String.valueOf(lumbarExtensionTraining.getWeight()));
+            } else {
+                lumbarExtensionTrainingGroup.setVisibility(View.GONE);
+            }
+
+
             if (badPosture != null || goodPosture != null) {
                 if (postureGroup != null) {
                     postureGroup.setVisibility(View.VISIBLE);
@@ -262,13 +284,24 @@ public class ReportDetailFragment extends Fragment {
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
         okPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_ok);
         notOkPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_not_ok);
+        lumbarTrainingLength = view.findViewById(R.id.fragment_report_lumbar_extension_training_length_total);
+        lumbarRepetitions = view.findViewById(R.id.fragment_report_lumbar_extension_training_repetitions_total);
+        lumbarScore = view.findViewById(R.id.fragment_report_lumbar_extension_training_score_total);
         postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
         distanceGroup = view.findViewById(R.id.distanceGroup);
+        lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(value -> onSummaryChanged(value));
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
+        LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+
+        try {
+            lumbarExtensionTraining = lumbarRepository.getLumbarTraining(LocalDate.now()).getValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

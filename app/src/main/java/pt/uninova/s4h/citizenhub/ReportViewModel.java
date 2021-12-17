@@ -2,7 +2,12 @@ package pt.uninova.s4h.citizenhub;
 
 import android.app.Application;
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 
@@ -12,7 +17,31 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import care.data4life.fhir.r4.model.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
+
+import care.data4life.fhir.r4.model.Attachment;
+import care.data4life.fhir.r4.model.CodeSystemDocumentReferenceStatus;
+import care.data4life.fhir.r4.model.CodeableConcept;
+import care.data4life.fhir.r4.model.Coding;
+import care.data4life.fhir.r4.model.DocumentReference;
+import care.data4life.fhir.r4.model.FhirDate;
+import care.data4life.fhir.r4.model.FhirDateTime;
+import care.data4life.fhir.r4.model.FhirInstant;
+import care.data4life.fhir.r4.model.FhirTime;
+import care.data4life.fhir.r4.model.Organization;
+import care.data4life.fhir.r4.model.Practitioner;
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
@@ -22,6 +51,8 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
@@ -30,22 +61,14 @@ import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.LocalDateInterval;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
 
 public class ReportViewModel extends AndroidViewModel {
 
     final private MeasurementRepository repository;
-
+    final private LumbarExtensionTrainingRepository lumbarTrainingRepository;
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
     final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
-
     final private Set<Pair<Integer, Integer>> peekedMonths;
 
     private LocalDate detailDate;
@@ -55,12 +78,12 @@ public class ReportViewModel extends AndroidViewModel {
         super(application);
 
         repository = new MeasurementRepository(application);
-
+        lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         dateBoundsLive = new MediatorLiveData<>();
 
         dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-
+        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -123,6 +146,7 @@ public class ReportViewModel extends AndroidViewModel {
     public byte[] createPdf() throws IOException {
         PdfDocument document = new PdfDocument();
         Resources res = getApplication().getResources();
+        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
@@ -361,6 +385,41 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
+        if (lumbarTraining != null) {
+
+            Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);
+            lumbar.setBounds(0, 0, lumbar.getIntrinsicWidth(), lumbar.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x - 15, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            lumbar.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText(("Training Length:"), x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addTextInFront(" s", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Score: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getScore()), boldTextPaint);
+            canvasWriter.addTextInFront(" %", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Repetitions: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
+            canvasWriter.addTextInFront(" reps", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Weight: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getWeight()), boldTextPaint);
+            canvasWriter.addTextInFront(" kg", darkTextPaint);
+
+            y += 20;
+
+            y += 40;
+
+        }
 
         RectF rectAround = new RectF(81, 205, 539, y);
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
@@ -409,9 +468,10 @@ public class ReportViewModel extends AndroidViewModel {
         repository.obtainDailyAggregate(detailDate, value -> {
             detailAggregates = value;
 
-            observer.observe(value);
+            observer.onChanged(value);
         });
     }
+
 
     private void onDatesChanged(List<LocalDate> dates) {
         if (dates.size() > 0) {
@@ -434,7 +494,8 @@ public class ReportViewModel extends AndroidViewModel {
 
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
-            repository.obtainDates(peek, dates -> onDatesChanged(dates));
+            repository.obtainDates(peek, this::onDatesChanged);
+//            lumbarTrainingRepository.obtainDates(peek,this::onDatesChanged);
         }
     }
 

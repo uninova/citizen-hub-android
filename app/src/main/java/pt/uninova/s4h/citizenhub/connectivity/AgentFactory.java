@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
@@ -59,7 +60,7 @@ public class AgentFactory {
                 bluetoothFactoryDestroy(address, observer);
                 break;
             case WEAROS:
-//                wearOsFactory(address, observer);
+                //wearOsFactory(address, observer);
                 break;
         }
     }
@@ -78,13 +79,6 @@ public class AgentFactory {
             e.printStackTrace();
         }
     }
-    //deixar so 1 para cada protocolo e dar nome aos protocolo;
-    // testar testar testar
-    // passar os observers sempre para o fim
-    //roda dentada
-    //usar so addresses
-    //TODO distinguir os estados dos devices desired state -> Active, antes de estar ou por ter corrido mal ->inactive, desligado = disabled
-    //TODO criar create que sabemos o que é com agentType +
 
     public void create(String address, String agentType, Observer<Agent> observer) {
         if (agentType.equals(WearOSAgent.class.getSimpleName())) {
@@ -141,9 +135,9 @@ public class AgentFactory {
         WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address, service);
         wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState, Agent>>() {
             @Override
-            public void observe(StateChangedMessage<WearOSConnectionState, Agent> value) {
+            public void onChanged(StateChangedMessage<WearOSConnectionState, Agent> value) {
                 if (value.getNewState() == WearOSConnectionState.READY) {
-                    observer.observe(new WearOSAgent(wearOSConnection));
+                    observer.onChanged(new WearOSAgent(wearOSConnection));
                     wearOSConnection.removeConnectionStateChangeListener(this);
 
                 }
@@ -158,7 +152,7 @@ public class AgentFactory {
 
         connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
             @Override
-            public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+            public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
                 if (value.getNewState() == BluetoothConnectionState.CONNECTED) {
                     device.setState(StateKind.INACTIVE);
@@ -175,7 +169,7 @@ public class AgentFactory {
                     device.setState(StateKind.ACTIVE);
                     connection.removeConnectionStateChangeListener(this);
                 }
-                observer.observe(createAgent(agentName, connection));
+                observer.onChanged(createAgent(agentName, connection));
 
 
             }
@@ -186,7 +180,7 @@ public class AgentFactory {
         deviceRepository.update(device);
 
         try {
-            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+            bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection, 2);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,7 +196,7 @@ public class AgentFactory {
 
         connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
             @Override
-            public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+            public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
                 if (value.getNewState() == BluetoothConnectionState.READY) {
                     connection.removeConnectionStateChangeListener(this);
@@ -211,18 +205,19 @@ public class AgentFactory {
                     final String address = connection.getDevice().getAddress();
 
                     if (name.startsWith("HX")) { // && name.equals("HX-00043494")) {
-                        observer.observe(new HexoSkinAgent(connection));
+                        observer.onChanged(new HexoSkinAgent(connection));
                     } else if (name.startsWith("MI")) {
-                        observer.observe(new MiBand2Agent(connection));
+                        observer.onChanged(new MiBand2Agent(connection));
                     } else if (connection.hasService(KbzRawProtocol.KBZ_SERVICE)) {
-                        observer.observe(new KbzPostureAgent(connection));
+                        observer.onChanged(new KbzPostureAgent(connection));
                     } else if (name.startsWith("UprightGO2")) {
-                        observer.observe(new UprightGo2Agent(connection));
-                    }
+                        observer.onChanged(new UprightGo2Agent(connection));
+                    } else if (name.startsWith("S4H")) {
+                    observer.onChanged(new HealthHubAgent(connection));
+                }
                 }
             }
         });
-
-        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection);
+        bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection, 2);
     }
 }

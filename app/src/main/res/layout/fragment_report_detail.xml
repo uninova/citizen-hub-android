@@ -119,6 +119,149 @@
                 android:visibility="gone"
                 app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal,notOkPostureUnitsTextView,okPostureUnitsTextView" />
 
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/lumbarExtensionTrainingGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/lumbar_extension_training"
+                android:visibility="gone"
+                app:constraint_referenced_ids="lumbarExtensionTrainingTitle,fragment_report_lumbar_extension_training_repetitions_total,fragment_report_lumbar_extension_training_score_units,fragment_report_lumbar_extension_training_score_total,fragment_report_lumbar_extension_training_repetitions,fragment_report_lumbar_extension_training_length_units,fragment_report_lumbar_extension_training_length_total,fragment_report_lumbar_extension_training_length,fragment_report_lumbar_extension_training_score,fragment_report_lumbar_extension_training_repetitions_units" />
+
+            <TextView
+                android:id="@+id/lumbarExtensionTrainingTitle"
+                style="@style/ReportDetailTitle"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:tag="lumbar_training"
+                android:text="@string/lumbar_extension_training"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/postureTitle"
+                app:layout_constraintTop_toBottomOf="@+id/notOkPostureVal" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_length"
+                style="@style/ReportDetailValueType"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_extension_training_length_textview"
+                android:textColor="#00796B"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/notOkPostureVal"
+                app:layout_constraintTop_toBottomOf="@+id/lumbarExtensionTrainingTitle" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_repetitions"
+                style="@style/ReportDetailValueType"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_extension_training_repetitions_textview"
+                android:textColor="#00796B"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_length"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_lumbar_extension_training_length" />
+
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_score"
+                style="@style/ReportDetailValueType"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_extension_training_score_textview"
+                android:textColor="#00796B"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_repetitions"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_lumbar_extension_training_repetitions" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight"
+                style="@style/ReportDetailValueType"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_extension_training_weight_textview"
+                android:textColor="#00796B"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_lumbar_extension_training_score" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight_value"
+                style="@style/ReportDetailValue"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_training_weight_value"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_weight"
+                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight" />
+
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_length_total"
+                style="@style/ReportDetailValue"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_training_total_value"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_length"
+                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_length_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_lumbar_training_units"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_length_total"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length_total" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_repetitions_total"
+                style="@style/ReportDetailValue"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_training_repetitions_value"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_repetitions"
+                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_repetitions" />
+
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_score_total"
+                style="@style/ReportDetailValue"
+                android:tag="@string/lumbar_extension_training"
+                android:text="@string/fragment_report_lumbar_training_score_value"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_score"
+                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_score" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_repetitions_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_lumbar_training_repetition_units"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_repetitions_total"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_repetitions_total" />
+
+
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_score_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_lumbar_training_score_units"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_score_total"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_score_total" />
+
+            <TextView
+                android:id="@+id/fragment_report_lumbar_extension_training_weight_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_lumbar_training_weight_units"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_weight_value"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight_value" />
+
+
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/stepsGroup"
                 android:layout_width="wrap_content"
@@ -152,7 +295,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:layout_marginRight="100dp"
+                android:layout_marginEnd="100dp"
                 android:fontFamily="@font/neo_sans_pro_bold"
                 android:text="@string/fragment_report_detail_title_date_day_month"
                 android:textAlignment="center"

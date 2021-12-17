@@ -21,7 +21,7 @@ buildscript {
 
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
@@ -33,22 +33,22 @@ allprojects {
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-util-sdk-kmp")
             credentials {
-                username = project.findProperty("github.username")
-                password = project.findProperty("github.token")
+                username = "fabioseixaslopes"
+                password = "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"
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-fhir-sdk-java")
             credentials {
-                username = project.findProperty("github.username")
-                password = project.findProperty("github.token")
+                username = "fabioseixaslopes"
+                password = "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"
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/d4l-data4life/hc-fhir-helper-sdk-kmp")
             credentials {
-                username = project.findProperty("github.username")
-                password = project.findProperty("github.token")
+                username = "fabioseixaslopes"
+                password = "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"
             }
         }
     }

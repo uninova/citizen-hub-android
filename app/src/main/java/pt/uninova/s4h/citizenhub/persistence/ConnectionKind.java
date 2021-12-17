@@ -6,7 +6,8 @@ import java.util.Map;
 public enum ConnectionKind {
     UNKNOWN(0),
     BLUETOOTH(1),
-    WEAROS(2);
+    WEAROS(2),
+    MEDEX(3);
 
     private static final Map<Integer, ConnectionKind> LOOKUP = new HashMap<>(ConnectionKind.values().length);
 
