@@ -93,8 +93,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         runnables.clear();
 
         stateChangedMessageDispatcher.close();
-
-        gatt.close();
+        if(gatt != null) {
+            gatt.close();
+        }
     }
 
     private Triple<UUID, UUID, UUID> descriptorKey(BluetoothGattDescriptor descriptor) {
