@@ -31,6 +31,8 @@ public class LocalDateInterval {
 
         final LocalDateInterval other = (LocalDateInterval) obj;
 
+        System.out.println(" LOWER " + lower + " UPPER " + upper );
+        System.out.println(" OTHER LOWER " + other.lower + "OTHER UPPER " + other.upper );
         return lower.equals(other.lower) && upper.equals(other.upper);
     }
 }

@@ -1,9 +1,12 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.room.TypeConverter;
+
 import pt.uninova.util.Pair;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 public class EpochTypeConverter {
@@ -19,6 +22,11 @@ public class EpochTypeConverter {
     }
 
     @TypeConverter
+    public static Long fromLocalDateTime(LocalDateTime value) {
+        return value == null ? null : value.toEpochSecond(ZoneOffset.UTC);
+    }
+
+    @TypeConverter
     public static Long fromPair(Pair<Integer, Integer> month) {
         return month == null ? null : LocalDate.of(month.getFirst(), month.getSecond(), 1).toEpochDay() * 86400L;
     }
@@ -30,7 +38,18 @@ public class EpochTypeConverter {
 
     @TypeConverter
     public static LocalDate toLocalDate(Long value) {
-        return value == null ? null : LocalDate.ofEpochDay( value / 86400L);
+        return value == null ? null : LocalDate.ofEpochDay(value / 86400L);
     }
 
+    @TypeConverter
+    public static LocalDateTime toLocalDateTime(Long value) {
+        return value == null ? null : LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
+
+    }
+
+    @TypeConverter
+    public static LocalDateTime toLocalDateTime(Integer value) {
+        return value == null ? null : LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
+
+    }
 }

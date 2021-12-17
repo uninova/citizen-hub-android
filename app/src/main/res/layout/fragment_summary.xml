@@ -15,10 +15,12 @@
         <TextView
             android:id="@+id/fragment_summary_text_view_no_data"
             style="@style/AppTheme.Summary.Item.TextView"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="276dp"
             android:gravity="center|center_horizontal|center_vertical"
             android:text="@string/fragment_report_text_view_no_data_summary"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,19 +42,21 @@
             <ImageView
                 android:id="@+id/fragment_summary_image_view_steps"
                 style="@style/AppTheme.Summary.Item.ImageView"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginStart="-20dp"
                 android:adjustViewBounds="false"
                 android:contentDescription="@string/content_description_fragment_summary_image_view_steps"
                 android:scaleType="center"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_steps_item" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_steps"
                 style="@style/AppTheme.Summary.Item.TextView"
+
                 android:text="@string/fragment_summary_text_view_steps_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -101,6 +105,7 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/content_description_fragment_summary_image_view_distance"
                 android:scaleType="centerCrop"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_distance" />
 
             <TextView
@@ -108,7 +113,7 @@
                 style="@style/AppTheme.Summary.Item.TextView"
 
                 android:text="@string/fragment_summary_text_view_distance_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -149,10 +154,10 @@
                 android:id="@+id/fragment_summary_image_view_heart_rate"
                 style="@style/AppTheme.Summary.Item.ImageView"
                 android:layout_height="55dp"
-                android:layout_marginStart="10dp"
                 android:adjustViewBounds="true"
-                android:scaleType="center"
                 android:contentDescription="@string/content_description_fragment_summary_ic_heartbeat"
+                android:scaleType="center"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_heartbeat" />
 
             <TextView
@@ -161,7 +166,7 @@
                 android:layout_width="220dp"
                 android:layout_height="55dp"
                 android:text="@string/fragment_summary_text_view_heart_rate_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -201,21 +206,22 @@
             <ImageView
                 android:id="@+id/fragment_summary_image_view_calories"
                 style="@style/AppTheme.Summary.Item.ImageView"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="-5dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:adjustViewBounds="true"
-                android:scaleType="center"
                 android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
+                android:scaleType="center"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_calories" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_calories"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:text="@string/fragment_summary_text_view_calories_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -238,6 +244,66 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_calories" />
 
         <TextView
+            android:id="@+id/lumbarTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:text="@string/fragment_summary_layout_lumbar_training_extension"
+            android:textColor="@color/colorS4HWhite"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_lumbar_training_extension"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_heart_rate" />
+
+
+        <LinearLayout
+            android:id="@+id/fragment_summary_layout_lumbar_training_extension"
+            style="@style/AppTheme.Summary.Item"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/button_rounded_bottom_outline_darkblue_14dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/lumbarTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lumbarTextView">
+
+            <ImageView
+                android:id="@+id/fragment_summary_image_view_lumbar"
+                style="@style/AppTheme.Summary.Item.ImageView"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
+                android:scaleType="center"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_heartbeat" />
+
+
+            <TextView
+                android:id="@+id/fragment_summary_text_view_lumbar_text"
+                style="@style/AppTheme.Summary.Item.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_summary_text_view_lumbar_text"
+                android:visibility="visible" />
+
+
+        </LinearLayout>
+
+        <TextView
             android:id="@+id/sittingTextView"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -253,7 +319,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/fragment_summary_layout_posture" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_posture"
@@ -279,13 +345,14 @@
                 android:scaleType="center"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_time_sitting" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_posture"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:text="@string/fragment_summary_text_view_posture_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 

@@ -1,14 +1,22 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
+import android.os.ParcelUuid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.security.auth.callback.Callback;
 
 public class BluetoothScanner extends ScanCallback {
 
@@ -48,6 +56,27 @@ public class BluetoothScanner extends ScanCallback {
         return listener != null;
     }
 
+    public synchronized void startWithFilter(BluetoothScannerListener listener, ParcelUuid serviceUUID, ScanCallback scanCallback) {
+        if (!isScanning()) {
+            this.listener = listener;
+            scanner.startScan(buildScanFilters(serviceUUID),buildScanSettings(),scanCallback);
+        }
+    }
+
+    private List<ScanFilter> buildScanFilters(ParcelUuid serviceUUID) {
+        List<ScanFilter> scanFilters = new ArrayList<>();
+        ScanFilter.Builder builder = new ScanFilter.Builder();
+        builder.setServiceUuid(serviceUUID);
+        scanFilters.add(builder.build());
+        return scanFilters;
+    }
+
+    private ScanSettings buildScanSettings() {
+        ScanSettings.Builder builder = new ScanSettings.Builder();
+        builder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
+        return builder.build();
+    }
+
     @Override
     public synchronized void onBatchScanResults(List<ScanResult> results) {
         for (ScanResult i : results) {
@@ -79,4 +108,5 @@ public class BluetoothScanner extends ScanCallback {
             listener = null;
         }
     }
+
 }

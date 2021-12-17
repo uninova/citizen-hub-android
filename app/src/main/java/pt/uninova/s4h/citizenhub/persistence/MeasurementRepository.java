@@ -37,7 +37,6 @@ public class MeasurementRepository {
     }
 
     public LiveData<Map<MeasurementKind, MeasurementAggregate>> getDailyAggregate(LocalDate localDate) {
-        System.out.println();
         if (dailyAggregateMap.containsKey(localDate)) {
             return dailyAggregateMap.get(localDate);
         } else {
@@ -55,6 +54,8 @@ public class MeasurementRepository {
     }
 
     public LiveData<LocalDateInterval> getDateBounds() {
+        System.out.println(" MEASUREMENTTT GET DATE BOUNDS " + measurementDao.getDateBoundsLive().getValue());
+
         return measurementDao.getDateBoundsLive();
     }
 
@@ -80,6 +81,7 @@ public class MeasurementRepository {
         CitizenHubDatabase.executorService().execute(() -> {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
             final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
+            System.out.println(" MEASUREMENTT OBTAIN DATES " + measurementDao.getDates(from,to));
 
             observer.observe(measurementDao.getDates(from, to));
         });
