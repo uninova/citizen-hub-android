@@ -111,18 +111,13 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
-        scanner = new BluetoothScanner(bluetoothManager);
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
-
-
-
-
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         cleanList();
 
-        checkPermissions();
+//        checkPermissions();
         buildRecycleView(result);
 
         return result;
@@ -160,6 +155,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             requestLocationPermissions();
 
         } else {
+            scanner = new BluetoothScanner(bluetoothManager);
+
             startFilteredScan();
 
         }
