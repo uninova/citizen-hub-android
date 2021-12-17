@@ -287,6 +287,7 @@ public class ReportDetailFragment extends Fragment {
         lumbarTrainingLength = view.findViewById(R.id.fragment_report_lumbar_extension_training_length_total);
         lumbarRepetitions = view.findViewById(R.id.fragment_report_lumbar_extension_training_repetitions_total);
         lumbarScore = view.findViewById(R.id.fragment_report_lumbar_extension_training_score_total);
+        lumbarWeight = view.findViewById(R.id.fragment_report_lumbar_extension_training_weight_value);
         postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
