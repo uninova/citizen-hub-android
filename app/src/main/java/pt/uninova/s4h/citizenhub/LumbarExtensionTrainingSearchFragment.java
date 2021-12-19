@@ -30,14 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.JulianFields;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -48,12 +41,8 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
@@ -91,8 +80,11 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
                 if (!model.isDevicePaired(device)) {
-                    deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
-                    adapter.notifyItemInserted(0);
+                    DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
+                    if (!deviceList.contains(deviceListItem)) {
+                        deviceList.add(deviceListItem);
+                        adapter.notifyItemInserted(0);
+                    }
                 }
 
 
@@ -263,8 +255,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
-        if(connection!=null)
-        connection.close();
+        if (connection != null)
+            connection.close();
 
     }
 
@@ -275,7 +267,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
-        if(connection!=null)
+        if (connection != null)
             connection.close();
     }
 
@@ -303,6 +295,10 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             public void onItemClick(int position) {
                 model.setDevice(deviceList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
+
+                if (scanner != null) {
+                    scanner.stop();
+                }
 
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
@@ -356,8 +352,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 //                                    int repetitions = (int) parsed[5];
 //                                    System.out.println("Repetetions were: " + repetitions);
 //
-                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions,weight));
-                                    connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE,LUMBARTRAINING_UUID_CHARACTERISTIC);
+                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions, weight));
+                                    connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
                                     connection.close();
 
                                 }
