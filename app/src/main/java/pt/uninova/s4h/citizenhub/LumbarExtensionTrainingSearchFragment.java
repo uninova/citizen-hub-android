@@ -112,6 +112,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         System.out.println("Tamanho deviceItemList antes do clean: " + deviceItemList.size());
         cleanList();
+        deviceList.clear();
 
         buildRecycleView(result);
 
