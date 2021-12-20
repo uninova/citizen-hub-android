@@ -46,7 +46,7 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         text.setMovementMethod(LinkMovementMethod.getInstance());
         //testing
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
-        lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90,60));
+        //lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90,60));
         MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
         Date now = Date.from(Instant.now());
         measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 70.0));

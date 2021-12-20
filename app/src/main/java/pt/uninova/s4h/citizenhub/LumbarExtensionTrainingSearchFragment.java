@@ -126,8 +126,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     }
 
     private void startFilteredScan() {
-        connection = new BluetoothConnection();
-
         scanner.startWithFilter(listener, new ParcelUuid(LUMBARTRAINING_UUID_SERVICE), scanCallback);
 
     }
@@ -293,6 +291,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                System.out.println("LumbarExtensionTrainingSearchFragment.onItemClick");
                 model.setDevice(deviceList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
 
@@ -300,15 +299,20 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                     scanner.stop();
                 }
 
+                connection = new BluetoothConnection();
+
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
                     public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+                        System.out.println("LumbarExtensionTrainingSearchFragment.state");
+
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
                             LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
                             connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
                                 @Override
                                 public void onRead(byte[] value) {
+                                    System.out.println("LumbarExtensionTrainingSearchFragment.onRead");
                                     ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
                                     System.out.println(byteBuffer);
 
@@ -355,6 +359,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                     lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions, weight));
                                     connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
                                     connection.close();
+                                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
 
                                 }
                             });
@@ -367,9 +372,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                     System.out.println("Connecting");
                     bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
                     simpleProgressBar.setVisibility(View.GONE);
-
-                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
