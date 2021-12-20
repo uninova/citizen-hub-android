@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -57,7 +59,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     LayoutInflater localInflater;
     ViewGroup localContainer;
     private DeviceListAdapter adapter;
-    private ArrayList<DeviceListItem> deviceList;
+    private ArrayList<DeviceListItem> deviceItemList;
+    private ArrayList<Device> deviceList;
     private boolean alreadyConnected = false;
     private DeviceViewModel model;
     private BluetoothScanner scanner;
@@ -81,16 +84,17 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
                 if (!model.isDevicePaired(device)) {
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
-                    if (!deviceList.contains(deviceListItem)) {
-                        deviceList.add(deviceListItem);
+
+                    if (!deviceList.contains(device)) {
+                        deviceList.add(device);
+                        System.out.println( "TAMANHO DEVICE LIST: " + deviceList.size());
+                        System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
+                        deviceItemList.add(deviceListItem);
                         adapter.notifyItemInserted(0);
                     }
                 }
-
-
             }
         }
-
     };
 
     @Override
@@ -106,10 +110,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
+        System.out.println("Tamanho deviceItemList antes do clean: " + deviceItemList.size());
         cleanList();
 
-//        checkPermissions();
         buildRecycleView(result);
 
         return result;
@@ -130,7 +133,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
     }
 
-    private void checkPermissions() {
+    private void startScan() {
+        System.out.println("LumbarExtensionTrainingSearchFragment.TryStartScan");
 
         if (!hasBluetoothEnabled()) {
             enableBluetooth();
@@ -146,6 +150,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
         } else {
             scanner = new BluetoothScanner(bluetoothManager);
+            System.out.println("LumbarExtensionTrainingSearchFragment.StartFilteredScan");
 
             startFilteredScan();
 
@@ -190,7 +195,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> startScan())
                     .show();
         }
     }
@@ -214,7 +219,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> startScan())
                     .show();
         }
     }
@@ -248,6 +253,17 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == FEATURE_BLUETOOTH_STATE) {
+        System.out.println("LumbarExtensionTrainingSearchFragment.onActivityResult");
+        startScan();
+//        }
+
+    }
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (scanner != null) {
@@ -273,7 +289,8 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkPermissions();
+        System.out.println("LumbarExtensionTrainingSearchFragment.onResume");
+        startScan();
 
     }
 
@@ -281,7 +298,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceList);
+        adapter = new DeviceListAdapter(deviceItemList);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -292,7 +309,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 System.out.println("LumbarExtensionTrainingSearchFragment.onItemClick");
-                model.setDevice(deviceList.get(position).getDevice());
+                model.setDevice(deviceItemList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
 
                 if (scanner != null) {
@@ -364,13 +381,14 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
+                            System.out.println(" Reading ");
                         }
                     }
                 });
                 alreadyConnected = true;
                 try {
                     System.out.println("Connecting");
-                    bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
+                    bluetoothManager.getAdapter().getRemoteDevice(deviceItemList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
                     simpleProgressBar.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -380,14 +398,14 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
+                model.setDevice(deviceItemList.get(position).getDevice());
                 onItemClick(position);
             }
         });
     }
 
     private void cleanList() {
-        deviceList = new ArrayList<>();
+        deviceItemList = new ArrayList<>();
     }
 }
 
