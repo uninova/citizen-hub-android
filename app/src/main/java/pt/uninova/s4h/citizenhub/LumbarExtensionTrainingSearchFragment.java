@@ -60,7 +60,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     ViewGroup localContainer;
     private DeviceListAdapter adapter;
     private ArrayList<DeviceListItem> deviceItemList;
-    private ArrayList<Device> deviceList;
     private boolean alreadyConnected = false;
     private DeviceViewModel model;
     private BluetoothScanner scanner;
@@ -85,13 +84,10 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 if (!model.isDevicePaired(device)) {
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
 
-                    if (!deviceList.contains(device)) {
-                        deviceList.add(device);
-                        System.out.println( "TAMANHO DEVICE LIST: " + deviceList.size());
                         System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
                         deviceItemList.add(deviceListItem);
                         adapter.notifyItemInserted(0);
-                    }
+
                 }
             }
         }
@@ -110,9 +106,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        System.out.println("Tamanho deviceItemList antes do clean: " + deviceItemList.size());
         cleanList();
-        deviceList.clear();
 
         buildRecycleView(result);
 

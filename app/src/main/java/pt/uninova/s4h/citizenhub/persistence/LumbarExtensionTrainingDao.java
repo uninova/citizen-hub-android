@@ -33,9 +33,11 @@ public interface LumbarExtensionTrainingDao {
     List<LumbarExtensionTraining> getAll();
 
     @Query(value = "SELECT * FROM lumbar_training WHERE timestamp >= :from AND timestamp < :to")
-    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    @TypeConverters(EpochTypeConverter.class)
     LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate from, LocalDate to);
 
+    @Query("SELECT * FROM lumbar_training ORDER BY timestamp DESC LIMIT 1")
+    LiveData<LumbarExtensionTraining> getMostRecentLumbarTraining();
 
     @Query("SELECT MIN(DATE(timestamp)) AS lower, MAX(DATE(timestamp)) AS upper FROM lumbar_training;")
     @TypeConverters(EpochTypeConverter.class)

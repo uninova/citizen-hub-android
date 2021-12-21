@@ -46,14 +46,14 @@ public class LumbarExtensionTrainingFragment extends Fragment {
         text.setMovementMethod(LinkMovementMethod.getInstance());
         //testing
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
-        //lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90,60));
-        MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
-        Date now = Date.from(Instant.now());
-        measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 70.0));
-        measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 1000.0));
-        measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 3.0));
-        measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
-        measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
+        lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 99.9, 90,60));
+//        MeasurementRepository measurementRepository = new MeasurementRepository(requireActivity().getApplication());
+//        Date now = Date.from(Instant.now());
+//        measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 70.0));
+//        measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 1000.0));
+//        measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 3.0));
+//        measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
+//        measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
 //        medExDialogBuilder.setMessage(R.string.medex_fragment_dialog_textview);
         medExDialogBuilder.setView(medexDialogView);
         searchButton.setOnClickListener(new View.OnClickListener() {

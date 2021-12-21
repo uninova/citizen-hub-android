@@ -38,7 +38,7 @@ public class SummaryFragment extends Fragment {
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
-
+        model.getMostRecentLumbar().observe(getViewLifecycleOwner(),this::onLumbarExtensionTrainingUpdate);
     }
 
     private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
@@ -48,7 +48,6 @@ public class SummaryFragment extends Fragment {
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
         if (lumbarExtensionTraining != null) {
-            lumbar = true;
 
             final int lumbarTrainingLength = lumbarExtensionTraining.getTrainingLength();
             final float lumbarScore = lumbarExtensionTraining.getScore();
@@ -59,7 +58,7 @@ public class SummaryFragment extends Fragment {
             lumbarGroup.setVisibility(View.VISIBLE);
             lumbarTitle.setVisibility(View.VISIBLE);
             lumbarTextView.setVisibility(View.VISIBLE);
-
+            lumbar = true;
         } else {
             lumbar = false;
 
@@ -197,7 +196,7 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setVisibility(View.GONE);
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && lumbar == false) {
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar) {
                 noDataTextView.setText("No activity data for today.");
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
