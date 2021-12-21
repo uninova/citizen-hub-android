@@ -82,11 +82,30 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
                 if (!model.isDevicePaired(device)) {
+
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
 
+                    if (deviceItemList.size()>0)
+                    {
+                        for (DeviceListItem adeviceListItem:deviceItemList) {
+                            if(adeviceListItem.getDevice().equals(device))
+                            {
+                                System.out.println("DUPLICATEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+                            }
+                            else
+                            {
+                                System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
+                                deviceItemList.add(deviceListItem);
+                                adapter.notifyItemInserted(0);
+                            }
+                        }
+                    }
+                    else
+                    {
                         System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
                         deviceItemList.add(deviceListItem);
                         adapter.notifyItemInserted(0);
+                    }
 
                 }
             }
