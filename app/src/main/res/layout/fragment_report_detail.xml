@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:tag="@string/lumbar_extension_training"
                 android:visibility="gone"
-                app:constraint_referenced_ids="lumbarExtensionTrainingTitle,fragment_report_lumbar_extension_training_repetitions_total,fragment_report_lumbar_extension_training_score_units,fragment_report_lumbar_extension_training_score_total,fragment_report_lumbar_extension_training_repetitions,fragment_report_lumbar_extension_training_length_units,fragment_report_lumbar_extension_training_length_total,fragment_report_lumbar_extension_training_length,fragment_report_lumbar_extension_training_score,fragment_report_lumbar_extension_training_repetitions_units" />
+                app:constraint_referenced_ids="lumbarExtensionTrainingTitle,fragment_report_lumbar_extension_training_repetitions_total,fragment_report_lumbar_extension_training_score_units,fragment_report_lumbar_extension_training_score_total,fragment_report_lumbar_extension_training_repetitions,fragment_report_lumbar_extension_training_length_units,fragment_report_lumbar_extension_training_length_total,fragment_report_lumbar_extension_training_length,fragment_report_lumbar_extension_training_score,fragment_report_lumbar_extension_training_repetitions_units,fragment_report_lumbar_extension_training_weight,fragment_report_lumbar_extension_training_weight_value,fragment_report_lumbar_extension_training_weight_units" />
 
             <TextView
                 android:id="@+id/lumbarExtensionTrainingTitle"
