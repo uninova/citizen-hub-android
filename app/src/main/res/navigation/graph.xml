@@ -190,7 +190,9 @@
         tools:layout="@layout/fragment_device_search">
         <action
             android:id="@+id/action_lumbarExtensionTrainingSearchFragment_to_summary_fragment"
-            app:destination="@id/summary_fragment" />
+            app:destination="@id/summary_fragment"
+            app:popUpTo="@id/summary_fragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 
