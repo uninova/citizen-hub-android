@@ -471,6 +471,11 @@ public class ReportViewModel extends AndroidViewModel {
             observer.observe(value);
         });
     }
+//    public void obtainLumbar(Observer<LumbarExtensionTraining> lumbarExtensionTraining){
+//
+//        lumbarExtensionTraining.observe(lumbarTrainingRepository.getMostRecentLumbarTraining().getValue());
+//
+//    }
 
 
     private void onDatesChanged(List<LocalDate> dates) {

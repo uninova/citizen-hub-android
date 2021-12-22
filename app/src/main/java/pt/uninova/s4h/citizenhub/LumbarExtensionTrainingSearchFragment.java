@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -68,6 +69,10 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private BluetoothConnection connection;
     private ProgressBar simpleProgressBar;
     private LumbarExtensionTrainingRepository lumbarRepository;
+    //Delete after testing
+    Button  TESTBUTTON;
+
+
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -124,8 +129,15 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         simpleProgressBar = requireView().findViewById(R.id.progressBar);
         lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
-
-
+//
+//        TESTBUTTON = requireView().findViewById(R.id.TESTEBUTTON);
+//        TESTBUTTON.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
+//
+//            }
+//        });
     }
 
     private void startFilteredScan() {
@@ -295,6 +307,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+
                 model.setDevice(deviceItemList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
 
@@ -358,7 +371,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                     lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions, weight));
                                     connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
                                     connection.close();
-                                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
+                                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
 
                                 }
                             });
