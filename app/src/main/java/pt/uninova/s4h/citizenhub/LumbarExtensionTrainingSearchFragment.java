@@ -22,7 +22,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -31,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -50,8 +48,6 @@ import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
-    public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
-    public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
     private static final UUID LUMBARTRAINING_UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
     private static final UUID LUMBARTRAINING_UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
     private static final int PERMISSIONS_REQUEST_CODE = 77;
@@ -85,24 +81,14 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
 
-                    if (deviceItemList.size()>0)
-                    {
-                        for (DeviceListItem adeviceListItem:deviceItemList) {
-                            if(adeviceListItem.getDevice().equals(device))
-                            {
-                                System.out.println("DUPLICATEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-                            }
-                            else
-                            {
-                                System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
+                    if (deviceItemList.size() > 0) {
+                        for (DeviceListItem deviceItem : deviceItemList) {
+                            if (!deviceItem.getDevice().equals(device)) {
                                 deviceItemList.add(deviceListItem);
                                 adapter.notifyItemInserted(0);
                             }
                         }
-                    }
-                    else
-                    {
-                        System.out.println( "TAMANHO DEVICE LIST ITEM: " + deviceItemList.size());
+                    } else {
                         deviceItemList.add(deviceListItem);
                         adapter.notifyItemInserted(0);
                     }
@@ -164,8 +150,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
         } else {
             scanner = new BluetoothScanner(bluetoothManager);
-            System.out.println("LumbarExtensionTrainingSearchFragment.StartFilteredScan");
-
             startFilteredScan();
 
         }
@@ -254,13 +238,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-
-            if (grantResults.length == 1 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-            }
-
+            startScan();
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -269,11 +247,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == FEATURE_BLUETOOTH_STATE) {
-        System.out.println("LumbarExtensionTrainingSearchFragment.onActivityResult");
         startScan();
-//        }
-
     }
 
 
@@ -303,7 +277,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("LumbarExtensionTrainingSearchFragment.onResume");
         startScan();
 
     }
@@ -322,7 +295,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                System.out.println("LumbarExtensionTrainingSearchFragment.onItemClick");
                 model.setDevice(deviceItemList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
 
@@ -335,15 +307,11 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
                     public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-                        System.out.println("LumbarExtensionTrainingSearchFragment.state");
-
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
-                            LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
                             connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
                                 @Override
                                 public void onRead(byte[] value) {
-                                    System.out.println("LumbarExtensionTrainingSearchFragment.onRead");
                                     ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
                                     System.out.println(byteBuffer);
 
@@ -422,5 +390,3 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         deviceItemList = new ArrayList<>();
     }
 }
-
-//MedX0009
