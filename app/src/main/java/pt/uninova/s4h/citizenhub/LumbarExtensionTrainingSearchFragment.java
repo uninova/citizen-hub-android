@@ -78,7 +78,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
 
-            if (!alreadyConnected) {
+            if (!alreadyConnected&&getView()!=null) {
                 buildRecycleView(requireView());
 
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
