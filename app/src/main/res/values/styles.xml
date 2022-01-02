@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Theme.Citizen" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -28,8 +29,6 @@
         <item name="android:drawablePadding">6dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center_vertical</item>
-
-
     </style>
 
 
@@ -81,6 +80,7 @@
         <item name="android:layout_weight">2</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
+
     <style name="AppTheme.Summary.Item.TextView">
         <item name="fontWeight">700</item>
         <item name="android:fontFamily">@font/primus</item>
@@ -94,7 +94,9 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">20sp</item>
     </style>
-    <style name="AppTheme.About"  />
+
+    <style name="AppTheme.About" />
+
     <style name="AppTheme.About.TextView" parent="Theme.AppCompat.DayNight">
         <item name="android:textColor">@color/colorS4HBlack</item>
         <item name="android:fontFamily">@font/primus</item>
