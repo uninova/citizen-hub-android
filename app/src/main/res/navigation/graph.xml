@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/graph"
-            app:startDestination="@id/summary_fragment"
-            android:launchMode="singleTop">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph"
+    android:launchMode="singleTop"
+    app:startDestination="@id/summary_fragment">
 
     <fragment
-            android:id="@+id/summary_fragment"
-            android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
-            android:label="@string/fragment_summary_label"
-            tools:layout="@layout/fragment_summary"
-        />
+        android:id="@+id/summary_fragment"
+        android:name="pt.uninova.s4h.citizenhub.SummaryFragment"
+        android:label="@string/fragment_summary_label"
+        tools:layout="@layout/fragment_summary" />
 
     <fragment
-            android:id="@+id/report_master_fragment"
-            android:name="pt.uninova.s4h.citizenhub.ReportMasterFragment"
-            android:label="@string/fragment_report_label"
-            tools:layout="@layout/fragment_report_master">
+        android:id="@+id/report_master_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ReportMasterFragment"
+        android:label="@string/fragment_report_label"
+        tools:layout="@layout/fragment_report_master">
 
         <action
-                android:id="@+id/action_report_master_fragment_to_report_detail_fragment"
-                app:destination="@+id/report_detail_fragment"/>
+            android:id="@+id/action_report_master_fragment_to_report_detail_fragment"
+            app:destination="@+id/report_detail_fragment" />
     </fragment>
 
     <fragment
-            android:id="@+id/report_detail_fragment"
-            android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
-            android:label="Activity Report"
-            tools:layout="@layout/fragment_report_detail"/>
+        android:id="@+id/report_detail_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
+        android:label="Activity Report"
+        tools:layout="@layout/fragment_report_detail" />
 
     <fragment
         android:id="@+id/lumbar_extension_training_fragment"
@@ -64,19 +63,19 @@
     </fragment>
 
     <fragment
-            android:id="@+id/device_search_fragment"
-            android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragment"
-            android:label="@string/fragment_device_search_label"
-            tools:layout="@layout/fragment_device_search">
+        android:id="@+id/device_search_fragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragment"
+        android:label="@string/fragment_device_search_label"
+        tools:layout="@layout/fragment_device_search">
 
         <action
-                android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
-                app:destination="@+id/device_configuration_add_fragment"/>
+            android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
+            app:destination="@+id/device_configuration_add_fragment" />
 
         <action
-                android:id="@+id/action_device_search_fragment_to_device_list_fragment"
-                app:destination="@id/device_list_fragment"
-                app:popUpTo="@+id/device_list_fragment"/>
+            android:id="@+id/action_device_search_fragment_to_device_list_fragment"
+            app:destination="@id/device_list_fragment"
+            app:popUpTo="@+id/device_list_fragment" />
 
     </fragment>
 
@@ -89,30 +88,30 @@
         <action
             android:id="@+id/action_device_search_wearos_fragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
-            app:popUpTo="@+id/device_list_fragment"/>
+            app:popUpTo="@+id/device_list_fragment" />
         <action
             android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
-            app:destination="@+id/device_configuration_add_fragment"/>
+            app:destination="@+id/device_configuration_add_fragment" />
 
     </fragment>
 
     <fragment
-            android:id="@+id/device_configuration_fragment"
-            android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationFragment"
-            android:label="@string/fragment_device_configuration_label"
-            tools:layout="@layout/fragment_device_configuration">
+        android:id="@+id/device_configuration_fragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationFragment"
+        android:label="@string/fragment_device_configuration_label"
+        tools:layout="@layout/fragment_device_configuration">
 
     </fragment>
 
     <fragment
-            android:id="@+id/device_configuration_add_fragment"
-            android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
-            android:label="Device Configuration"
-            tools:layout="@layout/fragment_device_configuration_add">
+        android:id="@+id/device_configuration_add_fragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
+        android:label="Device Configuration"
+        tools:layout="@layout/fragment_device_configuration_add">
 
         <action
-                android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
-                app:destination="@+id/device_list_fragment"/>
+            android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
+            app:destination="@+id/device_list_fragment" />
 
     </fragment>
 
@@ -144,25 +143,106 @@
     </fragment>
 
     <fragment
-            android:id="@+id/logout_fragment"
-            android:name="pt.uninova.s4h.citizenhub.ui.logout.LogoutFragment"
-            android:label="@string/fragment_logout_label"
-            tools:layout="@layout/fragment_logout"  />
+        android:id="@+id/accounts_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.AccountsFragment"
+        android:label="Accounts"
+        tools:layout="@layout/accounts_fragment">
+
+        <action
+            android:id="@+id/action_accounts_fragment_to_add_account_fragment"
+            app:destination="@+id/add_account_fragment" />
+
+        <action
+            android:id="@+id/action_accounts_fragment_to_smart4health_account_fragment"
+            app:destination="@+id/smart4health_account_fragment" />
+
+        <action
+            android:id="@+id/action_accounts_fragment_to_smart_bear_account_fragment"
+            app:destination="@+id/smart_bear_account_fragment" />
+    </fragment>
 
     <fragment
-            android:id="@+id/about_fragment"
-            android:name="pt.uninova.s4h.citizenhub.AboutFragment"
-            android:label="@string/fragment_about_label"
-            tools:layout="@layout/fragment_about">
+        android:id="@+id/add_account_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.AddAccountFragment"
+        android:label="Add Account"
+        tools:layout="@layout/accounts_fragment">
+
+        <action
+            android:id="@+id/action_add_account_fragment_to_advanced_smart_bear_account_gate_fragment"
+            app:destination="@+id/advanced_smart_bear_account_gate_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/smart4health_account_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.Smart4HealthAccountFragment"
+        android:label="Smart4Health Account"
+        tools:layout="@layout/smart4health_account_fragment" />
+
+    <fragment
+        android:id="@+id/smart_bear_account_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.SmartBearAccountFragment"
+        android:label="Smart Bear Account"
+        tools:layout="@layout/smart4health_account_fragment">
+
+        <action
+            android:id="@+id/action_smart_bear_account_fragment_to_advanced_smart_bear_account_gate_fragment"
+            app:destination="@+id/advanced_smart_bear_account_gate_fragment" />
+
+        <action
+            android:id="@+id/action_smart_bear_account_fragment_to_accounts_fragment"
+            app:destination="@+id/accounts_fragment"
+            app:popUpTo="@+id/accounts_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/advanced_smart_bear_account_gate_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.AdvancedSmartBearAccountGateFragment"
+        android:label="Smart Bear Account"
+        tools:layout="@layout/advanced_smart_bear_account_gate_fragment">
+
+        <action
+            android:id="@+id/action_advanced_smart_bear_account_gate_fragment_to_advanced_smart_bear_account_fragment"
+            app:destination="@+id/advanced_smart_bear_account_fragment"
+            app:popUpTo="@+id/accounts_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/advanced_smart_bear_account_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.accounts.AdvancedSmartBearAccountFragment"
+        android:label="Smart Bear Account"
+        tools:layout="@layout/advanced_smart_bear_account_fragment">
+
+        <action
+            android:id="@+id/action_advanced_smart_bear_account_fragment_to_accounts_fragment"
+            app:destination="@+id/accounts_fragment"
+            app:popUpTo="@+id/accounts_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/logout_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.logout.LogoutFragment"
+        android:label="@string/fragment_logout_label"
+        tools:layout="@layout/fragment_logout" />
+
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="pt.uninova.s4h.citizenhub.AboutFragment"
+        android:label="@string/fragment_about_label"
+        tools:layout="@layout/fragment_about">
+
         <action
             android:id="@+id/action_about_fragment_to_privacy_policy_fragment"
             app:destination="@+id/fragment_privacy_policy"
-            app:popUpTo="@+id/fragment_privacy_policy"/>
+            app:popUpTo="@+id/fragment_privacy_policy" />
 
         <action
             android:id="@+id/action_about_fragment_to_license_of_use_fragment"
             app:destination="@+id/license_of_use_fragment"
-            app:popUpTo="@+id/license_of_use_fragment"/>
+            app:popUpTo="@+id/license_of_use_fragment" />
 
         <action
             android:id="@+id/action_about_fragment_to_open_source_licenses_fragment"
@@ -170,15 +250,18 @@
             app:popUpTo="@+id/open_source_licenses_fragment" />
 
     </fragment>
+
     <fragment
         android:id="@+id/fragment_privacy_policy"
         android:name="pt.uninova.s4h.citizenhub.PrivacyPolicyFragment"
         android:label="@string/fragment_privacy_policy_label"
         tools:layout="@layout/fragment_privacy_policy" />
+
     <fragment
         android:id="@+id/license_of_use_fragment"
         android:name="pt.uninova.s4h.citizenhub.LicenseOfUseFragment"
         android:label="@string/fragment_license_of_use_label" />
+
     <fragment
         android:id="@+id/open_source_licenses_fragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"

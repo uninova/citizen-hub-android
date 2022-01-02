@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/smart_bear_account_fragment_menu_advanced"
+        android:title="Advanced settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/smart_bear_account_fragment_menu_log_out"
+        android:title="Log out"
+        app:showAsAction="never" />
+</menu>
