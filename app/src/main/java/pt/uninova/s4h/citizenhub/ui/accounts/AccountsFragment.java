@@ -7,10 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,8 +32,21 @@ public class AccountsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        view.findViewById(R.id.accounts_fragment_smart4health).setVisibility(viewModel.hasSmart4HealthAccount() ? View.VISIBLE : View.GONE);
-        view.findViewById(R.id.accounts_fragment_smartbear).setVisibility(viewModel.hasSmartBearAccount() ? View.VISIBLE : View.GONE);
+        View smart4HealthCard = view.findViewById(R.id.card_smart4health);
+        View smartBearCard = view.findViewById(R.id.card_smartbear);
+
+        smart4HealthCard.setVisibility(viewModel.hasSmart4HealthAccount() ? View.VISIBLE : View.GONE);
+        smartBearCard.setVisibility(viewModel.hasSmartBearAccount() ? View.VISIBLE : View.GONE);
+
+        smart4HealthCard.setOnClickListener((View v) -> {
+            NavController controller = Navigation.findNavController(requireView());
+
+            controller.navigate(AccountsFragmentDirections.actionAccountsFragmentToSmart4healthAccountFragment());
+        });
+
+        smartBearCard.setOnClickListener((View v) -> {
+            Navigation.findNavController(requireView()).navigate(AccountsFragmentDirections.actionAccountsFragmentToSmartBearAccountFragment());
+        });
 
         return view;
     }
@@ -37,10 +54,18 @@ public class AccountsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.accounts_fragment, menu);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        MenuItem addItem = menu.findItem(R.id.accounts_fragment_menu_add_item);
 
+        addItem.setOnMenuItemClickListener((MenuItem item) -> {
+                    Navigation.findNavController(requireView()).navigate(AccountsFragmentDirections.actionAccountsFragmentToAddAccountFragment());
+
+                    return true;
+                }
+        );
+
+        if (viewModel.hasSmart4HealthAccount() && viewModel.hasSmartBearAccount()) {
+            menu.removeItem(R.id.accounts_fragment_menu_add_item);
+        }
     }
 }
