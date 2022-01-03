@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.healthhub.HealthHubAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
@@ -153,7 +152,6 @@ public class AgentFactory {
         connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
             @Override
             public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-
                 if (value.getNewState() == BluetoothConnectionState.CONNECTED) {
                     device.setState(StateKind.INACTIVE);
 
@@ -170,7 +168,6 @@ public class AgentFactory {
                     connection.removeConnectionStateChangeListener(this);
                 }
                 observer.observe(createAgent(agentName, connection));
-
 
             }
 
@@ -197,7 +194,6 @@ public class AgentFactory {
         connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
             @Override
             public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-
                 if (value.getNewState() == BluetoothConnectionState.READY) {
                     connection.removeConnectionStateChangeListener(this);
 
@@ -215,6 +211,7 @@ public class AgentFactory {
                     }
                 }
             }
+
         });
         bluetoothManager.getAdapter().getRemoteDevice(address).connectGatt(service, true, connection, 2);
     }

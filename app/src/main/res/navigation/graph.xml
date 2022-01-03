@@ -36,7 +36,8 @@
         tools:layout="@layout/fragment_lumbar_extension_training">
         <action
             android:id="@+id/action_lumbar_extension_training_fragment_to_lumbarExtensionTrainingSearchFragment"
-            app:destination="@id/lumbarExtensionTrainingSearchFragment" />
+            app:destination="@id/lumbarExtensionTrainingSearchFragment"
+            app:popUpTo="@id/lumbarExtensionTrainingSearchFragment"/>
     </fragment>
 
     <fragment
@@ -272,8 +273,10 @@
         android:label="Lumbar Extension Training Devices"
         tools:layout="@layout/fragment_device_search">
         <action
-            android:id="@+id/action_lumbarExtensionTrainingSearchFragment_to_summary_fragment"
-            app:destination="@id/summary_fragment" />
+            android:id="@+id/action_lumbarExtensionTrainingSearchFragment_to_lumbar_extension_training_fragment"
+            app:destination="@id/summary_fragment"
+            app:popUpTo="@id/summary_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 

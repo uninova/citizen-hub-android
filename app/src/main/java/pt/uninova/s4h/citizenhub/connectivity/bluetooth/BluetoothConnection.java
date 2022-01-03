@@ -48,6 +48,8 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addCharacteristicListener(CharacteristicListener listener) {
+        System.out.println("BluetoothConnection.addCharacteristicListener");
+
         final Pair<UUID, UUID> key = characteristicKey(listener);
 
         synchronized (characteristicListenerMap) {
@@ -60,6 +62,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
+        System.out.println("BluetoothConnection.addConnectionStateChangeListener");
         stateChangedMessageDispatcher.addObserver(listener);
     }
 
@@ -93,8 +96,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         runnables.clear();
 
         stateChangedMessageDispatcher.close();
-
-        gatt.close();
+        if (gatt != null) {
+            gatt.disconnect ();
+            gatt.close();
+        }
     }
 
     private Triple<UUID, UUID, UUID> descriptorKey(BluetoothGattDescriptor descriptor) {
@@ -156,6 +161,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+        System.out.println("BluetoothConnection.onCharacteristicRead status=" + status);
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
@@ -251,7 +257,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         super.onServicesDiscovered(gatt, status);
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
-             setState(BluetoothConnectionState.READY);
+            setState(BluetoothConnectionState.READY);
         }
 
         next();
@@ -266,6 +272,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void readCharacteristic(final UUID serviceUuid, final UUID characteristicUuid) {
+        System.out.println("BluetoothConnection.readCharacteristic serviceUuid=" + serviceUuid + " characteristicUuid=" + characteristicUuid);
         push(new Runnable() {
             @Override
             public void run() {

@@ -287,6 +287,7 @@ public class ReportDetailFragment extends Fragment {
         lumbarTrainingLength = view.findViewById(R.id.fragment_report_lumbar_extension_training_length_total);
         lumbarRepetitions = view.findViewById(R.id.fragment_report_lumbar_extension_training_repetitions_total);
         lumbarScore = view.findViewById(R.id.fragment_report_lumbar_extension_training_score_total);
+        lumbarWeight = view.findViewById(R.id.fragment_report_lumbar_extension_training_weight_value);
         postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
@@ -294,7 +295,7 @@ public class ReportDetailFragment extends Fragment {
         distanceGroup = view.findViewById(R.id.distanceGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
-        model.obtainSummary(value -> onSummaryChanged(value));
+        model.obtainSummary(this::onSummaryChanged);
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 

@@ -471,6 +471,11 @@ public class ReportViewModel extends AndroidViewModel {
             observer.observe(value);
         });
     }
+//    public void obtainLumbar(Observer<LumbarExtensionTraining> lumbarExtensionTraining){
+//
+//        lumbarExtensionTraining.observe(lumbarTrainingRepository.getMostRecentLumbarTraining().getValue());
+//
+//    }
 
 
     private void onDatesChanged(List<LocalDate> dates) {
@@ -494,7 +499,8 @@ public class ReportViewModel extends AndroidViewModel {
 
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
-            repository.obtainDates(peek, dates -> onDatesChanged(dates));
+            repository.obtainDates(peek, this::onDatesChanged);
+//            lumbarTrainingRepository.obtainDates(peek,this::onDatesChanged);
         }
     }
 

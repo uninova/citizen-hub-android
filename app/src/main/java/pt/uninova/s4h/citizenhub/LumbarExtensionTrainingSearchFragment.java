@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -30,14 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.JulianFields;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -48,19 +42,13 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
-    public final static UUID UUID_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
-    public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
     private static final UUID LUMBARTRAINING_UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
     private static final UUID LUMBARTRAINING_UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
     private static final int PERMISSIONS_REQUEST_CODE = 77;
@@ -68,7 +56,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     LayoutInflater localInflater;
     ViewGroup localContainer;
     private DeviceListAdapter adapter;
-    private ArrayList<DeviceListItem> deviceList;
+    private ArrayList<DeviceListItem> deviceItemList;
     private boolean alreadyConnected = false;
     private DeviceViewModel model;
     private BluetoothScanner scanner;
@@ -81,24 +69,38 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private BluetoothConnection connection;
     private ProgressBar simpleProgressBar;
     private LumbarExtensionTrainingRepository lumbarRepository;
+    //Delete after testing
+    Button  TESTBUTTON;
+
+
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
 
-            if (!alreadyConnected) {
+            if (!alreadyConnected&&getView()!=null) {
                 buildRecycleView(requireView());
 
                 Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
                 if (!model.isDevicePaired(device)) {
-                    deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
-                    adapter.notifyItemInserted(0);
+
+                    DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
+
+                    if (deviceItemList.size() > 0) {
+                        for (DeviceListItem deviceItem : deviceItemList) {
+                            if (!deviceItem.getDevice().equals(device)) {
+                                deviceItemList.add(deviceListItem);
+                                adapter.notifyItemInserted(0);
+                            }
+                        }
+                    } else {
+                        deviceItemList.add(deviceListItem);
+                        adapter.notifyItemInserted(0);
+                    }
+
                 }
-
-
             }
         }
-
     };
 
     @Override
@@ -111,18 +113,11 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         bluetoothManager = (BluetoothManager) requireContext().getSystemService(Context.BLUETOOTH_SERVICE);
-        scanner = new BluetoothScanner(bluetoothManager);
         final View result = inflater.inflate(R.layout.fragment_device_search, container, false);
 
-
-
-
-
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
         cleanList();
 
-        checkPermissions();
         buildRecycleView(result);
 
         return result;
@@ -134,18 +129,24 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         simpleProgressBar = requireView().findViewById(R.id.progressBar);
         lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
-
-
+//
+//        TESTBUTTON = requireView().findViewById(R.id.TESTEBUTTON);
+//        TESTBUTTON.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
+//
+//            }
+//        });
     }
 
     private void startFilteredScan() {
-        connection = new BluetoothConnection();
-
         scanner.startWithFilter(listener, new ParcelUuid(LUMBARTRAINING_UUID_SERVICE), scanCallback);
 
     }
 
-    private void checkPermissions() {
+    private void startScan() {
+        System.out.println("LumbarExtensionTrainingSearchFragment.TryStartScan");
 
         if (!hasBluetoothEnabled()) {
             enableBluetooth();
@@ -160,6 +161,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             requestLocationPermissions();
 
         } else {
+            scanner = new BluetoothScanner(bluetoothManager);
             startFilteredScan();
 
         }
@@ -203,7 +205,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> startScan())
                     .show();
         }
     }
@@ -227,7 +229,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> checkPermissions())
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (paramDialogInterface, paramInt) -> startScan())
                     .show();
         }
     }
@@ -248,17 +250,18 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-
-            if (grantResults.length == 1 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-            }
-
+            startScan();
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        startScan();
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -266,6 +269,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
+        if (connection != null)
+            connection.close();
+
     }
 
 
@@ -275,13 +281,15 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         if (scanner != null) {
             scanner.stop();
         }
+        if (connection != null)
+            connection.close();
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        checkPermissions();
+        startScan();
 
     }
 
@@ -289,7 +297,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceList);
+        adapter = new DeviceListAdapter(deviceItemList);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -299,16 +307,21 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
+
+                model.setDevice(deviceItemList.get(position).getDevice());
                 simpleProgressBar.setVisibility(View.VISIBLE);
+
+                if (scanner != null) {
+                    scanner.stop();
+                }
+
+                connection = new BluetoothConnection();
 
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
                     public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
-                            LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getActivity().getApplication());
                             connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
                                 @Override
                                 public void onRead(byte[] value) {
@@ -355,21 +368,23 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 //                                    int repetitions = (int) parsed[5];
 //                                    System.out.println("Repetetions were: " + repetitions);
 //
-                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions,weight));
+                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions, weight));
+                                    connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
+                                    connection.close();
+                                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
+
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
+                            System.out.println(" Reading ");
                         }
                     }
                 });
                 alreadyConnected = true;
                 try {
                     System.out.println("Connecting");
-                    bluetoothManager.getAdapter().getRemoteDevice(deviceList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
+                    bluetoothManager.getAdapter().getRemoteDevice(deviceItemList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
                     simpleProgressBar.setVisibility(View.GONE);
-
-                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -378,15 +393,13 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
             @Override
             public void onSettingsClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
+                model.setDevice(deviceItemList.get(position).getDevice());
                 onItemClick(position);
             }
         });
     }
 
     private void cleanList() {
-        deviceList = new ArrayList<>();
+        deviceItemList = new ArrayList<>();
     }
 }
-
-//MedX0009

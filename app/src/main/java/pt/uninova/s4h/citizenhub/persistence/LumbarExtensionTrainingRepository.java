@@ -57,6 +57,10 @@ public class LumbarExtensionTrainingRepository {
         return lumbarExtensionTrainingDao.getLumbarTraining(localDate, localDate.plusDays(1));
     }
 
+    public LiveData<LumbarExtensionTraining> getMostRecentLumbarTraining(){
+        return lumbarExtensionTrainingDao.getMostRecentLumbarTraining();
+    }
+
     public LiveData<LocalDateInterval> getDateBounds() {
         System.out.println(" LUMBAR GET DATE BOUNDS " + lumbarExtensionTrainingDao.getDateBoundsLive().getValue());
         return lumbarExtensionTrainingDao.getDateBoundsLive();
