@@ -9,13 +9,13 @@
             android:id="@+id/report_master_fragment"
             android:icon="@drawable/ic_daily_dark_blue"
             android:title="@string/fragment_report_label" />
+        <item
+            android:id="@+id/lumbar_extension_training_fragment"
+            android:icon="@drawable/ic_medx_program"
+            android:title="@string/fragment_lumbar_extension_training_label" />
     </group>
 
     <group android:id="@+id/group_configuration">
-        <item
-            android:id="@+id/lumbar_extension_training_fragment"
-            android:icon="@android:drawable/ic_dialog_email"
-            android:title="@string/fragment_lumbar_extension_training_label" />
         <item
             android:id="@+id/device_list_fragment"
             android:icon="@drawable/ic_devices"

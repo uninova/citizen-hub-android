@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/lumbar_extension_training_fragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingFragment"
-        android:label="Lumbar Extension Training"
+        android:label="MedX Program"
         tools:layout="@layout/fragment_lumbar_extension_training">
         <action
             android:id="@+id/action_lumbar_extension_training_fragment_to_lumbarExtensionTrainingSearchFragment"

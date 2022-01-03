@@ -67,7 +67,7 @@ public class LumbarExtensionTrainingRepository {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);
             final LocalDate to = LocalDate.of(month.getSecond() == 12 ? month.getFirst() + 1 : month.getFirst(), month.getSecond() == 12 ? 1 : month.getSecond() + 1, 1);
             System.out.println(" LUMBAR OBTAIN DATES " + lumbarExtensionTrainingDao.getDates(from,to));
-            observer.onChanged(lumbarExtensionTrainingDao.getDates(from, to));
+            observer.observe(lumbarExtensionTrainingDao.getDates(from, to));
         });
     }
 }

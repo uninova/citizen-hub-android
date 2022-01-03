@@ -93,7 +93,6 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         startForeground(1, buildNotification());
         wearOSMessageService = new WearOSMessageService();
 
-        System.out.println("ONCREATEONCREATEONCREATEONCREATE");
         agentOrchestrator = new AgentOrchestrator(this);
 
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);

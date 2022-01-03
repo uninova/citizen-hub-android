@@ -304,7 +304,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                 connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
                     @Override
-                    public void onChanged(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+                    public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
 
                         if (value.getNewState() == BluetoothConnectionState.READY) {
                             connection.removeConnectionStateChangeListener(this);
