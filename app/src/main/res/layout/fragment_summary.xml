@@ -289,7 +289,7 @@
                 android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
                 android:scaleType="center"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_heartbeat" />
+                app:srcCompat="@drawable/ic_color_medx_training" />
 
 
             <TextView
