@@ -54,7 +54,7 @@ public class SummaryFragment extends Fragment {
             final float lumbarScore = lumbarExtensionTraining.getScore();
             final int lumbarRepetitions = lumbarExtensionTraining.getRepetitions();
             noDataTextView.setVisibility(GONE);
-            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions)));
+            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions), lumbarExtensionTraining.getWeight()));
 
             lumbarGroup.setVisibility(View.VISIBLE);
             lumbarTitle.setVisibility(View.VISIBLE);
@@ -198,7 +198,7 @@ public class SummaryFragment extends Fragment {
             }
 
             if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null) {
-                noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary ));
+                noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
             } else {

@@ -15,7 +15,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class HealthHubTrainingFeedbackProtocol extends BluetoothMeasuringProtocol {
 
-    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.healthub.trainingfeedback");
+    final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.healthhub.trainingfeedback");
     private static final UUID UUID_TRAININGFEEDBACK_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
     private static final UUID UUID_TRAININGFEEDBACK_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
 

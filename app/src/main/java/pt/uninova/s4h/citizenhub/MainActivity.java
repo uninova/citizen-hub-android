@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment,R.id.lumbar_extension_training_fragment, R.id.device_list_fragment, R.id.accounts_fragment, R.id.about_fragment)
+                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.lumbar_extension_training_fragment, R.id.device_list_fragment, R.id.accounts_fragment, R.id.about_fragment)
                         .setOpenableLayout(drawerLayout)
                         .build();
 
@@ -124,10 +124,9 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
     public void onBackPressed() {
         NavController navController = ((NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
 
-        if (Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.summary_fragment) {
+        if (navController.getCurrentBackStackEntry().getDestination().getId() == R.id.summary_fragment) {
             moveTaskToBack(false);
-        } else if ((Objects.requireNonNull(navController.getCurrentBackStackEntry()).getDestination().getId() == R.id.device_list_fragment)
-        ) {
+        } else if (navController.getCurrentBackStackEntry().getDestination().getId() == R.id.device_list_fragment) {
             moveTaskToBack(false);
         } else {
             navController.popBackStack();
