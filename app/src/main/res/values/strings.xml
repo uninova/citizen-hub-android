@@ -58,7 +58,7 @@
     <string name="fragment_about_button_text_privacy_policy_button">privacy policy</string>
     <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
     <string name="fragment_about_developedBy"><![CDATA[Developed by]]></string>
-    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union's Horizon 2020 research and innovation programme under grant agreement No 826117</string>
+    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union\'s Horizon 2020 research and innovation programme under grant agreement No 826117</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
     <string name="fragment_about_image_view_citizenhub_logo">Citizenhub logo</string>
     <string name="fragment_about_image_view_european_commission_logo">EU commission logo</string>
@@ -273,4 +273,24 @@
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_settings_label">Settings</string>
+    <string-array name="workdays">
+        <item >Monday</item>
+        <item >Tuesday</item>
+        <item >Wednesday</item>
+        <item >Thursday</item>
+        <item >Friday</item>
+        <item >Saturday</item>
+        <item >Sunday</item>
+    </string-array>
+    <string-array name="workday_values">
+        <item >0</item>
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+    </string-array>
+    <string-array name="empty_array" />
 </resources>

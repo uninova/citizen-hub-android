@@ -81,10 +81,6 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name ="AppTheme.Settings">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-    </style>
-
     <style name="AppTheme.Summary.Item.TextView">
         <item name="fontWeight">700</item>
         <item name="android:fontFamily">@font/primus</item>
