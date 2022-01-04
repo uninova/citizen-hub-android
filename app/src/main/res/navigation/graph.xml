@@ -145,9 +145,9 @@
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.accounts.AccountsFragment"
+        android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
         android:label="Settings"
-        tools:layout="@layout/settings_fragment">
+        tools:layout="@layout/fragment_settings">
     </fragment>
 
     <fragment
