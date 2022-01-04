@@ -1,28 +1,17 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceFragmentCompat;
 
 
-public class SettingsFragment extends Fragment {
-
-    private SettingsViewModel viewModel;
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.settings_fragment, container, false);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.settings_fragment, rootKey);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
-
-        setHasOptionsMenu(true);
-
-
-        return view;
     }
+
 
 }
