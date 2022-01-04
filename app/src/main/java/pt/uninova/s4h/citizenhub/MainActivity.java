@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.lumbar_extension_training_fragment, R.id.device_list_fragment, R.id.accounts_fragment, R.id.about_fragment)
+                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.lumbar_extension_training_fragment, R.id.device_list_fragment,R.id.settings_fragment, R.id.accounts_fragment, R.id.about_fragment)
                         .setOpenableLayout(drawerLayout)
                         .build();
 
