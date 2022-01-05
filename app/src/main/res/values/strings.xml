@@ -58,7 +58,7 @@
     <string name="fragment_about_button_text_privacy_policy_button">privacy policy</string>
     <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
     <string name="fragment_about_developedBy"><![CDATA[Developed by]]></string>
-    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union's Horizon 2020 research and innovation programme under grant agreement No 826117</string>
+    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union\'s Horizon 2020 research and innovation programme under grant agreement No 826117</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
     <string name="fragment_about_image_view_citizenhub_logo">Citizenhub logo</string>
     <string name="fragment_about_image_view_european_commission_logo">EU commission logo</string>
