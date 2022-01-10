@@ -273,4 +273,5 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
+    <string name="fragment_summary_text_view_blood_pressure_text">SBP:\u00a0%1$s\u00a0mmHg\nDBP:\u00a0%2s\u00a0mmHg\nMeanAP:\u00a0%3$s\u00a0mmHg</string>
 </resources>

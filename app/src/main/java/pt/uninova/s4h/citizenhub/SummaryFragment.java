@@ -142,7 +142,7 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate bloodPressure = dailySummary.get(MeasurementKind.BLOOD_PRESSURE);
 
             if (bloodPressure != null) {
-                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_respiration_text, respiration.getSum()));
+                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text,"120.5","78.5","0.05"));
                 bloodPressureGroup.setVisibility(VISIBLE);
                 bloodPressureTitle.setVisibility(VISIBLE);
                 bloodPressureTextView.setVisibility(VISIBLE);
