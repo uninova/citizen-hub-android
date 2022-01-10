@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -105,19 +107,24 @@ public class SummaryFragment extends Fragment {
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout respirationGroup = requireView().findViewById(R.id.fragment_summary_layout_respiration);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
+        final TextView respirationTextView = requireView().findViewById(R.id.fragment_summary_text_view_respiration);
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
+        final TextView respirationTitle = requireView().findViewById(R.id.respirationTextView);
+
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
+
 
 
         if (dailySummary != null) {
@@ -128,7 +135,19 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate badPosture = dailySummary.get(MeasurementKind.BAD_POSTURE);
             final MeasurementAggregate goodPosture = dailySummary.get(MeasurementKind.GOOD_POSTURE);
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
+            final MeasurementAggregate respiration = dailySummary.get(MeasurementKind.RESPIRATION_RATE);
+            final MeasurementAggregate bloodPressure = dailySummary.get(MeasurementKind.BLOOD_PRESSURE);
 
+            if (respiration != null) {
+                respirationTextView.setText(getString(R.string.fragment_summary_text_view_respiration_text, respiration.getSum()));
+                respirationGroup.setVisibility(VISIBLE);
+                respirationTitle.setVisibility(VISIBLE);
+                respirationTextView.setVisibility(VISIBLE);
+            } else {
+                respirationGroup.setVisibility(View.GONE);
+                respirationTitle.setVisibility(View.GONE);
+                respirationTextView.setVisibility(View.GONE);
+            }
 
             if (calories != null) {
                 caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
