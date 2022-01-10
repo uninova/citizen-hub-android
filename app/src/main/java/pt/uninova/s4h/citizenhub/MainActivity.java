@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             // <---- run your one time code here
 
             LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(getApplication());
-            lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 95.9, 90,60));
+            lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 206, (float) 95.9, 18,80));
             MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
             Date now = Date.from(Instant.now());
 
