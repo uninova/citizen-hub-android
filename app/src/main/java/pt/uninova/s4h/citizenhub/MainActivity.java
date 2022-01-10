@@ -18,8 +18,16 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -68,6 +76,20 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        //testing
+
+        LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(getApplication());
+        lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 93838, (float) 95.9, 90,60));
+        MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+        Date now = Date.from(Instant.now());
+        measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 73.0));
+        measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 993.5));
+        measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 3.0));
+        measurementRepository.add(new Measurement(now, MeasurementKind.BLOOD_PRESSURE,4.0));
+        measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
+        measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
+
 
     }
 

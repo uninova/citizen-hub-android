@@ -58,7 +58,7 @@
     <string name="fragment_about_button_text_privacy_policy_button">privacy policy</string>
     <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
     <string name="fragment_about_developedBy"><![CDATA[Developed by]]></string>
-    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union's Horizon 2020 research and innovation programme under grant agreement No 826117</string>
+    <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union\'s Horizon 2020 research and innovation programme under grant agreement No 826117</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
     <string name="fragment_about_image_view_citizenhub_logo">Citizenhub logo</string>
     <string name="fragment_about_image_view_european_commission_logo">EU commission logo</string>
@@ -189,7 +189,6 @@
     <string name="fragment_summary_text_steps_taken">Steps Taken</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f calories</string>
     <string name="fragment_summary_text_view_respiration_text">%1$.0f inspiration</string>
-
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">Your average heart rate is %1$.2f.</string>
