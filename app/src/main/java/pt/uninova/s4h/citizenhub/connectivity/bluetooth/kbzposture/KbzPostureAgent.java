@@ -29,11 +29,6 @@ public class KbzPostureAgent extends BluetoothAgent {
     }
 
     @Override
-    public Set<MeasurementKind> getSupportedMeasurements() {
-        return supportedMeasurementKinds;
-    }
-
-    @Override
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
         if (kind == MeasurementKind.POSTURE) {
             return new KbzRawProtocol(this.getConnection(), this);
