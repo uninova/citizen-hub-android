@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.w3c.dom.Text;
-
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +38,7 @@ public class SummaryFragment extends Fragment {
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
-        model.getMostRecentLumbar().observe(getViewLifecycleOwner(),this::onLumbarExtensionTrainingUpdate);
+        model.getMostRecentLumbar().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
     }
 
     private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
@@ -125,9 +123,8 @@ public class SummaryFragment extends Fragment {
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
         final TextView respirationTitle = requireView().findViewById(R.id.respirationTextView);
-        final TextView bloodPressureTitle =requireView().findViewById(R.id.bloodPressureTextView);
+        final TextView bloodPressureTitle = requireView().findViewById(R.id.bloodPressureTextView);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
-
 
 
         if (dailySummary != null) {
@@ -142,7 +139,7 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate bloodPressure = dailySummary.get(MeasurementKind.BLOOD_PRESSURE);
 
             if (bloodPressure != null) {
-                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text,"120.5","78.5","0.05"));
+                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, "120.5", "78.5", "0.05"));
                 bloodPressureGroup.setVisibility(VISIBLE);
                 bloodPressureTitle.setVisibility(VISIBLE);
                 bloodPressureTextView.setVisibility(VISIBLE);
@@ -229,7 +226,7 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setVisibility(View.GONE);
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration==null && bloodPressure == null) {
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressure == null) {
                 noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
