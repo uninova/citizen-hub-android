@@ -108,6 +108,7 @@ public class SummaryFragment extends Fragment {
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
         final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
         final LinearLayout respirationGroup = requireView().findViewById(R.id.fragment_summary_layout_respiration);
+        final LinearLayout bloodPressureGroup = requireView().findViewById(R.id.fragment_summary_layout_blood_pressure);
 
         final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
@@ -115,6 +116,8 @@ public class SummaryFragment extends Fragment {
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
         final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
         final TextView respirationTextView = requireView().findViewById(R.id.fragment_summary_text_view_respiration);
+        final TextView bloodPressureTextView = requireView().findViewById(R.id.fragment_summary_text_view_blood_pressure);
+
 
         final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
@@ -122,7 +125,7 @@ public class SummaryFragment extends Fragment {
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
         final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
         final TextView respirationTitle = requireView().findViewById(R.id.respirationTextView);
-
+        final TextView bloodPressureTitle =requireView().findViewById(R.id.bloodPressureTextView);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
 
 
@@ -137,6 +140,17 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
             final MeasurementAggregate respiration = dailySummary.get(MeasurementKind.RESPIRATION_RATE);
             final MeasurementAggregate bloodPressure = dailySummary.get(MeasurementKind.BLOOD_PRESSURE);
+
+            if (bloodPressure != null) {
+                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_respiration_text, respiration.getSum()));
+                bloodPressureGroup.setVisibility(VISIBLE);
+                bloodPressureTitle.setVisibility(VISIBLE);
+                bloodPressureTextView.setVisibility(VISIBLE);
+            } else {
+                bloodPressureGroup.setVisibility(View.GONE);
+                bloodPressureTitle.setVisibility(View.GONE);
+                bloodPressureTextView.setVisibility(View.GONE);
+            }
 
             if (respiration != null) {
                 respirationTextView.setText(getString(R.string.fragment_summary_text_view_respiration_text, respiration.getSum()));
@@ -215,7 +229,7 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setVisibility(View.GONE);
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar) {
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration==null && bloodPressure == null) {
                 noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
