@@ -1,16 +1,16 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 
 public abstract class WearOSDevice {
-    public final Device device;
+    public final DeviceRecord deviceRecord;
 
-    protected WearOSDevice(Device d){
-        device=d;
+    protected WearOSDevice(DeviceRecord d){
+        deviceRecord =d;
 
     }
 
     protected String getAddress(){
-        return device.getAddress();
+        return deviceRecord.getAddress();
     }
 }
