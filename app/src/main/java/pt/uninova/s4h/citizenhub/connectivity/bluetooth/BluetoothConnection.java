@@ -26,8 +26,6 @@ import pt.uninova.util.messaging.Observer;
 
 public class BluetoothConnection extends BluetoothGattCallback implements Connection {
 
-    public final static UUID ORG_BLUETOOTH_SERVICE_HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
-
     public final static UUID ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
     private final Queue<Runnable> runnables;
@@ -49,7 +47,6 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     public void addCharacteristicListener(CharacteristicListener listener) {
         System.out.println("BluetoothConnection.addCharacteristicListener");
-
         final Pair<UUID, UUID> key = characteristicKey(listener);
 
         synchronized (characteristicListenerMap) {
@@ -90,6 +87,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         return new Pair<>(serviceUuid, characteristicUuid);
     }
 
+    public void connect(BluetoothDevice bluetoothDevice) {
+        bluetoothDevice.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
+    }
+
     public void close() {
         characteristicListenerMap.clear();
         descriptorListenerMap.clear();
@@ -97,7 +98,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
         stateChangedMessageDispatcher.close();
         if (gatt != null) {
-            gatt.disconnect ();
+            gatt.disconnect();
             gatt.close();
         }
     }
@@ -150,6 +151,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        System.out.println("BluetoothConnection.onCharacteristicChanged");
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {

@@ -1,8 +1,10 @@
 package pt.uninova.s4h.citizenhub;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import java.util.Objects;
 
-public class DeviceListItem {
+import pt.uninova.s4h.citizenhub.connectivity.Device;
+
+public class DeviceListItem implements Comparable<DeviceListItem> {
     private int imageResource;
     private String name;
     private String address;
@@ -45,5 +47,23 @@ public class DeviceListItem {
 
     public String getAddress() {
         return device.getAddress();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeviceListItem that = (DeviceListItem) o;
+        return device.equals(that.device);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(device);
+    }
+
+    @Override
+    public int compareTo(DeviceListItem o) {
+        return device.compareTo(o.getDevice());
     }
 }

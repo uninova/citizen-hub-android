@@ -26,9 +26,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 public class DeviceSearchFragment extends Fragment {
@@ -188,7 +189,8 @@ public class DeviceSearchFragment extends Fragment {
             if (address.equals("0C:B2:B7:39:99:63"))
                 name = "Posture Sensor";
 
-            Device device = new Device(name, address, ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
+            Device device = new Device(address, name == null ? "{Unnamed}" : name, ConnectionKind.BLUETOOTH);
+
             if (!model.isDevicePaired(device)) {
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
                 adapter.notifyItemInserted(0);
@@ -198,7 +200,7 @@ public class DeviceSearchFragment extends Fragment {
     }
 
 
-    private void onDeviceUpdate(List<Device> devices) {
+    private void onDeviceUpdate(List<DeviceRecord> deviceRecords) {
 
     }
 

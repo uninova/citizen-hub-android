@@ -8,58 +8,56 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
 
 public class DeviceViewModel extends AndroidViewModel {
+
+    private final DeviceRepository deviceRepository;
+    private final FeatureRepository featureRepository;
+
     private final MutableLiveData<Device> device;
-    final private DeviceRepository deviceRepository;
     private final MutableLiveData<Feature> feature;
     private final LiveData<List<Feature>> featureList;
-    final private FeatureRepository featureRepository;
+
     private List<Device> deviceList;
 
     public DeviceViewModel(Application application) {
         super(application);
-        deviceRepository = new DeviceRepository(application);
-        device = new MutableLiveData<>();
-        deviceRepository.obtainAll(value -> deviceList = value);
 
+        deviceRepository = new DeviceRepository(application);
         featureRepository = new FeatureRepository(application);
+
+        device = new MutableLiveData<>();
         feature = new MutableLiveData<>();
         featureList = featureRepository.getAllLive();
-    }
 
-    public List<Device> getAllActive() {
-        return deviceRepository.getWithState(StateKind.ACTIVE);
-    }
+        deviceList = new LinkedList<>();
 
-    public List<Device> getAllInactive() {
-        return deviceRepository.getWithState(StateKind.INACTIVE);
-    }
-
-    public List<Device> getWithAgent(String type) {
-        return deviceRepository.getWithAgent(type);
+        deviceRepository.obtainAll((List<DeviceRecord> value) -> {
+            for (DeviceRecord i : value) {
+                deviceList.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()));
+            }
+        });
     }
 
     public List<FeatureListItem> getSupportedFeatures(AgentOrchestrator agentOrchestrator) {
         final List<FeatureListItem> supportedFeaturesList = new ArrayList<>();
 
-        final Agent agent = agentOrchestrator.getDeviceAgentMap().get(device.getValue());
+        final Agent agent = agentOrchestrator.getAgent(device.getValue());
 
         for (MeasurementKind kind : agent.getSupportedMeasurements()) {
             supportedFeaturesList.add(new FeatureListItem(kind));
@@ -101,7 +99,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public void apply(Feature feature, AgentOrchestrator agentOrchestrator, MeasurementRepository measurementRepository) {
-        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurement -> measurementRepository.add(measurement));
+        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurementRepository::add);
         featureRepository.add(feature);
     }
 
@@ -127,14 +125,8 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
 
-    public void createAgent(CitizenHubService service, ConnectionKind connectionKind, Observer<Agent> observer) {
-        AgentFactory factory = new AgentFactory(service);
-
-        factory.create(connectionKind, device.getValue().getAddress(), observer);
-    }
-
     public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {
-        Agent agent = agentOrchestrator.getDeviceAgentMap().get(device.getValue());
+        Agent agent = agentOrchestrator.getAgent(device.getValue());
 
         if (agent == null) throw new NullPointerException();
         return agent;
@@ -144,14 +136,17 @@ public class DeviceViewModel extends AndroidViewModel {
         this.device.postValue(device);
     }
 
+    private DeviceRecord toRecord(Device device) {
+        return new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, "");
+    }
 
     public void apply() {
-        deviceRepository.add(device.getValue());
+        deviceRepository.add(toRecord(device.getValue()));
         deviceList.add(device.getValue());
     }
 
     public void delete(Device device) {
-        deviceRepository.remove(device);
+        deviceRepository.remove(toRecord(device));
         deviceList.remove(device);
         //TODO
     }

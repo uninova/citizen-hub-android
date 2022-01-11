@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,8 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 
@@ -39,7 +39,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
     private DeviceListAdapter adapter;
     private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    public static Device deviceForSettings;
+    public static DeviceRecord deviceRecordForSettings;
     LayoutInflater localInflater;
     ViewGroup localContainer;
     private GoogleApiClient client;
@@ -129,12 +129,12 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS, StateKind.INACTIVE, null);
+        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS);
         deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
         adapter.notifyItemInserted(0);
     }
 
-    private void onDeviceUpdate(List<Device> devices) {
+    private void onDeviceUpdate(List<DeviceRecord> deviceRecords) {
 
     }
 
@@ -159,7 +159,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
                 model.setDevice(deviceList.get(position).getDevice());
                 Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
 
-                DeviceListFragment.deviceForSettings = new Device(deviceList.get(position).getName(),
+                DeviceListFragment.deviceRecordForSettings = new DeviceRecord(deviceList.get(position).getName(),
                         deviceList.get(position).getAddress(), ConnectionKind.WEAROS, StateKind.INACTIVE, null);
             }
 

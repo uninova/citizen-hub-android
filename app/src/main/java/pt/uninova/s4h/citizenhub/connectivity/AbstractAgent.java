@@ -83,6 +83,7 @@ public abstract class AbstractAgent implements Agent {
 
     @Override
     public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+        System.out.println("AbstractAgent.enableMeasurement measurementKind=" + measurementKind);
         if (getState() != AgentState.ENABLED) {
             this.addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
 

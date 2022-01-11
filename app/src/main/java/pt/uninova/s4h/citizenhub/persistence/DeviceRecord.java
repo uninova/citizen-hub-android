@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 @Entity(tableName = "device", primaryKeys = {"address"})
-public class Device {
+public class DeviceRecord {
     //TODO state passar a type para guardar o tipo de agente
     private String name;
     @NonNull
@@ -26,7 +26,7 @@ public class Device {
     //agent_type -ID do agent
 
     @Ignore
-    public Device() {
+    public DeviceRecord() {
         address = null;
     }
 
@@ -34,8 +34,8 @@ public class Device {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Device device = (Device) o;
-        return address.equals(device.address);
+        DeviceRecord deviceRecord = (DeviceRecord) o;
+        return address.equals(deviceRecord.address);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Device {
         return Objects.hash(address);
     }
 
-    public Device(String name, String address, ConnectionKind connectionKind, StateKind state, String agentType) {
+    public DeviceRecord(String name, String address, ConnectionKind connectionKind, StateKind state, String agentType) {
         this.name = name;
         this.address = address;
         this.connectionKind = connectionKind;

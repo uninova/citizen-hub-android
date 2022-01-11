@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 
 public class DeviceAddFragment extends Fragment {
 
@@ -34,9 +34,9 @@ public class DeviceAddFragment extends Fragment {
         });
 
         TextView detailText = result.findViewById(R.id.text_add_fragment);
-        Device device = DeviceListFragment.deviceForSettings;
+        DeviceRecord deviceRecord = DeviceListFragment.deviceRecordForSettings;
 
-        detailText.setText("Name: " + device.getName() + "\n" + "Address: " + device.getAddress());
+        detailText.setText("Name: " + deviceRecord.getName() + "\n" + "Address: " + deviceRecord.getAddress());
 
         return result;
     }
