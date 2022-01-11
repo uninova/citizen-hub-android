@@ -16,13 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import java.util.Objects;
-
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
@@ -45,9 +43,11 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+        final Device device = model.getSelectedDevice().getValue();
+
         CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
         AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
-        final Device device = model.getSelectedDevice().getValue();
+
         ProgressBar progressBar = view.findViewById(R.id.add_pprogressBar);
 
         connectDevice = view.findViewById(R.id.buttonConfiguration);
@@ -57,26 +57,20 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setText("Loading device features...");
 
-        model.createAgent(service, Objects.requireNonNull(model.getSelectedDevice().getValue()).getConnectionKind(), agent -> {
-            agentOrchestrator.add(model.getSelectedDevice().getValue(), agent);
-            if (model.getSelectedDevice().getValue().getAgentType() != null) {
-                loadSupportedFeatures();
-            }
-            requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    DeviceConfigurationAddFragment.this.loadSupportedFeatures();
+        agentOrchestrator.add(device, value -> requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DeviceConfigurationAddFragment.this.loadSupportedFeatures();
 
-                    connectDevice.setOnClickListener(v -> {
+                connectDevice.setOnClickListener(v -> {
 
-                        agent.enable();
-                        model.apply();
+                    value.enable();
+                    model.apply();
 
-                        DeviceConfigurationAddFragment.this.saveFeaturesChosen();
+                    DeviceConfigurationAddFragment.this.saveFeaturesChosen();
 
-                        if(device.getName().startsWith("UprightGO2"))
-                        {
-                            new AlertDialog.Builder(getContext())
+                    if (device.getName().startsWith("UprightGO2")) {
+                        new AlertDialog.Builder(getContext())
                                 .setTitle("Sensor Calibration")
                                 .setMessage("ATTENTION: Before pressing Calibrate, please ensure you are sitting and have" +
                                         " your back straight.")
@@ -86,7 +80,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                                         //TODO calibrate and animate
                                         dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
 
-                                        UprightGo2Agent agent = (UprightGo2Agent) agentOrchestrator.getDeviceAgentMap().get(device);
+                                        UprightGo2Agent agent = (UprightGo2Agent) value;
 
                                         //Send Message calibration
                                         agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
@@ -100,7 +94,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                                         int strength = 1;
 
                                         //Send Message vibration settings
-                                        agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern,pattern,strength ));
+                                        agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
 
                                         handler.sendMessageDelayed(new Message(), 2500);
 
@@ -108,17 +102,14 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                                 })
                                 .setIcon(R.drawable.img_citizen_hub_logo_png)
                                 .show();
-                        }
-                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
-                    });
+                    }
+                    Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                });
 
-                    progressBar.setVisibility(View.INVISIBLE);
-                    connectDevice.setText("connect");
-                }
-
-            });
-
-        });
+                progressBar.setVisibility(View.INVISIBLE);
+                connectDevice.setText("connect");
+            }
+        }));
 
         return view;
     }

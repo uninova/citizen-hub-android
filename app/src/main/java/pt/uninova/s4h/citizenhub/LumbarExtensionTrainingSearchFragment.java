@@ -34,6 +34,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
@@ -41,7 +42,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
@@ -81,9 +82,9 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             if (!alreadyConnected&&getView()!=null) {
                 buildRecycleView(requireView());
 
-                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH, StateKind.INACTIVE, null);
-                if (!model.isDevicePaired(device)) {
+                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH);
 
+                if (!model.isDevicePaired(device)) {
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
 
                     if (deviceItemList.size() > 0) {
