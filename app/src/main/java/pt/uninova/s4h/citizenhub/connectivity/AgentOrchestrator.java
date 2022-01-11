@@ -1,0 +1,120 @@
+package pt.uninova.s4h.citizenhub.connectivity;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.util.UUIDv5;
+import pt.uninova.util.messaging.Observer;
+
+public class AgentOrchestrator {
+
+    private static UUIDv5 NAMESPACE_GENERATOR;
+
+    static {
+        try {
+            NAMESPACE_GENERATOR = new UUIDv5("pt.uninova");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final Map<Device, Agent> agentMap;
+    private final Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap;
+
+    private final List<AgentOrchestratorListener> listeners;
+
+    public AgentOrchestrator() {
+        this(new HashMap<>());
+    }
+
+    public AgentOrchestrator(Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap) {
+        this.agentMap = new HashMap<>();
+        this.agentFactoryMap = agentFactoryMap;
+        this.listeners = new LinkedList<>();
+    }
+
+    public static UUIDv5 namespaceGenerator() {
+        return NAMESPACE_GENERATOR;
+    }
+
+    public void add(Device device) {
+        add(device, value -> {
+        });
+    }
+
+    public void add(Device device, Observer<Agent> observer) {
+        final AgentFactory<? extends Agent> factory = agentFactoryMap.get(device.getConnectionKind());
+
+        if (factory != null) {
+            put(device, null);
+            tellOnDeviceAdded(device);
+
+            factory.create(device.getAddress(), (value) -> {
+                put(device, value);
+                tellOnAgentAttached(device, value);
+                observer.observe(value);
+            });
+        } else {
+            observer.observe(null);
+        }
+    }
+
+    public void addListener(AgentOrchestratorListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public void clear() {
+        this.agentMap.clear();
+        this.agentFactoryMap.clear();
+        this.listeners.clear();
+    }
+
+    public Agent getAgent(Device device) {
+        return agentMap.get(device);
+    }
+
+    public Set<Device> getDevices() {
+        return Collections.unmodifiableSet(new TreeSet<>(agentMap.keySet()));
+    }
+
+    private void put(Device device, Agent agent) {
+        agentMap.put(device, agent);
+    }
+
+    public void remove(Device device) {
+        agentMap.remove(device);
+
+        tellOnDeviceRemoved(device);
+    }
+
+    public void removeListener(AgentOrchestratorListener listener) {
+        this.listeners.remove(listener);
+    }
+
+    private void tellOnAgentAttached(Device device, Agent agent) {
+        for (AgentOrchestratorListener i : listeners) {
+            i.onAgentAttached(device, agent);
+        }
+    }
+
+    private void tellOnDeviceAdded(Device device) {
+        for (AgentOrchestratorListener i : listeners) {
+            i.onDeviceAdded(device);
+        }
+    }
+
+    private void tellOnDeviceRemoved(Device device) {
+        for (AgentOrchestratorListener i : listeners) {
+            i.onDeviceRemoved(device);
+        }
+    }
+
+
+}
