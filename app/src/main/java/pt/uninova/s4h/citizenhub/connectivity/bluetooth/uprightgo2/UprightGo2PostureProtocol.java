@@ -79,50 +79,49 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
         //handle sensor evaluation of good posture
         connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
-             @Override
-             public void onChange(byte[] value) {
+                                                 @Override
+                                                 public void onChange(byte[] value) {
+                                                     System.out.println("UprightGo2PostureProtocol.attachObservers.BaseCharacteristicListener.onChange");
+                                                     final LocalDateTime now = LocalDateTime.now();
 
-                 final LocalDateTime now = LocalDateTime.now();
+                                                     byte[] bytes = value;
+                                                     ByteBuffer byteBuffer = ByteBuffer.wrap(bytes).asReadOnlyBuffer();
+                                                     String s = Arrays.toString(bytes);
 
-                 byte[] bytes = value;
-                 ByteBuffer byteBuffer = ByteBuffer.wrap(bytes).asReadOnlyBuffer();
-                 String s = Arrays.toString(bytes);
+                                                     final double[] parsed = new double[]{
+                                                             byteBuffer.get(0), byteBuffer.get(1), byteBuffer.get(2)
+                                                     };
 
-                 final double[] parsed = new double[]{
-                         byteBuffer.get(0), byteBuffer.get(1), byteBuffer.get(2)
-                 };
+                                                     System.out.println("Result: " + s + parsed[0] + "|" + parsed[1] + "|" + parsed[2]);
 
-                 System.out.println("Result: " + s + parsed[0] + "|" + parsed[1] + "|" + parsed[2]);
-                 if (lastPosture != null)
-
-                 if (isGoodPosture_Sensor(parsed[0])) { //new reading is good posture
-                     if (lastPosture != null) { //if there is previous posture
-                         final Duration duration = Duration.between(lastTimestamp, now); //gets duration to dispatch
-                         //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
-                         if (lastPosture == MeasurementKind.GOOD_POSTURE)
-                             getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
-                         else if (lastPosture == MeasurementKind.BAD_POSTURE)
-                            getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
-                         lastPosture = MeasurementKind.GOOD_POSTURE; // we save this posture reading for next iteration
-                     } else { //if no previous last posture
-                         lastPosture = MeasurementKind.GOOD_POSTURE; // we save this posture reading for next iteration
-                     }
-                 } else { //new reading is bad posture
-                     if (lastPosture != null) {//if there is previous posture
-                         final Duration duration = Duration.between(lastTimestamp, now); //gets duration to dispatch
-                         //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
-                         if (lastPosture == MeasurementKind.GOOD_POSTURE)
-                             getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
-                         else if (lastPosture == MeasurementKind.BAD_POSTURE)
-                             getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
-                         lastPosture = MeasurementKind.BAD_POSTURE; // we save this posture reading for next iteration
-                     } else { //if no previous last posture
-                         lastPosture = MeasurementKind.BAD_POSTURE; // we save this posture reading for next iteration
-                     }
-                 }
-                 lastTimestamp = now; //always saves time of last posture
-             }
-         }
+                                                     if (isGoodPosture_Sensor(parsed[0])) { //new reading is good posture
+                                                         if (lastPosture != null) { //if there is previous posture
+                                                             final Duration duration = Duration.between(lastTimestamp, now); //gets duration to dispatch
+                                                             //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
+                                                             if (lastPosture == MeasurementKind.GOOD_POSTURE)
+                                                                 getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
+                                                             else if (lastPosture == MeasurementKind.BAD_POSTURE)
+                                                                 getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
+                                                             lastPosture = MeasurementKind.GOOD_POSTURE; // we save this posture reading for next iteration
+                                                         } else { //if no previous last posture
+                                                             lastPosture = MeasurementKind.GOOD_POSTURE; // we save this posture reading for next iteration
+                                                         }
+                                                     } else { //new reading is bad posture
+                                                         if (lastPosture != null) {//if there is previous posture
+                                                             final Duration duration = Duration.between(lastTimestamp, now); //gets duration to dispatch
+                                                             //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
+                                                             if (lastPosture == MeasurementKind.GOOD_POSTURE)
+                                                                 getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
+                                                             else if (lastPosture == MeasurementKind.BAD_POSTURE)
+                                                                 getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
+                                                             lastPosture = MeasurementKind.BAD_POSTURE; // we save this posture reading for next iteration
+                                                         } else { //if no previous last posture
+                                                             lastPosture = MeasurementKind.BAD_POSTURE; // we save this posture reading for next iteration
+                                                         }
+                                                     }
+                                                     lastTimestamp = now; //always saves time of last posture
+                                                 }
+                                             }
         );
     }
 
