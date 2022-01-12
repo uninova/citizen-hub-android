@@ -14,20 +14,29 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_EDIT_TEXT_PREFERENCE = "workdays";
+    private static final String KEY_WORK_TIME_START = "workStart";
+    private static final String KEY_WORK_TIME_END = "workEnd";
+
     private SharedPreferences preferences;
+
+    public static List<String> days;
+    public static String workStart =null;
+    public static final String workEnd=null;
+    public static final boolean isWorking = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext());
-
     }
 
     @Override
@@ -93,6 +102,29 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 }
             }
         }
+        if(key.equals(KEY_WORK_TIME_START)){
+            workStart = preferences.getString(KEY_WORK_TIME_START,"09:00");
+        }
+        if(key.equals(KEY_WORK_TIME_END)){
+            workStart = preferences.getString(KEY_WORK_TIME_END,"17:00");
+        }
+
+        isWorkTime(days,workStart,workEnd);
+
+    }
+
+    public boolean isWorkTime(List<String> days,String workStart, String workEnd){
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        if(days.contains(currentTime.getDayOfWeek().name())){
+            LocalDateTime start = LocalDateTime.parse(workStart);
+            LocalDateTime end = LocalDateTime.parse(workEnd);
+            if( currentTime.isAfter(start) && currentTime.isBefore(end)){
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     public List<String> getCurrentEntries(MultiSelectListPreference preference) {
