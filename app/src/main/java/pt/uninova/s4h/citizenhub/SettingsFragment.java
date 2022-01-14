@@ -112,12 +112,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equals(KEY_WORK_TIME_END)) {
             workEnd = preferences.getString(KEY_WORK_TIME_END, "17:00");
         }
-
-        isWorkTime();
-
+        preferences.edit().putBoolean( "workTime"  ,isWorkTime()).apply();
     }
 
-    public static boolean isWorkTime() {
+    public boolean isWorkTime() {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (days != null && workStart != null && workEnd != null) {
@@ -144,6 +142,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             }
         }
         System.out.println(isWorking);
+        preferences.edit().putBoolean("workTime",isWorking).apply();
         return isWorking;
     }
 
