@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import pt.uninova.util.WorkTimeRangeConverter;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -93,6 +96,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         updatePreference(key);
     }
 
+    private void refreshPreferences(Context context){
+        WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(context);
+        workTimeRangeConverter.refreshTimeVariables(context);
+    }
+
     private void updatePreference(String key) {
         if (key.equals(KEY_EDIT_TEXT_PREFERENCE)) {
             Preference preference = findPreference(key);
@@ -112,10 +120,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equals(KEY_WORK_TIME_END)) {
             workEnd = preferences.getString(KEY_WORK_TIME_END, "17:00");
         }
-        preferences.edit().putBoolean( "workTime"  ,isWorkTime()).apply();
+        refreshPreferences(requireContext());
+        isWorkTime();
     }
 
-    public boolean isWorkTime() {
+    public static int isWorkTime() {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (days != null && workStart != null && workEnd != null) {
@@ -134,16 +143,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     System.out.println("End " + end);
                     if (now.isAfter(start) && now.isBefore(end)) {
                         System.out.println("tá dentro");
-                        isWorking = true;
+                        return 1;
                     }
-                    isWorking = false;
-                    return isWorking;
+                    return 0;
                 }
             }
         }
-        System.out.println(isWorking);
-        preferences.edit().putBoolean("workTime",isWorking).apply();
-        return isWorking;
+        return 0;
     }
 
     public List<String> getCurrentEntries(MultiSelectListPreference preference) {
