@@ -1,8 +1,14 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.preference.PreferenceManager;
+
+import pt.uninova.s4h.citizenhub.SettingsFragment;
+import pt.uninova.util.WorkTimeRangeConverter;
 import pt.uninova.util.time.LocalDateInterval;
 import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.Pair;
@@ -15,19 +21,21 @@ import java.util.Map;
 public class MeasurementRepository {
 
     private final MeasurementDao measurementDao;
-
+    private WorkTimeRangeConverter workTimeRangeConverter;
     private final Map<LocalDate, LiveData<Map<MeasurementKind, MeasurementAggregate>>> dailyAggregateMap;
-
+    private Boolean isWorking;
     public MeasurementRepository(Application application) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
 
         measurementDao = citizenHubDatabase.measurementDao();
         dailyAggregateMap = new HashMap<>();
+        workTimeRangeConverter = WorkTimeRangeConverter.getInstance(application.getApplicationContext());
     }
 
     public void add(Measurement measurement) {
         System.out.println("MeasurementRepository.add kind=" + measurement.getKind() + " value=" + measurement.getValue());
         CitizenHubDatabase.executorService().execute(() -> {
+          measurement.setIsWorking(workTimeRangeConverter.isNowWorkTime());
             measurementDao.insert(measurement);
         });
     }
