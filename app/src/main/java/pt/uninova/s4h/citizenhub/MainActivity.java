@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 
@@ -15,11 +16,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBinder;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -68,6 +78,33 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        //testing
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("firstTimeTesting", false)) {
+            // <---- run your one time code here
+
+            LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(getApplication());
+            lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 206, (float) 95.9, 18,80));
+            MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+            Date now = Date.from(Instant.now());
+
+            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 60.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.GOOD_POSTURE, 100.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.CALORIES, 550.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.DISTANCE, 1350.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 73.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 993.5));
+            measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 14.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTimeTesting", true);
+            editor.commit();
+        }
+
 
     }
 
