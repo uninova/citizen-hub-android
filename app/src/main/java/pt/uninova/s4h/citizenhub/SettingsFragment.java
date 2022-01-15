@@ -35,8 +35,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public static List<String> days;
     public static String workStart = "09:00";
     public static String workEnd = "17:00";
-    public static boolean isWorking = false;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,36 +119,36 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             workEnd = preferences.getString(KEY_WORK_TIME_END, "17:00");
         }
         refreshPreferences(requireContext());
-        isWorkTime();
+//        isWorkTime();
     }
 
-    public static int isWorkTime() {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        if (days != null && workStart != null && workEnd != null) {
-            System.out.println(days);
-            for (String day : days
-            ) {
-                if (day.equalsIgnoreCase(currentTime.getDayOfWeek().name())) {
-
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime start = LocalTime.parse(workStart, formatter);
-                    LocalTime end = LocalTime.parse(workEnd, formatter);
-                    LocalTime now = LocalTime.parse(LocalTime.now().format(formatter));
-
-                    System.out.println("Preferences: " + workStart + " -> " + workEnd);
-                    System.out.println("Start " + start);
-                    System.out.println("End " + end);
-                    if (now.isAfter(start) && now.isBefore(end)) {
-                        System.out.println("tá dentro");
-                        return 1;
-                    }
-                    return 0;
-                }
-            }
-        }
-        return 0;
-    }
+//    public static int isWorkTime() {
+//        LocalDateTime currentTime = LocalDateTime.now();
+//
+//        if (days != null && workStart != null && workEnd != null) {
+//            System.out.println(days);
+//            for (String day : days
+//            ) {
+//                if (day.equalsIgnoreCase(currentTime.getDayOfWeek().name())) {
+//
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+//                    LocalTime start = LocalTime.parse(workStart, formatter);
+//                    LocalTime end = LocalTime.parse(workEnd, formatter);
+//                    LocalTime now = LocalTime.parse(LocalTime.now().format(formatter));
+//
+//                    System.out.println("Preferences: " + workStart + " -> " + workEnd);
+//                    System.out.println("Start " + start);
+//                    System.out.println("End " + end);
+//                    if (now.isAfter(start) && now.isBefore(end)) {
+//                        System.out.println("tá dentro");
+//                        return 1;
+//                    }
+//                    return 0;
+//                }
+//            }
+//        }
+//        return 0;
+//    }
 
     public List<String> getCurrentEntries(MultiSelectListPreference preference) {
         CharSequence[] entries = preference.getEntries();
