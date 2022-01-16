@@ -56,6 +56,9 @@ public class StandardProtocolBloodPressure extends BluetoothMeasuringProtocol {
 
                 //TODO: only dispaching heart rate. implement other measurements kinds.
                 getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, pulse));
+                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_SBP, systolic));
+                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_DBP, diastolic));
+                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_MEAN_AP, meanAP));
             }
         });
 
