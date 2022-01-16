@@ -237,9 +237,17 @@ public class ReportDetailFragment extends Fragment {
                 respirationGroup.setVisibility(View.GONE);
             }
 
-
-
-
+            if (bloodPressure != null) {
+                if (bloodPressureGroup != null) {
+                    bloodPressureGroup.setVisibility(View.VISIBLE);
+                }
+                bloodPressureSBP.setText(String.valueOf(bloodPressure.getMax()));
+                bloodPressureDBP.setText(String.valueOf(bloodPressure.getMin()));
+                bloodPressureMeanAP.setText(String.valueOf(bloodPressure.getAverage()));
+            }
+            else if (bloodPressureGroup != null) {
+                bloodPressureGroup.setVisibility(View.GONE);
+            }
 
             if (lumbarExtensionTraining != null) {
                 if (lumbarExtensionTrainingGroup != null) {
