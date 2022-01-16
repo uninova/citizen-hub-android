@@ -37,9 +37,9 @@ public class ReportDetailFragment extends Fragment {
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
-            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight;
+            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBP, bloodPressureDBP, bloodPressureMeanAP;
     private LumbarExtensionTraining lumbarExtensionTraining;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
     private boolean isSucess;
 
     @Override
@@ -117,6 +117,8 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
         final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
+        final MeasurementAggregate bloodPressure = value.get(MeasurementKind.BLOOD_PRESSURE);
+        final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
             final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null
@@ -279,6 +281,10 @@ public class ReportDetailFragment extends Fragment {
         heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
         heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
         heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
+        bloodPressureSBP = view.findViewById(R.id.fragment_report_blood_pressure_sbp_value);
+        bloodPressureDBP = view.findViewById(R.id.fragment_report_blood_pressure_dbp_value);
+        bloodPressureMeanAP = view.findViewById(R.id.fragment_report_blood_pressure_meanAP_value);
+        respirationRate = bloodPressureSBP = view.findViewById(R.id.fragment_report_respiration_breathing_rate_value);
         distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
@@ -293,6 +299,8 @@ public class ReportDetailFragment extends Fragment {
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
         distanceGroup = view.findViewById(R.id.distanceGroup);
+        bloodPressureGroup = view.findViewById(R.id.bloodPressureGroup);
+        respirationGroup = view.findViewById(R.id.respirationGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
