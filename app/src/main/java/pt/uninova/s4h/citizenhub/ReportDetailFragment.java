@@ -37,10 +37,9 @@ public class ReportDetailFragment extends Fragment {
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
-            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBP, bloodPressureDBP, bloodPressureMeanAP;
+            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
     private LumbarExtensionTraining lumbarExtensionTraining;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
-    private boolean isSucess;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,11 +116,13 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
         final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressure = value.get(MeasurementKind.BLOOD_PRESSURE);
+        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
         final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -176,7 +177,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null && respiration == null && bloodPressure == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null && respiration == null && bloodPressureSBPavg==null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -237,13 +238,13 @@ public class ReportDetailFragment extends Fragment {
                 respirationGroup.setVisibility(View.GONE);
             }
 
-            if (bloodPressure != null) {
+            if (bloodPressureSBP != null && bloodPressureDBP !=null && bloodPressureMeanAP!=null) {
                 if (bloodPressureGroup != null) {
                     bloodPressureGroup.setVisibility(View.VISIBLE);
                 }
-                bloodPressureSBP.setText(String.valueOf(bloodPressure.getMax()));
-                bloodPressureDBP.setText(String.valueOf(bloodPressure.getMin()));
-                bloodPressureMeanAP.setText(String.valueOf(bloodPressure.getAverage()));
+                bloodPressureSBPavg.setText(String.valueOf(bloodPressureSBP.getAverage()));
+                bloodPressureDBPavg.setText(String.valueOf(bloodPressureDBP.getAverage()));
+                bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
             }
             else if (bloodPressureGroup != null) {
                 bloodPressureGroup.setVisibility(View.GONE);
@@ -301,10 +302,10 @@ public class ReportDetailFragment extends Fragment {
         heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
         heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
         heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
-        bloodPressureSBP = view.findViewById(R.id.fragment_report_blood_pressure_sbp_value);
-        bloodPressureDBP = view.findViewById(R.id.fragment_report_blood_pressure_dbp_value);
-        bloodPressureMeanAP = view.findViewById(R.id.fragment_report_blood_pressure_meanAP_value);
-        respirationRate = bloodPressureSBP = view.findViewById(R.id.fragment_report_respiration_breathing_rate_value);
+        bloodPressureSBPavg = view.findViewById(R.id.fragment_report_blood_pressure_sbp_value);
+        bloodPressureDBPavg = view.findViewById(R.id.fragment_report_blood_pressure_dbp_value);
+        bloodPressureMeanAPavg = view.findViewById(R.id.fragment_report_blood_pressure_meanAP_value);
+        respirationRate = view.findViewById(R.id.fragment_report_respiration_breathing_rate_value);
         distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
