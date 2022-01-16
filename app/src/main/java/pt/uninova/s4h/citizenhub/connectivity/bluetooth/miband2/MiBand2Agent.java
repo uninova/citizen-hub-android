@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;

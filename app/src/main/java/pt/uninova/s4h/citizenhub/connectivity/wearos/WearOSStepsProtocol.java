@@ -2,13 +2,11 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 

@@ -31,13 +31,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class DeviceListFragment extends Fragment {
 
-    public static Device deviceForSettings;
+    public static DeviceRecord deviceRecordForSettings;
     public static MutableLiveData<DeviceListItem> asd;
     TextView noDevices;
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
@@ -54,7 +57,7 @@ public class DeviceListFragment extends Fragment {
     private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<DeviceListItem> deviceList;
+    private List<DeviceListItem> deviceList;
     private Button searchDevices;
     private DeviceViewModel model;
 
@@ -86,25 +89,41 @@ public class DeviceListFragment extends Fragment {
             buildRecycleView(result);
         }
 
-        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
+        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevices().size() > 0) {
             deviceList.clear();
 
-            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
+            for (pt.uninova.s4h.citizenhub.connectivity.Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevices()
             ) {
                 deviceList.add(new DeviceListItem(device));
                 adapter.notifyDataSetChanged();
             }
         }
         Activity activity = requireActivity();
-        ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
-            deviceList.clear();
-            for (Device device : value.getDeviceList()) {
-                deviceList.add(new DeviceListItem(device));
+        ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addListener(new AgentOrchestratorListener() {
+            @Override
+            public void onDeviceAdded(pt.uninova.s4h.citizenhub.connectivity.Device device) {
+                DeviceListItem listItem = new DeviceListItem(device);
+
+                if (!deviceList.contains(listItem)) {
+                    deviceList.add(listItem);
+                    Collections.sort(deviceList);
+                }
+
+                activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
             }
 
-            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
+            @Override
+            public void onDeviceRemoved(pt.uninova.s4h.citizenhub.connectivity.Device device) {
+                DeviceListItem listItem = new DeviceListItem(device);
 
+                if (deviceList.contains(listItem)) {
+                    deviceList.remove(listItem);
+                }
+
+                activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
+            }
         });
+
 
         buildRecycleView(result);
         setHasOptionsMenu(false); //shows Action Bar menu button

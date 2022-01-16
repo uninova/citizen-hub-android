@@ -14,33 +14,33 @@ import java.util.List;
 public interface DeviceDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Device device);
+    void insert(DeviceRecord deviceRecord);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(Device device);
+    void update(DeviceRecord deviceRecord);
 
     @Delete
-    void delete(Device device);
+    void delete(DeviceRecord deviceRecord);
 
     @Query("DELETE FROM device")
     void deleteAll();
 
     @Query("SELECT * FROM device")
-    List<Device> getAll();
+    List<DeviceRecord> getAll();
 
     @Query("SELECT * FROM device WHERE address =:deviceAddress")
-    Device get(String deviceAddress);
+    DeviceRecord get(String deviceAddress);
 
 
     @Query("SELECT * FROM device WHERE connection_kind=:connectionKind")
     @TypeConverters(ConnectionKindTypeConverter.class)
-    List<Device> getAllWithConnectionKind(ConnectionKind connectionKind);
+    List<DeviceRecord> getAllWithConnectionKind(ConnectionKind connectionKind);
 
     @Query("SELECT * FROM device WHERE state=:stateKind")
     @TypeConverters(StateKindTypeConverter.class)
-    List<Device> getWithState(StateKind stateKind);
+    List<DeviceRecord> getWithState(StateKind stateKind);
 
     @Query("SELECT * FROM device WHERE type=:type")
-    List<Device> getWithAgent(String type);
+    List<DeviceRecord> getWithAgent(String type);
 
 }

@@ -3,34 +3,44 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
+import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
 
     boolean mBound = false;
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
-    private AgentOrchestrator agentOrchestrator;
+    private AgentOrchestrator orchestrator;
     private NotificationManager notificationManager;
     private WearOSMessageService wearOSMessageService;
     private WearOSServiceBinder wearOSServiceBinder;
-    private ServiceConnection connection = new ServiceConnection() {
 
+    private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
@@ -67,12 +77,37 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     }
 
     public AgentOrchestrator getAgentOrchestrator() {
-        return agentOrchestrator;
+        return orchestrator;
     }
 
-    public WearOSMessageService getWearOSMessageService(){
+    public WearOSMessageService getWearOSMessageService() {
 
         return wearOSMessageService;
+    }
+
+    private void initAgentOrchestrator() {
+        final Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
+
+        agentFactoryMap.put(ConnectionKind.BLUETOOTH, new BluetoothAgentFactory(this));
+
+        orchestrator = new AgentOrchestrator(agentFactoryMap);
+
+        DeviceRepository deviceRepository = new DeviceRepository(getApplication());
+        FeatureRepository featureRepository = new FeatureRepository(getApplication());
+        MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+
+        deviceRepository.obtainAll(value -> {
+            for (DeviceRecord i : value) {
+                orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
+                    agent.enable();
+                    featureRepository.obtainKindsFromDevice(i.getAddress(), kindList -> {
+                        for (MeasurementKind kind : kindList) {
+                            agent.enableMeasurement(kind, measurementRepository::add);
+                        }
+                    });
+                });
+            }
+        });
     }
 
     @Override
@@ -86,22 +121,19 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     public void onCreate() {
         super.onCreate();
 
-
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannel();
 
         startForeground(1, buildNotification());
         wearOSMessageService = new WearOSMessageService();
 
-        agentOrchestrator = new AgentOrchestrator(this);
-
-        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+        initAgentOrchestrator();
     }
 
 
     @Override
     public void onDestroy() {
-        agentOrchestrator.close();
+        orchestrator.clear();
 
         super.onDestroy();
     }

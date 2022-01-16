@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.Device;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
@@ -68,7 +68,6 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void loadSupportedFeatures() {
-
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
         listViewFeatures.setAdapter(adapter);
         adapter.updateResults(getSupportedFeatures());
@@ -92,7 +91,7 @@ public class DeviceConfigurationFragment extends Fragment {
     protected void setFeaturesState() {
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
 
-            Objects.requireNonNull(agentOrchestrator.getDeviceAgentMap().get(model.getSelectedDevice().getValue())).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
+            Objects.requireNonNull(agentOrchestrator.getAgent(model.getSelectedDevice().getValue())).disableMeasurement(((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind());
         }
         for (int i = 0; i < listViewFeatures.getAdapter().getCount(); i++) {
 
