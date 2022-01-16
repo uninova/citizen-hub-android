@@ -386,6 +386,27 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
+        measurementAggregate = detailAggregates.get(MeasurementKind.RESPIRATION_RATE);
+
+        if (measurementAggregate != null) {
+            Drawable respiration_rate = res.getDrawable(R.drawable.ic_lungs, null);
+            respiration_rate.setBounds(0, 0, respiration_rate.getIntrinsicWidth(), respiration_rate.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            respiration_rate.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText("Breathing Rate:", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+
+            y += 20;
+
+            y += 40;
+        }
+
         measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
         MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
         MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
@@ -404,17 +425,17 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
             canvasWriter.addText(res.getString(R.string.pdf_report_average_SBP_text), x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
             canvasWriter.addText("Average DBP: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate2.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
             canvasWriter.addText("Mean AP: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate3.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
 
