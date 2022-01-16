@@ -385,6 +385,42 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+        MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        if (measurementAggregate != null && measurementAggregate2 !=null && measurementAggregate3 !=null) {
+
+            y -= 10;
+
+            Drawable bloodPressure = res.getDrawable(R.drawable.ic_blood_pressure, null);
+            bloodPressure.setBounds(0, 0, bloodPressure.getIntrinsicWidth(), bloodPressure.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x - 15, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            bloodPressure.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText(res.getString(R.string.pdf_report_average_SBP_text), x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Average DBP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate2.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Mean AP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate3.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+
+            y += 20;
+
+            y += 40;
+        }
+
         if (lumbarTraining != null) {
 
             Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);

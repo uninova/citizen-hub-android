@@ -140,7 +140,7 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate bloodPressureDBP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_DBP);
             final MeasurementAggregate bloodPressureMeanAP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
 
-            if (bloodPressureSBP != null && bloodPressureDBP!=null && bloodPressureMeanAP!=null) {
+            if (bloodPressureSBP != null && bloodPressureDBP != null && bloodPressureMeanAP != null) {
                 bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, bloodPressureSBP.getAverage().toString(),
                         bloodPressureDBP.getAverage().toString(), bloodPressureMeanAP.getAverage().toString()));
                 bloodPressureGroup.setVisibility(VISIBLE);

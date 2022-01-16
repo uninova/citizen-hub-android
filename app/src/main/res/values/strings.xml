@@ -288,4 +288,5 @@
     <string name="fragment_report_detail_text_respiration_breathing_rate">Breathing Rate:</string>
     <string name="fragment_report_detail_value_respiration_breathing_rate">0</string>
     <string name="fragment_report_detail_respiration_breathing_rate_units_text">rpm</string>
+    <string name="pdf_report_average_SBP_text">Average SBP: \</string>
 </resources>
