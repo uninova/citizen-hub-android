@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 73.0));
             measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 993.5));
             measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 14.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.BLOOD_PRESSURE,4.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.BLOOD_PRESSURE_SBP,16.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.BLOOD_PRESSURE_DBP,4.0));
+            measurementRepository.add(new Measurement(now, MeasurementKind.BLOOD_PRESSURE_MEAN_AP,0.05));
             measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
             measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
 

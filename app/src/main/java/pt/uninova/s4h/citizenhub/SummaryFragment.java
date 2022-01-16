@@ -136,10 +136,13 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate goodPosture = dailySummary.get(MeasurementKind.GOOD_POSTURE);
             final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
             final MeasurementAggregate respiration = dailySummary.get(MeasurementKind.RESPIRATION_RATE);
-            final MeasurementAggregate bloodPressure = dailySummary.get(MeasurementKind.BLOOD_PRESSURE);
+            final MeasurementAggregate bloodPressureSBP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+            final MeasurementAggregate bloodPressureDBP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+            final MeasurementAggregate bloodPressureMeanAP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
 
-            if (bloodPressure != null) {
-                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, "120.5", "78.5", "0.05"));
+            if (bloodPressureSBP != null && bloodPressureDBP!=null && bloodPressureMeanAP!=null) {
+                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, bloodPressureSBP.getAverage().toString(),
+                        bloodPressureDBP.getAverage().toString(), bloodPressureMeanAP.getAverage().toString()));
                 bloodPressureGroup.setVisibility(VISIBLE);
                 bloodPressureTitle.setVisibility(VISIBLE);
                 bloodPressureTextView.setVisibility(VISIBLE);
@@ -226,7 +229,7 @@ public class SummaryFragment extends Fragment {
                 stepsTextView.setVisibility(View.GONE);
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressure == null) {
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
                 noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
