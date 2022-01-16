@@ -176,7 +176,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null && respiration == null && bloodPressure == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -227,6 +227,18 @@ public class ReportDetailFragment extends Fragment {
             } else if (heartRateGroup != null) {
                 heartRateGroup.setVisibility(View.GONE);
             }
+
+            if (respiration != null) {
+                if (respirationGroup != null) {
+                    respirationGroup.setVisibility(View.VISIBLE);
+                }
+                respirationRate.setText(String.valueOf(respiration.getAverage()));
+            } else if (respirationGroup != null) {
+                respirationGroup.setVisibility(View.GONE);
+            }
+
+
+
 
 
             if (lumbarExtensionTraining != null) {
