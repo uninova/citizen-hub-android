@@ -148,7 +148,7 @@ public class ReportViewModel extends AndroidViewModel {
         Resources res = getApplication().getResources();
         LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 1100, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         canvas.setDensity(72);
@@ -229,18 +229,18 @@ public class ReportViewModel extends AndroidViewModel {
 
         Bitmap ec_logo = BitmapFactory.decodeResource(res, R.drawable.img_ec_logo_png, options);
         canvas.save();
-        canvas.translate(10, 790);
+        canvas.translate(10, 1048);
         canvas.scale(0.04f, 0.04f);
         canvas.drawBitmap(ec_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
         CanvasWriter canvasWriter = new CanvasWriter(canvas);
-        canvasWriter.addText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
+        canvasWriter.addText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 1066, ecInfoPaint);
         canvasWriter.addNewLine("innovation programme under Grant agreement No 826117", 13);
-        canvasWriter.addText("powered by", x + 365, 813, poweredByPaint);
+        canvasWriter.addText("powered by", x + 365, 1071, poweredByPaint);
 
         Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_transparent_png, options);
         canvas.save();
-        canvas.translate(475, 801);
+        canvas.translate(475, 1059);
         canvas.scale(0.35f, 0.35f);
         canvas.drawBitmap(smart4Health_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
