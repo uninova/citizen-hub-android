@@ -283,4 +283,9 @@
     <string name="blood_pressure">blood_pressure</string>
     <string name="fragment_report_detail_value_blood_presure_DBP">0</string>
     <string name="fragment_report_detail_value_blood_presure_meanAP_value">0</string>
+    <string name="respirationTitle">Respiration</string>
+    <string name="fragment_report_detail_title_respiration">Respiration</string>
+    <string name="fragment_report_detail_text_respiration_breathing_rate">Breathing Rate:</string>
+    <string name="fragment_report_detail_value_respiration_breathing_rate">0</string>
+    <string name="fragment_report_detail_respiration_breathing_rate_units_text">rpm</string>
 </resources>

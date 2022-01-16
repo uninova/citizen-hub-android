@@ -195,10 +195,10 @@
                 android:paddingVertical="5dp"
                 android:tag="lumbar_training"
                 android:text="@string/lumbar_extension_training"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/postureTitle"
                 app:layout_constraintTop_toBottomOf="@+id/notOkPostureVal"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/bloodPressureGroup"
@@ -342,6 +342,14 @@
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight_value"
                 tools:visibility="visible" />
 
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/respirationGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="fragment_report_detail_respiration_breathing_rate_units,respirationTitle,fragment_report_respiration_breathing_rate_value,fragment_report_respiration_breathing_rate_text"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/stepsGroup"
@@ -743,10 +751,8 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_sbp_text"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_units"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_sbp_text"
-                app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />
 
             <TextView
@@ -772,7 +778,6 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_dbp_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_blood_pressure_dbp_value"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_dbp_text"
                 tools:visibility="visible" />
@@ -785,10 +790,8 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_dbp_text"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_units"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_dbp_text"
-                app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />
 
             <TextView
@@ -799,10 +802,8 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_meanAP_text"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_units"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_meanAP_text"
-                app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />
 
             <TextView
@@ -817,6 +818,55 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_blood_pressure_meanAP_value"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_meanAP_text"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/respirationTitle"
+                style="@style/ReportDetailTitle"
+                android:layout_marginTop="32dp"
+                android:layout_width="wrap_content"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:tag="@string/respirationTitle"
+                android:text="@string/fragment_report_detail_title_respiration"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_report_blood_pressure_meanAP_text"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_report_respiration_breathing_rate_text"
+                style="@style/ReportDetailValueType"
+                android:layout_marginTop="32dp"
+                android:tag="respirationBreathingRateText"
+                android:text="@string/fragment_report_detail_text_respiration_breathing_rate"
+                android:textColor="@color/colorS4HTurquoise"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
+                app:layout_constraintTop_toBottomOf="@+id/respirationTitle"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_report_respiration_breathing_rate_value"
+                style="@style/ReportDetailValue"
+                android:tag="Breathing Rate Value"
+                android:text="@string/fragment_report_detail_value_respiration_breathing_rate"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_respiration_breathing_rate_text"
+                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_respiration_breathing_rate_text"
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_report_detail_respiration_breathing_rate_units"
+                style="@style/ReportDetailUnits"
+                android:text="@string/fragment_report_detail_respiration_breathing_rate_units_text"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_respiration_breathing_rate_text"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_respiration_breathing_rate_value"
+                app:layout_constraintTop_toTopOf="@+id/fragment_report_respiration_breathing_rate_text"
                 tools:visibility="visible" />
 
 
