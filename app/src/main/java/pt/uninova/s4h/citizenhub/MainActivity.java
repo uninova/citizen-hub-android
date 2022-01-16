@@ -80,30 +80,45 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
         NavigationUI.setupWithNavController(navView, navController);
 
         //testing
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTimeTesting", false)) {
-            // <---- run your one time code here
-
-            LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(getApplication());
-            lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 206, (float) 95.9, 18,80));
-            MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
-            Date now = Date.from(Instant.now());
-
-            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 60.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.GOOD_POSTURE, 100.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.CALORIES, 550.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.DISTANCE, 1350.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 73.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 993.5));
-            measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 14.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
-            measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstTimeTesting", true);
-            editor.commit();
-        }
+//
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        if (!prefs.getBoolean("firstTimeTesting", false)) {
+//            // <---- run your one time code here
+//
+//            LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(getApplication());
+//            lumbarRepository.add(new LumbarExtensionTraining(LocalDateTime.now(), 206, (float) 95.9, 18,80));
+//            MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+//            Date now = Date.from(Instant.now());
+//
+//            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 60.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.GOOD_POSTURE, 100.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.CALORIES, 550.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.DISTANCE, 1350.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 73.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 993.5));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 14.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
+//
+//            SharedPreferences.Editor editor = prefs.edit();
+//            editor.putBoolean("firstTimeTesting", true);
+//            editor.commit();
+//        }
+//        else{
+//            MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+//            Date now = Date.from(Instant.now());
+//
+//            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 50.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.GOOD_POSTURE, 70.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.CALORIES, 300.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.DISTANCE, 500.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.HEART_RATE, 30.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.STEPS, 30.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.RESPIRATION_RATE, 14.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.BAD_POSTURE, 730.0));
+//            measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
+//
+//        }
 
 
     }

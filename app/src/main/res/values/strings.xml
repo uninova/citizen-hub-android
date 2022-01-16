@@ -273,6 +273,7 @@
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_settings_label">Settings</string>
+    <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
     <string-array name="workdays">
         <item >Monday</item>
         <item >Tuesday</item>

@@ -15,10 +15,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,12 +27,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private static final String KEY_EDIT_TEXT_PREFERENCE = "workdays";
     private static final String KEY_WORK_TIME_START = "workStart";
     private static final String KEY_WORK_TIME_END = "workEnd";
-
-    private SharedPreferences preferences;
-
     public static List<String> days;
     public static String workStart = "09:00";
     public static String workEnd = "17:00";
+    private SharedPreferences preferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,9 +90,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         updatePreference(key);
     }
 
-    private void refreshPreferences(Context context){
+    private void refreshPreferences(Context context) {
         WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(context);
-        workTimeRangeConverter.refreshTimeVariables(context);
+        workTimeRangeConverter.refreshTimeVariables(context, days);
     }
 
     private void updatePreference(String key) {
@@ -106,11 +102,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 MultiSelectListPreference pref = (MultiSelectListPreference) preference;
                 if (getCurrentEntries(pref).size() > 0) {
                     days = (getCurrentEntries(pref));
+                    preferences.edit().putStringSet("weekdays", new HashSet<>(days)).apply();
+
                     pref.setSummary("Current work days:  " + getCurrentEntries(pref));
                 } else {
                     pref.setSummary("Choose your working days");
                 }
             }
+            preferences.edit().putStringSet("workDays", new HashSet<>(days)).apply();
         }
         if (key.equals(KEY_WORK_TIME_START)) {
             workStart = preferences.getString(KEY_WORK_TIME_START, "09:00");
@@ -119,36 +118,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             workEnd = preferences.getString(KEY_WORK_TIME_END, "17:00");
         }
         refreshPreferences(requireContext());
-//        isWorkTime();
     }
-
-//    public static int isWorkTime() {
-//        LocalDateTime currentTime = LocalDateTime.now();
-//
-//        if (days != null && workStart != null && workEnd != null) {
-//            System.out.println(days);
-//            for (String day : days
-//            ) {
-//                if (day.equalsIgnoreCase(currentTime.getDayOfWeek().name())) {
-//
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-//                    LocalTime start = LocalTime.parse(workStart, formatter);
-//                    LocalTime end = LocalTime.parse(workEnd, formatter);
-//                    LocalTime now = LocalTime.parse(LocalTime.now().format(formatter));
-//
-//                    System.out.println("Preferences: " + workStart + " -> " + workEnd);
-//                    System.out.println("Start " + start);
-//                    System.out.println("End " + end);
-//                    if (now.isAfter(start) && now.isBefore(end)) {
-//                        System.out.println("tá dentro");
-//                        return 1;
-//                    }
-//                    return 0;
-//                }
-//            }
-//        }
-//        return 0;
-//    }
 
     public List<String> getCurrentEntries(MultiSelectListPreference preference) {
         CharSequence[] entries = preference.getEntries();
