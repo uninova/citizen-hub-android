@@ -316,6 +316,7 @@
     <string name="welcome_slide_view_pager_connect_devices_message">Simplifying different devices connection into one app</string>
     <string name="welcome_slide_view_pager_connect_real_time_data_title">Real-time data</string>
     <string name="welcome_slide_view_pager_connect_real_time_data_message">Live visualisation and analytics on your health and wellbeing data!</string>
+    <string name="fragment_smart4health_account_fragment_logout_failure_toast">Failure to log out.</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
