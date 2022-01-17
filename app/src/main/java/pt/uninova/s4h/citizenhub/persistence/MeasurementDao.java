@@ -21,6 +21,10 @@ public interface MeasurementDao {
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
     List<MeasurementAggregate> getAggregate(LocalDate from, LocalDate to);
 
+    @Query("SELECT kind_id as measurementKind, AVG(value) as average, COUNT(value) as count, MAX(value) as max, MIN(value) as min, SUM(value) as sum FROM measurement WHERE timestamp >= :from AND timestamp < :to AND is_working == :workTime GROUP BY kind_id;")
+    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    List<MeasurementAggregate> getAggregateWorkTime(LocalDate from, LocalDate to, int workTime);
+
     @Query("SELECT kind_id as measurementKind, AVG(value) as average, COUNT(value) as count, MAX(value) as max, MIN(value) as min, SUM(value) as sum FROM measurement WHERE timestamp >= :from AND timestamp < :to GROUP BY kind_id;")
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
     LiveData<List<MeasurementAggregate>> getAggregateLive(LocalDate from, LocalDate to);

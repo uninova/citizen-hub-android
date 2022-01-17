@@ -83,6 +83,14 @@ public class MeasurementRepository {
         });
     }
 
+    public void obtainDailyAggregateWorkTime(int workTime,LocalDate localDate, Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            final List<MeasurementAggregate> aggregates = measurementDao.getAggregateWorkTime(localDate, localDate.plusDays(1),workTime);
+
+            observer.observe(mapAggregates(aggregates));
+        });
+    }
+
     public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);

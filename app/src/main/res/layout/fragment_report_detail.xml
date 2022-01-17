@@ -198,7 +198,7 @@
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/postureTitle"
                 app:layout_constraintTop_toBottomOf="@+id/notOkPostureVal"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/bloodPressureGroup"
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="fragment_report_blood_pressure_sbp_value,mmHgTextView1,fragment_report_blood_pressure_meanAP_value,fragment_report_blood_pressure_dbp_value,mmHgTextView3,mmHgTextView2,bloodPressureTitle,fragment_report_blood_pressure_dbp_text,fragment_report_blood_pressure_meanAP_text,fragment_report_blood_pressure_sbp_text"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_report_lumbar_extension_training_length"
@@ -357,7 +357,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="StepsTotalVal,fragment_report_detail_steps_total,StepsTitle,stepsUnitsTextView"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/caloriesGroup"
@@ -365,7 +365,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="CaloriesTotalVal,caloriesTitle,fragment_report_detail_calories_total,caloriesUnitsTextView"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/distanceGroup"
@@ -373,7 +373,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="fragment_report_detail_distance_total,DistanceTotalVal,DistanceTitle,distanceUnitsTextView"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/hearRateGroup"
@@ -381,7 +381,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="HeartRateMinVal,fragment_report_detail_heart_rate_min,fragment_report_detail_heart_rate_average,HeartRateAvgVal,fragment_report_detail_heart_rate_max,HeartRateMaxVal,HeartRateTitle,bpmTextView1,bpmTextView2,bpmTextView3"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_report_detail_text_view_day"
@@ -823,8 +823,8 @@
             <TextView
                 android:id="@+id/respirationTitle"
                 style="@style/ReportDetailTitle"
-                android:layout_marginTop="32dp"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="32dp"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:tag="@string/respirationTitle"
