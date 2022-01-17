@@ -329,6 +329,7 @@
     <string name="fragment_advanced_smart_bear_account_gate_confirmation_code_text">Confirmation Code</string>
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirm</string>
     <string name="dialog_do_not_show_this_message_again_text">Don\'t show this message again</string>
+    <string name="drawer_accounts_title">Accounts</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
