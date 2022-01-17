@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/advanced_smart_bear_account_fragment_menu_accept"
-        android:title="Accept"
+        android:title="@string/menu_fragment_advanced_smart_bear_account_accept_title"
         app:showAsAction="always" />
 
 </menu>
