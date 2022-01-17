@@ -333,6 +333,18 @@
     <string name="fragment_device_configuration_advanced_address_text">Address</string>
     <string name="fragment_device_configuration_advanced_text_advanced_configuration">Advanced Configurations</string>
     <string name="fragment_device_configuration_advanced_update_text">Update</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_strict_text">Strict</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_relaxed_text">Relaxed</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_correction_interval_text">Correction Interval (seconds)</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text">Vibration Pattern</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_text">Vibration Strength</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_text">Vibration Strength</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_gentle_text">Gentle</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_strong_text">Strong</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_sensor_calibration_button_text">Sensor Calibration</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
