@@ -348,6 +348,11 @@
     <string name="fragment_device_configuration_update_advanced_button_text">Advanced Configurations</string>
     <string name="fragment_device_list_item_text_view_title">Title</string>
     <string name="fragment_device_list_item_text_view_description">Description</string>
+    <string name="fragment_summary_respiration_text">Respiration</string>
+    <string name="fragment_summary_blood_pressure_text">Blood Pressure</string>
+    <string name="fragment_smart4health_account_log_out_title">Log out</string>
+    <string name="fragment_smart_bear_account_fragment_advanced_settings_title">Advanced settings</string>
+    <string name="fragment_smart_bear_account_fragment_log_out_title">Log out</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
