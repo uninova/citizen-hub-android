@@ -321,6 +321,7 @@
     <string name="accounts_fragment_logo_smart4health_title">Smart4Health</string>
     <string name="accounts_fragment_logo_smartbear_description">TODO</string>
     <string name="accounts_fragment_logo_smartbear_title">Smart Bear</string>
+    <string name="menu_accounts_fragment_add_title">Add</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
