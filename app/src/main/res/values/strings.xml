@@ -299,6 +299,12 @@
     <string name="fragment_device_configuration_warning_calibration_text2">\" your back straight.\"</string>
     <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait...</string>
     <string name="fragment_device_configuration_connect_option_text">connect</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">Calibration Completed!</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensor Calibration</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">\" your back straight.\"</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrate</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait...</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
