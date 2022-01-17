@@ -162,7 +162,7 @@
     <string name="fragment_report_text_view_got_data">Daily activity data for</string>
     <string name="fragment_report_text_view_heartrate_text">Heart rate average: %1$.2f bpm</string>
     <string name="fragment_report_text_view_no_data">No daily activity data for</string>
-    <string name="fragment_report_text_view_no_data_summary">No activity data for today.</string>
+    <string name="fragment_report_text_view_no_data_summary">You don\'t have any activity yet.\n\nHave you connected a device?</string>
     <string name="fragment_report_text_view_steps_text">Steps taken: %1$.0f</string>
     <string name="fragment_report_text_view_time_posture_text">Time with good posture: %1$.0f min</string>
     <string name="fragment_report_text_view_time_sitting_text">Time sitting: %1$.0f min</string>
