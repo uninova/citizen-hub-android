@@ -314,7 +314,7 @@ public class ReportDetailFragment extends Fragment {
                 if (heartRateGroup != null) {
                     heartRateGroup.setVisibility(View.VISIBLE);
                 }
-                heartRateAvg.setText(String.format("%.1f", heartRate.getAverage()));
+                heartRateAvg.setText(String.format("%.0f", heartRate.getAverage()));
                 heartRateMax.setText(String.valueOf(heartRate.getMax()));
                 heartRateMin.setText(String.valueOf(heartRate.getMin()));
             } else if (heartRateGroup != null) {
