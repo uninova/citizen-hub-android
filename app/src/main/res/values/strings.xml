@@ -305,6 +305,7 @@
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">\" your back straight.\"</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrate</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait...</string>
+    <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
