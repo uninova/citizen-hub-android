@@ -325,6 +325,9 @@
     <string name="fragment_advanced_smart_bear_account_fragment_advanced_settings_text">Advanced Settings</string>
     <string name="fragment_advanced_smart_bear_account_fragment_patient_id_text">Patient Id</string>
     <string name="menu_fragment_advanced_smart_bear_account_accept_title">Accept</string>
+    <string name="fragment_advanced_smart_bear_account_gate_security_text">Security</string>
+    <string name="fragment_advanced_smart_bear_account_gate_confirmation_code_text">Confirmation Code</string>
+    <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirm</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
