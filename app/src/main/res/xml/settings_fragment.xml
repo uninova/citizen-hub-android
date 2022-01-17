@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-        <PreferenceCategory
-            android:key="pref1"
-            android:title="Work Hours">
-
-            <CheckBoxPreference
-                android:key="check_all"
-                android:title="Check"/>
-        </PreferenceCategory>
-        <MultiSelectListPreference
-            android:key="workdays"
-            android:title="Work Days"
-            android:summary="Select your Working Days"
-            android:entries="@array/workdays"
-            android:entryValues="@array/workday_values"
-            android:defaultValue="@array/empty_array"/>
+    <PreferenceCategory
+        android:key="pref1"
+        android:title="Work Hours" />
+    <MultiSelectListPreference
+        android:defaultValue="@array/empty_array"
+        android:entries="@array/workdays"
+        android:entryValues="@array/workday_values"
+        android:key="workdays"
+        android:summary="Select your Working Days"
+        android:title="Work Days" />
 
     <pt.uninova.s4h.citizenhub.TimePreference
-        android:key="workStart"
-        android:title="Work Start Time"
         android:defaultValue="09:00"
-        android:summary="Set some time"/>
+        android:key="workStart"
+        android:summary="Set some time"
+        android:title="Work Start Time" />
     <pt.uninova.s4h.citizenhub.TimePreference
-        android:key="workEnd"
-        android:title="Work End Time"
         android:defaultValue="17:00"
-        android:summary="Set some time"/>
+        android:key="workEnd"
+        android:summary="Set some time"
+        android:title="Work End Time" />
 
 </PreferenceScreen>
