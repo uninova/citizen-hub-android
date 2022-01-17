@@ -20,7 +20,10 @@ public enum MeasurementKind {
     SITTING(13),
     STANDING(14),
     POSTURE(15),
-    LUMBAR_EXTENSION_TRAINING(16);
+    LUMBAR_EXTENSION_TRAINING(16),
+    BLOOD_PRESSURE_SBP(17),
+    BLOOD_PRESSURE_DBP(18),
+    BLOOD_PRESSURE_MEAN_AP(19);
 
     private static final Map<Integer, MeasurementKind> LOOKUP = new HashMap<>(MeasurementKind.values().length);
 
