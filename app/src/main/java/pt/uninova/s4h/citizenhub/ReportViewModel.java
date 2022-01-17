@@ -148,7 +148,7 @@ public class ReportViewModel extends AndroidViewModel {
         Resources res = getApplication().getResources();
         LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 1100, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         canvas.setDensity(72);
@@ -229,18 +229,18 @@ public class ReportViewModel extends AndroidViewModel {
 
         Bitmap ec_logo = BitmapFactory.decodeResource(res, R.drawable.img_ec_logo_png, options);
         canvas.save();
-        canvas.translate(10, 790);
+        canvas.translate(10, 1048);
         canvas.scale(0.04f, 0.04f);
         canvas.drawBitmap(ec_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
         CanvasWriter canvasWriter = new CanvasWriter(canvas);
-        canvasWriter.addText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 808, ecInfoPaint);
+        canvasWriter.addText("This work has received funding from the European Union's Horizon 2020 research and", x + 25, 1066, ecInfoPaint);
         canvasWriter.addNewLine("innovation programme under Grant agreement No 826117", 13);
-        canvasWriter.addText("powered by", x + 365, 813, poweredByPaint);
+        canvasWriter.addText("powered by", x + 365, 1071, poweredByPaint);
 
         Bitmap smart4Health_logo = BitmapFactory.decodeResource(res, R.drawable.img_s4h_logo_transparent_png, options);
         canvas.save();
-        canvas.translate(475, 801);
+        canvas.translate(475, 1059);
         canvas.scale(0.35f, 0.35f);
         canvas.drawBitmap(smart4Health_logo, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
         canvas.restore();
@@ -385,6 +385,63 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
         }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.RESPIRATION_RATE);
+
+        if (measurementAggregate != null) {
+            Drawable respiration_rate = res.getDrawable(R.drawable.ic_lungs, null);
+            respiration_rate.setBounds(0, 0, respiration_rate.getIntrinsicWidth(), respiration_rate.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            respiration_rate.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText("Breathing Rate:", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" rpm", darkTextPaint);
+
+            y += 20;
+
+            y += 40;
+        }
+
+        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+        MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        if (measurementAggregate != null && measurementAggregate2 !=null && measurementAggregate3 !=null) {
+
+            y -= 10;
+
+            Drawable bloodPressure = res.getDrawable(R.drawable.ic_blood_pressure, null);
+            bloodPressure.setBounds(0, 0, bloodPressure.getIntrinsicWidth(), bloodPressure.getIntrinsicHeight());
+            canvas.save();
+            canvas.translate(x - 15, y + 15);
+            canvas.scale(0.35f, 0.35f);
+            bloodPressure.draw(canvas);
+            canvas.restore();
+
+            y += 40;
+            canvasWriter.addText(res.getString(R.string.pdf_report_average_SBP_text), x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Average DBP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate2.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
+
+            y += 20;
+            canvasWriter.addText("Mean AP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate3.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
+
+            y += 20;
+
+            y += 40;
+        }
+
         if (lumbarTraining != null) {
 
             Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);

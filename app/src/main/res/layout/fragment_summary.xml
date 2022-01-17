@@ -23,7 +23,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_steps"
@@ -39,7 +39,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stepsTakenTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_steps"
@@ -51,14 +51,16 @@
                 android:contentDescription="@string/content_description_fragment_summary_image_view_steps"
                 android:scaleType="center"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_steps_item" />
+                app:srcCompat="@drawable/ic_steps_item"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_steps"
                 style="@style/AppTheme.Summary.Item.TextView"
 
                 android:text="@string/fragment_summary_text_view_steps_text"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
@@ -81,8 +83,148 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_distance"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
+
+        <TextView
+            android:id="@+id/respirationTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="Respiration"
+            android:textColor="@color/colorS4HWhite"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_lumbar_training_extension"
+            tools:visibility="visible" />
+
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/caloriesTextView"-->
+        <!--            android:layout_width="350dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="80dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:layout_marginRight="80dp"-->
+        <!--            android:background="@drawable/button_rounded_top_darkblue_14dp"-->
+        <!--            android:paddingStart="12dp"-->
+        <!--            android:paddingEnd="12dp"-->
+        <!--            android:text="@string/fragment_summary_text_calories_burned"-->
+        <!--            android:textColor="@color/colorS4HWhite"-->
+        <!--            android:textSize="16sp"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_calories"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.5"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_steps"-->
+        <!--            tools:visibility="visible" />-->
+
+        <TextView
+            android:id="@+id/bloodPressureTextView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="Blood Pressure"
+            android:textColor="@color/colorS4HWhite"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/fragment_summary_layout_blood_pressure"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_respiration"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/fragment_summary_layout_blood_pressure"
+            style="@style/AppTheme.Summary.Item"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/button_rounded_bottom_outline_darkblue_14dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bloodPressureTextView"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/fragment_summary_image_view_blood_pressure"
+                style="@style/AppTheme.Summary.Item.ImageView"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/content_description_fragment_summary_ic_heartbeat"
+                android:scaleType="center"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_blood_pressure"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_summary_text_view_blood_pressure"
+                style="@style/AppTheme.Summary.Item.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SBP:\u00a0%1$s\u00a0mmHg\nDBP:\u00a0%2s\u00a0mmHg\nMeanAP:\u00a0%3$s\u00a0mmHg"
+                android:visibility="visible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_summary_layout_respiration"
+            style="@style/AppTheme.Summary.Item"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/button_rounded_bottom_outline_darkblue_14dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/respirationTextView"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/fragment_summary_image_view_respiration"
+                style="@style/AppTheme.Summary.Item.ImageView"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="-5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:adjustViewBounds="true"
+                android:contentDescription=""
+                android:scaleType="center"
+                android:src="@drawable/ic_lungs"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_summary_text_view_respiration"
+                style="@style/AppTheme.Summary.Item.TextView"
+                android:text="%1$s OK\n%2$s not OK"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_distance"
@@ -98,7 +240,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/distanceWalkedTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_distance"
@@ -112,14 +254,16 @@
                 android:contentDescription="@string/content_description_fragment_summary_image_view_distance"
                 android:scaleType="centerCrop"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_distance" />
+                app:srcCompat="@drawable/ic_distance"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_distance"
                 style="@style/AppTheme.Summary.Item.TextView"
 
                 android:text="@string/fragment_summary_text_view_distance_text"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
@@ -142,7 +286,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_steps"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_heart_rate"
@@ -158,7 +302,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/heartrateTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_heart_rate"
@@ -168,7 +312,8 @@
                 android:contentDescription="@string/content_description_fragment_summary_ic_heartbeat"
                 android:scaleType="center"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_heartbeat" />
+                app:srcCompat="@drawable/ic_heartbeat"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_heart_rate"
@@ -176,7 +321,8 @@
                 android:layout_width="220dp"
                 android:layout_height="55dp"
                 android:text="@string/fragment_summary_text_view_heart_rate_text"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
@@ -188,18 +334,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/fragment_summary_text_distance_walked"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16sp"
             android:visibility="gone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_distance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_posture"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_calories"
@@ -215,7 +361,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/caloriesTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_calories"
@@ -229,13 +375,15 @@
                 android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
                 android:scaleType="center"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_calories" />
+                app:srcCompat="@drawable/ic_calories"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_summary_text_view_calories"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:text="@string/fragment_summary_text_view_calories_text"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
@@ -247,18 +395,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/fragment_summary_text_average_heart_rate"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16sp"
             android:visibility="gone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_heart_rate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_calories"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
 
         <LinearLayout
@@ -274,7 +422,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lumbarTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_lumbar"
@@ -288,7 +436,8 @@
                 android:contentDescription="@string/content_description_fragment_summary_img_caloriess"
                 android:scaleType="center"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_color_medx_training" />
+                app:srcCompat="@drawable/ic_color_medx_training"
+                tools:visibility="visible" />
 
 
             <TextView
@@ -297,7 +446,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_summary_text_view_lumbar_text"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
 
         </LinearLayout>
@@ -310,19 +460,19 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/fragment_summary_text_posture"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16sp"
             android:visibility="gone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_posture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/fragment_summary_layout_posture"
             app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/lumbarTextView"
@@ -332,19 +482,19 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/fragment_summary_layout_lumbar_training_extension"
             android:textColor="@color/colorS4HWhite"
             android:textSize="16sp"
             android:visibility="gone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@id/lumbarTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_heart_rate"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
 
         <LinearLayout
@@ -361,7 +511,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sittingTextView"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/fragment_summary_image_view_posture"
