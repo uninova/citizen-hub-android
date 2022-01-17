@@ -308,6 +308,8 @@
     <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
+    <string name="fragment_settings_current_work_days_text">\"Current work days:  \"</string>
+    <string name="fragment_settings_choose_work_days_text">Choose your working days</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>

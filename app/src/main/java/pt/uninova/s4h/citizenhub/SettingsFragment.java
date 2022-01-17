@@ -104,9 +104,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     days = (getCurrentEntries(pref));
                     preferences.edit().putStringSet("weekdays", new HashSet<>(days)).apply();
 
-                    pref.setSummary("Current work days:  " + getCurrentEntries(pref));
+                    pref.setSummary(getString(R.string.fragment_settings_current_work_days_text) + getCurrentEntries(pref));
                 } else {
-                    pref.setSummary("Choose your working days");
+                    pref.setSummary(getString(R.string.fragment_settings_choose_work_days_text));
                 }
             }
             preferences.edit().putStringSet("workDays", new HashSet<>(days)).apply();
