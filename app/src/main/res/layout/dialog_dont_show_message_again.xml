@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/primus_bold"
         android:textColor="@color/colorS4HBlack"
-        android:text="Don't show this message again" />
+        android:text="@string/dialog_do_not_show_this_message_again_text" />
 
 
 </LinearLayout>
