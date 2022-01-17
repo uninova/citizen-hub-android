@@ -346,6 +346,8 @@
     <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_strong_text">Strong</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_sensor_calibration_button_text">Sensor Calibration</string>
     <string name="fragment_device_configuration_update_advanced_button_text">Advanced Configurations</string>
+    <string name="fragment_device_list_item_text_view_title">Title</string>
+    <string name="fragment_device_list_item_text_view_description">Description</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
