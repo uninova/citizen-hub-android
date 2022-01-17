@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/primus_bold"
-                android:text="Advanced Settings"
+                android:text="@string/fragment_advanced_smart_bear_account_fragment_advanced_settings_text"
                 android:textAlignment="center"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp" />
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/neo_sans_pro_regular"
                 android:labelFor="@+id/edit_text_patient_id"
-                android:text="Patient Id"
+                android:text="@string/fragment_advanced_smart_bear_account_fragment_patient_id_text"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="18sp" />
 

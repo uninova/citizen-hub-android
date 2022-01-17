@@ -322,6 +322,8 @@
     <string name="accounts_fragment_logo_smartbear_description">TODO</string>
     <string name="accounts_fragment_logo_smartbear_title">Smart Bear</string>
     <string name="menu_accounts_fragment_add_title">Add</string>
+    <string name="fragment_advanced_smart_bear_account_fragment_advanced_settings_text">Advanced Settings</string>
+    <string name="fragment_advanced_smart_bear_account_fragment_patient_id_text">Patient Id</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
