@@ -291,6 +291,14 @@
     <string name="pdf_report_average_SBP_text">Average SBP: \</string>
     <string name="fragment_settings_label">Settings</string>
     <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
+    <string name="fragment_device_configuration_add_calibration_completed_toast">Calibration Completed!</string>
+    <string name="fragment_device_configuration_add_loading_features_text">Loading device features...</string>
+    <string name="fragment_device_configuration_sensor_calibration_text">Sensor Calibration</string>
+    <string name="fragment_device_configuration_warning_calibration_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
+    <string name="fragment_device_configuration_dialog_option_calibrate">Calibrate</string>
+    <string name="fragment_device_configuration_warning_calibration_text2">\" your back straight.\"</string>
+    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_connect_option_text">connect</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
