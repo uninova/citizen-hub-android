@@ -317,6 +317,10 @@
     <string name="welcome_slide_view_pager_connect_real_time_data_title">Real-time data</string>
     <string name="welcome_slide_view_pager_connect_real_time_data_message">Live visualisation and analytics on your health and wellbeing data!</string>
     <string name="fragment_smart4health_account_fragment_logout_failure_toast">Failure to log out.</string>
+    <string name="accounts_fragment_logo_smart4health_description">TODO</string>
+    <string name="accounts_fragment_logo_smart4health_title">Smart4Health</string>
+    <string name="accounts_fragment_logo_smartbear_description">TODO</string>
+    <string name="accounts_fragment_logo_smartbear_title">Smart Bear</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
