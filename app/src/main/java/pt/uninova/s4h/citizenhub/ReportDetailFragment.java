@@ -301,7 +301,7 @@ public class ReportDetailFragment extends Fragment {
                 if (caloriesGroup != null) {
                     caloriesGroup.setVisibility(View.VISIBLE);
                 }
-                caloriesTotal.setText(String.format("%.2f", calories.getSum()));
+                caloriesTotal.setText(String.format("%.0f", calories.getSum()));
             } else {
                 if (caloriesGroup != null) {
 
