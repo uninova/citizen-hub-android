@@ -37,10 +37,9 @@ public class ReportDetailFragment extends Fragment {
     private ReportViewModel model;
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
-            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight;
+            lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
     private LumbarExtensionTraining lumbarExtensionTraining;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup;
-    private boolean isSucess;
+    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +87,34 @@ public class ReportDetailFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            try {
+                model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
+                    @Override
+                    public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+                        requireActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    viewPdfButton.setVisibility(View.VISIBLE);
+                                    uploadPdfButton.setVisibility(View.GONE);
+                                }
+                        );
+                    }
+
+                    @Override
+                    public void onError(D4LException exception) {
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                            exception.printStackTrace();
+                        });
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         });
+
+
         return view;
     }
 
@@ -110,6 +136,71 @@ public class ReportDetailFragment extends Fragment {
         return result.equals("") ? "0s" : result;
     }
 
+    private void onSummaryWorkTimeChanged(Map<MeasurementKind, MeasurementAggregate> value) {
+        final MeasurementAggregate caloriesWorkTime = value.get(MeasurementKind.CALORIES);
+        final MeasurementAggregate distanceWorkTime = value.get(MeasurementKind.DISTANCE);
+        final MeasurementAggregate heartRateWorkTime = value.get(MeasurementKind.HEART_RATE);
+        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.BAD_POSTURE);
+        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.GOOD_POSTURE);
+        final MeasurementAggregate stepsWorkTime = value.get(MeasurementKind.STEPS);
+        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate respirationWorkTime = value.get(MeasurementKind.RESPIRATION_RATE);
+
+        requireActivity().runOnUiThread(() -> {
+                    final int titleResId = (caloriesWorkTime == null || distanceWorkTime == null || heartRateWorkTime == null || badPostureWorkTime == null || goodPostureWorkTime == null || stepsWorkTime == null || respirationWorkTime == null || (bloodPressureSBPWorkTime == null && bloodPressureDBPWorkTime == null && bloodPressureMeanAPWorkTime == null)
+                            ? R.string.fragment_report_text_view_title_no_data
+                            : R.string.fragment_report_text_view_title);
+
+
+                    String day = String.valueOf(model.getDetailDate().getDayOfMonth());
+                    int monthInt = model.getDetailDate().getMonthValue();
+                    String month;
+                    switch (monthInt) {
+                        case 1:
+                            month = getString(R.string.date_month_01);
+                            break;
+                        case 2:
+                            month = getString(R.string.date_month_02);
+                            break;
+                        case 3:
+                            month = getString(R.string.date_month_03);
+                            break;
+                        case 4:
+                            month = getString(R.string.date_month_04);
+                            break;
+                        case 5:
+                            month = getString(R.string.date_month_05);
+                            break;
+                        case 6:
+                            month = getString(R.string.date_month_06);
+                            break;
+                        case 7:
+                            month = getString(R.string.date_month_07);
+                            break;
+                        case 8:
+                            month = getString(R.string.date_month_08);
+                            break;
+                        case 9:
+                            month = getString(R.string.date_month_09);
+                            break;
+                        case 10:
+                            month = getString(R.string.date_month_10);
+                            break;
+                        case 11:
+                            month = getString(R.string.date_month_11);
+                            break;
+                        case 12:
+                            month = getString(R.string.date_month_12);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + monthInt);
+                    }
+                }
+        );
+    }
+
     private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distance = value.get(MeasurementKind.DISTANCE);
@@ -117,9 +208,13 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
         final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
+        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
+        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -174,7 +269,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -226,6 +321,25 @@ public class ReportDetailFragment extends Fragment {
                 heartRateGroup.setVisibility(View.GONE);
             }
 
+            if (respiration != null) {
+                if (respirationGroup != null) {
+                    respirationGroup.setVisibility(View.VISIBLE);
+                }
+                respirationRate.setText(String.valueOf(respiration.getAverage()));
+            } else if (respirationGroup != null) {
+                respirationGroup.setVisibility(View.GONE);
+            }
+
+            if (bloodPressureSBP != null && bloodPressureDBP != null && bloodPressureMeanAP != null) {
+                if (bloodPressureGroup != null) {
+                    bloodPressureGroup.setVisibility(View.VISIBLE);
+                }
+                bloodPressureSBPavg.setText(String.valueOf(bloodPressureSBP.getAverage()));
+                bloodPressureDBPavg.setText(String.valueOf(bloodPressureDBP.getAverage()));
+                bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
+            } else if (bloodPressureGroup != null) {
+                bloodPressureGroup.setVisibility(View.GONE);
+            }
 
             if (lumbarExtensionTraining != null) {
                 if (lumbarExtensionTrainingGroup != null) {
@@ -279,6 +393,10 @@ public class ReportDetailFragment extends Fragment {
         heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
         heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
         heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
+        bloodPressureSBPavg = view.findViewById(R.id.fragment_report_blood_pressure_sbp_value);
+        bloodPressureDBPavg = view.findViewById(R.id.fragment_report_blood_pressure_dbp_value);
+        bloodPressureMeanAPavg = view.findViewById(R.id.fragment_report_blood_pressure_meanAP_value);
+        respirationRate = view.findViewById(R.id.fragment_report_respiration_breathing_rate_value);
         distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
@@ -293,9 +411,12 @@ public class ReportDetailFragment extends Fragment {
         caloriesGroup = view.findViewById(R.id.caloriesGroup);
         stepsGroup = view.findViewById(R.id.stepsGroup);
         distanceGroup = view.findViewById(R.id.distanceGroup);
+        bloodPressureGroup = view.findViewById(R.id.bloodPressureGroup);
+        respirationGroup = view.findViewById(R.id.respirationGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
         model.obtainSummary(this::onSummaryChanged);
+        model.obtainWorkTimeSummary(this::onSummaryWorkTimeChanged);
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
@@ -305,4 +426,6 @@ public class ReportDetailFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+
 }

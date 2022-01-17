@@ -188,6 +188,7 @@
     <string name="fragment_summary_text_posture">Posture</string>
     <string name="fragment_summary_text_steps_taken">Steps Taken</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f calories</string>
+    <string name="fragment_summary_text_view_respiration_text">Breathing Rate: %1$.0f rpm</string>
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">Your average heart rate is %1$.2f.</string>
@@ -272,4 +273,46 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
+    <string name="fragment_summary_text_view_blood_pressure_text">SBP:\u00a0%1$s\u00a0mmHg\nDBP:\u00a0%2s\u00a0mmHg\nMeanAP:\u00a0%3$s\u00a0mmHg</string>
+    <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
+    <string name="fragment_report_detail_text_sbp">SBP:</string>
+    <string name="fragment_report_detail_text_dbp">DBP:</string>
+    <string name="fragment_report_detail_text_meanAP">MeanAP:</string>
+    <string name="fragment_report_detail_blood_pressure_units">mmHg</string>
+    <string name="fragment_report_detail_value_blood_presure_SBP">0</string>
+    <string name="blood_pressure">blood_pressure</string>
+    <string name="fragment_report_detail_value_blood_presure_DBP">0</string>
+    <string name="fragment_report_detail_value_blood_presure_meanAP_value">0</string>
+    <string name="respirationTitle">Respiration</string>
+    <string name="fragment_report_detail_title_respiration">Respiration</string>
+    <string name="fragment_report_detail_text_respiration_breathing_rate">Breathing Rate:</string>
+    <string name="fragment_report_detail_value_respiration_breathing_rate">0</string>
+    <string name="fragment_report_detail_respiration_breathing_rate_units_text">rpm</string>
+    <string name="pdf_report_average_SBP_text">Average SBP: \</string>
+    <string name="fragment_settings_label">Settings</string>
+    <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
+    <string-array name="workdays">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="workday_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    <string-array name="empty_array" />
+
 </resources>
+
+
+
