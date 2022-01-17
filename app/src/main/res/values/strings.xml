@@ -310,6 +310,12 @@
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
     <string name="fragment_settings_current_work_days_text">\"Current work days:  \"</string>
     <string name="fragment_settings_choose_work_days_text">Choose your working days</string>
+    <string name="welcome_slide_view_pager_welcome_title">Welcome</string>
+    <string name="welcome_slide_view_pager_thank_you_message">Thank you for using CitizenHub</string>
+    <string name="welcome_slide_view_pager_connect_devices_title">Connect Devices</string>
+    <string name="welcome_slide_view_pager_connect_devices_message">Simplifying different devices connection into one app</string>
+    <string name="welcome_slide_view_pager_connect_real_time_data_title">Real-time data</string>
+    <string name="welcome_slide_view_pager_connect_real_time_data_message">Live visualisation and analytics on your health and wellbeing data!</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
