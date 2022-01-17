@@ -15,11 +15,11 @@ import androidx.lifecycle.LifecycleService;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
 
-
-import java.util.Date;
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
 
@@ -116,5 +116,17 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     @Override
     public WearOSMessageService getService() {
         return wearOSMessageService;
+    }
+
+    public WorkOrchestrator showMethods() throws ExecutionException, InterruptedException {
+
+        //just for testing purposes. TODO erase this when fully implemented
+        WorkOrchestrator workOrchestrator = new WorkOrchestrator();
+        workOrchestrator.addOneTimeWork(getApplicationContext());
+        workOrchestrator.addPeriodicWork(getApplicationContext(),24, TimeUnit.HOURS, "reportWork");
+        workOrchestrator.getWorkers(getApplicationContext(),"reportWork");
+        workOrchestrator.cancelWork("reportWork");
+
+        return workOrchestrator;
     }
 }
