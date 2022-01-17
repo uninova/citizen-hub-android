@@ -346,4 +346,10 @@
     <string name="fragment_smart4health_account_log_out_title">Terminar sessão</string>
     <string name="fragment_smart_bear_account_fragment_advanced_settings_title">Configurações Avançadas</string>
     <string name="fragment_smart_bear_account_fragment_log_out_title">Terminar Sessão</string>
+    <string name="fragment_settings_work_days_title">Selecione os seus Dias de Trabalho</string>
+    <string name="fragment_settings_work_hours_title">Horas de Trabalho</string>
+    <string name="fragment_settings_work_start_title">Hora de entrada no Trabalho</string>
+    <string name="fragment_settings_work_end_title">Hora de saída do Trabalho</string>
+    <string name="fragment_settings_work_hours_start_message">Selecione as Horas de entrada</string>
+    <string name="fragment_settings_work_hours_end_message">Selecione as Horas de saída</string>
 </resources>

@@ -335,12 +335,10 @@
     <string name="fragment_device_configuration_advanced_update_text">Update</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
-    <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_strict_text">Strict</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_relaxed_text">Relaxed</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_interval_text">Correction Interval (seconds)</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text">Vibration Pattern</string>
-    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_text">Vibration Strength</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_text">Vibration Strength</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_gentle_text">Gentle</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_strong_text">Strong</string>
@@ -353,6 +351,12 @@
     <string name="fragment_smart4health_account_log_out_title">Log out</string>
     <string name="fragment_smart_bear_account_fragment_advanced_settings_title">Advanced settings</string>
     <string name="fragment_smart_bear_account_fragment_log_out_title">Log out</string>
+    <string name="fragment_settings_work_hours_title">Work Hours</string>
+    <string name="fragment_settings_work_days_title">Select your Working Days</string>
+    <string name="fragment_settings_work_start_title">Work Start Time</string>
+    <string name="fragment_settings_work_end_title">Work End Time</string>
+    <string name="fragment_settings_work_hours_start_message">Set some time</string>
+    <string name="fragment_settings_work_hours_end_message">Set some time</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>
