@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
 
         //testing
 
+        /*
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTimeTesting", false)) {
             // <---- run your one time code here
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements CitizenHubService
             measurementRepository.add(new Measurement(now, MeasurementKind.SITTING, 700.0));
 
         }
-
+        */
 
     }
 
