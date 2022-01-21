@@ -1,5 +1,3 @@
-import groovy.json.JsonSlurper
-
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
@@ -13,40 +11,55 @@ android {
         targetSdkVersion 30
         versionCode 8
         versionName "0.6.0"
+    }
 
-        buildConfigField "boolean", "DEV_MODE_NO_AUTH", "false"
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
 
-        def configFile = file(rootDir.absolutePath + "/d4lsdk-config.json")
-        def config = new JsonSlurper().parseText(configFile.text)
+        debug {
+            debuggable true
+            matchingFallbacks = ['release']
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+    }
 
-        manifestPlaceholders = [
-                clientId      : config.id,
-                clientSecret  : config.secret,
-                environment   : config.environment,
-                redirectScheme: config.redirectScheme,
-                debug         : config.debug,
-                platform      : config.platform
-        ]
+    flavorDimensions "environment"
+
+    productFlavors {
+        development
+        stable
     }
 
     applicationVariants.all { variant ->
         variant.resValue "string", "versionName", variant.versionName
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "DEV_MODE_NO_AUTH", "false"
+    productFlavors.all { flavor ->
+        def propertiesFile = rootProject.file("env.${flavor.name}.properties")
+        def properties = new Properties()
 
-        }
-        debug {
-            matchingFallbacks = ['release']
-            buildConfigField "boolean", "DEV_MODE_NO_AUTH", "false"
-        }
-        debug_login {
-            initWith debug
-            buildConfigField "boolean", "DEV_MODE_NO_AUTH", "true"
+        properties.load(new FileInputStream(propertiesFile))
+
+        manifestPlaceholders = [
+                clientId      : properties["smart4HealthId"],
+                clientSecret  : properties["smart4HealthSecret"],
+                environment   : properties["smart4HealthEnvironment"],
+                redirectScheme: properties["smart4HealthRedirectScheme"],
+                debug         : properties["smart4HealthDebug"],
+                platform      : properties["smart4HealthPlatform"]
+        ]
+
+        buildConfigField("String", "SMART_BEAR_API_KEY", "\"${properties["smartBearApiKey"]}\"")
+        buildConfigField("String", "SMART_BEAR_URL", "\"${properties["smartBearUrl"]}\"")
+
+        if (flavor.name != "stable" && properties["skipAuth"] != null) {
+            buildConfigField("Boolean", "SKIP_AUTH", properties["skipAuth"])
+        } else {
+            buildConfigField("Boolean", "SKIP_AUTH", "false")
         }
     }
 
@@ -56,18 +69,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    android {
-        lintOptions {
-            abortOnError false
-        }
-    }
 }
 
 dependencies {
     def desugar_version = "1.1.5"
     def lifecycle_version = "2.4.0"
     def preference_version = "1.1.1"
+    def okhttp_version = "4.9.3"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
 
@@ -77,6 +85,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation "androidx.preference:preference:$preference_version"
+
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -119,5 +129,4 @@ dependencies {
     //TypeDef Annotations
 
     implementation 'com.android.support:support-annotations:28.0.0'
-
 }
