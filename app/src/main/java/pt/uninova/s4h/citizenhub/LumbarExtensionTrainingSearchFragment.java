@@ -82,7 +82,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
             if (!alreadyConnected&&getView()!=null) {
                 buildRecycleView(requireView());
 
-                Device device = new Device(result.getDevice().getName(), result.getDevice().getAddress(), ConnectionKind.BLUETOOTH);
+                Device device = new Device(result.getDevice().getAddress(), result.getDevice().getName(), ConnectionKind.BLUETOOTH);
 
                 if (!model.isDevicePaired(device)) {
                     DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
@@ -322,7 +322,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                     @Override
                     public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
                         if (value.getNewState() == BluetoothConnectionState.READY) {
-                            connection.removeConnectionStateChangeListener(this);
+                            //connection.removeConnectionStateChangeListener(this);
                             connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
                                 @Override
                                 public void onRead(byte[] value) {
@@ -374,6 +374,11 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                                     connection.close();
                                     Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
 
+                                }
+
+                                @Override
+                                public void onReadFailure(byte [] value, int status) {
+                                    System.out.println("BUGOUT");
                                 }
                             });
                             connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
