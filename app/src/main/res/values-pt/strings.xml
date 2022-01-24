@@ -194,7 +194,7 @@
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">O seu ritmo cardíaco médio é de %1$.2f.</string>
-    <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s não OK</string>
+    <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s não OK</string>
     <string name="fragment_summary_text_view_steps_text">%1$.0f passos</string>
     <string name="fragment_user_label">Perfil do utilizador</string>
     <string name="layout_activity_add_device_address">Endereço</string>
@@ -229,7 +229,7 @@
     <string name="menu_fragment_device_list_search_title">Pesquisa</string>
     <string name="menu_fragment_device_list_title">Pesquisa</string>
     <string name="pdf_layout_background_logo">logótipo de fundo</string>
-    <string name="pdf_report_average_HR_text">Ritmo cardíaco médio (bpm): \\</string>
+    <string name="pdf_report_average_HR_text">Ritmo cardíaco médio (bpm):</string>
     <string name="slide_screen_skip">continuar</string>
     <string name="slide_screen_text_placeholder">espaço reservado para cada layout</string>
     <string name="slide_screen_welcome_text">Welcome</string>
