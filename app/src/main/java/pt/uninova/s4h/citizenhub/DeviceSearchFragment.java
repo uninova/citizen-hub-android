@@ -189,11 +189,11 @@ public class DeviceSearchFragment extends Fragment {
             if (address.equals("0C:B2:B7:39:99:63"))
                 name = "Posture Sensor";
 
-            Device device = new Device(address, name == null ? "{Unnamed}" : name, ConnectionKind.BLUETOOTH);
+            Device device = new Device(address, name == null ? address : name, ConnectionKind.BLUETOOTH);
 
             if (!model.isDevicePaired(device)) {
                 deviceList.add(new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off));
-                adapter.notifyItemInserted(0);
+                adapter.notifyItemInserted(deviceList.size() - 1);
 //                adapter.updateResults(deviceList);
             }
         });

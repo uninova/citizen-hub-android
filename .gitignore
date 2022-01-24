@@ -2,9 +2,9 @@
 /gradle/
 /.gradle/
 /.idea/
-/local.properties
+/*.iml
+/env.*.properties
+/gradle.properties
 /gradlew
 /gradlew.bat
-/*.iml
-/*.json
-/gradle.properties
+/local.properties
