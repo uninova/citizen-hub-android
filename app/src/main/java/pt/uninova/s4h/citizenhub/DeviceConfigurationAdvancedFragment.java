@@ -42,7 +42,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             super.handleMessage(msg);
             if (dialog.isShowing()) {
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.fragment_device_configuration_advanced_warning_calibration_completed_text), Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -220,10 +220,10 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Sensor Calibration")
-                        .setMessage("ATTENTION: Before pressing Calibrate, please ensure you are sitting and have" +
-                                " your back straight.")
-                        .setPositiveButton("Calibrate", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+                        .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+                                getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -231,7 +231,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
 
                                 agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
 
-                                dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
+                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
 
                                 handler.sendMessageDelayed(new Message(), 2500);
                             }

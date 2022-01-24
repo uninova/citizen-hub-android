@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/primus_bold"
-                android:text="Security"
+                android:text="@string/fragment_advanced_smart_bear_account_gate_security_text"
                 android:textAlignment="center"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp" />
@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/neo_sans_pro_regular"
                 android:labelFor="@+id/advanced_smart_bear_account_gate_fragment_input_code"
-                android:text="Confirmation Code"
+                android:text="@string/fragment_advanced_smart_bear_account_gate_confirmation_code_text"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="18sp" />
 

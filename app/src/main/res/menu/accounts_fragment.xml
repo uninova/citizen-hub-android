@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/accounts_fragment_menu_add_item"
-        android:title="Add"
+        android:title="@string/menu_accounts_fragment_add_title"
         app:showAsAction="always"/>
 </menu>

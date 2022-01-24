@@ -69,7 +69,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onSuccess(Fhir4Record<DocumentReference> recAord) {
                         requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
                                     viewPdfButton.setVisibility(View.VISIBLE);
                                     uploadPdfButton.setVisibility(View.GONE);
                                 }
@@ -79,7 +79,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onError(D4LException exception) {
                         requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
                             exception.printStackTrace();
                         });
                     }
@@ -93,7 +93,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onSuccess(Fhir4Record<DocumentReference> recAord) {
                         requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
                                     viewPdfButton.setVisibility(View.VISIBLE);
                                     uploadPdfButton.setVisibility(View.GONE);
                                 }
@@ -103,7 +103,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onError(D4LException exception) {
                         requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
                             exception.printStackTrace();
                         });
                     }

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/advanced_smart_bear_account_gate_fragment_menu_confirm"
-        android:title="Confirm"
+        android:title="@string/menu_fragment_advanced_smart_bear_account_gate_confirm_title"
         app:showAsAction="always" />
 
 </menu>

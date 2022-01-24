@@ -102,8 +102,8 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind2.setImageResource(R.drawable.shape_unselected_oval);
                 ind3.setImageResource(R.drawable.shape_unselected_oval);
 
-                title.setText("Welcome");
-                desc.setText("Thank you for using CitizenHub");
+                title.setText(R.string.welcome_slide_view_pager_welcome_title);
+                desc.setText(R.string.welcome_slide_view_pager_thank_you_message);
                 back.setVisibility(View.GONE);
                 next.setVisibility(View.VISIBLE);
                 logo_text_view.setVisibility(View.VISIBLE);
@@ -115,8 +115,8 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind2.setImageResource(R.drawable.shape_seleted_oval);
                 ind3.setImageResource(R.drawable.shape_unselected_oval);
 
-                title.setText("Connect Devices");
-                desc.setText("Simplifying different devices connection into one app");
+                title.setText(R.string.welcome_slide_view_pager_connect_devices_title);
+                desc.setText(R.string.welcome_slide_view_pager_connect_devices_message);
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.VISIBLE);
                 logo_text_view.setVisibility(View.GONE);
@@ -128,8 +128,8 @@ public class SlideViewPagerAdapter extends PagerAdapter {
                 ind2.setImageResource(R.drawable.shape_unselected_oval);
                 ind3.setImageResource(R.drawable.shape_seleted_oval);
 
-                title.setText("Real-time data");
-                desc.setText("Live visualisation and analytics on your health and wellbeing data!");
+                title.setText(R.string.welcome_slide_view_pager_connect_real_time_data_title);
+                desc.setText(R.string.welcome_slide_view_pager_connect_real_time_data_message);
                 back.setVisibility(View.VISIBLE);
                 next.setVisibility(View.GONE);
                 logo_text_view.setVisibility(View.GONE);

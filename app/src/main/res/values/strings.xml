@@ -249,7 +249,7 @@
     <string name="fragment_report_detail_lumbar_training_repetition_units">times</string>
     <string name="fragment_report_lumbar_extension_training_score_textview">Score</string>
     <string name="fragment_report_lumbar_training_score_value">0</string>
-    <string name="fragment_report_detail_lumbar_training_score_units">%</string>
+    <string name="fragment_report_detail_lumbar_training_score_units" translatable="false">%</string>
     <string name="fragment_report_detail_lumbar_training_weight_units">kg</string>
     <string name="fragment_summary_layout_lumbar_training_extension">Lumbar Extension Training</string>
     <string name="lumbar_icon">Lumbar Icon</string>
@@ -273,14 +273,14 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
-    <string name="fragment_summary_text_view_blood_pressure_text">SBP:\u00a0%1$s\u00a0mmHg\nDBP:\u00a0%2s\u00a0mmHg\nMeanAP:\u00a0%3$s\u00a0mmHg</string>
+    <string name="fragment_summary_text_view_blood_pressure_text" translatable="false">SBP:\u00a0%1$s\u00a0mmHg\nDBP:\u00a0%2s\u00a0mmHg\nMeanAP:\u00a0%3$s\u00a0mmHg</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
     <string name="fragment_report_detail_text_sbp">SBP:</string>
     <string name="fragment_report_detail_text_dbp">DBP:</string>
     <string name="fragment_report_detail_text_meanAP">MeanAP:</string>
     <string name="fragment_report_detail_blood_pressure_units">mmHg</string>
     <string name="fragment_report_detail_value_blood_presure_SBP">0</string>
-    <string name="blood_pressure">blood_pressure</string>
+    <string name="blood_pressure" translatable="false">blood_pressure</string>
     <string name="fragment_report_detail_value_blood_presure_DBP">0</string>
     <string name="fragment_report_detail_value_blood_presure_meanAP_value">0</string>
     <string name="respirationTitle">Respiration</string>
@@ -291,6 +291,72 @@
     <string name="pdf_report_average_SBP_text">Average SBP: \</string>
     <string name="fragment_settings_label">Settings</string>
     <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
+    <string name="fragment_device_configuration_add_calibration_completed_toast">Calibration Completed!</string>
+    <string name="fragment_device_configuration_add_loading_features_text">Loading device features...</string>
+    <string name="fragment_device_configuration_sensor_calibration_text">Sensor Calibration</string>
+    <string name="fragment_device_configuration_warning_calibration_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
+    <string name="fragment_device_configuration_dialog_option_calibrate">Calibrate</string>
+    <string name="fragment_device_configuration_warning_calibration_text2">\" your back straight.\"</string>
+    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_connect_option_text">connect</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">Calibration Completed!</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensor Calibration</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">\" your back straight.\"</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrate</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait...</string>
+    <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
+    <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
+    <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
+    <string name="fragment_settings_current_work_days_text">\"Current work days:  \"</string>
+    <string name="fragment_settings_choose_work_days_text">Choose your working days</string>
+    <string name="welcome_slide_view_pager_welcome_title">Welcome</string>
+    <string name="welcome_slide_view_pager_thank_you_message">Thank you for using CitizenHub</string>
+    <string name="welcome_slide_view_pager_connect_devices_title">Connect Devices</string>
+    <string name="welcome_slide_view_pager_connect_devices_message">Simplifying different devices connection into one app</string>
+    <string name="welcome_slide_view_pager_connect_real_time_data_title">Real-time data</string>
+    <string name="welcome_slide_view_pager_connect_real_time_data_message">Live visualisation and analytics on your health and wellbeing data!</string>
+    <string name="fragment_smart4health_account_fragment_logout_failure_toast">Failure to log out.</string>
+    <string name="accounts_fragment_logo_smart4health_description">TODO</string>
+    <string name="accounts_fragment_logo_smart4health_title" translatable="false">Smart4Health</string>
+    <string name="accounts_fragment_logo_smartbear_description">TODO</string>
+    <string name="accounts_fragment_logo_smartbear_title" translatable="false">Smart Bear</string>
+    <string name="menu_accounts_fragment_add_title">Add</string>
+    <string name="fragment_advanced_smart_bear_account_fragment_advanced_settings_text">Advanced Settings</string>
+    <string name="fragment_advanced_smart_bear_account_fragment_patient_id_text">Patient Id</string>
+    <string name="menu_fragment_advanced_smart_bear_account_accept_title">Accept</string>
+    <string name="fragment_advanced_smart_bear_account_gate_security_text">Security</string>
+    <string name="fragment_advanced_smart_bear_account_gate_confirmation_code_text">Confirmation Code</string>
+    <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirm</string>
+    <string name="dialog_do_not_show_this_message_again_text">Don\'t show this message again</string>
+    <string name="drawer_accounts_title">Accounts</string>
+    <string name="fragment_device_configuration_advanced_address_text">Address</string>
+    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Advanced Configurations</string>
+    <string name="fragment_device_configuration_advanced_update_text">Update</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_strict_text">Strict</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_relaxed_text">Relaxed</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_correction_interval_text">Correction Interval (seconds)</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text">Vibration Pattern</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_text">Vibration Strength</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_gentle_text">Gentle</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_vibration_strength_strong_text">Strong</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_sensor_calibration_button_text">Sensor Calibration</string>
+    <string name="fragment_device_configuration_update_advanced_button_text">Advanced Configurations</string>
+    <string name="fragment_device_list_item_text_view_title">Title</string>
+    <string name="fragment_device_list_item_text_view_description">Description</string>
+    <string name="fragment_summary_respiration_text">Respiration</string>
+    <string name="fragment_summary_blood_pressure_text">Blood Pressure</string>
+    <string name="fragment_smart4health_account_log_out_title">Log out</string>
+    <string name="fragment_smart_bear_account_fragment_advanced_settings_title">Advanced settings</string>
+    <string name="fragment_smart_bear_account_fragment_log_out_title">Log out</string>
+    <string name="fragment_settings_work_hours_title">Work Hours</string>
+    <string name="fragment_settings_work_days_title">Select your Working Days</string>
+    <string name="fragment_settings_work_start_title">Work Start Time</string>
+    <string name="fragment_settings_work_end_title">Work End Time</string>
+    <string name="fragment_settings_work_hours_start_message">Set some time</string>
+    <string name="fragment_settings_work_hours_end_message">Set some time</string>
     <string-array name="workdays">
         <item>Monday</item>
         <item>Tuesday</item>

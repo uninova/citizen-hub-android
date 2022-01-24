@@ -54,7 +54,7 @@ public class Smart4HealthAccountFragment extends Fragment {
                 @Override
                 public void onError(@NonNull D4LException exception) {
                     requireActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Failure to log out.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),getString(R.string.fragment_smart4health_account_fragment_logout_failure_toast), Toast.LENGTH_SHORT).show();
                         exception.printStackTrace();
                     });
                 }

@@ -34,7 +34,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             super.handleMessage(msg);
             if (dialog.isShowing()) {
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),getString(R.string.fragment_device_configuration_add_calibration_completed_toast), Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -55,7 +55,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         setupText();
 
         progressBar.setVisibility(View.VISIBLE);
-        connectDevice.setText("Loading device features...");
+        connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
 
         agentOrchestrator.add(device, value -> requireActivity().runOnUiThread(new Runnable() {
             @Override
@@ -71,14 +71,14 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
                     if (device.getName().startsWith("UprightGO2")) {
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Sensor Calibration")
-                                .setMessage("ATTENTION: Before pressing Calibrate, please ensure you are sitting and have" +
-                                        " your back straight.")
-                                .setPositiveButton("Calibrate", new DialogInterface.OnClickListener() {
+                                .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
+                                .setMessage(getString(R.string.fragment_device_configuration_warning_calibration_text) +
+                                        getString(R.string.fragment_device_configuration_warning_calibration_text2))
+                                .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //TODO calibrate and animate
-                                        dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
+                                        dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
 
                                         UprightGo2Agent agent = (UprightGo2Agent) value;
 
@@ -107,7 +107,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 });
 
                 progressBar.setVisibility(View.INVISIBLE);
-                connectDevice.setText("connect");
+                connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
             }
         }));
 
