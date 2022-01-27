@@ -16,9 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
 public class SummaryFragment extends Fragment {
 
@@ -230,7 +233,13 @@ public class SummaryFragment extends Fragment {
             }
 
             if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
-                noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
+
+                CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
+                AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+                if(agentOrchestrator.getDevices().isEmpty())
+                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
+                else
+                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
                 noDataTextView.setVisibility(VISIBLE); //TODO make own card
             } else {
