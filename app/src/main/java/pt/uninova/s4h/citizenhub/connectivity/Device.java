@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity;
+package pt.uninova.s4h.citizenhub.data;
 
 import java.util.Objects;
 
@@ -10,6 +10,9 @@ public class Device implements Comparable<Device> {
     private final ConnectionKind connectionKind;
     private final String name;
 
+    public Device(String address, ConnectionKind connectionKind) {
+        this(address, address, connectionKind);
+    }
 
     public Device(String address, String name, ConnectionKind connectionKind) {
         this.address = address;
@@ -32,6 +35,13 @@ public class Device implements Comparable<Device> {
         return this.address.compareTo(o.address);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device device = (Device) o;
+        return address.equals(device.address) && connectionKind == device.connectionKind && Objects.equals(name, device.name);
+    }
 
     public String getAddress() {
         return address;
@@ -43,14 +53,6 @@ public class Device implements Comparable<Device> {
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Device device = (Device) o;
-        return address.equals(device.address) && connectionKind == device.connectionKind && Objects.equals(name, device.name);
     }
 
     @Override
