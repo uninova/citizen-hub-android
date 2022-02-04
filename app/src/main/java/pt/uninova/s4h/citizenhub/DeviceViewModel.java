@@ -99,7 +99,7 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public void apply(Feature feature, AgentOrchestrator agentOrchestrator, MeasurementRepository measurementRepository) {
-        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind(), measurementRepository::add);
+        getSelectedAgent(agentOrchestrator).enableMeasurement(feature.getKind());
         featureRepository.add(feature);
     }
 

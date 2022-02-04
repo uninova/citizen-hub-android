@@ -9,7 +9,9 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 
@@ -30,7 +32,7 @@ public class WearOSAgent extends AbstractAgent {
     final private WearOSConnection connection;
 
     public WearOSAgent(WearOSConnection connection) {
-        super(ID, supportedProtocolsIds, supportedMeasurementKinds);
+        super(ID, new Device(connection.getAddress(), ConnectionKind.BLUETOOTH), supportedProtocolsIds, supportedMeasurementKinds);
 
         this.connection = connection;
     }

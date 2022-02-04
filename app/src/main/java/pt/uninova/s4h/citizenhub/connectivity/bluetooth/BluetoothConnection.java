@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.util.Pair;
@@ -129,8 +130,27 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
     }
 
+
+    @Override
+    public String getAddress() {
+        return getDevice().getAddress();
+    }
+
+    @Override
+    public ConnectionKind getConnectionKind() {
+        return ConnectionKind.BLUETOOTH;
+    }
+
     public BluetoothDevice getDevice() {
         return gatt.getDevice();
+    }
+
+    public Device getSource() {
+        final BluetoothDevice device = getDevice();
+        final String address = device.getAddress();
+        final String name = device.getName();
+
+        return new Device(address, name != null ? name : address, ConnectionKind.BLUETOOTH);
     }
 
     public List<BluetoothGattService> getServices() {
@@ -362,13 +382,4 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         });
     }
 
-    @Override
-    public ConnectionKind getConnectionKind() {
-        return ConnectionKind.BLUETOOTH;
-    }
-
-    @Override
-    public String getAddress() {
-        return getDevice().getAddress();
-    }
 }

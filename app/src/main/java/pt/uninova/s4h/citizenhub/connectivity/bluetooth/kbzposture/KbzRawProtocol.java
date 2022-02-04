@@ -12,8 +12,14 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
+import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.SittingMeasurement;
+import pt.uninova.s4h.citizenhub.data.StandingMeasurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class KbzRawProtocol extends BluetoothMeasuringProtocol {
 
@@ -33,8 +39,8 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
     private MeasurementKind lastPosture;
     private LocalDateTime lastTimestamp;
 
-    public KbzRawProtocol(BluetoothConnection connection, BluetoothAgent agent) {
-        super(ID, connection, agent);
+    public KbzRawProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, BluetoothAgent agent) {
+        super(ID, connection, sampleDispatcher, agent);
     }
 
     private void attachObservers() {
@@ -52,20 +58,21 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
             public void onChange(byte[] value) {
                 final double[] parsed = parseAccelerometer(value);
                 final LocalDateTime now = LocalDateTime.now();
+                final Duration duration = Duration.between(lastTimestamp, now);
+                final double seconds = duration.toNanos() * 0.000000001;
+
+                final Measurement<?>[] measurements = new Measurement[2];
 
                 if (isGoodPosture(parsed[2], parsed[3])) {
                     if (lastPosture == MeasurementKind.GOOD_POSTURE) {
-                        final Duration duration = Duration.between(lastTimestamp, now);
 
-                        getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.GOOD_POSTURE, duration.toNanos() * 0.000000001));
+                        measurements[0] = new GoodPostureMeasurement(seconds);
                     } else {
                         lastPosture = MeasurementKind.GOOD_POSTURE;
                     }
                 } else {
                     if (lastPosture == MeasurementKind.BAD_POSTURE) {
-                        final Duration duration = Duration.between(lastTimestamp, now);
-
-                        getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.BAD_POSTURE, duration.toNanos() * 0.000000001));
+                        measurements[0] = new BadPostureMeasurement(seconds);
                     } else {
                         lastPosture = MeasurementKind.BAD_POSTURE;
                     }
@@ -73,27 +80,26 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
 
                 if (isStanding(parsed[1], parsed[2], parsed[3])) {
                     if (lastBodyPosition == MeasurementKind.STANDING) {
-                        final Duration duration = Duration.between(lastTimestamp, now);
-
-                        getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.STANDING, duration.toNanos() * 0.000000001));
+                        measurements[1] = new StandingMeasurement(seconds);
                     } else {
                         lastBodyPosition = MeasurementKind.STANDING;
                     }
                 } else {
                     if (lastBodyPosition == MeasurementKind.SITTING) {
-                        final Duration duration = Duration.between(lastTimestamp, now);
-
-                        getMeasurementDispatcher().dispatch(new Measurement(Date.from(Instant.from(now.atZone(ZoneId.systemDefault()))), MeasurementKind.SITTING, duration.toNanos() * 0.000000001));
+                        measurements[1] = new SittingMeasurement(seconds);
                     } else {
                         lastBodyPosition = MeasurementKind.SITTING;
                     }
                 }
 
+                final Sample sample = new Sample(getAgent().getSource(), measurements);
+
+                getSampleDispatcher().dispatch(sample);
+
                 lastTimestamp = now;
             }
         });
     }
-
 
 
     private double byteToDouble(byte a, byte b) {

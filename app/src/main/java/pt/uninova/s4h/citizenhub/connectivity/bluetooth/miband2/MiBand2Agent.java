@@ -65,9 +65,9 @@ public class MiBand2Agent extends BluetoothAgent {
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
         switch (kind) {
             case HEART_RATE:
-                return new MiBand2HeartRateProtocol(this.getConnection(), this);
+                return new MiBand2HeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
             case ACTIVITY:
-                return new MiBand2DistanceProtocol(this.getConnection(), this);
+                return new MiBand2DistanceProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;

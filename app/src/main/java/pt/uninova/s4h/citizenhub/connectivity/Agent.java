@@ -3,11 +3,13 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
 public interface Agent {
+
+    void addSampleObserver(Observer<Sample> observer);
 
     void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
 
@@ -19,7 +21,7 @@ public interface Agent {
 
     void enable();
 
-    void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer);
+    void enableMeasurement(MeasurementKind measurementKind);
 
     void enableProtocol(Protocol protocol);
 
@@ -29,11 +31,15 @@ public interface Agent {
 
     Protocol getProtocol(UUID protocolId);
 
+    Device getSource();
+
     AgentState getState();
 
     Set<MeasurementKind> getSupportedMeasurements();
 
     Set<UUID> getSupportedProtocolsIds();
+
+    void removeSampleObserver(Observer<Sample> observer);
 
     void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
 }

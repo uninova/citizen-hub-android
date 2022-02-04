@@ -35,7 +35,7 @@ public class StandardProtocolHeartRate extends BluetoothMeasuringProtocol {
                 };
                 double heartRate = parsed[1];
                 System.out.println("Heart Rate measured: " + heartRate + " bpm.");
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, heartRate));
+                //getSampleDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, heartRate));
             }
         });
 

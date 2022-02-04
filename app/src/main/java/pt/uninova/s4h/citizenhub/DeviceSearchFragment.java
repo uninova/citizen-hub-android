@@ -30,7 +30,6 @@ import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
 
 public class DeviceSearchFragment extends Fragment {
 

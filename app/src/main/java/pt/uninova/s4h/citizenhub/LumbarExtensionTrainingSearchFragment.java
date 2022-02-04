@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
@@ -41,11 +42,12 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgent;
+import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
@@ -71,7 +73,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private ProgressBar simpleProgressBar;
     private LumbarExtensionTrainingRepository lumbarRepository;
     //Delete after testing
-    Button  TESTBUTTON;
+    Button TESTBUTTON;
 
 
     private final ScanCallback scanCallback = new ScanCallback() {
@@ -79,7 +81,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
 
-            if (!alreadyConnected&&getView()!=null) {
+            if (!alreadyConnected && getView() != null) {
                 buildRecycleView(requireView());
 
                 Device device = new Device(result.getDevice().getAddress(), result.getDevice().getName(), ConnectionKind.BLUETOOTH);
@@ -308,93 +310,41 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
         adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                final Device device = deviceItemList.get(position).getDevice();
 
-                model.setDevice(deviceItemList.get(position).getDevice());
+                model.setDevice(device);
+
                 simpleProgressBar.setVisibility(View.VISIBLE);
 
                 if (scanner != null) {
                     scanner.stop();
                 }
 
-                connection = new BluetoothConnection();
+                final BluetoothConnection bluetoothConnection = new BluetoothConnection();
+                final BluetoothDevice bluetoothDevice = bluetoothManager.getAdapter().getRemoteDevice(device.getAddress());
 
-                connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                    @Override
-                    public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-                        if (value.getNewState() == BluetoothConnectionState.READY) {
-                            //connection.removeConnectionStateChangeListener(this);
-                            connection.addCharacteristicListener(new BaseCharacteristicListener(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC) {
-                                @Override
-                                public void onRead(byte[] value) {
-                                    ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
-                                    System.out.println(byteBuffer);
+                bluetoothConnection.addConnectionStateChangeListener((state) -> {
+                    if (state.getOldState() == BluetoothConnectionState.CONNECTED && state.getNewState() == BluetoothConnectionState.READY) {
+                        final MedXAgent agent = new MedXAgent(bluetoothConnection);
 
-                                    int timestamp = byteBuffer.getInt();
-                                    System.out.println("Timestamp: " + timestamp);
-                                    int length = byteBuffer.getInt();
-                                    System.out.println("Length: " + length);
-                                    float score = byteBuffer.getFloat();
-                                    System.out.println("Score: " + score);
-                                    int repetitions = byteBuffer.getInt();
-                                    System.out.println("Repetitions: " + repetitions);
-                                    int weight = byteBuffer.getInt();
-                                    System.out.println("Weight: " + weight);
-//                                    //for timestamp
-//                                    byte[] timestampByteArray = new byte[4];
-//                                    System.arraycopy(value, 0, timestampByteArray, 0, 4);
-//                                    ByteBuffer timestampByteBuffer = ByteBuffer.wrap(timestampByteArray).asReadOnlyBuffer();
-//                                    int timestampEpoch = timestampByteBuffer.getInt();
-//                                    java.util.Date timestamp = new java.util.Date((long) timestampEpoch * 1000);
-//                                    System.out.println("Timestamp was: " + timestamp);
-//                                    System.out.println("Timestamp long (epoch) is " + (long) timestampEpoch);
-//
-//                                    //for training length
-//                                    final double[] parsed = new double[]{
-//                                            byteBuffer.get(4) & 0xFF,
-//                                            byteBuffer.get(5) & 0xFF,
-//                                            byteBuffer.get(6) & 0xFF,
-//                                            byteBuffer.get(7) & 0xFF,
-//                                            byteBuffer.get(8) & 0xFF,
-//                                            byteBuffer.get(9) & 0xFF
-//                                    };
-//                                    System.out.println("Training Length was: " + (int) parsed[0] + "h " + (int) parsed[1] + "m " + (int) parsed[2] + "s");
-//                                    long trainingLength = (int) (parsed[0] * 60 * 60) + (int) (parsed[1] * 60) + (int) parsed[2]; //milliseconds
-//                                    System.out.println("Training Length long is " + trainingLength);
-//
-//                                    //for score
-//                                    Double score = parsed[3] + parsed[4] * 0.01;
-//                                    System.out.println("Score was: " + score + "%");
-//
-//                                    //for repetitions
-//                                    int repetitions = (int) parsed[5];
-//                                    System.out.println("Repetetions were: " + repetitions);
-//
-                                    lumbarRepository.add(new LumbarExtensionTraining(timestamp, length, score, repetitions, weight));
-                                    connection.disableNotifications(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
-                                    connection.close();
-                                    Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment());
+                        agent.addSampleObserver((sample) -> {
+                            agent.disable();
+                            bluetoothConnection.close();
 
-                                }
+                            MedXTrainingValue val = (MedXTrainingValue) sample.getMeasurements()[0].getValue();
+                            int duration = (int) val.getDuration().toMillis() / 1000;
 
-                                @Override
-                                public void onReadFailure(byte [] value, int status) {
-                                    System.out.println("BUGOUT");
-                                }
-                            });
-                            connection.readCharacteristic(LUMBARTRAINING_UUID_SERVICE, LUMBARTRAINING_UUID_CHARACTERISTIC);
-                            System.out.println(" Reading ");
-                        }
+                            lumbarRepository.add(new LumbarExtensionTraining(sample.getTimestamp().toEpochMilli(), duration, val.getScore(), val.getRepetitions(), val.getWeight()));
+
+                            requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment()));
+                        });
+
+                        agent.enable();
+                        agent.enableMeasurement(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
                     }
                 });
-                alreadyConnected = true;
-                try {
-                    System.out.println("Connecting");
-                    bluetoothManager.getAdapter().getRemoteDevice(deviceItemList.get(position).getDevice().getAddress()).connectGatt(getContext(), true, connection, BluetoothDevice.TRANSPORT_LE);
-                    simpleProgressBar.setVisibility(View.GONE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+                bluetoothDevice.connectGatt(requireContext(), false, bluetoothConnection, BluetoothDevice.TRANSPORT_LE);
             }
 
             @Override
