@@ -10,6 +10,8 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
@@ -55,10 +57,11 @@ public class StandardProtocolBloodPressure extends BluetoothMeasuringProtocol {
                 System.out.println("Pulse: " + pulse + " bpm");
 
                 //TODO: only dispaching heart rate. implement other measurements kinds.
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, pulse));
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_SBP, systolic));
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_DBP, diastolic));
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_MEAN_AP, meanAP));
+                /*final Sample sample = new Sample(getAgent().getSource()                        );
+                getSampleDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, pulse));
+                getSampleDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_SBP, systolic));
+                getSampleDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_DBP, diastolic));
+                getSampleDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.BLOOD_PRESSURE_MEAN_AP, meanAP));*/
             }
         });
 

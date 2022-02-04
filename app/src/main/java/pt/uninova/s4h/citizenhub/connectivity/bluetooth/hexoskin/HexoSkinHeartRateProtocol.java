@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
-import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -8,8 +7,10 @@ import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 
@@ -19,18 +20,17 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
-    private Class<?> agent;
 
-    public HexoSkinHeartRateProtocol(BluetoothConnection connection, HexoSkinAgent agent) {
-        super(ID, connection, agent);
+    public HexoSkinHeartRateProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, HexoSkinAgent agent) {
+        super(ID, connection, sampleDispatcher, agent);
 
         setState(ProtocolState.DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
             @Override
             public void onChange(byte[] value) {
-
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) value[1]));
+                final int val = value[1];
+                getSampleDispatcher().dispatch(new Sample(getAgent().getSource(), new Measurement[]{new HeartRateMeasurement(val)}));
             }
         });
     }
@@ -43,7 +43,6 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void enable() {
-        System.out.println("HEARTRATE_ENABLED");
         setState(ProtocolState.ENABLED);
         getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }

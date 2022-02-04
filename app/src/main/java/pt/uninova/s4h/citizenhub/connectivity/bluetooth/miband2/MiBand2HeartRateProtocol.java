@@ -12,8 +12,11 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
@@ -23,8 +26,8 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_CONTROL = UUID.fromString("00002a39-0000-1000-8000-00805f9b34fb");
     public final static UUID UUID_CHARACTERISTIC_HEART_RATE_DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
-    public MiBand2HeartRateProtocol(BluetoothConnection connection, MiBand2Agent agent) {
-        super(ID, connection, agent);
+    public MiBand2HeartRateProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, MiBand2Agent agent) {
+        super(ID, connection, sampleDispatcher, agent);
 
         setState(ProtocolState.DISABLED);
 
@@ -65,7 +68,7 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
             @Override
             public void onChange(byte[] value) {
-                getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.HEART_RATE, (double) value[1]));
+                getSampleDispatcher().dispatch(new Sample(getAgent().getSource(), new HeartRateMeasurement((int) value[1])));
             }
         });
     }

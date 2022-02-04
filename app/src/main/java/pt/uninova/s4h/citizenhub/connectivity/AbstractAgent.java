@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
@@ -13,6 +14,7 @@ import pt.uninova.util.messaging.Observer;
 public abstract class AbstractAgent implements Agent {
 
     private final UUID id;
+    private final Device source;
 
     private AgentState state;
 
@@ -23,9 +25,11 @@ public abstract class AbstractAgent implements Agent {
     private final Map<MeasurementKind, MeasuringProtocol> measurementMap;
 
     private final Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
+    private final Dispatcher<Sample> sampleDispatcher;
 
-    protected AbstractAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements) {
+    protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements) {
         this.id = id;
+        this.source = source;
 
         this.supportedProtocolsIds = supportedProtocolsIds;
         this.supportedMeasurements = supportedMeasurements;
@@ -34,6 +38,12 @@ public abstract class AbstractAgent implements Agent {
         this.measurementMap = new HashMap<>(supportedMeasurements.size());
 
         this.stateChangedDispatcher = new Dispatcher<>();
+        this.sampleDispatcher = new Dispatcher<>();
+    }
+
+    @Override
+    public void addSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.addObserver(observer);
     }
 
     @Override
@@ -60,7 +70,7 @@ public abstract class AbstractAgent implements Agent {
 
         if (protocol != null) {
             this.measurementMap.remove(measurementKind);
-            protocol.clearMeasurementObservers();
+            protocol.clearSampleObservers();
             disableProtocol(protocol);
         }
     }
@@ -82,15 +92,16 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind, Observer<Measurement> observer) {
+    public void enableMeasurement(MeasurementKind measurementKind) {
         System.out.println("AbstractAgent.enableMeasurement measurementKind=" + measurementKind);
+
         if (getState() != AgentState.ENABLED) {
             this.addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
 
                 @Override
                 public void observe(StateChangedMessage<AgentState, ? extends Agent> message) {
                     if (message.getNewState() == AgentState.ENABLED) {
-                        AbstractAgent.this.enableMeasurement(measurementKind, observer);
+                        AbstractAgent.this.enableMeasurement(measurementKind);
                         removeStateObserver(this);
                     }
                 }
@@ -103,7 +114,6 @@ public abstract class AbstractAgent implements Agent {
 
         if (protocol != null) {
             this.measurementMap.put(measurementKind, protocol);
-            protocol.addMeasurementObserver(observer);
             enableProtocol(protocol);
         }
     }
@@ -151,11 +161,19 @@ public abstract class AbstractAgent implements Agent {
 
     protected abstract MeasuringProtocol getMeasuringProtocol(MeasurementKind kind);
 
+    protected Dispatcher<Sample> getSampleDispatcher() {
+        return sampleDispatcher;
+    }
+
+    @Override
+    public Device getSource() {
+        return source;
+    }
+
     @Override
     public AgentState getState() {
         return state;
     }
-
 
     @Override
     public Set<MeasurementKind> getSupportedMeasurements() {
@@ -165,6 +183,11 @@ public abstract class AbstractAgent implements Agent {
     @Override
     public Set<UUID> getSupportedProtocolsIds() {
         return this.supportedProtocolsIds;
+    }
+
+    @Override
+    public void removeSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.removeObserver(observer);
     }
 
     @Override
