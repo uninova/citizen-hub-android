@@ -1,10 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -35,7 +32,7 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
     final private static double GYR_RATIO = 1000.0 / 32767;
 
 
-    private MeasurementKind lastBodyPosition;
+    private MeasurementKind lastPosition;
     private MeasurementKind lastPosture;
     private LocalDateTime lastTimestamp;
 
@@ -56,47 +53,25 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(KBZ_SERVICE, KBZ_RAW_CHARACTERISTIC) {
             @Override
             public void onChange(byte[] value) {
-                final double[] parsed = parseAccelerometer(value);
                 final LocalDateTime now = LocalDateTime.now();
-                final Duration duration = Duration.between(lastTimestamp, now);
-                final double seconds = duration.toNanos() * 0.000000001;
 
-                final Measurement<?>[] measurements = new Measurement[2];
+                if (lastTimestamp != null) {
+                    final Duration duration = Duration.between(lastTimestamp, now);
+                    final double seconds = duration.toNanos() * 0.000000001;
 
-                if (isGoodPosture(parsed[2], parsed[3])) {
-                    if (lastPosture == MeasurementKind.GOOD_POSTURE) {
+                    final Measurement<?> posture = lastPosture == MeasurementKind.GOOD_POSTURE ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
+                    final Measurement<?> position = lastPosition == MeasurementKind.STANDING ? new StandingMeasurement(seconds) : new SittingMeasurement(seconds);
 
-                        measurements[0] = new GoodPostureMeasurement(seconds);
-                    } else {
-                        lastPosture = MeasurementKind.GOOD_POSTURE;
-                    }
-                } else {
-                    if (lastPosture == MeasurementKind.BAD_POSTURE) {
-                        measurements[0] = new BadPostureMeasurement(seconds);
-                    } else {
-                        lastPosture = MeasurementKind.BAD_POSTURE;
-                    }
+                    final Sample sample = new Sample(getAgent().getSource(), posture, position);
+
+                    getSampleDispatcher().dispatch(sample);
                 }
 
-                if (isStanding(parsed[1], parsed[2], parsed[3])) {
-                    if (lastBodyPosition == MeasurementKind.STANDING) {
-                        measurements[1] = new StandingMeasurement(seconds);
-                    } else {
-                        lastBodyPosition = MeasurementKind.STANDING;
-                    }
-                } else {
-                    if (lastBodyPosition == MeasurementKind.SITTING) {
-                        measurements[1] = new SittingMeasurement(seconds);
-                    } else {
-                        lastBodyPosition = MeasurementKind.SITTING;
-                    }
-                }
-
-                final Sample sample = new Sample(getAgent().getSource(), measurements);
-
-                getSampleDispatcher().dispatch(sample);
+                final double[] parsed = parseAccelerometer(value);
 
                 lastTimestamp = now;
+                lastPosture = isGoodPosture(parsed[2], parsed[3]) ? MeasurementKind.GOOD_POSTURE : MeasurementKind.BAD_POSTURE;
+                lastPosition = isStanding(parsed[1], parsed[2], parsed[3]) ? MeasurementKind.STANDING : MeasurementKind.SITTING;
             }
         });
     }
@@ -115,7 +90,7 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
     public void enable() {
         attachObservers();
 
-        lastBodyPosition = null;
+        lastPosition = null;
         lastPosture = null;
         lastTimestamp = null;
 
