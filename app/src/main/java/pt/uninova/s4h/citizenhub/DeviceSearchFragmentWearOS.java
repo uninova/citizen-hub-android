@@ -144,7 +144,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void buildRecycleView(View result) {
         RecyclerView recyclerView = result.findViewById(R.id.recyclerView_searchList);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
 
