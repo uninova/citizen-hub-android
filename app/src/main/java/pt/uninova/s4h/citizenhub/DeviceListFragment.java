@@ -188,7 +188,7 @@ public class DeviceListFragment extends Fragment {
 
     private void buildRecycleView(View result) {
         recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
 
