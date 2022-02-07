@@ -32,19 +32,19 @@
     <fragment
         android:id="@+id/lumbar_extension_training_fragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingFragment"
-        android:label="MedX Program"
+        android:label="@string/fragment_lumbar_extension_training_label"
         tools:layout="@layout/fragment_lumbar_extension_training">
         <action
             android:id="@+id/action_lumbar_extension_training_fragment_to_lumbarExtensionTrainingSearchFragment"
             app:destination="@id/lumbarExtensionTrainingSearchFragment"
-            app:popUpTo="@id/lumbarExtensionTrainingSearchFragment"/>
+            app:popUpTo="@id/lumbarExtensionTrainingSearchFragment" />
     </fragment>
 
     <fragment
-            android:id="@+id/device_list_fragment"
-            android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
-            android:label="@string/fragment_device_list_label"
-            tools:layout="@layout/fragment_device_list">
+        android:id="@+id/device_list_fragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
+        android:label="@string/fragment_device_list_label"
+        tools:layout="@layout/fragment_device_list">
 
         <action
             android:id="@+id/action_device_list_fragment_to_device_search_fragment"
@@ -147,8 +147,7 @@
         android:id="@+id/settings_fragment"
         android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
         android:label="Settings"
-        tools:layout="@layout/fragment_settings">
-    </fragment>
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/accounts_fragment"
