@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:key="pref1"
-        android:title="Work Hours" />
-    <MultiSelectListPreference
-        android:defaultValue="@array/empty_array"
-        android:entries="@array/workdays"
-        android:entryValues="@array/workday_values"
-        android:key="workdays"
-        android:summary="Select your Working Days"
-        android:title="Work Days" />
+        <PreferenceCategory
+            android:key="pref1"
+            android:title="@string/fragment_settings_work_hours_title">
+
+            <CheckBoxPreference
+                android:key="check_all"
+                android:title="Check"/>
+        </PreferenceCategory>
+        <MultiSelectListPreference
+            android:key="workdays"
+            android:title="Work Days"
+            android:summary="@string/fragment_settings_work_days_title"
+            android:entries="@array/workdays"
+            android:entryValues="@array/workday_values"
+            android:defaultValue="@array/empty_array"/>
 
     <pt.uninova.s4h.citizenhub.TimePreference
-        android:defaultValue="09:00"
         android:key="workStart"
-        android:summary="Set some time"
-        android:title="Work Start Time" />
+        android:title="@string/fragment_settings_work_start_title"
+        android:defaultValue="09:00"
+        android:summary="@string/fragment_settings_work_hours_start_message"/>
     <pt.uninova.s4h.citizenhub.TimePreference
-        android:defaultValue="17:00"
         android:key="workEnd"
-        android:summary="Set some time"
-        android:title="Work End Time" />
+        android:title="@string/fragment_settings_work_end_title"
+        android:defaultValue="17:00"
+        android:summary="@string/fragment_settings_work_hours_end_message"/>
 
 </PreferenceScreen>

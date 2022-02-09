@@ -40,7 +40,7 @@ public class LogoutFragment extends Fragment {
                 @Override
                 public void onError(D4LException exception) {
                     requireActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Failure to log out.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.fragment_logout_toast_failure_text), Toast.LENGTH_SHORT).show();
                         exception.printStackTrace();
                     });
                 }

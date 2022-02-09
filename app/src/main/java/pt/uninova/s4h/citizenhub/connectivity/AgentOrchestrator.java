@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Observer;
@@ -30,14 +31,17 @@ public class AgentOrchestrator {
 
     private final List<AgentOrchestratorListener> listeners;
 
-    public AgentOrchestrator() {
-        this(new HashMap<>());
+    private final Observer<Sample> ingester;
+
+    public AgentOrchestrator(Observer<Sample> ingester) {
+        this(new HashMap<>(), ingester);
     }
 
-    public AgentOrchestrator(Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap) {
+    public AgentOrchestrator(Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap, Observer<Sample> ingester) {
         this.agentMap = new HashMap<>();
         this.agentFactoryMap = agentFactoryMap;
         this.listeners = new LinkedList<>();
+        this.ingester = ingester;
     }
 
     public static UUIDv5 namespaceGenerator() {
@@ -56,10 +60,11 @@ public class AgentOrchestrator {
             put(device, null);
             tellOnDeviceAdded(device);
 
-            factory.create(device.getAddress(), (value) -> {
-                put(device, value);
-                tellOnAgentAttached(device, value);
-                observer.observe(value);
+            factory.create(device.getAddress(), (agent) -> {
+                put(device, agent);
+                agent.addSampleObserver(ingester);
+                tellOnAgentAttached(device, agent);
+                observer.observe(agent);
             });
         } else {
             observer.observe(null);
@@ -90,7 +95,7 @@ public class AgentOrchestrator {
 
     public void remove(Device device) {
         agentMap.remove(device);
-
+        getAgent(device).removeSampleObserver(ingester);
         tellOnDeviceRemoved(device);
     }
 
@@ -115,6 +120,4 @@ public class AgentOrchestrator {
             i.onDeviceRemoved(device);
         }
     }
-
-
 }

@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
@@ -92,7 +93,7 @@ public class DeviceListFragment extends Fragment {
         if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevices().size() > 0) {
             deviceList.clear();
 
-            for (pt.uninova.s4h.citizenhub.connectivity.Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevices()
+            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevices()
             ) {
                 deviceList.add(new DeviceListItem(device));
                 adapter.notifyDataSetChanged();
@@ -101,7 +102,7 @@ public class DeviceListFragment extends Fragment {
         Activity activity = requireActivity();
         ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addListener(new AgentOrchestratorListener() {
             @Override
-            public void onDeviceAdded(pt.uninova.s4h.citizenhub.connectivity.Device device) {
+            public void onDeviceAdded(Device device) {
                 DeviceListItem listItem = new DeviceListItem(device);
 
                 if (!deviceList.contains(listItem)) {
@@ -113,7 +114,7 @@ public class DeviceListFragment extends Fragment {
             }
 
             @Override
-            public void onDeviceRemoved(pt.uninova.s4h.citizenhub.connectivity.Device device) {
+            public void onDeviceRemoved(Device device) {
                 DeviceListItem listItem = new DeviceListItem(device);
 
                 if (deviceList.contains(listItem)) {
@@ -187,7 +188,7 @@ public class DeviceListFragment extends Fragment {
 
     private void buildRecycleView(View result) {
         recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new DeviceListAdapter(deviceList);
 

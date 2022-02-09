@@ -56,7 +56,7 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEV_MODE_NO_AUTH) {
+        if (BuildConfig.SKIP_AUTH) {
             final Activity activity = requireActivity();
             final Intent intent = new Intent(activity, MainActivity.class);
 //                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
