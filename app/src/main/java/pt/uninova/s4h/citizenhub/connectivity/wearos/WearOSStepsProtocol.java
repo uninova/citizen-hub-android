@@ -26,7 +26,7 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
             @Override
             public void onChange(double value, Date timestamp) {
 
-                getMeasurementDispatcher().dispatch(new Measurement(timestamp, MeasurementKind.STEPS, value));
+                //getSampleDispatcher().dispatch(new Measurement(timestamp, MeasurementKind.STEPS, value));
                 Log.d(TAG, "dispatch " + timestamp + " and " + value);
             }
         });

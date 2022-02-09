@@ -1,31 +1,30 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
-import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol implements MeasuringProtocol {
 
-    private final Dispatcher<Measurement> measurementDispatcher;
+    private final Dispatcher<Sample> sampleDispatcher;
 
     public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, BluetoothAgent agent) {
         this(id, connection, new Dispatcher<>(), agent);
     }
 
-    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Dispatcher<Measurement> dispatcher, BluetoothAgent agent) {
+    public BluetoothMeasuringProtocol(UUID id, BluetoothConnection connection, Dispatcher<Sample> dispatcher, BluetoothAgent agent) {
         super(id, connection, agent);
 
-        measurementDispatcher = dispatcher;
+        sampleDispatcher = dispatcher;
     }
 
     @Override
-    public void addMeasurementObserver(Observer<Measurement> observer) {
-        this.measurementDispatcher.addObserver(observer);
+    public void addSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.addObserver(observer);
     }
 
     @Override
@@ -34,16 +33,16 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
     }
 
     @Override
-    public void clearMeasurementObservers() {
-        measurementDispatcher.close();
+    public void clearSampleObservers() {
+        sampleDispatcher.close();
     }
 
-    protected Dispatcher<Measurement> getMeasurementDispatcher() {
-        return measurementDispatcher;
+    protected Dispatcher<Sample> getSampleDispatcher() {
+        return sampleDispatcher;
     }
 
     @Override
-    public void removeMeasurementObserver(Observer<Measurement> observer) {
-        this.measurementDispatcher.removeObserver(observer);
+    public void removeSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.removeObserver(observer);
     }
 }

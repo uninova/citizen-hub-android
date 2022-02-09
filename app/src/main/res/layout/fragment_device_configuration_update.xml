@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Advanced Configurations"
+                android:text="@string/fragment_device_configuration_update_advanced_button_text"
                 android:visibility="gone" />
         </LinearLayout>
 

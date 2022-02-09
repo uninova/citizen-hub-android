@@ -19,7 +19,7 @@ public class Measurement {
     @TypeConverters(MeasurementKindTypeConverter.class)
     private MeasurementKind kind;
     private Double value;
-    @ColumnInfo(name = "is_working",defaultValue = "0")
+    @ColumnInfo(name = "is_working", defaultValue = "0")
     private Integer isWorking;
 
 
@@ -30,15 +30,15 @@ public class Measurement {
 
     @Ignore
     public Measurement(Date timestamp, MeasurementKind kind, Double value, Integer isWorking) {
-        this(null, timestamp, kind, value,isWorking);
+        this(null, timestamp, kind, value, isWorking);
     }
 
-    public Measurement(Integer id, Date timestamp, MeasurementKind kind, Double value,Integer isWorking) {
+    public Measurement(Integer id, Date timestamp, MeasurementKind kind, Double value, Integer isWorking) {
         this.id = id;
         this.timestamp = timestamp;
         this.kind = kind;
         this.value = value;
-        this.isWorking =isWorking;
+        this.isWorking = isWorking;
     }
 
     public Integer getId() {

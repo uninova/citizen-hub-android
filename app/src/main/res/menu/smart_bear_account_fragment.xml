@@ -4,11 +4,11 @@
 
     <item
         android:id="@+id/smart_bear_account_fragment_menu_advanced"
-        android:title="Advanced settings"
+        android:title="@string/fragment_smart_bear_account_fragment_advanced_settings_title"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/smart_bear_account_fragment_menu_log_out"
-        android:title="Log out"
+        android:title="@string/fragment_smart_bear_account_fragment_log_out_title"
         app:showAsAction="never" />
 </menu>

@@ -1,39 +1,43 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 public abstract class AbstractMeasuringProtocol extends AbstractProtocol implements MeasuringProtocol {
 
-    final private Dispatcher<Measurement> measurementDispatcher;
+    final private Dispatcher<Sample> sampleDispatcher;
 
     protected AbstractMeasuringProtocol(UUID id, Agent agent) {
+        this(id, agent, new Dispatcher<>());
+    }
+
+    protected AbstractMeasuringProtocol(UUID id, Agent agent, Dispatcher<Sample> dispatcher) {
         super(id, agent);
 
-        measurementDispatcher = new Dispatcher<>();
+        this.sampleDispatcher = dispatcher;
     }
 
     @Override
-    public void addMeasurementObserver(Observer<Measurement> observer) {
-        this.measurementDispatcher.addObserver(observer);
+    public void addSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.addObserver(observer);
     }
 
-    protected Dispatcher<Measurement> getMeasurementDispatcher() {
-        return measurementDispatcher;
-    }
-
-    @Override
-    public void removeMeasurementObserver(Observer<Measurement> observer) {
-        this.measurementDispatcher.removeObserver(observer);
+    protected Dispatcher<Sample> getSampleDispatcher() {
+        return sampleDispatcher;
     }
 
     @Override
-    public void clearMeasurementObservers(){
-        this.measurementDispatcher.close();
+    public void removeSampleObserver(Observer<Sample> observer) {
+        this.sampleDispatcher.removeObserver(observer);
+    }
+
+    @Override
+    public void clearSampleObservers() {
+        this.sampleDispatcher.close();
     }
 
 }

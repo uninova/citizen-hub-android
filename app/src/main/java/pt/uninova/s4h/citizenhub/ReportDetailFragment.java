@@ -68,7 +68,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onSuccess(Fhir4Record<DocumentReference> recAord) {
                         requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
                                     viewPdfButton.setVisibility(View.VISIBLE);
                                     uploadPdfButton.setVisibility(View.GONE);
                                 }
@@ -78,7 +78,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onError(D4LException exception) {
                         requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
                             exception.printStackTrace();
                         });
                     }
@@ -92,7 +92,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onSuccess(Fhir4Record<DocumentReference> recAord) {
                         requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "File uploaded successfully.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
                                     viewPdfButton.setVisibility(View.VISIBLE);
                                     uploadPdfButton.setVisibility(View.GONE);
                                 }
@@ -102,7 +102,7 @@ public class ReportDetailFragment extends Fragment {
                     @Override
                     public void onError(D4LException exception) {
                         requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "File failed to upload.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
                             exception.printStackTrace();
                         });
                     }
@@ -300,7 +300,7 @@ public class ReportDetailFragment extends Fragment {
                 if (caloriesGroup != null) {
                     caloriesGroup.setVisibility(View.VISIBLE);
                 }
-                caloriesTotal.setText(String.valueOf(calories.getSum()));
+                caloriesTotal.setText(String.format("%.0f", calories.getSum()));
             } else {
                 if (caloriesGroup != null) {
 
@@ -313,7 +313,7 @@ public class ReportDetailFragment extends Fragment {
                 if (heartRateGroup != null) {
                     heartRateGroup.setVisibility(View.VISIBLE);
                 }
-                heartRateAvg.setText(String.format("%.1f", heartRate.getAverage()));
+                heartRateAvg.setText(String.format("%.0f", heartRate.getAverage()));
                 heartRateMax.setText(String.valueOf(heartRate.getMax()));
                 heartRateMin.setText(String.valueOf(heartRate.getMin()));
             } else if (heartRateGroup != null) {

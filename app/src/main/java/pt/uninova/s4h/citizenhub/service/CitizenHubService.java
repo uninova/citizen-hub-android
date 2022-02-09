@@ -19,14 +19,21 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
+import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.util.messaging.Observer;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -85,16 +92,44 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         return wearOSMessageService;
     }
 
+    private Double parseMeasurementValue(Measurement<?> measurement) throws Exception {
+        final Class<?> c = measurement.getValue().getClass();
+
+        if (c == Integer.class) {
+            return Double.valueOf((Integer) measurement.getValue());
+        } else if (c == Double.class || c == Float.class) {
+            return (Double) measurement.getValue();
+        }
+
+        throw new Exception();
+    }
+
     private void initAgentOrchestrator() {
         final Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
+        final DeviceRepository deviceRepository = new DeviceRepository(getApplication());
+        final FeatureRepository featureRepository = new FeatureRepository(getApplication());
+        final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getApplication());
+        final MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
 
         agentFactoryMap.put(ConnectionKind.BLUETOOTH, new BluetoothAgentFactory(this));
 
-        orchestrator = new AgentOrchestrator(agentFactoryMap);
+        final Observer<Sample> databaseWriter = (Sample sample) -> {
+            for (Measurement<?> m : sample.getMeasurements()) {
+                if (m.getType() == Measurement.LUMBAR_EXTENSION_TRAINING) {
+                    final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
 
-        DeviceRepository deviceRepository = new DeviceRepository(getApplication());
-        FeatureRepository featureRepository = new FeatureRepository(getApplication());
-        MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+                    lumbarExtensionTrainingRepository.add(new LumbarExtensionTraining(value.getTimestamp().toEpochMilli(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight()));
+                } else {
+                    try {
+                        measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.find(m.getType()), parseMeasurementValue(m)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        orchestrator = new AgentOrchestrator(agentFactoryMap, databaseWriter);
 
         deviceRepository.obtainAll(value -> {
             for (DeviceRecord i : value) {
@@ -102,7 +137,7 @@ public class CitizenHubService extends LifecycleService implements WearOSService
                     agent.enable();
                     featureRepository.obtainKindsFromDevice(i.getAddress(), kindList -> {
                         for (MeasurementKind kind : kindList) {
-                            agent.enableMeasurement(kind, measurementRepository::add);
+                            agent.enableMeasurement(kind);
                         }
                     });
                 });
