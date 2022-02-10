@@ -123,11 +123,16 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
     }
 
+
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
+        enableNotifications(serviceUuid, characteristicUuid, false);
+    }
+
+    public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid, boolean acknowledge) {
         final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
 
         gatt.setCharacteristicNotification(characteristic, true);
-        writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
     }
 
 
@@ -238,6 +243,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
             } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
                 setState(BluetoothConnectionState.DISCONNECTED);
             }
+        } else if (status == BluetoothGatt.HID_DEVICE) {
+            if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                setState(BluetoothConnectionState.DISCONNECTED);
+            }
         }
     }
 
@@ -276,10 +285,20 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-        super.onServicesDiscovered(gatt, status);
-
         if (status == BluetoothGatt.GATT_SUCCESS) {
             setState(BluetoothConnectionState.READY);
+
+            for (BluetoothGattService i : gatt.getServices()) {
+                System.out.println(i.getUuid());
+
+                for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
+                    System.out.println(" >> " + j.getUuid());
+
+                    for (BluetoothGattDescriptor k : j.getDescriptors()) {
+                        System.out.println(" >> >> " + k.getUuid());
+                    }
+                }
+            }
         }
 
         next();
