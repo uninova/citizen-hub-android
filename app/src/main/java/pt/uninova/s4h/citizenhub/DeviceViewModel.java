@@ -103,7 +103,8 @@ public class DeviceViewModel extends AndroidViewModel {
         featureRepository.add(feature);
     }
 
-    public void delete(Feature feature) {
+    public void delete(Feature feature, AgentOrchestrator agentOrchestrator) {
+        getSelectedAgent(agentOrchestrator).disableMeasurement(feature.getKind());
         featureRepository.remove(feature);
     }
 
