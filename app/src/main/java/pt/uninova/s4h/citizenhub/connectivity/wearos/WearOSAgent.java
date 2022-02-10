@@ -32,7 +32,7 @@ public class WearOSAgent extends AbstractAgent {
     final private WearOSConnection connection;
 
     public WearOSAgent(WearOSConnection connection) {
-        super(ID, new Device(connection.getAddress(), ConnectionKind.BLUETOOTH), supportedProtocolsIds, supportedMeasurementKinds);
+        super(ID, new Device(connection.getAddress(), ConnectionKind.WEAROS), supportedProtocolsIds, supportedMeasurementKinds);
 
         this.connection = connection;
     }
@@ -45,8 +45,6 @@ public class WearOSAgent extends AbstractAgent {
     @Override
     public void enable() {
         setState(AgentState.ENABLED);
-        //  getProtocol(WearOSHeartRateProtocol.ID).enable();
-        //getProtocol(WearOSStepsProtocol.ID).enable();
     }
 
     @Override

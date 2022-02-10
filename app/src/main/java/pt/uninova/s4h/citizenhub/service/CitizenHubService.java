@@ -19,6 +19,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
+import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOsAgentFactory;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -112,6 +113,7 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         final MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
 
         agentFactoryMap.put(ConnectionKind.BLUETOOTH, new BluetoothAgentFactory(this));
+        agentFactoryMap.put(ConnectionKind.WEAROS, new WearOsAgentFactory(this));
 
         final Observer<Sample> databaseWriter = (Sample sample) -> {
             for (Measurement<?> m : sample.getMeasurements()) {

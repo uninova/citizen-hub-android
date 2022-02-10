@@ -53,7 +53,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-
+        System.out.println("onMessageReceived......");
         new GetConnectedNode("wear", appContext).start();
         String datapath = citizenhubPath + nodeIdString;
 
@@ -96,7 +96,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
         Wearable.getMessageClient(service).addListener(this);
         WearOSConnection wearOSConnection = new WearOSConnection(address);
         connectionMap.put(address, wearOSConnection);
-
+        new SendMessage(citizenhubPath+"bf405e51","Connected",appContext).start();
         return wearOSConnection;
     }
 
