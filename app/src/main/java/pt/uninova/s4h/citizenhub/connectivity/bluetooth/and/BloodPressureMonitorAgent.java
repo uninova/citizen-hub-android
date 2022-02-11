@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DateTime;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class BloodPressureMonitorAgent extends BluetoothAgent {
@@ -30,8 +32,8 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        // TODO: Set current date on device
-        getConnection().writeCharacteristic(UUID.fromString("00001810-0000-1000-8000-00805f9b34fb"), UUID.fromString("00002a08-0000-1000-8000-00805f9b34fb"), new byte[]{(byte) 0xe6, 0x07, 0x02, 0x0a, 0x0f, 0x34, 0x37});
+        getConnection().writeCharacteristic(UUID_SERVICE_BLOOD_PRESSURE, UUID_CHARACTERISTIC_DATE_TIME, (new DateTime(LocalDateTime.now())).toBytes());
+
         super.enable();
     }
 
