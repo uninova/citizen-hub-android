@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +178,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         System.out.println("BluetoothConnection.onCharacteristicChanged");
+        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
@@ -189,6 +193,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         System.out.println("BluetoothConnection.onCharacteristicRead status=" + status);
+        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
@@ -206,6 +213,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+        System.out.println("BluetoothConnection.onCharacteristicWrite status=" + status);
+        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
         if (characteristicListenerMap.containsKey(key)) {
