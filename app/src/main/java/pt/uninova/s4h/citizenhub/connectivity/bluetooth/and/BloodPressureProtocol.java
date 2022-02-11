@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -12,8 +11,9 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.std.characteristic.BloodPressureMeasurementCharacteristicValue;
-import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.BloodPressureMeasurement;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DateTime;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
@@ -22,15 +22,21 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.and.ua651ble.bloodpressure");
 
-    private static final UUID UUID_BLOODPRESSURE_SERVICE = UUID.fromString("00001810-0000-1000-8000-00805f9b34fb");
-    private static final UUID UUID_BLOODPRESSURE_CHARACTERISTIC = UUID.fromString("00002a35-0000-1000-8000-00805f9b34fb");
 
-    private final CharacteristicListener onChange = new BaseCharacteristicListener(UUID_BLOODPRESSURE_SERVICE, UUID_BLOODPRESSURE_CHARACTERISTIC) {
+    private final CharacteristicListener onChange = new BaseCharacteristicListener(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT) {
         @Override
         public void onChange(byte[] value) {
-            final BloodPressureMeasurementCharacteristicValue val = new BloodPressureMeasurementCharacteristicValue(value);
-            final Instant timestamp = val.hasTimeStamp() && val.getTimeStampDate() != null ? Instant.from(LocalDateTime.of(val.getTimeStampDate(), val.getTimeStampTime())) : Instant.now();
-            final Sample sample = new Sample(timestamp, getAgent().getSource(), val.toMeasurements());
+            final BloodPressureMeasurement val = new BloodPressureMeasurement(value);
+            final Measurement<?>[] measurements = val.toMeasurements();
+
+            if (measurements.length == 0)
+                return;
+
+            final DateTime dateTime = val.getTimeStamp();
+
+            final Instant timestamp = dateTime.isValidDate() ? Instant.from(dateTime.toLocalDateTime()) : Instant.now();
+
+            final Sample sample = new Sample(timestamp, getAgent().getSource(), measurements);
 
             getSampleDispatcher().dispatch(sample);
         }
@@ -38,7 +44,7 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> onReady = (StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) -> {
         if (value.getNewState() == BluetoothConnectionState.READY) {
-            getConnection().enableNotifications(UUID_BLOODPRESSURE_SERVICE, UUID_BLOODPRESSURE_CHARACTERISTIC, true);
+            getConnection().enableNotifications(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT, true);
         }
     };
 
@@ -48,7 +54,7 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        getConnection().disableNotifications(UUID_BLOODPRESSURE_SERVICE, UUID_BLOODPRESSURE_CHARACTERISTIC);
+        getConnection().disableNotifications(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT);
         getConnection().removeCharacteristicListener(onChange);
         getConnection().removeConnectionStateChangeListener(onReady);
 
@@ -60,7 +66,7 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
         getConnection().addCharacteristicListener(onChange);
         getConnection().addConnectionStateChangeListener(onReady);
         // TODO: Improve first enable
-        getConnection().enableNotifications(UUID_BLOODPRESSURE_SERVICE, UUID_BLOODPRESSURE_CHARACTERISTIC, true);
+        getConnection().enableNotifications(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT, true);
 
         super.enable();
     }
