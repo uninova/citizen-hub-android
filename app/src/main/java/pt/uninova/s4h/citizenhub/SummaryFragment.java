@@ -144,8 +144,7 @@ public class SummaryFragment extends Fragment {
             final MeasurementAggregate bloodPressureMeanAP = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
 
             if (bloodPressureSBP != null && bloodPressureDBP != null && bloodPressureMeanAP != null) {
-                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, bloodPressureSBP.getAverage().toString(),
-                        bloodPressureDBP.getAverage().toString(), bloodPressureMeanAP.getAverage().toString()));
+                bloodPressureTextView.setText(getString(R.string.fragment_summary_text_view_blood_pressure_text, bloodPressureSBP.getAverage(), bloodPressureDBP.getAverage()));
                 bloodPressureGroup.setVisibility(VISIBLE);
                 bloodPressureTitle.setVisibility(VISIBLE);
                 bloodPressureTextView.setVisibility(VISIBLE);
@@ -236,7 +235,7 @@ public class SummaryFragment extends Fragment {
 
                 CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
                 AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
-                if(agentOrchestrator.getDevices().isEmpty())
+                if (agentOrchestrator.getDevices().isEmpty())
                     noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
                 else
                     noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));

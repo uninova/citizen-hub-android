@@ -1,8 +1,8 @@
 package pt.uninova.s4h.citizenhub.data;
 
-public class RrIntervalMeasurement extends Measurement<Integer[]> {
+public class RrIntervalMeasurement extends Measurement<int[]> {
 
-    public RrIntervalMeasurement(Integer[] value) {
+    public RrIntervalMeasurement(int[] value) {
         super(Measurement.RR_INTERVAL, value);
     }
 }
