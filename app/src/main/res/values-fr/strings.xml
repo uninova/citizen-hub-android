@@ -321,4 +321,5 @@
     <string name="fragment_settings_work_end_title">Heure de fin de travail</string>
     <string name="fragment_settings_work_hours_start_message">Fixez une heure de début</string>
     <string name="fragment_settings_work_hours_end_message">Fixez une heure de fin</string>
+    <string name="medex_fragment_dialog_textview">"Si vous n’êtes pas un utilisateur de medx ou si vous voulez masquer ce contenu, vous pouvez toujours le modifier dans les paramètres. "</string>
 </resources>

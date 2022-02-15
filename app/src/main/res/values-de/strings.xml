@@ -321,4 +321,5 @@
     <string name="fragment_device_configuration_warning_calibration_text">ACHTUNG: Bevor Sie Kalibrieren drücken, stellen Sie bitte sicher, dass Sie sitzen und ihren Rücken</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Sensorkalibrierung</string>
     <string name="fragment_device_configuration_add_loading_features_text">"Lade Geräteigenschaften... "</string>
+    <string name="medex_fragment_dialog_textview">"Wenn Sie kein Medx-Benutzer sind oder diesen Inhalt ausblenden möchten, können Sie dies jederzeit in den Einstellungen ändern. "</string>
 </resources>
