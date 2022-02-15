@@ -253,17 +253,14 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Longo, Medio, Pequeno, Rampa, Toc Toc, Batimento cardiaco, Tuk tuk</string>
-    <string name="fragment_lumbar_extension_training_label">Programa MedX</string>
+    <string name="fragment_lumbar_extension_training_label">Programa de dor lombar</string>
     <string name="medex_fragment_explanation_textview">Pressione o butão para encontrar a máquina onde treinou.</string>
     <string name="fragment_medex_button_search">Pesquisar</string>
     <string name="medex_fragment_explanation2">Se não for um utilizador da medX ou quiser esconder esta funcionalidade, poderá desligá-la nas configurações</string>
     <string name="medex_fragment_dialog_textview">"MedX é um plataforma com o intuito de ajudar a melhorar a sua saúde através de treinos com a nossa máquina. Para saber mais aceda a: <a href="https://smart4health.eu/">smart4health</a> "</string>
     <string name="lumbar_extension_training">Treino de extensão lombar</string>
     <string name="fragment_report_lumbar_extension_training_length_textview">Tempo do treino</string>
-    <string name="fragment_report_lumbar_training_total_value">0</string>
-    <string name="fragment_report_detail_lumbar_training_units">s</string>
     <string name="fragment_report_lumbar_extension_training_repetitions_textview">Repetições</string>
-    <string name="fragment_report_lumbar_training_repetitions_value">0</string>
     <string name="fragment_report_detail_lumbar_training_repetition_units">vezes</string>
     <string name="fragment_report_lumbar_extension_training_score_textview">Pontuação</string>
     <string name="fragment_report_lumbar_training_score_value">0</string>
@@ -273,17 +270,12 @@
     <string name="fragment_report_lumbar_extension_training_weight_textview">Peso:</string>
     <string name="fragment_report_lumbar_training_weight_value">0</string>
     <string name="fragment_report_detail_title_blood_pressure">Pressão arterial</string>
-    <string name="fragment_report_detail_text_sbp">SBP:</string>
-    <string name="fragment_report_detail_text_dbp">DBP:</string>
+    <string name="fragment_report_detail_text_sbp">PAS:</string>
+    <string name="fragment_report_detail_text_dbp">PAD:</string>
     <string name="fragment_report_detail_text_meanAP">MeanAP:</string>
-    <string name="fragment_report_detail_blood_pressure_units">mmHg</string>
-    <string name="fragment_report_detail_value_blood_presure_SBP">0</string>
-    <string name="fragment_report_detail_value_blood_presure_DBP">0</string>
-    <string name="fragment_report_detail_value_blood_presure_meanAP_value">0</string>
     <string name="respirationTitle">Respiração:</string>
     <string name="fragment_report_detail_title_respiration">Respiração:</string>
-    <string name="fragment_report_detail_text_respiration_breathing_rate">Frequência de Respiração:</string>
-    <string name="fragment_report_detail_value_respiration_breathing_rate">0</string>
+    <string name="fragment_report_detail_text_respiration_breathing_rate">Taxa de Respiração:</string>
     <string name="fragment_report_detail_respiration_breathing_rate_units_text">rpm</string>
     <string name="pdf_report_average_SBP_text">Média SBP:</string>
     <string name="fragment_settings_label">Configurações</string>
@@ -352,4 +344,5 @@
     <string name="fragment_settings_work_end_title">Hora de saída do Trabalho</string>
     <string name="fragment_settings_work_hours_start_message">Selecione as Horas de entrada</string>
     <string name="fragment_settings_work_hours_end_message">Selecione as Horas de saída</string>
+    <string name="fragment_summary_text_view_blood_pressure_text">Sistólica: %1$.1f mmHg Distólica: %2$.1f:mmHg</string>
 </resources>
