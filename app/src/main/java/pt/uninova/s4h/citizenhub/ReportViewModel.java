@@ -397,22 +397,22 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(("Training Length:"), x + 70, y, darkTextPaint);
+            canvasWriter.addText(("Training duration:"), x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
-            canvasWriter.addTextInFront(" s", darkTextPaint);
+            canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Score: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Training score: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getScore()), boldTextPaint);
-            canvasWriter.addTextInFront(" %", darkTextPaint);
+            canvasWriter.addTextInFront("%", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Repetitions: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("NºRepetitions: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
             canvasWriter.addTextInFront(" reps", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Weight: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Training weight: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getWeight()), boldTextPaint);
             canvasWriter.addTextInFront(" kg", darkTextPaint);
 
@@ -753,22 +753,22 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(("Training Length:"), x + 70, y, darkTextPaint);
+            canvasWriter.addText(("Training duration:"), x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
-            canvasWriter.addTextInFront(" s", darkTextPaint);
+            canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Score: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Training score: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getScore()), boldTextPaint);
-            canvasWriter.addTextInFront(" %", darkTextPaint);
+            canvasWriter.addTextInFront("%", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Repetitions: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("NºRepetitions: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
             canvasWriter.addTextInFront(" reps", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Weight: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Training weight: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getWeight()), boldTextPaint);
             canvasWriter.addTextInFront(" kg", darkTextPaint);
 
