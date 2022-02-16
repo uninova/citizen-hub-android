@@ -1,6 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.core;
 
-public class UInt16 implements Bufferable, Byteable {
+public class UInt16 implements ByteSerializable {
 
     private final byte b1, b2;
 
@@ -18,17 +18,17 @@ public class UInt16 implements Bufferable, Byteable {
     }
 
     @Override
-    public void buffer(ByteWriter writer) {
-        writer.write(b1, b2);
-    }
-
-    @Override
     public byte[] toBytes() {
         return new byte[]{b1, b2};
     }
 
     public int toInt() {
-        return (b1 & 0xff) << 8 | b2 & 0xff;
+        return (b2 & 0xff) << 8 | b1 & 0xff;
+    }
+
+    @Override
+    public void write(Buffer writer) {
+        writer.write(b1, b2);
     }
 
 }

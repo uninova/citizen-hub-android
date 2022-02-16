@@ -2,7 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.core;
 
 import java.util.Objects;
 
-public class Float16 implements Bufferable, Byteable {
+public class Float16 implements ByteSerializable {
 
     public static final Float16 NAN = Float16.of(0x7FF);
     public static final Float16 NRES = Float16.of(0x800);
@@ -22,11 +22,6 @@ public class Float16 implements Bufferable, Byteable {
     private Float16(byte b1, byte b2) {
         this.b1 = b1;
         this.b2 = b2;
-    }
-
-    @Override
-    public void buffer(ByteWriter writer) {
-        writer.write(b1, b2);
     }
 
     @Override
@@ -50,4 +45,10 @@ public class Float16 implements Bufferable, Byteable {
     public double toDouble() {
         return ((b2 & 0xf) << 8 | b1 & 0xff) * Math.pow(10, (b2 & 0xf0) >>> 4);
     }
+
+    @Override
+    public void write(Buffer writer) {
+        writer.write(b1, b2);
+    }
+
 }
