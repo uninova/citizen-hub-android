@@ -274,7 +274,6 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
-    <string name="fragment_summary_text_view_blood_pressure_text">Systolic: %1$.1f mmHg\nDiastolic: %2$.1f:mmHg</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
     <string name="fragment_report_detail_text_sbp">SBP:</string>
     <string name="fragment_report_detail_text_dbp">DBP:</string>
