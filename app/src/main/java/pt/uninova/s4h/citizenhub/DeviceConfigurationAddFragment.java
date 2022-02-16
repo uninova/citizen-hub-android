@@ -60,7 +60,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         agentOrchestrator.add(device, value -> requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Entrei no RUN.");
                 DeviceConfigurationAddFragment.this.loadSupportedFeatures();
 
                 connectDevice.setOnClickListener(v -> {

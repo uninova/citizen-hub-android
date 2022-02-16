@@ -21,7 +21,6 @@ public class WearOsAgentFactory implements AgentFactory<WearOSAgent> {
         wearOSConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<WearOSConnectionState, WearOSConnection>>() {
             @Override
             public void observe(StateChangedMessage<WearOSConnectionState, WearOSConnection> value) {
-                System.out.println("Im observing.");
                 if (value.getNewState() == WearOSConnectionState.READY) {
                     observer.observe(new WearOSAgent(wearOSConnection));
                 }

@@ -22,8 +22,8 @@ android {
         debug {
             debuggable true
             matchingFallbacks = ['release']
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
+            //applicationIdSuffix = ".debug"
+            //versionNameSuffix = "-debug"
         }
     }
 
@@ -120,11 +120,11 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
 
     // WearOS
-    implementation 'androidx.wear:wear:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    compileOnly 'com.google.android.support:wearable:2.8.1'
-    compileOnly 'com.google.android.wearable:wearable:2.8.1'
+
+    wearApp project(":wear")
 
     //TypeDef Annotations
 

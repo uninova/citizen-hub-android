@@ -84,12 +84,10 @@ public class WearOSConnection /*extends AbstractProtocol */ {
     }
 
     private void setState(WearOSConnectionState value) {
-        System.out.println("GOT IN SETSTATE1");
         if (value != state) {
             final WearOSConnectionState oldValue = state;
 
             this.state = value;
-            System.out.println("GOT IN SETSTATE2");
             stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, this));
         }
     }
