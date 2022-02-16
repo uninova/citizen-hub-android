@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/layout_fragment_device_configuration_name"
-                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:fontFamily="@font/primus_bold"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -45,7 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/layout_fragment_device_configuration_name"
-                android:textAlignment="center"
+                android:textColor="@color/colorS4HDarkBlue"
+                android:fontFamily="@font/primus_bold"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -65,6 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/layout_fragment_device_configuration_features"
+                android:fontFamily="@font/neo_sans_pro_medium"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -81,6 +84,7 @@
                 android:id="@+id/listViewFeature"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                style="@style/AppTheme.Summary.Item.TextView"
                 android:divider="@null"
                 />
 
