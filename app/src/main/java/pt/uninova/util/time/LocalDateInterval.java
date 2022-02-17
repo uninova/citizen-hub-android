@@ -1,6 +1,7 @@
 package pt.uninova.util.time;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class LocalDateInterval {
 
@@ -24,15 +25,15 @@ public class LocalDateInterval {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof LocalDateInterval)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocalDateInterval that = (LocalDateInterval) o;
+        return Objects.equals(lower, that.lower) && Objects.equals(upper, that.upper);
+    }
 
-        final LocalDateInterval other = (LocalDateInterval) obj;
-
-        System.out.println(" LOWER " + lower + " UPPER " + upper );
-        System.out.println(" OTHER LOWER " + other.lower + "OTHER UPPER " + other.upper );
-        return lower.equals(other.lower) && upper.equals(other.upper);
+    @Override
+    public int hashCode() {
+        return Objects.hash(lower, upper);
     }
 }
