@@ -94,8 +94,13 @@ public class AgentOrchestrator {
     }
 
     public void remove(Device device) {
+        final Agent agent = getAgent(device);
+
+        if (agent != null) {
+            agent.removeSampleObserver(ingester);
+        }
+
         agentMap.remove(device);
-        getAgent(device).removeSampleObserver(ingester);
         tellOnDeviceRemoved(device);
     }
 
