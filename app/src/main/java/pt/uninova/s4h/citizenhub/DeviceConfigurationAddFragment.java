@@ -63,7 +63,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 DeviceConfigurationAddFragment.this.loadSupportedFeatures();
 
                 connectDevice.setOnClickListener(v -> {
-
                     value.enable();
                     model.apply();
 
