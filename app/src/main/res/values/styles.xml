@@ -5,11 +5,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/colorS4HGreyLight</item>
         <item name="toolbarStyle">@style/Widget.Citizen.Toolbar</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="Widget.Citizen.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="titleTextAppearance">@style/TextAppearance.Citizen.Widget.Toolbar.Title</item>
     </style>
+
 
     <style name="TextAppearance.Citizen.Widget.Toolbar.Title" parent="TextAppearance.AppCompat.Title">
         <item name="fontFamily">@font/primus</item>
@@ -31,6 +33,14 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="preferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="colorAccent">@color/colorS4HDarkBlue</item>
+        <item name="android:background">@color/colorS4HGreyLight</item>
+        <item name="android:textColorPrimary">@color/colorS4HDarkBlue</item>
+        <item name="android:textColorSecondary">@color/colorS4HDarkGreyVariant</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/primus_bold</item>
+    </style>
 
     <style name="Drawer">
         <item name="background">@color/colorS4HGreyLight</item>

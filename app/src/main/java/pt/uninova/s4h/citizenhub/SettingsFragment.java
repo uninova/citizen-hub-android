@@ -34,6 +34,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        getContext().setTheme(R.style.preferenceTheme);
         super.onCreate(savedInstanceState);
         days = new ArrayList<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext());
