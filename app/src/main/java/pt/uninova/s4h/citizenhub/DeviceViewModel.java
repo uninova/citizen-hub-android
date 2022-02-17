@@ -72,10 +72,12 @@ public class DeviceViewModel extends AndroidViewModel {
 
             final Set<MeasurementKind> enabledFeaturesSet = new HashSet<>(enabledFeatures);
 
-            for (MeasurementKind feature : getSelectedAgent(agentOrchestrator).getSupportedMeasurements()) {//(device.getValue().getName())) {
+            Agent agent = getSelectedAgent(agentOrchestrator);
 
-                featureList.add(new FeatureListItem(feature, enabledFeaturesSet.contains(feature)));
-
+            if (agent != null) {
+                for (MeasurementKind feature : agent.getSupportedMeasurements()) {
+                    featureList.add(new FeatureListItem(feature, enabledFeaturesSet.contains(feature)));
+                }
             }
         });
         return featureList;
@@ -127,10 +129,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
 
     public Agent getSelectedAgent(AgentOrchestrator agentOrchestrator) {
-        Agent agent = agentOrchestrator.getAgent(device.getValue());
-
-        if (agent == null) throw new NullPointerException();
-        return agent;
+        return agentOrchestrator.getAgent(device.getValue());
     }
 
     public void setDevice(Device device) {

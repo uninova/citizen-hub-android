@@ -59,7 +59,7 @@ public class BluetoothScanner extends ScanCallback {
     public synchronized void startWithFilter(BluetoothScannerListener listener, ParcelUuid serviceUUID, ScanCallback scanCallback) {
         if (!isScanning()) {
             this.listener = listener;
-            scanner.startScan(buildScanFilters(serviceUUID),buildScanSettings(),scanCallback);
+            scanner.startScan(buildScanFilters(serviceUUID), buildScanSettings(), scanCallback);
         }
     }
 
@@ -92,7 +92,8 @@ public class BluetoothScanner extends ScanCallback {
 
     @Override
     public synchronized void onScanResult(int callbackType, ScanResult result) {
-        addDevice(result.getDevice());
+        if (result.getDevice().getName() != null) // Ignore null names
+            addDevice(result.getDevice());
     }
 
     public synchronized void start(BluetoothScannerListener listener) {
