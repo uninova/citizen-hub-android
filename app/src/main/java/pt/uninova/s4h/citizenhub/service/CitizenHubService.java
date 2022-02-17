@@ -20,6 +20,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOsAgentFactory;
+import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -121,6 +122,12 @@ public class CitizenHubService extends LifecycleService implements WearOSService
                     final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
 
                     lumbarExtensionTrainingRepository.add(new LumbarExtensionTraining(value.getTimestamp().toEpochMilli(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight()));
+                } else if (m.getType() == Measurement.BLOOD_PRESSURE) {
+                    final BloodPressureValue value = (BloodPressureValue) m.getValue();
+
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_SBP, value.getSystolic()));
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_DBP, value.getDiastolic()));
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_MEAN_AP, value.getMeanArterialPressure()));
                 } else {
                     try {
                         measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.find(m.getType()), parseMeasurementValue(m)));

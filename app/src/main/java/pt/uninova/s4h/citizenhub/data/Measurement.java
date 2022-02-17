@@ -20,11 +20,9 @@ public abstract class Measurement<T> {
     public static final int POSTURE = 15;
     public static final int LUMBAR_EXTENSION_TRAINING = 16;
     public static final int BLOOD_PRESSURE = 17;
-    public static final int BLOOD_PRESSURE_SBP = 18;
-    public static final int BLOOD_PRESSURE_DBP = 19;
-    public static final int BLOOD_PRESSURE_MEAN_AP = 20;
     public static final int ENERGY_EXPENDED = 21;
     public static final int RR_INTERVAL = 22;
+    public static final int PULSE_RATE = 23;
 
     private final int type;
     private final T value;

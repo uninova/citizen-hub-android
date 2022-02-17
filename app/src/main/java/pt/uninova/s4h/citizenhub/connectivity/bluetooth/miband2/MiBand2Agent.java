@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
@@ -54,6 +55,16 @@ public class MiBand2Agent extends BluetoothAgent {
     @Override
     public void enable() {
         authorize();
+
+        addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+            @Override
+            public void observe(StateChangedMessage<AgentState, ? extends Agent> value) {
+                if (value.getNewState() == AgentState.ENABLED) {
+                    new SetTimeProtocol(getConnection(), MiBand2Agent.this).enable();
+                    removeStateObserver(this);
+                }
+            }
+        });
     }
 
     @Override

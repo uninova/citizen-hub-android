@@ -83,7 +83,7 @@ public class DeviceConfigurationFragment extends Fragment {
                 model.apply(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator, new MeasurementRepository(requireActivity().getApplication()));
             } else {
                 assert model.getSelectedDevice() != null;
-                model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
+                model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
             }
         }
     }
@@ -104,7 +104,7 @@ public class DeviceConfigurationFragment extends Fragment {
             } else {
                 assert model.getSelectedDevice() != null;
 
-                model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()));
+                model.delete(new Feature(model.getSelectedDevice().getValue().getAddress(), ((FeatureListItem) listViewFeatures.getAdapter().getItem(i)).getMeasurementKind()), agentOrchestrator);
             }
         }
     }

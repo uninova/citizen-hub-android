@@ -11,6 +11,15 @@ import pt.uninova.util.messaging.Observer;
 
 public abstract class BluetoothAgent extends AbstractAgent {
 
+    public static final UUID UUID_SERVICE_BLOOD_PRESSURE = UUID.fromString("00001810-0000-1000-8000-00805f9b34fb");
+
+    public static final UUID UUID_CHARACTERISTIC_DATE_TIME = UUID.fromString("00002a08-0000-1000-8000-00805f9b34fb");
+    public static final UUID UUID_CHARACTERISTIC_CURRENT_TIME = UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb");
+    public static final UUID UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT = UUID.fromString("00002a35-0000-1000-8000-00805f9b34fb");
+
+    public static final UUID UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_1 = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
+    public static final UUID UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_2 = UUID.fromString("0000fee1-0000-1000-8000-00805f9b34fb");
+
     final private BluetoothConnection connection;
 
     protected BluetoothAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements, BluetoothConnection connection) {

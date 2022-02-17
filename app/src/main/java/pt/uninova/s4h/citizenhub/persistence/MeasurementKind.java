@@ -24,7 +24,10 @@ public enum MeasurementKind {
     BLOOD_PRESSURE(17),
     BLOOD_PRESSURE_SBP(18),
     BLOOD_PRESSURE_DBP(19),
-    BLOOD_PRESSURE_MEAN_AP(20);
+    BLOOD_PRESSURE_MEAN_AP(20),
+    ENERGY_EXPENDED(21),
+    RR_INTERVAL(22),
+    PULSE_RATE(23);
 
     private static final Map<Integer, MeasurementKind> LOOKUP = new HashMap<>(MeasurementKind.values().length);
 
