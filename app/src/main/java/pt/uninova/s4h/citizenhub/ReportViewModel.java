@@ -250,7 +250,7 @@ public class ReportViewModel extends AndroidViewModel {
         x += 60;
         y += 120;
 
-        String content = "Your Daily Report";
+        String content = "MyWork Daily Report";
         RectF rect = new RectF(x - 30, y - 50, x + 430, y + 15);
         canvas.drawRoundRect(rect, 10, 10, backgroundPaint);
         canvasWriter.addText("Results of: " + detailDate.toString(), x + 120, y + 30, titlePaint);
@@ -549,7 +549,7 @@ public class ReportViewModel extends AndroidViewModel {
         x += 60;
         y += 120;
 
-        String content = "Your Daily Report";
+        String content = "MyTime Daily Report";
         RectF rect = new RectF(x - 30, y - 50, x + 430, y + 15);
         canvas.drawRoundRect(rect, 10, 10, backgroundPaint);
         canvasWriter.addText("Results of: " + detailDate.toString(), x + 120, y + 30, titlePaint);
