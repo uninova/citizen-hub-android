@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 25
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
     }
 
     buildTypes {
@@ -22,6 +22,13 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
+    }
+
+    flavorDimensions "environment"
+
+    productFlavors {
+        development
+        stable
     }
 
     compileOptions {
@@ -42,6 +49,6 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
     implementation 'com.google.android.support:wearable:2.8.1'
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    implementation 'androidx.wear:wear:1.1.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'androidx.wear:wear:1.2.0'
 }
