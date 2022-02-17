@@ -32,7 +32,7 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
 
     @Override
     public void enable() {
-        getConnection().writeCharacteristic(UUID_SERVICE_BLOOD_PRESSURE, UUID_CHARACTERISTIC_DATE_TIME, (new DateTime(LocalDateTime.now())).toBytes());
+        getConnection().writeCharacteristic(UUID_SERVICE_BLOOD_PRESSURE, UUID_CHARACTERISTIC_DATE_TIME, (DateTime.of(LocalDateTime.now())).toBytes());
 
         super.enable();
     }

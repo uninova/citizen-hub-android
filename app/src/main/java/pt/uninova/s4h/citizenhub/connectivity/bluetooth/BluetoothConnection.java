@@ -177,7 +177,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        System.out.println("BluetoothConnection.onCharacteristicChanged");
+        System.out.println("BluetoothConnection.onCharacteristicChanged " + gatt.getDevice().getAddress());
         System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
         System.out.println("    " + Arrays.toString(characteristic.getValue()));
 
@@ -192,7 +192,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        System.out.println("BluetoothConnection.onCharacteristicRead status=" + status);
+        System.out.println("BluetoothConnection.onCharacteristicRead " + gatt.getDevice().getAddress() + " status=" + status);
         System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
         System.out.println("    " + Arrays.toString(characteristic.getValue()));
 
@@ -213,7 +213,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        System.out.println("BluetoothConnection.onCharacteristicWrite status=" + status);
+        System.out.println("BluetoothConnection.onCharacteristicWrite " + gatt.getDevice().getAddress() + " status=" + status);
         System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
         System.out.println("    " + Arrays.toString(characteristic.getValue()));
 
@@ -234,7 +234,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
-        System.out.println("BluetoothConnection.onConnectionStateChange status=" + status + " newState=" + newState);
+        System.out.println("BluetoothConnection.onConnectionStateChange " + gatt.getDevice().getAddress() + " status=" + status + " newState=" + newState);
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
@@ -303,10 +303,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
                 System.out.println(i.getUuid());
 
                 for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
-                    System.out.println(" >> " + j.getUuid());
+                    System.out.println("  c " + j.getUuid());
 
                     for (BluetoothGattDescriptor k : j.getDescriptors()) {
-                        System.out.println(" >> >> " + k.getUuid());
+                        System.out.println("    d " + k.getUuid());
                     }
                 }
             }

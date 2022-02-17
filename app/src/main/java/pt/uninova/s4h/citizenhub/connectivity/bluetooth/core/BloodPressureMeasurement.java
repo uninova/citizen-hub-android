@@ -7,6 +7,7 @@ import pt.uninova.s4h.citizenhub.data.PulseRateMeasurement;
 public class BloodPressureMeasurement {
 
     private static class Flags {
+
         private final byte flags;
 
         public Flags(byte flags) {
@@ -43,15 +44,8 @@ public class BloodPressureMeasurement {
     private final UInt8 userId;
     private final MeasurementStatus measurementStatus;
 
-    public BloodPressureMeasurement(byte[] buffer) {
-        this(buffer, 0);
-    }
 
-    public BloodPressureMeasurement(byte[] buffer, int offset) {
-        this(new ByteReader(buffer, offset));
-    }
-
-    public BloodPressureMeasurement(ByteReader reader) {
+    public BloodPressureMeasurement(Buffer reader) {
         flags = new Flags(reader.readByte());
         systolic = reader.readFloat16();
         diastolic = reader.readFloat16();
@@ -62,6 +56,10 @@ public class BloodPressureMeasurement {
         measurementStatus = flags.isMeasurementStatusPresent() ? new MeasurementStatus(reader) : null;
     }
 
+    public BloodPressureMeasurement(byte[] buffer) {
+        this(new Buffer(buffer));
+    }
+    
     public Float16 getDiastolic() {
         return diastolic;
     }

@@ -2,7 +2,11 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.core;
 
 import java.time.LocalDateTime;
 
-public class DateTime implements Bufferable, Byteable {
+public class DateTime implements ByteSerializable {
+
+    public static DateTime of(LocalDateTime localDateTime) {
+        return new DateTime(UInt16.of(localDateTime.getYear()), UInt8.of(localDateTime.getMonthValue()), UInt8.of(localDateTime.getDayOfMonth()), UInt8.of(localDateTime.getHour()), UInt8.of(localDateTime.getMinute()), UInt8.of(localDateTime.getSecond()));
+    }
 
     private final UInt16 year;
     private final UInt8 month;
@@ -10,10 +14,6 @@ public class DateTime implements Bufferable, Byteable {
     private final UInt8 hours;
     private final UInt8 minutes;
     private final UInt8 seconds;
-
-    public DateTime(LocalDateTime localDateTime) {
-        this(UInt16.of(localDateTime.getYear()), UInt8.of(localDateTime.getMonthValue()), UInt8.of(localDateTime.getDayOfMonth()), UInt8.of(localDateTime.getHour()), UInt8.of(localDateTime.getMinute()), UInt8.of(localDateTime.getSecond()));
-    }
 
     public DateTime(UInt16 year, UInt8 month, UInt8 day, UInt8 hours, UInt8 minutes, UInt8 seconds) {
         this.year = year;
@@ -25,30 +25,16 @@ public class DateTime implements Bufferable, Byteable {
     }
 
     public DateTime(byte[] buffer) {
-        this(buffer, 0);
+        this(new Buffer(buffer));
     }
 
-    public DateTime(byte[] buffer, int offset) {
-        this(new ByteReader(buffer, offset));
-    }
-
-    public DateTime(ByteReader reader) {
+    public DateTime(Buffer reader) {
         year = reader.readUInt16();
         month = reader.readUInt8();
         day = reader.readUInt8();
         hours = reader.readUInt8();
         minutes = reader.readUInt8();
         seconds = reader.readUInt8();
-    }
-
-    @Override
-    public void buffer(ByteWriter writer) {
-        year.buffer(writer);
-        month.buffer(writer);
-        day.buffer(writer);
-        hours.buffer(writer);
-        minutes.buffer(writer);
-        seconds.buffer(writer);
     }
 
     public UInt8 getDay() {
@@ -81,15 +67,25 @@ public class DateTime implements Bufferable, Byteable {
 
     @Override
     public byte[] toBytes() {
-        final byte[] buffer = new byte[7];
+        final Buffer buffer = new Buffer(7);
 
-        buffer(new ByteWriter(buffer));
+        write(buffer);
 
-        return buffer;
+        return buffer.getBytes();
     }
 
     public LocalDateTime toLocalDateTime() {
         return LocalDateTime.of(year.toInt(), month.toInt(), day.toInt(), hours.toInt(), minutes.toInt(), seconds.toInt());
+    }
+
+    @Override
+    public void write(Buffer writer) {
+        year.write(writer);
+        month.write(writer);
+        day.write(writer);
+        hours.write(writer);
+        minutes.write(writer);
+        seconds.write(writer);
     }
 
 }

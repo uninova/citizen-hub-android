@@ -1,8 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.core;
 
-import java.io.BufferedWriter;
+import java.util.Objects;
 
-public class UInt8 implements Bufferable, Byteable {
+public class UInt8 implements ByteSerializable {
 
     private final byte b1;
 
@@ -19,8 +19,16 @@ public class UInt8 implements Bufferable, Byteable {
     }
 
     @Override
-    public void buffer(ByteWriter writer) {
-        writer.write(b1);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UInt8 uInt8 = (UInt8) o;
+        return b1 == uInt8.b1;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(b1);
     }
 
     @Override
@@ -31,4 +39,10 @@ public class UInt8 implements Bufferable, Byteable {
     public int toInt() {
         return b1 & 0xff;
     }
+
+    @Override
+    public void write(Buffer writer) {
+        writer.write(b1);
+    }
+
 }
