@@ -29,8 +29,9 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
             @Override
             public void onChange(byte[] value) {
-                final int val = value[1];
-                getSampleDispatcher().dispatch(new Sample(getAgent().getSource(), new Measurement[]{new HeartRateMeasurement(val)}));
+                final pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.HeartRateMeasurement val = new pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.HeartRateMeasurement(value);
+
+                getSampleDispatcher().dispatch(new Sample(getAgent().getSource(), new HeartRateMeasurement(val.getValue().toInt())));
             }
         });
     }

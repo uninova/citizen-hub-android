@@ -21,6 +21,10 @@ public class Buffer {
         return bufferArray;
     }
 
+    public int getBytesLeft() {
+        return bufferArray.length - offset;
+    }
+
     public boolean hasBytes() {
         return offset < bufferArray.length;
     }

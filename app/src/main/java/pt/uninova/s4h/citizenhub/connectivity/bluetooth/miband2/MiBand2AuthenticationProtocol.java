@@ -16,6 +16,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothProtocol;
@@ -43,7 +44,7 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
     private void attachObservers() {
         final BluetoothConnection connection = getConnection();
 
-        connection.addDescriptorListener(new BaseDescriptorListener(XIAOMI_MIBAND2_SERVICE_AUTH, XIAOMI_MIBAND2_CHARACTERISTIC_AUTH, BluetoothConnection.ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION) {
+        connection.addDescriptorListener(new BaseDescriptorListener(XIAOMI_MIBAND2_SERVICE_AUTH, XIAOMI_MIBAND2_CHARACTERISTIC_AUTH, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION) {
             @Override
             public void onWrite(byte[] value) {
                 connection.removeDescriptorListener(this);

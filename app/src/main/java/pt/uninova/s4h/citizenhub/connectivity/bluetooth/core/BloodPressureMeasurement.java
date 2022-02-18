@@ -6,11 +6,11 @@ import pt.uninova.s4h.citizenhub.data.PulseRateMeasurement;
 
 public class BloodPressureMeasurement {
 
-    private static class Flags {
+    public static final class Flags {
 
         private final byte flags;
 
-        public Flags(byte flags) {
+        private Flags(byte flags) {
             this.flags = flags;
         }
 
@@ -59,9 +59,13 @@ public class BloodPressureMeasurement {
     public BloodPressureMeasurement(byte[] buffer) {
         this(new Buffer(buffer));
     }
-    
+
     public Float16 getDiastolic() {
         return diastolic;
+    }
+
+    public Flags getFlags() {
+        return flags;
     }
 
     public Float16 getMeanArterialPressure() {
