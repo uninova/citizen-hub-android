@@ -28,8 +28,6 @@ import pt.uninova.util.messaging.Observer;
 
 public class BluetoothConnection extends BluetoothGattCallback implements Connection {
 
-    public final static UUID ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
@@ -121,7 +119,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
 
         gatt.setCharacteristicNotification(characteristic, false);
-        writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+        writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
     }
 
 
@@ -133,7 +131,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
 
         gatt.setCharacteristicNotification(characteristic, true);
-        writeDescriptor(serviceUuid, characteristicUuid, ORG_BLUETOOTH_DESCRIPTOR_GATT_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
     }
 
 
