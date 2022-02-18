@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/layout_fragment_device_configuration_name"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
 
@@ -45,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/fragment_device_configuration_advanced_address_text"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -65,6 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
+                style="@style/AppTheme.Summary.Item"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>

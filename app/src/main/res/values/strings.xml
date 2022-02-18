@@ -72,10 +72,10 @@
     <string name="fragment_authentication_orange_circular_shape">Orange circular Shape</string>
     <string name="fragment_authentication_text_login">login</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
-    <string name="fragment_configuration_text_view_address">Address: %1$s</string>
+    <string name="fragment_configuration_text_view_address">%1$s</string>
     <string name="fragment_configuration_text_view_connect">Connect</string>
     <string name="fragment_configuration_text_view_delete">Delete</string>
-    <string name="fragment_configuration_text_view_name">Name: %1$s</string>
+    <string name="fragment_configuration_text_view_name">%1$s</string>
     <string name="fragment_configuration_text_view_update">Update</string>
     <string name="fragment_device_add_button">add device</string>
     <string name="fragment_device_add_info_text">Info</string>
