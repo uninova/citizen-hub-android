@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
+import android.bluetooth.BluetoothDevice;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -16,7 +18,7 @@ import pt.uninova.util.messaging.Observer;
 public class WearOSConnection /*extends AbstractProtocol */ {
     private static final String TAG = "WearOSConnection";
     private final String address;
-    private final Dispatcher<StateChangedMessage<WearOSConnectionState, Agent>> stateChangedMessageDispatcher;
+    private final Dispatcher<StateChangedMessage<WearOSConnectionState, WearOSConnection>> stateChangedMessageDispatcher;
     private final Map<MeasurementKind, Set<ChannelListener>> channelListenerMap;
     private WearOSConnectionState state;
 
@@ -32,11 +34,11 @@ public class WearOSConnection /*extends AbstractProtocol */ {
         return address;
     }
 
-    public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
+    public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, WearOSConnection>> listener) {
         stateChangedMessageDispatcher.addObserver(listener);
     }
 
-    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, Agent>> listener) {
+    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, WearOSConnection>> listener) {
         stateChangedMessageDispatcher.removeObserver(listener);
     }
 
@@ -86,8 +88,7 @@ public class WearOSConnection /*extends AbstractProtocol */ {
             final WearOSConnectionState oldValue = state;
 
             this.state = value;
-
-            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, new WearOSAgent(this)));
+            stateChangedMessageDispatcher.dispatch(new StateChangedMessage<>(state, oldValue, this));
         }
     }
 
@@ -98,7 +99,5 @@ public class WearOSConnection /*extends AbstractProtocol */ {
 
     public void enable() {
         setState(WearOSConnectionState.READY);
-
     }
-
 }

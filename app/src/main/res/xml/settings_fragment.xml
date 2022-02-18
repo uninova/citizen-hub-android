@@ -6,9 +6,7 @@
             android:key="pref1"
             android:layout="@layout/settings_title_layout"
             android:title="@string/fragment_settings_work_hours_title">
-            <CheckBoxPreference
-                android:key="check_all"
-                android:title="Check"/>
+
         </PreferenceCategory>
         <MultiSelectListPreference
             android:key="workdays"

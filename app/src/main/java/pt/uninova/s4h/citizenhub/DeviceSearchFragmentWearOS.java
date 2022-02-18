@@ -129,7 +129,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeName, nodeId, ConnectionKind.WEAROS);
+        Device device = new Device(nodeId,nodeName, ConnectionKind.WEAROS);
         deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
         adapter.notifyItemInserted(0);
     }

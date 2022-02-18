@@ -11,6 +11,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
@@ -32,7 +33,7 @@ public class WearOSAgent extends AbstractAgent {
     final private WearOSConnection connection;
 
     public WearOSAgent(WearOSConnection connection) {
-        super(ID, new Device(connection.getAddress(), ConnectionKind.BLUETOOTH), supportedProtocolsIds, supportedMeasurementKinds);
+        super(ID, new Device(connection.getAddress(), ConnectionKind.WEAROS), supportedProtocolsIds, supportedMeasurementKinds);
 
         this.connection = connection;
     }
@@ -45,8 +46,6 @@ public class WearOSAgent extends AbstractAgent {
     @Override
     public void enable() {
         setState(AgentState.ENABLED);
-        //  getProtocol(WearOSHeartRateProtocol.ID).enable();
-        //getProtocol(WearOSStepsProtocol.ID).enable();
     }
 
     @Override
@@ -58,9 +57,9 @@ public class WearOSAgent extends AbstractAgent {
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
         switch (kind) {
             case ACTIVITY:
-                return new WearOSStepsProtocol(this.connection, this);
+                return new WearOSStepsProtocol(this.connection, getSampleDispatcher(), this);
             case HEART_RATE:
-                return new WearOSHeartRateProtocol(this.connection, this);
+                return new WearOSHeartRateProtocol(this.connection, getSampleDispatcher(), this);
         }
 
         return null;

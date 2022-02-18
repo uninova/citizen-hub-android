@@ -2,8 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "pt.uninova.s4h.citizenhub"
@@ -55,6 +54,7 @@ android {
 
         buildConfigField("String", "SMART_BEAR_API_KEY", "\"${properties["smartBearApiKey"]}\"")
         buildConfigField("String", "SMART_BEAR_URL", "\"${properties["smartBearUrl"]}\"")
+        buildConfigField("String", "SMART4HEALTH_APP_URL\n", "\"${properties["smart4HealthAppUrl"]}\"")
 
         if (flavor.name != "stable" && properties["skipAuth"] != null) {
             buildConfigField("Boolean", "SKIP_AUTH", properties["skipAuth"])
@@ -73,8 +73,8 @@ android {
 
 dependencies {
     def desugar_version = "1.1.5"
-    def lifecycle_version = "2.4.0"
-    def preference_version = "1.1.1"
+    def lifecycle_version = "2.4.1"
+    def preference_version = "1.2.0"
     def okhttp_version = "4.9.3"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
@@ -87,6 +87,8 @@ dependencies {
     implementation "androidx.preference:preference:$preference_version"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -120,11 +122,7 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
 
     // WearOS
-    implementation 'androidx.wear:wear:1.2.0'
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    compileOnly 'com.google.android.support:wearable:2.8.1'
-    compileOnly 'com.google.android.wearable:wearable:2.8.1'
 
     //TypeDef Annotations
 

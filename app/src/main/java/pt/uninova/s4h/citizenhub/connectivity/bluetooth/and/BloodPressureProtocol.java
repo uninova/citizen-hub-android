@@ -1,6 +1,10 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -33,8 +37,8 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
                 return;
 
             final DateTime dateTime = val.getTimeStamp();
-
-            final Instant timestamp = dateTime.isValidDate() ? Instant.from(dateTime.toLocalDateTime()) : Instant.now();
+            final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime.toLocalDateTime(), ZoneId.systemDefault());
+            final Instant timestamp = dateTime.isValidDate() ? Instant.from(zonedDateTime) : Instant.now();
 
             final Sample sample = new Sample(timestamp, getAgent().getSource(), measurements);
 

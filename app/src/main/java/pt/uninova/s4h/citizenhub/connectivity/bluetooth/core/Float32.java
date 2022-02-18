@@ -2,9 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.core;
 
 import java.util.Objects;
 
-import okio.ByteString;
-
-public class Float32 implements Bufferable, Byteable {
+public class Float32 implements ByteSerializable {
 
     public static final Float32 NAN = Float32.of(0x7FFFFF);
     public static final Float32 NRES = Float32.of(0x800000);
@@ -18,7 +16,7 @@ public class Float32 implements Bufferable, Byteable {
     }
 
     public static Float32 of(int val) {
-        return new Float32((byte) (val >>> 24 & 0xff), (byte) (val >>> 16 & 0xff), (byte) (val >>> 8 & 0xff), (byte) (val & 0xff));
+        return new Float32((byte) (val & 0xff), (byte) (val >>> 8 & 0xff), (byte) (val >>> 16 & 0xff), (byte) (val >>> 24 & 0xff));
     }
 
     private Float32(byte b1, byte b2, byte b3, byte b4) {
@@ -26,11 +24,6 @@ public class Float32 implements Bufferable, Byteable {
         this.b2 = b2;
         this.b3 = b3;
         this.b4 = b4;
-    }
-
-    @Override
-    public void buffer(ByteWriter writer) {
-        writer.write(b1, b2, b3, b4);
     }
 
     @Override
@@ -53,6 +46,11 @@ public class Float32 implements Bufferable, Byteable {
 
     public double toDouble() {
         return ((b2 << 16) | (b3 << 8) | b4) * Math.pow(10, b1);
+    }
+
+    @Override
+    public void write(Buffer writer) {
+        writer.write(b1, b2, b3, b4);
     }
 
 }

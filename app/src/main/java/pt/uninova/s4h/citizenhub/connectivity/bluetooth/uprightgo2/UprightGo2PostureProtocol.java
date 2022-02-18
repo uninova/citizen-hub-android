@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
@@ -63,7 +65,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
      */
 
     private MeasurementKind lastPosture;
-    private LocalDateTime lastTimestamp;
+    private Instant lastTimestamp;
 
     public UprightGo2PostureProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
         super(ID, connection, agent);
@@ -76,64 +78,32 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     private void attachObservers() {
         final BluetoothConnection connection = getConnection();
 
-        //setting up sensor evaluation of good posture (posture correction)
         if (connection.hasService(MEASUREMENTS_SERVICE)) {
             connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
         }
 
         //handle sensor evaluation of good posture
         connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
-                                                 @Override
-                                                 public void onChange(byte[] value) {
-                                                     System.out.println("UprightGo2PostureProtocol.attachObservers.BaseCharacteristicListener.onChange");
-                                                     final LocalDateTime now = LocalDateTime.now();
+            @Override
+            public void onChange(byte[] value) {
+                final Instant now = Instant.now();
 
-                                                     ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
-                                                     String s = Arrays.toString(value);
+                if (lastTimestamp != null) {
+                    final Duration duration = Duration.between(lastTimestamp, now);
+                    final double seconds = duration.toNanos() * 0.000000001;
 
-                                                     final double[] parsed = new double[]{
-                                                             byteBuffer.get(0), byteBuffer.get(1), byteBuffer.get(2)
-                                                     };
+                    final Measurement<?> posture = lastPosture == MeasurementKind.GOOD_POSTURE ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
 
-                                                     System.out.println("Result: " + s + parsed[0] + "|" + parsed[1] + "|" + parsed[2]);
 
-                                                     final Duration duration = Duration.between(lastTimestamp, now); //gets duration to dispatch
-                                                     final double seconds = duration.toNanos() * 0.000000001;
+                    final Sample sample = new Sample(getAgent().getSource(), posture);
 
-                                                     if (isGoodPosture_Sensor(parsed[0])) { //new reading is good posture
-                                                         if (lastPosture != null) { //if there is previous posture
-                                                             //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
-                                                             if (lastPosture == MeasurementKind.GOOD_POSTURE) {
-                                                                 final GoodPostureMeasurement mes = new GoodPostureMeasurement(seconds);
-                                                                 final Sample sample = new Sample(getAgent().getSource(), new pt.uninova.s4h.citizenhub.data.Measurement[]{mes});
-                                                                 getSampleDispatcher().dispatch(sample);
-                                                             } else if (lastPosture == MeasurementKind.BAD_POSTURE) {
-                                                                 final BadPostureMeasurement mes = new BadPostureMeasurement(seconds);
-                                                                 final Sample sample = new Sample(getAgent().getSource(), new pt.uninova.s4h.citizenhub.data.Measurement[]{mes});
-                                                                 getSampleDispatcher().dispatch(sample);
-                                                             }
-                                                         }
+                    getSampleDispatcher().dispatch(sample);
+                }
 
-                                                         lastPosture = MeasurementKind.GOOD_POSTURE; // we save this posture reading for next iteration;
-                                                     } else { //new reading is bad posture
-                                                         if (lastPosture != null) {//if there is previous posture
-                                                             //here, we dispatch time considering last posture. If last posture is good we dispatch good, if bad, we dispatch as bad
-                                                             if (lastPosture == MeasurementKind.GOOD_POSTURE) {
-                                                                 final GoodPostureMeasurement mes = new GoodPostureMeasurement(seconds);
-                                                                 final Sample sample = new Sample(getAgent().getSource(), new pt.uninova.s4h.citizenhub.data.Measurement[]{mes});
-                                                                 getSampleDispatcher().dispatch(sample);
-                                                             } else if (lastPosture == MeasurementKind.BAD_POSTURE) {
-                                                                 final BadPostureMeasurement mes = new BadPostureMeasurement(seconds);
-                                                                 final Sample sample = new Sample(getAgent().getSource(), new pt.uninova.s4h.citizenhub.data.Measurement[]{mes});
-                                                                 getSampleDispatcher().dispatch(sample);
-                                                             }
-                                                         }
-                                                         lastPosture = MeasurementKind.BAD_POSTURE; // we save this posture reading for next iteration
-                                                     }
-                                                     lastTimestamp = now; //always saves time of last posture
-                                                 }
-                                             }
-        );
+                lastTimestamp = now;
+                lastPosture = value[0] == 0 ? MeasurementKind.GOOD_POSTURE : MeasurementKind.BAD_POSTURE;
+            }
+        });
     }
 
     @Override
@@ -156,14 +126,5 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         lastTimestamp = null;
 
         super.enable();
-    }
-
-    //definition of good posture by the sensor defined settings
-    private boolean isGoodPosture_Sensor(double posture) {
-        //here only the good posture is tested, but the sensor also provides information
-        //of when it's vibrating, etc... This can also be included later in the UI
-        //good
-        //bad, posture == 1
-        return posture == 0;
     }
 }

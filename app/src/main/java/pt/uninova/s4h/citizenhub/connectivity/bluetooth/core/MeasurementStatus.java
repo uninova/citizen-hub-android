@@ -5,14 +5,10 @@ public class MeasurementStatus {
     private final byte b1, b2;
 
     public MeasurementStatus(byte[] buffer) {
-        this(buffer, 0);
+        this(new Buffer(buffer));
     }
 
-    public MeasurementStatus(byte[] buffer, int offset) {
-        this(new ByteReader(buffer, offset));
-    }
-
-    public MeasurementStatus(ByteReader reader) {
+    public MeasurementStatus(Buffer reader) {
         this(reader.readByte(), reader.readByte());
     }
 
@@ -30,7 +26,6 @@ public class MeasurementStatus {
     }
 
     public boolean isIrregularPulseDetected() {
-
         return (b2 & 0x4) != 0;
     }
 

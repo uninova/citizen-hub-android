@@ -7,31 +7,32 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
 import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
     final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
-
     final String TAG = "WearOSHeartRateProtocol";
-    private final WearOSConnection connection;
 
 
-    protected WearOSHeartRateProtocol(WearOSConnection connection, WearOSAgent agent) {
-        super(ID, agent);
-        this.connection = connection;
-
+    protected WearOSHeartRateProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent) {
+        super(ID, agent,sampleDispatcher);
         Log.d(TAG, "Entered");
-
         connection.addChannelListener(new BaseChannelListener(channelName) {
             @Override
             public void onChange(double value, Date timestamp) {
-
-           //     getSampleDispatcher().dispatch(new Measurement(timestamp, MeasurementKind.HEART_RATE, value));
-                //Log.d(TAG, "dispatch " + timestamp + " and " + value);
+                final int heartRate = (int) value;
+                final Sample sample = new Sample(getAgent().getSource(),
+                        new HeartRateMeasurement(heartRate));
+                getSampleDispatcher().dispatch(sample);
             }
 
         });
