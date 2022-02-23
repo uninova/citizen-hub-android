@@ -62,7 +62,7 @@
                 android:text="@string/fragment_report_detail_units_distance"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_distance_total2"
                 app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
                 tools:visibility="visible" />
 
@@ -415,25 +415,11 @@
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/stepsGroup"
+                android:id="@+id/activityGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="StepsTotalVal,fragment_report_detail_steps_total,ActivityTitle,stepsUnitsTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/caloriesGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/distanceGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
+                app:constraint_referenced_ids="ActivityTitle,fragment_report_detail_calories_total,StepsTotalVal,DistanceTotalVal,caloriesUnitsTextView,distanceUnitsTextView2,fragment_report_detail_steps_total,CaloriesTotalVal,fragment_report_detail_distance_total2,stepsUnitsTextView"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
