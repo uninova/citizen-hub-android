@@ -115,7 +115,7 @@ public class SummaryFragment extends Fragment {
         final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
-        final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
+        final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity);
         final TextView respirationTextView = requireView().findViewById(R.id.fragment_summary_text_view_respiration);
         final TextView bloodPressureTextView = requireView().findViewById(R.id.fragment_summary_text_view_blood_pressure);
 
@@ -124,7 +124,7 @@ public class SummaryFragment extends Fragment {
         final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
-        final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
+        final TextView stepsTitle = requireView().findViewById(R.id.activityTextView);
         final TextView respirationTitle = requireView().findViewById(R.id.respirationTextView);
         final TextView bloodPressureTitle = requireView().findViewById(R.id.bloodPressureTextView);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
