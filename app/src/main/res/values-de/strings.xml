@@ -187,13 +187,13 @@
     <string name="fragment_summary_text_calories_burned">Verbrannte Kilokalorien</string>
     <string name="fragment_summary_text_distance_walked">Zurückgelegte Strecke</string>
     <string name="fragment_summary_text_posture">Körperhaltung</string>
-    <string name="fragment_summary_text_steps_taken">Zurückgelegte Schritte</string>
+    <string name="fragment_summary_text_activity">Zurückgelegte Schritte</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f Kalorien</string>
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">Ihre durchschnittliche Herzfrequenz beträgt %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s nicht OK</string>
-    <string name="fragment_summary_text_view_steps_text">%1$.0f Schritte</string>
+    <string name="fragment_summary_text_view_activity_text">%1$.0f Schritte</string>
     <string name="fragment_user_label">Benutzerprofil</string>
     <string name="layout_activity_add_device_address">Adresse</string>
     <string name="layout_activity_add_device_name">Name</string>

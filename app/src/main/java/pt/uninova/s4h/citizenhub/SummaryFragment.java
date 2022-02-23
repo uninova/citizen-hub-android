@@ -107,7 +107,7 @@ public class SummaryFragment extends Fragment {
         final LinearLayout distanceGroup = requireView().findViewById(R.id.fragment_summary_layout_distance);
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
-        final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_activity);
         final LinearLayout respirationGroup = requireView().findViewById(R.id.fragment_summary_layout_respiration);
         final LinearLayout bloodPressureGroup = requireView().findViewById(R.id.fragment_summary_layout_blood_pressure);
 
@@ -220,7 +220,7 @@ public class SummaryFragment extends Fragment {
             }
 
             if (steps != null) {
-                stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
+                stepsTextView.setText(getString(R.string.fragment_summary_text_view_activity_text, steps.getSum()));
                 stepsGroup.setVisibility(VISIBLE);
                 stepsTitle.setVisibility(VISIBLE);
                 stepsTextView.setVisibility(VISIBLE);
