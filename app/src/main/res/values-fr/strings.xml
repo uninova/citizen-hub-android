@@ -132,7 +132,7 @@
     <string name="fragment_report_detail_title_heart_rate">Fréquence cardiaque</string>
     <string name="fragment_report_detail_title_not_ok_posture">s</string>
     <string name="fragment_report_detail_title_posture">Posture</string>
-    <string name="fragment_report_detail_title_steps">Pas</string>
+    <string name="fragment_report_detail_title_activity">Pas</string>
     <string name="fragment_report_detail_units_calories">calories</string>
     <string name="fragment_report_detail_units_distance">m</string>
     <string name="fragment_report_detail_units_heart_rate">bpm</string>

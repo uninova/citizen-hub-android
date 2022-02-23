@@ -134,7 +134,7 @@
     <string name="fragment_report_detail_title_heart_rate">Ritmo cardíaco</string>
     <string name="fragment_report_detail_title_not_ok_posture">s</string>
     <string name="fragment_report_detail_title_posture">Postura</string>
-    <string name="fragment_report_detail_title_steps">Passos</string>
+    <string name="fragment_report_detail_title_activity">Passos</string>
     <string name="fragment_report_detail_units_calories">calorias</string>
     <string name="fragment_report_detail_units_distance">m</string>
     <string name="fragment_report_detail_units_heart_rate">bpm</string>
