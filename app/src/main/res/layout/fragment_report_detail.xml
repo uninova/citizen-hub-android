@@ -87,8 +87,9 @@
                 android:text="@string/fragment_report_detail_value_total_distance"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
+                app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
                 app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
-                tools:layout_editor_absoluteX="370dp"
+                app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />
 
             <TextView

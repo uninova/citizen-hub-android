@@ -651,9 +651,9 @@ public class ReportViewModel extends AndroidViewModel {
         }
 
         measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
-        if (measurementAggregate != null && measurementAggregate2 !=null && measurementAggregate3 !=null) {
+        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
+        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        if (measurementAggregate != null && measurementAggregate2work !=null && measurementAggregate3work !=null) {
 
             y -= 10;
 
@@ -672,12 +672,12 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 20;
             canvasWriter.addText("Average DBP: ", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(String.valueOf(measurementAggregate2.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate2work.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
             canvasWriter.addText("Mean AP: ", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(String.valueOf(measurementAggregate3.getAverage()), boldTextPaint);
+            canvasWriter.addTextInFront(String.valueOf(measurementAggregate3work.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
