@@ -130,7 +130,7 @@ public class ReportDetailFragment extends Fragment {
             minutes = minutes % 60;
         }
 
-        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+        String result = ((hours > 0 ? hours +  "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
 
         return result.equals("") ? "0s" : result;
     }

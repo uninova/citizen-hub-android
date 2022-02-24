@@ -239,7 +239,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal,notOkPostureUnitsTextView,okPostureUnitsTextView"
+                app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal"
                 tools:visibility="visible" />
 
 
@@ -325,7 +325,6 @@
                 android:text="@string/fragment_report_lumbar_training_weight_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_weight"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight"
                 tools:visibility="visible" />
@@ -338,7 +337,6 @@
                 android:text="@string/fragment_report_lumbar_training_total_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_length"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length"
                 tools:visibility="visible" />
@@ -348,7 +346,6 @@
                 style="@style/ReportDetailUnits"
                 android:text="@string/fragment_report_detail_lumbar_training_units"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_length_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length_total"
                 tools:visibility="visible" />
@@ -360,7 +357,6 @@
                 android:text="@string/fragment_report_lumbar_training_repetitions_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_repetitions"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_repetitions"
                 tools:visibility="visible" />
@@ -373,7 +369,6 @@
                 android:text="@string/fragment_report_lumbar_training_score_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_score"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_score"
                 tools:visibility="visible" />
@@ -463,26 +458,6 @@
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/notOkPostureUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_title_not_ok_posture"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/notOkPostureVal"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/okPostureUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_units_ok_posture"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/okPostureVal"
-                tools:visibility="visible" />
-
-            <TextView
                 android:id="@+id/HeartRateTitle"
                 style="@style/ReportDetailTitle"
                 android:paddingHorizontal="15dp"
@@ -553,6 +528,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
                 app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_detail_calories_total"
                 app:layout_constraintTop_toTopOf="@+id/okPostureVal"
                 tools:visibility="visible" />
 
@@ -564,6 +540,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
                 app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/distanceUnitsTextView2"
                 app:layout_constraintTop_toTopOf="@+id/notOkPostureVal"
                 tools:visibility="visible" />
 
@@ -781,7 +758,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_respiration_breathing_rate_text"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
-                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_detail_steps_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_respiration_breathing_rate_text"
                 app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />
