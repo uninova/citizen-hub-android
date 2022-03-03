@@ -196,7 +196,7 @@
     <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s not OK</string>
     <string name="fragment_summary_text_view_lumbar_text">Duration: %1$s\nScore: %2$.2f\nRepetitions: %3$s\nWeight: %4$dkg</string>
     <!-- <string name="fragment_summary_text_view_lumbar_text">Duration: %1$s s\nScore: %2$.2f %%\n Repetitions: %3$d</string> -->
-    <string name="fragment_summary_text_view_activity_text">%1$.0f steps\n%2$.0f m\n%3$.0f kcal</string>
+    <string name="fragment_summary_text_view_activity_text">Steps: %1$.0f steps\nDistance: %2$.0f m\nCalories: %3$.0f kcal</string>
     <string name="fragment_user_label">User Profile</string>
     <string name="layout_activity_add_device_address">Address</string>
     <string name="layout_activity_add_device_name">Name</string>
