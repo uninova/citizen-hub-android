@@ -305,7 +305,7 @@ public class ReportViewModel extends AndroidViewModel {
             stepsTaken.draw(canvas);
             canvas.restore();
 
-            y += 40;
+            y += 20;
             canvasWriter.addText("Steps: ", x + 70, y + 10, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
 
@@ -577,7 +577,7 @@ public class ReportViewModel extends AndroidViewModel {
             stepsTaken.draw(canvas);
             canvas.restore();
 
-            y += 40;
+            y += 20;
             canvasWriter.addText("Steps: ", x + 70, y + 10, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getSum()), boldTextPaint);
 
