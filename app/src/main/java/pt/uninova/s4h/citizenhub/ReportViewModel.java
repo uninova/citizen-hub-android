@@ -74,6 +74,7 @@ public class ReportViewModel extends AndroidViewModel {
     private LocalDate detailDate;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregates;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregatesWorkTime;
+    private LumbarExtensionTraining lumbarTraining;
 
     public ReportViewModel(Application application) {
         super(application);
@@ -82,7 +83,7 @@ public class ReportViewModel extends AndroidViewModel {
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         dateBoundsLive = new MediatorLiveData<>();
-
+        lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
         dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
         dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
@@ -147,7 +148,6 @@ public class ReportViewModel extends AndroidViewModel {
     public byte[] createWorkTimePdf() throws IOException {
         PdfDocument document = new PdfDocument();
         Resources res = getApplication().getResources();
-        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
@@ -419,7 +419,6 @@ public class ReportViewModel extends AndroidViewModel {
     public byte[] createPdf() throws IOException {
         PdfDocument document = new PdfDocument();
         Resources res = getApplication().getResources();
-        LumbarExtensionTraining lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
 
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 1100, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
@@ -687,7 +686,7 @@ public class ReportViewModel extends AndroidViewModel {
 
         if (lumbarTraining != null) {
 
-            Drawable lumbar = res.getDrawable(R.drawable.ic_heartbeat_item, null);
+            Drawable lumbar = res.getDrawable(R.drawable.ic_medx_program, null);
             lumbar.setBounds(0, 0, lumbar.getIntrinsicWidth(), lumbar.getIntrinsicHeight());
             canvas.save();
             canvas.translate(x - 15, y + 15);
