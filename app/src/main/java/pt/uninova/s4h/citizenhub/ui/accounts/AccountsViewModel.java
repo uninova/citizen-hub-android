@@ -38,6 +38,14 @@ public class AccountsViewModel extends AndroidViewModel {
 
     }
 
+    public void enableSmartHealthAccount(){
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putBoolean("accounts.smart4health.enabled",true);
+
+        editor.apply();
+    }
+
     public int getSmartBearId() {
         return preferences.getInt("accounts.smartbear.id", -1);
     }

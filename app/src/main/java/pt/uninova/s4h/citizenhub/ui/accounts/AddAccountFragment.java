@@ -1,5 +1,9 @@
 package pt.uninova.s4h.citizenhub.ui.accounts;
 
+import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import care.data4life.sdk.Data4LifeClient;
+import care.data4life.sdk.lang.D4LException;
+import care.data4life.sdk.listener.ResultListener;
+import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 
 public class AddAccountFragment extends Fragment {
@@ -28,10 +36,48 @@ public class AddAccountFragment extends Fragment {
         smart4HealthCard.setVisibility(!viewModel.hasSmart4HealthAccount() ? View.VISIBLE : View.GONE);
         smartBearCard.setVisibility(!viewModel.hasSmartBearAccount() ? View.VISIBLE : View.GONE);
 
+        smart4HealthCard.setOnClickListener((View v) -> {
+
+            final Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(requireActivity(), null);
+            startActivityForResult(loginIntent, D4L_AUTH);
+
+        });
         smartBearCard.setOnClickListener((View v) -> {
             Navigation.findNavController(requireView()).navigate(AddAccountFragmentDirections.actionAddAccountFragmentToAdvancedSmartBearAccountGateFragment());
         });
 
         return view;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == D4L_AUTH) {
+            authenticate();
+        }
+    }
+    private void authenticate() {
+        final Data4LifeClient client = Data4LifeClient.getInstance();
+
+        client.isUserLoggedIn(new ResultListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean value) {
+                if (value) {
+                    final Activity activity = requireActivity();
+                    final Intent intent = new Intent(activity, MainActivity.class);
+
+                    AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
+                    viewModel.enableSmartHealthAccount();
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    activity.startActivity(intent);
+                    activity.finish();
+                }
+
+            }
+
+            @Override
+            public void onError(D4LException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 }
