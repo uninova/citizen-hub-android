@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.ui.logout;
+package pt.uninova.s4h.citizenhub.ui.Authentication;
 
 import android.app.Activity;
 import android.content.Intent;

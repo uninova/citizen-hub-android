@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,12 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 
 import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
@@ -31,6 +34,7 @@ import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 
 public class ReportDetailFragment extends Fragment {
 
@@ -41,82 +45,89 @@ public class ReportDetailFragment extends Fragment {
     private LumbarExtensionTraining lumbarExtensionTraining;
     private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
+
+
         Button uploadPdfButton = view.findViewById(R.id.uploadButton);
         Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
+        AccountsViewModel viewModel = new AccountsViewModel(requireActivity().getApplication());
+        if(viewModel.hasSmart4HealthAccount()) {
 
-
-        viewPdfButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = BuildConfig.SMART4HEALTH_APP_URL;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+            viewPdfButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = BuildConfig.SMART4HEALTH_APP_URL;
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
 //                uploadPdfButton.setVisibility(View.VISIBLE);
 //                viewPdfButton.setVisibility(View.GONE);
-            }
-        });
+                }
+            });
 
 
-        uploadPdfButton.setOnClickListener(v -> {
+            uploadPdfButton.setOnClickListener(v -> {
 
-            try {
-                model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
-                    @Override
-                    public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                        requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                    viewPdfButton.setVisibility(View.VISIBLE);
-                                    uploadPdfButton.setVisibility(View.GONE);
-                                }
-                        );
-                    }
+                try {
+                    model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
+                        @Override
+                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+                            requireActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
+                                        viewPdfButton.setVisibility(View.VISIBLE);
+                                        uploadPdfButton.setVisibility(View.GONE);
+                                    }
+                            );
+                        }
 
-                    @Override
-                    public void onError(D4LException exception) {
-                        requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
-                            exception.printStackTrace();
-                        });
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                        @Override
+                        public void onError(D4LException exception) {
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
+                                exception.printStackTrace();
+                            });
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            try {
-                model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
-                    @Override
-                    public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                        requireActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                    viewPdfButton.setVisibility(View.VISIBLE);
-                                    uploadPdfButton.setVisibility(View.GONE);
-                                }
-                        );
-                    }
+                try {
+                    model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
+                        @Override
+                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+                            requireActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
+                                        viewPdfButton.setVisibility(View.VISIBLE);
+                                        uploadPdfButton.setVisibility(View.GONE);
+                                    }
+                            );
+                        }
 
-                    @Override
-                    public void onError(D4LException exception) {
-                        requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
-                            exception.printStackTrace();
-                        });
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                        @Override
+                        public void onError(D4LException exception) {
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
+                                exception.printStackTrace();
+                            });
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-        });
-
+            });
+        }
+        else{
+            viewPdfButton.setVisibility(View.GONE);
+            uploadPdfButton.setVisibility(View.GONE);
+        }
 
         return view;
     }
-
 
     private String secondsToString(int value) {
         int seconds = value;
