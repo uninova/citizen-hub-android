@@ -58,4 +58,11 @@ public class AccountsViewModel extends AndroidViewModel {
         editor.apply();
     }
 
+    public void disableSmart4HealthAccount() {
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.remove("accounts.smart4health.id");
+        editor.putBoolean("accounts.smart4health.enabled", false);
+        editor.apply();
+    }
 }
