@@ -103,28 +103,21 @@ public class SummaryFragment extends Fragment {
 
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
-        final LinearLayout caloriesGroup = requireView().findViewById(R.id.fragment_summary_layout_calories);
-        final LinearLayout distanceGroup = requireView().findViewById(R.id.fragment_summary_layout_distance);
         final LinearLayout heartrateGroup = requireView().findViewById(R.id.fragment_summary_layout_heart_rate);
         final LinearLayout postureGroup = requireView().findViewById(R.id.fragment_summary_layout_posture);
-        final LinearLayout stepsGroup = requireView().findViewById(R.id.fragment_summary_layout_steps);
+        final LinearLayout activityGroup = requireView().findViewById(R.id.fragment_summary_layout_activity);
         final LinearLayout respirationGroup = requireView().findViewById(R.id.fragment_summary_layout_respiration);
         final LinearLayout bloodPressureGroup = requireView().findViewById(R.id.fragment_summary_layout_blood_pressure);
 
-        final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_calories);
-        final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_distance);
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
-        final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_steps);
+        final TextView activityTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity);
         final TextView respirationTextView = requireView().findViewById(R.id.fragment_summary_text_view_respiration);
         final TextView bloodPressureTextView = requireView().findViewById(R.id.fragment_summary_text_view_blood_pressure);
 
-
-        final TextView caloriesTitle = requireView().findViewById(R.id.caloriesTextView);
-        final TextView distanceTitle = requireView().findViewById(R.id.distanceWalkedTextView);
         final TextView heartRateTitle = requireView().findViewById(R.id.heartrateTextView);
         final TextView postureTitle = requireView().findViewById(R.id.sittingTextView);
-        final TextView stepsTitle = requireView().findViewById(R.id.stepsTakenTextView);
+        final TextView activityTitle = requireView().findViewById(R.id.activityTextView);
         final TextView respirationTitle = requireView().findViewById(R.id.respirationTextView);
         final TextView bloodPressureTitle = requireView().findViewById(R.id.bloodPressureTextView);
         final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
@@ -165,30 +158,6 @@ public class SummaryFragment extends Fragment {
                 respirationTextView.setVisibility(View.GONE);
             }
 
-            if (calories != null) {
-                caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_text, calories.getSum()));
-                caloriesGroup.setVisibility(VISIBLE);
-                caloriesTitle.setVisibility(VISIBLE);
-                caloriesTextView.setVisibility(VISIBLE);
-            } else {
-                caloriesGroup.setVisibility(View.GONE);
-                caloriesTitle.setVisibility(View.GONE);
-                caloriesTextView.setVisibility(View.GONE);
-            }
-
-            if (distance != null) {
-                distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_text, distance.getSum()));
-                distanceGroup.setVisibility(VISIBLE);
-                distanceTitle.setVisibility(VISIBLE);
-                distanceTextView.setVisibility(VISIBLE);
-
-            } else {
-                distanceGroup.setVisibility(View.GONE);
-                distanceTitle.setVisibility(View.GONE);
-                distanceTextView.setVisibility(View.GONE);
-
-            }
-
             if (heartRate != null) {
                 heartRateTextView.setText(getString(R.string.fragment_summary_text_view_heart_rate_text, heartRate.getAverage()));
                 heartrateGroup.setVisibility(VISIBLE);
@@ -219,16 +188,16 @@ public class SummaryFragment extends Fragment {
 
             }
 
-            if (steps != null) {
-                stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
-                stepsGroup.setVisibility(VISIBLE);
-                stepsTitle.setVisibility(VISIBLE);
-                stepsTextView.setVisibility(VISIBLE);
+            if (steps != null && calories!=null && distance !=null) {
+                activityTextView.setText(getString(R.string.fragment_summary_text_view_activity_text, steps.getSum(),calories.getSum(),distance.getSum()));
+                activityGroup.setVisibility(VISIBLE);
+                activityTitle.setVisibility(VISIBLE);
+                activityTextView.setVisibility(VISIBLE);
 
             } else {
-                stepsGroup.setVisibility(View.GONE);
-                stepsTitle.setVisibility(View.GONE);
-                stepsTextView.setVisibility(View.GONE);
+                activityGroup.setVisibility(View.GONE);
+                activityTitle.setVisibility(View.GONE);
+                activityTextView.setVisibility(View.GONE);
             }
 
             if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {

@@ -50,8 +50,60 @@
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".ReportDetailFragment"
+            tools:layout_editor_absoluteX="0dp"
             tools:visibility="visible">
 
+
+            <TextView
+                android:id="@+id/distanceUnitsTextView2"
+                style="@style/ReportDetailUnits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_report_detail_units_distance"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_distance_total2"
+                app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/caloriesUnitsTextView"
+                style="@style/ReportDetailUnits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_report_detail_units_calories"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
+                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
+                app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_report_detail_distance_total2"
+                style="@style/ReportDetailValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="distance"
+                android:text="@string/fragment_report_detail_value_total_distance"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
+                app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+                app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_report_detail_calories_total"
+                style="@style/ReportDetailValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="calories"
+                android:text="@string/fragment_report_detail_value_calories"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
+                app:layout_constraintEnd_toStartOf="@+id/caloriesUnitsTextView"
+                app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/fragment_report_detail_view_no_data"
@@ -72,30 +124,30 @@
 
 
             <TextView
-                android:id="@+id/StepsTitle"
+                android:id="@+id/ActivityTitle"
                 style="@style/ReportDetailTitle"
                 android:layout_marginTop="32dp"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:tag="steps"
-                android:text="@string/fragment_report_detail_title_steps"
+                android:text="@string/fragment_report_detail_title_activity"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/CaloriesTotalVal"
+                app:layout_constraintTop_toBottomOf="@+id/HeartRateMinVal"
                 tools:visibility="visible" />
 
 
             <TextView
                 android:id="@+id/postureTitle"
                 style="@style/ReportDetailTitle"
-                android:layout_marginTop="32dp"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:tag="posture"
                 android:text="@string/fragment_report_detail_title_posture"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/StepsTotalVal"
+                app:layout_constraintTop_toBottomOf="@id/CaloriesTotalVal"
+                tools:layout_editor_absoluteY="593dp"
                 tools:visibility="visible" />
 
 
@@ -113,24 +165,13 @@
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/fragment_report_blood_pressure_meanAP_text"
-                style="@style/ReportDetailValueType"
-                android:tag="bloodPressureMeanAPText"
-                android:text="@string/fragment_report_detail_text_meanAP"
-                android:textColor="@color/colorS4HTurquoise"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_report_blood_pressure_dbp_text"
-                tools:visibility="visible" />
-
-            <TextView
                 android:id="@+id/fragment_report_blood_pressure_dbp_text"
                 style="@style/ReportDetailValueType"
                 android:tag="bloodPressureDBPText"
                 android:text="@string/fragment_report_detail_text_dbp"
                 android:textColor="@color/colorS4HTurquoise"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_weight"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_report_blood_pressure_sbp_text"
                 tools:visibility="visible" />
 
@@ -142,7 +183,7 @@
                 android:text="@string/fragment_report_detail_text_sbp"
                 android:textColor="@color/colorS4HTurquoise"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_weight"
                 app:layout_constraintTop_toBottomOf="@+id/bloodPressureTitle"
                 tools:visibility="visible" />
 
@@ -154,8 +195,31 @@
                 android:text="@string/fragment_report_detail_text_total_steps"
                 android:textColor="@color/colorS4HTurquoise"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/CaloriesTotalVal"
-                app:layout_constraintTop_toBottomOf="@+id/StepsTitle"
+                app:layout_constraintStart_toStartOf="@+id/HeartRateMinVal"
+                app:layout_constraintTop_toBottomOf="@+id/ActivityTitle"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/DistanceTotalVal"
+                style="@style/ReportDetailValueType"
+                android:tag="distance"
+                android:text="@string/fragment_report_detail_text_total_distance"
+                android:textColor="@color/colorS4HTurquoise"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/HeartRateMinVal"
+                app:layout_constraintTop_toBottomOf="@id/StepsTotalVal"
+                tools:layout_editor_absoluteY="337dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/CaloriesTotalVal"
+                style="@style/ReportDetailValueType"
+                android:tag="calories"
+                android:text="@string/fragment_report_detail_text_total_calories"
+                android:textColor="@color/colorS4HTurquoise"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/HeartRateMinVal"
+                app:layout_constraintTop_toBottomOf="@+id/DistanceTotalVal"
                 tools:visibility="visible" />
 
             <TextView
@@ -175,7 +239,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal,notOkPostureUnitsTextView,okPostureUnitsTextView"
+                app:constraint_referenced_ids="postureTitle,fragment_report_total_time_posture_not_ok,notOkPostureVal,fragment_report_total_time_posture_ok,okPostureVal"
                 tools:visibility="visible" />
 
 
@@ -205,7 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="fragment_report_blood_pressure_sbp_value,mmHgTextView1,fragment_report_blood_pressure_meanAP_value,fragment_report_blood_pressure_dbp_value,mmHgTextView3,mmHgTextView2,bloodPressureTitle,fragment_report_blood_pressure_dbp_text,fragment_report_blood_pressure_meanAP_text,fragment_report_blood_pressure_sbp_text"
+                app:constraint_referenced_ids="fragment_report_blood_pressure_sbp_value,mmHgTextView1,fragment_report_blood_pressure_dbp_value,mmHgTextView2,bloodPressureTitle,fragment_report_blood_pressure_dbp_text,fragment_report_blood_pressure_sbp_text"
                 tools:visibility="visible" />
 
             <TextView
@@ -261,7 +325,6 @@
                 android:text="@string/fragment_report_lumbar_training_weight_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_weight"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_weight"
                 tools:visibility="visible" />
@@ -274,7 +337,6 @@
                 android:text="@string/fragment_report_lumbar_training_total_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_length"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length"
                 tools:visibility="visible" />
@@ -284,7 +346,6 @@
                 style="@style/ReportDetailUnits"
                 android:text="@string/fragment_report_detail_lumbar_training_units"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_lumbar_extension_training_length_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_length_total"
                 tools:visibility="visible" />
@@ -296,7 +357,6 @@
                 android:text="@string/fragment_report_lumbar_training_repetitions_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_repetitions"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_repetitions"
                 tools:visibility="visible" />
@@ -309,7 +369,6 @@
                 android:text="@string/fragment_report_lumbar_training_score_value"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_lumbar_extension_training_score"
-                app:layout_constraintEnd_toStartOf="@+id/notOkPostureUnitsTextView"
                 app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_lumbar_extension_training_score"
                 tools:visibility="visible" />
@@ -352,27 +411,11 @@
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/stepsGroup"
+                android:id="@+id/activityGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="StepsTotalVal,fragment_report_detail_steps_total,StepsTitle,stepsUnitsTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/caloriesGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="CaloriesTotalVal,caloriesTitle,fragment_report_detail_calories_total,caloriesUnitsTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/distanceGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="fragment_report_detail_distance_total,DistanceTotalVal,DistanceTitle,distanceUnitsTextView"
+                app:constraint_referenced_ids="ActivityTitle,fragment_report_detail_calories_total,StepsTotalVal,DistanceTotalVal,caloriesUnitsTextView,distanceUnitsTextView2,fragment_report_detail_steps_total,CaloriesTotalVal,fragment_report_detail_distance_total2,stepsUnitsTextView"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
@@ -415,26 +458,6 @@
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/notOkPostureUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_title_not_ok_posture"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/notOkPostureVal"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/okPostureUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_units_ok_posture"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/okPostureVal"
-                tools:visibility="visible" />
-
-            <TextView
                 android:id="@+id/HeartRateTitle"
                 style="@style/ReportDetailTitle"
                 android:paddingHorizontal="15dp"
@@ -445,18 +468,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline3"
                 app:layout_goneMarginStart="100dp"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/DistanceTitle"
-                style="@style/ReportDetailTitle"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:tag="distance"
-                android:text="@string/fragment_report_detail_title_distance"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/HeartRateMinVal"
                 tools:visibility="visible" />
 
             <TextView
@@ -517,6 +528,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/okPostureVal"
                 app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_detail_calories_total"
                 app:layout_constraintTop_toTopOf="@+id/okPostureVal"
                 tools:visibility="visible" />
 
@@ -528,6 +540,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/notOkPostureVal"
                 app:layout_constraintEnd_toStartOf="@+id/stepsUnitsTextView"
+                app:layout_constraintStart_toStartOf="@+id/distanceUnitsTextView2"
                 app:layout_constraintTop_toTopOf="@+id/notOkPostureVal"
                 tools:visibility="visible" />
 
@@ -599,65 +612,6 @@
                 app:layout_constraintTop_toTopOf="@+id/bpmTextView3"
                 tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/DistanceTotalVal"
-                style="@style/ReportDetailValueType"
-                android:layout_marginTop="32dp"
-                android:tag="distance"
-                android:text="@string/fragment_report_detail_text_total_distance"
-                android:textColor="@color/colorS4HTurquoise"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/HeartRateMinVal"
-                app:layout_constraintTop_toBottomOf="@+id/DistanceTitle"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/fragment_report_detail_distance_total"
-                style="@style/ReportDetailValue"
-                android:tag="distance"
-                android:text="@string/fragment_report_detail_value_total_distance"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
-                app:layout_constraintEnd_toStartOf="@+id/distanceUnitsTextView"
-                app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/CaloriesTotalVal"
-                style="@style/ReportDetailValueType"
-                android:layout_marginTop="32dp"
-                android:tag="calories"
-                android:text="@string/fragment_report_detail_text_total_calories"
-                android:textColor="@color/colorS4HTurquoise"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
-                app:layout_constraintTop_toBottomOf="@+id/caloriesTitle"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/fragment_report_detail_calories_total"
-                style="@style/ReportDetailValue"
-                android:tag="calories"
-                android:text="@string/fragment_report_detail_value_calories"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
-                app:layout_constraintEnd_toStartOf="@+id/caloriesUnitsTextView"
-                app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/caloriesTitle"
-                style="@style/ReportDetailTitle"
-                android:layout_marginTop="32dp"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:tag="calories"
-                android:text="@string/fragment_report_detail_title_calories"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/DistanceTotalVal"
-                tools:visibility="visible" />
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
                 android:layout_width="wrap_content"
@@ -722,26 +676,6 @@
                 app:layout_constraintTop_toTopOf="@+id/HeartRateMinVal"
                 tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/distanceUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_units_distance"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/DistanceTotalVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/DistanceTotalVal"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/caloriesUnitsTextView"
-                style="@style/ReportDetailUnits"
-                android:text="@string/fragment_report_detail_units_calories"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/CaloriesTotalVal"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_detail_heart_rate_min"
-                app:layout_constraintTop_toTopOf="@+id/CaloriesTotalVal"
-                tools:visibility="visible" />
-
 
             <TextView
                 android:id="@+id/fragment_report_blood_pressure_sbp_value"
@@ -751,7 +685,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_sbp_text"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_units"
-                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score_total"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_value"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_sbp_text"
                 tools:visibility="visible" />
 
@@ -763,8 +697,6 @@
                 android:text="@string/fragment_report_detail_blood_pressure_units"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_sbp_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_blood_pressure_sbp_value"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_sbp_text"
                 tools:visibility="visible" />
@@ -777,7 +709,6 @@
                 android:text="@string/fragment_report_detail_blood_pressure_units"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_dbp_text"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/fragment_report_blood_pressure_dbp_value"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_dbp_text"
                 tools:visibility="visible" />
@@ -795,43 +726,16 @@
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/fragment_report_blood_pressure_meanAP_value"
-                style="@style/ReportDetailValue"
-                android:tag="@string/blood_pressure"
-                android:text="@string/fragment_report_detail_value_blood_presure_meanAP_value"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_meanAP_text"
-                app:layout_constraintEnd_toStartOf="@+id/fragment_report_lumbar_extension_training_weight_units"
-                app:layout_constraintStart_toStartOf="@+id/fragment_report_lumbar_extension_training_score_total"
-                app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_meanAP_text"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/mmHgTextView3"
-                style="@style/ReportDetailUnits"
-                android:paddingStart="2dp"
-                android:paddingEnd="4dp"
-                android:text="@string/fragment_report_detail_blood_pressure_units"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/fragment_report_blood_pressure_meanAP_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/fragment_report_blood_pressure_meanAP_value"
-                app:layout_constraintTop_toTopOf="@+id/fragment_report_blood_pressure_meanAP_text"
-                tools:visibility="visible" />
-
-            <TextView
                 android:id="@+id/respirationTitle"
                 style="@style/ReportDetailTitle"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="32dp"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:tag="@string/respirationTitle"
                 android:text="@string/fragment_report_detail_title_respiration"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_report_blood_pressure_meanAP_text"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_blood_pressure_dbp_text"
                 tools:visibility="visible" />
 
             <TextView
@@ -842,7 +746,7 @@
                 android:text="@string/fragment_report_detail_text_respiration_breathing_rate"
                 android:textColor="@color/colorS4HTurquoise"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/DistanceTotalVal"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_blood_pressure_dbp_text"
                 app:layout_constraintTop_toBottomOf="@+id/respirationTitle"
                 tools:visibility="visible" />
 
@@ -854,7 +758,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_report_respiration_breathing_rate_text"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
-                app:layout_constraintStart_toStartOf="@+id/fragment_report_total_time_posture_not_ok"
+                app:layout_constraintStart_toStartOf="@+id/fragment_report_detail_steps_total"
                 app:layout_constraintTop_toTopOf="@+id/fragment_report_respiration_breathing_rate_text"
                 app:layout_constraintVertical_bias="0.0"
                 tools:visibility="visible" />

@@ -39,7 +39,7 @@ public class ReportDetailFragment extends Fragment {
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
             lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
     private LumbarExtensionTraining lumbarExtensionTraining;
-    private Group heartRateGroup, caloriesGroup, distanceGroup, stepsGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
+    private Group heartRateGroup, activityGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class ReportDetailFragment extends Fragment {
             minutes = minutes % 60;
         }
 
-        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+        String result = ((hours > 0 ? hours +  "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
 
         return result.equals("") ? "0s" : result;
     }
@@ -274,39 +274,17 @@ public class ReportDetailFragment extends Fragment {
                 getInfoTextView_noData.setVisibility(View.GONE);
             }
 
-            if (distance != null) {
-                if (distanceGroup != null) {
-                    distanceGroup.setVisibility(View.VISIBLE);
+            if (distance != null && steps !=null && calories !=null) {
+                if (activityGroup != null) {
+                    activityGroup.setVisibility(View.VISIBLE);
                 }
                 distanceTotal.setText(String.valueOf(distance.getSum()));
-            } else {
-                if (distanceGroup != null) {
-                    distanceGroup.setVisibility(View.GONE);
-                }
-            }
-            if (steps != null) {
-                if (stepsGroup != null) {
-                    stepsGroup.setVisibility(View.VISIBLE);
-                }
+                caloriesTotal.setText(String.valueOf(calories.getSum()));
                 stepsTotal.setText(String.valueOf(steps.getSum()));
             } else {
-                if (stepsGroup != null) {
-
-                    stepsGroup.setVisibility(View.GONE);
-
+                if (activityGroup != null) {
+                    activityGroup.setVisibility(View.GONE);
                 }
-            }
-            if (calories != null) {
-                if (caloriesGroup != null) {
-                    caloriesGroup.setVisibility(View.VISIBLE);
-                }
-                caloriesTotal.setText(String.format("%.0f", calories.getSum()));
-            } else {
-                if (caloriesGroup != null) {
-
-                    caloriesGroup.setVisibility(View.GONE);
-                }
-
             }
 
             if (heartRate != null) {
@@ -394,9 +372,8 @@ public class ReportDetailFragment extends Fragment {
         heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
         bloodPressureSBPavg = view.findViewById(R.id.fragment_report_blood_pressure_sbp_value);
         bloodPressureDBPavg = view.findViewById(R.id.fragment_report_blood_pressure_dbp_value);
-        bloodPressureMeanAPavg = view.findViewById(R.id.fragment_report_blood_pressure_meanAP_value);
         respirationRate = view.findViewById(R.id.fragment_report_respiration_breathing_rate_value);
-        distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total);
+        distanceTotal = view.findViewById(R.id.fragment_report_detail_distance_total2);
         caloriesTotal = view.findViewById(R.id.fragment_report_detail_calories_total);
         stepsTotal = view.findViewById(R.id.fragment_report_detail_steps_total);
         okPostureTotal = view.findViewById(R.id.fragment_report_total_time_posture_ok);
@@ -407,9 +384,7 @@ public class ReportDetailFragment extends Fragment {
         lumbarWeight = view.findViewById(R.id.fragment_report_lumbar_extension_training_weight_value);
         postureGroup = view.findViewById(R.id.postureGroup);
         heartRateGroup = view.findViewById(R.id.hearRateGroup);
-        caloriesGroup = view.findViewById(R.id.caloriesGroup);
-        stepsGroup = view.findViewById(R.id.stepsGroup);
-        distanceGroup = view.findViewById(R.id.distanceGroup);
+        activityGroup = view.findViewById(R.id.activityGroup);
         bloodPressureGroup = view.findViewById(R.id.bloodPressureGroup);
         respirationGroup = view.findViewById(R.id.respirationGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
