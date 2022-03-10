@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -45,6 +46,13 @@ public class ReportMasterFragment extends Fragment {
         DotDecorator reportDecorator = new DotDecorator(ContextCompat.getColor(requireActivity(), R.color.colorS4HDarkBlue), model.getAvailableReportDates().getValue());
 
         calendarView.addDecorator(reportDecorator);
+
+        calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            model.setDetailDate(LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
+            Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
+        });
+
+        calendarView.addDecorator(new CurrentDateDecorator(getContext()));
 
         calendarView.setTitleFormatter(new TitleFormatter() {
             @Override
