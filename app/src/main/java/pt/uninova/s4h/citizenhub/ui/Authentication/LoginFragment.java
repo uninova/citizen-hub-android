@@ -1,20 +1,22 @@
-package pt.uninova.s4h.citizenhub.ui.accounts;
+package pt.uninova.s4h.citizenhub.ui.Authentication;
+
 
 import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
@@ -22,38 +24,50 @@ import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 
-public class AddAccountFragment extends Fragment {
+public class LoginFragment extends Fragment {
+
+    private Button loginButton;
+    private TextView citizenHubLogo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.accounts_fragment, container, false);
 
-        AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
+        final View result = inflater.inflate(R.layout.fragment_authentication, container, false);
+        TextView textView = result.findViewById(R.id.citizen_hub_text_logo);
+        Spannable word = new SpannableString("Citizen");
 
-        View smart4HealthCard = view.findViewById(R.id.card_smart4health);
-        View smartBearCard = view.findViewById(R.id.card_smartbear);
+        word.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorS4HDarkBlue)), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        smart4HealthCard.setVisibility(!viewModel.hasSmart4HealthAccount() ? View.VISIBLE : View.GONE);
-        smartBearCard.setVisibility(!viewModel.hasSmartBearAccount() ? View.VISIBLE : View.GONE);
+        textView.setText(word);
+        Spannable wordTwo = new SpannableString("HUB");
 
-        smart4HealthCard.setOnClickListener((View v) -> {
+        wordTwo.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorS4HTurquoise)), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.append(wordTwo);
 
+
+        loginButton = result.findViewById(R.id.authentication_fragment_login_button);
+        loginButton.setOnClickListener((View v) -> {
             final Intent loginIntent = Data4LifeClient.getInstance().getLoginIntent(requireActivity(), null);
+
             startActivityForResult(loginIntent, D4L_AUTH);
-
-        });
-        smartBearCard.setOnClickListener((View v) -> {
-            Navigation.findNavController(requireView()).navigate(AddAccountFragmentDirections.actionAddAccountFragmentToAdvancedSmartBearAccountGateFragment());
         });
 
-        return view;
+        return result;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        authenticate();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == D4L_AUTH) {
             authenticate();
         }
     }
+
     private void authenticate() {
         final Data4LifeClient client = Data4LifeClient.getInstance();
 
@@ -63,21 +77,22 @@ public class AddAccountFragment extends Fragment {
                 if (value) {
                     final Activity activity = requireActivity();
                     final Intent intent = new Intent(activity, MainActivity.class);
-
-                    AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
-                    viewModel.enableSmartHealthAccount();
-
+//                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                     activity.startActivity(intent);
                     activity.finish();
+                } else {
+                    //    loginButton.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
             public void onError(D4LException exception) {
+                loginButton.setVisibility(View.VISIBLE);
                 exception.printStackTrace();
             }
         });
     }
+
 }

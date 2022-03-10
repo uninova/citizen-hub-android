@@ -67,5 +67,6 @@ public class AccountsFragment extends Fragment {
         if (viewModel.hasSmart4HealthAccount() && viewModel.hasSmartBearAccount()) {
             menu.removeItem(R.id.accounts_fragment_menu_add_item);
         }
+
     }
 }
