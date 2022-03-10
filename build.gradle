@@ -51,6 +51,16 @@ allprojects {
                 password = project.findProperty("github.token")
             }
         }
+        maven {
+            url 'https://code.grisenergia.pt/api/v4/projects/373/packages/maven'
+            credentials(HttpHeaderCredentials) {
+                name = "Deploy-Token"
+                value = project.findProperty("grisenergia.token")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
     }
 }
 
