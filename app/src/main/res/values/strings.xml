@@ -380,6 +380,7 @@
     <string name="fragment_summary_text_view_blood_pressure_text" translatable="false">Systolic: %1$.1f mmHg Diastolic: %2$.1f:mmHg</string>
     <string name="login_fragment_login_text_view">By authenticating you will be able to upload and keep track of your health reports.</string>
     <string name="fragment_smart4health_account_log_in_title">Login</string>
+    <string name="fragment_authentication_skip_text">You may skip authentication and authenticate later\n\n<b><i>Skip</i></b></string>
 
 </resources>
 
