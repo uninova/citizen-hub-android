@@ -80,9 +80,6 @@ public class ReportViewModel extends AndroidViewModel {
         repository = new MeasurementRepository(application);
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
-
-//        dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-//        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -795,10 +792,6 @@ public class ReportViewModel extends AndroidViewModel {
         document.close();
 
         return out.toByteArray();
-    }
-
-    public LiveData<LocalDateInterval> getAvailableReportDateBoundaries() {
-        return dateBoundsLive;
     }
 
     public LiveData<Set<LocalDate>> getAvailableReportDates() {
