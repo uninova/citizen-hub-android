@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class}, version = 34, exportSchema = false)
+@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class}, version = 35, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
