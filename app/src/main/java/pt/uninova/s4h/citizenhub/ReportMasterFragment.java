@@ -49,39 +49,7 @@ public class ReportMasterFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
         });
 
-        LocalDate now = LocalDate.now();
-
-        calendarView.state().edit()
-                .setMinimumDate(CalendarDay.from(now.getYear(), now.getMonthValue(), 1))
-                .setMaximumDate(CalendarDay.from(now.getYear(), now.getMonthValue(), now.getDayOfMonth()))
-                .commit();
-
         model.getAvailableReportDates().observe(getViewLifecycleOwner(), this::onNewMonth);
-        model.getAvailableReportDateBoundaries().observe(getViewLifecycleOwner(), this::onAvailableReportDateBoundaries);
-    }
-
-    private void onAvailableReportDateBoundaries(LocalDateInterval boundaries) {
-        final LocalDate lower = boundaries.getLower();
-        final LocalDate upper = boundaries.getUpper();
-
-
-        if (lower != null) {
-            System.out.println("CALENDAR BOUNDARIES lower!=null" + " LOWER " + lower + " UPPER " + upper);
-
-            calendarView.state().edit()
-                    .setMinimumDate(CalendarDay.from(lower.getYear(), lower.getMonthValue(), 1))
-                    .setMaximumDate(CalendarDay.from(upper.getYear(), upper.getMonthValue(), upper.getDayOfMonth()))
-                    .commit();
-        } else {
-            System.out.println("CALENDAR BOUNDARIES lower ==null" + " UPPER " + upper);
-
-            calendarView.state().edit()
-                    .setMinimumDate(CalendarDay.today())
-                    .setMaximumDate(CalendarDay.today())
-                    .commit();
-        }
-
-        // TODO: KEEP TRACK OF LAST PEEK calendarView.setCurrentDate(CalendarDay.from(2020,3, 10));
     }
 
     private void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {

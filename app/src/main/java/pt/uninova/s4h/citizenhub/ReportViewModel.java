@@ -68,7 +68,6 @@ public class ReportViewModel extends AndroidViewModel {
     final private LumbarExtensionTrainingRepository lumbarTrainingRepository;
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
-    final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
     final private Set<Pair<Integer, Integer>> peekedMonths;
 
     private LocalDate detailDate;
@@ -81,10 +80,9 @@ public class ReportViewModel extends AndroidViewModel {
         repository = new MeasurementRepository(application);
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
-        dateBoundsLive = new MediatorLiveData<>();
 
-        dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
+//        dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
+//        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -799,12 +797,6 @@ public class ReportViewModel extends AndroidViewModel {
         return out.toByteArray();
     }
 
-    private void onDateBoundsChanged(LocalDateInterval dateBounds) {
-        if (dateBoundsLive.getValue() == null || !dateBoundsLive.getValue().equals(dateBounds)) {
-            dateBoundsLive.postValue(dateBounds);
-        }
-    }
-
     public LiveData<LocalDateInterval> getAvailableReportDateBoundaries() {
         return dateBoundsLive;
     }
@@ -835,14 +827,6 @@ public class ReportViewModel extends AndroidViewModel {
             observer.observe(value);
         });
     }
-
-
-//    public void obtainLumbar(Observer<LumbarExtensionTraining> lumbarExtensionTraining){
-//
-//        lumbarExtensionTraining.observe(lumbarTrainingRepository.getMostRecentLumbarTraining().getValue());
-//
-//    }
-
 
     private void onDatesChanged(List<LocalDate> dates) {
         if (dates.size() > 0) {
