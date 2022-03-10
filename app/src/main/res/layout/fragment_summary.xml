@@ -58,7 +58,7 @@
                 android:id="@+id/fragment_summary_text_view_activity"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:layout_weight="0.3"
-                android:text="@string/fragment_summary_text_view_steps_text"
+                android:text="@string/fragment_summary_text_view_activity_text"
                 android:visibility="visible"
                 tools:visibility="visible" />
 
@@ -325,27 +325,6 @@
                 tools:visibility="visible" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/distanceWalkedTextView"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="80dp"
-            android:background="@drawable/button_rounded_top_darkblue_14dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="@string/fragment_summary_text_distance_walked"
-            android:textColor="@color/colorS4HWhite"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_distance"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_summary_layout_posture"
-            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/fragment_summary_layout_calories"
