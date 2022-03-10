@@ -10,17 +10,19 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Set;
-
-import pt.uninova.util.time.LocalDateInterval;
 
 public class ReportMasterFragment extends Fragment {
 
@@ -44,9 +46,14 @@ public class ReportMasterFragment extends Fragment {
 
         calendarView.addDecorator(reportDecorator);
 
-        calendarView.setOnDateChangedListener((widget, date, selected) -> {
-            model.setDetailDate(LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
-            Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
+        calendarView.setTitleFormatter(new TitleFormatter() {
+            @Override
+            public CharSequence format(CalendarDay day) {
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); //"February 2016" format
+
+                return simpleDateFormat.format(Date.from(Instant.now()));
+            }
         });
 
         model.getAvailableReportDates().observe(getViewLifecycleOwner(), this::onNewMonth);
