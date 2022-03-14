@@ -62,6 +62,10 @@ public class AdvancedSmartBearAccountGateFragment extends Fragment {
 
     private boolean validate(String code) {
         try {
+            if (code.length() != 6) {
+                return false;
+            }
+            
             int month = Integer.parseInt(code.substring(0, 2));
             int day = Integer.parseInt(code.substring(2, 4));
             int hour = Integer.parseInt(code.substring(4, 6));

@@ -54,7 +54,7 @@
                 android:autofillHints=""
                 android:fontFamily="@font/neo_sans_pro_regular"
                 android:inputType="numberPassword"
-                android:maxLength="6"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="18sp" />
