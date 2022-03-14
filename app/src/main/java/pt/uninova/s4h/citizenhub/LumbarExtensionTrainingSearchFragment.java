@@ -198,7 +198,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment()))
                     .show();
         } else {
             hasStartedEnableLocationActivity = true;
@@ -221,7 +221,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
                         requireContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
                         paramDialogInterface.dismiss();
                     })
-                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment()))
+                    .setNegativeButton(R.string.fragment_device_search_cancel_option, (dialog, which) -> Navigation.findNavController(requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment()))
                     .show();
 
         } else {
@@ -336,7 +336,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                             lumbarRepository.add(new LumbarExtensionTraining(sample.getTimestamp().toEpochMilli(), duration, val.getScore(), val.getRepetitions(), val.getWeight()));
 
-                            requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToLumbarExtensionTrainingFragment()));
+                            requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment()));
                         });
 
                         agent.enable();
