@@ -820,16 +820,12 @@ public class ReportViewModel extends AndroidViewModel {
         byte[] data = createWorkTimePdf();
         Attachment attach = null;
 
-        try {
-            attach = AttachmentBuilder.buildWith(now.toString(),
-                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                            TimeZone.getDefault()),
-                    "application/pdf",
-                    data);
-        } catch (DataRestrictionException.MaxDataSizeViolation | DataRestrictionException.UnsupportedFileType maxDataSizeViolation) {
-            maxDataSizeViolation.printStackTrace();
-        }
+        attach = AttachmentBuilder.buildWith(now.toString(),
+                new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
+                        new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
+                        TimeZone.getDefault()),
+                "application/pdf",
+                data);
 
         attachments.add(attach);
 
@@ -858,16 +854,12 @@ public class ReportViewModel extends AndroidViewModel {
         byte[] data = createPdf();
         Attachment attach = null;
 
-        try {
-            attach = AttachmentBuilder.buildWith(now.toString(),
-                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                            TimeZone.getDefault()),
-                    "application/pdf",
-                    data);
-        } catch (DataRestrictionException.MaxDataSizeViolation | DataRestrictionException.UnsupportedFileType maxDataSizeViolation) {
-            maxDataSizeViolation.printStackTrace();
-        }
+        attach = AttachmentBuilder.buildWith(now.toString(),
+                new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
+                        new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
+                        TimeZone.getDefault()),
+                "application/pdf",
+                data);
 
         attachments.add(attach);
 
