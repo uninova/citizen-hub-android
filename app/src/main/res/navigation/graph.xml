@@ -35,9 +35,9 @@
         android:label="@string/fragment_lumbar_extension_training_label"
         tools:layout="@layout/fragment_lumbar_extension_training">
         <action
-            android:id="@+id/action_lumbar_extension_training_fragment_to_lumbarExtensionTrainingSearchFragment"
-            app:destination="@id/lumbarExtensionTrainingSearchFragment"
-            app:popUpTo="@id/lumbarExtensionTrainingSearchFragment" />
+            android:id="@+id/action_lumbar_extension_training_fragment_to_lumbar_extension_training_search_fragment"
+            app:destination="@id/lumbar_extension_training_search_fragment"
+            app:popUpTo="@id/lumbar_extension_training_search_fragment" />
     </fragment>
 
     <fragment
@@ -273,17 +273,26 @@
         android:id="@+id/open_source_licenses_fragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
         android:label="Open source licenses" />
+
     <fragment
-        android:id="@+id/lumbarExtensionTrainingSearchFragment"
+        android:id="@+id/lumbar_extension_training_search_fragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingSearchFragment"
         android:label="Lumbar Extension Training Devices"
         tools:layout="@layout/fragment_device_search">
+
         <action
-            android:id="@+id/action_lumbarExtensionTrainingSearchFragment_to_lumbar_extension_training_fragment"
+            android:id="@+id/action_lumbar_extension_training_search_fragment_to_summary_fragment"
             app:destination="@id/summary_fragment"
             app:popUpTo="@id/summary_fragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_lumbar_extension_training_search_fragment_to_lumbar_extension_training_fragment"
+            app:destination="@id/lumbar_extension_training_fragment"
+            app:popUpTo="@id/lumbar_extension_training_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.Authentication.LoginFragment"
