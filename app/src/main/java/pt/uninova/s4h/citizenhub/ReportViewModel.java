@@ -46,7 +46,6 @@ import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
-import care.data4life.sdk.helpers.lang.DataRestrictionException;
 import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
@@ -296,7 +295,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate2 = detailAggregatesWorkTime.get(MeasurementKind.STEPS);
         MeasurementAggregate measurementAggregate3 = detailAggregatesWorkTime.get(MeasurementKind.CALORIES);
 
-        if (measurementAggregate != null && measurementAggregate2!=null && measurementAggregate3!=null) {
+        if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
             Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
@@ -567,7 +566,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.STEPS);
         MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.CALORIES);
 
-        if (measurementAggregate != null && measurementAggregate2!=null && measurementAggregate3!=null) {
+        if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
             Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
@@ -652,7 +651,7 @@ public class ReportViewModel extends AndroidViewModel {
         measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
         MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
         MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
-        if (measurementAggregate != null && measurementAggregate2work !=null && measurementAggregate3work !=null) {
+        if (measurementAggregate != null && measurementAggregate2work != null && measurementAggregate3work != null) {
 
             y -= 10;
 
@@ -764,14 +763,14 @@ public class ReportViewModel extends AndroidViewModel {
     }
 
     public void obtainSummary(Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
-        repository.obtainDailyAggregateWorkTime(0,detailDate, value -> {
+        repository.obtainDailyAggregateWorkTime(0, detailDate, value -> {
             detailAggregates = value;
             observer.observe(value);
         });
     }
 
     public void obtainWorkTimeSummary(Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
-        repository.obtainDailyAggregateWorkTime(1,detailDate, value -> {
+        repository.obtainDailyAggregateWorkTime(1, detailDate, value -> {
             detailAggregatesWorkTime = value;
 
             observer.observe(value);
@@ -820,13 +819,16 @@ public class ReportViewModel extends AndroidViewModel {
         byte[] data = createWorkTimePdf();
         Attachment attach = null;
 
-        attach = AttachmentBuilder.buildWith(now.toString(),
-                new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                        new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                        TimeZone.getDefault()),
-                "application/pdf",
-                data);
-
+        try {
+            attach = AttachmentBuilder.buildWith(now.toString(),
+                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
+                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
+                            TimeZone.getDefault()),
+                    "application/pdf",
+                    data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         attachments.add(attach);
 
         //TODO this comment is temporary, do not apply this change
@@ -854,12 +856,16 @@ public class ReportViewModel extends AndroidViewModel {
         byte[] data = createPdf();
         Attachment attach = null;
 
-        attach = AttachmentBuilder.buildWith(now.toString(),
-                new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-                        new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
-                        TimeZone.getDefault()),
-                "application/pdf",
-                data);
+        try {
+            attach = AttachmentBuilder.buildWith(now.toString(),
+                    new FhirDateTime(new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
+                            new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null),
+                            TimeZone.getDefault()),
+                    "application/pdf",
+                    data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         attachments.add(attach);
 
