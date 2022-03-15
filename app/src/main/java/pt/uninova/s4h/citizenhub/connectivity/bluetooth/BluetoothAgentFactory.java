@@ -53,7 +53,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                     }else if (name.startsWith("A&D")) {
                         observer.observe(new BloodPressureMonitorAgent(source));
                     }else if (name.startsWith("ZTEZ")) {
-                        observer.observe(new DigitsoleAgent(source));
+                        observer.observe(new DigitsoleAgent(source, context));
                     } else {
                         observer.observe(null);
                     }

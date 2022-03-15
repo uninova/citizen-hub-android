@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
+import android.content.Context;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,14 +25,17 @@ public class DigitsoleAgent extends BluetoothAgent {
             DigitsoleActivityProtocol.ID
     )));
 
-    public DigitsoleAgent(BluetoothConnection connection) {
+    private Context context;
+
+    public DigitsoleAgent(BluetoothConnection connection, Context context) {
         super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
+        this.context = context;
     }
 
     @Override
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
         if (kind == MeasurementKind.STEPS) {
-            return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this);
+            return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this, context);
         }
 
         return null;

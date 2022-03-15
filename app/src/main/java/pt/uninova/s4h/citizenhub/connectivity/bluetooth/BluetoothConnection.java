@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -177,6 +178,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         System.out.println("BluetoothConnection.onCharacteristicChanged " + gatt.getDevice().getAddress());
         System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+        System.out.println("    " + new Timestamp(System.currentTimeMillis()));
         System.out.println("    " + Arrays.toString(characteristic.getValue()));
 
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
@@ -297,7 +299,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         if (status == BluetoothGatt.GATT_SUCCESS) {
             setState(BluetoothConnectionState.READY);
 
-            for (BluetoothGattService i : gatt.getServices()) {
+            /*for (BluetoothGattService i : gatt.getServices()) {
                 System.out.println(i.getUuid());
 
                 for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
@@ -307,7 +309,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
                         System.out.println("    d " + k.getUuid());
                     }
                 }
-            }
+            }*/
         }
 
         next();
