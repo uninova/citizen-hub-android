@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 
 @Entity(tableName = "blood_pressure", primaryKeys = {"device_address", "kind_id"})
-public class BloodPressure {
+public class BloodPressureRecord {
     @NonNull
     private String device_address;
     private LocalDateTime timestamp;
@@ -19,24 +19,24 @@ public class BloodPressure {
     @TypeConverters(MeasurementKindTypeConverter.class)
     @NonNull
     private MeasurementKind kind;
-    private double systolic;
-    private double dystolic;
-    private double pulse_rate;
+    private double value;
+    private Integer isWorking;
 
 
     @Ignore
-    public BloodPressure() {
+    public BloodPressureRecord() {
         device_address = null;
         kind = null;
+        this.timestamp =null;
+        this.isWorking =null;
     }
 
-    public BloodPressure(@NotNull String device_address, @NotNull MeasurementKind kind, LocalDateTime timestamp, double systolic, double dystolic, double pulse_rate) {
+    public BloodPressureRecord(@NotNull String device_address, @NotNull MeasurementKind kind, LocalDateTime timestamp, double value, Integer isWorking) {
         this.device_address = device_address;
         this.kind = kind;
         this.timestamp = timestamp;
-        this.systolic = systolic;
-        this.dystolic = dystolic;
-        this.pulse_rate = pulse_rate;
+        this.value = value;
+        this.isWorking = isWorking;
     }
 
     @NotNull
@@ -65,27 +65,19 @@ public class BloodPressure {
         this.timestamp = timestamp;
     }
 
-    public double getSystolic() {
-        return systolic;
+    public double getValue() {
+        return value;
     }
 
-    public void setSystolic(double systolic) {
-        this.systolic = systolic;
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    public double getDystolic() {
-        return dystolic;
+    public Integer getIsWorking() {
+        return isWorking;
     }
 
-    public void setDystolic(double dystolic) {
-        this.dystolic = dystolic;
-    }
-
-    public double getPulse_rate() {
-        return pulse_rate;
-    }
-
-    public void setPulse_rate(double pulse_rate) {
-        this.pulse_rate = pulse_rate;
+    public void setIsWorking(Integer isWorking) {
+        this.isWorking = isWorking;
     }
 }
