@@ -308,7 +308,7 @@
     <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
-    <string name="fragment_settings_current_work_days_text">\"Current work days:  \"</string>
+    <string name="fragment_settings_current_work_days_text">Current work days: " "</string>
     <string name="fragment_settings_choose_work_days_text">Choose your working days</string>
     <string name="welcome_slide_view_pager_welcome_title">Welcome</string>
     <string name="welcome_slide_view_pager_thank_you_message">Thank you for using CitizenHub</string>
@@ -374,7 +374,6 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
-        <item>7</item>
     </string-array>
     <string-array name="empty_array" />
     <string name="fragment_summary_text_view_blood_pressure_text" translatable="false">Systolic: %1$.1f mmHg Diastolic: %2$.1f:mmHg</string>
