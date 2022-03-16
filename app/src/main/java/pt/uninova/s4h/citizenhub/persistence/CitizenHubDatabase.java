@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class, BloodPressureMeasurement.class}, version = 35, exportSchema = false)
+@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class, BloodPressureMeasurement.class, Sample.class}, version = 36, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -53,6 +53,10 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public abstract FeatureDao featureDao();
 
     public abstract LumbarExtensionTrainingDao lumbarExtensionTrainingDao();
+
+    public abstract SampleDao sampleDao();
+
+    public abstract BloodPressureDao bloodPressureDao();
 }
 
 
