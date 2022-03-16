@@ -1,10 +1,13 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -12,7 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
-@Entity(tableName = "blood_pressure")
+@Entity(tableName = "blood_pressure",
+        indices = @Index(value = {"id"}, unique = true),
+        foreignKeys = @ForeignKey(
+                entity = Sample.class,
+                parentColumns = "id",
+                childColumns = "id",
+                onUpdate = CASCADE, onDelete = CASCADE))
+
 public class BloodPressureMeasurement {
     @PrimaryKey
     private Integer id;
