@@ -231,7 +231,7 @@
 
     <fragment
         android:id="@+id/logout_fragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.Authentication.LogoutFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.authentication.LogoutFragment"
         android:label="@string/fragment_logout_label"
         tools:layout="@layout/fragment_logout" />
 
@@ -295,7 +295,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.Authentication.LoginFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.authentication.LoginFragment"
         android:label="LoginFragment" />
 
 
