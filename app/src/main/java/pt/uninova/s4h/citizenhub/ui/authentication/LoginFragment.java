@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.ui.Authentication;
+package pt.uninova.s4h.citizenhub.ui.authentication;
 
 
 import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;

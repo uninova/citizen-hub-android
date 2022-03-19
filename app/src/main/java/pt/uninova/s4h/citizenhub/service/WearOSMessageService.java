@@ -2,8 +2,10 @@ package pt.uninova.s4h.citizenhub.service;
 
 import android.content.Context;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.MessageClient;
@@ -16,10 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
-import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSDevice;
-import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
-import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 

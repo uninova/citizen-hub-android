@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import androidx.room.TypeConverters;
-
 public class MeasurementAggregate {
 
     private MeasurementKind measurementKind;

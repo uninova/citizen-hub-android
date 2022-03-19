@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

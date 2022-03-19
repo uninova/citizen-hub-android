@@ -17,8 +17,6 @@ import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
 
 public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {

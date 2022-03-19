@@ -5,11 +5,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import pt.uninova.util.time.LocalDateInterval;
 
 @Entity(tableName = "lumbar_training")
 public class LumbarExtensionTraining {

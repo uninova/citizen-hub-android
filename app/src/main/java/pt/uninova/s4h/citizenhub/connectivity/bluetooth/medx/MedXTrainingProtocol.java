@@ -11,8 +11,8 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.MedXTrainingMeasurement;
+import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.util.messaging.Dispatcher;
 
