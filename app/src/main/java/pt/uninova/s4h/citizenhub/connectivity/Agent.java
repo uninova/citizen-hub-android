@@ -35,6 +35,8 @@ public interface Agent {
 
     AgentState getState();
 
+    Set<MeasurementKind> getEnabledMeasurements();
+
     Set<MeasurementKind> getSupportedMeasurements();
 
     Set<UUID> getSupportedProtocolsIds();
