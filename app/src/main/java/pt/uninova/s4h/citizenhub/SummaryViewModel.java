@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
