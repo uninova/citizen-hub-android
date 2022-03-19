@@ -2,18 +2,14 @@ package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +27,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
@@ -48,6 +42,7 @@ import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 import pt.uninova.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends Fragment {
@@ -63,7 +58,6 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     private boolean alreadyConnected = false;
     private DeviceViewModel model;
     private BluetoothScanner scanner;
-    private BluetoothScannerListener listener;
     private LocationManager locationManager;
     private BluetoothManager bluetoothManager;
     private boolean hasStartedEnableLocationActivity = false;
@@ -76,18 +70,16 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     Button TESTBUTTON;
 
 
-    private final ScanCallback scanCallback = new ScanCallback() {
+    private final BluetoothScannerListener listener = new BluetoothScannerListener() {
         @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-
+        public void onDeviceFound(String address, String name) {
             if (!alreadyConnected && getView() != null) {
                 buildRecycleView(requireView());
 
-                Device device = new Device(result.getDevice().getAddress(), result.getDevice().getName(), ConnectionKind.BLUETOOTH);
+                Device device = new Device(address, name, ConnectionKind.BLUETOOTH);
 
-                if (!model.isDevicePaired(device)) {
-                    DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired, R.drawable.ic_settings_off);
+                if (model.getAgentOrchestrator().getValue().getAgent(device) != null) {
+                    DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired);
 
                     if (deviceItemList.size() > 0) {
                         for (DeviceListItem deviceItem : deviceItemList) {
@@ -144,8 +136,7 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
     }
 
     private void startFilteredScan() {
-        scanner.startWithFilter(listener, new ParcelUuid(LUMBARTRAINING_UUID_SERVICE), scanCallback);
-
+        scanner.start(listener, LUMBARTRAINING_UUID_SERVICE);
     }
 
     private void startScan() {
@@ -296,34 +287,27 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
     }
 
-    private void buildRecycleView(View view) {
+    private void buildRecycleView(View view) throws SecurityException {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         //recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceItemList);
+        adapter = new DeviceListAdapter(item -> {
+            final Device device = item.getDevice();
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            model.selectDevice(device);
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            simpleProgressBar.setVisibility(View.VISIBLE);
 
-        adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                final Device device = deviceItemList.get(position).getDevice();
+            if (scanner != null) {
+                scanner.stop();
+            }
 
-                model.setDevice(device);
+            final BluetoothConnection bluetoothConnection = new BluetoothConnection();
+            final BluetoothDevice bluetoothDevice = bluetoothManager.getAdapter().getRemoteDevice(device.getAddress());
 
-                simpleProgressBar.setVisibility(View.VISIBLE);
-
-                if (scanner != null) {
-                    scanner.stop();
-                }
-
-                final BluetoothConnection bluetoothConnection = new BluetoothConnection();
-                final BluetoothDevice bluetoothDevice = bluetoothManager.getAdapter().getRemoteDevice(device.getAddress());
-
-                bluetoothConnection.addConnectionStateChangeListener((state) -> {
+            bluetoothConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+                @Override
+                public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> state) throws SecurityException {
                     if (state.getOldState() == BluetoothConnectionState.CONNECTED && state.getNewState() == BluetoothConnectionState.READY) {
                         final MedXAgent agent = new MedXAgent(bluetoothConnection);
 
@@ -336,23 +320,22 @@ public class LumbarExtensionTrainingSearchFragment extends Fragment {
 
                             lumbarRepository.add(new LumbarExtensionTraining(sample.getTimestamp().toEpochMilli(), duration, val.getScore(), val.getRepetitions(), val.getWeight()));
 
-                            requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment()));
+                            LumbarExtensionTrainingSearchFragment.this.requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment()));
                         });
 
                         agent.enable();
                         agent.enableMeasurement(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
                     }
-                });
+                }
+            });
 
-                bluetoothDevice.connectGatt(requireContext(), false, bluetoothConnection, BluetoothDevice.TRANSPORT_LE);
-            }
-
-            @Override
-            public void onSettingsClick(int position) {
-                model.setDevice(deviceItemList.get(position).getDevice());
-                onItemClick(position);
-            }
+            bluetoothDevice.connectGatt(requireContext(), false, bluetoothConnection, BluetoothDevice.TRANSPORT_LE);
         });
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void cleanList() {
