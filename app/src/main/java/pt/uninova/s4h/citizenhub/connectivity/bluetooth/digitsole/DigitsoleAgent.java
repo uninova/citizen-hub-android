@@ -37,7 +37,6 @@ public class DigitsoleAgent extends BluetoothAgent {
         if (kind == MeasurementKind.STEPS) {
             return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this, context);
         }
-
         return null;
     }
 
@@ -45,5 +44,4 @@ public class DigitsoleAgent extends BluetoothAgent {
     public String getName() {
         return "Digitsole";
     }
-
 }

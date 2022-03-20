@@ -1,10 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.os.DeadObjectException;
 
 import java.util.UUID;
 
@@ -33,11 +30,10 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     Context context;
     long lastTime = 0;
+    int miliForTimer = 120000; //2 minutes
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE) {
-
         private boolean once0x02 = false;
-
         @Override
         public void onWrite(byte[] value) {
             switch (value[0]) {
@@ -61,21 +57,16 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     };
 
     private final CharacteristicListener dataListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG) {
-
         @Override
         public void onChange(byte[] value) {
             int steps = value[4] & 0xff;
-
             final Sample sample = new Sample(getAgent().getSource(), new StepCountMeasurement(steps));
-
-            lastTime = System.currentTimeMillis();
-
             getSampleDispatcher().dispatch(sample);
+            lastTime = System.currentTimeMillis();
         }
     };
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> reconnectionListener = new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-
         @Override
         public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
             if (value.getNewState() == BluetoothConnectionState.READY) {
@@ -92,33 +83,23 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void disable() {
         final BluetoothConnection connection = getConnection();
-
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG);
         connection.removeCharacteristicListener(dataListener);
-
         connection.removeCharacteristicListener(activationListener);
-
         super.disable();
     }
 
     @Override
     public void enable() {
-
         long currentTime = System.currentTimeMillis();
-
-        //System.out.println("Current Time: " + currentTime);
-        //System.out.println("Last Time: " + lastTime);
-        //System.out.println("Difference Time: " + (currentTime-lastTime));
-
-        if(currentTime-lastTime < (2*60*1000)) //3 minutes
+        //Last segment is recent, restarting timer...
+        if(currentTime-lastTime < (miliForTimer))
         {
-            System.out.println("Last segment is recent, restarting timer...");
             runTimer();
             return;
         }
-        System.out.println("Last segment is old or first time connecting, enabling...");
+        //Last segment is old or first time connecting, enabling...
         runTimer();
-
         final BluetoothConnection connection = getConnection();
         connection.addCharacteristicListener(activationListener);
         connection.addCharacteristicListener(dataListener);
@@ -128,20 +109,15 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     private void runTimer(){
         ContextCompat.getMainExecutor(context).execute(()  -> {
-            //set Countdown, 120 seconds
-            new CountDownTimer(120000, 1000) {
+            //set Countdown
+            new CountDownTimer(miliForTimer, 1000) {
                 @Override
-                public void onTick(long millisecondsUntilDone) {
-                    System.out.println("Running Timer... " + millisecondsUntilDone);
-                }
-
+                public void onTick(long millisecondsUntilDone) {}
                 @Override
                 public void onFinish() {
-                    //System.out.println("I've reached onFinish on the DigitsoleStateChecker.");
                     enable();
                 }
             }.start();
         });
     }
-
 }
