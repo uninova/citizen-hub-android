@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "pt.uninova.s4h.citizenhub"
@@ -126,7 +126,6 @@ dependencies {
 
     // WearOS
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-
     //TypeDef Annotations
 
     implementation 'com.android.support:support-annotations:28.0.0'
