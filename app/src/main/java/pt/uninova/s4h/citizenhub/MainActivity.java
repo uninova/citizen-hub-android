@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (navController.getCurrentBackStackEntry().getDestination().getId() == R.id.summary_fragment) {
             moveTaskToBack(false);
-        } else if (navController.getCurrentBackStackEntry().getDestination().getId() == R.id.device_list_fragment) {
-            moveTaskToBack(false);
         } else {
             navController.popBackStack();
         }
