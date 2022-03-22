@@ -53,7 +53,6 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
 
-        AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -87,7 +86,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
                     time = 60;
 
                 //Send Message
-                UprightGo2Agent agent = (UprightGo2Agent) agentOrchestrator.getAgent(device);
+                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
                 agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, time, showPattern, pattern, strength + 1));
             }
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationAdvancedFragmentDirections.actionDeviceConfigurationAdvancedFragmentToDeviceConfigurationUpdateFragment());
@@ -212,7 +211,6 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         // Perform Calibration (Trigger)
         Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
 
-        AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
 
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -224,7 +222,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                UprightGo2Agent agent = (UprightGo2Agent) agentOrchestrator.getAgent(device);
+                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
                                 agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
 

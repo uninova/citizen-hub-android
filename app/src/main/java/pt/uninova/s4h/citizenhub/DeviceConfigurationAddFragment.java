@@ -63,73 +63,62 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
 
-        model.getAgentOrchestrator().observe(getViewLifecycleOwner(), this::onAgentOrchestrator);
+        model.identifySelectedDevice(agent -> {
+            requireActivity().runOnUiThread(this::loadSupportedFeatures);
+
+            connectDevice.setOnClickListener(v -> {
+                agent.enable();
+                model.addAgent(agent);
+
+                saveFeaturesChosen();
+
+                if (agent.getSource().getName().startsWith("UprightGO2")) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
+                            .setMessage(getString(R.string.fragment_device_configuration_warning_calibration_text) +
+                                    getString(R.string.fragment_device_configuration_warning_calibration_text2))
+                            .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //TODO calibrate and animate
+                                    dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
+
+                                    UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;
+
+                                    //Send Message calibration
+                                    uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
+
+                                    //default - first vibration settings when adding device
+                                    boolean vibration = true;
+                                    int angle = 1;
+                                    int interval = 5;
+                                    int pattern = 0;
+                                    boolean showPattern = true;
+                                    int strength = 1;
+
+                                    //Send Message vibration settings
+                                    uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
+
+                                    handler.sendMessageDelayed(new Message(), 2500);
+
+                                }
+                            })
+                            .setIcon(R.drawable.img_citizen_hub_logo_png)
+                            .show();
+                }
+
+                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+            });
+
+            requireActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
+            });
+
+
+        });
 
         return view;
-    }
-
-    private void onAgentOrchestrator(AgentOrchestrator agentOrchestrator) {
-        final Observer<Device> deviceObserver = new Observer<Device>() {
-
-            @Override
-            public void onChanged(Device device) {
-                agentOrchestrator.identify(device, agent -> {
-                    requireActivity().runOnUiThread(() -> loadSupportedFeatures());
-
-                    connectDevice.setOnClickListener(view -> {
-                        agent.enable();
-                        agentOrchestrator.add(agent);
-
-                        saveFeaturesChosen();
-
-                        if (device.getName().startsWith("UprightGO2")) {
-                            new AlertDialog.Builder(getContext())
-                                    .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
-                                    .setMessage(getString(R.string.fragment_device_configuration_warning_calibration_text) +
-                                            getString(R.string.fragment_device_configuration_warning_calibration_text2))
-                                    .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            //TODO calibrate and animate
-                                            dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
-
-                                            UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;
-
-                                            //Send Message calibration
-                                            uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
-
-                                            //default - first vibration settings when adding device
-                                            boolean vibration = true;
-                                            int angle = 1;
-                                            int interval = 5;
-                                            int pattern = 0;
-                                            boolean showPattern = true;
-                                            int strength = 1;
-
-                                            //Send Message vibration settings
-                                            uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
-
-                                            handler.sendMessageDelayed(new Message(), 2500);
-
-                                        }
-                                    })
-                                    .setIcon(R.drawable.img_citizen_hub_logo_png)
-                                    .show();
-                        }
-
-
-                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
-                    });
-
-                    progressBar.setVisibility(View.INVISIBLE);
-                    connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
-                });
-
-                model.getSelectedDevice().removeObserver(this);
-            }
-        };
-
-        model.getSelectedDevice().observe(getViewLifecycleOwner(), deviceObserver);
     }
 }
 

@@ -31,13 +31,12 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             saveFeaturesChosen();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
+
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
+
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                model.getAgentOrchestrator().getValue().remove(model.getSelectedDevice().getValue());
-                AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
-                agentOrchestrator.getAgent(model.getSelectedDevice().getValue()).disable();
-                agentOrchestrator.remove(model.getSelectedDevice().getValue());
+                model.removeSelectedDevice();
 
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }

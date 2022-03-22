@@ -56,7 +56,7 @@ public class DeviceSearchFragment extends BluetoothFragment {
         scanner.start((address, name) -> {
             final Device device = new Device(address, name == null ? address : name, ConnectionKind.BLUETOOTH);
 
-            if (model.getAgentOrchestrator().getValue().getAgent(device) == null) {
+            if (!model.hasAgentAttached(device)) {
                 adapter.addItem(new DeviceListItem(device, R.drawable.ic_devices_unpaired));
             }
         });

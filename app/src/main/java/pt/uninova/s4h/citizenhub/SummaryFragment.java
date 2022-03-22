@@ -34,14 +34,13 @@ public class SummaryFragment extends ServiceFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_summary, container, false);
-    }
+        final View view = inflater.inflate(R.layout.fragment_summary, container, false);
 
-    @Override
-    public void onServiceConnected() {
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
         model.getMostRecentLumbar().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
+
+        return view;
     }
 
     private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
