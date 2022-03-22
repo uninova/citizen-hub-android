@@ -55,9 +55,8 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected List<FeatureListItem> getSupportedFeatures() {
-        final Device device = model.getSelectedDevice().getValue();
         final List<FeatureListItem> featureListItems = new LinkedList<>();
-        final Agent agent = model.getAgentOrchestrator().getValue().getAgent(device);
+        final Agent agent = model.getSelectedDeviceAgent();
 
         if (agent != null) {
             final Set<MeasurementKind> measurementKindSet = agent.getEnabledMeasurements();
@@ -84,8 +83,7 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void saveFeaturesChosen() {
-        final AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
-        final Agent agent = agentOrchestrator.getAgent(model.getSelectedDevice().getValue());
+        final Agent agent = model.getSelectedDeviceAgent();
         final ListAdapter adapter = listViewFeatures.getAdapter();
 
         for (int i = 0; i < adapter.getCount(); i++) {

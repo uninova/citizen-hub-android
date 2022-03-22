@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class DeviceRepository {
 
     private final DeviceDao deviceDao;
 
-    public DeviceRepository(Application application) {
-        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+    public DeviceRepository(Context context) {
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
         deviceDao = citizenHubDatabase.deviceDao();
     }
 

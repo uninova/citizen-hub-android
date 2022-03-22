@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,10 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
+import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
@@ -65,7 +62,7 @@ public class DeviceListFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
-        model.getAgentOrchestrator().observe(getViewLifecycleOwner(), this::onAgentOrchestrator);
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
 
         Button searchDevices = result.findViewById(R.id.searchButton);
 
@@ -118,37 +115,6 @@ public class DeviceListFragment extends Fragment {
     }
 
 
-    /*
-        private void buildRecycleView(View result) {
-            recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-            //recyclerView.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(getActivity());
-            adapter = new DeviceListAdapter(deviceList);
-
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
-
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            emptyListCheck();
-
-            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-            adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    model.setDevice(deviceList.get(position).getDevice());
-                    Navigation.findNavController(requireView()).navigate();
-                }
-
-                @Override
-                public void onSettingsClick(int position) {
-                    model.setDevice(deviceList.get(position).getDevice());
-                    Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
-                }
-            });
-        }
-
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -167,28 +133,13 @@ public class DeviceListFragment extends Fragment {
         super.onDestroy();
     }
 
-    public void onAgentOrchestrator(AgentOrchestrator agentOrchestrator) {
-        final Activity activity = requireActivity();
-        final Set<Device> deviceSet = agentOrchestrator.getDevices();
+    public void onDeviceListChanged(List<Device> deviceList) {
+        adapter.clear();
 
-        if (deviceSet.size() > 0) {
-            for (Device i : deviceSet) {
+        if (deviceList.size() > 0) {
+            for (Device i : deviceList) {
                 adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
             }
         }
-
-        agentOrchestrator.addListener(new AgentOrchestratorListener() {
-            @Override
-            public void onDeviceAdded(Device device) {
-                final DeviceListItem deviceListItem = new DeviceListItem(device, R.drawable.ic_devices_unpaired);
-
-                activity.runOnUiThread(() -> adapter.addItem(deviceListItem));
-            }
-
-            @Override
-            public void onDeviceRemoved(Device device) {
-                activity.runOnUiThread(() -> adapter.removeItem(device));
-            }
-        });
     }
 }

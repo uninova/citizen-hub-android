@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Observer;
 

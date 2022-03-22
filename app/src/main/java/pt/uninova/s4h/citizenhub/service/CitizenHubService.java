@@ -20,7 +20,9 @@ import java.util.Objects;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
+import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOsAgentFactory;
@@ -31,11 +33,13 @@ import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
 import pt.uninova.util.messaging.Observer;
 
 public class CitizenHubService extends LifecycleService {
@@ -147,6 +151,38 @@ public class CitizenHubService extends LifecycleService {
         };
 
         orchestrator = new AgentOrchestrator(agentFactoryMap, databaseWriter);
+        orchestrator.addListener(new AgentOrchestratorListener() {
+            @Override
+            public void onAgentAttached(Device device, Agent agent) {
+                agent.addAgentListener(new AgentListener() {
+                    @Override
+                    public void onMeasurementDisabled(Agent agent, MeasurementKind measurementKind) {
+                        featureRepository.remove(new Feature(agent.getSource().getAddress(), measurementKind));
+                    }
+
+                    @Override
+                    public void onMeasurementEnabled(Agent agent, MeasurementKind measurementKind) {
+                        featureRepository.add(new Feature(agent.getSource().getAddress(), measurementKind));
+                    }
+                });
+            }
+
+            @Override
+            public void onDeviceAdded(Device device) {
+                deviceRepository.add(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+            }
+
+            @Override
+            public void onDeviceRemoved(Device device) {
+                final Agent agent = getAgentOrchestrator().getAgent(device);
+
+                if (agent != null) {
+                    agent.removeAllAgentListeners();
+                }
+
+                deviceRepository.remove(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+            }
+        });
 
         deviceRepository.obtainAll(value -> {
             for (DeviceRecord i : value) {
