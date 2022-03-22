@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;

@@ -28,8 +28,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 
 public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment {
@@ -54,8 +53,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
 
-        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
-        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+        AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -214,8 +212,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         // Perform Calibration (Trigger)
         Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
 
-        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
-        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+        AgentOrchestrator agentOrchestrator = model.getAgentOrchestrator().getValue();
 
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -1,11 +1,16 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
-import pt.uninova.util.time.LocalDateInterval;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.TypeConverters;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import pt.uninova.util.time.LocalDateInterval;
 
 @Dao
 public interface MeasurementDao {

@@ -48,8 +48,7 @@
 
         <action
             android:id="@+id/action_device_list_fragment_to_device_search_fragment"
-            app:destination="@+id/device_search_fragment"
-            app:popUpTo="@id/device_list_fragment" />
+            app:destination="@+id/device_search_fragment" />
 
         <action
             android:id="@+id/action_device_list_fragment_to_device_configuration_update_fragment"
@@ -75,8 +74,9 @@
 
         <action
             android:id="@+id/action_device_search_fragment_to_device_list_fragment"
-            app:destination="@id/device_list_fragment"
-            app:popUpTo="@+id/device_list_fragment" />
+            app:destination="@+id/device_list_fragment"
+            app:popUpTo="@id/device_list_fragment"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -231,7 +231,7 @@
 
     <fragment
         android:id="@+id/logout_fragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.Authentication.LogoutFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.authentication.LogoutFragment"
         android:label="@string/fragment_logout_label"
         tools:layout="@layout/fragment_logout" />
 
@@ -295,7 +295,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.Authentication.LoginFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.authentication.LoginFragment"
         android:label="LoginFragment" />
 
 

@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 
 import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;

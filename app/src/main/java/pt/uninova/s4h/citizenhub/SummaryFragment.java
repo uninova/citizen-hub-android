@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
@@ -20,13 +19,18 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
 
-public class SummaryFragment extends Fragment {
+public class SummaryFragment extends ServiceFragment {
 
     private SummaryViewModel model;
     private boolean lumbar = false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,8 +40,6 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
 
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
@@ -188,8 +190,8 @@ public class SummaryFragment extends Fragment {
 
             }
 
-            if (steps != null && calories!=null && distance !=null) {
-                activityTextView.setText(getString(R.string.fragment_summary_text_view_activity_text, steps.getSum(),calories.getSum(),distance.getSum()));
+            if (steps != null && calories != null && distance != null) {
+                activityTextView.setText(getString(R.string.fragment_summary_text_view_activity_text, steps.getSum(), calories.getSum(), distance.getSum()));
                 activityGroup.setVisibility(VISIBLE);
                 activityTitle.setVisibility(VISIBLE);
                 activityTextView.setVisibility(VISIBLE);
@@ -201,9 +203,7 @@ public class SummaryFragment extends Fragment {
             }
 
             if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
-
-                CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
-                AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
+                AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
                 if (agentOrchestrator.getDevices().isEmpty())
                     noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
                 else

@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
@@ -137,6 +136,11 @@ public abstract class AbstractAgent implements Agent {
         }
 
         protocol.enable();
+    }
+
+    @Override
+    public Set<MeasurementKind> getEnabledMeasurements() {
+        return measurementMap.keySet();
     }
 
     @Override

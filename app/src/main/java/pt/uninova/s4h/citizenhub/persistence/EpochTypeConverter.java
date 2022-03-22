@@ -2,12 +2,12 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.room.TypeConverter;
 
-import pt.uninova.util.Pair;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+
+import pt.uninova.util.Pair;
 
 public class EpochTypeConverter {
 

@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.util.messaging.Observer;

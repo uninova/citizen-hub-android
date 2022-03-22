@@ -6,92 +6,84 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
 
-    private final List<DeviceListItem> devicesList;
-    private OnItemClickListener listener;
+    public interface OnItemClickListener {
 
-    public DeviceListAdapter(List<DeviceListItem> listDevices) {
-        devicesList = listDevices;
+        void onItemClick(DeviceListItem item);
+
     }
 
-    void updateResults(List<DeviceListItem> results) {
-        if (devicesList != null) {
-            devicesList.clear();
+    public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
+
+        private final OnItemClickListener listener;
+
+        public DeviceListViewHolder(View itemView, final OnItemClickListener listener) {
+            super(itemView);
+
+            this.listener = listener;
         }
-        if (results != null) {
-            devicesList.addAll(results);
-            this.notifyDataSetChanged();
+
+        public void setItem(DeviceListItem item) {
+            final ImageView imageView = itemView.findViewById(R.id.image_device);
+            final TextView titleTextView = itemView.findViewById(R.id.text_view_title);
+            final TextView descriptionTextView = itemView.findViewById(R.id.text_view_description);
+
+            imageView.setImageResource(item.getImageResource());
+            descriptionTextView.setText(item.getDevice().getAddress());
+            titleTextView.setText(item.getDevice().getName());
+
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.onItemClick(item);
+                }
+            });
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener listen) {
-        listener = listen;
+    private final List<DeviceListItem> deviceListItems;
+    private final OnItemClickListener listener;
+
+    public DeviceListAdapter(OnItemClickListener listener) {
+        this.deviceListItems = new LinkedList<>();
+        this.listener = listener;
     }
 
-    @NonNull
-    @Override
-    public DeviceListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_device_list_item, parent, false);
-        DeviceListViewHolder hol = new DeviceListViewHolder(v, listener);
-        return hol;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull DeviceListViewHolder holder, int position) {
-        DeviceListItem currentItem = devicesList.get(position);
-        holder.textTitle.setText(currentItem.getName());
-        holder.textDescription.setText(currentItem.getAddress());
-        holder.image.setImageResource(currentItem.getImageResource());
-        holder.imageSettings.setImageResource(currentItem.getImageSettings());
+    public void addItem(DeviceListItem deviceListItem) {
+        deviceListItems.add(deviceListItem);
+        notifyItemInserted(deviceListItems.size() - 1);
     }
 
     @Override
     public int getItemCount() {
-        return devicesList.size();
+        return deviceListItems.size();
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-
-        void onSettingsClick(int position);
+    @Override
+    public void onBindViewHolder(DeviceListViewHolder holder, int position) {
+        holder.setItem(deviceListItems.get(position));
     }
 
-    public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
-        public TextView textTitle;
-        public TextView textDescription;
-        public ImageView imageSettings;
+    @Override
+    public DeviceListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_device_list_item, parent, false);
 
-        public DeviceListViewHolder(@NonNull View itemView, final OnItemClickListener listen) {
-            super(itemView);
-            image = itemView.findViewById(R.id.image_device);
-            textTitle = itemView.findViewById(R.id.text_view_title);
-            textDescription = itemView.findViewById(R.id.text_view_description);
-            imageSettings = itemView.findViewById(R.id.image_view_settings);
+        return new DeviceListViewHolder(view, listener);
+    }
 
-            itemView.setOnClickListener(view -> {
-                if (listen != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listen.onItemClick(position);
-                    }
-                }
-            });
-
-            imageSettings.setOnClickListener(view -> {
-                if (listen != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listen.onSettingsClick(position);
-                    }
-                }
-            });
+    public void removeItem(Device device) {
+        for (DeviceListItem i : deviceListItems) {
+            if (device.equals(i.getDevice())) {
+                deviceListItems.remove(i);
+                return;
+            }
         }
     }
 }

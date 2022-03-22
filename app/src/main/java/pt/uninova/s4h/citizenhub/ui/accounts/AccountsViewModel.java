@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.preference.PreferenceManager;
 
-import care.data4life.sdk.Data4LifeClient;
-
 public class AccountsViewModel extends AndroidViewModel {
 
     private final SharedPreferences preferences;

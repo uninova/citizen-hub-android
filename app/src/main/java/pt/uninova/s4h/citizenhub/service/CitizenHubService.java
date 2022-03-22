@@ -3,7 +3,6 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -12,6 +11,11 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -34,40 +38,45 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.util.messaging.Observer;
 
+public class CitizenHubService extends LifecycleService {
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+    public class Binder extends android.os.Binder {
+        public CitizenHubService getService() {
+            return CitizenHubService.this;
+        }
+    }
 
-public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
+    public static void bind(Context context, ServiceConnection connection) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
 
-    boolean mBound = false;
+        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    public static void start(Context context) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
+
+        context.startService(intent);
+    }
+
+    public static void stop(Context context) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
+
+        context.stopService(intent);
+    }
+
+    public static void unbind(Context context, ServiceConnection connection) {
+        context.unbindService(connection);
+    }
+
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
     private AgentOrchestrator orchestrator;
     private NotificationManager notificationManager;
     private WearOSMessageService wearOSMessageService;
-    private WearOSServiceBinder wearOSServiceBinder;
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            WearOSServiceBinder binder = (WearOSServiceBinder) service;
-            wearOSMessageService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
+    private final IBinder binder;
 
     public CitizenHubService() {
-        super();
+        this.binder = new Binder();
     }
 
     private Notification buildNotification() {
@@ -90,7 +99,6 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     }
 
     public WearOSMessageService getWearOSMessageService() {
-
         return wearOSMessageService;
     }
 
@@ -158,7 +166,7 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     public IBinder onBind(Intent intent) {
         super.onBind(intent);
 
-        return new CitizenHubServiceBinder(this);
+        return binder;
     }
 
     @Override
@@ -189,7 +197,6 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         return START_STICKY;
     }
 
-    @Override
     public WearOSMessageService getService() {
         return wearOSMessageService;
     }
