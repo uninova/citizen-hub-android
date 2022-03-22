@@ -47,7 +47,6 @@ public class DeviceSearchFragment extends BluetoothFragment {
         super.onCreate(savedInstanceState);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
     }
 
     @Override
