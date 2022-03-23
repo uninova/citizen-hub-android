@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
@@ -15,33 +16,26 @@ import androidx.work.WorkManager;
 
 public class WorkOrchestrator {
 
-    public static String WORK_RESULT = "work_result";
+    private final WorkManager workManager;
 
-    public void addPeriodicWork(@NonNull Context context, int time, TimeUnit timeUnit, String workName){
-        WorkManager reportWorkManager = WorkManager.getInstance(context);
+    public WorkOrchestrator(WorkManager workManager) {
+        this.workManager = workManager;
+        workManager.cancelAllWork();
+    }
 
-        //request
-        PeriodicWorkRequest.Builder periodicWorkBuilder =
-                new PeriodicWorkRequest.Builder(CitizenHubWorker.class,
-                        time,
-                        timeUnit); // minimum time period is 15 minutes
-        PeriodicWorkRequest periodicWork = periodicWorkBuilder.build();
-        // the enqueueUniquePeriodicWork() ensures only one active request with this name
+    public void addPeriodicWork(Class<? extends ListenableWorker> worker, int time, TimeUnit timeUnit) {
+        final PeriodicWorkRequest.Builder periodicWorkBuilder = new PeriodicWorkRequest.Builder(worker,
+                time,
+                timeUnit);
 
-        //enqueue
-        reportWorkManager.enqueueUniquePeriodicWork(workName,
-                ExistingPeriodicWorkPolicy.KEEP,
+        final PeriodicWorkRequest periodicWork = periodicWorkBuilder.build();
+
+        workManager.enqueueUniquePeriodicWork("smartbearuploader",
+                ExistingPeriodicWorkPolicy.REPLACE,
                 periodicWork);
     }
 
-    public void addOneTimeWork(@NonNull Context context){
-        WorkManager reportWorkManager = WorkManager.getInstance(context);
-        OneTimeWorkRequest requestWorkManager =
-                new OneTimeWorkRequest.Builder(CitizenHubWorker.class).build();
-        reportWorkManager.enqueue(requestWorkManager);
-    }
-
-    public void cancelWork(String workName){
+    public void cancelWork(String workName) {
         WorkManager.getInstance().cancelAllWorkByTag(workName);
     }
 
@@ -54,8 +48,7 @@ public class WorkOrchestrator {
             //work is not running -> is WorkInfo.State.CANCELLED or WorkInfo.State.FAILED or WorkInfo.State.BLOCKED
             return WorkManager.getInstance(context)
                     .getWorkInfosForUniqueWork(workName).get().get(0).getState();
-        }
-        else {
+        } else {
             System.out.println(WorkManager.getInstance(context)
                     .getWorkInfosForUniqueWork(workName).get().get(0).getState());
             return WorkManager.getInstance(context)
