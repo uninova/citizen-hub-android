@@ -34,10 +34,6 @@ public interface MeasurementDao {
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
     LiveData<List<MeasurementAggregate>> getAggregateLive(LocalDate from, LocalDate to);
 
-    @Query("SELECT MIN(timestamp) AS lower, MAX(timestamp) AS upper FROM measurement;")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<LocalDateInterval> getDateBoundsLive();
-
     @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> getDates(LocalDate from, LocalDate to);

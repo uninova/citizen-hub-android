@@ -59,12 +59,6 @@ public class MeasurementRepository {
         }
     }
 
-    public LiveData<LocalDateInterval> getDateBounds() {
-        System.out.println(" MEASUREMENTTT GET DATE BOUNDS " + measurementDao.getDateBoundsLive().getValue());
-
-        return measurementDao.getDateBoundsLive();
-    }
-
     private Map<MeasurementKind, MeasurementAggregate> mapAggregates(List<MeasurementAggregate> aggregates) {
         final Map<MeasurementKind, MeasurementAggregate> aggregateMap = new HashMap<>(aggregates.size());
 
