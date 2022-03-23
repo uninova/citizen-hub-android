@@ -297,7 +297,7 @@
     <string name="fragment_logout_toast_failure_text">"Não foi possível terminar sessão. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Ficheiro carregado com sucesso. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"O ficheiro não foi carregado. "</string>
-    <string name="fragment_settings_current_work_days_text">"\\\"Dias de trabalho atuais: \\\" "</string>
+    <string name="fragment_settings_current_work_days_text">Dias de trabalho atuais:" "</string>
     <string name="fragment_settings_choose_work_days_text">Escolha os seus dias de trabalho</string>
     <string name="welcome_slide_view_pager_welcome_title">Bem-vindo</string>
     <string name="welcome_slide_view_pager_thank_you_message">Obrigado por utilizar o CitizenHub</string>
@@ -345,4 +345,13 @@
     <string name="fragment_settings_work_hours_start_message">Selecione as Horas de entrada</string>
     <string name="fragment_settings_work_hours_end_message">Selecione as Horas de saída</string>
     <string name="fragment_summary_text_view_blood_pressure_text">Sistólica: %1$.1f mmHg Distólica: %2$.1f:mmHg</string>
+    <string-array name="workdays">
+    <item>Segunda</item>
+    <item>Terça</item>
+    <item>Quarta</item>
+    <item>Quinta</item>
+    <item>Sexta</item>
+    <item>Sábado</item>
+    <item>Domingo</item>
+    </string-array>
 </resources>
