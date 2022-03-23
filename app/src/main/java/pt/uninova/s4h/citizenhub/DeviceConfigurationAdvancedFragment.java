@@ -22,18 +22,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2PostureProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 
 public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment {
@@ -46,7 +41,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             super.handleMessage(msg);
             if (dialog.isShowing()) {
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Calibration Completed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.fragment_device_configuration_advanced_warning_calibration_completed_text), Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -58,8 +53,6 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         final Device device = model.getSelectedDevice().getValue();
 
-        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
-        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -72,31 +65,31 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         enableAdvancedConfigurations(view, model);
 
         advancedOKDevice.setOnClickListener(v -> {
-                    if (device.getName().equals("UprightGO2")) {
-                        //get Data
-                        boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration",true);
-                        int angle = sharedPreferences.getInt("Vibration Angle",1);
-                        int interval = sharedPreferences.getInt("Vibration Interval", 5);
-                        int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
-                        boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
-                        int strength = sharedPreferences.getInt("Vibration Strength", 0);
+            if (device.getName().equals("UprightGO2")) {
+                //get Data
+                boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+                int angle = sharedPreferences.getInt("Vibration Angle", 1);
+                int interval = sharedPreferences.getInt("Vibration Interval", 5);
+                int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+                boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+                int strength = sharedPreferences.getInt("Vibration Strength", 0);
 
-                        //some value adaptation
-                        int time = 5;
-                        if(interval == 0)
-                            time = 5;
-                        else if (interval == 1)
-                            time = 15;
-                        else if (interval == 2)
-                            time = 30;
-                        else if (interval == 3)
-                            time = 60;
+                //some value adaptation
+                int time = 5;
+                if (interval == 0)
+                    time = 5;
+                else if (interval == 1)
+                    time = 15;
+                else if (interval == 2)
+                    time = 30;
+                else if (interval == 3)
+                    time = 60;
 
-                        //Send Message
-                        UprightGo2Agent agent = (UprightGo2Agent) agentOrchestrator.getDeviceAgentMap().get(device);
-                        agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, time, showPattern,pattern,strength+1));
-                    }
-                        Navigation.findNavController(requireView()).navigate(DeviceConfigurationAdvancedFragmentDirections.actionDeviceConfigurationAdvancedFragmentToDeviceConfigurationUpdateFragment());
+                //Send Message
+                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+                agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, time, showPattern, pattern, strength + 1));
+            }
+            Navigation.findNavController(requireView()).navigate(DeviceConfigurationAdvancedFragmentDirections.actionDeviceConfigurationAdvancedFragmentToDeviceConfigurationUpdateFragment());
         });
 
         return view;
@@ -121,7 +114,6 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
         }
     }
-
 
 
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
@@ -219,24 +211,22 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         // Perform Calibration (Trigger)
         Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
 
-        CitizenHubService service = ((CitizenHubServiceBound) requireActivity()).getService();
-        AgentOrchestrator agentOrchestrator = service.getAgentOrchestrator();
 
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Sensor Calibration")
-                        .setMessage("ATTENTION: Before pressing Calibrate, please ensure you are sitting and have" +
-                                " your back straight.")
-                        .setPositiveButton("Calibrate", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+                        .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+                                getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                UprightGo2Agent agent = (UprightGo2Agent) agentOrchestrator.getDeviceAgentMap().get(device);
+                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
                                 agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
 
-                                dialog = ProgressDialog.show(getContext(), "", "Calibrating, Please wait...", false);
+                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
 
                                 handler.sendMessageDelayed(new Message(), 2500);
                             }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen app:widgetLayout="@style/AppTheme"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+            android:key="pref1"
+            android:layout="@layout/settings_title_layout"
+            android:title="@string/fragment_settings_work_hours_title">
+
+        </PreferenceCategory>
+        <MultiSelectListPreference
+            android:key="workdays"
+            android:title="Work Days"
+            android:summary="@string/fragment_settings_work_days_title"
+            android:entries="@array/workdays"
+            android:entryValues="@array/workday_values"
+            android:defaultValue="@array/empty_array"/>
+
+    <pt.uninova.s4h.citizenhub.TimePreference
+        android:key="workStart"
+        android:title="@string/fragment_settings_work_start_title"
+        android:defaultValue="09:00"
+        android:summary="@string/fragment_settings_work_hours_start_message"/>
+    <pt.uninova.s4h.citizenhub.TimePreference
+        android:key="workEnd"
+        android:title="@string/fragment_settings_work_end_title"
+        android:defaultValue="17:00"
+        android:summary="@string/fragment_settings_work_hours_end_message"/>
+
+</PreferenceScreen>

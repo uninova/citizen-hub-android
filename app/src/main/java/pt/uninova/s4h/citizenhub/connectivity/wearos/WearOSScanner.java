@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.contentcapture.ContentCaptureCondition;
 
 import androidx.annotation.WorkerThread;
 
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import pt.uninova.util.Pair;
 
 public class WearOSScanner {

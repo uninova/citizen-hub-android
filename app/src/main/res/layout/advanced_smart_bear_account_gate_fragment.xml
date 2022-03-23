@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/primus_bold"
-                android:text="Security"
+                android:text="@string/fragment_advanced_smart_bear_account_gate_security_text"
                 android:textAlignment="center"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="24sp" />
@@ -43,7 +42,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/neo_sans_pro_regular"
                 android:labelFor="@+id/advanced_smart_bear_account_gate_fragment_input_code"
-                android:text="Confirmation Code"
+                android:text="@string/fragment_advanced_smart_bear_account_gate_confirmation_code_text"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="18sp" />
 
@@ -54,7 +53,7 @@
                 android:autofillHints=""
                 android:fontFamily="@font/neo_sans_pro_regular"
                 android:inputType="numberPassword"
-                android:maxLength="6"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:textSize="18sp" />

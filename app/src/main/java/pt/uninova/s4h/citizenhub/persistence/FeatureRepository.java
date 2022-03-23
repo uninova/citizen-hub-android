@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -11,8 +12,8 @@ import pt.uninova.util.messaging.Observer;
 public class FeatureRepository {
     private final FeatureDao featureDao;
 
-    public FeatureRepository(Application application) {
-        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+    public FeatureRepository(Context context) {
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
         featureDao = citizenHubDatabase.featureDao();
     }
 

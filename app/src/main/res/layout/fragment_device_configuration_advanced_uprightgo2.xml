@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Posture Correction Vibration"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_posture_correction_text"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Correction Angle"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text"
             />
 
         <SeekBar
@@ -57,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Correction Angle" />
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,13 +68,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="Strict" />
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_strict_text" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="Relaxed" />
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_relaxed_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -93,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Correction Interval (seconds)"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_interval_text"
             />
 
         <LinearLayout
@@ -125,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Vibration Pattern"
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text"
                 />
 
             <LinearLayout
@@ -157,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Vibration Strength"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text"
             />
 
         <SeekBar
@@ -165,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Vibration Strength" />
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -178,13 +176,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="Gentle" />
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_gentle_text" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="Strong" />
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_strong_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -200,7 +198,7 @@
             android:id="@+id/buttonCalibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sensor Calibration"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_sensor_calibration_button_text"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

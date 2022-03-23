@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/layout_fragment_device_configuration_name"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
 
@@ -44,7 +44,8 @@
                 android:id="@+id/textConfigurationDeviceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Address"
+                android:text="@string/fragment_device_configuration_advanced_address_text"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -64,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Advanced Configurations"
+                android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
+                style="@style/AppTheme.Summary.Item"
                 android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -108,7 +110,7 @@
                 android:id="@+id/buttonConfigurationAdvancedOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update"
+                android:text="@string/fragment_device_configuration_advanced_update_text"
                 android:layout_gravity="center"/>
 
         </LinearLayout>

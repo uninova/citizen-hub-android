@@ -13,8 +13,11 @@ import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
@@ -29,8 +32,8 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
     private Class<?> agent;
 
-    public MiBand2DistanceProtocol(BluetoothConnection connection, MiBand2Agent agent) {
-        super(ID, connection, agent);
+    public MiBand2DistanceProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, MiBand2Agent agent) {
+        super(ID, connection, sampleDispatcher, agent);
 
         setState(ProtocolState.DISABLED);
 
@@ -61,9 +64,12 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                         lastCalories = 0.0;
                     }
 
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.STEPS, (double) steps - lastSteps));
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.DISTANCE, distance - lastDistance));
-                    getMeasurementDispatcher().dispatch(new Measurement(now, MeasurementKind.CALORIES, calories - lastCalories));
+                    final Sample sample = new Sample(getAgent().getSource(),
+                            new StepCountMeasurement(steps - lastSteps),
+                            new DistanceMeasurement(distance - lastDistance),
+                            new CaloriesMeasurement(calories - lastCalories));
+
+                    getSampleDispatcher().dispatch(sample);
                 }
 
                 lastSteps = steps;

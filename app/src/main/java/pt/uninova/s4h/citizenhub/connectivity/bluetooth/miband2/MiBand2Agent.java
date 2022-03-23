@@ -55,6 +55,16 @@ public class MiBand2Agent extends BluetoothAgent {
     @Override
     public void enable() {
         authorize();
+
+        addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+            @Override
+            public void observe(StateChangedMessage<AgentState, ? extends Agent> value) {
+                if (value.getNewState() == AgentState.ENABLED) {
+                    new SetTimeProtocol(getConnection(), MiBand2Agent.this).enable();
+                    removeStateObserver(this);
+                }
+            }
+        });
     }
 
     @Override
@@ -66,9 +76,9 @@ public class MiBand2Agent extends BluetoothAgent {
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
         switch (kind) {
             case HEART_RATE:
-                return new MiBand2HeartRateProtocol(this.getConnection(), this);
+                return new MiBand2HeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
             case ACTIVITY:
-                return new MiBand2DistanceProtocol(this.getConnection(), this);
+                return new MiBand2DistanceProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;

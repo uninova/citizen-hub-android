@@ -61,11 +61,6 @@ public class LumbarExtensionTrainingRepository {
         return lumbarExtensionTrainingDao.getMostRecentLumbarTraining();
     }
 
-    public LiveData<LocalDateInterval> getDateBounds() {
-        System.out.println(" LUMBAR GET DATE BOUNDS " + lumbarExtensionTrainingDao.getDateBoundsLive().getValue());
-        return lumbarExtensionTrainingDao.getDateBoundsLive();
-    }
-
     public void obtainDates(Pair<Integer, Integer> month, Observer<List<LocalDate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> {
             final LocalDate from = LocalDate.of(month.getFirst(), month.getSecond(), 1);

@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
@@ -25,18 +25,18 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         enableAdvancedConfigurations();
         setupViews(view);
         setupText();
-        loadEnabledFeatures();
+        loadSupportedFeatures();
 
         updateDevice.setOnClickListener(v -> {
-            setFeaturesState();
+            saveFeaturesChosen();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
+
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
+
         deleteDevice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                model.delete(model.getSelectedDevice().getValue());
-                AgentOrchestrator agentOrchestrator = ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator();
-                agentOrchestrator.deleteDeviceFromMap(model.getSelectedDevice().getValue());
+                model.removeSelectedDevice();
 
                 Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
             }

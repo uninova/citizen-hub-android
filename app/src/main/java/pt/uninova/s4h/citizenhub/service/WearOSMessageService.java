@@ -1,10 +1,9 @@
 package pt.uninova.s4h.citizenhub.service;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.Task;
@@ -13,22 +12,15 @@ import com.google.android.gms.wearable.MessageClient;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
-import com.google.android.gms.wearable.WearableListenerService;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import pt.uninova.s4h.citizenhub.MainActivity;
-import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSAgent;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
-import pt.uninova.util.Pair;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 
 public class WearOSMessageService extends FragmentActivity implements MessageClient.OnMessageReceivedListener {
@@ -39,8 +31,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
     String citizenhubPath = "/citizenhub_path_";
     String checkConnectionPath = "checkConnection";
     Context appContext;
-
-
+    private MessageClient client;
 
     @Override
     protected void onDestroy() {
@@ -49,11 +40,9 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
         Wearable.getMessageClient(appContext).removeListener(this);
     }
 
-
-
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-
+        //System.out.println("onMessageReceived......");
         new GetConnectedNode("wear", appContext).start();
         String datapath = citizenhubPath + nodeIdString;
 
@@ -68,7 +57,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
             }else if(messageEvent.getPath().equals(datapath)){
                 wearOSConnection.enable();
                 String message = new String(messageEvent.getData());
-                Log.d("MessageService", "message: "+ message);
+                //Log.d("MessageService", "message: "+ message);
 
                 if (message.equals("")){
                     //do nothing
@@ -93,9 +82,32 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
     public WearOSConnection connect(String address, CitizenHubService service){
         Log.d(TAG, "Entered connect with address " + address);
         appContext = service;
+
         Wearable.getMessageClient(service).addListener(this);
         WearOSConnection wearOSConnection = new WearOSConnection(address);
         connectionMap.put(address, wearOSConnection);
+        new SendMessage(citizenhubPath+"bf405e51","Connected",appContext).start();
+
+        //this part is new code, it's not writing to DB yet, old onMessageReceived still active
+        MessageClient.OnMessageReceivedListener listener = new MessageClient.OnMessageReceivedListener() {
+            @Override
+            public void onMessageReceived(@NonNull MessageEvent messageEvent) {
+                //System.out.println("IM HEREEEEEEEE");
+                String message = new String(messageEvent.getData());
+                String[] messageParsed = message.split(",",3);
+                Date time = new Date(Long.parseLong(messageParsed[1]));
+                System.out.println("MeasurementValue: " + messageParsed[0] +
+                        " | MeasurementTime: " + time +
+                        " | MeasurementKind: " + MeasurementKind.find(Integer.parseInt(messageParsed[2])) +
+                        " | from nodeID: " + messageEvent.getSourceNodeId() +
+                        " | from path: " + messageEvent.getPath());
+                //wearOSConnection.onCharacteristicChanged(messageParsed);
+            }
+        };
+
+        client = Wearable.getMessageClient(service);
+        client.addListener(listener);
+
 
         return wearOSConnection;
     }

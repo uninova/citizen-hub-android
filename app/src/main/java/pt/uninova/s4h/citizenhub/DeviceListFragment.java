@@ -1,15 +1,12 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,97 +14,61 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import pt.uninova.s4h.citizenhub.persistence.Device;
-import pt.uninova.s4h.citizenhub.service.CitizenHubServiceBound;
+import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceListFragment extends Fragment {
 
-    public static Device deviceForSettings;
-    public static MutableLiveData<DeviceListItem> asd;
-    TextView noDevices;
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, 0) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-        }
-    };
-    private RecyclerView recyclerView;
     private DeviceListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<DeviceListItem> deviceList;
-    private Button searchDevices;
     private DeviceViewModel model;
+
+    private void buildRecycleView(View view) {
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_devicesList);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+
+        adapter = new DeviceListAdapter(item -> {
+            model.selectDevice(item.getDevice());
+
+            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
+        });
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.fragment_device_list, menu);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        deviceList = new ArrayList<>();
-
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
 
-        searchDevices = result.findViewById(R.id.searchButton);
-        noDevices = result.findViewById(R.id.fragment_device_list_no_data);
-
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        if (adapter == null) {
-            buildRecycleView(result);
-        }
 
-        if (((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDeviceAgentMap().size() > 0) {
-            deviceList.clear();
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
 
-            for (Device device : ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().getDevicesFromMap()
-            ) {
-                deviceList.add(new DeviceListItem(device));
-                adapter.notifyDataSetChanged();
-            }
-        }
-        Activity activity = requireActivity();
-        ((CitizenHubServiceBound) requireActivity()).getService().getAgentOrchestrator().addAgentEventListener(value -> {
-            deviceList.clear();
-            for (Device device : value.getDeviceList()) {
-                deviceList.add(new DeviceListItem(device));
-            }
-
-            activity.runOnUiThread(() -> adapter.notifyDataSetChanged());
-
-        });
+        Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
-        setHasOptionsMenu(false); //shows Action Bar menu button
+
+        setHasOptionsMenu(false);
 
         searchDevices.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,13 +78,6 @@ public class DeviceListFragment extends Fragment {
         });
 
         return result;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
     }
 
     private void showConnectedDialog(View result) {
@@ -161,72 +115,31 @@ public class DeviceListFragment extends Fragment {
     }
 
 
-    private void cleanList() {
-        deviceList = new ArrayList<>();
-    }
-
-
-    private void buildRecycleView(View result) {
-        recyclerView = result.findViewById(R.id.recyclerView_devicesList);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceList);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        emptyListCheck();
-
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-        adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
-            }
-
-            @Override
-            public void onSettingsClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
-            }
-        });
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        emptyListCheck();
 
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-        else {
-            buildRecycleView(requireView());
-        }
-    }
+        TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-    }
-
-    public void emptyListCheck() {
-        if (deviceList.isEmpty()) {
+        if (adapter.getItemCount() == 0) {
             noDevices.setVisibility(View.VISIBLE);
         } else {
-            noDevices.setVisibility(View.INVISIBLE);
+            noDevices.setVisibility(View.GONE);
         }
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        return super.onOptionsItemSelected(item);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
+    public void onDeviceListChanged(List<Device> deviceList) {
+        adapter.clear();
+
+        if (deviceList.size() > 0) {
+            for (Device i : deviceList) {
+                adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
+            }
+        }
+    }
 }

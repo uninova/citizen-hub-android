@@ -14,6 +14,16 @@ public final class Triple<F, S, T> {
         this.third = third;
     }
 
+    //settings page
+    //estilos
+    //Settings shared preferences settings.workhours.
+    //Check para ver se tá a trabalhar 0,1. Migrações
+
+    //3 fases: pagina settings, carregar e descarregar
+    //base de dados com campo adicional
+    //onde coleccionamos os dados ler a informação e escrever no campo
+    //notificar o measurementRepository
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Triple)) {

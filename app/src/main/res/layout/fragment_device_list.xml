@@ -19,7 +19,6 @@ android:visibility="visible">
             style="AppTheme.Summary.Item.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/primus"
             android:paddingVertical="20dp"
             android:text="@string/fragment_device_list_text_no_data"
             android:visibility="invisible"

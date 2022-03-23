@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
-import java.util.Date;
+import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
+import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinDataConverter.getIntValue;
+
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -8,11 +10,11 @@ import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-
-import static android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT16;
-import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinDataConverter.getIntValue;
+import pt.uninova.s4h.citizenhub.data.ActivityMeasurement;
+import pt.uninova.s4h.citizenhub.data.CadenceMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
+import pt.uninova.util.messaging.Dispatcher;
 
 public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
@@ -22,10 +24,9 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
     public static final UUID ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("75246a26-237a-4863-aca6-09b639344f43");
 
     private int lastStepCount;
-    private Class<?> agent;
 
-    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, HexoSkinAgent agent) {
-        super(ID, connection, agent);
+    public HexoSkinAccelerometerProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, HexoSkinAgent agent) {
+        super(ID, connection, dispatcher, agent);
         setState(ProtocolState.DISABLED);
         lastStepCount = 0;
 
@@ -40,6 +41,11 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 boolean isActivityPresent = (flag & 0x02) != 0;
                 boolean isCadencePresent = (flag & 0x04) != 0;
 
+                final int measurementSize = (isStepCountPresent ? 1 : 0) + (isActivityPresent ? 1 : 0) + (isCadencePresent ? 1 : 0);
+                int measurementIndex = 0;
+
+                pt.uninova.s4h.citizenhub.data.Measurement<?>[] measurements = new pt.uninova.s4h.citizenhub.data.Measurement[measurementSize];
+
                 if (isStepCountPresent) {
                     int stepCount = getIntValue(format, dataIndex, value);
                     dataIndex = dataIndex + 2;
@@ -48,7 +54,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                         lastStepCount = 0;
                     }
 
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.STEPS, (double) stepCount - lastStepCount));
+                    measurements[measurementIndex++] = new StepCountMeasurement(stepCount - lastStepCount);
 
                     lastStepCount = stepCount;
                 }
@@ -57,16 +63,18 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                     float activity = getIntValue(format, dataIndex, value) / 256.0f;
 
                     dataIndex = dataIndex + 2;
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.ACTIVITY, (double) activity));
 
+                    measurements[measurementIndex++] = new ActivityMeasurement(activity);
                 }
-
 
                 if (isCadencePresent) {
                     int cadence = getIntValue(format, dataIndex, value);
-                    getMeasurementDispatcher().dispatch(new Measurement(new Date(), MeasurementKind.CADENCE, (double) cadence));
-
+                    measurements[measurementIndex] = new CadenceMeasurement(cadence);
                 }
+
+                final Sample sample = new Sample(agent.getSource(), measurements);
+
+                getSampleDispatcher().dispatch(sample);
             }
         });
     }
@@ -83,6 +91,4 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
         setState(ProtocolState.ENABLED);
         getConnection().enableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
     }
-
-
 }

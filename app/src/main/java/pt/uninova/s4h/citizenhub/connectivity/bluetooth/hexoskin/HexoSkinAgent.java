@@ -41,11 +41,11 @@ public class HexoSkinAgent extends BluetoothAgent {
     public MeasuringProtocol getMeasuringProtocol(MeasurementKind measurementKind) {
         switch (measurementKind) {
             case ACTIVITY:
-                return new HexoSkinAccelerometerProtocol(this.getConnection(), this);
+                return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(),this);
             case HEART_RATE:
-                return new HexoSkinHeartRateProtocol(this.getConnection(), this);
+                return new HexoSkinHeartRateProtocol(this.getConnection(), getSampleDispatcher(),this);
             case RESPIRATION_RATE:
-                return new HexoSkinRespirationProtocol(this.getConnection(), this);
+                return new HexoSkinRespirationProtocol(this.getConnection(), getSampleDispatcher(),this);
         }
 
         return null;
