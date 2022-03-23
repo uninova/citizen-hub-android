@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class}, version = 35, exportSchema = false)
+@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class, SmartBearUploadDateRecord.class}, version = 36, exportSchema = false)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -20,7 +20,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     private static volatile CitizenHubDatabase INSTANCE;
 
 
-    static final Migration MIGRATION_32_33 = new Migration(32,33) {
+    static final Migration MIGRATION_32_33 = new Migration(32, 33) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE measurement "
@@ -53,6 +53,8 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public abstract FeatureDao featureDao();
 
     public abstract LumbarExtensionTrainingDao lumbarExtensionTrainingDao();
+
+    public abstract SmartBearUploadDateDao smartBearUploadDateDao();
 }
 
 

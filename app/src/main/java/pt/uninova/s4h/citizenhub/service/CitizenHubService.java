@@ -6,16 +6,27 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+import androidx.preference.PreferenceManager;
+import androidx.work.WorkManager;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
+import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -40,6 +51,8 @@ import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
+import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
 import pt.uninova.util.messaging.Observer;
 
 public class CitizenHubService extends LifecycleService {
@@ -79,6 +92,10 @@ public class CitizenHubService extends LifecycleService {
 
     private final IBinder binder;
 
+    private WorkOrchestrator workOrchestrator;
+
+    private SharedPreferences preferences;
+
     public CitizenHubService() {
         this.binder = new Binder();
     }
@@ -100,6 +117,10 @@ public class CitizenHubService extends LifecycleService {
 
     public AgentOrchestrator getAgentOrchestrator() {
         return orchestrator;
+    }
+
+    public SharedPreferences getPreferences() {
+        return preferences;
     }
 
     public WearOSMessageService getWearOSMessageService() {
@@ -215,9 +236,31 @@ public class CitizenHubService extends LifecycleService {
         startForeground(1, buildNotification());
         wearOSMessageService = new WearOSMessageService();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        /*
+        LocalDateTime l = LocalDateTime.now();
+
+        MeasurementRepository repo = new MeasurementRepository(getApplicationContext());
+        Random random = new Random();
+
+        for (int i = 0; i < 1000; i++) {
+            Date d = Date.from(Instant.ofEpochSecond(l.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(l))));
+            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.GOOD_POSTURE, random.nextDouble() * 10));
+            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.BAD_POSTURE, random.nextDouble() * 10));
+            l = l.plusSeconds(random.nextInt(300));
+        }
+        */
+
         initAgentOrchestrator();
+        initWorkOrchestrator();
     }
 
+    private void initWorkOrchestrator() {
+        workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(this));
+
+        workOrchestrator.addPeriodicWork(SmartBearUploadWorker.class, 12, TimeUnit.HOURS);
+    }
 
     @Override
     public void onDestroy() {
@@ -236,4 +279,5 @@ public class CitizenHubService extends LifecycleService {
     public WearOSMessageService getService() {
         return wearOSMessageService;
     }
+
 }

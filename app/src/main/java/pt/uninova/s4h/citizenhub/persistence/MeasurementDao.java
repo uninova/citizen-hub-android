@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.TypeConverters;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -37,6 +38,14 @@ public interface MeasurementDao {
     @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> getDates(LocalDate from, LocalDate to);
+
+    @Query("SELECT (timestamp - (timestamp / 86400) * 86400) / 3600 AS hour, SUM(value) AS value FROM measurement WHERE timestamp >= :from AND timestamp < :to AND kind_id = :measurementKind GROUP BY hour ORDER BY hour;")
+    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    List<HourlyValue> getHourlySum(Instant from, Instant to, MeasurementKind measurementKind);
+
+    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND kind_id = :measurementKind" )
+    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    List<LocalDate> getDaysWithValues(LocalDate from, MeasurementKind measurementKind);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Measurement measurement);
