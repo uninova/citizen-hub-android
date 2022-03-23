@@ -1,14 +1,18 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import pt.uninova.util.Pair;
 import pt.uninova.util.WorkTimeRangeConverter;
@@ -21,13 +25,13 @@ public class MeasurementRepository {
     private final WorkTimeRangeConverter workTimeRangeConverter;
     private final Map<LocalDate, LiveData<Map<MeasurementKind, MeasurementAggregate>>> dailyAggregateMap;
 
-    public MeasurementRepository(Application application) {
-        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(application);
+    public MeasurementRepository(Context context) {
+        final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
 
         measurementDao = citizenHubDatabase.measurementDao();
         dailyAggregateMap = new HashMap<>();
-        workTimeRangeConverter = WorkTimeRangeConverter.getInstance(application.getApplicationContext());
-        workTimeRangeConverter.load(application.getApplicationContext());
+        workTimeRangeConverter = WorkTimeRangeConverter.getInstance(context.getApplicationContext());
+        workTimeRangeConverter.load(context.getApplicationContext());
     }
 
     public void add(Measurement measurement) {
@@ -69,6 +73,23 @@ public class MeasurementRepository {
         return aggregateMap;
     }
 
+    public void obtainDaysWithData(LocalDate from, MeasurementKind measurementKind, Observer<List<LocalDate>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            final List<LocalDate> localDates = measurementDao.getDaysWithValues(from, measurementKind);
+
+            observer.observe(localDates);
+        });
+    }
+
+    public void obtainHourlySum(LocalDate date, MeasurementKind measurementKind, Observer<List<HourlyValue>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> {
+            final Instant from = Instant.ofEpochSecond(date.toEpochDay() * 86400 + TimeZone.getDefault().getRawOffset() / 1000);
+            final List<HourlyValue> hourlyValues = measurementDao.getHourlySum(from, from.plusSeconds(86400), measurementKind);
+
+            observer.observe(hourlyValues);
+        });
+    }
+
     public void obtainDailyAggregate(LocalDate localDate, Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> {
             final List<MeasurementAggregate> aggregates = measurementDao.getAggregate(localDate, localDate.plusDays(1));
@@ -77,9 +98,9 @@ public class MeasurementRepository {
         });
     }
 
-    public void obtainDailyAggregateWorkTime(int workTime,LocalDate localDate, Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
+    public void obtainDailyAggregateWorkTime(int workTime, LocalDate localDate, Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> {
-            final List<MeasurementAggregate> aggregates = measurementDao.getAggregateWorkTime(localDate, localDate.plusDays(1),workTime);
+            final List<MeasurementAggregate> aggregates = measurementDao.getAggregateWorkTime(localDate, localDate.plusDays(1), workTime);
 
             observer.observe(mapAggregates(aggregates));
         });
