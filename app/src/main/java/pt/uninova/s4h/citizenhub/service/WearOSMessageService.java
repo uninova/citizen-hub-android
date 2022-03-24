@@ -76,6 +76,10 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
         return deviceAddress;
     }
 
+    public void sendMessage (String path,String message){
+        new SendMessage(citizenhubPath+path,message,appContext).start();
+    }
+
 
     //lista de wearOsconnection para cada id || Connection recebe dispatcher fica a observar o que é o dispatcher
     //enviar sinal para receber dados || mecanismo para passar dados para a connection ( metodo de adicionar observer )

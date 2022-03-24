@@ -18,23 +18,36 @@ import java.util.concurrent.ExecutionException;
 public class WearOSMessageService extends WearableListenerService {
     private String nodeIdString;
     String citizenhubPath = "/citizenhub_path_";
-    String checkConnectionPath = "checkConnection";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-      //  Log.d("MessageService", "entered " );
-
-        String message2 = new String(messageEvent.getData());
-
         new GetConnectedNode().start();
-        String datapath = citizenhubPath + nodeIdString;
-
-        String connectPath = citizenhubPath + checkConnectionPath;
-      //  Log.d("MessageService", "mobile_id: " + nodeIdString);
-
-        if (messageEvent.getPath().equals(datapath)) {
+        if(messageEvent.getPath().equals(citizenhubPath+"WearOSHeartRateProtocol"))
+        {
             final String message = new String(messageEvent.getData());
-        //Broadcast the received data layer messages//
+            Intent messageIntent = new Intent();
+            messageIntent.setAction(Intent.ACTION_SEND);
+            messageIntent.putExtra("WearOSHeartRateProtocol", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+        }
+        if(messageEvent.getPath().equals(citizenhubPath+"WearOSStepsProtocol"))
+        {
+            final String message = new String(messageEvent.getData());
+            Intent messageIntent = new Intent();
+            messageIntent.setAction(Intent.ACTION_SEND);
+            messageIntent.putExtra("WearOSStepsProtocol", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+        }
+        if(messageEvent.getPath().equals(citizenhubPath+"WearOSAgent"))
+        {
+            final String message = new String(messageEvent.getData());
+            Intent messageIntent = new Intent();
+            messageIntent.setAction(Intent.ACTION_SEND);
+            messageIntent.putExtra("WearOSAgent", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+        }
+        if (messageEvent.getPath().equals(citizenhubPath + nodeIdString)) {
+            final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
             messageIntent.setAction(Intent.ACTION_SEND);
             messageIntent.putExtra("message", message);
@@ -46,35 +59,19 @@ public class WearOSMessageService extends WearableListenerService {
     }
 
     class GetConnectedNode extends Thread {
-
-
-        GetConnectedNode() {
-
-        }
-
-//Send the message via the thread. This will send the message to all the currently-connected devices//
-
+        GetConnectedNode() {}
         public void run() {
-
             nodeIdString = null;
             Task<List<Node>> nodeTaskList = Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
-
             try {
-                //Block on a task and get the result synchronously//
                 List<Node> nodes = Tasks.await(nodeTaskList);
                 for (Node node : nodes) {
                     nodeIdString = node.getId();
                 }
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 }
 

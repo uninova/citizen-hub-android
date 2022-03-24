@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -22,7 +21,7 @@ public class WearOsAgentFactory implements AgentFactory<WearOSAgent> {
             @Override
             public void observe(StateChangedMessage<WearOSConnectionState, WearOSConnection> value) {
                 if (value.getNewState() == WearOSConnectionState.READY) {
-                    observer.observe(new WearOSAgent(wearOSConnection));
+                    observer.observe(new WearOSAgent(wearOSConnection, service));
                 }
             }
         });
