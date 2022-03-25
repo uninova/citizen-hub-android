@@ -7,10 +7,10 @@ buildscript {
         lifecycle_version = '2.3.1'
         navigation_version = '2.4.1'
         recyclerview_version = '1.2.1'
-        room_version = '2.4.1'
+        room_version = '2.4.2'
 
         d4lsdk_version = '1.15.1'
-        d4lhelpersdk_version = '1.7.1'
+        d4lhelpersdk_version = '1.8.0'
         materialcalendarview_version = '2.0.1'
     }
 
