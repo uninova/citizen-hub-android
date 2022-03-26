@@ -20,8 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
-import persistence.DataBaseHelper;
-import persistence.Measurement;
 import persistence.MeasurementKind;
 
 import java.util.Date;
@@ -45,7 +43,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private void sensorsManager() {
         mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         mHeartSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR); //MUDEI DE STEP_COUNTER
+        mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         textInfoProtocols = findViewById(R.id.textInfo2);
 
         textSteps.setText("Steps: " + stepsTotal);
-        textHeartRate.setText("Heart rate: " + heartRate);
+        textHeartRate.setText("Heart Rate: " + heartRate);
         textInfoPhone.setText("Phone not connected");
         textInfoProtocols.setText("Not sending data");
 
@@ -88,7 +86,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         } else {
             String newMsg = toCsvFormat(msg);
             String[] msgArray = newMsg.split(",");
-            System.out.println("AQUI TOU EU:::" + msgArray[0] + " " + msgArray[1] + " " + msgArray[2] + " " + msgArray[3] + " " + msgArray[4]);
             if (msgArray[3].equals("STEPS")) {
                 stepsTotal += (int) Double.parseDouble(msgArray[1]);
                 System.out.println((int) Double.parseDouble(msgArray[1]));
@@ -282,9 +279,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             try {
                 Node node = Tasks.await(nodeTask);
                 nodeIdString = node.getId();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

@@ -59,7 +59,6 @@ public class WearOSMessageService extends WearableListenerService {
     }
 
     class GetConnectedNode extends Thread {
-        GetConnectedNode() {}
         public void run() {
             nodeIdString = null;
             Task<List<Node>> nodeTaskList = Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
