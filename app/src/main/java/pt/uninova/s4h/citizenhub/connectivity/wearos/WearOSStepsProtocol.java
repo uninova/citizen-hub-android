@@ -1,25 +1,12 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
-
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
-import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
-import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
-import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
-import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.SittingMeasurement;
-import pt.uninova.s4h.citizenhub.data.StandingMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -51,12 +38,12 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     @Override
     public void disable() {
         setState(ProtocolState.DISABLED);
-        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","disabled");
+        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","false");
     }
 
     @Override
     public void enable() {
         setState(ProtocolState.ENABLED);
-        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","enabled");
+        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","true");
     }
 }
