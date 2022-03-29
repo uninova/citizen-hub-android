@@ -10,6 +10,12 @@ android {
         targetSdkVersion 30
         versionCode 17
         versionName "0.8.6"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
