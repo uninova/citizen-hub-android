@@ -5,5 +5,6 @@ public enum ProtocolState {
     DISABLING,
     ENABLED,
     ENABLING,
+    SUSPENDED,
     COMPLETED
 }

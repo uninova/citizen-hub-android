@@ -29,6 +29,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     final private static UUID POSTURE_CORRECTION = UUID.fromString("0000bac3-0000-1000-8000-00805f9b34fb"); //bac3
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
 
+    private static final int selfUpdatingInterval = 30000;
     /*
     ALL KNOWN SERVICES
     0x1800 -> Generic Access Service
@@ -70,22 +71,27 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     private boolean lastGoodPosture;
     private Instant lastTimestamp;
 
+    private Thread selfUpdatingThread;
+
     private final BaseCharacteristicListener postureChangedListener = new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
         @Override
         public void onChange(byte[] value) {
-            final Instant now = Instant.now();
-
             push(value[0] == 0);
         }
     };
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> connectionStateObserver = value -> {
         if (value.getNewState() == BluetoothConnectionState.DISCONNECTED) {
-            final Instant now = Instant.now();
-
+            setState(ProtocolState.SUSPENDED);
             push(lastGoodPosture);
             reset();
         } else if (value.getNewState() == BluetoothConnectionState.READY && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
+            setState(ProtocolState.ENABLED);
+
+            if (selfUpdatingThread == null) {
+                startSelfUpdatingThread();
+            }
+
             value.getSource().enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
         }
     };
@@ -100,6 +106,8 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
+        setState(ProtocolState.DISABLING);
+
         final BluetoothConnection connection = getConnection();
 
         connection.disableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
@@ -112,6 +120,8 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void enable() {
+        setState(ProtocolState.ENABLING);
+
         final BluetoothConnection connection = getConnection();
 
         connection.addCharacteristicListener(postureChangedListener);
@@ -119,31 +129,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
         connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
 
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-
-                Looper.prepare();
-
-                Handler handler = new Handler(Looper.myLooper());
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Instant now = Instant.now();
-
-                        if (UprightGo2PostureProtocol.this.getState() == ProtocolState.ENABLED) {
-                            UprightGo2PostureProtocol.this.push(lastGoodPosture);
-                            handler.postDelayed(this, 5000);
-                        }
-                    }
-                });
-
-                Looper.loop();
-            }
-        };
-
-        t.start();
+        startSelfUpdatingThread();
 
         reset();
 
@@ -171,5 +157,34 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     private void reset() {
         lastTimestamp = null;
         lastGoodPosture = true;
+    }
+
+    private void startSelfUpdatingThread() {
+        selfUpdatingThread = new Thread() {
+            @Override
+            public void run() {
+
+                Looper.prepare();
+
+                Handler handler = new Handler(Looper.myLooper());
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (UprightGo2PostureProtocol.this.getState() == ProtocolState.ENABLED) {
+                            UprightGo2PostureProtocol.this.push(lastGoodPosture);
+                            handler.postDelayed(this, selfUpdatingInterval);
+                        } else {
+                            selfUpdatingThread.interrupt();
+                            selfUpdatingThread = null;
+                        }
+                    }
+                }, selfUpdatingInterval);
+
+                Looper.loop();
+            }
+        };
+
+        selfUpdatingThread.start();
     }
 }
