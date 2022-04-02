@@ -13,16 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
-        android:padding="@dimen/screen_percentage_10"
-        android:layout_marginTop="10dp">
+        android:padding="@dimen/screen_percentage_10">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/img_s4h_logo" />
+            android:id="@+id/imageViewCitizenHub"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_citizen_hub_logo_png" />
 
         <TextView
             android:id="@+id/textHearRate"
@@ -31,6 +33,7 @@
             android:layout_gravity="center"
             android:text="Heart Rate:"
             android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <TextView
@@ -40,6 +43,7 @@
             android:layout_gravity="center"
             android:text="Steps:"
             android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <TextView
@@ -47,10 +51,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:text="Phone not connected"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/textInfo2"
@@ -59,7 +63,16 @@
             android:layout_gravity="center"
             android:text="Not sending data"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/imageViewS4H"
+            android:layout_width="75dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/img_s4h_logo" />
+
     </LinearLayout>
 
 
