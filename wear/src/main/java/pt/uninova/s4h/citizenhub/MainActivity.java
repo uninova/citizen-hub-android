@@ -37,7 +37,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
     private SensorManager mSensorManager;
     private Sensor mStepSensor, mHeartSensor;
-    private boolean connected = false;
     Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
     private int counter = 0;
 
@@ -59,10 +58,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         textInfoPhone = findViewById(R.id.textInfo);
         textInfoProtocols = findViewById(R.id.textInfo2);
 
-        textSteps.setText("Steps: " + stepsTotal);
-        textHeartRate.setText("Heart Rate: " + heartRate);
-        textInfoPhone.setText("Phone not connected");
-        textInfoProtocols.setText("Not sending data");
+        textSteps.setText(getString(R.string.show_data_steps, stepsTotal));
+        textHeartRate.setText(getString(R.string.show_data_heartrate, heartRate));
+        textInfoPhone.setText(getString(R.string.show_data_phone_not_connected));
+        textInfoProtocols.setText(getString(R.string.show_data_protocols_no_data));
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -70,7 +69,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         permissionRequest();
         sensorsManager();
-        connected = false;
     }
 
     @Override
@@ -118,11 +116,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         switch (event.sensor.getType()) {
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
-                textHeartRate.setText("Heart Rate: " + value + " bpm");
+                textHeartRate.setText(getString(R.string.show_data_heartrate, value));
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
-                textSteps.setText("Steps: " + (stepsTotal += value));
+                textSteps.setText(getString(R.string.show_data_steps, (stepsTotal+= value)));
                 System.out.println(value + " " + now.getTime() + " " + ++counter);
                 break;
         }
