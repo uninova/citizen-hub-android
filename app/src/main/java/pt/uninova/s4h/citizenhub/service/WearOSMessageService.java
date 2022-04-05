@@ -130,7 +130,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
 
 
         public void run() {
-
+            System.out.println("Sending: " + message);
             Task<List<Node>> wearableList = Wearable.getNodeClient(context).getConnectedNodes();
             try {
 

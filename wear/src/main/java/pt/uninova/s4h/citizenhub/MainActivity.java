@@ -155,25 +155,26 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     private void setScreenInfoText(){
         if (wearOSAgent)
-            textInfoPhone.setText("Phone connected");
+            textInfoPhone.setText(R.string.show_data_phone_connected);
         else
-            textInfoPhone.setText("Phone not connected");
+            textInfoPhone.setText(R.string.show_data_phone_not_connected);
         if (wearOSStepsProtocol && wearOSHeartRateProtocol) {
-            textInfoPhone.setText("Phone connected");
-            textInfoProtocols.setText("Sending: Heart Rate, Steps");
+            textInfoPhone.setText(R.string.show_data_phone_connected);
+            textInfoProtocols.setText(R.string.show_data_protocols_heartrate_steps);
         }
         else if (wearOSHeartRateProtocol)
         {
-            textInfoPhone.setText("Phone connected");
-            textInfoProtocols.setText("Sending: Heart Rate");
+            textInfoPhone.setText(R.string.show_data_phone_connected);
+            textInfoProtocols.setText(R.string.show_data_protocols_heartrate);
         }
         else if (wearOSStepsProtocol)
         {
-            textInfoPhone.setText("Phone connected");
-            textInfoProtocols.setText("Sending: Steps");
+            textInfoPhone.setText(R.string.show_data_phone_connected);
+            textInfoProtocols.setText(R.string.show_data_protocols_steps);
         }
-        else
-            textInfoProtocols.setText("Not sending data");
+        else{
+            textInfoProtocols.setText(R.string.show_data_protocols_no_data);
+        }
     }
 
     class SendMessage extends Thread {
