@@ -21,7 +21,6 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
     final String TAG = "WearOSHeartRateProtocol";
     CitizenHubService service;
 
-
     protected WearOSHeartRateProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent, CitizenHubService service) {
         super(ID, agent,sampleDispatcher);
         Log.d(TAG, "Entered");

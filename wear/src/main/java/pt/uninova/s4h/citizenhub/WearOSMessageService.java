@@ -3,14 +3,17 @@ package pt.uninova.s4h.citizenhub;
 import android.content.Intent;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
+
+import java.util.Arrays;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class WearOSMessageService extends WearableListenerService {
-    String citizenhubPath = "/citizenhub_path_";
+    String citizenHubPath = "/citizenhub_path_";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        if(messageEvent.getPath().equals(citizenhubPath+"WearOSHeartRateProtocol"))
+        if(messageEvent.getPath().equals(citizenHubPath+"WearOSHeartRateProtocol"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
@@ -18,7 +21,7 @@ public class WearOSMessageService extends WearableListenerService {
             messageIntent.putExtra("WearOSHeartRateProtocol", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenhubPath+"WearOSStepsProtocol"))
+        if(messageEvent.getPath().equals(citizenHubPath+"WearOSStepsProtocol"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
@@ -26,7 +29,7 @@ public class WearOSMessageService extends WearableListenerService {
             messageIntent.putExtra("WearOSStepsProtocol", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenhubPath+"WearOSAgent"))
+        if(messageEvent.getPath().equals(citizenHubPath+"WearOSAgent"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();

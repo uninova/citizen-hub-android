@@ -32,7 +32,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     String nodeIdString;
     double heartRate = 0;
-    String citizenhubPath = "/citizenhub_path_";
+    String citizenHubPath = "/citizenhub_path_";
     int stepsTotal = 0;
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
     private SensorManager mSensorManager;
@@ -124,13 +124,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 System.out.println(value + " " + now.getTime() + " " + ++counter);
                 break;
         }
-        String msg = "";
-        msg += value;
-        msg += ",";
-        msg += now.getTime();
-        msg += ",";
-        msg += kind.getId();
-        String datapath = citizenhubPath + nodeIdString;
+        String msg = value + "," + now.getTime() + "," + kind.getId();
+        String datapath = citizenHubPath + nodeIdString;
         new SendMessage(datapath, msg).start();
     }
 

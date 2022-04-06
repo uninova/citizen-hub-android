@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
-import android.content.Context;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +11,6 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
