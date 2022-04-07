@@ -37,7 +37,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*" android:pathPrefix="/citizenhub_path_" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/citizenhub_" />
             </intent-filter>
         </service>
     </application>

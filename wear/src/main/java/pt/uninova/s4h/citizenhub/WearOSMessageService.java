@@ -9,7 +9,7 @@ import java.util.Arrays;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class WearOSMessageService extends WearableListenerService {
-    String citizenHubPath = "/citizenhub_path_";
+    String citizenHubPath = "/citizenhub_";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {

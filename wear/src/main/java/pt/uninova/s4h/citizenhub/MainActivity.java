@@ -32,7 +32,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     String nodeIdString;
     double heartRate = 0;
-    String citizenHubPath = "/citizenhub_path_";
+    String citizenHubPath = "/citizenhub_";
     int stepsTotal = 0;
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
     private SensorManager mSensorManager;

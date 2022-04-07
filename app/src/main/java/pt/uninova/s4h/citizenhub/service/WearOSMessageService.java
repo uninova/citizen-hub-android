@@ -25,7 +25,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
     private String nodeIdString, mobileIDString;
     private static final String TAG = "WearOSMessageService";
     private Map<String,WearOSConnection> connectionMap = new HashMap<>();
-    String citizenHubPath = "/citizenhub_path_";
+    String citizenHubPath = "/citizenhub_";
     String checkConnectionPath = "checkConnection";
     Context appContext;
     private MessageClient client;
@@ -97,7 +97,6 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
 
         client = Wearable.getMessageClient(service);
         client.addListener(listener);
-
 
         return wearOSConnection;
     }
