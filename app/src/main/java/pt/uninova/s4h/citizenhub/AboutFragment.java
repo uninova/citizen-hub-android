@@ -37,7 +37,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
+                emailIntent.setType(getString(R.string.fragment_about_email_type));
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.about_page_emailTo_string)});
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.about_page_string_email_subject));
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");

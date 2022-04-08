@@ -381,6 +381,14 @@
     <string name="login_fragment_login_text_view">By authenticating you will be able to upload and keep track of your health reports.</string>
     <string name="fragment_smart4health_account_log_in_title">Login</string>
     <string name="fragment_authentication_skip_text">You may skip authentication and authenticate later\n\n<b><i>Skip</i></b></string>
+    <string name="fragment_about_email_type">plain/text</string>
+    <string name="fragment_authentication_spannable_string_citizen">Citizen</string>
+    <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
+    <string name="database_table_name_blood_pressure">blood_pressure</string>
+    <string name="database_blood_pressure_column_id">sample_id</string>
+    <string name="fragment_device_add_name">\"Name: \"</string>
+    <string name="fragment_device_add_address">\"Address: \"</string>
+    <string name="fragment_device_search_posture_sensor_name">Posture Sensor</string>
 
 </resources>
 

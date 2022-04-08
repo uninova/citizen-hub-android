@@ -186,7 +186,7 @@ public class DeviceSearchFragment extends Fragment {
         scanner.start((address, name) -> {
             buildRecycleView(requireView());
             if (address.equals("0C:B2:B7:39:99:63"))
-                name = "Posture Sensor";
+                name = getString(R.string.fragment_device_search_posture_sensor_name);
 
             Device device = new Device(address, name == null ? address : name, ConnectionKind.BLUETOOTH);
 

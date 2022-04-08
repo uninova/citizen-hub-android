@@ -36,7 +36,7 @@ public class AuthenticationFragment extends Fragment {
 
         final View result = inflater.inflate(R.layout.fragment_authentication, container, false);
         TextView textView = result.findViewById(R.id.citizen_hub_text_logo);
-        Spannable word = new SpannableString("Citizen");
+        Spannable word = new SpannableString(getString(R.string.fragment_authentication_spannable_string_citizen));
 
         word.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorS4HDarkBlue)), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

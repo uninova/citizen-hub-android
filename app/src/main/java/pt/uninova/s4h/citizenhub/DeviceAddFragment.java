@@ -36,7 +36,7 @@ public class DeviceAddFragment extends Fragment {
         TextView detailText = result.findViewById(R.id.text_add_fragment);
         DeviceRecord deviceRecord = DeviceListFragment.deviceRecordForSettings;
 
-        detailText.setText("Name: " + deviceRecord.getName() + "\n" + "Address: " + deviceRecord.getAddress());
+        detailText.setText(getString(R.string.fragment_device_add_name) + deviceRecord.getName() + "\n" + getString(R.string.fragment_device_add_address) + deviceRecord.getAddress());
 
         return result;
     }

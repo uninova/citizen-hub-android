@@ -257,8 +257,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         textSteps = findViewById(R.id.textSteps);
         textHeartRate = findViewById(R.id.textHearRate);
 
-        textSteps.setText("Steps: " + stepsTotal);
-        textHeartRate.setText("Heart rate: " + heartRate);
+        textSteps.setText(getString(R.string.main_activity_steps) + stepsTotal);
+        textHeartRate.setText(getString(R.string.main_activity_heart_rate) + heartRate);
 
         //Register the local broadcast receiver//
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -279,7 +279,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         //Make sure you’re using the same path value//
         new GetLocalNode().start();
 
-        if (msg.equals("Check Connection")) {
+        if (msg.equals(getString(R.string.main_activity_check_connection_message))) {
             String datapath = citizenhubPath + checkConnectionPath;
             new SendMessage(datapath, msg).start();
 
@@ -291,7 +291,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             if (msgArray[3].equals("STEPS")) {
                 stepsTotal += (int) Double.parseDouble(msgArray[1]);
                 System.out.println((int) Double.parseDouble(msgArray[1]));
-                textSteps.setText("Steps: " + stepsTotal);
+                textSteps.setText(getString(R.string.main_activity_steps) + stepsTotal);
             }
             String datapath = citizenhubPath + nodeIdString;
             new SendMessage(datapath, newMsg).start();
@@ -355,11 +355,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         switch (event.sensor.getType()) {
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
-                textHeartRate.setText("Heart rate: " + value + " bpm");
+                textHeartRate.setText(getString(R.string.main_activity_heart_rate) + value + getString(R.string.main_activity_heart_rate_units));
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
-                textSteps.setText("Steps: " + (stepsTotal += value));
+                textSteps.setText(getString(R.string.main_activity_steps) + (stepsTotal += value));
                 System.out.println(value + " " + now.getTime() + " " + ++counter);
                 break;
         }
@@ -485,11 +485,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             }
             if ((onMessageReceived.equals("HeartRate"))) {
                 Log.i("onMessageReceived", "just got here " + onMessageReceived);
-                onClickMessage = "You have a Heart Rate of: " + heartRate + ".";
+                onClickMessage = getString(R.string.main_activity_heart_rate_message) + heartRate + ".";
                 //System.out.println("BROADCAST RECEIVER" + heartRate);
                 getInfo(onClickMessage);
             } else if (onMessageReceived.equals("Steps")) {
-                onClickMessage = "You have walked a total of " + steps + " steps today.";
+                onClickMessage = getString(R.string.main_activity_steps_message) + steps + getString(R.string.main_activity_steps_message_2);
                 //System.out.println("BROADCAST RECEIVER" + heartRate);
                 getInfo(onClickMessage);
             }

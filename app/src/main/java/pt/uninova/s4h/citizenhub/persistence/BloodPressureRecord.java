@@ -6,7 +6,9 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-@Entity(tableName = "blood_pressure",
+import pt.uninova.s4h.citizenhub.R;
+
+@Entity(tableName ="blood_pressure",
         indices = @Index(value = {"id"}, unique = true))
 
 public class BloodPressureRecord {
