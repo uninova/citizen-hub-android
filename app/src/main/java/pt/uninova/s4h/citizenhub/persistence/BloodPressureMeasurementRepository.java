@@ -2,14 +2,6 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-
-import pt.uninova.util.WorkTimeRangeConverter;
-
 public class BloodPressureMeasurementRepository {
 
         private final BloodPressureDao bloodPressureDao;
@@ -20,7 +12,7 @@ public class BloodPressureMeasurementRepository {
             bloodPressureDao = citizenHubDatabase.bloodPressureDao();
         }
 
-        public void add(BloodPressureMeasurement measurement) {
+        public void add(BloodPressureRecord measurement) {
             CitizenHubDatabase.executorService().execute(() -> {
                 bloodPressureDao.insert(measurement);
             });
