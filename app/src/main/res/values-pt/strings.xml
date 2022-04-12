@@ -354,4 +354,13 @@
     <item>Sábado</item>
     <item>Domingo</item>
     </string-array>
+    <string name="fragment_report_text_view_no_data_summary_nodevices">Parece que não tem dispositivos conectados. Verifique a secção Dispositivos no menu lateral?</string>
+    <string name="login_fragment_login_text_view">Ao autenticar-se será capaz de fazer upload e acompanhar os seus relatórios de saúde.</string>
+    <string name="fragment_smart4health_account_log_in_title">Login</string>
+    <string name="fragment_authentication_skip_text">Pode saltar a autenticação e autenticar-se mais tarde Skip</string>
+    <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
+    <string name="fragment_device_add_name">\"Nome: \"</string>
+    <string name="fragment_device_add_address">\"Endereço: \"</string>
+    <string name="fragment_device_search_posture_sensor_name">Sensor de Postura</string>
+    <string name="fragment_settings_work_days">Dias de trabalho</string>
 </resources>
