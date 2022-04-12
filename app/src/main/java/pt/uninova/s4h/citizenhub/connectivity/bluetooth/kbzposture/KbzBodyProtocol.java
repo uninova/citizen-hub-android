@@ -1,26 +1,24 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.SittingMeasurement;
-import pt.uninova.s4h.citizenhub.data.StandingMeasurement;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.util.messaging.Observer;
 import pt.uninova.util.time.Accumulator;
+import pt.uninova.util.time.FlushingAccumulator;
 
 public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
 
@@ -57,12 +55,25 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
         }
     };
 
-    protected KbzBodyProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, UprightGo2Agent agent) {
-        super(ID, connection, agent);
+    private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> connectionStateObserver = new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
+        @Override
+        public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
+            if (value.getNewState() == BluetoothConnectionState.READY) {
+                KbzBodyProtocol.this.setState(ProtocolState.ENABLED);
+                KbzBodyProtocol.this.getConnection().writeCharacteristic(KBZ_SERVICE, KBZ_CHARACTERISTIC, new byte[]{1 & 0xFF});
+            } else {
+                KbzBodyProtocol.this.setState(ProtocolState.SUSPENDED);
+                posture.stop();
+            }
+        }
+    };
+
+    protected KbzBodyProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, KbzPostureAgent agent) {
+        super(ID, connection, dispatcher, agent);
 
         this.motion = new Accumulator<>();
         this.position = new Accumulator<>();
-        this.posture = new Accumulator<>();
+        this.posture = new FlushingAccumulator<>(5000);
 
         this.posture.addObserver(value -> {
             final double seconds = value.getSecond().toNanos() * 0.000000001;
@@ -90,6 +101,7 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
     public void disable() {
         getConnection().removeCharacteristicListener(changeListener);
         getConnection().removeCharacteristicListener(writeListener);
+        getConnection().removeConnectionStateChangeListener(connectionStateObserver);
 
         super.disable();
     }
@@ -98,6 +110,7 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
     public void enable() {
         getConnection().addCharacteristicListener(changeListener);
         getConnection().addCharacteristicListener(writeListener);
+        getConnection().addConnectionStateChangeListener(connectionStateObserver);
 
         getConnection().writeCharacteristic(KBZ_SERVICE, KBZ_CHARACTERISTIC, new byte[]{1 & 0xFF});
 
@@ -110,7 +123,7 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
         int offset = 2;
 
         for (int i = 0; i < length; i++) {
-            doubles[i] = RATIOS[i % 3] * shift(byteToDouble(bytes[offset++], bytes[offset++]));
+            doubles[i] = RATIOS[i / 3] * shift(byteToDouble(bytes[offset++], bytes[offset++]));
         }
 
         return doubles;
