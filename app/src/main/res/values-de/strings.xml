@@ -322,4 +322,12 @@
     <string name="fragment_device_configuration_sensor_calibration_text">Sensorkalibrierung</string>
     <string name="fragment_device_configuration_add_loading_features_text">"Lade Geräteigenschaften... "</string>
     <string name="medex_fragment_dialog_textview">"Wenn Sie kein Medx-Benutzer sind oder diesen Inhalt ausblenden möchten, können Sie dies jederzeit in den Einstellungen ändern. "</string>
+    <string name="login_fragment_login_text_view">Durch die Authentifizierung werden Sie in der Lage sein, Ihre Gesundheitsberichte hochzuladen und zu verfolgen.</string>
+    <string name="fragment_smart4health_account_log_in_title">Anmelden</string>
+    <string name="fragment_authentication_skip_text">Sie können die Authentifizierung überspringen und später authentifizieren Skip</string>
+    <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
+    <string name="fragment_device_add_name">\"Name: \"</string>
+    <string name="fragment_device_add_address">\"Adresse: \"</string>
+    <string name="fragment_device_search_posture_sensor_name">Haltungssensor</string>
+    <string name="fragment_report_text_view_no_data_summary_nodevices">Sie scheinen keine Geräte angeschlossen zu haben. Haben Sie den Bereich Geräte im Seitenmenü überprüft?</string>
 </resources>
