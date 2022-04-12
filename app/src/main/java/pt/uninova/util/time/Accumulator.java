@@ -16,6 +16,9 @@ public class Accumulator<T> {
 
     public Accumulator() {
         this.dispatcher = new Dispatcher<>();
+
+        this.timestamp = null;
+        this.value = null;
     }
 
     public void addObserver(Observer<Pair<T, Duration>> observer) {
@@ -31,26 +34,23 @@ public class Accumulator<T> {
     }
 
     public void flush(Instant timestamp) {
-        notify(value, Duration.between(timestamp, this.timestamp));
+        if (this.timestamp != null) {
+            notify(timestamp);
 
-        this.timestamp = timestamp;
+            this.timestamp = timestamp;
+        }
     }
 
-    private void notify(T value, Duration duration) {
-        dispatcher.dispatch(new Pair<>(value, duration));
+    public boolean isRunning() {
+        return this.timestamp != null;
+    }
+
+    private void notify(Instant timestamp) {
+        dispatcher.dispatch(new Pair<>(value, Duration.between(this.timestamp, timestamp)));
     }
 
     public void removeObserver(Observer<Pair<T, Duration>> observer) {
         dispatcher.removeObserver(observer);
-    }
-
-    public void reset(T value) {
-        reset(value, Instant.now());
-    }
-
-    public void reset(T value, Instant timestamp) {
-        this.value = value;
-        this.timestamp = timestamp;
     }
 
     public void set(T value) {
@@ -58,11 +58,28 @@ public class Accumulator<T> {
     }
 
     public void set(T value, Instant timestamp) {
-        if (value != this.value) {
-            notify(value, Duration.between(timestamp, this.timestamp));
+        if (this.timestamp == null) {
+            this.timestamp = timestamp;
+            this.value = value;
+        } else if (!this.value.equals(value)) {
+            notify(timestamp);
+
+            this.timestamp = timestamp;
+            this.value = value;
         }
 
-        this.value = value;
-        this.timestamp = timestamp;
+    }
+
+    public void stop() {
+        stop(Instant.now());
+    }
+
+    public void stop(Instant timestamp) {
+        if (this.timestamp != null) {
+            notify(timestamp);
+        }
+
+        this.value = null;
+        this.timestamp = null;
     }
 }
