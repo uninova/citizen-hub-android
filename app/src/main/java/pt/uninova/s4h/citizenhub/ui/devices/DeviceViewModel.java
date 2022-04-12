@@ -146,7 +146,9 @@ public class DeviceViewModel extends AndroidViewModel {
         final Device device = getSelectedDevice().getValue();
         final Agent agent = agentOrchestrator.getAgent(device);
 
-        agent.disable();
+        if (agent != null) {
+            agent.disable();
+        }
 
         agentOrchestrator.remove(device);
     }
