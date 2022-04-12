@@ -10,12 +10,6 @@ public interface ChannelListener {
 
     void onChange(double value, Date timestamp);
 
-    void onRead(byte[] value);
-
-    void onReadFailure(byte[] value, int status);
-
     void onWrite(byte[] value);
-
-    void onWriteFailure(byte[] value, int status);
 
 }
