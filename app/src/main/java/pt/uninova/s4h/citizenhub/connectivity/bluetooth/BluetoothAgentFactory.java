@@ -8,6 +8,7 @@ import android.content.Context;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
@@ -51,6 +52,8 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                         observer.observe(new UprightGo2Agent(source));
                     }else if (name.startsWith("A&D")) {
                         observer.observe(new BloodPressureMonitorAgent(source));
+                    }else if (name.startsWith("ZTEZ")) {
+                        observer.observe(new DigitsoleAgent(source, context));
                     } else {
                         observer.observe(null);
                     }

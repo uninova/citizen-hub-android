@@ -11,9 +11,7 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
-
-public class WearOSConnection /*extends AbstractProtocol */ {
-    private static final String TAG = "WearOSConnection";
+public class WearOSConnection {
     private final String address;
     private final Dispatcher<StateChangedMessage<WearOSConnectionState, WearOSConnection>> stateChangedMessageDispatcher;
     private final Map<MeasurementKind, Set<ChannelListener>> channelListenerMap;
@@ -35,11 +33,6 @@ public class WearOSConnection /*extends AbstractProtocol */ {
         stateChangedMessageDispatcher.addObserver(listener);
     }
 
-    public void removeConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, WearOSConnection>> listener) {
-        stateChangedMessageDispatcher.removeObserver(listener);
-    }
-
-
     public void addChannelListener(ChannelListener listener) {
         final MeasurementKind key = listener.getChannelName();
 
@@ -48,7 +41,6 @@ public class WearOSConnection /*extends AbstractProtocol */ {
                 channelListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<ChannelListener, Boolean>()));
             }
         }
-
         channelListenerMap.get(key).add(listener);
     }
 
@@ -76,8 +68,6 @@ public class WearOSConnection /*extends AbstractProtocol */ {
     public void close() {
         channelListenerMap.clear();
         stateChangedMessageDispatcher.close();
-
-
     }
 
     private void setState(WearOSConnectionState value) {
@@ -92,7 +82,6 @@ public class WearOSConnection /*extends AbstractProtocol */ {
     public void disable() {
         setState(WearOSConnectionState.DISCONNECTED);
     }
-
 
     public void enable() {
         setState(WearOSConnectionState.READY);
