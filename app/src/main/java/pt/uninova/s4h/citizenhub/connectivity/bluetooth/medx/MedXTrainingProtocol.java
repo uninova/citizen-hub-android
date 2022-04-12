@@ -11,8 +11,8 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.MedXTrainingMeasurement;
+import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.util.messaging.Dispatcher;
 
@@ -20,8 +20,8 @@ public class MedXTrainingProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.medx.medxtraining");
 
-    private static final UUID UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
-    private static final UUID UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
+    public static final UUID UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
+    public static final UUID UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
 
     public MedXTrainingProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, BluetoothAgent agent) {
         super(ID, connection, sampleDispatcher, agent);

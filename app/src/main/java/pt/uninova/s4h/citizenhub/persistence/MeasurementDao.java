@@ -1,11 +1,17 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
-import pt.uninova.util.time.LocalDateInterval;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.TypeConverters;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+
+import pt.uninova.util.time.LocalDateInterval;
 
 @Dao
 public interface MeasurementDao {
@@ -29,13 +35,17 @@ public interface MeasurementDao {
     @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
     LiveData<List<MeasurementAggregate>> getAggregateLive(LocalDate from, LocalDate to);
 
-    @Query("SELECT MIN(timestamp) AS lower, MAX(timestamp) AS upper FROM measurement;")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<LocalDateInterval> getDateBoundsLive();
-
     @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> getDates(LocalDate from, LocalDate to);
+
+    @Query("SELECT (timestamp - (timestamp / 86400) * 86400) / 3600 AS hour, SUM(value) AS value FROM measurement WHERE timestamp >= :from AND timestamp < :to AND kind_id = :measurementKind GROUP BY hour ORDER BY hour;")
+    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    List<HourlyValue> getHourlySum(Instant from, Instant to, MeasurementKind measurementKind);
+
+    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM measurement WHERE timestamp >= :from AND kind_id = :measurementKind" )
+    @TypeConverters({EpochTypeConverter.class, MeasurementKindTypeConverter.class})
+    List<LocalDate> getDaysWithValues(LocalDate from, MeasurementKind measurementKind);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Measurement measurement);

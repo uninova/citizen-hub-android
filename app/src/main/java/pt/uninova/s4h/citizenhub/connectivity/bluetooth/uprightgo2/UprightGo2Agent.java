@@ -10,7 +10,6 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class UprightGo2Agent extends BluetoothAgent {

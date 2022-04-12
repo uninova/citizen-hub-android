@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:scaleType="fitEnd"
         android:src="@drawable/ic_citizen_hub_logo_side_color"
         app:layout_constraintBottom_toBottomOf="parent"

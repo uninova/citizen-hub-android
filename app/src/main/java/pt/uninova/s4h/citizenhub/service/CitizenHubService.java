@@ -3,20 +3,37 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+import androidx.preference.PreferenceManager;
+import androidx.work.WorkManager;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
+import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
+import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOsAgentFactory;
@@ -27,47 +44,60 @@ import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
+import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
 import pt.uninova.util.messaging.Observer;
 
+public class CitizenHubService extends LifecycleService {
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+    public class Binder extends android.os.Binder {
+        public CitizenHubService getService() {
+            return CitizenHubService.this;
+        }
+    }
 
-public class CitizenHubService extends LifecycleService implements WearOSServiceBound {
+    public static void bind(Context context, ServiceConnection connection) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
 
-    boolean mBound = false;
+        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    public static void start(Context context) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
+
+        context.startService(intent);
+    }
+
+    public static void stop(Context context) {
+        final Intent intent = new Intent(context, CitizenHubService.class);
+
+        context.stopService(intent);
+    }
+
+    public static void unbind(Context context, ServiceConnection connection) {
+        context.unbindService(connection);
+    }
+
     private final static CharSequence NOTIFICATION_TITLE = "Citizen Hub";
     private AgentOrchestrator orchestrator;
     private NotificationManager notificationManager;
     private WearOSMessageService wearOSMessageService;
-    private WearOSServiceBinder wearOSServiceBinder;
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            WearOSServiceBinder binder = (WearOSServiceBinder) service;
-            wearOSMessageService = binder.getService();
-            mBound = true;
-        }
+    private final IBinder binder;
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
+    private WorkOrchestrator workOrchestrator;
 
+    private SharedPreferences preferences;
 
     public CitizenHubService() {
-        super();
+        this.binder = new Binder();
     }
 
     private Notification buildNotification() {
@@ -89,8 +119,11 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         return orchestrator;
     }
 
-    public WearOSMessageService getWearOSMessageService() {
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
 
+    public WearOSMessageService getWearOSMessageService() {
         return wearOSMessageService;
     }
 
@@ -139,6 +172,38 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         };
 
         orchestrator = new AgentOrchestrator(agentFactoryMap, databaseWriter);
+        orchestrator.addListener(new AgentOrchestratorListener() {
+            @Override
+            public void onAgentAttached(Device device, Agent agent) {
+                agent.addAgentListener(new AgentListener() {
+                    @Override
+                    public void onMeasurementDisabled(Agent agent, MeasurementKind measurementKind) {
+                        featureRepository.remove(new Feature(agent.getSource().getAddress(), measurementKind));
+                    }
+
+                    @Override
+                    public void onMeasurementEnabled(Agent agent, MeasurementKind measurementKind) {
+                        featureRepository.add(new Feature(agent.getSource().getAddress(), measurementKind));
+                    }
+                });
+            }
+
+            @Override
+            public void onDeviceAdded(Device device) {
+                deviceRepository.add(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+            }
+
+            @Override
+            public void onDeviceRemoved(Device device) {
+                final Agent agent = getAgentOrchestrator().getAgent(device);
+
+                if (agent != null) {
+                    agent.removeAllAgentListeners();
+                }
+
+                deviceRepository.remove(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+            }
+        });
 
         deviceRepository.obtainAll(value -> {
             for (DeviceRecord i : value) {
@@ -158,7 +223,7 @@ public class CitizenHubService extends LifecycleService implements WearOSService
     public IBinder onBind(Intent intent) {
         super.onBind(intent);
 
-        return new CitizenHubServiceBinder(this);
+        return binder;
     }
 
     @Override
@@ -171,9 +236,31 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         startForeground(1, buildNotification());
         wearOSMessageService = new WearOSMessageService();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        /*
+        LocalDateTime l = LocalDateTime.now();
+
+        MeasurementRepository repo = new MeasurementRepository(getApplicationContext());
+        Random random = new Random();
+
+        for (int i = 0; i < 1000; i++) {
+            Date d = Date.from(Instant.ofEpochSecond(l.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(l))));
+            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.GOOD_POSTURE, random.nextDouble() * 10));
+            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.BAD_POSTURE, random.nextDouble() * 10));
+            l = l.plusSeconds(random.nextInt(300));
+        }
+        */
+
         initAgentOrchestrator();
+        initWorkOrchestrator();
     }
 
+    private void initWorkOrchestrator() {
+        workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(this));
+
+        workOrchestrator.addPeriodicWork(SmartBearUploadWorker.class, 12, TimeUnit.HOURS);
+    }
 
     @Override
     public void onDestroy() {
@@ -189,8 +276,8 @@ public class CitizenHubService extends LifecycleService implements WearOSService
         return START_STICKY;
     }
 
-    @Override
     public WearOSMessageService getService() {
         return wearOSMessageService;
     }
+
 }

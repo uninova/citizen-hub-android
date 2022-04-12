@@ -3,13 +3,10 @@ package pt.uninova.s4h.citizenhub.persistence;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 
 import org.jetbrains.annotations.NotNull;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "feature", primaryKeys = {"device_address", "kind_id"}/*, foreignKeys = @ForeignKey(onDelete = CASCADE, entity = Device.class, parentColumns = "address", childColumns = "device_address")*/)
 public class Feature {

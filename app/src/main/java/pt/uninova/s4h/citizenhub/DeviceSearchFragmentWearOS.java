@@ -1,14 +1,12 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -21,25 +19,19 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 
 public class DeviceSearchFragmentWearOS extends Fragment {
 
-    private static final int PERMISSIONS_REQUEST_CODE = 77;
-    private static final int FEATURE_BLUETOOTH_STATE = 78;
-
     private DeviceListAdapter adapter;
-    private ArrayList<DeviceListItem> deviceList;
     private DeviceViewModel model;
-    public static DeviceRecord deviceRecordForSettings;
+
     LayoutInflater localInflater;
     ViewGroup localContainer;
     private GoogleApiClient client;
@@ -55,7 +47,6 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         // model.getDevices().observe(getViewLifecycleOwner(), this::onDeviceUpdate);
-        cleanList();
         buildRecycleView(result);
 
         //Check if WearOS is installed
@@ -65,11 +56,10 @@ public class DeviceSearchFragmentWearOS extends Fragment {
         retrieveDeviceNode();
 
 
-
         return result;
     }
 
-    private void checkWearOSPackage(PackageManager packageManager){
+    private void checkWearOSPackage(PackageManager packageManager) {
         /*
         try {
             packageManager.getPackageInfo("com.google.android.wearable.app", PackageManager.GET_META_DATA);
@@ -107,15 +97,14 @@ public class DeviceSearchFragmentWearOS extends Fragment {
                 List<Node> nodes = result.getNodes();
                 if (nodes.size() > 0) {
                     //TODO: showing multiple devices is not tested yet
-                    for (Node node : nodes)
-                    {
+                    for (Node node : nodes) {
                         String nodeId = node.getId();
                         String nodeName = node.getDisplayName();
                         System.out.println("node found success!" + " " + nodeId + " " + nodeName);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                addItem(nodeName,nodeId);
+                                addItem(nodeName, nodeId);
                             }
                         });
                     }
@@ -129,55 +118,28 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeId,nodeName, ConnectionKind.WEAROS);
-        deviceList.add(new DeviceListItem(device, R.drawable.ic_watch_off, R.drawable.ic_settings_off));
-        adapter.notifyItemInserted(0);
-    }
-
-    private void onDeviceUpdate(List<DeviceRecord> deviceRecords) {
-
-    }
-
-    private void cleanList() {
-        deviceList = new ArrayList<>();
+        Device device = new Device(nodeId, nodeName, ConnectionKind.WEAROS);
+        adapter.addItem(new DeviceListItem(device, R.drawable.ic_watch_off));
     }
 
     private void buildRecycleView(View result) {
         RecyclerView recyclerView = result.findViewById(R.id.recyclerView_searchList);
         //recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new DeviceListAdapter(deviceList);
+        adapter = new DeviceListAdapter(item -> {
+            model.selectDevice(item.getDevice());
+            Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
+        });
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        adapter.setOnItemClickListener(new DeviceListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                model.setDevice(deviceList.get(position).getDevice());
-                Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentWearOSDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
-
-                DeviceListFragment.deviceRecordForSettings = new DeviceRecord(deviceList.get(position).getName(),
-                        deviceList.get(position).getAddress(), ConnectionKind.WEAROS, StateKind.INACTIVE, null);
-            }
-
-            @Override
-            public void onSettingsClick(int position) {
-            }
-        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override

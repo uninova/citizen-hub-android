@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.preference.PreferenceManager;
 
-import care.data4life.sdk.Data4LifeClient;
-
 public class AccountsViewModel extends AndroidViewModel {
 
     private final SharedPreferences preferences;
@@ -38,6 +36,14 @@ public class AccountsViewModel extends AndroidViewModel {
 
     }
 
+    public void enableSmartHealthAccount(){
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putBoolean("accounts.smart4health.enabled",true);
+
+        editor.apply();
+    }
+
     public int getSmartBearId() {
         return preferences.getInt("accounts.smartbear.id", -1);
     }
@@ -58,4 +64,11 @@ public class AccountsViewModel extends AndroidViewModel {
         editor.apply();
     }
 
+    public void disableSmart4HealthAccount() {
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.remove("accounts.smart4health.id");
+        editor.putBoolean("accounts.smart4health.enabled", false);
+        editor.apply();
+    }
 }

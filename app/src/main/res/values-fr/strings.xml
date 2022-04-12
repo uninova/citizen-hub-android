@@ -132,7 +132,7 @@
     <string name="fragment_report_detail_title_heart_rate">Fréquence cardiaque</string>
     <string name="fragment_report_detail_title_not_ok_posture">s</string>
     <string name="fragment_report_detail_title_posture">Posture</string>
-    <string name="fragment_report_detail_title_steps">Pas</string>
+    <string name="fragment_report_detail_title_activity">Pas</string>
     <string name="fragment_report_detail_units_calories">calories</string>
     <string name="fragment_report_detail_units_distance">m</string>
     <string name="fragment_report_detail_units_heart_rate">bpm</string>
@@ -187,13 +187,13 @@
     <string name="fragment_summary_text_calories_burned">Kilocalories brûlées</string>
     <string name="fragment_summary_text_distance_walked">Distance parcourue</string>
     <string name="fragment_summary_text_posture">Posture</string>
-    <string name="fragment_summary_text_steps_taken">Nombre de pas effectués</string>
+    <string name="fragment_summary_text_activity">Nombre de pas effectués</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f calories</string>
     <string name="fragment_summary_text_view_distance_text">1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">Votre fréquence cardiaque moyenne est  %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s non OK</string>
-    <string name="fragment_summary_text_view_steps_text">%1$.0f pas</string>
+    <string name="fragment_summary_text_view_activity_text">%1$.0f pas</string>
     <string name="fragment_user_label">Profil Utilisateur</string>
     <string name="layout_activity_add_device_address">Adresse</string>
     <string name="layout_activity_add_device_name">Nom</string>

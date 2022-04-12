@@ -7,4 +7,8 @@
         android:title="@string/fragment_smart4health_account_log_out_title"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/smart4health_account_fragment_menu_log_in"
+        android:title="@string/fragment_smart4health_account_log_in_title"
+        app:showAsAction="never" />
 </menu>

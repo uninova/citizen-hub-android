@@ -1,10 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;

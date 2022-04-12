@@ -5,16 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/authentication_fragment_skip_login"
+        style="@style/TextAppearance.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="548dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/neo_sans_pro_regular"
+        android:includeFontPadding="false"
+        android:text="@string/fragment_authentication_skip_text"
+        android:textAllCaps="false"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/authentication_fragment_login_text_view"
+        style="@style/AppTheme.About.TextView"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:text="@string/fragment_authentication_login_text_view"
+        android:textColor="@color/colorS4HDarkGreyVariant"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_login_button" />
+
+    <Button
+        android:id="@+id/authentication_fragment_login_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_width="70dp"
+        android:layout_marginTop="432dp"
+        android:background="@android:color/transparent"
+        android:includeFontPadding="false"
+        android:text="@string/fragment_authentication_button_login"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/authentication_fragment_login_text_view2"
+        style="@style/AppTheme.About.TextView"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="32dp"
-        android:textSize="6pt"
+        android:layout_marginBottom="12dp"
         android:gravity="center"
-        style="@style/AppTheme.About.TextView"
-        android:textColor="@color/colorS4HDarkGreyVariant"
         android:text="@string/fragment_authentication_login_requirement_text"
+        android:textColor="@color/colorS4HDarkGreyVariant"
+        android:textSize="6pt"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -32,35 +79,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img_citizen_hub_logo_png" />
 
-    <Button
-        android:id="@+id/authentication_fragment_login_button"
-        android:layout_marginTop="424dp"
-        android:layout_width="70dp"
-        android:background="@android:color/transparent"
-        style="@style/Widget.Citizen.Button"
-        android:includeFontPadding="false"
-        android:text="@string/fragment_authentication_button_login"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/authentication_fragment_login_text_view"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/authentication_fragment_login_text_view"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/authentication_fragment_login_text_view"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:textSize="6pt"
-        android:gravity="center"
-        android:text="@string/fragment_authentication_login_text_view"
-        style="@style/AppTheme.About.TextView"
-        android:textColor="@color/colorS4HDarkGreyVariant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_login_button" />
-
 
     <TextView
         android:id="@+id/authentication_fragment_text_powered_by"
@@ -71,8 +89,8 @@
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/primus_bold"
         android:text="@string/fragment_authentication_text_powered_by"
-        android:textSize="4.3pt"
         android:textColor="@color/colorS4HDarkBlue"
+        android:textSize="4.3pt"
         app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

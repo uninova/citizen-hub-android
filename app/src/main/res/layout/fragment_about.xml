@@ -6,27 +6,112 @@
     android:layout_height="match_parent"
     tools:context=".AboutFragment">
 
-    <ImageView
-        android:id="@+id/image_about_citizenhub_logo"
-        android:layout_width="207dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@+id/text_ab"
-        android:src="@drawable/ic_citizen_hub_logo_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/app_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/developed_by"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/about_privacy_policy_button"
-        style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="99dp"
-        android:layout_marginBottom="257dp"
-        android:text="@string/fragment_about_button_text_privacy_policy_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/about_licenses_button"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
+        <ImageView
+            android:id="@+id/image_about_citizenhub_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:contentDescription="@+id/text_ab"
+            android:src="@drawable/ic_citizen_hub_logo_text" />
+
+        <TextView
+            android:id="@+id/text_about_versioning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/neosanspro"
+            android:text="@string/versionName"
+            android:textAlignment="center"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/developed_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/buttons"
+        app:layout_constraintTop_toBottomOf="@id/app_logo">
+
+        <TextView
+            android:id="@+id/text_about_1paragraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/neosanspro"
+            android:text="@string/fragment_about_developedBy"
+            android:textAlignment="center"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/logos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_logo_uninova"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="0.5"
+                android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
+                android:src="@drawable/img_uninova_logo" />
+
+            <ImageView
+                android:id="@+id/img_logo_kbz"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_weight="0.5"
+                android:contentDescription="@string/fragment_about_image_view_logo_kbz"
+                android:src="@drawable/img_kbz_logo" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/text_about_contact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/developed_by">
+
+        <Button
+            android:id="@+id/about_privacy_policy_button"
+            style="@style/Widget.Citizen.Button"
+            android:layout_gravity="end"
+            android:text="@string/fragment_about_button_text_privacy_policy_button" />
+
+        <Button
+            android:id="@+id/about_licenses_button"
+            style="@style/Widget.Citizen.Button"
+            android:layout_gravity="end"
+            android:text="@string/fragment_about_button_text_licenses_of_use" />
+
+        <Button
+            android:id="@+id/about_open_sources_button"
+            style="@style/Widget.Citizen.Button"
+            android:layout_gravity="end"
+            android:text="@string/fragment_open_source_licenses_text_view_info" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_about_contact"
@@ -37,122 +122,45 @@
         android:text="@string/fragment_about_contact_email"
         android:textAlignment="center"
         android:textColorLink="@color/colorS4HLightBlue"
-        android:textSize="5.5pt"
-        app:layout_constraintBottom_toTopOf="@+id/text_about_ce_info"
-        app:layout_constraintEnd_toEndOf="@+id/about_open_sources_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/about_open_sources_button" />
-
-    <Button
-        android:id="@+id/about_licenses_button"
-        style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="4dp"
-        android:text="@string/fragment_about_button_text_licenses_of_use"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_privacy_policy_button" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/about_open_sources_button"
-        style="@style/Widget.Citizen.Button"
-        android:layout_marginTop="4dp"
-        android:text="@string/fragment_open_source_licenses_text_view_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_licenses_button" />
-
-    <ImageView
-        android:id="@+id/img_ec_logo"
-        android:layout_width="90dp"
-        android:layout_height="47dp"
-
-        android:contentDescription="@string/fragment_about_image_view__kbz_logo"
-        android:src="@drawable/ic_ec_logo"
-        app:layout_constraintBottom_toBottomOf="@+id/text_about_ce_info"
-        app:layout_constraintEnd_toStartOf="@+id/text_about_ce_info"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_about_ce_info" />
-
-    <TextView
-        android:id="@+id/text_about_ce_info"
-        style="@style/AppTheme.Summary.Item.TextView"
-        android:layout_width="289dp"
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:fontFamily="@font/neosanspro"
-        android:lineSpacingExtra="4dp"
-        android:text="@string/fragment_about_european_commission_info"
-        android:textAlignment="center"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/img_ec_logo" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/text_about_1paragraph"
-        style="@style/AppTheme.Summary.Item.TextView"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/neosanspro"
-        android:text="@string/fragment_about_developedBy"
-        android:textAlignment="center"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="9pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_versioning" />
+        <ImageView
+            android:id="@+id/img_ec_logo"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/fragment_about_image_view__kbz_logo"
+            android:src="@drawable/ic_ec_logo" />
 
-    <ImageView
-        android:id="@+id/img_logo_kbz"
-        android:layout_width="151dp"
-        android:layout_height="81dp"
-        android:layout_marginTop="6dp"
-        android:contentDescription="@string/fragment_about_image_view_logo_kbz"
-        android:src="@drawable/img_kbz_logo_png"
-        app:layout_constraintBottom_toBottomOf="@+id/img_logo_uninova"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/img_logo_uninova"
-        app:layout_constraintTop_toTopOf="@+id/img_logo_uninova" />
-
-    <ImageView
-        android:id="@+id/img_logo_uninova"
-        android:layout_width="148dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="4dp"
-        android:contentDescription="@string/fragment_about_button_image_view_uninova_logo"
-        android:src="@drawable/img_uninova_logo_png"
-        app:layout_constraintEnd_toStartOf="@+id/img_logo_kbz"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_about_1paragraph" />
-
-    <TextView
-            android:id="@+id/text_about_versioning"
+        <TextView
+            android:id="@+id/text_about_ce_info"
             style="@style/AppTheme.Summary.Item.TextView"
-            android:layout_width="match_parent"
+            android:layout_width="0px"
             android:layout_height="wrap_content"
+            android:layout_weight="0.8"
             android:fontFamily="@font/neosanspro"
-            android:text="@string/versionName"
-            android:textAlignment="center"
+            android:paddingStart="10dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="0dp"
+            android:text="@string/fragment_about_european_commission_info"
+            android:textAlignment="textStart"
             android:textColor="@color/colorS4HDarkBlue"
-            android:textSize="5.5pt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_about_citizenhub_logo"/>
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+            android:textSize="11sp" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

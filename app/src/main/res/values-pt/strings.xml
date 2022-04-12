@@ -134,7 +134,7 @@
     <string name="fragment_report_detail_title_heart_rate">Ritmo cardíaco</string>
     <string name="fragment_report_detail_title_not_ok_posture">s</string>
     <string name="fragment_report_detail_title_posture">Postura</string>
-    <string name="fragment_report_detail_title_steps">Passos</string>
+    <string name="fragment_report_detail_title_activity">Passos</string>
     <string name="fragment_report_detail_units_calories">calorias</string>
     <string name="fragment_report_detail_units_distance">m</string>
     <string name="fragment_report_detail_units_heart_rate">bpm</string>
@@ -189,13 +189,13 @@
     <string name="fragment_summary_text_calories_burned">Quilocalorias queimadas</string>
     <string name="fragment_summary_text_distance_walked">Distância percorrida</string>
     <string name="fragment_summary_text_posture">Postura</string>
-    <string name="fragment_summary_text_steps_taken">Passos dados</string>
+    <string name="fragment_summary_text_activity">Passos dados</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f calorias</string>
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
     <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
     <string name="fragment_summary_text_view_no_activity">O seu ritmo cardíaco médio é de %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\n%2$s não OK</string>
-    <string name="fragment_summary_text_view_steps_text">%1$.0f passos</string>
+    <string name="fragment_summary_text_view_activity_text">%1$.0f passos</string>
     <string name="fragment_user_label">Perfil do utilizador</string>
     <string name="layout_activity_add_device_address">Endereço</string>
     <string name="layout_activity_add_device_name">Nome</string>
@@ -297,7 +297,7 @@
     <string name="fragment_logout_toast_failure_text">"Não foi possível terminar sessão. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Ficheiro carregado com sucesso. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"O ficheiro não foi carregado. "</string>
-    <string name="fragment_settings_current_work_days_text">"\\\"Dias de trabalho atuais: \\\" "</string>
+    <string name="fragment_settings_current_work_days_text">Dias de trabalho atuais:" "</string>
     <string name="fragment_settings_choose_work_days_text">Escolha os seus dias de trabalho</string>
     <string name="welcome_slide_view_pager_welcome_title">Bem-vindo</string>
     <string name="welcome_slide_view_pager_thank_you_message">Obrigado por utilizar o CitizenHub</string>
@@ -345,4 +345,13 @@
     <string name="fragment_settings_work_hours_start_message">Selecione as Horas de entrada</string>
     <string name="fragment_settings_work_hours_end_message">Selecione as Horas de saída</string>
     <string name="fragment_summary_text_view_blood_pressure_text">Sistólica: %1$.1f mmHg Distólica: %2$.1f:mmHg</string>
+    <string-array name="workdays">
+    <item>Segunda</item>
+    <item>Terça</item>
+    <item>Quarta</item>
+    <item>Quinta</item>
+    <item>Sexta</item>
+    <item>Sábado</item>
+    <item>Domingo</item>
+    </string-array>
 </resources>

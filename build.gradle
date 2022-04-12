@@ -21,7 +21,7 @@ buildscript {
 
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
-        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
     }
 }
 
@@ -49,6 +49,16 @@ allprojects {
             credentials {
                 username = project.findProperty("github.username")
                 password = project.findProperty("github.token")
+            }
+        }
+        maven {
+            url 'https://code.grisenergia.pt/api/v4/projects/373/packages/maven'
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = project.findProperty("grisenergia.token")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
             }
         }
     }

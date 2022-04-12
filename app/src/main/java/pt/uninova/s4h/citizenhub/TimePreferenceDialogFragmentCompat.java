@@ -1,8 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.content.Context;
-
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -10,9 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat implements DialogPreference.TargetFragment
 {

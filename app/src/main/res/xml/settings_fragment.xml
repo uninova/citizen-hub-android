@@ -11,7 +11,6 @@
         <MultiSelectListPreference
             android:key="workdays"
             android:title="Work Days"
-
             android:summary="@string/fragment_settings_work_days_title"
             android:entries="@array/workdays"
             android:entryValues="@array/workday_values"

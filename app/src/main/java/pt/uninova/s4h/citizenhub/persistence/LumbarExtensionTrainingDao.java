@@ -39,10 +39,6 @@ public interface LumbarExtensionTrainingDao {
     @Query("SELECT * FROM lumbar_training ORDER BY timestamp DESC LIMIT 1")
     LiveData<LumbarExtensionTraining> getMostRecentLumbarTraining();
 
-    @Query("SELECT MIN(DATE(timestamp)) AS lower, MAX(DATE(timestamp)) AS upper FROM lumbar_training;")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<LocalDateInterval> getDateBoundsLive();
-
     @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM lumbar_training WHERE DATE(timestamp) >= :from AND DATE(timestamp) < :to")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> getDates(LocalDate from, LocalDate to);
