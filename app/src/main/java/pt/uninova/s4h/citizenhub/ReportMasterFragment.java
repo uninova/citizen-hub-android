@@ -57,10 +57,10 @@ public class ReportMasterFragment extends Fragment {
         calendarView.setTitleFormatter(new TitleFormatter() {
             @Override
             public CharSequence format(CalendarDay day) {
+                final LocalDate localDate = day.getDate();
+                final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); //"February 2016" format
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); //"February 2016" format
-
-                return simpleDateFormat.format(Date.from(Instant.now()));
+                return simpleDateFormat.format(new Date(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()));
             }
         });
 
