@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -58,9 +59,9 @@ public class ReportMasterFragment extends Fragment {
             @Override
             public CharSequence format(CalendarDay day) {
                 final LocalDate localDate = day.getDate();
-                final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); //"February 2016" format
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
 
-                return simpleDateFormat.format(new Date(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()));
+                return localDate.format(formatter);
             }
         });
 
