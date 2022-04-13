@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -57,10 +58,10 @@ public class ReportMasterFragment extends Fragment {
         calendarView.setTitleFormatter(new TitleFormatter() {
             @Override
             public CharSequence format(CalendarDay day) {
+                final LocalDate localDate = day.getDate();
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); //"February 2016" format
-
-                return simpleDateFormat.format(Date.from(Instant.now()));
+                return localDate.format(formatter);
             }
         });
 
