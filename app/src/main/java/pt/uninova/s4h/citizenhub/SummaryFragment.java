@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
@@ -211,23 +210,23 @@ public class SummaryFragment extends ServiceFragment {
                 if (distance != null) {
                     distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_walked_text, distance.getSum()));
                     distanceTextView.setVisibility(VISIBLE);
-                } else {
-                    activityGroup.setVisibility(View.GONE);
-                    activityTitle.setVisibility(View.GONE);
                 }
+            } else {
+                activityGroup.setVisibility(View.GONE);
+                activityTitle.setVisibility(View.GONE);
             }
 
-                if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
-                    AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
-                    if (agentOrchestrator.getDevices().isEmpty())
-                        noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
-                    else
-                        noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
+            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
+                AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
+                if (agentOrchestrator.getDevices().isEmpty())
+                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
+                else
+                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
-                    noDataTextView.setVisibility(View.VISIBLE);
-                } else {
-                    noDataTextView.setVisibility(View.GONE);
-                }
+                noDataTextView.setVisibility(View.VISIBLE);
+            } else {
+                noDataTextView.setVisibility(View.GONE);
             }
         }
     }
+}
