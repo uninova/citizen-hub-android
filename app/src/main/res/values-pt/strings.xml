@@ -363,4 +363,7 @@
     <string name="fragment_device_add_address">\"Endereço: \"</string>
     <string name="fragment_device_search_posture_sensor_name">Sensor de Postura</string>
     <string name="fragment_settings_work_days">Dias de trabalho</string>
+    <string name="fragment_summary_text_view_steps_text">%1$.0f passos</string>
+    <string name="fragment_summary_text_view_distance_walked_text">%1$.0f m</string>
+    <string name="fragment_summary_text_view_calories_burned_text">%1$.0f calorias</string>
 </resources>
