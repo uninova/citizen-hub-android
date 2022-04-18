@@ -117,7 +117,10 @@ public class SummaryFragment extends ServiceFragment {
 
         final TextView heartRateTextView = requireView().findViewById(R.id.fragment_summary_text_view_heart_rate);
         final TextView postureTextView = requireView().findViewById(R.id.fragment_summary_text_view_posture);
-        final TextView activityTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity);
+        final TextView stepsTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity_steps);
+        final TextView distanceTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity_distance);
+        final TextView caloriesTextView = requireView().findViewById(R.id.fragment_summary_text_view_activity_calories);
+
         final TextView respirationTextView = requireView().findViewById(R.id.fragment_summary_text_view_respiration);
         final TextView bloodPressureTextView = requireView().findViewById(R.id.fragment_summary_text_view_blood_pressure);
 
@@ -194,29 +197,37 @@ public class SummaryFragment extends ServiceFragment {
 
             }
 
-            if (steps != null && calories != null && distance != null) {
-                activityTextView.setText(getString(R.string.fragment_summary_text_view_activity_text, steps.getSum(), calories.getSum(), distance.getSum()));
+            if (steps != null || calories != null || distance != null) {
                 activityGroup.setVisibility(VISIBLE);
                 activityTitle.setVisibility(VISIBLE);
-                activityTextView.setVisibility(VISIBLE);
-
-            } else {
-                activityGroup.setVisibility(View.GONE);
-                activityTitle.setVisibility(View.GONE);
-                activityTextView.setVisibility(View.GONE);
+                if (steps != null) {
+                    stepsTextView.setText(getString(R.string.fragment_summary_text_view_steps_text, steps.getSum()));
+                    stepsTextView.setVisibility(VISIBLE);
+                }
+                if (calories != null) {
+                    caloriesTextView.setText(getString(R.string.fragment_summary_text_view_calories_burned_text, calories.getSum()));
+                    caloriesTextView.setVisibility(VISIBLE);
+                }
+                if (distance != null) {
+                    distanceTextView.setText(getString(R.string.fragment_summary_text_view_distance_walked_text, distance.getSum()));
+                    distanceTextView.setVisibility(VISIBLE);
+                } else {
+                    activityGroup.setVisibility(View.GONE);
+                    activityTitle.setVisibility(View.GONE);
+                }
             }
 
-            if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
-                AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
-                if (agentOrchestrator.getDevices().isEmpty())
-                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
-                else
-                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
+                if (badPosture == null && goodPosture == null && distance == null && steps == null && calories == null && heartRate == null && !lumbar && respiration == null && bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null) {
+                    AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
+                    if (agentOrchestrator.getDevices().isEmpty())
+                        noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
+                    else
+                        noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
-                noDataTextView.setVisibility(View.VISIBLE);
-            } else {
-                noDataTextView.setVisibility(View.GONE);
+                    noDataTextView.setVisibility(View.VISIBLE);
+                } else {
+                    noDataTextView.setVisibility(View.GONE);
+                }
             }
         }
     }
-}
