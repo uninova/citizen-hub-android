@@ -321,7 +321,7 @@ public class ReportDetailFragment extends Fragment {
                 }
                 bloodPressureSBPavg.setText(String.valueOf(bloodPressureSBP.getAverage()));
                 bloodPressureDBPavg.setText(String.valueOf(bloodPressureDBP.getAverage()));
-                bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
+                //bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
             } else if (bloodPressureGroup != null) {
                 bloodPressureGroup.setVisibility(View.GONE);
             }
