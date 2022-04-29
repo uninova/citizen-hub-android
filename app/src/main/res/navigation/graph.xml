@@ -47,16 +47,27 @@
         tools:layout="@layout/fragment_device_list">
 
         <action
-            android:id="@+id/action_device_list_fragment_to_device_search_fragment"
-            app:destination="@+id/device_search_fragment" />
+            android:id="@+id/action_device_list_fragment_to_device_connection_method_fragment"
+            app:destination="@+id/device_connection_method_fragment" />
 
         <action
             android:id="@+id/action_device_list_fragment_to_device_configuration_update_fragment"
             app:destination="@+id/device_configuration_update_fragment"
             app:popUpTo="@id/device_list_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/device_connection_method_fragment"
+        android:name="pt.uninova.s4h.citizenhub.MethodConnectionFragment"
+        android:label="@string/fragment_device_connection_method_label"
+        tools:layout="@layout/fragment_device_list">
 
         <action
-            android:id="@+id/action_device_list_fragment_to_device_search_wearos_fragment"
+            android:id="@+id/action_device_connection_method_fragment_to_device_search_fragment"
+            app:destination="@+id/device_search_fragment" />
+
+        <action
+            android:id="@+id/action_device_connection_method_fragment_to_device_search_wearos_fragment"
             app:destination="@+id/device_search_wearos_fragment"
             app:popUpTo="@id/device_list_fragment" />
 
