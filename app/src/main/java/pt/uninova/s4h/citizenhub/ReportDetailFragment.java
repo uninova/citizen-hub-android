@@ -71,13 +71,30 @@ public class ReportDetailFragment extends Fragment {
                 try {
                     model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
                         @Override
-                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                            requireActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                        viewPdfButton.setVisibility(View.VISIBLE);
-                                        uploadPdfButton.setVisibility(View.GONE);
+                        public void onSuccess(Fhir4Record<DocumentReference> record) {
+                            try {
+                                model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
+                                    @Override
+                                    public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+                                        requireActivity().runOnUiThread(() -> {
+                                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
+                                                    viewPdfButton.setVisibility(View.VISIBLE);
+                                                    uploadPdfButton.setVisibility(View.GONE);
+                                                }
+                                        );
                                     }
-                            );
+
+                                    @Override
+                                    public void onError(D4LException exception) {
+                                        requireActivity().runOnUiThread(() -> {
+                                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
+                                            exception.printStackTrace();
+                                        });
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override
@@ -92,29 +109,7 @@ public class ReportDetailFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                try {
-                    model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
-                        @Override
-                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                            requireActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                        viewPdfButton.setVisibility(View.VISIBLE);
-                                        uploadPdfButton.setVisibility(View.GONE);
-                                    }
-                            );
-                        }
 
-                        @Override
-                        public void onError(D4LException exception) {
-                            requireActivity().runOnUiThread(() -> {
-                                Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
-                                exception.printStackTrace();
-                            });
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             });
         }
