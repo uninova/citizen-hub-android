@@ -7,7 +7,7 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 25
         targetSdkVersion 32
-        versionCode 23
+        versionCode 220220430
         versionName "0.2.0"
     }
 
