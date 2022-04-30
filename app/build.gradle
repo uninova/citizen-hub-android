@@ -8,8 +8,8 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 120220430
-        versionName "0.8.12"
+        versionCode 1000813
+        versionName "0.8.13"
 
         javaCompileOptions {
             annotationProcessorOptions {
