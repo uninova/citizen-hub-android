@@ -331,4 +331,7 @@
     <string name="fragment_device_search_posture_sensor_name">Capteur de posture</string>
     <string name="fragment_report_text_view_no_data_summary_nodevices">Vous ne semblez pas avoir des appareils connectés. Avez-vous vérifié la section Appareils dans le menu latéral?</string>
     <string name="fragment_settings_work_days">Journées de travail</string>
+    <string name="fragment_summary_text_view_steps_text">%1$.0f pas</string>
+    <string name="fragment_summary_text_view_distance_walked_text">1$.0f m</string>
+    <string name="fragment_summary_text_view_calories_burned_text">%1$.0f calories</string>
 </resources>
