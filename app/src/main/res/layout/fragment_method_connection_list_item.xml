@@ -21,7 +21,7 @@
         >
 
         <TextView
-            android:id="@+id/text_view_title"
+            android:id="@+id/text_view_title_method"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/image_method"
@@ -35,23 +35,12 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/text_view_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/image_method"
-            android:layout_toEndOf="@id/image_method"
-            android:fontFamily="@font/neosanspro"
-            android:paddingStart="10dp"
-            android:paddingTop="3.5dp"
-            android:text="@string/fragment_device_list_item_text_view_description" />
-
         <ImageView
             android:id="@+id/image_method"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            app:srcCompat="@drawable/ic_devices" />
+            app:srcCompat="@drawable/ic_bluetooth" />
 
 
     </RelativeLayout>
