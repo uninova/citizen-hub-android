@@ -389,6 +389,9 @@
     <string name="fragment_device_add_address">\"Address: \"</string>
     <string name="fragment_device_search_posture_sensor_name">Posture Sensor</string>
     <string name="fragment_settings_work_days">Work Days</string>
+    <string name="fragment_summary_text_view_steps_text">Steps: %1$.0f steps</string>
+    <string name="fragment_summary_text_view_distance_walked_text">Distance: %1$.0f m</string>
+    <string name="fragment_summary_text_view_calories_burned_text">Calories: %1$.0f kcal</string>
 </resources>
 
 
