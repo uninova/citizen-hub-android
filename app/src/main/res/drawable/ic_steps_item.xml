@@ -9,7 +9,7 @@
     </item>
     <item
         android:bottom="16dp"
-        android:drawable="@drawable/ic_steps"
+        android:drawable="@drawable/card_activity"
         android:gravity="left"
         android:left="16dp"
         android:right="16dp"
