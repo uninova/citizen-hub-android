@@ -29,7 +29,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     final private static UUID POSTURE_CORRECTION = UUID.fromString("0000bac3-0000-1000-8000-00805f9b34fb"); //bac3
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
 
-    private static final int selfUpdatingInterval = 30000;
+    private static final int selfUpdatingInterval = 5000;
     /*
     ALL KNOWN SERVICES
     0x1800 -> Generic Access Service
