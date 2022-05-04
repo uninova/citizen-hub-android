@@ -10,7 +10,6 @@ import androidx.work.WorkerParameters;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.interoperability.DailyPostureReport;
@@ -40,11 +39,11 @@ public class SmartBearUploadWorker extends Worker {
 
             SmartBearClient client = new SmartBearClient(BuildConfig.SMART_BEAR_URL, BuildConfig.SMART_BEAR_API_KEY);
 
-            smartBearUploadDateRepository.obtainDaysWithData(MeasurementKind.GOOD_POSTURE, value -> {
+            smartBearUploadDateRepository.obtainDaysWithData(MeasurementKind.POSTURE_CORRECT, value -> {
                 for (LocalDate i : value) {
                     if (i.compareTo(LocalDate.now()) < 0) {
-                        measurementRepository.obtainHourlySum(i, MeasurementKind.GOOD_POSTURE, value1 -> {
-                            measurementRepository.obtainHourlySum(i, MeasurementKind.BAD_POSTURE, value2 -> {
+                        measurementRepository.obtainHourlySum(i, MeasurementKind.POSTURE_CORRECT, value1 -> {
+                            measurementRepository.obtainHourlySum(i, MeasurementKind.POSTURE_INCORRECT, value2 -> {
                                 int[] good = new int[24];
                                 int[] bad = new int[24];
 
