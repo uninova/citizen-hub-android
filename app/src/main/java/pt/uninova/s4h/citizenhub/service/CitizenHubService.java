@@ -15,17 +15,10 @@ import androidx.lifecycle.LifecycleService;
 import androidx.preference.PreferenceManager;
 import androidx.work.WorkManager;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
-import java.util.TimeZone;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -158,9 +151,9 @@ public class CitizenHubService extends LifecycleService {
                 } else if (m.getType() == Measurement.BLOOD_PRESSURE) {
                     final BloodPressureValue value = (BloodPressureValue) m.getValue();
 
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_SBP, value.getSystolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_DBP, value.getDiastolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_MEAN_AP, value.getMeanArterialPressure()));
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_SYSTOLIC, value.getSystolic()));
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_DIASTOLIC, value.getDiastolic()));
+                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE, value.getMeanArterialPressure()));
                 } else {
                     try {
                         measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.find(m.getType()), parseMeasurementValue(m)));
