@@ -12,14 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
@@ -36,6 +35,8 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView addressDevice;
     protected ListView listViewFeatures;
     private DeviceViewModel model;
+
+    private MeasurementKindLocalization measurementKindLocalization;
 
     public DeviceConfigurationFragment() {
         super();
@@ -62,7 +63,7 @@ public class DeviceConfigurationFragment extends Fragment {
             final Set<MeasurementKind> measurementKindSet = agent.getEnabledMeasurements();
 
             for (MeasurementKind i : agent.getSupportedMeasurements()) {
-                featureListItems.add(new FeatureListItem(i, measurementKindSet.contains(i)));
+                featureListItems.add(new FeatureListItem(i.getId(), measurementKindLocalization.localize(i.getId()), measurementKindSet.contains(i)));
             }
         }
 
@@ -78,6 +79,7 @@ public class DeviceConfigurationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        measurementKindLocalization = new MeasurementKindLocalization(requireContext());
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
     }
@@ -89,10 +91,16 @@ public class DeviceConfigurationFragment extends Fragment {
         for (int i = 0; i < adapter.getCount(); i++) {
             final FeatureListItem item = (FeatureListItem) listViewFeatures.getAdapter().getItem(i);
 
+            MeasurementKind k = MeasurementKind.find(item.getFeatureId());
+
             if (item.isActive()) {
-                agent.enableMeasurement(item.getMeasurementKind());
+                if (!agent.getEnabledMeasurements().contains(k)) {
+                    agent.enableMeasurement(k);
+                }
             } else {
-                agent.disableMeasurement(item.getMeasurementKind());
+                if (agent.getEnabledMeasurements().contains(k)) {
+                    agent.disableMeasurement(k);
+                }
             }
         }
     }
