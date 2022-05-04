@@ -16,7 +16,7 @@ public class KbzPostureAgent extends BluetoothAgent {
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.kbzposture");
 
     static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.POSTURE
+            MeasurementKind.POSTURE_CORRECT
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
@@ -29,7 +29,7 @@ public class KbzPostureAgent extends BluetoothAgent {
 
     @Override
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.POSTURE) {
+        if (kind == MeasurementKind.POSTURE_CORRECT) {
             return new KbzBodyProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
