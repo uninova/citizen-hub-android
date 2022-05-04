@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/report_detail_fragment"
         android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
-        android:label="Activity Report"
+        android:label="@string/fragment_report_label"
         tools:layout="@layout/fragment_report_detail" />
 
     <fragment
@@ -34,6 +34,7 @@
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingFragment"
         android:label="@string/fragment_lumbar_extension_training_label"
         tools:layout="@layout/fragment_lumbar_extension_training">
+
         <action
             android:id="@+id/action_lumbar_extension_training_fragment_to_lumbar_extension_training_search_fragment"
             app:destination="@id/lumbar_extension_training_search_fragment"
@@ -107,7 +108,7 @@
     <fragment
         android:id="@+id/device_configuration_add_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
-        android:label="Device Configuration"
+        android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_add">
 
         <action
@@ -119,7 +120,7 @@
     <fragment
         android:id="@+id/device_configuration_update_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragment"
-        android:label="Device Configuration"
+        android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_update">
 
         <action
@@ -134,7 +135,7 @@
     <fragment
         android:id="@+id/device_configuration_advanced_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAdvancedFragment"
-        android:label="Device Configuration"
+        android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_advanced">
 
         <action
@@ -146,13 +147,13 @@
     <fragment
         android:id="@+id/settings_fragment"
         android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/fragment_settings_label"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/accounts_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.AccountsFragment"
-        android:label="Accounts"
+        android:label="@string/accounts_fragment_label"
         tools:layout="@layout/accounts_fragment">
 
         <action
@@ -171,7 +172,7 @@
     <fragment
         android:id="@+id/add_account_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.AddAccountFragment"
-        android:label="Add Account"
+        android:label="@string/accounts_fragment_label"
         tools:layout="@layout/accounts_fragment">
 
         <action
@@ -182,13 +183,13 @@
     <fragment
         android:id="@+id/smart4health_account_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.Smart4HealthAccountFragment"
-        android:label="Smart4Health Account"
+        android:label="Smart4Health"
         tools:layout="@layout/smart4health_account_fragment" />
 
     <fragment
         android:id="@+id/smart_bear_account_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.SmartBearAccountFragment"
-        android:label="Smart Bear Account"
+        android:label="Smart Bear"
         tools:layout="@layout/smart4health_account_fragment">
 
         <action
@@ -206,7 +207,7 @@
     <fragment
         android:id="@+id/advanced_smart_bear_account_gate_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.AdvancedSmartBearAccountGateFragment"
-        android:label="Smart Bear Account"
+        android:label="Smart Bear"
         tools:layout="@layout/advanced_smart_bear_account_gate_fragment">
 
         <action
@@ -219,7 +220,7 @@
     <fragment
         android:id="@+id/advanced_smart_bear_account_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.accounts.AdvancedSmartBearAccountFragment"
-        android:label="Smart Bear Account"
+        android:label="Smart Bear"
         tools:layout="@layout/advanced_smart_bear_account_fragment">
 
         <action
@@ -272,12 +273,12 @@
     <fragment
         android:id="@+id/open_source_licenses_fragment"
         android:name="pt.uninova.s4h.citizenhub.OpenSourceLicensesFragment"
-        android:label="Open source licenses" />
+        android:label="@string/open_source_licenses_fragment_label" />
 
     <fragment
         android:id="@+id/lumbar_extension_training_search_fragment"
         android:name="pt.uninova.s4h.citizenhub.LumbarExtensionTrainingSearchFragment"
-        android:label="Lumbar Extension Training Devices"
+        android:label="@string/fragment_lumbar_extension_training_label"
         tools:layout="@layout/fragment_device_search">
 
         <action
@@ -292,11 +293,5 @@
             app:popUpTo="@id/lumbar_extension_training_fragment"
             app:popUpToInclusive="true" />
     </fragment>
-
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.authentication.LoginFragment"
-        android:label="LoginFragment" />
-
 
 </navigation>
