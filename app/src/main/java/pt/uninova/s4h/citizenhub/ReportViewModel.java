@@ -14,7 +14,6 @@ import android.graphics.pdf.PdfDocument;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.ByteArrayOutputStream;
@@ -58,7 +57,6 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.report.CanvasWriter;
 import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
-import pt.uninova.util.time.LocalDateInterval;
 
 
 public class ReportViewModel extends AndroidViewModel {
@@ -260,8 +258,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.GOOD_POSTURE);
-        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(MeasurementKind.BAD_POSTURE);
+        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -291,7 +289,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate3 = detailAggregatesWorkTime.get(MeasurementKind.CALORIES);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
-            Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
+            Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
             canvas.translate(x, y + 15);
@@ -531,8 +529,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
-        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.BAD_POSTURE);
+        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -562,7 +560,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.CALORIES);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
-            Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
+            Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
             canvas.translate(x, y + 15);
@@ -643,9 +641,9 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         if (measurementAggregate != null && measurementAggregate2work != null && measurementAggregate3work != null) {
 
             y -= 10;
