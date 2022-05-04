@@ -3,24 +3,27 @@ package pt.uninova.s4h.citizenhub;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class FeatureListItem {
-    private MeasurementKind measurementKind;
+
+    private String label;
+    private int featureId;
     private boolean active;
 
-    public FeatureListItem(MeasurementKind measurementKind) {
-        this(measurementKind, false);
+    public FeatureListItem(int featureId, String label) {
+        this(featureId, label, false);
     }
 
-    public FeatureListItem(MeasurementKind measurementKind, boolean active) {
-        this.measurementKind = measurementKind;
+    public FeatureListItem(int featureId, String label, boolean active) {
+        this.featureId = featureId;
         this.active = active;
+        this.label = label;
     }
 
-    public MeasurementKind getMeasurementKind() {
-        return measurementKind;
+    public int getFeatureId() {
+        return featureId;
     }
 
-    public void setMeasurementKind(MeasurementKind measurementKind) {
-        this.measurementKind = measurementKind;
+    public void setFeatureId(int value) {
+        this.featureId = value;
     }
 
     public boolean isActive() {
@@ -31,7 +34,11 @@ public class FeatureListItem {
         this.active = active;
     }
 
-    public void enable() {
-        //Objects.requireNonNull(((CitizenHubServiceBound) application).getService().getAgentOrchestrator().getDeviceAgentMap().get(device)).enableMeasurement(getMeasurementKind());
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

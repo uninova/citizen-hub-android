@@ -80,7 +80,6 @@ public abstract class AbstractAgent implements Agent {
 
         if (protocol != null) {
             this.measurementMap.remove(measurementKind);
-            protocol.clearSampleObservers();
             disableProtocol(protocol);
         }
 

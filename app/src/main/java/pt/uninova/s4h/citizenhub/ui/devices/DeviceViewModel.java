@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.util.messaging.Observer;
 
@@ -136,6 +137,12 @@ public class DeviceViewModel extends AndroidViewModel {
 
         if (agent != null) {
             agent.disable();
+
+            if (agent instanceof BluetoothAgent) {
+                BluetoothAgent bluetoothAgent = (BluetoothAgent) agent;
+
+                bluetoothAgent.getConnection().close();
+            }
         }
 
         agentOrchestrator.remove(device);

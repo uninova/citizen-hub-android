@@ -74,7 +74,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         if (dialogFragment != null) {
             dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(this.getFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
+            dialogFragment.show(this.getParentFragmentManager(), "android.support.v7.preference.PreferenceFragment.DIALOG");
         } else {
             super.onDisplayPreferenceDialog(preference);
         }

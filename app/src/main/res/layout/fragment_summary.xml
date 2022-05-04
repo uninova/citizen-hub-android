@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -228,7 +228,7 @@
                 android:id="@+id/fragment_summary_text_view_respiration"
                 style="@style/AppTheme.Summary.Item.TextView"
                 android:layout_weight="0.3"
-                android:text="%1$s OK\n%2$s not OK"
+                android:text="%1$s OK\n%2$s no OK"
                 android:visibility="visible"
                 tools:visibility="visible" />
 
@@ -439,27 +439,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/sittingTextView"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="80dp"
-            android:background="@drawable/button_rounded_top_darkblue_14dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="@string/fragment_summary_text_posture"
-            android:textColor="@color/colorS4HWhite"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_posture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/fragment_summary_layout_posture"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/lumbarTextView"
@@ -487,10 +466,10 @@
         <LinearLayout
             android:id="@+id/fragment_summary_layout_posture"
             style="@style/AppTheme.Summary.Item"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/button_rounded_bottom_outline_darkblue_14dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -517,6 +496,26 @@
                 android:visibility="visible" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/sittingTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_rounded_top_darkblue_14dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/fragment_summary_text_posture"
+            android:textColor="@color/colorS4HWhite"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_summary_layout_posture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragment_summary_layout_posture"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

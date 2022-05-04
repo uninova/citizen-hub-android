@@ -17,7 +17,7 @@ public class HexoSkinAgent extends BluetoothAgent {
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
 
     static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            MeasurementKind.ACTIVITY,
+            MeasurementKind.STEPS,
             MeasurementKind.HEART_RATE,
             MeasurementKind.RESPIRATION_RATE
     )));
@@ -40,7 +40,7 @@ public class HexoSkinAgent extends BluetoothAgent {
     @Override
     public MeasuringProtocol getMeasuringProtocol(MeasurementKind measurementKind) {
         switch (measurementKind) {
-            case ACTIVITY:
+            case STEPS:
                 return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(),this);
             case HEART_RATE:
                 return new HexoSkinHeartRateProtocol(this.getConnection(), getSampleDispatcher(),this);

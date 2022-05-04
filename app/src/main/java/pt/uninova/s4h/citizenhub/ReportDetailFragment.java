@@ -142,12 +142,12 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate caloriesWorkTime = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distanceWorkTime = value.get(MeasurementKind.DISTANCE);
         final MeasurementAggregate heartRateWorkTime = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.BAD_POSTURE);
-        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.GOOD_POSTURE);
+        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.POSTURE_INCORRECT);
+        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.POSTURE_CORRECT);
         final MeasurementAggregate stepsWorkTime = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         final MeasurementAggregate respirationWorkTime = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
@@ -207,12 +207,12 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distance = value.get(MeasurementKind.DISTANCE);
         final MeasurementAggregate heartRate = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
-        final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
+        final MeasurementAggregate badPosture = value.get(MeasurementKind.POSTURE_INCORRECT);
+        final MeasurementAggregate goodPosture = value.get(MeasurementKind.POSTURE_CORRECT);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {

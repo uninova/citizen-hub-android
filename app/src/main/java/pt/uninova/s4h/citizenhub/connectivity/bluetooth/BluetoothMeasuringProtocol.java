@@ -33,7 +33,7 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
 
     @Override
     public void clearSampleObservers() {
-        sampleDispatcher.close();
+        this.sampleDispatcher.close();
     }
 
     protected Dispatcher<Sample> getSampleDispatcher() {

@@ -12,12 +12,8 @@ public abstract class Measurement<T> {
     public static final int RESPIRATION_RATE = 7;
     public static final int INSPIRATION = 8;
     public static final int EXPIRATION = 9;
-    public static final int STEPS_PER_MINUTE = 10;
     public static final int ACTIVITY = 11;
     public static final int CADENCE = 12;
-    public static final int SITTING = 13;
-    public static final int STANDING = 14;
-    public static final int POSTURE = 15;
     public static final int LUMBAR_EXTENSION_TRAINING = 16;
     public static final int BLOOD_PRESSURE = 17;
     public static final int ENERGY_EXPENDED = 21;
@@ -44,5 +40,4 @@ public abstract class Measurement<T> {
     public T getValue() {
         return value;
     }
-
 }

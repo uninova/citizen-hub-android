@@ -67,8 +67,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             requireActivity().runOnUiThread(this::loadSupportedFeatures);
 
             connectDevice.setOnClickListener(v -> {
-                agent.enable();
                 model.addAgent(agent);
+                agent.enable();
 
                 saveFeaturesChosen();
 
