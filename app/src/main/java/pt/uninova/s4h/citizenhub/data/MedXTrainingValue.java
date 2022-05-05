@@ -10,13 +10,19 @@ public class MedXTrainingValue {
     private final float score;
     private final int repetitions;
     private final int weight;
+    private final float calories;
 
-    public MedXTrainingValue(Instant timestamp, Duration duration, float score, int repetitions, int weight) {
+    public MedXTrainingValue(Instant timestamp, Duration duration, float score, int repetitions, int weight, float calories) {
         this.timestamp = timestamp;
         this.duration = duration;
         this.score = score;
         this.repetitions = repetitions;
         this.weight = weight;
+        this.calories = calories;
+    }
+
+    public float getCalories() {
+        return calories;
     }
 
     public Duration getDuration() {

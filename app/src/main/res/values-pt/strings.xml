@@ -414,5 +414,6 @@
     <string name="measurement_type.26">Movimento</string>
     <string name="measurement_type.27">Posição</string>
     <string name="measurement_type.28">Posição</string>
+    <string name="lumbar_training_calories_label">Calorias</string>
 
 </resources>

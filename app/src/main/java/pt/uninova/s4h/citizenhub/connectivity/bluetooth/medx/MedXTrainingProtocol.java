@@ -3,6 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -35,22 +36,23 @@ public class MedXTrainingProtocol extends BluetoothMeasuringProtocol {
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE, UUID_CHARACTERISTIC) {
             @Override
             public void onRead(byte[] value) {
+                System.out.println("BIM" + Arrays.toString(value));
                 final ByteBuffer byteBuffer = ByteBuffer.wrap(value).asReadOnlyBuffer();
 
                 final int timestamp = byteBuffer.getInt();
                 final int length = byteBuffer.getInt();
                 final float score = byteBuffer.getFloat();
+                final float calories = byteBuffer.getFloat();
                 final int repetitions = byteBuffer.getInt();
                 final int weight = byteBuffer.getInt();
 
-                final Sample sample = new Sample(getAgent().getSource(), new MedXTrainingMeasurement(new MedXTrainingValue(Instant.ofEpochSecond(timestamp), Duration.ofSeconds(length), score, repetitions, weight)));
+                final Sample sample = new Sample(getAgent().getSource(), new MedXTrainingMeasurement(new MedXTrainingValue(Instant.ofEpochSecond(timestamp), Duration.ofSeconds(length), score, repetitions, weight, calories)));
 
                 getSampleDispatcher().dispatch(sample);
             }
 
             @Override
             public void onReadFailure(byte[] value, int status) {
-                System.out.println("WAH WAH WAH WAAAAAAAAAAAAAAAH!");
             }
         });
 
