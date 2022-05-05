@@ -426,9 +426,11 @@
     <string name="lumbar_training_score_label">Score</string>
     <string name="lumbar_training_score_value" translatable="false">%1$.2f</string>
     <string name="lumbar_training_repetitions_label">Repetitions</string>
-    <string name="lumbar_training_repetitions_value" translatable="false">%1$.0f</string>
+    <string name="lumbar_training_repetitions_value" translatable="false">%1$d</string>
     <string name="lumbar_training_weight_label">Weight</string>
-    <string name="lumbar_training_weight_value" translatable="false">%1$.0f kg</string>
+    <string name="lumbar_training_weight_value" translatable="false">%1$d kg</string>
+    <string name="lumbar_training_calories_label">Calories</string>
+    <string name="lumbar_training_calories_value" translatable="false">%1$.2f kcal</string>
 
     <string name="measurement_type.0">Unknown</string>
     <string name="measurement_type.1">Heart rate</string>

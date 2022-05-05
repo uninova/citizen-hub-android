@@ -12,35 +12,29 @@ import androidx.room.Update;
 import java.time.LocalDate;
 import java.util.List;
 
-import pt.uninova.util.time.LocalDateInterval;
-
 @Dao
 public interface LumbarExtensionTrainingDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(LumbarExtensionTraining lumbarExtensionTraining);
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(LumbarExtensionTraining lumbarExtensionTraining);
-
     @Delete
-    void delete(LumbarExtensionTraining lumbarExtensionTraining);
+    void delete(LumbarExtensionTrainingRecord record);
 
-    @Query("DELETE FROM lumbar_training")
+    @Query("DELETE FROM lumbar_extension_training_measurement")
     void deleteAll();
 
-    @Query("SELECT * FROM lumbar_training")
-    List<LumbarExtensionTraining> getAll();
-
-    @Query(value = "SELECT * FROM lumbar_training WHERE timestamp >= :from AND timestamp < :to")
+    @Query(value = "SELECT * FROM lumbar_extension_training_measurement WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<LumbarExtensionTraining> getLumbarTraining(LocalDate from, LocalDate to);
+    LiveData<List<LumbarExtensionTrainingRecord>> get(LocalDate from, LocalDate to);
 
-    @Query("SELECT * FROM lumbar_training ORDER BY timestamp DESC LIMIT 1")
-    LiveData<LumbarExtensionTraining> getMostRecentLumbarTraining();
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(LumbarExtensionTrainingRecord record);
 
-    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM lumbar_training WHERE DATE(timestamp) >= :from AND DATE(timestamp) < :to")
+    @Query(value = "SELECT * FROM lumbar_extension_training_measurement WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
-    List<LocalDate> getDates(LocalDate from, LocalDate to);
+    List<LumbarExtensionTrainingRecord> select(LocalDate from, LocalDate to);
 
+    @Query("SELECT * FROM lumbar_extension_training_measurement")
+    List<LumbarExtensionTrainingRecord> selectAll();
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void update(LumbarExtensionTrainingRecord record);
 }

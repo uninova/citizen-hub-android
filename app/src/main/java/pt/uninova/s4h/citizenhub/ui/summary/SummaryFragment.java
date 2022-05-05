@@ -1,20 +1,22 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.summary;
 
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.List;
 import java.util.Map;
 
+import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
@@ -40,51 +42,28 @@ public class SummaryFragment extends ServiceFragment {
         return view;
     }
 
-    @Override
-    public void onServiceConnected() {
-        model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
-        //model.getMostRecentLumbar().observe(getViewLifecycleOwner(), this::onLumbarExtensionTrainingUpdate);
-    }
+    private void onDailyLumbarExtensionTrainingUpdate(List<LumbarExtensionTrainingRecord> lumbarExtensionTrainingRecords) {
+        final View view = requireView();
 
-    private void onLumbarExtensionTrainingUpdate(LumbarExtensionTraining lumbarExtensionTraining) {
-        final LinearLayout lumbarGroup = requireView().findViewById(R.id.fragment_summary_layout_lumbar_training_extension);
-        final TextView lumbarTextView = requireView().findViewById(R.id.fragment_summary_text_view_lumbar_text);
-        final TextView lumbarTitle = requireView().findViewById(R.id.lumbarTextView);
-        final TextView noDataTextView = requireView().findViewById(R.id.fragment_summary_text_view_no_data);
+        if (lumbarExtensionTrainingRecords != null) {
+            if (!lumbarExtensionTrainingRecords.isEmpty()) {
+                final LumbarExtensionTrainingRecord record = lumbarExtensionTrainingRecords.get(lumbarExtensionTrainingRecords.size() - 1);
 
-        if (lumbarExtensionTraining != null) {
+                final TextView lumbarExtensionTrainingCaloriesTextView = view.findViewById(R.id.lumbarTrainingCaloriesValueTextView);
+                final TextView lumbarExtensionTrainingDurationTextView = view.findViewById(R.id.lumbarTrainingDurationValueTextView);
+                final TextView lumbarExtensionTrainingRepetitionsTextView = view.findViewById(R.id.lumbarTrainingRepetitionsValueTextView);
+                final TextView lumbarExtensionTrainingWeightTextView = view.findViewById(R.id.lumbarTrainingWeightValueTextView);
 
-            final int lumbarTrainingLength = lumbarExtensionTraining.getTrainingLength();
-            final float lumbarScore = lumbarExtensionTraining.getScore();
-            final int lumbarRepetitions = lumbarExtensionTraining.getRepetitions();
-            noDataTextView.setVisibility(View.GONE);
-            lumbarTextView.setText(getString(R.string.fragment_summary_text_view_lumbar_text, secondsToString(lumbarTrainingLength), lumbarScore, String.valueOf(lumbarRepetitions), lumbarExtensionTraining.getWeight()));
+                lumbarExtensionTrainingCaloriesTextView.setText(getString(R.string.lumbar_training_calories_value, record.getCalories()));
+                lumbarExtensionTrainingDurationTextView.setText(getString(R.string.lumbar_training_duration_value, secondsToString(record.getDuration())));
+                lumbarExtensionTrainingRepetitionsTextView.setText(getString(R.string.lumbar_training_repetitions_value, record.getRepetitions()));
+                lumbarExtensionTrainingWeightTextView.setText(getString(R.string.lumbar_training_weight_value, record.getWeight()));
+            }
 
-            lumbarGroup.setVisibility(View.VISIBLE);
-            lumbarTitle.setVisibility(View.VISIBLE);
-            lumbarTextView.setVisibility(View.VISIBLE);
-        } else {
-            lumbarGroup.setVisibility(View.GONE);
-            lumbarTitle.setVisibility(View.GONE);
-            lumbarTextView.setVisibility(View.GONE);
+            final CardView lumbarExtensionTrainingCardView = view.findViewById(R.id.lumbarTrainingCardView);
+
+            lumbarExtensionTrainingCardView.setVisibility(lumbarExtensionTrainingRecords.isEmpty() ? View.GONE : View.VISIBLE);
         }
-    }
-
-    private String secondsToString(int value) {
-        int seconds = value;
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-
-        if (minutes > 0)
-            seconds = seconds % 60;
-
-        if (hours > 0) {
-            minutes = minutes % 60;
-        }
-
-        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
-
-        return result.equals("") ? "0s" : result;
     }
 
     private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
@@ -178,5 +157,28 @@ public class SummaryFragment extends ServiceFragment {
                 noDataTextView.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Override
+    public void onServiceConnected() {
+        model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
+        model.getDailyLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onDailyLumbarExtensionTrainingUpdate);
+    }
+
+    private String secondsToString(int value) {
+        int seconds = value;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
     }
 }

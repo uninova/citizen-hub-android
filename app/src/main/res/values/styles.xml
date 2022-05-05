@@ -230,18 +230,22 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:padding">20dp</item>
     </style>
 
     <style name="SummaryCardInformation">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.7</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
         <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingTop">10dp</item>
         <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
     </style>
 
     <style name="SummaryCardInformationRow">

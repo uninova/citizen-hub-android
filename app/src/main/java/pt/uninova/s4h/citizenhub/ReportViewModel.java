@@ -49,7 +49,7 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -70,7 +70,7 @@ public class ReportViewModel extends AndroidViewModel {
     private LocalDate detailDate;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregates;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregatesWorkTime;
-    private LumbarExtensionTraining lumbarTraining;
+    private LumbarExtensionTrainingRecord lumbarTraining;
 
     public ReportViewModel(Application application) {
         super(application);
@@ -363,7 +363,7 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
             canvasWriter.addText("Training duration:", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getDuration()), boldTextPaint);
             canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;
@@ -688,7 +688,7 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
             canvasWriter.addText("Training duration:", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getDuration()), boldTextPaint);
             canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;

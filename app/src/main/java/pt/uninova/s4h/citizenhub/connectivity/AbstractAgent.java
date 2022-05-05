@@ -68,8 +68,10 @@ public abstract class AbstractAgent implements Agent {
         }
 
         for (final Protocol i : this.protocolMap.values()) {
-            disableProtocol(i);
+            i.disable();
         }
+
+        protocolMap.clear();
 
         setState(AgentState.DISABLED);
     }
