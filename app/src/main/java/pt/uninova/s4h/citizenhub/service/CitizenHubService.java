@@ -39,7 +39,7 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
@@ -147,7 +147,7 @@ public class CitizenHubService extends LifecycleService {
                 if (m.getType() == Measurement.LUMBAR_EXTENSION_TRAINING) {
                     final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
 
-                    lumbarExtensionTrainingRepository.add(new LumbarExtensionTraining(value.getTimestamp().toEpochMilli(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight()));
+                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
                 } else if (m.getType() == Measurement.BLOOD_PRESSURE) {
                     final BloodPressureValue value = (BloodPressureValue) m.getValue();
 

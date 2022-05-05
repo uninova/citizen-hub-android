@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".SummaryFragment"
+        tools:context=".ui.summary.SummaryFragment"
         tools:ignore="UseCompoundDrawables">
 
         <TextView
