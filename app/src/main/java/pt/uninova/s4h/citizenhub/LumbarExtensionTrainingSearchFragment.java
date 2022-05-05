@@ -24,7 +24,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXTrainingProtoco
 import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Observer;
@@ -68,9 +68,9 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
                             final MedXTrainingValue val = (MedXTrainingValue) sample.getMeasurements()[0].getValue();
                             int duration = (int) val.getDuration().toMillis() / 1000;
 
-                            lumbarExtensionTrainingRepository.add(new LumbarExtensionTraining(sample.getTimestamp().toEpochMilli(), duration, val.getScore(), val.getRepetitions(), val.getWeight()));
+                            lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingRecord(sample.getTimestamp(), duration, val.getScore(), val.getRepetitions(), val.getWeight(), val.getCalories()));
 
-                            LumbarExtensionTrainingSearchFragment.this.requireActivity().runOnUiThread(() -> Navigation.findNavController(LumbarExtensionTrainingSearchFragment.this.requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment()));
+                            navigateToSummaryFragment();
                         }
                     });
 
@@ -142,5 +142,9 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
             scanner.stop();
             scanner = null;
         }
+    }
+
+    private void navigateToSummaryFragment() {
+        requireActivity().runOnUiThread(() -> Navigation.findNavController(requireView()).navigate(LumbarExtensionTrainingSearchFragmentDirections.actionLumbarExtensionTrainingSearchFragmentToSummaryFragment()));
     }
 }
