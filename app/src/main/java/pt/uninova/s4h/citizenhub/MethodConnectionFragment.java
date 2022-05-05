@@ -17,7 +17,7 @@ public class MethodConnectionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View result = inflater.inflate(R.layout.fragment_device_connection_method, container, false);
+        final View result = inflater.inflate(R.layout.fragment_device_connection_method_list, container, false);
 
         ListView listConnectionMethods = result.findViewById(R.id.listViewConnectionMethods);
         ArrayList<String> connectionMethods = new ArrayList<>(connectionMethodsAvailable);

@@ -21,7 +21,7 @@ public class MethodConnectionAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent){
         String name = getItem(position);
         if (convertView==null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_method_connection_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_device_connection_method_list_item, parent, false);
 
         ImageView methodImage = convertView.findViewById(R.id.image_method);
         TextView methodName = convertView.findViewById(R.id.text_view_title_method);
