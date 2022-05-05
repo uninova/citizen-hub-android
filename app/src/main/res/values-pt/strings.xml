@@ -253,7 +253,7 @@
         <item>Muzzle</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Longo, Medio, Pequeno, Rampa, Toc Toc, Batimento cardiaco, Tuk tuk</string>
-    <string name="fragment_lumbar_extension_training_label">Programa de dor lombar</string>
+    <string name="fragment_lumbar_extension_training_label">Programa lombar</string>
     <string name="medex_fragment_explanation_textview">"Pressione o botão abaixo para encontrar a máquina onde fez o treino. "</string>
     <string name="fragment_medex_button_search">Pesquisar</string>
     <string name="medex_fragment_explanation2">Se não for um utilizador da medX ou quiser esconder esta funcionalidade, poderá desligá-la nas configurações</string>
