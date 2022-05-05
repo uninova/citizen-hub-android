@@ -19,6 +19,7 @@ public class SummaryViewModel extends AndroidViewModel {
     private final LiveData<Map<MeasurementKind, MeasurementAggregate>> dailySummary;
     private final LiveData<LumbarExtensionTraining> lumbarSummary;
     private final LiveData<LumbarExtensionTraining> newestLumbar;
+    
     public SummaryViewModel(Application application) {
         super(application);
 
