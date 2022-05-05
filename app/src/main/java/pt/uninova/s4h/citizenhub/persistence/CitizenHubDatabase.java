@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTraining.class, SmartBearUploadDateRecord.class}, version = 36)
+@Database(entities = {DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTrainingRecord.class, SmartBearUploadDateRecord.class}, version = 37)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
