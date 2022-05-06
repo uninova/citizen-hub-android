@@ -3,14 +3,10 @@ package pt.uninova.s4h.citizenhub.persistence;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import pt.uninova.s4h.citizenhub.R;
 
 @Entity(tableName = "blood_pressure_measurement")
-public class BloodPressureRecord {
+public class BloodPressureMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
@@ -22,11 +18,11 @@ public class BloodPressureRecord {
     private Double meanArterialPressure;
 
     @Ignore
-    public BloodPressureRecord(Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
+    public BloodPressureMeasurementRecord(Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
         this(null, sampleId, systolic, diastolic, meanArterialPressure);
     }
 
-    public BloodPressureRecord(Integer id, Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
+    public BloodPressureMeasurementRecord(Integer id, Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
         this.id = id;
         this.sampleId = sampleId;
         this.systolic = systolic;
@@ -46,6 +42,10 @@ public class BloodPressureRecord {
         return meanArterialPressure;
     }
 
+    public Integer getSampleId() {
+        return sampleId;
+    }
+
     public Double getSystolic() {
         return systolic;
     }
@@ -60,6 +60,10 @@ public class BloodPressureRecord {
 
     public void setMeanArterialPressure(Double value) {
         this.meanArterialPressure = value;
+    }
+
+    public void setSampleId(Integer value) {
+        this.sampleId = value;
     }
 
     public void setSystolic(Double value) {

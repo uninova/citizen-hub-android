@@ -19,11 +19,11 @@ public class LumbarExtensionTrainingRepository {
         lumbarExtensionTrainingDao = citizenHubDatabase.lumbarExtensionTrainingDao();
     }
 
-    public void create(LumbarExtensionTrainingRecord record) {
+    public void create(LumbarExtensionTrainingMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.insert(record));
     }
 
-    public void delete(LumbarExtensionTrainingRecord record) {
+    public void delete(LumbarExtensionTrainingMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.delete(record));
     }
 
@@ -31,15 +31,15 @@ public class LumbarExtensionTrainingRepository {
         CitizenHubDatabase.executorService().execute(lumbarExtensionTrainingDao::deleteAll);
     }
 
-    public LiveData<List<LumbarExtensionTrainingRecord>> get(LocalDate localDate) {
+    public LiveData<List<LumbarExtensionTrainingMeasurementRecord>> get(LocalDate localDate) {
         return lumbarExtensionTrainingDao.get(localDate, localDate.plusDays(1));
     }
 
-    public void read(LocalDate localDate, Observer<List<LumbarExtensionTrainingRecord>> observer) {
+    public void read(LocalDate localDate, Observer<List<LumbarExtensionTrainingMeasurementRecord>> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.select(localDate, localDate.plusDays(1))));
     }
 
-    public void update(LumbarExtensionTrainingRecord record) {
+    public void update(LumbarExtensionTrainingMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(record));
     }
 

@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {BloodPressureRecord.class, DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTrainingRecord.class, SampleRecord.class, SmartBearUploadDateRecord.class}, version = 38)
+@Database(entities = {BloodPressureMeasurementRecord.class, DeviceRecord.class, Measurement.class, Feature.class, LumbarExtensionTrainingMeasurementRecord.class, SampleRecord.class, SmartBearUploadDateRecord.class}, version = 38)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -35,7 +35,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
         return EXECUTOR_SERVICE;
     }
 
-    public abstract BloodPressureDao bloodPressureDao();
+    public abstract BloodPressureMeasurementDao bloodPressureDao();
 
     public abstract DeviceDao deviceDao();
 

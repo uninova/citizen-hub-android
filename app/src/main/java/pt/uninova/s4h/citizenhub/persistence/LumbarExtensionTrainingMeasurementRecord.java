@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 import java.time.Instant;
 
 @Entity(tableName = "lumbar_extension_training_measurement")
-public class LumbarExtensionTrainingRecord {
+public class LumbarExtensionTrainingMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
@@ -21,21 +21,21 @@ public class LumbarExtensionTrainingRecord {
     private Float calories;
 
     @Ignore
-    public LumbarExtensionTrainingRecord(Integer timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
+    public LumbarExtensionTrainingMeasurementRecord(Integer timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
         this(EpochTypeConverter.toInstant(timestamp.longValue()), duration, score, repetitions, weight, calories);
     }
 
     @Ignore
-    public LumbarExtensionTrainingRecord(Long timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
+    public LumbarExtensionTrainingMeasurementRecord(Long timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
         this(EpochTypeConverter.toInstant(timestamp), duration, score, repetitions, weight, calories);
     }
 
     @Ignore
-    public LumbarExtensionTrainingRecord(Instant timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
+    public LumbarExtensionTrainingMeasurementRecord(Instant timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
         this(null, timestamp, duration, score, repetitions, weight, calories);
     }
 
-    public LumbarExtensionTrainingRecord(Integer id, Instant timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
+    public LumbarExtensionTrainingMeasurementRecord(Integer id, Instant timestamp, Integer duration, Float score, Integer repetitions, Integer weight, Float calories) {
         this.id = id;
         this.timestamp = timestamp;
         this.duration = duration;

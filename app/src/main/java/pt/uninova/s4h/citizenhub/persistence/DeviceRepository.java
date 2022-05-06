@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.persistence;
 
-import android.app.Application;
 import android.content.Context;
 
 import java.util.List;
@@ -13,70 +12,35 @@ public class DeviceRepository {
 
     public DeviceRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
+
         deviceDao = citizenHubDatabase.deviceDao();
     }
 
-    public void add(DeviceRecord deviceRecord) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            deviceDao.insert(deviceRecord);
-        });
+    public void create(DeviceRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> deviceDao.insert(record));
     }
 
-    public DeviceRecord get(String address) {
-        try {
-            return deviceDao.get(address);
-        } catch (Exception e) {
-            return null;
-        }
+    public void delete(String address) {
+        CitizenHubDatabase.executorService().execute(() -> deviceDao.delete(address));
     }
 
-
-    public void obtain(String address, Observer<DeviceRecord> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.get(address)));
+    public void delete(DeviceRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> deviceDao.delete(record));
     }
 
-    public void obtainAll(Observer<List<DeviceRecord>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.getAll()));
-    }
-
-    public List<DeviceRecord> getAllWithConnectionKind(ConnectionKind connectionKind) {
-        try {
-            return deviceDao.getAllWithConnectionKind(connectionKind);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void remove(DeviceRecord deviceRecord) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            deviceDao.delete(deviceRecord);
-        });
-    }
-
-    public void removeAll() {
+    public void deleteAll() {
         CitizenHubDatabase.executorService().execute(deviceDao::deleteAll);
     }
 
-    public void update(DeviceRecord deviceRecord) {
-        //mudar o state
-        CitizenHubDatabase.executorService().execute(() -> {
-            deviceDao.update(deviceRecord);
-        });
+    public void read(String address, Observer<DeviceRecord> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.select(address)));
     }
 
-    public List<DeviceRecord> getWithState(StateKind state) {
-        try {
-            return deviceDao.getWithState(state);
-        } catch (Exception e) {
-            return null;
-        }
+    public void readAll(Observer<List<DeviceRecord>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.selectAll()));
     }
 
-    public List<DeviceRecord> getWithAgent(String type) {
-        try {
-            return deviceDao.getWithAgent(type);
-        } catch (Exception e) {
-            return null;
-        }
+    public void update(DeviceRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> deviceDao.update(record));
     }
 }
