@@ -39,11 +39,11 @@ import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.Feature;
 import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.persistence.SampleRepository;
 import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
 import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
 import pt.uninova.util.messaging.Observer;
@@ -138,6 +138,7 @@ public class CitizenHubService extends LifecycleService {
         final FeatureRepository featureRepository = new FeatureRepository(getApplication());
         final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getApplication());
         final MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+        final SampleRepository sampleRepository = new SampleRepository(getApplication());
 
         agentFactoryMap.put(ConnectionKind.BLUETOOTH, new BluetoothAgentFactory(this));
         agentFactoryMap.put(ConnectionKind.WEAROS, new WearOsAgentFactory(this));
@@ -147,13 +148,9 @@ public class CitizenHubService extends LifecycleService {
                 if (m.getType() == Measurement.LUMBAR_EXTENSION_TRAINING) {
                     final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
 
-                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
+                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingMeasurementRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
                 } else if (m.getType() == Measurement.BLOOD_PRESSURE) {
-                    final BloodPressureValue value = (BloodPressureValue) m.getValue();
-
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_SYSTOLIC, value.getSystolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_DIASTOLIC, value.getDiastolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE, value.getMeanArterialPressure()));
+                    sampleRepository.addSample(sample);
                 } else {
                     try {
                         measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.find(m.getType()), parseMeasurementValue(m)));
@@ -168,6 +165,8 @@ public class CitizenHubService extends LifecycleService {
         orchestrator.addListener(new AgentOrchestratorListener() {
             @Override
             public void onAgentAttached(Device device, Agent agent) {
+                deviceRepository.update(new DeviceRecord(device.getAddress(), device.getName(), device.getConnectionKind(), agent.getClass().getCanonicalName()));
+
                 agent.addAgentListener(new AgentListener() {
                     @Override
                     public void onMeasurementDisabled(Agent agent, MeasurementKind measurementKind) {
@@ -183,7 +182,7 @@ public class CitizenHubService extends LifecycleService {
 
             @Override
             public void onDeviceAdded(Device device) {
-                deviceRepository.add(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+                deviceRepository.create(new DeviceRecord(device.getAddress(), device.getName(), device.getConnectionKind(), null));
             }
 
             @Override
@@ -194,11 +193,11 @@ public class CitizenHubService extends LifecycleService {
                     agent.removeAllAgentListeners();
                 }
 
-                deviceRepository.remove(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+                deviceRepository.delete(device.getAddress());
             }
         });
 
-        deviceRepository.obtainAll(value -> {
+        deviceRepository.readAll(value -> {
             for (DeviceRecord i : value) {
                 orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
                     agent.enable();

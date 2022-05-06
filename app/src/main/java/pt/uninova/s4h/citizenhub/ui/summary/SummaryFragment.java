@@ -16,7 +16,8 @@ import java.util.Map;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
+import pt.uninova.s4h.citizenhub.persistence.BloodPressureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
@@ -42,12 +43,29 @@ public class SummaryFragment extends ServiceFragment {
         return view;
     }
 
-    private void onDailyLumbarExtensionTrainingUpdate(List<LumbarExtensionTrainingRecord> lumbarExtensionTrainingRecords) {
+    private void onDailyBloodPressureMeasurementUpdate(List<BloodPressureMeasurementRecord> bloodPressureMeasurementRecords) {
+        final View view = requireView();
+        final BloodPressureMeasurementRecord record = bloodPressureMeasurementRecords.get(bloodPressureMeasurementRecords.size() - 1);
+
+        if (!bloodPressureMeasurementRecords.isEmpty()) {
+            TextView bloodPressureSystolicTextView = view.findViewById(R.id.bloodPressureSystolicValueTextView);
+            TextView bloodPressureDiastolicTextView = view.findViewById(R.id.bloodPressureDiastolicValueTextView);
+
+            bloodPressureSystolicTextView.setText(getString(R.string.blood_pressure_systolic_value, record.getSystolic()));
+            bloodPressureDiastolicTextView.setText(getString(R.string.blood_pressure_diastolic_value, record.getDiastolic()));
+        }
+
+        final CardView bloodPressureCardView = view.findViewById(R.id.bloodPressureCardView);
+
+        bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
+    private void onDailyLumbarExtensionTrainingUpdate(List<LumbarExtensionTrainingMeasurementRecord> lumbarExtensionTrainingMeasurementRecords) {
         final View view = requireView();
 
-        if (lumbarExtensionTrainingRecords != null) {
-            if (!lumbarExtensionTrainingRecords.isEmpty()) {
-                final LumbarExtensionTrainingRecord record = lumbarExtensionTrainingRecords.get(lumbarExtensionTrainingRecords.size() - 1);
+        if (lumbarExtensionTrainingMeasurementRecords != null) {
+            if (!lumbarExtensionTrainingMeasurementRecords.isEmpty()) {
+                final LumbarExtensionTrainingMeasurementRecord record = lumbarExtensionTrainingMeasurementRecords.get(lumbarExtensionTrainingMeasurementRecords.size() - 1);
 
                 final TextView lumbarExtensionTrainingCaloriesTextView = view.findViewById(R.id.lumbarTrainingCaloriesValueTextView);
                 final TextView lumbarExtensionTrainingDurationTextView = view.findViewById(R.id.lumbarTrainingDurationValueTextView);
@@ -62,7 +80,7 @@ public class SummaryFragment extends ServiceFragment {
 
             final CardView lumbarExtensionTrainingCardView = view.findViewById(R.id.lumbarTrainingCardView);
 
-            lumbarExtensionTrainingCardView.setVisibility(lumbarExtensionTrainingRecords.isEmpty() ? View.GONE : View.VISIBLE);
+            lumbarExtensionTrainingCardView.setVisibility(lumbarExtensionTrainingMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -108,21 +126,6 @@ public class SummaryFragment extends ServiceFragment {
             CardView postureCardView = view.findViewById(R.id.postureCardView);
             postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
 
-
-            boolean hasBloodPressure = bloodPressureSystolic != null && bloodPressureDiastolic != null;
-
-            if (hasBloodPressure) {
-                TextView bloodPressureSystolicTextView = view.findViewById(R.id.bloodPressureSystolicValueTextView);
-                TextView bloodPressureDiastolicTextView = view.findViewById(R.id.bloodPressureDiastolicValueTextView);
-
-                bloodPressureSystolicTextView.setText(getString(R.string.blood_pressure_systolic_value, bloodPressureSystolic.getAverage()));
-                bloodPressureDiastolicTextView.setText(getString(R.string.blood_pressure_diastolic_value, bloodPressureDiastolic.getAverage()));
-            }
-
-            CardView bloodPressureCardView = view.findViewById(R.id.bloodPressureCardView);
-            bloodPressureCardView.setVisibility(hasBloodPressure ? View.VISIBLE : View.GONE);
-
-
             boolean hasActivity = steps != null || calories != null || distance != null;
 
             if (hasActivity) {
@@ -144,7 +147,7 @@ public class SummaryFragment extends ServiceFragment {
 
             TextView noDataTextView = view.findViewById(R.id.fragment_summary_text_view_no_data);
 
-            if (!hasActivity && !hasBloodPressure && !hasPosture && !hasHeartRate) {
+            if (!hasActivity && !hasPosture && !hasHeartRate) {
                 AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
 
                 if (agentOrchestrator.getDevices().isEmpty())
@@ -163,6 +166,7 @@ public class SummaryFragment extends ServiceFragment {
     public void onServiceConnected() {
         model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getDailyLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onDailyLumbarExtensionTrainingUpdate);
+        model.getDailyBloodPressureMeasurement().observe(getViewLifecycleOwner(), this::onDailyBloodPressureMeasurementUpdate);
     }
 
     private String secondsToString(int value) {

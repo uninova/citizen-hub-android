@@ -27,7 +27,7 @@ import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -39,7 +39,7 @@ public class ReportDetailFragment extends Fragment {
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
             lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
-    private LumbarExtensionTrainingRecord lumbarExtensionTrainingRecord;
+    private LumbarExtensionTrainingMeasurementRecord lumbarExtensionTrainingMeasurementRecord;
     private Group heartRateGroup, activityGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
 
@@ -214,7 +214,7 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTrainingRecord == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTrainingMeasurementRecord == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -269,7 +269,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTrainingRecord == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTrainingMeasurementRecord == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -319,14 +319,14 @@ public class ReportDetailFragment extends Fragment {
                 bloodPressureGroup.setVisibility(View.GONE);
             }
 
-            if (lumbarExtensionTrainingRecord != null) {
+            if (lumbarExtensionTrainingMeasurementRecord != null) {
                 if (lumbarExtensionTrainingGroup != null) {
                     lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
                 }
-                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTrainingRecord.getDuration()));
-                lumbarScore.setText(String.valueOf(lumbarExtensionTrainingRecord.getScore()));
-                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTrainingRecord.getRepetitions()));
-                lumbarWeight.setText(String.valueOf(lumbarExtensionTrainingRecord.getWeight()));
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getDuration()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getScore()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getRepetitions()));
+                lumbarWeight.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getWeight()));
             } else {
                 lumbarExtensionTrainingGroup.setVisibility(View.GONE);
             }
@@ -396,7 +396,7 @@ public class ReportDetailFragment extends Fragment {
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
         try {
-            lumbarExtensionTrainingRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
+            lumbarExtensionTrainingMeasurementRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

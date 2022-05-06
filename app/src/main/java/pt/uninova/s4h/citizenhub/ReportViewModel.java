@@ -49,7 +49,7 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -70,7 +70,7 @@ public class ReportViewModel extends AndroidViewModel {
     private LocalDate detailDate;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregates;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregatesWorkTime;
-    private LumbarExtensionTrainingRecord lumbarTraining;
+    private LumbarExtensionTrainingMeasurementRecord lumbarTraining;
 
     public ReportViewModel(Application application) {
         super(application);
