@@ -31,6 +31,7 @@
             android:id="@+id/accounts_fragment"
             android:icon="@drawable/ic_user_fragment"
             android:title="@string/drawer_accounts_title" />
+
         <item
             android:id="@+id/about_fragment"
             android:icon="@drawable/ic_about"

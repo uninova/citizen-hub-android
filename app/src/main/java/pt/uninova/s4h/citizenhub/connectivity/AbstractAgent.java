@@ -1,12 +1,13 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
@@ -27,6 +28,8 @@ public abstract class AbstractAgent implements Agent {
     private final Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
     private final Dispatcher<Sample> sampleDispatcher;
 
+    private final Set<AgentListener> agentListenerSet;
+
     protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements) {
         this.id = id;
         this.source = source;
@@ -39,6 +42,13 @@ public abstract class AbstractAgent implements Agent {
 
         this.stateChangedDispatcher = new Dispatcher<>();
         this.sampleDispatcher = new Dispatcher<>();
+
+        this.agentListenerSet = new HashSet<>();
+    }
+
+    @Override
+    public void addAgentListener(AgentListener agentListener) {
+        agentListenerSet.add(agentListener);
     }
 
     @Override
@@ -58,8 +68,10 @@ public abstract class AbstractAgent implements Agent {
         }
 
         for (final Protocol i : this.protocolMap.values()) {
-            disableProtocol(i);
+            i.disable();
         }
+
+        protocolMap.clear();
 
         setState(AgentState.DISABLED);
     }
@@ -70,9 +82,10 @@ public abstract class AbstractAgent implements Agent {
 
         if (protocol != null) {
             this.measurementMap.remove(measurementKind);
-            protocol.clearSampleObservers();
             disableProtocol(protocol);
         }
+
+        tellOnMeasurementDisabled(measurementKind);
     }
 
     @Override
@@ -84,6 +97,8 @@ public abstract class AbstractAgent implements Agent {
             protocolMap.remove(protocolId);
             protocol.disable();
         }
+
+        tellOnProtocolDisabled(protocol);
     }
 
     @Override
@@ -116,6 +131,8 @@ public abstract class AbstractAgent implements Agent {
             this.measurementMap.put(measurementKind, protocol);
             enableProtocol(protocol);
         }
+
+        tellOnMeasurementEnabled(measurementKind);
     }
 
     @Override
@@ -137,6 +154,13 @@ public abstract class AbstractAgent implements Agent {
         }
 
         protocol.enable();
+
+        tellOnProtocolEnabled(protocol);
+    }
+
+    @Override
+    public Set<MeasurementKind> getEnabledMeasurements() {
+        return measurementMap.keySet();
     }
 
     @Override
@@ -185,6 +209,17 @@ public abstract class AbstractAgent implements Agent {
         return this.supportedProtocolsIds;
     }
 
+
+    @Override
+    public void removeAgentListener(AgentListener agentListener) {
+        agentListenerSet.remove(agentListener);
+    }
+
+    @Override
+    public void removeAllAgentListeners() {
+        agentListenerSet.clear();
+    }
+
     @Override
     public void removeSampleObserver(Observer<Sample> observer) {
         this.sampleDispatcher.removeObserver(observer);
@@ -202,6 +237,30 @@ public abstract class AbstractAgent implements Agent {
             state = value;
 
             stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, this));
+        }
+    }
+
+    protected void tellOnMeasurementDisabled(MeasurementKind measurementKind) {
+        for (AgentListener i : agentListenerSet) {
+            i.onMeasurementDisabled(this, measurementKind);
+        }
+    }
+
+    protected void tellOnMeasurementEnabled(MeasurementKind measurementKind) {
+        for (AgentListener i : agentListenerSet) {
+            i.onMeasurementEnabled(this, measurementKind);
+        }
+    }
+
+    protected void tellOnProtocolDisabled(Protocol protocol) {
+        for (AgentListener i : agentListenerSet) {
+            i.onProtocolDisabled(this, protocol);
+        }
+    }
+
+    protected void tellOnProtocolEnabled(Protocol protocol) {
+        for (AgentListener i : agentListenerSet) {
+            i.onProtocolEnabled(this, protocol);
         }
     }
 }

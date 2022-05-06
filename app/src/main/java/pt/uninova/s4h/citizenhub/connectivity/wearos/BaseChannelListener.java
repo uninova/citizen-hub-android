@@ -2,13 +2,13 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
-import java.sql.Timestamp;
 import java.util.Date;
+
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class BaseChannelListener implements ChannelListener {
 
     final private MeasurementKind name;
-
 
     public BaseChannelListener(MeasurementKind name) {
         this.name = name;
@@ -24,18 +24,7 @@ public class BaseChannelListener implements ChannelListener {
     }
 
     @Override
-    public void onRead(byte[] value) {
-    }
-
-    @Override
-    public void onReadFailure(byte[] value, int status) {
-    }
-
-    @Override
     public void onWrite(byte[] value) {
     }
 
-    @Override
-    public void onWriteFailure(byte[] value, int status) {
-    }
 }

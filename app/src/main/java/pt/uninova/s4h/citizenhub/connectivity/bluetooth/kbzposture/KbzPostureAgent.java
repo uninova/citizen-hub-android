@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +16,11 @@ public class KbzPostureAgent extends BluetoothAgent {
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.kbzposture");
 
     static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.POSTURE
+            MeasurementKind.POSTURE_CORRECT
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            KbzRawProtocol.ID
+            KbzBodyProtocol.ID
     )));
 
     public KbzPostureAgent(BluetoothConnection connection) {
@@ -30,8 +29,8 @@ public class KbzPostureAgent extends BluetoothAgent {
 
     @Override
     protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.POSTURE) {
-            return new KbzRawProtocol(this.getConnection(), getSampleDispatcher(), this);
+        if (kind == MeasurementKind.POSTURE_CORRECT) {
+            return new KbzBodyProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;

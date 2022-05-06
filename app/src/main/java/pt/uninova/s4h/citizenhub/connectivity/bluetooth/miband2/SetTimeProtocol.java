@@ -12,7 +12,6 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.AdjustReason;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.CurrentTime;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DayDateTime;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.ExactTime256;
 
 public class SetTimeProtocol extends BluetoothProtocol {

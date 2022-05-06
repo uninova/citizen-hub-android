@@ -2,7 +2,6 @@ package pt.uninova.s4h.citizenhub;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,20 +16,18 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 
 import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -42,7 +39,7 @@ public class ReportDetailFragment extends Fragment {
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
             lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
-    private LumbarExtensionTraining lumbarExtensionTraining;
+    private LumbarExtensionTrainingRecord lumbarExtensionTrainingRecord;
     private Group heartRateGroup, activityGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
 
@@ -54,7 +51,7 @@ public class ReportDetailFragment extends Fragment {
         Button uploadPdfButton = view.findViewById(R.id.uploadButton);
         Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
         AccountsViewModel viewModel = new AccountsViewModel(requireActivity().getApplication());
-        if(viewModel.hasSmart4HealthAccount()) {
+        if (viewModel.hasSmart4HealthAccount()) {
 
             viewPdfButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,13 +71,30 @@ public class ReportDetailFragment extends Fragment {
                 try {
                     model.sendDetail(new Callback<Fhir4Record<DocumentReference>>() {
                         @Override
-                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                            requireActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                        viewPdfButton.setVisibility(View.VISIBLE);
-                                        uploadPdfButton.setVisibility(View.GONE);
+                        public void onSuccess(Fhir4Record<DocumentReference> record) {
+                            try {
+                                model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
+                                    @Override
+                                    public void onSuccess(Fhir4Record<DocumentReference> recAord) {
+                                        requireActivity().runOnUiThread(() -> {
+                                                    Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
+                                                    viewPdfButton.setVisibility(View.VISIBLE);
+                                                    uploadPdfButton.setVisibility(View.GONE);
+                                                }
+                                        );
                                     }
-                            );
+
+                                    @Override
+                                    public void onError(D4LException exception) {
+                                        requireActivity().runOnUiThread(() -> {
+                                            Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
+                                            exception.printStackTrace();
+                                        });
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override
@@ -95,33 +109,9 @@ public class ReportDetailFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                try {
-                    model.sendDetailWorkTime(new Callback<Fhir4Record<DocumentReference>>() {
-                        @Override
-                        public void onSuccess(Fhir4Record<DocumentReference> recAord) {
-                            requireActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_success), Toast.LENGTH_SHORT).show();
-                                        viewPdfButton.setVisibility(View.VISIBLE);
-                                        uploadPdfButton.setVisibility(View.GONE);
-                                    }
-                            );
-                        }
-
-                        @Override
-                        public void onError(D4LException exception) {
-                            requireActivity().runOnUiThread(() -> {
-                                Toast.makeText(getContext(), getString(R.string.fragment_report_detail_fragment_toast_upload_failure), Toast.LENGTH_SHORT).show();
-                                exception.printStackTrace();
-                            });
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             });
-        }
-        else{
+        } else {
             viewPdfButton.setVisibility(View.GONE);
             uploadPdfButton.setVisibility(View.GONE);
         }
@@ -141,7 +131,7 @@ public class ReportDetailFragment extends Fragment {
             minutes = minutes % 60;
         }
 
-        String result = ((hours > 0 ? hours +  "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
 
         return result.equals("") ? "0s" : result;
     }
@@ -150,12 +140,12 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate caloriesWorkTime = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distanceWorkTime = value.get(MeasurementKind.DISTANCE);
         final MeasurementAggregate heartRateWorkTime = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.BAD_POSTURE);
-        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.GOOD_POSTURE);
+        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.POSTURE_INCORRECT);
+        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.POSTURE_CORRECT);
         final MeasurementAggregate stepsWorkTime = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         final MeasurementAggregate respirationWorkTime = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
@@ -215,16 +205,16 @@ public class ReportDetailFragment extends Fragment {
         final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
         final MeasurementAggregate distance = value.get(MeasurementKind.DISTANCE);
         final MeasurementAggregate heartRate = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPosture = value.get(MeasurementKind.BAD_POSTURE);
-        final MeasurementAggregate goodPosture = value.get(MeasurementKind.GOOD_POSTURE);
+        final MeasurementAggregate badPosture = value.get(MeasurementKind.POSTURE_INCORRECT);
+        final MeasurementAggregate goodPosture = value.get(MeasurementKind.POSTURE_CORRECT);
         final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTraining == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTrainingRecord == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -279,13 +269,13 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTraining == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTrainingRecord == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
             }
 
-            if (distance != null && steps !=null && calories !=null) {
+            if (distance != null && steps != null && calories != null) {
                 if (activityGroup != null) {
                     activityGroup.setVisibility(View.VISIBLE);
                 }
@@ -324,19 +314,19 @@ public class ReportDetailFragment extends Fragment {
                 }
                 bloodPressureSBPavg.setText(String.valueOf(bloodPressureSBP.getAverage()));
                 bloodPressureDBPavg.setText(String.valueOf(bloodPressureDBP.getAverage()));
-                bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
+                //bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
             } else if (bloodPressureGroup != null) {
                 bloodPressureGroup.setVisibility(View.GONE);
             }
 
-            if (lumbarExtensionTraining != null) {
+            if (lumbarExtensionTrainingRecord != null) {
                 if (lumbarExtensionTrainingGroup != null) {
                     lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
                 }
-                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTraining.getTrainingLength()));
-                lumbarScore.setText(String.valueOf(lumbarExtensionTraining.getScore()));
-                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTraining.getRepetitions()));
-                lumbarWeight.setText(String.valueOf(lumbarExtensionTraining.getWeight()));
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTrainingRecord.getDuration()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTrainingRecord.getScore()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTrainingRecord.getRepetitions()));
+                lumbarWeight.setText(String.valueOf(lumbarExtensionTrainingRecord.getWeight()));
             } else {
                 lumbarExtensionTrainingGroup.setVisibility(View.GONE);
             }
@@ -406,7 +396,7 @@ public class ReportDetailFragment extends Fragment {
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
         try {
-            lumbarExtensionTraining = lumbarRepository.getLumbarTraining(LocalDate.now()).getValue();
+            lumbarExtensionTrainingRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

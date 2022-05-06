@@ -59,7 +59,7 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
                     final Duration duration = Duration.between(lastTimestamp, now);
                     final double seconds = duration.toNanos() * 0.000000001;
 
-                    final Measurement<?> posture = lastPosture == MeasurementKind.GOOD_POSTURE ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
+                    final Measurement<?> posture = lastPosture == MeasurementKind.POSTURE_CORRECT ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
                     final Measurement<?> position = lastPosition == MeasurementKind.STANDING ? new StandingMeasurement(seconds) : new SittingMeasurement(seconds);
 
                     final Sample sample = new Sample(getAgent().getSource(), posture, position);
@@ -70,7 +70,7 @@ public class KbzRawProtocol extends BluetoothMeasuringProtocol {
                 final double[] parsed = parseAccelerometer(value);
 
                 lastTimestamp = now;
-                lastPosture = isGoodPosture(parsed[2], parsed[3]) ? MeasurementKind.GOOD_POSTURE : MeasurementKind.BAD_POSTURE;
+                lastPosture = isGoodPosture(parsed[2], parsed[3]) ? MeasurementKind.POSTURE_CORRECT : MeasurementKind.POSTURE_INCORRECT;
                 lastPosition = isStanding(parsed[1], parsed[2], parsed[3]) ? MeasurementKind.STANDING : MeasurementKind.SITTING;
             }
         });

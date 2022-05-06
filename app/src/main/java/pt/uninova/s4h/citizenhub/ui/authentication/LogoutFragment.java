@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.ui.Authentication;
+package pt.uninova.s4h.citizenhub.ui.authentication;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
+
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.Callback;
-import pt.uninova.s4h.citizenhub.ui.lobby.LobbyActivity;
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.ui.lobby.LobbyActivity;
 
 public class LogoutFragment extends Fragment {
 

@@ -9,6 +9,8 @@ import pt.uninova.util.messaging.Observer;
 
 public interface Agent {
 
+    void addAgentListener(AgentListener agentListener);
+
     void addSampleObserver(Observer<Sample> observer);
 
     void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
@@ -35,11 +37,18 @@ public interface Agent {
 
     AgentState getState();
 
+    Set<MeasurementKind> getEnabledMeasurements();
+
     Set<MeasurementKind> getSupportedMeasurements();
 
     Set<UUID> getSupportedProtocolsIds();
 
+    void removeAllAgentListeners();
+
+    void removeAgentListener(AgentListener agentListener);
+
     void removeSampleObserver(Observer<Sample> observer);
 
     void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
+
 }

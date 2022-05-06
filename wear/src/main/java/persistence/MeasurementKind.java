@@ -22,10 +22,6 @@ public enum MeasurementKind {
         this.id = value;
     }
 
-    public static MeasurementKind find(int id) {
-        return LOOKUP.get(id);
-    }
-
     public int getId() {
         return id;
     }

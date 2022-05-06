@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
 import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
@@ -34,7 +33,7 @@ public abstract class BluetoothMeasuringProtocol extends BluetoothProtocol imple
 
     @Override
     public void clearSampleObservers() {
-        sampleDispatcher.close();
+        this.sampleDispatcher.close();
     }
 
     protected Dispatcher<Sample> getSampleDispatcher() {

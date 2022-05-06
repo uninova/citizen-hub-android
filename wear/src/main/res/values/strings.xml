@@ -9,4 +9,12 @@
     <string name="main_activity_steps_message_2">\" steps today.\"</string>
     <string name="activity_main_heart_rate_text">Heart rate:</string>
     <string name="activity_main_steps_text">Steps:</string>
+    <string name="show_data_steps">Steps: %1d</string>
+    <string name="show_data_heartrate">Heart Rate: %1$.0f BPM</string>
+    <string name="show_data_phone_connected">Phone Connected</string>
+    <string name="show_data_phone_not_connected">Phone Not Connected</string>
+    <string name="show_data_protocols_no_data">Not Sending Data</string>
+    <string name="show_data_protocols_heartrate">Sending: Heart Rate</string>
+    <string name="show_data_protocols_steps">Sending: Steps</string>
+    <string name="show_data_protocols_heartrate_steps">Sending: Heart Rate, Steps</string>
 </resources>

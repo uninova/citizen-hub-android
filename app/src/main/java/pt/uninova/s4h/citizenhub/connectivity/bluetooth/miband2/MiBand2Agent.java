@@ -24,7 +24,7 @@ public class MiBand2Agent extends BluetoothAgent {
 
     static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             MeasurementKind.HEART_RATE,
-            MeasurementKind.ACTIVITY
+            MeasurementKind.STEPS
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -77,7 +77,7 @@ public class MiBand2Agent extends BluetoothAgent {
         switch (kind) {
             case HEART_RATE:
                 return new MiBand2HeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
-            case ACTIVITY:
+            case STEPS:
                 return new MiBand2DistanceProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 

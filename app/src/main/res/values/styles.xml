@@ -5,7 +5,29 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/colorS4HGreyLight</item>
         <item name="toolbarStyle">@style/Widget.Citizen.Toolbar</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceCategoryStyle">@style/Theme.Citizen.AppSettings.Category.Material
+        </item>
+        <item name="preferenceFragmentCompatStyle">
+            @style/Theme.Citizen.AppSettings.Fragment.Material
+        </item>
+        <item name="preferenceStyle">@style/Theme.Citizen.AppSettings.Preference.Material</item>
+        <item name="preferenceTheme">@style/preferences</item>
+    </style>
+
+    <style name="Theme.Citizen.AppSettings.Category.Material" parent="Preference.Category.Material">
+        <item name="allowDividerAbove">false</item>
+        <item name="allowDividerBelow">false</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="Theme.Citizen.AppSettings.Fragment.Material" parent="PreferenceFragment.Material">
+        <item name="allowDividerAfterLastItem">true</item>
+    </style>
+
+    <style name="Theme.Citizen.AppSettings.Preference.Material" parent="Preference.Material">
+        <item name="allowDividerAbove">true</item>
+        <item name="allowDividerBelow">true</item>
+        <item name="iconSpaceReserved">false</item>
     </style>
 
     <style name="Widget.Citizen.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -34,7 +56,7 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="preferenceTheme" parent="PreferenceThemeOverlay">
+    <style name="preferences">
         <item name="colorAccent">@color/colorS4HDarkBlue</item>
         <item name="android:background">@color/colorS4HGreyLight</item>
         <item name="android:textColorPrimary">@color/colorS4HDarkBlue</item>
@@ -53,7 +75,10 @@
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:preferenceStyle">@style/preferences</item>
+
+    </style>
 
     <style name="ReportDetailTitle">
         <item name="android:layout_width">114.520dp</item>
@@ -157,4 +182,97 @@
         <item name="fontWeight">700</item>
         <item name="android:fontFamily">@font/primus</item>
     </style>
+
+    <!-- Model 2 -->
+    <style name="SummaryCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="SummaryCardContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/corner_frame_14dp</item>
+        <item name="android:backgroundTint">@color/colorS4HDarkBlue</item>
+        <item name="android:backgroundTintMode">add</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="SummaryCardTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorS4HDarkBlue</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textColor">@color/colorS4HWhite</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/primus</item>
+    </style>
+
+    <style name="SummaryCardBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="SummaryCardImage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+    <style name="SummaryCardInformation">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.7</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="SummaryCardInformationRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+
+    <style name="SummaryCardInformationText">
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SummaryCardInformationText.Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SummaryCardInformationText.Value">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/colorS4HLightBlue</item>
+    </style>
+
 </resources>

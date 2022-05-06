@@ -14,7 +14,6 @@ import android.graphics.pdf.PdfDocument;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.ByteArrayOutputStream;
@@ -50,7 +49,7 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTraining;
+import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
 import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
@@ -58,7 +57,6 @@ import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
 import pt.uninova.s4h.citizenhub.report.CanvasWriter;
 import pt.uninova.util.Pair;
 import pt.uninova.util.messaging.Observer;
-import pt.uninova.util.time.LocalDateInterval;
 
 
 public class ReportViewModel extends AndroidViewModel {
@@ -67,13 +65,12 @@ public class ReportViewModel extends AndroidViewModel {
     final private LumbarExtensionTrainingRepository lumbarTrainingRepository;
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
-    final private MediatorLiveData<LocalDateInterval> dateBoundsLive;
     final private Set<Pair<Integer, Integer>> peekedMonths;
 
     private LocalDate detailDate;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregates;
     private Map<MeasurementKind, MeasurementAggregate> detailAggregatesWorkTime;
-    private LumbarExtensionTraining lumbarTraining;
+    private LumbarExtensionTrainingRecord lumbarTraining;
 
     public ReportViewModel(Application application) {
         super(application);
@@ -81,10 +78,6 @@ public class ReportViewModel extends AndroidViewModel {
         repository = new MeasurementRepository(application);
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
-        dateBoundsLive = new MediatorLiveData<>();
-        lumbarTraining = lumbarTrainingRepository.getLumbarTraining(LocalDate.now()).getValue();
-        dateBoundsLive.addSource(repository.getDateBounds(), this::onDateBoundsChanged);
-        dateBoundsLive.addSource(lumbarTrainingRepository.getDateBounds(), this::onDateBoundsChanged);
         peekedMonths = new HashSet<>();
 
         detailDate = LocalDate.now();
@@ -265,8 +258,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.GOOD_POSTURE);
-        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(MeasurementKind.BAD_POSTURE);
+        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -278,13 +271,13 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("OK: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Good Posture: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate.getSum().intValue()), boldTextPaint);
 
             y += 20;
 
             if (measurementAggregate1 != null) {
-                canvasWriter.addText("OK: ", x + 70, y, darkTextPaint);
+                canvasWriter.addText("Bad Posture: ", x + 70, y, darkTextPaint);
                 canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate1.getSum().intValue()), boldTextPaint);
                 y += 20;
             }
@@ -296,7 +289,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate3 = detailAggregatesWorkTime.get(MeasurementKind.CALORIES);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
-            Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
+            Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
             canvas.translate(x, y + 15);
@@ -337,7 +330,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(res.getString(R.string.pdf_report_average_HR_text), x + 70, y, darkTextPaint);
+            canvasWriter.addText("Average heart rate", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
@@ -347,7 +340,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Maximum heart rate (bpm): ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Maximum heart rate: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate.getMax()), boldTextPaint);
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
@@ -369,8 +362,8 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(("Training duration:"), x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addText("Training duration:", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getDuration()), boldTextPaint);
             canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;
@@ -379,7 +372,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvasWriter.addTextInFront("%", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("NºRepetitions: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Number of Repetitions: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
             canvasWriter.addTextInFront(" reps", darkTextPaint);
 
@@ -536,8 +529,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.GOOD_POSTURE);
-        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.BAD_POSTURE);
+        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -549,13 +542,13 @@ public class ReportViewModel extends AndroidViewModel {
 
             y += 40;
 
-            canvasWriter.addText("OK: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Good Posture: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate.getSum().intValue()), boldTextPaint);
 
             y += 20;
 
             if (measurementAggregate1 != null) {
-                canvasWriter.addText("Not OK: ", x + 70, y, darkTextPaint);
+                canvasWriter.addText("Bad Posture: ", x + 70, y, darkTextPaint);
                 canvasWriter.addTextInFront(" " + secondsToString(measurementAggregate1.getSum().intValue()), boldTextPaint);
                 y += 20;
             }
@@ -567,7 +560,7 @@ public class ReportViewModel extends AndroidViewModel {
         MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.CALORIES);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
-            Drawable stepsTaken = res.getDrawable(R.drawable.ic_steps, null);
+            Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
             stepsTaken.setBounds(0, 0, stepsTaken.getIntrinsicWidth(), stepsTaken.getIntrinsicHeight());
             canvas.save();
             canvas.translate(x, y + 15);
@@ -608,17 +601,17 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(res.getString(R.string.pdf_report_average_HR_text), x + 70, y, darkTextPaint);
+            canvasWriter.addText("Average heart rate: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Min heart rate: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Minimum heart rate: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate.getMin()), boldTextPaint);
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Max heart rate (bpm): ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Maximum heart rate: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate.getMax()), boldTextPaint);
             canvasWriter.addTextInFront(" bpm", darkTextPaint);
 
@@ -639,7 +632,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText("Breathing Rate:", x + 70, y + 10, darkTextPaint);
+            canvasWriter.addText("Breathing rate: ", x + 70, y + 10, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" rpm", darkTextPaint);
 
@@ -648,9 +641,9 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SBP);
-        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DBP);
-        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_AP);
+        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
+        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
+        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
         if (measurementAggregate != null && measurementAggregate2work != null && measurementAggregate3work != null) {
 
             y -= 10;
@@ -664,17 +657,17 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(res.getString(R.string.pdf_report_average_SBP_text), x + 70, y, darkTextPaint);
+            canvasWriter.addText("Average Systolic Blood Pressure:", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Average DBP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Average Diastolic Blood Pressure: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate2work.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("Mean AP: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Mean Arterial Pressure: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(measurementAggregate3work.getAverage()), boldTextPaint);
             canvasWriter.addTextInFront(" mmHg", darkTextPaint);
 
@@ -694,8 +687,8 @@ public class ReportViewModel extends AndroidViewModel {
             canvas.restore();
 
             y += 40;
-            canvasWriter.addText(("Training duration:"), x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getTrainingLength()), boldTextPaint);
+            canvasWriter.addText("Training duration:", x + 70, y, darkTextPaint);
+            canvasWriter.addTextInFront(" " + decimalFormat.format(lumbarTraining.getDuration()), boldTextPaint);
             canvasWriter.addTextInFront("s", darkTextPaint);
 
             y += 20;
@@ -704,7 +697,7 @@ public class ReportViewModel extends AndroidViewModel {
             canvasWriter.addTextInFront("%", darkTextPaint);
 
             y += 20;
-            canvasWriter.addText("NºRepetitions: ", x + 70, y, darkTextPaint);
+            canvasWriter.addText("Number of Repetitions: ", x + 70, y, darkTextPaint);
             canvasWriter.addTextInFront(String.valueOf(lumbarTraining.getRepetitions()), boldTextPaint);
             canvasWriter.addTextInFront(" reps", darkTextPaint);
 
@@ -740,16 +733,6 @@ public class ReportViewModel extends AndroidViewModel {
         return out.toByteArray();
     }
 
-    private void onDateBoundsChanged(LocalDateInterval dateBounds) {
-        if (dateBoundsLive.getValue() == null || !dateBoundsLive.getValue().equals(dateBounds)) {
-            dateBoundsLive.postValue(dateBounds);
-        }
-    }
-
-    public LiveData<LocalDateInterval> getAvailableReportDateBoundaries() {
-        return dateBoundsLive;
-    }
-
     public LiveData<Set<LocalDate>> getAvailableReportDates() {
         return availableReportsLive;
     }
@@ -776,14 +759,6 @@ public class ReportViewModel extends AndroidViewModel {
             observer.observe(value);
         });
     }
-
-
-//    public void obtainLumbar(Observer<LumbarExtensionTraining> lumbarExtensionTraining){
-//
-//        lumbarExtensionTraining.observe(lumbarTrainingRepository.getMostRecentLumbarTraining().getValue());
-//
-//    }
-
 
     private void onDatesChanged(List<LocalDate> dates) {
         if (dates.size() > 0) {

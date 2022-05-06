@@ -1,16 +1,18 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
-import java.nio.ByteBuffer;
+import android.os.Handler;
+import android.os.Looper;
+
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
@@ -18,6 +20,7 @@ import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.util.messaging.Observer;
 
 public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
@@ -26,6 +29,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
     final private static UUID POSTURE_CORRECTION = UUID.fromString("0000bac3-0000-1000-8000-00805f9b34fb"); //bac3
     final private static UUID CHARACTERISTIC = UUID.fromString("0000bac4-0000-1000-8000-00805f9b34fb"); //bac4
 
+    private static final int selfUpdatingInterval = 5000;
     /*
     ALL KNOWN SERVICES
     0x1800 -> Generic Access Service
@@ -64,8 +68,33 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         own counters, BAA6 is an internal counter)
      */
 
-    private MeasurementKind lastPosture;
+    private boolean lastGoodPosture;
     private Instant lastTimestamp;
+
+    private Thread selfUpdatingThread;
+
+    private final BaseCharacteristicListener postureChangedListener = new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
+        @Override
+        public void onChange(byte[] value) {
+            push(value[0] == 0);
+        }
+    };
+
+    private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> connectionStateObserver = value -> {
+        if (value.getNewState() == BluetoothConnectionState.DISCONNECTED) {
+            setState(ProtocolState.SUSPENDED);
+            push(lastGoodPosture);
+            reset();
+        } else if (value.getNewState() == BluetoothConnectionState.READY && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
+            setState(ProtocolState.ENABLED);
+
+            if (selfUpdatingThread == null) {
+                startSelfUpdatingThread();
+            }
+
+            value.getSource().enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
+        }
+    };
 
     public UprightGo2PostureProtocol(BluetoothConnection connection, UprightGo2Agent agent) {
         super(ID, connection, agent);
@@ -75,56 +104,87 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
         super(ID, connection, dispatcher, agent);
     }
 
-    private void attachObservers() {
-        final BluetoothConnection connection = getConnection();
-
-        if (connection.hasService(MEASUREMENTS_SERVICE)) {
-            connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
-        }
-
-        //handle sensor evaluation of good posture
-        connection.addCharacteristicListener(new BaseCharacteristicListener(MEASUREMENTS_SERVICE, POSTURE_CORRECTION) {
-            @Override
-            public void onChange(byte[] value) {
-                final Instant now = Instant.now();
-
-                if (lastTimestamp != null) {
-                    final Duration duration = Duration.between(lastTimestamp, now);
-                    final double seconds = duration.toNanos() * 0.000000001;
-
-                    final Measurement<?> posture = lastPosture == MeasurementKind.GOOD_POSTURE ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
-
-
-                    final Sample sample = new Sample(getAgent().getSource(), posture);
-
-                    getSampleDispatcher().dispatch(sample);
-                }
-
-                lastTimestamp = now;
-                lastPosture = value[0] == 0 ? MeasurementKind.GOOD_POSTURE : MeasurementKind.BAD_POSTURE;
-            }
-        });
-    }
-
     @Override
     public void disable() {
+        setState(ProtocolState.DISABLING);
+
         final BluetoothConnection connection = getConnection();
-        if (connection.hasService(MEASUREMENTS_SERVICE)) {
-            connection.disableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
-        }
-        if (connection.hasService(MEASUREMENTS_SERVICE)) {
-            connection.disableNotifications(MEASUREMENTS_SERVICE, CHARACTERISTIC);
-        }
-        setState(ProtocolState.DISABLED);
+
+        connection.disableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
+
+        connection.removeCharacteristicListener(postureChangedListener);
+        connection.removeConnectionStateChangeListener(connectionStateObserver);
+
+        super.disable();
     }
 
     @Override
     public void enable() {
-        attachObservers();
+        setState(ProtocolState.ENABLING);
 
-        lastPosture = null;
-        lastTimestamp = null;
+        final BluetoothConnection connection = getConnection();
+
+        connection.addCharacteristicListener(postureChangedListener);
+        connection.addConnectionStateChangeListener(connectionStateObserver);
+
+        connection.enableNotifications(MEASUREMENTS_SERVICE, POSTURE_CORRECTION);
+
+        startSelfUpdatingThread();
+
+        reset();
 
         super.enable();
+    }
+
+    private void push(boolean goodPosture) {
+        final Instant now = Instant.now();
+
+        if (lastTimestamp != null) {
+            final Duration duration = Duration.between(lastTimestamp, now);
+            final double seconds = duration.toNanos() * 0.000000001;
+
+            final Measurement<?> posture = lastGoodPosture ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
+
+            final Sample sample = new Sample(getAgent().getSource(), posture);
+
+            getSampleDispatcher().dispatch(sample);
+        }
+
+        lastTimestamp = now;
+        lastGoodPosture = goodPosture;
+    }
+
+    private void reset() {
+        lastTimestamp = null;
+        lastGoodPosture = true;
+    }
+
+    private void startSelfUpdatingThread() {
+        selfUpdatingThread = new Thread() {
+            @Override
+            public void run() {
+
+                Looper.prepare();
+
+                Handler handler = new Handler(Looper.myLooper());
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (UprightGo2PostureProtocol.this.getState() == ProtocolState.ENABLED) {
+                            UprightGo2PostureProtocol.this.push(lastGoodPosture);
+                            handler.postDelayed(this, selfUpdatingInterval);
+                        } else {
+                            selfUpdatingThread.interrupt();
+                            selfUpdatingThread = null;
+                        }
+                    }
+                }, selfUpdatingInterval);
+
+                Looper.loop();
+            }
+        };
+
+        selfUpdatingThread.start();
     }
 }

@@ -4,10 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
 
 public abstract class BluetoothAgent extends AbstractAgent {
 

@@ -35,17 +35,6 @@ public class AuthenticationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View result = inflater.inflate(R.layout.fragment_authentication, container, false);
-        TextView textView = result.findViewById(R.id.citizen_hub_text_logo);
-        Spannable word = new SpannableString(getString(R.string.fragment_authentication_spannable_string_citizen));
-
-        word.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorS4HDarkBlue)), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        textView.setText(word);
-        Spannable wordTwo = new SpannableString("HUB");
-
-        wordTwo.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorS4HTurquoise)), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.append(wordTwo);
-
 
         loginButton = result.findViewById(R.id.authentication_fragment_login_button);
         loginButton.setOnClickListener((View v) -> {

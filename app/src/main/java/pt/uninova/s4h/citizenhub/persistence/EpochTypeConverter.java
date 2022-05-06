@@ -2,18 +2,24 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import androidx.room.TypeConverter;
 
-import pt.uninova.util.Pair;
-
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+
+import pt.uninova.util.Pair;
 
 public class EpochTypeConverter {
 
     @TypeConverter
     public static Long fromDate(Date date) {
         return date == null ? null : date.getTime() / 1000L;
+    }
+
+    @TypeConverter
+    public static Long fromInstant(Instant instant) {
+        return instant == null ? null : instant.getEpochSecond();
     }
 
     @TypeConverter
@@ -34,6 +40,11 @@ public class EpochTypeConverter {
     @TypeConverter
     public static Date toDate(Long value) {
         return value == null ? null : new Date(value * 1000L);
+    }
+
+    @TypeConverter
+    public static Instant toInstant(Long value) {
+        return value == null ? null : Instant.ofEpochSecond(value);
     }
 
     @TypeConverter

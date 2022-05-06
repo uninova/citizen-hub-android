@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.util.UUIDv5;
 import pt.uninova.util.messaging.Observer;
 
@@ -71,6 +72,16 @@ public class AgentOrchestrator {
         }
     }
 
+    public void add(Agent agent) {
+        final Device device = agent.getSource();
+
+        put(device, agent);
+        tellOnDeviceAdded(device);
+
+        agent.addSampleObserver(ingester);
+        tellOnAgentAttached(device, agent);
+    }
+
     public void addListener(AgentOrchestratorListener listener) {
         this.listeners.add(listener);
     }
@@ -87,6 +98,14 @@ public class AgentOrchestrator {
 
     public Set<Device> getDevices() {
         return Collections.unmodifiableSet(new TreeSet<>(agentMap.keySet()));
+    }
+
+    public void identify(Device device, Observer<Agent> observer) {
+        final AgentFactory<? extends Agent> factory = agentFactoryMap.get(device.getConnectionKind());
+
+        if (factory != null) {
+            factory.create(device.getAddress(), observer::observe);
+        }
     }
 
     private void put(Device device, Agent agent) {

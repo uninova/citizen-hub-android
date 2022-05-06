@@ -1,8 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.content.Context;
-
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -10,9 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat implements DialogPreference.TargetFragment
 {
@@ -31,8 +26,8 @@ public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragment
         super.onBindDialogView(v);
         timePicker.setIs24HourView(true);
         TimePreference pref = (TimePreference) getPreference();
-        timePicker.setCurrentHour(pref.hour);
-        timePicker.setCurrentMinute(pref.minute);
+        timePicker.setHour(pref.hour);
+        timePicker.setMinute(pref.minute);
     }
 
 
@@ -42,8 +37,8 @@ public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragment
         if (positiveResult)
         {
             TimePreference pref = (TimePreference) getPreference();
-            pref.hour = timePicker.getCurrentHour();
-            pref.minute = timePicker.getCurrentMinute();
+            pref.hour = timePicker.getHour();
+            pref.minute = timePicker.getMinute();
 
             String value = TimePreference.timeToString(pref.hour, pref.minute);
             if (pref.callChangeListener(value)) pref.persistStringValue(value);

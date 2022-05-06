@@ -5,7 +5,6 @@ public interface AgentOrchestratorListener {
     default void onAgentAttached(Device device, Agent agent) {
     }
 
-
     default void onDeviceAdded(Device device) {
     }
 

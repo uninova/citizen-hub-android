@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -27,6 +28,33 @@ import pt.uninova.util.messaging.Dispatcher;
 import pt.uninova.util.messaging.Observer;
 
 public class BluetoothConnection extends BluetoothGattCallback implements Connection {
+
+    public static final byte BLE_HCI_STATUS_CODE_SUCCESS = 0x00;
+    public static final byte BLE_HCI_STATUS_CODE_UNKNOWN_BTLE_COMMAND = 0x01;
+    public static final byte BLE_HCI_STATUS_CODE_UNKNOWN_CONNECTION_IDENTIFIER = 0x02;
+    public static final byte BLE_HCI_AUTHENTICATION_FAILURE = 0x05;
+    public static final byte BLE_HCI_STATUS_CODE_PIN_OR_KEY_MISSING = 0x06;
+    public static final byte BLE_HCI_MEMORY_CAPACITY_EXCEEDED = 0x07;
+    public static final byte BLE_HCI_CONNECTION_TIMEOUT = 0x08;
+    public static final byte BLE_HCI_STATUS_CODE_COMMAND_DISALLOWED = 0x0C;
+    public static final byte BLE_HCI_STATUS_CODE_INVALID_BTLE_COMMAND_PARAMETERS = 0x12;
+    public static final byte BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION = 0x13;
+    public static final byte BLE_HCI_REMOTE_DEV_TERMINATION_DUE_TO_LOW_RESOURCES = 0x14;
+    public static final byte BLE_HCI_REMOTE_DEV_TERMINATION_DUE_TO_POWER_OFF = 0x15;
+    public static final byte BLE_HCI_LOCAL_HOST_TERMINATED_CONNECTION = 0x16;
+    public static final byte BLE_HCI_UNSUPPORTED_REMOTE_FEATURE = 0x1A;
+    public static final byte BLE_HCI_STATUS_CODE_INVALID_LMP_PARAMETERS = 0x1E;
+    public static final byte BLE_HCI_STATUS_CODE_UNSPECIFIED_ERROR = 0x1F;
+    public static final byte BLE_HCI_STATUS_CODE_LMP_RESPONSE_TIMEOUT = 0x22;
+    public static final byte BLE_HCI_STATUS_CODE_LMP_PDU_NOT_ALLOWED = 0x24;
+    public static final byte BLE_HCI_INSTANT_PASSED = 0x28;
+    public static final byte BLE_HCI_PAIRING_WITH_UNIT_KEY_UNSUPPORTED = 0x29;
+    public static final byte BLE_HCI_DIFFERENT_TRANSACTION_COLLISION = 0x2A;
+    public static final byte BLE_HCI_CONTROLLER_BUSY = 0x3A;
+    public static final byte BLE_HCI_CONN_INTERVAL_UNACCEPTABLE = 0x3B;
+    public static final byte BLE_HCI_DIRECTED_ADVERTISER_TIMEOUT = 0x3C;
+    public static final byte BLE_HCI_CONN_TERMINATED_DUE_TO_MIC_FAILURE = 0x3D;
+    public static final byte BLE_HCI_CONN_FAILED_TO_BE_ESTABLISHED = 0x3E;
 
     private final Queue<Runnable> runnables;
     private final Map<Pair<UUID, UUID>, Set<CharacteristicListener>> characteristicListenerMap;
@@ -175,9 +203,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        System.out.println("BluetoothConnection.onCharacteristicChanged " + gatt.getDevice().getAddress());
-        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
-        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.onCharacteristicChanged " + gatt.getDevice().getAddress());
+            System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+            System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        }
 
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
@@ -190,9 +220,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        System.out.println("BluetoothConnection.onCharacteristicRead " + gatt.getDevice().getAddress() + " status=" + status);
-        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
-        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.onCharacteristicRead " + gatt.getDevice().getAddress() + " status=" + status);
+            System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+            System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        }
 
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
@@ -211,9 +243,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        System.out.println("BluetoothConnection.onCharacteristicWrite " + gatt.getDevice().getAddress() + " status=" + status);
-        System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
-        System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.onCharacteristicWrite " + gatt.getDevice().getAddress() + " status=" + status);
+            System.out.println("    " + characteristic.getService().getUuid() + " " + characteristic.getUuid());
+            System.out.println("    " + Arrays.toString(characteristic.getValue()));
+        }
 
         final Pair<UUID, UUID> key = characteristicKey(characteristic);
 
@@ -232,28 +266,24 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
-        System.out.println("BluetoothConnection.onConnectionStateChange " + gatt.getDevice().getAddress() + " status=" + status + " newState=" + newState);
+        if (BuildConfig.DEBUG)
+            System.out.println("BluetoothConnection.onConnectionStateChange " + gatt.getDevice().getAddress() + " status=" + status + " newState=" + newState);
 
-        if (status == BluetoothGatt.GATT_SUCCESS) {
+        if (status == BLE_HCI_STATUS_CODE_SUCCESS) {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 if (this.gatt == null) {
                     this.gatt = gatt;
                     setState(BluetoothConnectionState.CONNECTED);
 
-                    push(new Runnable() {
-                        @Override
-                        public void run() {
-                            gatt.discoverServices();
-                        }
-                    });
+                    push(gatt::discoverServices);
                 } else {
                     setState(BluetoothConnectionState.READY);
                 }
-            } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+            } else {
                 setState(BluetoothConnectionState.DISCONNECTED);
             }
-        } else if (status == BluetoothGatt.HID_DEVICE) {
-            if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+        } else {
+            if (newState != BluetoothGatt.STATE_CONNECTED) {
                 setState(BluetoothConnectionState.DISCONNECTED);
             }
         }
@@ -279,6 +309,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         final Triple<UUID, UUID, UUID> key = descriptorKey(descriptor);
+
         if (descriptorListenerMap.containsKey(key)) {
             for (DescriptorListener i : descriptorListenerMap.get(key)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -298,13 +329,13 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
             setState(BluetoothConnectionState.READY);
 
             for (BluetoothGattService i : gatt.getServices()) {
-                System.out.println(i.getUuid());
+                System.out.println("  s " + i.getUuid());
 
                 for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
-                    System.out.println("  c " + j.getUuid());
+                    System.out.println("    c " + j.getUuid());
 
                     for (BluetoothGattDescriptor k : j.getDescriptors()) {
-                        System.out.println("    d " + k.getUuid());
+                        System.out.println("      d " + k.getUuid());
                     }
                 }
             }
@@ -322,7 +353,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void readCharacteristic(final UUID serviceUuid, final UUID characteristicUuid) {
-        System.out.println("BluetoothConnection.readCharacteristic serviceUuid=" + serviceUuid + " characteristicUuid=" + characteristicUuid);
+        if (BuildConfig.DEBUG)
+            System.out.println("BluetoothConnection.readCharacteristic serviceUuid=" + serviceUuid + " characteristicUuid=" + characteristicUuid);
+
         push(new Runnable() {
             @Override
             public void run() {

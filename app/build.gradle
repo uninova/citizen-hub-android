@@ -2,14 +2,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 11
-        versionName "0.8.0"
+        versionCode 120220505
+        versionName "0.9.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -73,11 +79,15 @@ android {
 
 dependencies {
     def desugar_version = "1.1.5"
+    def fragment_version = "1.4.1"
     def lifecycle_version = "2.4.1"
     def preference_version = "1.2.0"
     def okhttp_version = "4.9.3"
+    def work_version = "2.7.1"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
+
+    implementation "androidx.fragment:fragment:$fragment_version"
 
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -86,8 +96,9 @@ dependencies {
 
     implementation "androidx.preference:preference:$preference_version"
 
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "androidx.work:work-runtime:$work_version"
 
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
 
 
@@ -112,18 +123,15 @@ dependencies {
         exclude group: 'care.data4life.hc-sdk-kmp', module: 'crypto-jvm'
         exclude group: 'care.data4life.hc-sdk-kmp', module: 'auth-jvm'
         exclude group: 'care.data4life.hc-util-sdk-kmp', module: 'util-jvm'
-        exclude group: 'org.threeten', module: 'threetenbp'
     }
 
     implementation "care.data4life.hc-fhir-helper-sdk-kmp:fhir-helper-android:$d4lhelpersdk_version"
 
     // Material Calendar View
-    implementation "com.github.prolificinteractive:material-calendarview:$materialcalendarview_version"
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
+    implementation 'pt.uninova.s4h:material-calendarview:2.0.1'
 
     // WearOS
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-
     //TypeDef Annotations
 
     implementation 'com.android.support:support-annotations:28.0.0'
