@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
@@ -30,11 +32,12 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends WearableActivity implements SensorEventListener {
 
-    String nodeIdString;
-    double heartRate = 0;
-    String citizenHubPath = "/citizenhub_";
-    int stepsTotal = 0;
+    private String nodeIdString;
+    private String citizenHubPath = "/citizenhub_";
+    private int stepsTotal = 0;
+    private double heartRate = 0;
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
+    private Switch switchHeartRate, switchSteps;
     private SensorManager mSensorManager;
     private Sensor mStepSensor, mHeartSensor;
     Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
@@ -62,6 +65,21 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         textHeartRate.setText(getString(R.string.show_data_heartrate, heartRate));
         textInfoPhone.setText(getString(R.string.show_data_phone_not_connected));
         textInfoProtocols.setText(getString(R.string.show_data_protocols_no_data));
+
+        switchHeartRate = findViewById(R.id.switchHeartRate);
+        switchSteps = findViewById(R.id.switchSteps);
+
+        switchHeartRate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //TODO change heart rate communication state
+            if(isChecked){}
+            else {}
+        });
+
+        switchSteps.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //TODO change steps communication state
+            if(isChecked){}
+            else {}
+        });
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();

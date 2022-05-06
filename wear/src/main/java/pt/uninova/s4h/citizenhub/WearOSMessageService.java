@@ -4,8 +4,6 @@ import android.content.Intent;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
-import java.util.Arrays;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class WearOSMessageService extends WearableListenerService {
