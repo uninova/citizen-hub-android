@@ -70,15 +70,19 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         switchSteps = findViewById(R.id.switchSteps);
 
         switchHeartRate.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //TODO change heart rate communication state
-            if(isChecked){}
-            else {}
+            Date now = new Date();
+            MeasurementKind kind = MeasurementKind.HEART_RATE;
+            String msg = kind.getId() + String.valueOf(isChecked) + now;
+            String dataPath = citizenHubPath + nodeIdString;
+            new SendMessage(dataPath, msg).start();
         });
 
         switchSteps.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //TODO change steps communication state
-            if(isChecked){}
-            else {}
+            Date now = new Date();
+            MeasurementKind kind = MeasurementKind.STEPS;
+            String msg = kind.getId() + String.valueOf(isChecked) + now;
+            String dataPath = citizenHubPath + nodeIdString;
+            new SendMessage(dataPath, msg).start();
         });
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -143,8 +147,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 break;
         }
         String msg = value + "," + now.getTime() + "," + kind.getId();
-        String datapath = citizenHubPath + nodeIdString;
-        new SendMessage(datapath, msg).start();
+        String dataPath = citizenHubPath + nodeIdString;
+        new SendMessage(dataPath, msg).start();
     }
 
     @Override
