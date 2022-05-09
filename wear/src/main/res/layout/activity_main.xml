@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +19,7 @@
         <ImageView
             android:id="@+id/imageViewCitizenHub"
             android:layout_width="45dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:scaleType="fitCenter"
@@ -29,60 +28,77 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="right"
+            android:gravity="left"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textHearRate"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Heart Rate"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView_createEmptySpace1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                <Switch
+                    android:id="@+id/switchHeartRate"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:showText="true"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
 
-            <Switch
-                android:id="@+id/switchHeartRate"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:showText="true" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textHearRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="Heart Rate 0 bpm"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="left"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textSteps"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="left"
-                android:text="Steps"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView_createEmptySpace2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                <Switch
+                    android:id="@+id/switchSteps"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:showText="true"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
 
-            <Switch
-                android:id="@+id/switchSteps"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:showText="true" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textSteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="0 Steps Taken"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -93,23 +109,14 @@
             android:layout_marginTop="8dp"
             android:text="Phone not connected"
             android:textAlignment="center"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/textInfo2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Not sending data"
-            android:textAlignment="center"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/imageViewS4H"
             android:layout_width="75dp"
             android:layout_height="10dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="7dp"
             android:src="@drawable/img_s4h_logo" />
 
     </LinearLayout>

@@ -59,12 +59,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         textSteps = findViewById(R.id.textSteps);
         textHeartRate = findViewById(R.id.textHearRate);
         textInfoPhone = findViewById(R.id.textInfo);
-        textInfoProtocols = findViewById(R.id.textInfo2);
 
         textSteps.setText(getString(R.string.show_data_steps, stepsTotal));
         textHeartRate.setText(getString(R.string.show_data_heartrate, heartRate));
         textInfoPhone.setText(getString(R.string.show_data_phone_not_connected));
-        textInfoProtocols.setText(getString(R.string.show_data_protocols_no_data));
 
         switchHeartRate = findViewById(R.id.switchHeartRate);
         switchSteps = findViewById(R.id.switchSteps);
@@ -74,7 +72,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             MeasurementKind kind = MeasurementKind.HEART_RATE;
             String msg = kind.getId() + String.valueOf(isChecked) + now;
             String dataPath = citizenHubPath + nodeIdString;
-            new SendMessage(dataPath, msg).start();
+            //new SendMessage(dataPath, msg).start();
         });
 
         switchSteps.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -82,7 +80,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             MeasurementKind kind = MeasurementKind.STEPS;
             String msg = kind.getId() + String.valueOf(isChecked) + now;
             String dataPath = citizenHubPath + nodeIdString;
-            new SendMessage(dataPath, msg).start();
+            //new SendMessage(dataPath, msg).start();
         });
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -177,20 +175,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             textInfoPhone.setText(R.string.show_data_phone_not_connected);
         if (wearOSStepsProtocol && wearOSHeartRateProtocol) {
             textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_heartrate_steps);
+            switchHeartRate.setChecked(true);
+            switchSteps.setChecked(true);
         }
         else if (wearOSHeartRateProtocol)
         {
             textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_heartrate);
+            switchHeartRate.setChecked(true);
+            switchSteps.setChecked(false);
         }
         else if (wearOSStepsProtocol)
         {
             textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_steps);
+            switchHeartRate.setChecked(false);
+            switchSteps.setChecked(true);
         }
         else{
-            textInfoProtocols.setText(R.string.show_data_protocols_no_data);
+            switchHeartRate.setChecked(false);
+            switchSteps.setChecked(false);
         }
     }
 
