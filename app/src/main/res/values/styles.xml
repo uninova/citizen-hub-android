@@ -71,8 +71,6 @@
     </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:preferenceStyle">@style/preferences</item>
-
     </style>
 
     <style name="ReportDetailTitle">
