@@ -1,11 +1,14 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
+import android.widget.ListAdapter;
 
 import java.util.Date;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.FeatureListItem;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
@@ -30,9 +33,21 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
             @Override
             public void onChange(double value, Date timestamp) {
                 final int heartRate = (int) value;
-                final Sample sample = new Sample(getAgent().getSource(),
-                        new HeartRateMeasurement(heartRate));
-                getSampleDispatcher().dispatch(sample);
+                if(value<1000){
+                    final Sample sample = new Sample(getAgent().getSource(),
+                            new HeartRateMeasurement(heartRate));
+                    getSampleDispatcher().dispatch(sample);
+                }
+                else{
+                    if(value==1000)
+                    {
+                        getAgent().disableMeasurement(MeasurementKind.HEART_RATE);
+                    }
+                    else if(value==1001)
+                    {
+                        getAgent().enableMeasurement(MeasurementKind.HEART_RATE);
+                    }
+                }
             }
         });
     }

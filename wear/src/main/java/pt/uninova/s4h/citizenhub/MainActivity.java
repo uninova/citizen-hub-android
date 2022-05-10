@@ -34,6 +34,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     private String nodeIdString;
     private String citizenHubPath = "/citizenhub_";
+    private String configPath = "_config";
     private int stepsTotal = 0;
     private double heartRate = 0;
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
@@ -70,17 +71,17 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         switchHeartRate.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.HEART_RATE;
-            String msg = kind.getId() + String.valueOf(isChecked) + now;
+            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
             String dataPath = citizenHubPath + nodeIdString;
-            //new SendMessage(dataPath, msg).start();
+            new SendMessage(dataPath, msg).start();
         });
 
         switchSteps.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.STEPS;
-            String msg = kind.getId() + String.valueOf(isChecked) + now;
+            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
             String dataPath = citizenHubPath + nodeIdString;
-            //new SendMessage(dataPath, msg).start();
+            new SendMessage(dataPath, msg).start();
         });
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -89,6 +90,13 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         permissionRequest();
         sensorsManager();
+    }
+
+    private int checkedToCommunicationValue(boolean isChecked){
+        if (isChecked)
+            return 1001;
+        else
+            return 1000;
     }
 
     @Override

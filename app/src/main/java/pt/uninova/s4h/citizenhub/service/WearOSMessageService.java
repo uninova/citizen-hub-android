@@ -43,25 +43,23 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         new GetConnectedNode("wear", appContext).start();
-        String datapath = citizenHubPath + nodeIdString;
+        String dataPath = citizenHubPath + nodeIdString;
 
         if(connectionMap.get(nodeIdString)!= null){
             WearOSConnection wearOSConnection = connectionMap.get(nodeIdString);
-            //new SendMessage(citizenHubPath+mobileIDString,"Connected",appContext).start();
 
             if (messageEvent.getPath().equals(citizenHubPath+checkConnectionPath)) {
                 new  GetConnectedNode("mobile", appContext).start();
-                //new SendMessage(citizenHubPath+mobileIDString,"Connected",appContext).start();
 
-            }else if(messageEvent.getPath().equals(datapath)){
+            }else if(messageEvent.getPath().equals(dataPath)) {
                 wearOSConnection.enable();
                 String message = new String(messageEvent.getData());
 
-                if (!message.equals("")){
+                if (!message.equals("")) {
                     String[] newMessage = message.split(",");
                     wearOSConnection.onCharacteristicChanged(newMessage);
                 }
-            }else {
+            } else {
                 Wearable.getMessageClient(appContext).removeListener(this);
             }
         }
