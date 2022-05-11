@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -17,6 +18,7 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.steps");
     final private static MeasurementKind channelName = MeasurementKind.STEPS;
     private static final String TAG = "WearOSStepsProtocol";
+    final private static int wearProtocolDisable = 1000, wearProtocolEnable = 1001;
     CitizenHubService service;
 
     protected WearOSStepsProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent, CitizenHubService service) {
@@ -27,10 +29,19 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
         connection.addChannelListener(new BaseChannelListener(channelName) {
             @Override
             public void onChange(double value, Date timestamp) {
-                final int steps = (int) value;
-                final Sample sample = new Sample(getAgent().getSource(),
-                        new StepCountMeasurement(steps));
-                getSampleDispatcher().dispatch(sample);
+                if(value<wearProtocolDisable) {
+                    final int steps = (int) value;
+                    final Sample sample = new Sample(getAgent().getSource(),
+                            new StepCountMeasurement(steps));
+                    getSampleDispatcher().dispatch(sample);
+                }
+                else{
+                    Set<MeasurementKind> enabledMeasurements = getAgent().getEnabledMeasurements();
+                    if(value==wearProtocolDisable && enabledMeasurements.contains(MeasurementKind.STEPS))
+                        getAgent().disableMeasurement(MeasurementKind.STEPS);
+                    else if(value==wearProtocolEnable && !enabledMeasurements.contains(MeasurementKind.STEPS))
+                        getAgent().enableMeasurement(MeasurementKind.STEPS);
+                }
             }
         });
     }

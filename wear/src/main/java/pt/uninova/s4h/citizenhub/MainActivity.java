@@ -41,8 +41,9 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private Switch switchHeartRate, switchSteps;
     private SensorManager mSensorManager;
     private Sensor mStepSensor, mHeartSensor;
-    Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
+    private Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
     private int counter = 0;
+    private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
 
     private void sensorsManager() {
         mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -68,21 +69,23 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         switchHeartRate = findViewById(R.id.switchHeartRate);
         switchSteps = findViewById(R.id.switchSteps);
 
-        switchHeartRate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        heartRateListener = (compoundButton, isChecked) -> {
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.HEART_RATE;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
             String dataPath = citizenHubPath + nodeIdString;
             new SendMessage(dataPath, msg).start();
-        });
+        };
 
-        switchSteps.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        stepsListener = (compoundButton, isChecked) -> {
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.STEPS;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
             String dataPath = citizenHubPath + nodeIdString;
             new SendMessage(dataPath, msg).start();
-        });
+        };
+
+        enableListeners();
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -176,6 +179,16 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         }
     }
 
+    private void removeListeners(){
+        switchHeartRate.setOnCheckedChangeListener(null);
+        switchSteps.setOnCheckedChangeListener(null);
+    }
+
+    private void enableListeners(){
+        switchHeartRate.setOnCheckedChangeListener(heartRateListener);
+        switchSteps.setOnCheckedChangeListener(stepsListener);
+    }
+
     private void setScreenInfoText(){
         if (wearOSAgent)
             textInfoPhone.setText(R.string.show_data_phone_connected);
@@ -183,24 +196,32 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             textInfoPhone.setText(R.string.show_data_phone_not_connected);
         if (wearOSStepsProtocol && wearOSHeartRateProtocol) {
             textInfoPhone.setText(R.string.show_data_phone_connected);
+            removeListeners();
             switchHeartRate.setChecked(true);
             switchSteps.setChecked(true);
+            enableListeners();
         }
         else if (wearOSHeartRateProtocol)
         {
             textInfoPhone.setText(R.string.show_data_phone_connected);
+            removeListeners();
             switchHeartRate.setChecked(true);
             switchSteps.setChecked(false);
+            enableListeners();
         }
         else if (wearOSStepsProtocol)
         {
             textInfoPhone.setText(R.string.show_data_phone_connected);
+            removeListeners();
             switchHeartRate.setChecked(false);
             switchSteps.setChecked(true);
+            enableListeners();
         }
         else{
+            removeListeners();
             switchHeartRate.setChecked(false);
             switchSteps.setChecked(false);
+            enableListeners();
         }
     }
 

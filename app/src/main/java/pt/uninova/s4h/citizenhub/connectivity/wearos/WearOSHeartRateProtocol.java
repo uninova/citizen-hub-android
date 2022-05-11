@@ -1,14 +1,12 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
-import android.widget.ListAdapter;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.FeatureListItem;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
@@ -21,6 +19,7 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
     final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
+    final private static int wearProtocolDisable = 1000, wearProtocolEnable = 1001;
     final String TAG = "WearOSHeartRateProtocol";
     CitizenHubService service;
 
@@ -33,20 +32,17 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
             @Override
             public void onChange(double value, Date timestamp) {
                 final int heartRate = (int) value;
-                if(value<1000){
+                if(value<wearProtocolDisable){
                     final Sample sample = new Sample(getAgent().getSource(),
                             new HeartRateMeasurement(heartRate));
                     getSampleDispatcher().dispatch(sample);
                 }
                 else{
-                    if(value==1000)
-                    {
+                    Set<MeasurementKind> enabledMeasurements = getAgent().getEnabledMeasurements();
+                    if(value==wearProtocolDisable && enabledMeasurements.contains(MeasurementKind.HEART_RATE))
                         getAgent().disableMeasurement(MeasurementKind.HEART_RATE);
-                    }
-                    else if(value==1001)
-                    {
+                    else if(value==wearProtocolEnable && !enabledMeasurements.contains(MeasurementKind.HEART_RATE))
                         getAgent().enableMeasurement(MeasurementKind.HEART_RATE);
-                    }
                 }
             }
         });
