@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.conversion;
 
 import androidx.room.TypeConverter;
 

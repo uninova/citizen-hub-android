@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
+import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 
 @Dao
 public interface BloodPressureMeasurementDao {
@@ -22,5 +23,5 @@ public interface BloodPressureMeasurementDao {
     void insert(BloodPressureMeasurementRecord record);
 
     @Query("INSERT INTO blood_pressure_measurement (sample_id, systolic, diastolic, mean_arterial_pressure) VALUES (:sampleId, :systolic, :diastolic, :meanArterialPressure)")
-    void insert(Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure);
+    void insert(Long sampleId, Double systolic, Double diastolic, Double meanArterialPressure);
 }

@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
 
 @Dao
 public interface SmartBearUploadDateDao {

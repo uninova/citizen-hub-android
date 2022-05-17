@@ -1,10 +1,13 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.repository;
 
 import android.content.Context;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
+import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearUploadDateDao;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class SmartBearUploadDateRepository {

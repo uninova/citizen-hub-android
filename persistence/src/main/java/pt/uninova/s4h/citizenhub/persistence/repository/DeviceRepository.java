@@ -1,9 +1,12 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.repository;
 
 import android.content.Context;
 
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
+import pt.uninova.s4h.citizenhub.persistence.dao.DeviceDao;
+import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceRepository {

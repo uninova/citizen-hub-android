@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

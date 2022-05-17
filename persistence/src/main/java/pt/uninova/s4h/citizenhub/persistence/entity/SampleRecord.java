@@ -1,9 +1,8 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -12,30 +11,34 @@ import java.time.Instant;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 
-@Entity(tableName = "sample",
-        foreignKeys = {@ForeignKey(entity = DeviceRecord.class, parentColumns = "id", childColumns = "device_id", onDelete = ForeignKey.SET_NULL)},
-        indices = {@Index("device_id")})
+@Entity(
+        tableName = "sample",
+        foreignKeys = {
+                @ForeignKey(entity = DeviceRecord.class,
+                        parentColumns = "id",
+                        childColumns = "device_id",
+                        onDelete = ForeignKey.SET_NULL)
+        },
+        indices = @Index("device_id")
+)
 public class SampleRecord {
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
+
+    @ColumnInfo(name = "device_id")
+    private Long deviceId;
+
     @TypeConverters(EpochTypeConverter.class)
     private Instant timestamp;
-    @ColumnInfo(name = "device_id")
-    private Integer deviceId;
 
-    @Ignore
-    public SampleRecord(Instant timestamp, Integer deviceId) {
-        this(null, timestamp, deviceId);
-    }
-
-    public SampleRecord(Long id, Instant timestamp, Integer deviceId) {
+    public SampleRecord(Long id, Long deviceId, Instant timestamp) {
         this.id = id;
-        this.timestamp = timestamp;
         this.deviceId = deviceId;
+        this.timestamp = timestamp;
     }
 
-    public Integer getDeviceId() {
+    public Long getDeviceId() {
         return deviceId;
     }
 
@@ -47,15 +50,15 @@ public class SampleRecord {
         return timestamp;
     }
 
-    public void setDeviceId(Integer value) {
-        deviceId = value;
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
     }
 
-    public void setId(Long value) {
-        this.id = value;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTimestamp(Instant value) {
-        this.timestamp = value;
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 }

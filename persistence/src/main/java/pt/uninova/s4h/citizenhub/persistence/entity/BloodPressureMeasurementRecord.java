@@ -1,29 +1,35 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "blood_pressure_measurement")
+@Entity(
+        tableName = "blood_pressure_measurement",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = SampleRecord.class,
+                        parentColumns = "id",
+                        childColumns = "sample_id")
+        },
+        indices = @Index("sample_id")
+)
 public class BloodPressureMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
-    private Integer id;
+    private Long id;
+
     @ColumnInfo(name = "sample_id")
-    private Integer sampleId;
+    private Long sampleId;
 
     private Double systolic;
     private Double diastolic;
     @ColumnInfo(name = "mean_arterial_pressure")
     private Double meanArterialPressure;
 
-    @Ignore
-    public BloodPressureMeasurementRecord(Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
-        this(null, sampleId, systolic, diastolic, meanArterialPressure);
-    }
-
-    public BloodPressureMeasurementRecord(Integer id, Integer sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
+    public BloodPressureMeasurementRecord(Long id, Long sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {
         this.id = id;
         this.sampleId = sampleId;
         this.systolic = systolic;
@@ -35,7 +41,7 @@ public class BloodPressureMeasurementRecord {
         return diastolic;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -43,7 +49,7 @@ public class BloodPressureMeasurementRecord {
         return meanArterialPressure;
     }
 
-    public Integer getSampleId() {
+    public Long getSampleId() {
         return sampleId;
     }
 
@@ -51,23 +57,23 @@ public class BloodPressureMeasurementRecord {
         return systolic;
     }
 
-    public void setDiastolic(Double value) {
-        this.diastolic = value;
+    public void setDiastolic(Double diastolic) {
+        this.diastolic = diastolic;
     }
 
-    public void setId(Integer value) {
-        this.id = value;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setMeanArterialPressure(Double value) {
-        this.meanArterialPressure = value;
+    public void setMeanArterialPressure(Double meanArterialPressure) {
+        this.meanArterialPressure = meanArterialPressure;
     }
 
-    public void setSampleId(Integer value) {
-        this.sampleId = value;
+    public void setSampleId(Long sampleId) {
+        this.sampleId = sampleId;
     }
 
-    public void setSystolic(Double value) {
-        this.systolic = value;
+    public void setSystolic(Double systolic) {
+        this.systolic = systolic;
     }
 }

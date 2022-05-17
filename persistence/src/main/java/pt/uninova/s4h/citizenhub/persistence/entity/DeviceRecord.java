@@ -1,10 +1,9 @@
-package pt.uninova.s4h.citizenhub.persistence;
+package pt.uninova.s4h.citizenhub.persistence.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 import java.util.Objects;
 
@@ -12,14 +11,16 @@ import java.util.Objects;
 public class DeviceRecord {
 
     @PrimaryKey(autoGenerate = true)
-    private Integer id;
+    private Long id;
+
     private String address;
     private String name;
     @ColumnInfo(name = "connection_kind")
     private Integer connectionKind;
     private String agent;
 
-    public DeviceRecord(String address, String name, Integer connectionKind, String agent) {
+    public DeviceRecord(Long id, String address, String name, Integer connectionKind, String agent) {
+        this.id = id;
         this.address = address;
         this.name = name;
         this.connectionKind = connectionKind;
@@ -51,7 +52,7 @@ public class DeviceRecord {
         return connectionKind;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -76,8 +77,8 @@ public class DeviceRecord {
         this.connectionKind = value;
     }
 
-    public void setId(Integer value) {
-        this.id = value;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

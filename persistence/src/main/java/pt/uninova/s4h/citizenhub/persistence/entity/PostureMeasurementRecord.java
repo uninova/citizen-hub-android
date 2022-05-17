@@ -11,7 +11,7 @@ import java.time.Duration;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 
-@Entity(tableName = "lumbar_extension_training_measurement",
+@Entity(tableName = "posture_measurement",
         foreignKeys = {
                 @ForeignKey(
                         entity = SampleRecord.class,
@@ -20,27 +20,26 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
         },
         indices = @Index("sample_id")
 )
-public class LumbarExtensionTrainingMeasurementRecord {
+public class PostureMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
-
     @ColumnInfo(name = "sample_id")
     private Long sampleId;
 
+    private Integer classification;
     @TypeConverters(DurationTypeConverter.class)
     private Duration duration;
-    private Double score;
-    private Integer repetitions;
-    private Integer weight;
 
-    public LumbarExtensionTrainingMeasurementRecord(Long id, Long sampleId, Duration duration, Double score, Integer repetitions, Integer weight) {
+    public PostureMeasurementRecord(Long id, Long sampleId, Integer classification, Duration duration) {
         this.id = id;
         this.sampleId = sampleId;
+        this.classification = classification;
         this.duration = duration;
-        this.score = score;
-        this.repetitions = repetitions;
-        this.weight = weight;
+    }
+
+    public Integer getClassification() {
+        return classification;
     }
 
     public Duration getDuration() {
@@ -51,20 +50,12 @@ public class LumbarExtensionTrainingMeasurementRecord {
         return id;
     }
 
-    public Integer getRepetitions() {
-        return repetitions;
-    }
-
     public Long getSampleId() {
         return sampleId;
     }
 
-    public Double getScore() {
-        return score;
-    }
-
-    public Integer getWeight() {
-        return weight;
+    public void setClassification(Integer classification) {
+        this.classification = classification;
     }
 
     public void setDuration(Duration duration) {
@@ -75,19 +66,7 @@ public class LumbarExtensionTrainingMeasurementRecord {
         this.id = id;
     }
 
-    public void setRepetitions(Integer repetitions) {
-        this.repetitions = repetitions;
-    }
-
     public void setSampleId(Long sampleId) {
         this.sampleId = sampleId;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
     }
 }
