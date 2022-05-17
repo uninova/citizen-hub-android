@@ -38,7 +38,7 @@ public class UInt16 implements ByteSerializable {
     }
 
     public int toInt() {
-        return b1 | b2 << 8;
+        return (b1 & 0xff) | (b2 & 0xff) << 8;
     }
 
     @Override
