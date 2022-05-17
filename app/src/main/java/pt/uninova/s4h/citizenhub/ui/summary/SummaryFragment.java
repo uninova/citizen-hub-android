@@ -7,23 +7,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.persistence.BloodPressureMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.PostureValue;
+import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 
 public class SummaryFragment extends ServiceFragment {
 
     private SummaryViewModel model;
+
+    private String millisToString(long value) {
+        return secondsToString(value / 1000);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,20 +43,24 @@ public class SummaryFragment extends ServiceFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_summary_2, container, false);
+        return inflater.inflate(R.layout.fragment_summary_2, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (getService() != null) {
             onServiceConnected();
         }
-
-        return view;
     }
 
     private void onDailyBloodPressureMeasurementUpdate(List<BloodPressureMeasurementRecord> bloodPressureMeasurementRecords) {
         final View view = requireView();
-        final BloodPressureMeasurementRecord record = bloodPressureMeasurementRecords.get(bloodPressureMeasurementRecords.size() - 1);
 
         if (!bloodPressureMeasurementRecords.isEmpty()) {
+            final BloodPressureMeasurementRecord record = bloodPressureMeasurementRecords.get(bloodPressureMeasurementRecords.size() - 1);
+
             TextView bloodPressureSystolicTextView = view.findViewById(R.id.bloodPressureSystolicValueTextView);
             TextView bloodPressureDiastolicTextView = view.findViewById(R.id.bloodPressureDiastolicValueTextView);
 
@@ -60,119 +73,144 @@ public class SummaryFragment extends ServiceFragment {
         bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-    private void onDailyLumbarExtensionTrainingUpdate(List<LumbarExtensionTrainingMeasurementRecord> lumbarExtensionTrainingMeasurementRecords) {
+    private void onDailyDataExistenceUpdate(Boolean exists) {
         final View view = requireView();
+        final TextView noDataTextView = view.findViewById(R.id.fragment_summary_text_view_no_data);
 
-        if (lumbarExtensionTrainingMeasurementRecords != null) {
-            if (!lumbarExtensionTrainingMeasurementRecords.isEmpty()) {
-                final LumbarExtensionTrainingMeasurementRecord record = lumbarExtensionTrainingMeasurementRecords.get(lumbarExtensionTrainingMeasurementRecords.size() - 1);
+        if (exists) {
+            noDataTextView.setVisibility(View.GONE);
+        } else {
+            AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
 
-                final TextView lumbarExtensionTrainingCaloriesTextView = view.findViewById(R.id.lumbarTrainingCaloriesValueTextView);
-                final TextView lumbarExtensionTrainingDurationTextView = view.findViewById(R.id.lumbarTrainingDurationValueTextView);
-                final TextView lumbarExtensionTrainingRepetitionsTextView = view.findViewById(R.id.lumbarTrainingRepetitionsValueTextView);
-                final TextView lumbarExtensionTrainingWeightTextView = view.findViewById(R.id.lumbarTrainingWeightValueTextView);
+            if (agentOrchestrator.getDevices().isEmpty())
+                noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
+            else
+                noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
 
-                lumbarExtensionTrainingCaloriesTextView.setText(getString(R.string.lumbar_training_calories_value, record.getCalories()));
-                lumbarExtensionTrainingDurationTextView.setText(getString(R.string.lumbar_training_duration_value, secondsToString(record.getDuration())));
-                lumbarExtensionTrainingRepetitionsTextView.setText(getString(R.string.lumbar_training_repetitions_value, record.getRepetitions()));
-                lumbarExtensionTrainingWeightTextView.setText(getString(R.string.lumbar_training_weight_value, record.getWeight()));
-            }
-
-            final CardView lumbarExtensionTrainingCardView = view.findViewById(R.id.lumbarTrainingCardView);
-
-            lumbarExtensionTrainingCardView.setVisibility(lumbarExtensionTrainingMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
+            noDataTextView.setVisibility(View.VISIBLE);
         }
     }
 
-    private void onDailySummaryUpdate(Map<MeasurementKind, MeasurementAggregate> dailySummary) {
+    private void onDailyHeartRateUpdate(Double value) {
         final View view = requireView();
 
-        if (dailySummary != null) {
-            final MeasurementAggregate heartRate = dailySummary.get(MeasurementKind.HEART_RATE);
-            final MeasurementAggregate postureCorrect = dailySummary.get(MeasurementKind.POSTURE_CORRECT);
-            final MeasurementAggregate postureIncorrect = dailySummary.get(MeasurementKind.POSTURE_INCORRECT);
-            final MeasurementAggregate steps = dailySummary.get(MeasurementKind.STEPS);
-            final MeasurementAggregate distance = dailySummary.get(MeasurementKind.DISTANCE);
-            final MeasurementAggregate calories = dailySummary.get(MeasurementKind.CALORIES);
-            final MeasurementAggregate bloodPressureSystolic = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
-            final MeasurementAggregate bloodPressureDiastolic = dailySummary.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
-            //final MeasurementAggregate respiration = dailySummary.get(MeasurementKind.RESPIRATION_RATE);
+        boolean hasHeartRate = value != null;
 
-            boolean hasHeartRate = heartRate != null;
+        if (hasHeartRate) {
+            TextView heartRateTextView = view.findViewById(R.id.heartRateValueTextView);
 
-            if (hasHeartRate) {
-                TextView heartRateTextView = view.findViewById(R.id.heartRateValueTextView);
+            heartRateTextView.setText(getString(R.string.heart_rate_value, value));
+        }
 
-                heartRateTextView.setText(getString(R.string.heart_rate_value, heartRate.getAverage()));
-            }
+        final CardView heartRateCardView = view.findViewById(R.id.heartRateCardView);
 
-            CardView heartRateCardView = view.findViewById(R.id.heartRateCardView);
-            heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
+        heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
+    }
 
+    private void onDailyLumbarExtensionTrainingUpdate(LumbarExtensionTrainingSummary record) {
+        final View view = requireView();
+        final CardView lumbarExtensionTrainingCardView = view.findViewById(R.id.lumbarTrainingCardView);
 
-            boolean hasPosture = postureIncorrect != null || postureCorrect != null;
+        if (record == null) {
+            lumbarExtensionTrainingCardView.setVisibility(View.GONE);
+        } else {
+            final TextView lumbarExtensionTrainingCaloriesTextView = view.findViewById(R.id.lumbarTrainingCaloriesValueTextView);
+            final TextView lumbarExtensionTrainingDurationTextView = view.findViewById(R.id.lumbarTrainingDurationValueTextView);
+            final TextView lumbarExtensionTrainingRepetitionsTextView = view.findViewById(R.id.lumbarTrainingRepetitionsValueTextView);
+            final TextView lumbarExtensionTrainingWeightTextView = view.findViewById(R.id.lumbarTrainingWeightValueTextView);
 
-            if (hasPosture) {
-                int pc = postureCorrect == null ? 0 : postureCorrect.getSum().intValue();
-                int pi = postureIncorrect == null ? 0 : postureIncorrect.getSum().intValue();
-
-                TextView postureCorrectTextView = view.findViewById(R.id.postureCorrectValueTextView);
-                TextView postureIncorrectTextView = view.findViewById(R.id.postureIncorrectValueTextView);
-
-                postureCorrectTextView.setText(getString(R.string.posture_correct_value, secondsToString(pc)));
-                postureIncorrectTextView.setText(getString(R.string.posture_incorrect_value, secondsToString(pi)));
-            }
-
-            CardView postureCardView = view.findViewById(R.id.postureCardView);
-            postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
-
-            boolean hasActivity = steps != null || calories != null || distance != null;
-
-            if (hasActivity) {
-                double s = steps == null ? 0 : steps.getSum();
-                double c = calories == null ? 0 : calories.getSum();
-                double d = distance == null ? 0 : distance.getSum();
-
-                TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-                TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-                TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-
-                activityStepsTextView.setText(getString(R.string.activity_steps_value, s));
-                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, c));
-                activityDistanceTextView.setText(getString(R.string.activity_distance_value, d));
-            }
-
-            CardView activityCardView = view.findViewById(R.id.activityCardView);
-            activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
-
-            TextView noDataTextView = view.findViewById(R.id.fragment_summary_text_view_no_data);
-
-            if (!hasActivity && !hasPosture && !hasHeartRate) {
-                AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
-
-                if (agentOrchestrator.getDevices().isEmpty())
-                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
-                else
-                    noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary));
-
-                noDataTextView.setVisibility(View.VISIBLE);
+            if (record.getCalories() == null) {
+                lumbarExtensionTrainingCaloriesTextView.setVisibility(View.GONE);
             } else {
-                noDataTextView.setVisibility(View.GONE);
+                lumbarExtensionTrainingCaloriesTextView.setText(getString(R.string.lumbar_training_calories_value, record.getCalories()));
+                lumbarExtensionTrainingCaloriesTextView.setVisibility(View.VISIBLE);
+            }
+
+            lumbarExtensionTrainingDurationTextView.setText(getString(R.string.lumbar_training_duration_value, millisToString(record.getDuration().toMillis())));
+            lumbarExtensionTrainingRepetitionsTextView.setText(getString(R.string.lumbar_training_repetitions_value, record.getRepetitions()));
+            lumbarExtensionTrainingWeightTextView.setText(getString(R.string.lumbar_training_weight_value, record.getWeight()));
+
+            lumbarExtensionTrainingCardView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void onDailyPostureMeasurementUpdate(List<PostureClassificationSum> records) {
+        final View view = requireView();
+        final Map<Integer, Double> values = new HashMap<>();
+
+        for (PostureClassificationSum i : records) {
+            if (i.getClassification() == PostureValue.CLASSIFICATION_CORRECT || i.getClassification() == PostureValue.CLASSIFICATION_INCORRECT) {
+                values.put(i.getClassification(), i.getDuration());
             }
         }
+
+        boolean hasPosture = !values.isEmpty();
+
+        if (hasPosture) {
+            int pc = values.containsKey(PostureValue.CLASSIFICATION_CORRECT) ? values.get(PostureValue.CLASSIFICATION_CORRECT).intValue() : 0;
+            int pi = values.containsKey(PostureValue.CLASSIFICATION_INCORRECT) ? values.get(PostureValue.CLASSIFICATION_INCORRECT).intValue() : 0;
+
+            TextView postureCorrectTextView = view.findViewById(R.id.postureCorrectValueTextView);
+            TextView postureIncorrectTextView = view.findViewById(R.id.postureIncorrectValueTextView);
+
+            postureCorrectTextView.setText(getString(R.string.posture_correct_value, secondsToString(pc)));
+            postureIncorrectTextView.setText(getString(R.string.posture_incorrect_value, secondsToString(pi)));
+        }
+
+        final CardView postureCardView = view.findViewById(R.id.postureCardView);
+        postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
+    }
+
+    public void onDailyWalkingInformationUpdate(WalkingInformation record) {
+        if (record != null) {
+            final View view = requireView();
+
+            final boolean hasSteps = record.getSteps() != null;
+            final boolean hasDistance = record.getDistance() != null;
+            final boolean hasCalories = record.getCalories() != null;
+
+            final boolean hasActivity = hasSteps || hasDistance || hasCalories;
+
+            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+
+            if (hasSteps) {
+                activityStepsTextView.setText(getString(R.string.activity_steps_value, record.getSteps()));
+            }
+
+            if (hasDistance) {
+                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, record.getCalories()));
+            }
+
+            if (hasCalories) {
+                activityDistanceTextView.setText(getString(R.string.activity_distance_value, record.getDistance()));
+            }
+
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+
+            activityStepsTextView.setVisibility(hasSteps ? View.VISIBLE : View.GONE);
+            activityDistanceTextView.setVisibility(hasDistance ? View.VISIBLE : View.GONE);
+            activityCaloriesTextView.setVisibility(hasCalories ? View.VISIBLE : View.GONE);
+            activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
+        }
+
     }
 
     @Override
     public void onServiceConnected() {
-        model.getDailySummary().observe(getViewLifecycleOwner(), this::onDailySummaryUpdate);
         model.getDailyLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onDailyLumbarExtensionTrainingUpdate);
         model.getDailyBloodPressureMeasurement().observe(getViewLifecycleOwner(), this::onDailyBloodPressureMeasurementUpdate);
+        model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);
+        model.getDailyHeartRate().observe(getViewLifecycleOwner(), this::onDailyHeartRateUpdate);
+        model.getDailyPostureMeasurement().observe(getViewLifecycleOwner(), this::onDailyPostureMeasurementUpdate);
+        model.getDailyWalkingInformation().observe(getViewLifecycleOwner(), this::onDailyWalkingInformationUpdate);
     }
 
-    private String secondsToString(int value) {
-        int seconds = value;
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
+    private String secondsToString(long value) {
+        long seconds = value;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
 
         if (minutes > 0)
             seconds = seconds % 60;
