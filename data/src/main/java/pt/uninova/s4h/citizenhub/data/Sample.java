@@ -2,8 +2,6 @@ package pt.uninova.s4h.citizenhub.data;
 
 import java.time.Instant;
 
-import pt.uninova.s4h.citizenhub.connectivity.Device;
-
 public class Sample {
 
     private final Instant timestamp;

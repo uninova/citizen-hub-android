@@ -1,47 +1,34 @@
 package pt.uninova.s4h.citizenhub.data;
 
 import java.time.Duration;
-import java.time.Instant;
 
-public class MedXTrainingValue {
+public class LumbarExtensionTrainingValue {
 
-    private final Instant timestamp;
     private final Duration duration;
-    private final float score;
-    private final int repetitions;
-    private final int weight;
-    private final float calories;
+    private final Double score;
+    private final Integer repetitions;
+    private final Integer weight;
 
-    public MedXTrainingValue(Instant timestamp, Duration duration, float score, int repetitions, int weight, float calories) {
-        this.timestamp = timestamp;
+    public LumbarExtensionTrainingValue(Duration duration, Double score, Integer repetitions, Integer weight) {
         this.duration = duration;
         this.score = score;
         this.repetitions = repetitions;
         this.weight = weight;
-        this.calories = calories;
-    }
-
-    public float getCalories() {
-        return calories;
     }
 
     public Duration getDuration() {
         return duration;
     }
 
-    public int getRepetitions() {
+    public Integer getRepetitions() {
         return repetitions;
     }
 
-    public float getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 }

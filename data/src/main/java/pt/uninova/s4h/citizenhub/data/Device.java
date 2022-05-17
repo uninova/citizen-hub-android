@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity;
+package pt.uninova.s4h.citizenhub.data;
 
 import java.util.Objects;
 

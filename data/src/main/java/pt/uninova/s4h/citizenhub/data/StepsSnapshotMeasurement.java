@@ -1,8 +1,8 @@
 package pt.uninova.s4h.citizenhub.data;
 
-public class StepsMeasurement extends Measurement<Integer> {
+public class StepsSnapshotMeasurement extends SnapshotMeasurement<Integer> {
 
-    public StepsMeasurement(Integer value) {
-        super(TYPE_STEPS_SNAPSHOT, value);
+    public StepsSnapshotMeasurement(int type, int value) {
+        super(TYPE_STEPS_SNAPSHOT, type, value);
     }
 }

@@ -1,8 +1,8 @@
 package pt.uninova.s4h.citizenhub.data;
 
-public class DistanceMeasurement extends Measurement<Double> {
+public class DistanceSnapshotMeasurement extends SnapshotMeasurement<Double> {
 
-    public DistanceMeasurement(Double value) {
-        super(TYPE_DISTANCE_SNAPSHOT, value);
+    public DistanceSnapshotMeasurement(int type, double value) {
+        super(TYPE_DISTANCE_SNAPSHOT, type, value);
     }
 }
