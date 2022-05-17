@@ -347,7 +347,7 @@
 
     <string name="activity_title">Activité</string>
     <string name="activity_steps_label">Pas</string>
-    <string name="activity_steps_value">%1$.0f</string>
+    <string name="activity_steps_value">%1$d</string>
     <string name="activity_distance_label">Distance</string>
     <string name="activity_distance_value">%1$.0f m</string>
     <string name="activity_calories_label">Calories</string>
