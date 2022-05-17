@@ -10,11 +10,11 @@ import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzBodyProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzRawProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
@@ -46,13 +46,13 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                         observer.observe(new HexoSkinAgent(source));
                     } else if (name.startsWith("MI")) {
                         observer.observe(new MiBand2Agent(source));
-                    } else if (source.hasService(KbzRawProtocol.KBZ_SERVICE)) {
+                    } else if (source.hasService(KbzBodyProtocol.KBZ_SERVICE)) {
                         observer.observe(new KbzPostureAgent(source));
                     } else if (name.startsWith("UprightGO2")) {
                         observer.observe(new UprightGo2Agent(source));
-                    }else if (name.startsWith("A&D")) {
+                    } else if (name.startsWith("A&D")) {
                         observer.observe(new BloodPressureMonitorAgent(source));
-                    }else if (name.startsWith("ZTEZ")) {
+                    } else if (name.startsWith("ZTEZ")) {
                         observer.observe(new DigitsoleAgent(source, context));
                     } else {
                         observer.observe(null);

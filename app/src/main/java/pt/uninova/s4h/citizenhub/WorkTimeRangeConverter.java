@@ -1,4 +1,4 @@
-package pt.uninova.util;
+package pt.uninova.s4h.citizenhub;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -67,9 +67,11 @@ public class WorkTimeRangeConverter {
                 if (day.equalsIgnoreCase(LocalDateTime.now().getDayOfWeek().name())) {
 
                     LocalTime now = LocalTime.parse(LocalTime.now().format(formatter));
+
                     if (now.isAfter(workStart) && now.isBefore(workEnd)) {
                         return 1;
                     }
+
                     return 0;
                 }
             }

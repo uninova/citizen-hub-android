@@ -11,19 +11,20 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListen
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
+import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingMeasurement;
 import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
-public class MedXTrainingProtocol extends BluetoothMeasuringProtocol {
+public class LumbarExtensionTrainingProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.medx.medxtraining");
 
     public static final UUID UUID_SERVICE = UUID.fromString("5a46791b-516e-48fd-9d29-a2f18d520aec");
     public static final UUID UUID_CHARACTERISTIC = UUID.fromString("38fde8b6-9664-4b8e-8b3a-e52b8809a64c");
 
-    public MedXTrainingProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, BluetoothAgent agent) {
+    public LumbarExtensionTrainingProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, BluetoothAgent agent) {
         super(ID, connection, sampleDispatcher, agent);
     }
 
@@ -44,7 +45,7 @@ public class MedXTrainingProtocol extends BluetoothMeasuringProtocol {
                 final int repetitions = byteBuffer.getInt();
                 final int weight = byteBuffer.getInt();
 
-                final Sample sample = new Sample(getAgent().getSource(), new LumbarExtensionTrainingMeasurement(new LumbarExtensionTrainingValue(Instant.ofEpochSecond(timestamp), Duration.ofSeconds(length), score, repetitions, weight, calories)));
+                final Sample sample = new Sample(getAgent().getSource(), new LumbarExtensionTrainingMeasurement(new LumbarExtensionTrainingValue(Duration.ofSeconds(length), (double) score, repetitions, weight)), new CaloriesMeasurement((double) calories));
 
                 getSampleDispatcher().dispatch(sample);
             }
