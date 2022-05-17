@@ -19,13 +19,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.util.Pair;
-import pt.uninova.util.Triple;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.util.Pair;
+import pt.uninova.s4h.citizenhub.util.Triple;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BluetoothConnection extends BluetoothGattCallback implements Connection {
 
@@ -169,8 +168,8 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     @Override
-    public ConnectionKind getConnectionKind() {
-        return ConnectionKind.BLUETOOTH;
+    public int getConnectionKind() {
+        return Connection.CONNECTION_KIND_BLUETOOTH;
     }
 
     public BluetoothDevice getDevice() {
@@ -182,7 +181,7 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         final String address = device.getAddress();
         final String name = device.getName();
 
-        return new Device(address, name != null ? name : address, ConnectionKind.BLUETOOTH);
+        return new Device(address, name != null ? name : address, CONNECTION_KIND_BLUETOOTH);
     }
 
     public List<BluetoothGattService> getServices() {

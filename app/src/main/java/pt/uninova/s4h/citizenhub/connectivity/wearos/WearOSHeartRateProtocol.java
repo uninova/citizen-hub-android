@@ -7,22 +7,22 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
-    final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
+    final private static int channelName = Measurement.TYPE_HEART_RATE;
     final String TAG = "WearOSHeartRateProtocol";
     CitizenHubService service;
 
     protected WearOSHeartRateProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent, CitizenHubService service) {
-        super(ID, agent,sampleDispatcher);
+        super(ID, agent, sampleDispatcher);
         Log.d(TAG, "Entered");
         this.service = service;
 
@@ -39,13 +39,13 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
-        service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol","false");
+        setState(Protocol.STATE_DISABLED);
+        service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol", "false");
     }
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLED);
-        service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol","true");
+        setState(Protocol.STATE_ENABLED);
+        service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol", "true");
     }
 }

@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceSearchFragment extends BluetoothFragment {
@@ -54,7 +54,7 @@ public class DeviceSearchFragment extends BluetoothFragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
         scanner.start((address, name) -> {
-            final Device device = new Device(address, name == null ? address : name, ConnectionKind.BLUETOOTH);
+            final Device device = new Device(address, name == null ? address : name, Connection.CONNECTION_KIND_BLUETOOTH);
 
             if (!model.hasAgentAttached(device)) {
                 adapter.addItem(new DeviceListItem(device, R.drawable.ic_devices_unpaired));

@@ -3,27 +3,31 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public interface Agent {
+
+    public static final int AGENT_STATE_DISABLED = 0;
+    public static final int AGENT_STATE_ENABLED = 1;
+    public static final int AGENT_STATE_INACTIVE = 2;
 
     void addAgentListener(AgentListener agentListener);
 
     void addSampleObserver(Observer<Sample> observer);
 
-    void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
+    void addStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer);
 
     void disable();
 
-    void disableMeasurement(MeasurementKind measurementKind);
+    void disableMeasurement(int measurementKind);
 
     void disableProtocol(Protocol protocol);
 
     void enable();
 
-    void enableMeasurement(MeasurementKind measurementKind);
+    void enableMeasurement(int measurementKind);
 
     void enableProtocol(Protocol protocol);
 
@@ -35,11 +39,11 @@ public interface Agent {
 
     Device getSource();
 
-    AgentState getState();
+    int getState();
 
-    Set<MeasurementKind> getEnabledMeasurements();
+    Set<Integer> getEnabledMeasurements();
 
-    Set<MeasurementKind> getSupportedMeasurements();
+    Set<Integer> getSupportedMeasurements();
 
     Set<UUID> getSupportedProtocolsIds();
 
@@ -49,6 +53,6 @@ public interface Agent {
 
     void removeSampleObserver(Observer<Sample> observer);
 
-    void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer);
+    void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer);
 
 }

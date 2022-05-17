@@ -7,14 +7,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class WearOSConnection {
     private final String address;
     private final Dispatcher<StateChangedMessage<WearOSConnectionState, WearOSConnection>> stateChangedMessageDispatcher;
-    private final Map<MeasurementKind, Set<ChannelListener>> channelListenerMap;
+    private final Map<Integer, Set<ChannelListener>> channelListenerMap;
     private WearOSConnectionState state;
 
     public WearOSConnection(String address) {
@@ -34,7 +33,7 @@ public class WearOSConnection {
     }
 
     public void addChannelListener(ChannelListener listener) {
-        final MeasurementKind key = listener.getChannelName();
+        final int key = listener.getChannelName();
 
         synchronized (channelListenerMap) {
             if (!channelListenerMap.containsKey(key)) {
@@ -45,7 +44,7 @@ public class WearOSConnection {
     }
 
     public void onCharacteristicChanged(String[] messageArray) {
-        final MeasurementKind key = MeasurementKind.find(Integer.parseInt(messageArray[2]));
+        final int key = Integer.parseInt(messageArray[2]);
 
         if (channelListenerMap.containsKey(key)) {
             for (ChannelListener i : channelListenerMap.get(key)) {

@@ -10,16 +10,16 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class HexoSkinAgent extends BluetoothAgent {
 
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.hexoskin");
 
-    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            MeasurementKind.STEPS,
-            MeasurementKind.HEART_RATE,
-            MeasurementKind.RESPIRATION_RATE
+    static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            Measurement.TYPE_STEPS_SNAPSHOT,
+            Measurement.TYPE_HEART_RATE,
+            Measurement.TYPE_RESPIRATION_RATE
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -33,19 +33,19 @@ public class HexoSkinAgent extends BluetoothAgent {
     }
 
     @Override
-    public Set<MeasurementKind> getSupportedMeasurements() {
+    public Set<Integer> getSupportedMeasurements() {
         return HexoSkinAgent.supportedMeasurementKinds;
     }
 
     @Override
-    public MeasuringProtocol getMeasuringProtocol(MeasurementKind measurementKind) {
+    public MeasuringProtocol getMeasuringProtocol(int measurementKind) {
         switch (measurementKind) {
-            case STEPS:
-                return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(),this);
-            case HEART_RATE:
-                return new HexoSkinHeartRateProtocol(this.getConnection(), getSampleDispatcher(),this);
-            case RESPIRATION_RATE:
-                return new HexoSkinRespirationProtocol(this.getConnection(), getSampleDispatcher(),this);
+            case Measurement.TYPE_STEPS_SNAPSHOT:
+                return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(), this);
+            case Measurement.TYPE_HEART_RATE:
+                return new HexoSkinHeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
+            case Measurement.TYPE_RESPIRATION_RATE:
+                return new HexoSkinRespirationProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;
