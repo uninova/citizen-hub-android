@@ -1,4 +1,4 @@
-package pt.uninova.util.time;
+package pt.uninova.s4h.citizenhub.util.time;
 
 import android.os.Handler;
 import android.os.Looper;

@@ -1,4 +1,4 @@
-package pt.uninova.util.messaging;
+package pt.uninova.s4h.citizenhub.util.messaging;
 
 import java.io.Closeable;
 import java.util.HashSet;

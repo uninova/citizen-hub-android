@@ -1,11 +1,11 @@
-package pt.uninova.util;
+package pt.uninova.s4h.citizenhub.util;
 
 import java.util.Objects;
 
 public final class Pair<F, S> {
 
-    private final F first;
-    private final S second;
+    private  F first;
+    private  S second;
 
     public Pair(F first, S second) {
         this.first = first;
@@ -34,6 +34,14 @@ public final class Pair<F, S> {
     @Override
     public int hashCode() {
         return Objects.hash(first, second);
+    }
+
+    public void setFirst(F first) {
+        this.first = first;
+    }
+
+    public void setSecond(S second) {
+        this.second = second;
     }
 
     @Override

@@ -1,11 +1,11 @@
-package pt.uninova.util.time;
+package pt.uninova.s4h.citizenhub.util.time;
 
 import java.time.Duration;
 import java.time.Instant;
 
-import pt.uninova.util.Pair;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.Pair;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class Accumulator<T> {
 

@@ -1,4 +1,4 @@
-package pt.uninova.util.time;
+package pt.uninova.s4h.citizenhub.util.time;
 
 import java.time.LocalDate;
 import java.util.Objects;

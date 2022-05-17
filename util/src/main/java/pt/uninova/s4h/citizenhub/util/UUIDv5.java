@@ -1,4 +1,4 @@
-package pt.uninova.util;
+package pt.uninova.s4h.citizenhub.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
