@@ -33,7 +33,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         }
 
         public void setItem(DeviceListItem item) {
-            final ImageView imageView = itemView.findViewById(R.id.image_device);
+            final ImageView imageView = itemView.findViewById(R.id.image_method);
             final TextView titleTextView = itemView.findViewById(R.id.text_view_title);
             final TextView descriptionTextView = itemView.findViewById(R.id.text_view_description);
 
