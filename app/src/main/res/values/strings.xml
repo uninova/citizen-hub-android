@@ -454,6 +454,8 @@
     <string name="measurement_type.26">Motion</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
+    <string name="drawer_smart4health_title">Smart4health</string>
+    <string name="smart4health_url">https://smart4health.eu/</string>
 
 </resources>
 
