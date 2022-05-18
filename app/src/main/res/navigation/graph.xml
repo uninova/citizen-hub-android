@@ -144,11 +144,16 @@
 
     </fragment>
 
-    <fragment
+    <activity
         android:id="@+id/settings_fragment"
         android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
         android:label="@string/fragment_settings_label"
         tools:layout="@layout/fragment_settings" />
+
+    <activity
+        android:id="@+id/smart4health_fragment"
+        app:action="android.intent.action.VIEW"
+        app:data="@string/smart4health_url"/>
 
     <fragment
         android:id="@+id/accounts_fragment"
