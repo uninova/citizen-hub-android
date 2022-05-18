@@ -4,27 +4,27 @@ import java.time.Instant;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
-import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
-import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.PostureMeasurement;
+import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
-import pt.uninova.util.time.Accumulator;
-import pt.uninova.util.time.FlushingAccumulator;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.time.Accumulator;
+import pt.uninova.s4h.citizenhub.util.time.FlushingAccumulator;
 
 public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2.posture");
 
-    private static final UUID KBZ_SERVICE = UUID.fromString("0000ff30-0000-1000-8000-00805f9b34fb");
+    public static final UUID KBZ_SERVICE = UUID.fromString("0000ff30-0000-1000-8000-00805f9b34fb");
     private static final UUID KBZ_CHARACTERISTIC = UUID.fromString("0000ff35-0000-1000-8000-00805f9b34fb");
     private static final UUID KBZ_RAW_CHARACTERISTIC = UUID.fromString("0000ff38-0000-1000-8000-00805f9b34fb");
 
@@ -59,10 +59,10 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
         @Override
         public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
             if (value.getNewState() == BluetoothConnectionState.READY) {
-                KbzBodyProtocol.this.setState(ProtocolState.ENABLED);
+                KbzBodyProtocol.this.setState(Protocol.STATE_ENABLED);
                 KbzBodyProtocol.this.getConnection().writeCharacteristic(KBZ_SERVICE, KBZ_CHARACTERISTIC, new byte[]{1 & 0xFF});
             } else {
-                KbzBodyProtocol.this.setState(ProtocolState.SUSPENDED);
+                KbzBodyProtocol.this.setState(Protocol.STATE_SUSPENDED);
                 posture.stop();
             }
         }
@@ -76,8 +76,9 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
         this.posture = new FlushingAccumulator<>(5000);
 
         this.posture.addObserver(value -> {
-            final double seconds = value.getSecond().toNanos() * 0.000000001;
-            final Measurement<?> measurement = value.getFirst() ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
+            final int classification = value.getFirst() ? PostureValue.CLASSIFICATION_CORRECT : PostureValue.CLASSIFICATION_INCORRECT;
+            final double duration = value.getSecond().toNanos() * 0.000000001;
+            final Measurement<?> measurement = new PostureMeasurement(new PostureValue(classification, duration));
             final Sample sample = new Sample(getAgent().getSource(), measurement);
 
             getSampleDispatcher().dispatch(sample);

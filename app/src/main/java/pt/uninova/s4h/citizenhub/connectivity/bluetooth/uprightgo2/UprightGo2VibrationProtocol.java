@@ -3,7 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 
@@ -34,7 +34,7 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
     }
 
     @Override
-    public void disable(){setState(ProtocolState.DISABLED);
+    public void disable(){setState(Protocol.STATE_DISABLED);
     }
 
     @Override

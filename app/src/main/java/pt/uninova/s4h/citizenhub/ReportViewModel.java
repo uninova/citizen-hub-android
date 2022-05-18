@@ -49,33 +49,30 @@ import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.helpers.r4.PractitionerBuilder;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.report.CanvasWriter;
-import pt.uninova.util.Pair;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.Pair;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 
 public class ReportViewModel extends AndroidViewModel {
 
-    final private MeasurementRepository repository;
     final private LumbarExtensionTrainingRepository lumbarTrainingRepository;
 
     final private MutableLiveData<Set<LocalDate>> availableReportsLive;
     final private Set<Pair<Integer, Integer>> peekedMonths;
 
     private LocalDate detailDate;
-    private Map<MeasurementKind, MeasurementAggregate> detailAggregates;
-    private Map<MeasurementKind, MeasurementAggregate> detailAggregatesWorkTime;
-    private LumbarExtensionTrainingRecord lumbarTraining;
+    private Map<Integer, MeasurementAggregate> detailAggregates;
+    private Map<Integer, MeasurementAggregate> detailAggregatesWorkTime;
+    private LumbarExtensionTrainingMeasurementRecord lumbarTraining;
 
     public ReportViewModel(Application application) {
         super(application);
 
-        repository = new MeasurementRepository(application);
         lumbarTrainingRepository = new LumbarExtensionTrainingRepository(application);
         availableReportsLive = new MutableLiveData<>(new HashSet<>());
         peekedMonths = new HashSet<>();
@@ -258,8 +255,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_CORRECT);
-        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(MeasurementKind.POSTURE_INCORRECT);
+        MeasurementAggregate measurementAggregate = detailAggregatesWorkTime.get(Measurement.TYPE_POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregatesWorkTime.get(Measurement.TYPE_POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -284,9 +281,9 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.DISTANCE);
-        MeasurementAggregate measurementAggregate2 = detailAggregatesWorkTime.get(MeasurementKind.STEPS);
-        MeasurementAggregate measurementAggregate3 = detailAggregatesWorkTime.get(MeasurementKind.CALORIES);
+        measurementAggregate = detailAggregatesWorkTime.get(Measurement.TYPE_DISTANCE_SNAPSHOT);
+        MeasurementAggregate measurementAggregate2 = detailAggregatesWorkTime.get(Measurement.TYPE_STEPS_SNAPSHOT);
+        MeasurementAggregate measurementAggregate3 = detailAggregatesWorkTime.get(Measurement.TYPE_CALORIES_SNAPSHOT);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
             Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
@@ -315,7 +312,7 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.HEART_RATE);
+        measurementAggregate = detailAggregatesWorkTime.get(Measurement.TYPE_HEART_RATE);
 
         if (measurementAggregate != null) {
 
@@ -349,7 +346,7 @@ public class ReportViewModel extends AndroidViewModel {
             y += 20;
         }
 
-        measurementAggregate = detailAggregatesWorkTime.get(MeasurementKind.CALORIES);
+        measurementAggregate = detailAggregatesWorkTime.get(Measurement.TYPE_CALORIES_SNAPSHOT);
 
         if (lumbarTraining != null) {
 
@@ -529,8 +526,8 @@ public class ReportViewModel extends AndroidViewModel {
         x += 20;
 
 
-        MeasurementAggregate measurementAggregate = detailAggregates.get(MeasurementKind.POSTURE_CORRECT);
-        MeasurementAggregate measurementAggregate1 = detailAggregates.get(MeasurementKind.POSTURE_INCORRECT);
+        MeasurementAggregate measurementAggregate = detailAggregates.get(Measurement.TYPE_POSTURE_CORRECT);
+        MeasurementAggregate measurementAggregate1 = detailAggregates.get(Measurement.TYPE_POSTURE_INCORRECT);
         if (measurementAggregate != null) {
             Drawable timeSitting = res.getDrawable(R.drawable.ic_time_sitting, null);
             timeSitting.setBounds(0, 0, timeSitting.getIntrinsicWidth(), timeSitting.getIntrinsicHeight());
@@ -555,9 +552,9 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.DISTANCE);
-        MeasurementAggregate measurementAggregate2 = detailAggregates.get(MeasurementKind.STEPS);
-        MeasurementAggregate measurementAggregate3 = detailAggregates.get(MeasurementKind.CALORIES);
+        measurementAggregate = detailAggregates.get(Measurement.TYPE_DISTANCE_SNAPSHOT);
+        MeasurementAggregate measurementAggregate2 = detailAggregates.get(Measurement.TYPE_STEPS_SNAPSHOT);
+        MeasurementAggregate measurementAggregate3 = detailAggregates.get(Measurement.TYPE_CALORIES_SNAPSHOT);
 
         if (measurementAggregate != null && measurementAggregate2 != null && measurementAggregate3 != null) {
             Drawable stepsTaken = res.getDrawable(R.drawable.card_activity, null);
@@ -586,7 +583,7 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.HEART_RATE);
+        measurementAggregate = detailAggregates.get(Measurement.TYPE_HEART_RATE);
 
         if (measurementAggregate != null) {
 
@@ -620,7 +617,7 @@ public class ReportViewModel extends AndroidViewModel {
             y += 20;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.RESPIRATION_RATE);
+        measurementAggregate = detailAggregates.get(Measurement.TYPE_RESPIRATION_RATE);
 
         if (measurementAggregate != null) {
             Drawable respiration_rate = res.getDrawable(R.drawable.ic_lungs, null);
@@ -641,40 +638,6 @@ public class ReportViewModel extends AndroidViewModel {
             y += 40;
         }
 
-        measurementAggregate = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
-        MeasurementAggregate measurementAggregate2work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
-        MeasurementAggregate measurementAggregate3work = detailAggregates.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
-        if (measurementAggregate != null && measurementAggregate2work != null && measurementAggregate3work != null) {
-
-            y -= 10;
-
-            Drawable bloodPressure = res.getDrawable(R.drawable.ic_blood_pressure, null);
-            bloodPressure.setBounds(0, 0, bloodPressure.getIntrinsicWidth(), bloodPressure.getIntrinsicHeight());
-            canvas.save();
-            canvas.translate(x - 15, y + 15);
-            canvas.scale(0.35f, 0.35f);
-            bloodPressure.draw(canvas);
-            canvas.restore();
-
-            y += 40;
-            canvasWriter.addText("Average Systolic Blood Pressure:", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(" " + decimalFormat.format(measurementAggregate.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
-
-            y += 20;
-            canvasWriter.addText("Average Diastolic Blood Pressure: ", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(String.valueOf(measurementAggregate2work.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
-
-            y += 20;
-            canvasWriter.addText("Mean Arterial Pressure: ", x + 70, y, darkTextPaint);
-            canvasWriter.addTextInFront(String.valueOf(measurementAggregate3work.getAverage()), boldTextPaint);
-            canvasWriter.addTextInFront(" mmHg", darkTextPaint);
-
-            y += 20;
-
-            y += 40;
-        }
 
         if (lumbarTraining != null) {
 
@@ -745,19 +708,10 @@ public class ReportViewModel extends AndroidViewModel {
         this.detailDate = detailDate;
     }
 
-    public void obtainSummary(Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
-        repository.obtainDailyAggregateWorkTime(0, detailDate, value -> {
-            detailAggregates = value;
-            observer.observe(value);
-        });
+    public void obtainSummary(Observer<Map<Integer, MeasurementAggregate>> observer) {
     }
 
-    public void obtainWorkTimeSummary(Observer<Map<MeasurementKind, MeasurementAggregate>> observer) {
-        repository.obtainDailyAggregateWorkTime(1, detailDate, value -> {
-            detailAggregatesWorkTime = value;
-
-            observer.observe(value);
-        });
+    public void obtainWorkTimeSummary(Observer<Map<Integer, MeasurementAggregate>> observer) {
     }
 
     private void onDatesChanged(List<LocalDate> dates) {
@@ -781,7 +735,7 @@ public class ReportViewModel extends AndroidViewModel {
 
         if (!peekedMonths.contains(peek)) {
             peekedMonths.add(peek);
-            repository.obtainDates(peek, this::onDatesChanged);
+            //repository.obtainDates(peek, this::onDatesChanged);
 //            lumbarTrainingRepository.obtainDates(peek,this::onDatesChanged);
         }
     }

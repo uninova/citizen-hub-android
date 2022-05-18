@@ -94,15 +94,15 @@ public class BloodPressureMeasurement {
 
     public Measurement<?>[] toMeasurements() {
         final boolean validBloodPressure = !systolic.equals(Float16.NAN) && !systolic.equals(Float16.NRES);
-        final boolean validPressure = flags.isPulseRatePresent() && !pulseRate.equals(Float16.NAN) && !pulseRate.equals(Float16.NRES);
+        final boolean validPulseRate = flags.isPulseRatePresent() && !pulseRate.equals(Float16.NAN) && !pulseRate.equals(Float16.NRES);
 
-        final Measurement<?>[] measurements = new Measurement<?>[(validBloodPressure ? 1 : 0) + (validPressure ? 1 : 0)];
+        final Measurement<?>[] measurements = new Measurement<?>[(validBloodPressure ? 1 : 0) + (validPulseRate ? 1 : 0)];
 
         if (validBloodPressure) {
             measurements[0] = new pt.uninova.s4h.citizenhub.data.BloodPressureMeasurement(new BloodPressureValue(systolic.toDouble(), diastolic.toDouble(), meanArterialPressure.toDouble()));
         }
 
-        if (validBloodPressure) {
+        if (validPulseRate) {
             measurements[1] = new PulseRateMeasurement(pulseRate.toDouble());
         }
 

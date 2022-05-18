@@ -15,38 +15,35 @@ import androidx.lifecycle.LifecycleService;
 import androidx.preference.PreferenceManager;
 import androidx.work.WorkManager;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.WorkTimeRangeConverter;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOsAgentFactory;
-import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
-import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRecord;
-import pt.uninova.s4h.citizenhub.persistence.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.Feature;
-import pt.uninova.s4h.citizenhub.persistence.FeatureRepository;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.StateKind;
+import pt.uninova.s4h.citizenhub.data.Tag;
+import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
+import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
+import pt.uninova.s4h.citizenhub.persistence.entity.Feature;
+import pt.uninova.s4h.citizenhub.persistence.repository.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
 import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
 import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class CitizenHubService extends LifecycleService {
 
@@ -133,49 +130,49 @@ public class CitizenHubService extends LifecycleService {
     }
 
     private void initAgentOrchestrator() {
-        final Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
+        final Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
         final DeviceRepository deviceRepository = new DeviceRepository(getApplication());
         final FeatureRepository featureRepository = new FeatureRepository(getApplication());
         final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getApplication());
-        final MeasurementRepository measurementRepository = new MeasurementRepository(getApplication());
+        final SampleRepository sampleRepository = new SampleRepository(getApplication());
+        final TagRepository tagRepository = new TagRepository(getApplication());
 
-        agentFactoryMap.put(ConnectionKind.BLUETOOTH, new BluetoothAgentFactory(this));
-        agentFactoryMap.put(ConnectionKind.WEAROS, new WearOsAgentFactory(this));
+        agentFactoryMap.put(Connection.CONNECTION_KIND_BLUETOOTH, new BluetoothAgentFactory(this));
+        agentFactoryMap.put(Connection.CONNECTION_KIND_WEAROS, new WearOsAgentFactory(this));
 
-        final Observer<Sample> databaseWriter = (Sample sample) -> {
-            for (Measurement<?> m : sample.getMeasurements()) {
-                if (m.getType() == Measurement.LUMBAR_EXTENSION_TRAINING) {
-                    final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
+        //            for (Measurement<?> m : sample.getMeasurements()) {
+        //                if (m.getType() == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+        //                    final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
+        //
+        //                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingMeasurementRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
+        //                } else if (m.getType() == Measurement.TYPE_BLOOD_PRESSURE) {
+        //                    sampleRepository.addSample(sample);
+        //                }
+        //            }
+        final Observer<Sample> databaseWriter = sample -> {
+            final WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(getApplicationContext());
 
-                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
-                } else if (m.getType() == Measurement.BLOOD_PRESSURE) {
-                    final BloodPressureValue value = (BloodPressureValue) m.getValue();
-
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_SYSTOLIC, value.getSystolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_DIASTOLIC, value.getDiastolic()));
-                    measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE, value.getMeanArterialPressure()));
-                } else {
-                    try {
-                        measurementRepository.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(Date.from(sample.getTimestamp()), MeasurementKind.find(m.getType()), parseMeasurementValue(m)));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            sampleRepository.create(sample, sampleId -> {
+                if (workTimeRangeConverter.isNowWorkTime() > 0) {
+                    tagRepository.create(sampleId, Tag.LABEL_CONTEXT_WORK);
                 }
-            }
+            });
         };
 
         orchestrator = new AgentOrchestrator(agentFactoryMap, databaseWriter);
         orchestrator.addListener(new AgentOrchestratorListener() {
             @Override
             public void onAgentAttached(Device device, Agent agent) {
+                deviceRepository.updateAgent(device.getAddress(), agent.getClass().getCanonicalName());
+
                 agent.addAgentListener(new AgentListener() {
                     @Override
-                    public void onMeasurementDisabled(Agent agent, MeasurementKind measurementKind) {
+                    public void onMeasurementDisabled(Agent agent, int measurementKind) {
                         featureRepository.remove(new Feature(agent.getSource().getAddress(), measurementKind));
                     }
 
                     @Override
-                    public void onMeasurementEnabled(Agent agent, MeasurementKind measurementKind) {
+                    public void onMeasurementEnabled(Agent agent, int measurementKind) {
                         featureRepository.add(new Feature(agent.getSource().getAddress(), measurementKind));
                     }
                 });
@@ -183,7 +180,7 @@ public class CitizenHubService extends LifecycleService {
 
             @Override
             public void onDeviceAdded(Device device) {
-                deviceRepository.add(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+                deviceRepository.create(new DeviceRecord(null, device.getAddress(), device.getName(), device.getConnectionKind(), null));
             }
 
             @Override
@@ -194,16 +191,16 @@ public class CitizenHubService extends LifecycleService {
                     agent.removeAllAgentListeners();
                 }
 
-                deviceRepository.remove(new DeviceRecord(device.getName(), device.getAddress(), device.getConnectionKind(), StateKind.ACTIVE, ""));
+                deviceRepository.delete(device.getAddress());
             }
         });
 
-        deviceRepository.obtainAll(value -> {
+        deviceRepository.readAll(value -> {
             for (DeviceRecord i : value) {
                 orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
                     agent.enable();
                     featureRepository.obtainKindsFromDevice(i.getAddress(), kindList -> {
-                        for (MeasurementKind kind : kindList) {
+                        for (int kind : kindList) {
                             agent.enableMeasurement(kind);
                         }
                     });
@@ -230,20 +227,6 @@ public class CitizenHubService extends LifecycleService {
         wearOSMessageService = new WearOSMessageService();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        /*
-        LocalDateTime l = LocalDateTime.now();
-
-        MeasurementRepository repo = new MeasurementRepository(getApplicationContext());
-        Random random = new Random();
-
-        for (int i = 0; i < 1000; i++) {
-            Date d = Date.from(Instant.ofEpochSecond(l.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(l))));
-            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.GOOD_POSTURE, random.nextDouble() * 10));
-            repo.add(new pt.uninova.s4h.citizenhub.persistence.Measurement(d, MeasurementKind.BAD_POSTURE, random.nextDouble() * 10));
-            l = l.plusSeconds(random.nextInt(300));
-        }
-        */
 
         initAgentOrchestrator();
         initWorkOrchestrator();

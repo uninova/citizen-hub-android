@@ -2,7 +2,7 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class WearOsAgentFactory implements AgentFactory<WearOSAgent> {
 

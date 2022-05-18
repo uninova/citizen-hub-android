@@ -9,11 +9,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.UUIDv5;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.UUIDv5;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class AgentOrchestrator {
 
@@ -28,7 +27,7 @@ public class AgentOrchestrator {
     }
 
     private final Map<Device, Agent> agentMap;
-    private final Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap;
+    private final Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap;
 
     private final List<AgentOrchestratorListener> listeners;
 
@@ -38,7 +37,7 @@ public class AgentOrchestrator {
         this(new HashMap<>(), ingester);
     }
 
-    public AgentOrchestrator(Map<ConnectionKind, AgentFactory<? extends Agent>> agentFactoryMap, Observer<Sample> ingester) {
+    public AgentOrchestrator(Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap, Observer<Sample> ingester) {
         this.agentMap = new HashMap<>();
         this.agentFactoryMap = agentFactoryMap;
         this.listeners = new LinkedList<>();

@@ -11,14 +11,14 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class DigitsoleAgent extends BluetoothAgent {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole");
 
-    public static final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.STEPS
+    public static final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
+            Measurement.TYPE_STEPS_SNAPSHOT
     )));
 
     private static final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
@@ -33,8 +33,8 @@ public class DigitsoleAgent extends BluetoothAgent {
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.STEPS) {
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
+        if (kind == Measurement.TYPE_STEPS_SNAPSHOT) {
             return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this, context);
         }
         return null;

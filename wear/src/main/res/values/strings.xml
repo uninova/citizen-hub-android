@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">Citizen Hub</string>
+    <string name="main_activity_steps">\"Steps: \"</string>
+    <string name="main_activity_heart_rate">\"Heart rate: \"</string>
+    <string name="main_activity_check_connection_message">Check Connection</string>
+    <string name="main_activity_heart_rate_units">\" bpm\"</string>
+    <string name="main_activity_heart_rate_message">\"You have a Heart Rate of: \"</string>
+    <string name="main_activity_steps_message">\"You have walked a total of \"</string>
+    <string name="main_activity_steps_message_2">\" steps today.\"</string>
+    <string name="activity_main_heart_rate_text">Heart rate:</string>
+    <string name="activity_main_steps_text">Steps:</string>
     <string name="show_data_steps">Steps: %1d</string>
     <string name="show_data_heartrate">Heart Rate: %1$.0f BPM</string>
     <string name="show_data_phone_connected">Phone Connected</string>

@@ -17,13 +17,12 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.BloodPressureMeasur
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DateTime;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.and.ua651ble.bloodpressure");
-
 
     private final CharacteristicListener onChange = new BaseCharacteristicListener(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT) {
         @Override

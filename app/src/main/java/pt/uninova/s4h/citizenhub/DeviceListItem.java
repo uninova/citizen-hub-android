@@ -2,7 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import java.util.Objects;
 
-import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.data.Device;
 
 public class DeviceListItem implements Comparable<DeviceListItem> {
 
