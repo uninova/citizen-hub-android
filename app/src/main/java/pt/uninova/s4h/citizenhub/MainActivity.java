@@ -1,13 +1,9 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,16 +11,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_main);
 
@@ -39,16 +38,14 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.lumbar_extension_training_fragment, R.id.device_list_fragment, R.id.settings_fragment,R.id.smart4health_fragment, R.id.accounts_fragment, R.id.about_fragment)
+                new AppBarConfiguration.Builder(R.id.summary_fragment, R.id.report_master_fragment, R.id.lumbar_extension_training_fragment, R.id.device_list_fragment, R.id.settings_fragment, R.id.smart4health_fragment, R.id.accounts_fragment, R.id.about_fragment)
                         .setOpenableLayout(drawerLayout)
                         .build();
-
-
+        Menu nav_Menu = navView.getMenu();
+        nav_Menu.findItem(R.id.smart4health_fragment).setVisible(preferences.getBoolean("accounts.smart4health.enabled", true));
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-
 
     }
 
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
+
     @Override
     public void onBackPressed() {
         NavController navController = ((NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();

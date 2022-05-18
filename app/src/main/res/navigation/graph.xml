@@ -150,7 +150,7 @@
         android:label="@string/fragment_settings_label"
         tools:layout="@layout/fragment_settings" />
 
-    <fragment
+    <activity
         android:id="@+id/smart4health_fragment"
         app:action="android.intent.action.VIEW"
         app:data="@string/smart4health_url"/>
