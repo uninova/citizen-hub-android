@@ -62,7 +62,7 @@ public class DateTime implements ByteSerializable {
     }
 
     public boolean isValidDate() {
-        return year.toInt() > 1532 && year.toInt() < 9999 && month.toInt() > 0 && month.toInt() < 13 && day.toInt() > 0 && day.toInt() < 31;
+        return year.toInt() > 1532 && year.toInt() < 9999 && month.toInt() > 0 && month.toInt() < 13 && day.toInt() > 0 && day.toInt() < 32;
     }
 
     @Override

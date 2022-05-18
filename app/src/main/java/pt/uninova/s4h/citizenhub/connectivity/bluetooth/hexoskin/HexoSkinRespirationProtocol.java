@@ -7,7 +7,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
@@ -15,7 +15,7 @@ import pt.uninova.s4h.citizenhub.data.ExpirationMeasurement;
 import pt.uninova.s4h.citizenhub.data.InspirationMeasurement;
 import pt.uninova.s4h.citizenhub.data.RespirationRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
@@ -26,7 +26,7 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     public HexoSkinRespirationProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, HexoSkinAgent agent) {
         super(ID, connection, sampleDispatcher, agent);
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID) {
             @Override
@@ -73,7 +73,7 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
         getConnection().disableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
 
     }
@@ -81,7 +81,7 @@ public class HexoSkinRespirationProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void enable() {
         System.out.println("RESPIRATION_ENABLED");
-        setState(ProtocolState.ENABLED);
+        setState(Protocol.STATE_ENABLED);
         getConnection().enableNotifications(RESPIRATION_SERVICE_UUID, RESPIRATION_RATE_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 

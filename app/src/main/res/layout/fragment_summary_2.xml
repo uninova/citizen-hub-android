@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fragment_summary_text_view_no_data"
+            style="@style/AppTheme.Summary.Item.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/heartRateCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/heart_rate_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/ic_heartbeat" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+
+                            <TextView
+                                android:id="@+id/heartRateValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/fragment_summary_text_view_heart_rate_text" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/postureCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/posture_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/card_posture" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/posture_correct_label" />
+
+                            <TextView
+                                android:id="@+id/postureCorrectValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/posture_correct_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/posture_incorrect_label" />
+
+                            <TextView
+                                android:id="@+id/postureIncorrectValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/posture_incorrect_value" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/activityCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/activity_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/card_activity" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/activity_steps_label" />
+
+                            <TextView
+                                android:id="@+id/activityStepsValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/activity_steps_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/activity_distance_label" />
+
+                            <TextView
+                                android:id="@+id/activityDistanceValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/activity_distance_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/activity_calories_label" />
+
+                            <TextView
+                                android:id="@+id/activityCaloriesValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/activity_calories_value" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bloodPressureCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/blood_pressure_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/card_blood_pressure" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/blood_pressure_systolic_label" />
+
+                            <TextView
+                                android:id="@+id/bloodPressureSystolicValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/blood_pressure_systolic_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/blood_pressure_diastolic_label" />
+
+                            <TextView
+                                android:id="@+id/bloodPressureDiastolicValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/blood_pressure_diastolic_value" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lumbarTrainingCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/lumbar_training_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/card_training" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/lumbar_training_duration_label" />
+
+                            <TextView
+                                android:id="@+id/lumbarTrainingDurationValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/lumbar_training_duration_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/lumbar_training_repetitions_label" />
+
+                            <TextView
+                                android:id="@+id/lumbarTrainingRepetitionsValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/lumbar_training_repetitions_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/lumbar_training_weight_label" />
+
+                            <TextView
+                                android:id="@+id/lumbarTrainingWeightValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/lumbar_training_weight_value" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/lumbar_training_calories_label" />
+
+                            <TextView
+                                android:id="@+id/lumbarTrainingCaloriesValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/lumbar_training_calories_value" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

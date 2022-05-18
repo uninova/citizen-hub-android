@@ -3,13 +3,13 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 
@@ -23,7 +23,7 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
     public HexoSkinHeartRateProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, HexoSkinAgent agent) {
         super(ID, connection, sampleDispatcher, agent);
 
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA) {
             @Override
@@ -37,13 +37,13 @@ public class HexoSkinHeartRateProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
         getConnection().disableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLED);
+        setState(Protocol.STATE_ENABLED);
         getConnection().enableNotifications(UUID_SERVICE_HEART_RATE, UUID_CHARACTERISTIC_HEART_RATE_DATA);
     }
 

@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import pt.uninova.s4h.citizenhub.data.Device;
+
 public interface AgentOrchestratorListener {
 
     default void onAgentAttached(Device device, Agent agent) {

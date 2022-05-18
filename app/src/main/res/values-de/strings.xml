@@ -47,7 +47,7 @@
     <string name="date_month_09">September</string>
     <string name="date_month_10">Oktober</string>
     <string name="date_month_11">November</string>
-    <string name="date_month_12">Bluetooth</string>
+    <string name="date_month_12">Dezember</string>
     <string name="dialog_connection_bluetooth_textview">Bluetooth</string>
     <string name="dialog_connection_button_submit">Suche</string>
     <string name="dialog_connection_search_text">Bitte wählen Sie die mit Ihrem Gerät kompatiblen Verbindungsmethoden aus:</string>
@@ -66,9 +66,9 @@
     <string name="fragment_about_image_view_logo_kbz">kbz-Logo</string>
     <string name="fragment_about_label">Impressum</string>
     <string name="fragment_about_text_view_versioning">version: 0.1.0</string>
-    <string name="fragment_authentication_button_login">Anmelden</string>
+    <string name="fragment_authentication_button_login">anmelden</string>
     <string name="fragment_authentication_img_s4h_logo_image_content">img_s4h_logo</string>
-    <string name="fragment_authentication_login_requirement_text">Um CitizenHub zu nutzen, müssen Sie sich auf der Smart4Health-Plattform registrieren und anmelden.</string>
+    <string name="fragment_authentication_login_requirement_text">Um CitizenHub zu nutzen, müssen Sie sich auf der Smart4Health-Plattform registrieren und anmelden</string>
     <string name="fragment_authentication_login_text_view">Ihre Gesundheits- und Fitnessdaten an einem Ort</string>
     <string name="fragment_authentication_orange_circular_shape">Oranger Kreis</string>
     <string name="fragment_authentication_text_login">Anmelden</string>
@@ -190,7 +190,7 @@
     <string name="fragment_summary_text_activity">Zurückgelegte Schritte</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f Kalorien</string>
     <string name="fragment_summary_text_view_distance_text">%1$.0f m</string>
-    <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
+    <string name="fragment_summary_text_view_heart_rate_text">%1$.0f bpm</string>
     <string name="fragment_summary_text_view_no_activity">Ihre durchschnittliche Herzfrequenz beträgt %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s nicht OK</string>
     <string name="fragment_summary_text_view_activity_text">%1$.0f Schritte</string>
@@ -227,7 +227,7 @@
     <string name="menu_fragment_device_list_search_title">Suche</string>
     <string name="menu_fragment_device_list_title">Suche</string>
     <string name="pdf_layout_background_logo">Hintergrund-Logo</string>
-    <string name="pdf_report_average_HR_text">Durchschnittliche Herzfrequenz (bpm): \\</string>
+    <string name="pdf_report_average_HR_text">Durchschnittliche herzfrequenz:</string>
     <string name="slide_screen_skip">weiter</string>
     <string name="slide_screen_text_placeholder">Platzhalter für jedes Layout</string>
     <string name="slide_screen_welcome_text">Willkommen</string>
@@ -256,7 +256,7 @@
     <string name="respirationTitle">Atmung</string>
     <string name="fragment_report_detail_text_respiration_breathing_rate">"Atemfrequenz: "</string>
     <string name="fragment_report_detail_respiration_breathing_rate_units_text">U/min</string>
-    <string name="pdf_report_average_SBP_text">Durchschnittlicher SBD: \\</string>
+    <string name="pdf_report_average_SBP_text">Durchschnittlicher systolischer blutdruck</string>
     <string name="fragment_settings_label">Einstellungen</string>
     <string name="fragment_settings_string_default_work_days">"Montag, Dienstag, Mittwoch, Donnerstag, Freitag "</string>
     <string name="fragment_device_configuration_add_calibration_completed_toast">"Kalibrierung abgeschlossen! "</string>
@@ -304,22 +304,87 @@
     <string name="welcome_slide_view_pager_thank_you_message">Vielen Dank für die Verwendung von CitizenHub</string>
     <string name="welcome_slide_view_pager_welcome_title">Willkommen</string>
     <string name="fragment_settings_choose_work_days_text">Wählen Sie Ihre Arbeitstage</string>
-    <string name="fragment_settings_current_work_days_text">"\\\"Aktuelle Arbeitstage:\\\" "</string>
+    <string name="fragment_settings_current_work_days_text">Aktuelle Arbeitstage: </string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Datei konnte nicht hochgeladen werden. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Datei wurde erfolgreich hochgeladen. "</string>
     <string name="fragment_logout_toast_failure_text">"Nicht ausloggen. "</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">"Kalibriere, bitte warten... "</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Kalibrieren</string>
-    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">"\\\"gerade halten.\\\" "</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">" gerade halten.</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ACHTUNG: Bevor Sie Kalibrieren drücken, stellen Sie bitte sicher, dass Sie sitzen und ihren Rücken</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensorkalibrierung</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">"Kalibrierung abgeschlossen! "</string>
     <string name="fragment_device_configuration_connect_option_text">verbinden</string>
     <string name="fragment_device_configuration_dialog_calibrating_message">"Kalibriere, bitte warten... "</string>
-    <string name="fragment_device_configuration_warning_calibration_text2">"\\\"gerade halten.\\\" "</string>
+    <string name="fragment_device_configuration_warning_calibration_text2"> gerade halten.</string>
     <string name="fragment_device_configuration_dialog_option_calibrate">Kalibrieren</string>
     <string name="fragment_device_configuration_warning_calibration_text">ACHTUNG: Bevor Sie Kalibrieren drücken, stellen Sie bitte sicher, dass Sie sitzen und ihren Rücken</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Sensorkalibrierung</string>
     <string name="fragment_device_configuration_add_loading_features_text">"Lade Geräteigenschaften... "</string>
     <string name="medex_fragment_dialog_textview">"Wenn Sie kein Medx-Benutzer sind oder diesen Inhalt ausblenden möchten, können Sie dies jederzeit in den Einstellungen ändern. "</string>
+    <string name="login_fragment_login_text_view">Durch die Authentifizierung werden Sie in der Lage sein, Ihre Gesundheitsberichte hochzuladen und zu verfolgen.</string>
+    <string name="fragment_smart4health_account_log_in_title">Anmelden</string>
+    <string name="fragment_authentication_skip_text">Sie können die Authentifizierung überspringen und später authentifizieren\n\n<b><i>Überspringen</i></b></string>
+    <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
+    <string name="fragment_device_add_name">Name: </string>
+    <string name="fragment_device_add_address">Adresse: </string>
+    <string name="fragment_device_search_posture_sensor_name">Haltungssensor</string>
+    <string name="fragment_report_text_view_no_data_summary_nodevices">Sie scheinen keine Geräte angeschlossen zu haben. Haben Sie den Bereich Geräte im Seitenmenü überprüft?</string>
+    <string name="fragment_settings_work_days">Arbeitstage:</string>
+    <string name="fragment_summary_text_view_steps_text">%1$.0f Schritte</string>
+    <string name="fragment_summary_text_view_distance_walked_text">%1$.0f m</string>
+    <string name="fragment_summary_text_view_calories_burned_text">%1$.0f Kalorien</string>
+    <string name="report_detail_fragment_label">Activity Report</string>
+    <string name="accounts_fragment_label">Konten</string>
+    <string name="open_source_licenses_fragment_label">Open-Source-Lizenzen</string>
+
+    <!-- Model 2 -->
+    <string name="heart_rate_title">Durchschnittliche herzfrequenz</string>
+
+    <string name="posture_title">Körperhaltung</string>
+    <string name="posture_correct_label">Korrekt</string>
+    <string name="posture_incorrect_label">Inkorrekt</string>
+
+    <string name="activity_title">Aktivität</string>
+    <string name="activity_steps_label">Schritte gesamt</string>
+    <string name="activity_steps_value">%1$d</string>
+    <string name="activity_distance_label">Distanz</string>
+    <string name="activity_distance_value">%1$.0f m</string>
+    <string name="activity_calories_label">Kalorien</string>
+    <string name="activity_calories_value">%1$.0f kcal</string>
+
+    <string name="blood_pressure_title">Blutdruck</string>
+    <string name="blood_pressure_diastolic_label">Diastolisch</string>
+    <string name="blood_pressure_systolic_label">Systolisch</string>
+
+    <string name="lumbar_training_title">Formation extension lombaire</string>
+    <string name="lumbar_training_score_label">Punktzahl</string>
+    <string name="lumbar_training_weight_label">Gewicht</string>
+    <string name="lumbar_training_repetitions_label">Wiederholungen</string>
+    <string name="lumbar_training_duration_label">Dauer</string>
+
+    <string name="measurement_type.0">Unbekannt</string>
+    <string name="measurement_type.1">Pulsschlag</string>
+    <string name="measurement_type.2">Aktivität</string>
+    <string name="measurement_type.3">Aktivität</string>
+    <string name="measurement_type.4">Aktivität</string>
+    <string name="measurement_type.5">Haltung</string>
+    <string name="measurement_type.6">Haltung</string>
+    <string name="measurement_type.7">Atmung</string>
+    <string name="measurement_type.8">Atmung</string>
+    <string name="measurement_type.9">Atmung</string>
+    <string name="measurement_type.11">Unbekannt</string>
+    <string name="measurement_type.12">Unbekannt</string>
+    <string name="measurement_type.16">Unbekannt</string>
+    <string name="measurement_type.17">Blutdruck</string>
+    <string name="measurement_type.21">Blutdruck</string>
+    <string name="measurement_type.22">Blutdruck</string>
+    <string name="measurement_type.23">Blutdruck</string>
+    <string name="measurement_type.24">Bewegung</string>
+    <string name="measurement_type.25">Bewegung</string>
+    <string name="measurement_type.26">Bewegung</string>
+    <string name="measurement_type.27">Position</string>
+    <string name="measurement_type.28">Position</string>
+    <string name="lumbar_training_calories_label">Kalorien</string>
+
 </resources>

@@ -12,12 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
@@ -67,8 +64,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             requireActivity().runOnUiThread(this::loadSupportedFeatures);
 
             connectDevice.setOnClickListener(v -> {
-                agent.enable();
                 model.addAgent(agent);
+                agent.enable();
 
                 saveFeaturesChosen();
 

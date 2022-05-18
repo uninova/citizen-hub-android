@@ -68,8 +68,8 @@
     <string name="fragment_about_text_view_versioning">version : 0.1.0</string>
     <string name="fragment_authentication_button_login">connexion</string>
     <string name="fragment_authentication_img_s4h_logo_image_content">img_s4h_logo</string>
-    <string name="fragment_authentication_login_requirement_text">CitizenHub vous demande de vous enregistrer et de vous connecter sur la plateforme Smart 4 health</string>
-    <string name="fragment_authentication_login_text_view">"Vos données de santé et de bien-être dans un seul endroit "</string>
+    <string name="fragment_authentication_login_requirement_text">CitizenHub vous demande de vous enregistrer et de vous connecter sur la plateforme Smart4Health</string>
+    <string name="fragment_authentication_login_text_view">"Vos données de santé et de bien-être dans un seul endroit"</string>
     <string name="fragment_authentication_orange_circular_shape">Forme circulaire orange</string>
     <string name="fragment_authentication_text_login">connexion</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
@@ -190,7 +190,7 @@
     <string name="fragment_summary_text_activity">Nombre de pas effectués</string>
     <string name="fragment_summary_text_view_calories_text">%1$.0f calories</string>
     <string name="fragment_summary_text_view_distance_text">1$.0f m</string>
-    <string name="fragment_summary_text_view_heart_rate_text">%1$.2f BPM</string>
+    <string name="fragment_summary_text_view_heart_rate_text">%1$.0f bpm</string>
     <string name="fragment_summary_text_view_no_activity">Votre fréquence cardiaque moyenne est  %1$.2f.</string>
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s non OK</string>
     <string name="fragment_summary_text_view_activity_text">%1$.0f pas</string>
@@ -227,7 +227,7 @@
     <string name="menu_fragment_device_list_search_title">Recherche</string>
     <string name="menu_fragment_device_list_title">Recherche</string>
     <string name="pdf_layout_background_logo">logo d\'arrière-plan</string>
-    <string name="pdf_report_average_HR_text">Fréquence cardiaque moyenne (bpm) : \\</string>
+    <string name="pdf_report_average_HR_text">Fréquence cardiaque moyenne:</string>
     <string name="slide_screen_skip">continuer</string>
     <string name="slide_screen_text_placeholder">espace réservé pour chaque mise en page</string>
     <string name="slide_screen_welcome_text">Bienvenue</string>
@@ -256,27 +256,27 @@
     <string name="fragment_report_detail_text_respiration_breathing_rate">Fréquence respiratoire</string>
     <string name="fragment_report_detail_title_respiration">Respiration</string>
     <string name="fragment_report_detail_respiration_breathing_rate_units_text">rpm</string>
-    <string name="pdf_report_average_SBP_text">SBP moyen: \\</string>
+    <string name="pdf_report_average_SBP_text">Pression artérielle systolique moyenne</string>
     <string name="fragment_settings_label">Paramètres</string>
     <string name="fragment_settings_string_default_work_days">Lundi, mardi, mercredi, jeudi, vendredi</string>
     <string name="fragment_device_configuration_add_calibration_completed_toast">"Calibrage terminé! "</string>
     <string name="fragment_device_configuration_add_loading_features_text">"Chargement des caractéristiques de l’appareil... "</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Calibrage du capteur</string>
     <string name="fragment_device_configuration_warning_calibration_text">ATTENTION: Avant d’appuyer sur Calibrer, assurez-vous que vous êtes assis et avez</string>
-    <string name="fragment_device_configuration_warning_calibration_text2">"\\\"Votre dos est droit.\\\" "</string>
+    <string name="fragment_device_configuration_warning_calibration_text2"> votre dos est droit.</string>
     <string name="fragment_device_configuration_dialog_option_calibrate">Calibrer</string>
     <string name="fragment_device_configuration_dialog_calibrating_message">En cours de calibrage,  veuillez attendre s\'il vous plaît…</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">"Calibrage terminé! "</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_title">Calibrage du capteur</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ATTENTION: Avant d’appuyer sur Calibrer, assurez-vous que vous êtes assis et avez</string>
     <string name="fragment_device_configuration_connect_option_text">connectez-vous</string>
-    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">"\\\"Votre dos est droit.\\\" "</string>
+    <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">votre dos est droit.</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrer</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">"En cours de calibrage, veuillez attendre s’il vous plaît... "</string>
     <string name="fragment_logout_toast_failure_text">"Echec de la déconnexion. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Fichier téléchargé avec succès. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Echec du téléchargement du fichier. "</string>
-    <string name="fragment_settings_current_work_days_text">"\\\"Journées de travail en cours:\\\" "</string>
+    <string name="fragment_settings_current_work_days_text">Journées de travail en cours: </string>
     <string name="fragment_settings_choose_work_days_text">Choisissez vos jours ouvrables</string>
     <string name="welcome_slide_view_pager_welcome_title">Bienvenue</string>
     <string name="welcome_slide_view_pager_thank_you_message">Merci d’avoir utilisé CitizenHub</string>
@@ -322,4 +322,68 @@
     <string name="fragment_settings_work_hours_start_message">Fixez une heure de début</string>
     <string name="fragment_settings_work_hours_end_message">Fixez une heure de fin</string>
     <string name="medex_fragment_dialog_textview">"Si vous n’êtes pas un utilisateur de medx ou si vous voulez masquer ce contenu, vous pouvez toujours le modifier dans les paramètres. "</string>
+    <string name="login_fragment_login_text_view">En vous authentifiant, vous pourrez télécharger et garder une trace de vos rapports de santé.</string>
+    <string name="fragment_smart4health_account_log_in_title">Connexion</string>
+    <string name="fragment_authentication_skip_text">Vous pouvez sauter l’authentification et vous authentifier plus tard\n\n<b><i>Passer</i></b></string>
+    <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
+    <string name="fragment_device_add_name">Nom: </string>
+    <string name="fragment_device_add_address">Adresse: </string>
+    <string name="fragment_device_search_posture_sensor_name">Capteur de posture</string>
+    <string name="fragment_report_text_view_no_data_summary_nodevices">Vous ne semblez pas avoir des appareils connectés. Avez-vous vérifié la section Appareils dans le menu latéral?</string>
+    <string name="fragment_settings_work_days">Journées de travail</string>
+    <string name="fragment_summary_text_view_steps_text">%1$.0f pas</string>
+    <string name="fragment_summary_text_view_distance_walked_text">1$.0f m</string>
+    <string name="fragment_summary_text_view_calories_burned_text">%1$.0f calories</string>
+    <string name="report_detail_fragment_label">Activity Report</string>
+    <string name="accounts_fragment_label">Comptes</string>
+    <string name="open_source_licenses_fragment_label">Licences Open Source</string>
+
+    <!-- Model 2 -->
+    <string name="heart_rate_title">Fréquence cardiaque moyenne</string>
+
+    <string name="posture_title">Posture</string>
+    <string name="posture_correct_label">Correct</string>
+    <string name="posture_incorrect_label">Incorrecte</string>
+
+    <string name="activity_title">Activité</string>
+    <string name="activity_steps_label">Pas</string>
+    <string name="activity_steps_value">%1$d</string>
+    <string name="activity_distance_label">Distance</string>
+    <string name="activity_distance_value">%1$.0f m</string>
+    <string name="activity_calories_label">Calories</string>
+    <string name="activity_calories_value">%1$.0f kcal</string>
+
+    <string name="blood_pressure_title">Tension artérielle</string>
+    <string name="blood_pressure_diastolic_label">Diastolique</string>
+    <string name="blood_pressure_systolic_label">Systolique</string>
+
+    <string name="lumbar_training_title">Training der lumbalextension</string>
+    <string name="lumbar_training_score_label">Score</string>
+    <string name="lumbar_training_weight_label">Masse</string>
+    <string name="lumbar_training_repetitions_label">Répétitions</string>
+    <string name="lumbar_training_duration_label">Durée</string>
+
+    <string name="measurement_type.0">Inconnue</string>
+    <string name="measurement_type.1">Rythme cardiaque</string>
+    <string name="measurement_type.2">Activité</string>
+    <string name="measurement_type.3">Activité</string>
+    <string name="measurement_type.4">Activité</string>
+    <string name="measurement_type.5">Posture</string>
+    <string name="measurement_type.6">Posture</string>
+    <string name="measurement_type.7">Respiration</string>
+    <string name="measurement_type.8">Respiration</string>
+    <string name="measurement_type.9">Respiration</string>
+    <string name="measurement_type.11">Inconnue</string>
+    <string name="measurement_type.12">Inconnue</string>
+    <string name="measurement_type.16">Inconnue</string>
+    <string name="measurement_type.17">Pression artérielle</string>
+    <string name="measurement_type.21">Pression artérielle</string>
+    <string name="measurement_type.22">Pression artérielle</string>
+    <string name="measurement_type.23">Pression artérielle</string>
+    <string name="measurement_type.24">Mouvement</string>
+    <string name="measurement_type.25">Mouvement</string>
+    <string name="measurement_type.26">Mouvement</string>
+    <string name="measurement_type.27">Position</string>
+    <string name="measurement_type.28">Position</string>
+    <string name="lumbar_training_calories_label">Calories</string>
 </resources>

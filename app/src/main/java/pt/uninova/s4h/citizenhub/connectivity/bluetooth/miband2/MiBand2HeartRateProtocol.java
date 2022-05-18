@@ -6,7 +6,7 @@ import android.os.Looper;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -16,7 +16,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.DescriptorListener;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
 
@@ -39,7 +39,7 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
                 getConnection().writeCharacteristic(BluetoothAgent.UUID_SERVICE_HEART_RATE, BluetoothAgent.UUID_CHARACTERISTIC_HEART_RATE_CONTROL_POINT, new byte[]{0x15, 0x01, 0x01});
             } else if (value[0] == 0x15 && value[1] == 0x01 && value[2] == 0x01) {
                 getConnection().removeCharacteristicListener(this);
-                setState(ProtocolState.ENABLED);
+                setState(Protocol.STATE_ENABLED);
 
                 final Handler h = new Handler(Looper.getMainLooper());
 
@@ -48,7 +48,7 @@ public class MiBand2HeartRateProtocol extends BluetoothMeasuringProtocol {
                     public void run() {
                         getConnection().writeCharacteristic(BluetoothAgent.UUID_SERVICE_HEART_RATE, BluetoothAgent.UUID_CHARACTERISTIC_HEART_RATE_CONTROL_POINT, new byte[]{0x16});
 
-                        if (getState() == ProtocolState.ENABLED) {
+                        if (getState() == Protocol.STATE_ENABLED) {
                             h.postDelayed(this, 10000);
                         }
                     }

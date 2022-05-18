@@ -1,36 +1,25 @@
 package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.app.Application;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.Message;
-import android.view.View;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment;
-import pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragmentDirections;
-import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceViewModel extends AndroidViewModel {
 
@@ -146,7 +135,15 @@ public class DeviceViewModel extends AndroidViewModel {
         final Device device = getSelectedDevice().getValue();
         final Agent agent = agentOrchestrator.getAgent(device);
 
-        agent.disable();
+        if (agent != null) {
+            agent.disable();
+
+            if (agent instanceof BluetoothAgent) {
+                BluetoothAgent bluetoothAgent = (BluetoothAgent) agent;
+
+                bluetoothAgent.getConnection().close();
+            }
+        }
 
         agentOrchestrator.remove(device);
     }

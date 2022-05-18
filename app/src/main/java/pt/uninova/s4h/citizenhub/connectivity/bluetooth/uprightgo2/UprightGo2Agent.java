@@ -10,14 +10,14 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class UprightGo2Agent extends BluetoothAgent {
 
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
 
-    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            MeasurementKind.POSTURE
+    static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            Measurement.TYPE_POSTURE_CORRECT
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -30,16 +30,16 @@ public class UprightGo2Agent extends BluetoothAgent {
         super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
     }
 
-
     @Override
-    public Set<MeasurementKind> getSupportedMeasurements() {
+    public Set<Integer> getSupportedMeasurements() {
         return supportedMeasurementKinds;
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
         System.out.println("UprightGo2Agent.getMeasuringProtocol kind=" + kind);
-        if (kind == MeasurementKind.POSTURE) {
+
+        if (kind == Measurement.TYPE_POSTURE_CORRECT) {
             return new UprightGo2PostureProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 

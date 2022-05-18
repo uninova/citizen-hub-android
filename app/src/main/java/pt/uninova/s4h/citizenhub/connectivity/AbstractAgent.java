@@ -6,31 +6,30 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public abstract class AbstractAgent implements Agent {
 
     private final UUID id;
     private final Device source;
 
-    private AgentState state;
+    private int state;
 
     private final Set<UUID> supportedProtocolsIds;
-    private final Set<MeasurementKind> supportedMeasurements;
+    private final Set<Integer> supportedMeasurements;
 
     private final Map<UUID, Protocol> protocolMap;
-    private final Map<MeasurementKind, MeasuringProtocol> measurementMap;
+    private final Map<Integer, MeasuringProtocol> measurementMap;
 
-    private final Dispatcher<StateChangedMessage<AgentState, ? extends Agent>> stateChangedDispatcher;
+    private final Dispatcher<StateChangedMessage<Integer, ? extends Agent>> stateChangedDispatcher;
     private final Dispatcher<Sample> sampleDispatcher;
 
     private final Set<AgentListener> agentListenerSet;
 
-    protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<MeasurementKind> supportedMeasurements) {
+    protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements) {
         this.id = id;
         this.source = source;
 
@@ -57,30 +56,31 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public void addStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+    public void addStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer) {
         this.stateChangedDispatcher.addObserver(observer);
     }
 
     @Override
     public void disable() {
-        for (final MeasurementKind i : this.measurementMap.keySet()) {
+        for (final int i : this.measurementMap.keySet()) {
             disableMeasurement(i);
         }
 
         for (final Protocol i : this.protocolMap.values()) {
-            disableProtocol(i);
+            i.disable();
         }
 
-        setState(AgentState.DISABLED);
+        protocolMap.clear();
+
+        setState(Agent.AGENT_STATE_DISABLED);
     }
 
     @Override
-    public void disableMeasurement(MeasurementKind measurementKind) {
+    public void disableMeasurement(int measurementKind) {
         final MeasuringProtocol protocol = this.measurementMap.get(measurementKind);
 
         if (protocol != null) {
             this.measurementMap.remove(measurementKind);
-            protocol.clearSampleObservers();
             disableProtocol(protocol);
         }
 
@@ -102,19 +102,19 @@ public abstract class AbstractAgent implements Agent {
 
     @Override
     public void enable() {
-        setState(AgentState.ENABLED);
+        setState(Agent.AGENT_STATE_ENABLED);
     }
 
     @Override
-    public void enableMeasurement(MeasurementKind measurementKind) {
+    public void enableMeasurement(int measurementKind) {
         System.out.println("AbstractAgent.enableMeasurement measurementKind=" + measurementKind);
 
-        if (getState() != AgentState.ENABLED) {
-            this.addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+        if (getState() != Agent.AGENT_STATE_ENABLED) {
+            this.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
 
                 @Override
-                public void observe(StateChangedMessage<AgentState, ? extends Agent> message) {
-                    if (message.getNewState() == AgentState.ENABLED) {
+                public void observe(StateChangedMessage<Integer, ? extends Agent> message) {
+                    if (message.getNewState() == Agent.AGENT_STATE_ENABLED) {
                         AbstractAgent.this.enableMeasurement(measurementKind);
                         removeStateObserver(this);
                     }
@@ -158,7 +158,7 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public Set<MeasurementKind> getEnabledMeasurements() {
+    public Set<Integer> getEnabledMeasurements() {
         return measurementMap.keySet();
     }
 
@@ -182,7 +182,7 @@ public abstract class AbstractAgent implements Agent {
         }
     }
 
-    protected abstract MeasuringProtocol getMeasuringProtocol(MeasurementKind kind);
+    protected abstract MeasuringProtocol getMeasuringProtocol(int kind);
 
     protected Dispatcher<Sample> getSampleDispatcher() {
         return sampleDispatcher;
@@ -194,12 +194,12 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public AgentState getState() {
+    public int getState() {
         return state;
     }
 
     @Override
-    public Set<MeasurementKind> getSupportedMeasurements() {
+    public Set<Integer> getSupportedMeasurements() {
         return this.supportedMeasurements;
     }
 
@@ -225,13 +225,13 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public void removeStateObserver(Observer<StateChangedMessage<AgentState, ? extends Agent>> observer) {
+    public void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer) {
         this.stateChangedDispatcher.removeObserver(observer);
     }
 
-    protected void setState(AgentState value) {
+    protected void setState(int value) {
         if (state != value) {
-            final AgentState oldState = state;
+            final int oldState = state;
 
             state = value;
 
@@ -239,13 +239,13 @@ public abstract class AbstractAgent implements Agent {
         }
     }
 
-    protected void tellOnMeasurementDisabled(MeasurementKind measurementKind) {
+    protected void tellOnMeasurementDisabled(int measurementKind) {
         for (AgentListener i : agentListenerSet) {
             i.onMeasurementDisabled(this, measurementKind);
         }
     }
 
-    protected void tellOnMeasurementEnabled(MeasurementKind measurementKind) {
+    protected void tellOnMeasurementEnabled(int measurementKind) {
         for (AgentListener i : agentListenerSet) {
             i.onMeasurementEnabled(this, measurementKind);
         }

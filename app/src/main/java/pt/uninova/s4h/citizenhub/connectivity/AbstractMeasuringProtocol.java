@@ -3,8 +3,8 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public abstract class AbstractMeasuringProtocol extends AbstractProtocol implements MeasuringProtocol {
 

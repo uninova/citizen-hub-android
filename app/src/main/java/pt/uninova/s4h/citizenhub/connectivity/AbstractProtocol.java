@@ -3,28 +3,28 @@ package pt.uninova.s4h.citizenhub.connectivity;
 import java.io.Closeable;
 import java.util.UUID;
 
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public abstract class AbstractProtocol implements Closeable, Protocol {
 
     private final UUID id;
     private final Agent agent;
 
-    private final Dispatcher<StateChangedMessage<ProtocolState, ? extends Protocol>> stateChangedDispatcher;
+    private final Dispatcher<StateChangedMessage<Integer, ? extends Protocol>> stateChangedDispatcher;
 
-    private ProtocolState state;
+    private int state;
 
     protected AbstractProtocol(UUID id, Agent agent) {
         this.id = id;
         this.agent = agent;
 
         this.stateChangedDispatcher = new Dispatcher<>();
-        this.state = ProtocolState.DISABLED;
+        this.state = Protocol.STATE_DISABLED;
     }
 
     @Override
-    public void addStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer) {
+    public void addStateObserver(Observer<StateChangedMessage<Integer, ? extends Protocol>> observer) {
         this.stateChangedDispatcher.addObserver(observer);
     }
 
@@ -35,12 +35,12 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState( Protocol.STATE_DISABLED);
     }
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLED);
+        setState( Protocol.STATE_ENABLED);
     }
 
     @Override
@@ -53,18 +53,18 @@ public abstract class AbstractProtocol implements Closeable, Protocol {
     }
 
     @Override
-    public ProtocolState getState() {
+    public int getState() {
         return state;
     }
 
     @Override
-    public void removeStateObserver(Observer<StateChangedMessage<ProtocolState, ? extends Protocol>> observer) {
+    public void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Protocol>> observer) {
         this.stateChangedDispatcher.removeObserver(observer);
     }
 
-    protected void setState(ProtocolState value) {
+    protected void setState(int value) {
         if (state != value) {
-            final ProtocolState oldState = state;
+            final int oldState = state;
 
             state = value;
             stateChangedDispatcher.dispatch(new StateChangedMessage<>(value, oldState, this));

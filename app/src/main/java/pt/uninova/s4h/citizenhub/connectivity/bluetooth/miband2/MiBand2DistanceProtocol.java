@@ -5,24 +5,24 @@ import android.os.Looper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Date;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
-import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2.distance");
     final public static String name = MiBand2DistanceProtocol.class.getSimpleName();
+
     final public static UUID UUID_SERVICE = UUID.fromString("0000fee0-0000-1000-8000-00805f9b34fb");
     final private static UUID UUID_CHARACTERISTIC_STEPS = UUID.fromString("00000007-0000-3512-2118-0009af100700");
 
@@ -30,12 +30,10 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
     private Double lastDistance;
     private Double lastCalories;
 
-    private Class<?> agent;
-
     public MiBand2DistanceProtocol(BluetoothConnection connection, Dispatcher<Sample> sampleDispatcher, MiBand2Agent agent) {
         super(ID, connection, sampleDispatcher, agent);
 
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(UUID_SERVICE, UUID_CHARACTERISTIC_STEPS) {
             @Override
@@ -55,7 +53,6 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                     calories = steps * 0.04;
                 }
 
-                final Date now = new Date();
 
                 if (lastSteps != null) {
                     if (steps < lastSteps) {
@@ -63,13 +60,14 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
                         lastDistance = 0.0;
                         lastCalories = 0.0;
                     }
-
+                    /*
                     final Sample sample = new Sample(getAgent().getSource(),
-                            new StepCountMeasurement(steps - lastSteps),
-                            new DistanceMeasurement(distance - lastDistance),
+                            new StepsSnapshotMeasurement(steps - lastSteps),
+                            new DistanceSnapshotMeasurement(distance - lastDistance),
                             new CaloriesMeasurement(calories - lastCalories));
 
                     getSampleDispatcher().dispatch(sample);
+                     */
                 }
 
                 lastSteps = steps;
@@ -81,21 +79,21 @@ public class MiBand2DistanceProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
     }
 
     @Override
     public void enable() {
         final Handler h = new Handler(Looper.getMainLooper());
 
-        setState(ProtocolState.ENABLED);
+        setState(Protocol.STATE_ENABLED);
 
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
                 getConnection().readCharacteristic(UUID_SERVICE, UUID_CHARACTERISTIC_STEPS);
 
-                if (getState() == ProtocolState.ENABLED) {
+                if (getState() == Protocol.STATE_ENABLED) {
                     h.postDelayed(this, 10000);
                 }
             }

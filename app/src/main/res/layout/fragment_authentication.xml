@@ -1,133 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/authenticationFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/citizen_hub_logo_with_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="10"
+        android:contentDescription="@string/citizen_hub_logo_with_text"
+        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/authentication_fragment_login_text_view2"
+        style="@style/AppTheme.About.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/fragment_authentication_login_requirement_text"
+        android:textColor="@color/colorS4HDarkGreyVariant"
+        android:textSize="6pt" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
+
+    <Button
+        android:id="@+id/authentication_fragment_login_button"
+        style="@style/Widget.Citizen.Button"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/fragment_authentication_button_login" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/authentication_fragment_login_text_view"
+        style="@style/AppTheme.About.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/fragment_authentication_login_text_view"
+        android:textColor="@color/colorS4HDarkGreyVariant"
+        android:textSize="6pt" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/authentication_fragment_skip_login"
         style="@style/TextAppearance.AppCompat.Button"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="548dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:fontFamily="@font/neo_sans_pro_regular"
-        android:includeFontPadding="false"
         android:text="@string/fragment_authentication_skip_text"
         android:textAllCaps="false"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="10sp" />
 
-    <TextView
-        android:id="@+id/authentication_fragment_login_text_view"
-        style="@style/AppTheme.About.TextView"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="@string/fragment_authentication_login_text_view"
-        android:textColor="@color/colorS4HDarkGreyVariant"
-        android:textSize="6pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_fragment_login_button" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
 
-    <Button
-        android:id="@+id/authentication_fragment_login_button"
-        style="@style/Widget.Citizen.Button"
-        android:layout_width="70dp"
-        android:layout_marginTop="432dp"
-        android:background="@android:color/transparent"
-        android:includeFontPadding="false"
-        android:text="@string/fragment_authentication_button_login"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/authentication_fragment_login_text_view2"
-        style="@style/AppTheme.About.TextView"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:text="@string/fragment_authentication_login_requirement_text"
-        android:textColor="@color/colorS4HDarkGreyVariant"
-        android:textSize="6pt"
-        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/citizen_hub_logo_with_text"
-        android:layout_width="263dp"
-        android:layout_height="225dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="@string/citizen_hub_logo_with_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
-
-
-    <TextView
-        android:id="@+id/authentication_fragment_text_powered_by"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginEnd="307dp"
-        android:layout_marginBottom="4dp"
-        android:fontFamily="@font/primus_bold"
-        android:text="@string/fragment_authentication_text_powered_by"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="4.3pt"
-        app:layout_constraintBottom_toTopOf="@+id/authentication_fragment_img_s4h_logo_image_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
-        android:layout_width="281dp"
-        android:layout_height="61dp"
-        android:contentDescription="@string/fragment_authentication_img_s4h_logo_image_content"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934"
-        app:srcCompat="@drawable/img_s4h_logo_transparent_png" />
+        <TextView
+            android:id="@+id/authentication_fragment_text_powered_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/primus_bold"
+            android:text="@string/fragment_authentication_text_powered_by"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="8sp" />
 
-    <TextView
-        android:id="@+id/citizen_hub_text_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/primus_bold"
-        android:textColor="@color/colorS4HDarkBlue"
-        android:textSize="17pt"
-        app:layout_constraintEnd_toEndOf="@+id/authentication_fragment_login_text_view2"
-        app:layout_constraintStart_toStartOf="@+id/authentication_fragment_login_text_view2"
-        app:layout_constraintTop_toBottomOf="@+id/citizen_hub_logo_with_text" />
+        <ImageView
+            android:id="@+id/authentication_fragment_img_s4h_logo_image_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/fragment_authentication_img_s4h_logo_image_content"
+            app:srcCompat="@drawable/img_s4h_logo_transparent_png" />
+    </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/citizen_hub_logo_with_text"
-        app:layout_constraintGuide_begin="205dp"
-        app:layout_constraintStart_toStartOf="@+id/citizen_hub_logo_with_text" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
