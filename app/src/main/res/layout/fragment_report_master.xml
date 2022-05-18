@@ -10,10 +10,10 @@
         android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:contentDescription="@string/content_description_fragment_report_master_logo"
         android:scaleType="fitEnd"
         android:src="@drawable/ic_citizen_hub_logo_side_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/content_description_fragment_report_master_logo"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -36,15 +36,17 @@
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/fragment_report_calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="516dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_selectday"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        app:mcv_dateTextAppearance="@style/CalendarDateText"
+        app:mcv_headerTextAppearance="@style/CalendarHeaderText"
+        app:mcv_weekDayTextAppearance="@style/CalendarWeekDayText">
 
     </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
