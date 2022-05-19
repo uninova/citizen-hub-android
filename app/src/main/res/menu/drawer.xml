@@ -30,9 +30,8 @@
 
         <item
             android:id="@+id/smart4health_fragment"
-            android:icon="@drawable/ic_user_fragment"
+            android:icon="@drawable/ic_s4h_logo_simple_version_drawer"
             android:title="@string/drawer_smart4health_title" />
-
 
         <item
             android:id="@+id/accounts_fragment"
