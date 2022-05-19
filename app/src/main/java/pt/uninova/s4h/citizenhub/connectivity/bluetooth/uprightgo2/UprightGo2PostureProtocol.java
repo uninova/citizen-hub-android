@@ -8,19 +8,17 @@ import java.time.Instant;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
-import pt.uninova.s4h.citizenhub.data.BadPostureMeasurement;
-import pt.uninova.s4h.citizenhub.data.GoodPostureMeasurement;
-import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.PostureMeasurement;
+import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
@@ -82,11 +80,11 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> connectionStateObserver = value -> {
         if (value.getNewState() == BluetoothConnectionState.DISCONNECTED) {
-            setState(ProtocolState.SUSPENDED);
+            setState(Protocol.STATE_SUSPENDED);
             push(lastGoodPosture);
             reset();
         } else if (value.getNewState() == BluetoothConnectionState.READY && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
-            setState(ProtocolState.ENABLED);
+            setState(Protocol.STATE_ENABLED);
 
             if (selfUpdatingThread == null) {
                 startSelfUpdatingThread();
@@ -106,7 +104,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLING);
+        setState(Protocol.STATE_DISABLING);
 
         final BluetoothConnection connection = getConnection();
 
@@ -120,7 +118,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLING);
+        setState(Protocol.STATE_ENABLING);
 
         final BluetoothConnection connection = getConnection();
 
@@ -143,9 +141,9 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
             final Duration duration = Duration.between(lastTimestamp, now);
             final double seconds = duration.toNanos() * 0.000000001;
 
-            final Measurement<?> posture = lastGoodPosture ? new GoodPostureMeasurement(seconds) : new BadPostureMeasurement(seconds);
+            final int classification = lastGoodPosture ? PostureValue.CLASSIFICATION_CORRECT : PostureValue.CLASSIFICATION_INCORRECT;
 
-            final Sample sample = new Sample(getAgent().getSource(), posture);
+            final Sample sample = new Sample(getAgent().getSource(), new PostureMeasurement(new PostureValue(classification, seconds)));
 
             getSampleDispatcher().dispatch(sample);
         }
@@ -171,7 +169,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (UprightGo2PostureProtocol.this.getState() == ProtocolState.ENABLED) {
+                        if (UprightGo2PostureProtocol.this.getState() == Protocol.STATE_ENABLED) {
                             UprightGo2PostureProtocol.this.push(lastGoodPosture);
                             handler.postDelayed(this, selfUpdatingInterval);
                         } else {

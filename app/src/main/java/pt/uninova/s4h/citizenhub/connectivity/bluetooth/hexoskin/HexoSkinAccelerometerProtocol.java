@@ -6,15 +6,15 @@ import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkin
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.ActivityMeasurement;
 import pt.uninova.s4h.citizenhub.data.CadenceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
@@ -27,7 +27,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
     public HexoSkinAccelerometerProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, HexoSkinAgent agent) {
         super(ID, connection, dispatcher, agent);
-        setState(ProtocolState.DISABLED);
+        setState(STATE_DISABLED);
         lastStepCount = 0;
 
         connection.addCharacteristicListener(new BaseCharacteristicListener(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID) {
@@ -54,7 +54,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                         lastStepCount = 0;
                     }
 
-                    measurements[measurementIndex++] = new StepCountMeasurement(stepCount - lastStepCount);
+                    // measurements[measurementIndex++] = new StepsSnapshotMeasurement(stepCount - lastStepCount);
 
                     lastStepCount = stepCount;
                 }
@@ -81,14 +81,14 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
         getConnection().disableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
 
     }
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLED);
+        setState(Protocol.STATE_ENABLED);
         getConnection().enableNotifications(ACCELEROMETER_SERVICE_UUID, ACCELEROMETER_MEASUREMENT_CHARACTERISTIC_UUID);
     }
 }

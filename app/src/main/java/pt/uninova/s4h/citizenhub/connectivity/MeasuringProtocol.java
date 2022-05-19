@@ -1,7 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public interface MeasuringProtocol extends Protocol {
 

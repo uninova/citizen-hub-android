@@ -3,7 +3,7 @@ package pt.uninova.s4h.citizenhub.interoperability;
 import java.util.Collection;
 
 import okhttp3.Response;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public interface Uploader<T> {
 

@@ -8,17 +8,11 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 import pt.uninova.s4h.citizenhub.BuildConfig;
-import pt.uninova.s4h.citizenhub.interoperability.DailyPostureReport;
 import pt.uninova.s4h.citizenhub.interoperability.SmartBearClient;
-import pt.uninova.s4h.citizenhub.persistence.HourlyValue;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.SmartBearUploadDateRecord;
-import pt.uninova.s4h.citizenhub.persistence.SmartBearUploadDateRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.SmartBearUploadDateRepository;
 
 public class SmartBearUploadWorker extends Worker {
 
@@ -34,38 +28,39 @@ public class SmartBearUploadWorker extends Worker {
 
         if (enabled) {
             final int patientId = preferences.getInt("accounts.smartbear.id", -1);
-            final MeasurementRepository measurementRepository = new MeasurementRepository(getApplicationContext());
+            // TODO: FETCH POSTURE
+            //final MeasurementRepository measurementRepository = new MeasurementRepository(getApplicationContext());
             final SmartBearUploadDateRepository smartBearUploadDateRepository = new SmartBearUploadDateRepository(getApplicationContext());
 
             SmartBearClient client = new SmartBearClient(BuildConfig.SMART_BEAR_URL, BuildConfig.SMART_BEAR_API_KEY);
 
-            smartBearUploadDateRepository.obtainDaysWithData(MeasurementKind.POSTURE_CORRECT, value -> {
+            smartBearUploadDateRepository.obtainDaysWithData(value -> {
                 for (LocalDate i : value) {
                     if (i.compareTo(LocalDate.now()) < 0) {
-                        measurementRepository.obtainHourlySum(i, MeasurementKind.POSTURE_CORRECT, value1 -> {
-                            measurementRepository.obtainHourlySum(i, MeasurementKind.POSTURE_INCORRECT, value2 -> {
-                                int[] good = new int[24];
-                                int[] bad = new int[24];
-
-                                for (HourlyValue j : value1) {
-                                    good[j.getHour()] = j.getValue().intValue();
-                                }
-
-                                for (HourlyValue j : value2) {
-                                    bad[j.getHour()] = j.getValue().intValue();
-                                }
-
-                                System.out.println("SENDING " + i.toString());
-
-                                DailyPostureReport report = new DailyPostureReport(Integer.toString(patientId), Instant.ofEpochSecond(i.toEpochDay() * 86400), Instant.ofEpochSecond((i.toEpochDay() + 1) * 86400 - 1), good, bad);
-                                client.upload(report, value3 -> {
-                                    System.out.println(value3.toString());
-                                    if (value3.isSuccessful()) {
-                                        smartBearUploadDateRepository.add(new SmartBearUploadDateRecord(i));
-                                    }
-                                });
-                            });
-                        });
+//                        measurementRepository.obtainHourlySum(i, Measurement.TYPE_POSTURE_CORRECT, value1 -> {
+//                            measurementRepository.obtainHourlySum(i, Measurement.TYPE_POSTURE_INCORRECT, value2 -> {
+//                                int[] good = new int[24];
+//                                int[] bad = new int[24];
+//
+//                                for (HourlyValue j : value1) {
+//                                    good[j.getHour()] = j.getValue().intValue();
+//                                }
+//
+//                                for (HourlyValue j : value2) {
+//                                    bad[j.getHour()] = j.getValue().intValue();
+//                                }
+//
+//                                System.out.println("SENDING " + i.toString());
+//
+//                                DailyPostureReport report = new DailyPostureReport(Integer.toString(patientId), Instant.ofEpochSecond(i.toEpochDay() * 86400), Instant.ofEpochSecond((i.toEpochDay() + 1) * 86400 - 1), good, bad);
+//                                client.upload(report, value3 -> {
+//                                    System.out.println(value3.toString());
+//                                    if (value3.isSuccessful()) {
+//                                        smartBearUploadDateRepository.add(new SmartBearUploadDateRecord(i));
+//                                    }
+//                                });
+//                            });
+//                        });
                     }
                 }
 

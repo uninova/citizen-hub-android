@@ -8,28 +8,26 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.AgentState;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class MiBand2Agent extends BluetoothAgent {
 
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
 
-    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            MeasurementKind.HEART_RATE,
-            MeasurementKind.STEPS
+    static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            Measurement.TYPE_HEART_RATE,
+            Measurement.TYPE_STEPS_SNAPSHOT
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            MiBand2DistanceProtocol.ID,
-            MiBand2HeartRateProtocol.ID
+            MiBand2HeartRateProtocol.ID,
+            MiBand2StepsProtocol.ID
     )));
 
     public MiBand2Agent(BluetoothConnection connection) {
@@ -39,11 +37,11 @@ public class MiBand2Agent extends BluetoothAgent {
     private void authorize() {
         final MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), this);
 
-        auth.addStateObserver(new Observer<StateChangedMessage<ProtocolState, ? extends Protocol>>() {
+        auth.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Protocol>>() {
             @Override
-            public void observe(StateChangedMessage<ProtocolState, ? extends Protocol> value) {
-                if (value.getNewState() == ProtocolState.ENABLED) {
-                    MiBand2Agent.this.setState(AgentState.ENABLED);
+            public void observe(StateChangedMessage<Integer, ? extends Protocol> value) {
+                if (value.getNewState() == Protocol.STATE_ENABLED) {
+                    MiBand2Agent.this.setState(Agent.AGENT_STATE_ENABLED);
                     auth.removeStateObserver(this);
                 }
             }
@@ -56,10 +54,10 @@ public class MiBand2Agent extends BluetoothAgent {
     public void enable() {
         authorize();
 
-        addStateObserver(new Observer<StateChangedMessage<AgentState, ? extends Agent>>() {
+        addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
             @Override
-            public void observe(StateChangedMessage<AgentState, ? extends Agent> value) {
-                if (value.getNewState() == AgentState.ENABLED) {
+            public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+                if (value.getNewState() == AGENT_STATE_ENABLED) {
                     new SetTimeProtocol(getConnection(), MiBand2Agent.this).enable();
                     removeStateObserver(this);
                 }
@@ -68,17 +66,17 @@ public class MiBand2Agent extends BluetoothAgent {
     }
 
     @Override
-    public Set<MeasurementKind> getSupportedMeasurements() {
+    public Set<Integer> getSupportedMeasurements() {
         return supportedMeasurementKinds;
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
         switch (kind) {
-            case HEART_RATE:
+            case Measurement.TYPE_HEART_RATE:
                 return new MiBand2HeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
-            case STEPS:
-                return new MiBand2DistanceProtocol(this.getConnection(), getSampleDispatcher(), this);
+            case Measurement.TYPE_STEPS_SNAPSHOT:
+                return new MiBand2StepsProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;

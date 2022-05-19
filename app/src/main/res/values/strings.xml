@@ -97,6 +97,7 @@
     <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
     <string name="fragment_device_search_label">Device Search…</string>
+    <string name="fragment_device_connection_method_label">Connection Methods</string>
     <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
     <string name="fragment_device_search_location_open_settings_button">Open settings</string>
     <string name="fragment_device_search_location_warning_title">Citizen Hub can\'t scan for devices without location turned on</string>
@@ -408,7 +409,7 @@
 
     <string name="activity_title">Activity</string>
     <string name="activity_steps_label">Steps</string>
-    <string name="activity_steps_value">%1$.0f</string>
+    <string name="activity_steps_value">%1$d</string>
     <string name="activity_distance_label">Distance</string>
     <string name="activity_distance_value">%1$.0f m</string>
     <string name="activity_calories_label">Calories</string>

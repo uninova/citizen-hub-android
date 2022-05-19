@@ -15,19 +15,17 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScanner;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXTrainingProtocol;
-import pt.uninova.s4h.citizenhub.data.MedXTrainingValue;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.LumbarExtensionTrainingProtocol;
+import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
 
@@ -38,7 +36,7 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
     private void buildRecycleView(View view) throws SecurityException {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_searchList);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
+        final SampleRepository sampleRepository = new SampleRepository(requireActivity().getApplication());
 
         adapter = new DeviceListAdapter(item -> {
             final Device device = item.getDevice();
@@ -65,17 +63,14 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
                             agent.removeSampleObserver(this);
                             bluetoothConnection.close();
 
-                            final MedXTrainingValue val = (MedXTrainingValue) sample.getMeasurements()[0].getValue();
-                            int duration = (int) val.getDuration().toMillis() / 1000;
-
-                            lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingRecord(sample.getTimestamp(), duration, val.getScore(), val.getRepetitions(), val.getWeight(), val.getCalories()));
+                            sampleRepository.create(sample);
 
                             navigateToSummaryFragment();
                         }
                     });
 
                     agent.enable();
-                    agent.enableMeasurement(MeasurementKind.LUMBAR_EXTENSION_TRAINING);
+                    agent.enableMeasurement(Measurement.TYPE_LUMBAR_EXTENSION_TRAINING);
                 }
             });
 
@@ -94,10 +89,10 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
         scanner.start((address, name) -> {
-            final Device device = new Device(address, name == null ? address : name, ConnectionKind.BLUETOOTH);
+            final Device device = new Device(address, name == null ? address : name, Connection.CONNECTION_KIND_BLUETOOTH);
 
             adapter.addItem(new DeviceListItem(device, R.drawable.ic_devices_unpaired));
-        }, MedXTrainingProtocol.UUID_SERVICE);
+        }, LumbarExtensionTrainingProtocol.UUID_SERVICE);
     }
 
     @Override

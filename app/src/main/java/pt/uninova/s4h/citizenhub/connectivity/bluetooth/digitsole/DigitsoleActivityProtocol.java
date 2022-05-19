@@ -6,8 +6,9 @@ import android.os.CountDownTimer;
 import java.util.UUID;
 
 import androidx.core.content.ContextCompat;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -16,9 +17,10 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.StepCountMeasurement;
-import pt.uninova.util.messaging.Dispatcher;
-import pt.uninova.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
@@ -34,6 +36,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE) {
         private boolean once0x02 = false;
+
         @Override
         public void onWrite(byte[] value) {
             switch (value[0]) {
@@ -50,7 +53,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
                     break;
                 case 0x01:
                     once0x02 = false;
-                    setState(ProtocolState.ENABLED);
+                    setState(Protocol.STATE_ENABLED);
                     break;
             }
         }
@@ -60,7 +63,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         @Override
         public void onChange(byte[] value) {
             int steps = value[4] & 0xff;
-            final Sample sample = new Sample(getAgent().getSource(), new StepCountMeasurement(steps));
+            final Sample sample = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps));
             getSampleDispatcher().dispatch(sample);
             lastTime = System.currentTimeMillis();
         }
@@ -93,8 +96,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     public void enable() {
         long currentTime = System.currentTimeMillis();
         //Last segment is recent, restarting timer...
-        if(currentTime-lastTime < (miliForTimer))
-        {
+        if (currentTime - lastTime < (miliForTimer)) {
             runTimer();
             return;
         }
@@ -107,12 +109,14 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x00});
     }
 
-    private void runTimer(){
-        ContextCompat.getMainExecutor(context).execute(()  -> {
+    private void runTimer() {
+        ContextCompat.getMainExecutor(context).execute(() -> {
             //set Countdown
             new CountDownTimer(miliForTimer, 1000) {
                 @Override
-                public void onTick(long millisecondsUntilDone) {}
+                public void onTick(long millisecondsUntilDone) {
+                }
+
                 @Override
                 public void onFinish() {
                     enable();

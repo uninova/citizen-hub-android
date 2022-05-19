@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
@@ -24,12 +24,12 @@ public class SetTimeProtocol extends BluetoothProtocol {
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLING);
+        setState(Protocol.STATE_ENABLING);
 
         getConnection().addCharacteristicListener(new BaseCharacteristicListener(BluetoothAgent.UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_1, BluetoothAgent.UUID_CHARACTERISTIC_CURRENT_TIME) {
             @Override
             public void onWrite(byte[] value) {
-                setState(ProtocolState.COMPLETED);
+                setState(Protocol.STATE_COMPLETED);
 
                 getConnection().removeCharacteristicListener(this);
             }

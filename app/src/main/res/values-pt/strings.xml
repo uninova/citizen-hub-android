@@ -375,7 +375,7 @@
 
     <string name="activity_title">Atividade</string>
     <string name="activity_steps_label">Passos</string>
-    <string name="activity_steps_value">%1$.0f</string>
+    <string name="activity_steps_value">%1$d</string>
     <string name="activity_distance_label">Distância</string>
     <string name="activity_distance_value">%1$.0f m</string>
     <string name="activity_calories_label">Calorias</string>

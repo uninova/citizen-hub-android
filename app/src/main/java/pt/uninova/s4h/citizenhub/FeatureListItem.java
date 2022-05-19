@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 public class FeatureListItem {
 

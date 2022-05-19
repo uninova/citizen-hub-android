@@ -13,7 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseDescriptorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -90,14 +90,14 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
                         e.printStackTrace();
                     }
                 } else if (value[0] == 0x10 && value[1] == 0x03 && value[2] == 0x01) {
-                    setState(ProtocolState.ENABLED);
+                    setState(Protocol.STATE_ENABLED);
                 }
             }
         });
 
         connection.addConnectionStateChangeListener(value -> {
             if (value.getNewState() == BluetoothConnectionState.CONNECTED && value.getOldState() == BluetoothConnectionState.DISCONNECTED) {
-                if (getState() == ProtocolState.ENABLED) {
+                if (getState() == Protocol.STATE_ENABLED) {
                     enable();
                 }
             }
@@ -106,7 +106,7 @@ public class MiBand2AuthenticationProtocol extends BluetoothProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
     }
 
     @Override

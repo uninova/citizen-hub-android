@@ -27,10 +27,10 @@ import care.data4life.fhir.r4.model.DocumentReference;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
 import care.data4life.sdk.lang.D4LException;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRecord;
-import pt.uninova.s4h.citizenhub.persistence.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementAggregate;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.MeasurementAggregate;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 
 public class ReportDetailFragment extends Fragment {
@@ -39,7 +39,7 @@ public class ReportDetailFragment extends Fragment {
     private TextView infoTextView_year, infoTextView_day, getInfoTextView_noData;
     private TextView heartRateAvg, heartRateMax, heartRateMin, distanceTotal, caloriesTotal, stepsTotal, okPostureTotal, notOkPostureTotal,
             lumbarRepetitions, lumbarTrainingLength, lumbarScore, lumbarWeight, respirationRate, bloodPressureSBPavg, bloodPressureDBPavg, bloodPressureMeanAPavg;
-    private LumbarExtensionTrainingRecord lumbarExtensionTrainingRecord;
+    private LumbarExtensionTrainingMeasurementRecord lumbarExtensionTrainingMeasurementRecord;
     private Group heartRateGroup, activityGroup, postureGroup, lumbarExtensionTrainingGroup, respirationGroup, bloodPressureGroup;
 
 
@@ -136,20 +136,17 @@ public class ReportDetailFragment extends Fragment {
         return result.equals("") ? "0s" : result;
     }
 
-    private void onSummaryWorkTimeChanged(Map<MeasurementKind, MeasurementAggregate> value) {
-        final MeasurementAggregate caloriesWorkTime = value.get(MeasurementKind.CALORIES);
-        final MeasurementAggregate distanceWorkTime = value.get(MeasurementKind.DISTANCE);
-        final MeasurementAggregate heartRateWorkTime = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPostureWorkTime = value.get(MeasurementKind.POSTURE_INCORRECT);
-        final MeasurementAggregate goodPostureWorkTime = value.get(MeasurementKind.POSTURE_CORRECT);
-        final MeasurementAggregate stepsWorkTime = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
-        final MeasurementAggregate bloodPressureDBPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
-        final MeasurementAggregate bloodPressureMeanAPWorkTime = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
-        final MeasurementAggregate respirationWorkTime = value.get(MeasurementKind.RESPIRATION_RATE);
+    private void onSummaryWorkTimeChanged(Map<Integer, MeasurementAggregate> value) {
+        final MeasurementAggregate caloriesWorkTime = value.get(Measurement.TYPE_CALORIES_SNAPSHOT);
+        final MeasurementAggregate distanceWorkTime = value.get(Measurement.TYPE_DISTANCE_SNAPSHOT);
+        final MeasurementAggregate heartRateWorkTime = value.get(Measurement.TYPE_HEART_RATE);
+        final MeasurementAggregate badPostureWorkTime = value.get(Measurement.TYPE_POSTURE_INCORRECT);
+        final MeasurementAggregate goodPostureWorkTime = value.get(Measurement.TYPE_POSTURE_CORRECT);
+        final MeasurementAggregate stepsWorkTime = value.get(Measurement.TYPE_STEPS_SNAPSHOT);
+        final MeasurementAggregate respirationWorkTime = value.get(Measurement.TYPE_RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-                    final int titleResId = (caloriesWorkTime == null || distanceWorkTime == null || heartRateWorkTime == null || badPostureWorkTime == null || goodPostureWorkTime == null || stepsWorkTime == null || respirationWorkTime == null || (bloodPressureSBPWorkTime == null && bloodPressureDBPWorkTime == null && bloodPressureMeanAPWorkTime == null)
+                    final int titleResId = (caloriesWorkTime == null || distanceWorkTime == null || heartRateWorkTime == null || badPostureWorkTime == null || goodPostureWorkTime == null || stepsWorkTime == null || respirationWorkTime == null
                             ? R.string.fragment_report_text_view_title_no_data
                             : R.string.fragment_report_text_view_title);
 
@@ -201,20 +198,17 @@ public class ReportDetailFragment extends Fragment {
         );
     }
 
-    private void onSummaryChanged(Map<MeasurementKind, MeasurementAggregate> value) {
-        final MeasurementAggregate calories = value.get(MeasurementKind.CALORIES);
-        final MeasurementAggregate distance = value.get(MeasurementKind.DISTANCE);
-        final MeasurementAggregate heartRate = value.get(MeasurementKind.HEART_RATE);
-        final MeasurementAggregate badPosture = value.get(MeasurementKind.POSTURE_INCORRECT);
-        final MeasurementAggregate goodPosture = value.get(MeasurementKind.POSTURE_CORRECT);
-        final MeasurementAggregate steps = value.get(MeasurementKind.STEPS);
-        final MeasurementAggregate bloodPressureSBP = value.get(MeasurementKind.BLOOD_PRESSURE_SYSTOLIC);
-        final MeasurementAggregate bloodPressureDBP = value.get(MeasurementKind.BLOOD_PRESSURE_DIASTOLIC);
-        final MeasurementAggregate bloodPressureMeanAP = value.get(MeasurementKind.BLOOD_PRESSURE_MEAN_ARTERIAL_PRESSURE);
-        final MeasurementAggregate respiration = value.get(MeasurementKind.RESPIRATION_RATE);
+    private void onSummaryChanged(Map<Integer, MeasurementAggregate> value) {
+        final MeasurementAggregate calories = value.get(Measurement.TYPE_CALORIES_SNAPSHOT);
+        final MeasurementAggregate distance = value.get(Measurement.TYPE_DISTANCE_SNAPSHOT);
+        final MeasurementAggregate heartRate = value.get(Measurement.TYPE_HEART_RATE);
+        final MeasurementAggregate badPosture = value.get(Measurement.TYPE_POSTURE_INCORRECT);
+        final MeasurementAggregate goodPosture = value.get(Measurement.TYPE_POSTURE_CORRECT);
+        final MeasurementAggregate steps = value.get(Measurement.TYPE_STEPS_SNAPSHOT);
+        final MeasurementAggregate respiration = value.get(Measurement.TYPE_RESPIRATION_RATE);
 
         requireActivity().runOnUiThread(() -> {
-            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTrainingRecord == null || respiration == null || (bloodPressureSBP == null && bloodPressureDBP == null && bloodPressureMeanAP == null)
+            final int titleResId = (calories == null || distance == null || heartRate == null || badPosture == null || goodPosture == null || steps == null || lumbarExtensionTrainingMeasurementRecord == null || respiration == null
                     ? R.string.fragment_report_text_view_title_no_data
                     : R.string.fragment_report_text_view_title);
 
@@ -269,7 +263,7 @@ public class ReportDetailFragment extends Fragment {
             infoTextView_day.setText(dayMonth);
             infoTextView_year.setText(year);
 
-            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTrainingRecord == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null && bloodPressureMeanAP == null) {
+            if (distance == null && steps == null && heartRate == null && calories == null && goodPosture == null && badPosture == null && lumbarExtensionTrainingMeasurementRecord == null && respiration == null && bloodPressureSBPavg == null && bloodPressureDBPavg == null) {
                 getInfoTextView_noData.setVisibility(View.VISIBLE);
             } else {
                 getInfoTextView_noData.setVisibility(View.GONE);
@@ -308,25 +302,14 @@ public class ReportDetailFragment extends Fragment {
                 respirationGroup.setVisibility(View.GONE);
             }
 
-            if (bloodPressureSBP != null && bloodPressureDBP != null && bloodPressureMeanAP != null) {
-                if (bloodPressureGroup != null) {
-                    bloodPressureGroup.setVisibility(View.VISIBLE);
-                }
-                bloodPressureSBPavg.setText(String.valueOf(bloodPressureSBP.getAverage()));
-                bloodPressureDBPavg.setText(String.valueOf(bloodPressureDBP.getAverage()));
-                //bloodPressureMeanAPavg.setText(String.valueOf(bloodPressureMeanAP.getAverage()));
-            } else if (bloodPressureGroup != null) {
-                bloodPressureGroup.setVisibility(View.GONE);
-            }
-
-            if (lumbarExtensionTrainingRecord != null) {
+            if (lumbarExtensionTrainingMeasurementRecord != null) {
                 if (lumbarExtensionTrainingGroup != null) {
                     lumbarExtensionTrainingGroup.setVisibility(View.VISIBLE);
                 }
-                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTrainingRecord.getDuration()));
-                lumbarScore.setText(String.valueOf(lumbarExtensionTrainingRecord.getScore()));
-                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTrainingRecord.getRepetitions()));
-                lumbarWeight.setText(String.valueOf(lumbarExtensionTrainingRecord.getWeight()));
+                lumbarTrainingLength.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getDuration()));
+                lumbarScore.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getScore()));
+                lumbarRepetitions.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getRepetitions()));
+                lumbarWeight.setText(String.valueOf(lumbarExtensionTrainingMeasurementRecord.getWeight()));
             } else {
                 lumbarExtensionTrainingGroup.setVisibility(View.GONE);
             }
@@ -396,7 +379,7 @@ public class ReportDetailFragment extends Fragment {
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
         try {
-            lumbarExtensionTrainingRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
+            lumbarExtensionTrainingMeasurementRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
