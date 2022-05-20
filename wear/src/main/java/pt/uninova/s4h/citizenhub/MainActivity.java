@@ -17,11 +17,16 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
+
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import persistence.MeasurementKind;
 
 import java.util.Date;
@@ -30,7 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 /*** Wear works with Bluetooth, ensure phone connectivity & permissions ***/
 
-public class MainActivity extends WearableActivity implements SensorEventListener {
+public class MainActivity extends FragmentActivity implements SensorEventListener {
 
     private String nodeIdString;
     private String citizenHubPath = "/citizenhub_";
@@ -44,6 +49,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
     private int counter = 0;
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
+    private FragmentStateAdapter pagerAdapter;
+    private ViewPager2 viewPager;
 
     private void sensorsManager() {
         mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -55,6 +62,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewPager = findViewById(R.id.viewPager);
+        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -124,6 +136,18 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 }
             }
         }.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
     }
 
     public void permissionRequest() {
