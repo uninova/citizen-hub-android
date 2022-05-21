@@ -63,14 +63,9 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewPager = findViewById(R.id.viewPager);
-        pagerAdapter = new ScreenSlidePagerAdapter(this);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setPageTransformer(new ZoomOutPageTransformer());
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        textSteps = findViewById(R.id.textSteps);
+        /*textSteps = findViewById(R.id.textSteps);
         textHeartRate = findViewById(R.id.textHearRate);
         textInfoPhone = findViewById(R.id.textInfo);
 
@@ -97,7 +92,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
             new SendMessage(dataPath, msg).start();
         };
 
-        enableListeners();
+        enableListeners();*/
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -105,6 +100,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
 
         permissionRequest();
         sensorsManager();
+
+        viewPager = findViewById(R.id.viewPager);
+        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
 
     private int checkedToCommunicationValue(boolean isChecked){
@@ -171,11 +171,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         switch (event.sensor.getType()) {
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
-                textHeartRate.setText(getString(R.string.show_data_heartrate, value));
+                //textHeartRate.setText(getString(R.string.show_data_heartrate, value));
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
-                textSteps.setText(getString(R.string.show_data_steps, (stepsTotal+= value)));
+                //textSteps.setText(getString(R.string.show_data_steps, (stepsTotal+= value)));
                 System.out.println(value + " " + now.getTime() + " " + ++counter);
                 break;
         }

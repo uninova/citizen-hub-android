@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="14dp"
             android:fontFamily="@font/primus_regular"
-            android:text="Recent Measurements"
+            android:text="Enable Measurements"
             android:textAlignment="center"
             android:textSize="16sp" />
 
@@ -34,16 +34,30 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <Switch
+                    android:id="@+id/switchHeartRate"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:showText="true"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/textHearRate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/primus_bold"
-                    android:text="Heart Rate: 100 bpm"
+                    android:text="Heart Rate"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -56,6 +70,20 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/switchSteps"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:showText="true"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -65,10 +93,10 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/primus_bold"
-                    android:text="Steps: 10000"
+                    android:text="    Steps    "
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -78,9 +106,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/primus_regular"
-            android:text="Settings >>"
+            android:text="Phone not connected"
             android:textAlignment="center"
             android:textSize="12sp" />
     </LinearLayout>
