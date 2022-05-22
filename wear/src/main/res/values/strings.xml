@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Citizen Hub</string>
-    <string name="show_data_steps">%1d Steps Taken</string>
-    <string name="show_data_heartrate">Heart Rate %1$.0f bpm</string>
+    <string name="show_data_steps">Steps: %1d</string>
+    <string name="show_data_heartrate">Heart Rate: %1$.0f bpm</string>
     <string name="show_data_phone_connected">Phone Connected</string>
     <string name="show_data_phone_not_connected">Phone Not Connected</string>
     <string name="show_data_protocols_no_data">Not Sending Data</string>

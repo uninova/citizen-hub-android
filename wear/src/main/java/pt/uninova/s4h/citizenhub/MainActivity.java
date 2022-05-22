@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +12,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.wearable.activity.WearableActivity;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -37,11 +40,11 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends FragmentActivity implements SensorEventListener {
 
-    private String nodeIdString;
+    public static String nodeIdString;
     private String citizenHubPath = "/citizenhub_";
     private String configPath = "_config";
-    private int stepsTotal = 0;
-    private double heartRate = 0;
+    public static int stepsTotal = 0;
+    public static double heartRate = 0;
     private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
     private Switch switchHeartRate, switchSteps;
     private SensorManager mSensorManager;
@@ -51,6 +54,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
     private FragmentStateAdapter pagerAdapter;
     private ViewPager2 viewPager;
+    static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
+    static MutableLiveData<String> listenSteps = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
 
     private void sensorsManager() {
         mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -65,35 +73,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        /*textSteps = findViewById(R.id.textSteps);
-        textHeartRate = findViewById(R.id.textHearRate);
-        textInfoPhone = findViewById(R.id.textInfo);
-
-        textSteps.setText(getString(R.string.show_data_steps, stepsTotal));
-        textHeartRate.setText(getString(R.string.show_data_heartrate, heartRate));
-        textInfoPhone.setText(getString(R.string.show_data_phone_not_connected));
-
-        switchHeartRate = findViewById(R.id.switchHeartRate);
-        switchSteps = findViewById(R.id.switchSteps);
-
-        heartRateListener = (compoundButton, isChecked) -> {
-            Date now = new Date();
-            MeasurementKind kind = MeasurementKind.HEART_RATE;
-            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
-            String dataPath = citizenHubPath + nodeIdString;
-            new SendMessage(dataPath, msg).start();
-        };
-
-        stepsListener = (compoundButton, isChecked) -> {
-            Date now = new Date();
-            MeasurementKind kind = MeasurementKind.STEPS;
-            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
-            String dataPath = citizenHubPath + nodeIdString;
-            new SendMessage(dataPath, msg).start();
-        };
-
-        enableListeners();*/
-
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, newFilter);
@@ -105,13 +84,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
-    }
-
-    private int checkedToCommunicationValue(boolean isChecked){
-        if (isChecked)
-            return 1001;
-        else
-            return 1000;
     }
 
     @Override
@@ -171,11 +143,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         switch (event.sensor.getType()) {
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
-                //textHeartRate.setText(getString(R.string.show_data_heartrate, value));
+                listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
-                //textSteps.setText(getString(R.string.show_data_steps, (stepsTotal+= value)));
+                listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
                 System.out.println(value + " " + now.getTime() + " " + ++counter);
                 break;
         }
@@ -191,61 +163,14 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("WearOSHeartRateProtocol")){
-                wearOSHeartRateProtocol = Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol"));
+                protocolHeartRate.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
             }
             if (intent.hasExtra("WearOSStepsProtocol")){
-                wearOSStepsProtocol = Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol"));
+                protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
             }
             if (intent.hasExtra("WearOSAgent")){
-                wearOSAgent = Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol"));
+                protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
             }
-            setScreenInfoText();
-        }
-    }
-
-    private void removeListeners(){
-        switchHeartRate.setOnCheckedChangeListener(null);
-        switchSteps.setOnCheckedChangeListener(null);
-    }
-
-    private void enableListeners(){
-        switchHeartRate.setOnCheckedChangeListener(heartRateListener);
-        switchSteps.setOnCheckedChangeListener(stepsListener);
-    }
-
-    private void setScreenInfoText(){
-        if (wearOSAgent)
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-        else
-            textInfoPhone.setText(R.string.show_data_phone_not_connected);
-        if (wearOSStepsProtocol && wearOSHeartRateProtocol) {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            removeListeners();
-            switchHeartRate.setChecked(true);
-            switchSteps.setChecked(true);
-            enableListeners();
-        }
-        else if (wearOSHeartRateProtocol)
-        {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            removeListeners();
-            switchHeartRate.setChecked(true);
-            switchSteps.setChecked(false);
-            enableListeners();
-        }
-        else if (wearOSStepsProtocol)
-        {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            removeListeners();
-            switchHeartRate.setChecked(false);
-            switchSteps.setChecked(true);
-            enableListeners();
-        }
-        else{
-            removeListeners();
-            switchHeartRate.setChecked(false);
-            switchSteps.setChecked(false);
-            enableListeners();
         }
     }
 

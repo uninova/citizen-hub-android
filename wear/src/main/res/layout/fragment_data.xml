@@ -5,6 +5,7 @@
     android:background="#000000">
 
     <LinearLayout
+        android:id="@+id/dataLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -35,7 +36,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textHearRate"
+                    android:id="@+id/textDataHearRate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -60,7 +61,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textSteps"
+                    android:id="@+id/textDataSteps"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
