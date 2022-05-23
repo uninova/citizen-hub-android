@@ -9,14 +9,14 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class KbzPostureAgent extends BluetoothAgent {
 
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.kbzposture");
 
-    static private final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.POSTURE_CORRECT
+    static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
+            Measurement.TYPE_POSTURE
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
@@ -28,8 +28,8 @@ public class KbzPostureAgent extends BluetoothAgent {
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.POSTURE_CORRECT) {
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
+        if (kind == Measurement.TYPE_POSTURE) {
             return new KbzBodyProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 

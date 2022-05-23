@@ -9,18 +9,18 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class MedXAgent extends BluetoothAgent {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.medx");
 
-    public static final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.LUMBAR_EXTENSION_TRAINING
+    public static final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
+            Measurement.TYPE_LUMBAR_EXTENSION_TRAINING
     )));
 
     private static final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MedXTrainingProtocol.ID
+            LumbarExtensionTrainingProtocol.ID
     )));
 
 
@@ -29,9 +29,9 @@ public class MedXAgent extends BluetoothAgent {
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.LUMBAR_EXTENSION_TRAINING) {
-            return new MedXTrainingProtocol(getConnection(), getSampleDispatcher(), this);
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
+        if (kind == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+            return new LumbarExtensionTrainingProtocol(getConnection(), getSampleDispatcher(), this);
         }
 
         return null;

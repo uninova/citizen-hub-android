@@ -347,7 +347,7 @@
 
     <string name="activity_title">Aktivität</string>
     <string name="activity_steps_label">Schritte gesamt</string>
-    <string name="activity_steps_value">%1$.0f</string>
+    <string name="activity_steps_value">%1$d</string>
     <string name="activity_distance_label">Distanz</string>
     <string name="activity_distance_value">%1$.0f m</string>
     <string name="activity_calories_label">Kalorien</string>
@@ -385,5 +385,6 @@
     <string name="measurement_type.26">Bewegung</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
+    <string name="lumbar_training_calories_label">Kalorien</string>
 
 </resources>

@@ -2,7 +2,8 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,9 +14,7 @@
             android:id="@+id/fragment_summary_text_view_no_data"
             style="@style/AppTheme.Summary.Item.TextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:text="@string/fragment_report_text_view_no_data_summary" />
+            android:layout_height="wrap_content" />
 
         <!-- Begin Card -->
         <androidx.cardview.widget.CardView
@@ -257,19 +256,6 @@
 
                             <TextView
                                 style="@style/SummaryCardInformationText.Label"
-                                android:text="@string/lumbar_training_score_label" />
-
-                            <TextView
-                                android:id="@+id/lumbarTrainingScoreValueTextView"
-                                style="@style/SummaryCardInformationText.Value"
-                                android:text="@string/lumbar_training_score_value" />
-
-                        </LinearLayout>
-
-                        <LinearLayout style="@style/SummaryCardInformationRow">
-
-                            <TextView
-                                style="@style/SummaryCardInformationText.Label"
                                 android:text="@string/lumbar_training_repetitions_label" />
 
                             <TextView
@@ -291,6 +277,19 @@
                                 android:text="@string/lumbar_training_weight_value" />
 
                         </LinearLayout>
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+                            <TextView
+                                style="@style/SummaryCardInformationText.Label"
+                                android:text="@string/lumbar_training_calories_label" />
+
+                            <TextView
+                                android:id="@+id/lumbarTrainingCaloriesValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/lumbar_training_calories_value" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

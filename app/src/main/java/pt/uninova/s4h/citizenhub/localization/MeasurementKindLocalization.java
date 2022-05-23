@@ -9,7 +9,7 @@ import java.util.Map;
 
 import pt.uninova.s4h.citizenhub.CitizenHubApplication;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.Measurement;
+
 
 public class MeasurementKindLocalization {
 

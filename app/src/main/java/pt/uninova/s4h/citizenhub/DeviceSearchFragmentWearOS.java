@@ -22,10 +22,9 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import pt.uninova.s4h.citizenhub.connectivity.Device;
-import pt.uninova.s4h.citizenhub.persistence.ConnectionKind;
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
-
 
 public class DeviceSearchFragmentWearOS extends Fragment {
 
@@ -118,7 +117,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
 
     private void addItem(String nodeName, String nodeId) {
         buildRecycleView(requireView());
-        Device device = new Device(nodeId, nodeName, ConnectionKind.WEAROS);
+        Device device = new Device(nodeId, nodeName, Connection.CONNECTION_KIND_WEAROS);
         adapter.addItem(new DeviceListItem(device, R.drawable.ic_watch_off));
     }
 

@@ -45,7 +45,7 @@ public class Float32 implements ByteSerializable {
     }
 
     public double toDouble() {
-        return ((b2 << 16) | (b3 << 8) | b4) * Math.pow(10, b1);
+        return (((b2 & 0xff) << 16) | ((b3 & 0xff) << 8) | (b4 & 0xff)) * Math.pow(10, (b1 & 0xff));
     }
 
     @Override

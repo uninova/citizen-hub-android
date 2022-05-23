@@ -11,14 +11,14 @@ import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DateTime;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class BloodPressureMonitorAgent extends BluetoothAgent {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.and.ua651ble");
 
-    private static final Set<MeasurementKind> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
-            MeasurementKind.BLOOD_PRESSURE
+    private static final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
+            Measurement.TYPE_BLOOD_PRESSURE
     )));
 
     private static final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList(
@@ -37,8 +37,8 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
     }
 
     @Override
-    protected MeasuringProtocol getMeasuringProtocol(MeasurementKind kind) {
-        if (kind == MeasurementKind.BLOOD_PRESSURE) {
+    protected MeasuringProtocol getMeasuringProtocol(int kind) {
+        if (kind == Measurement.TYPE_BLOOD_PRESSURE) {
             return new BloodPressureProtocol(getConnection(), getSampleDispatcher(), this);
         }
 

@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.Device;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
+
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
@@ -60,10 +60,10 @@ public class DeviceConfigurationFragment extends Fragment {
         final Agent agent = model.getSelectedDeviceAgent();
 
         if (agent != null) {
-            final Set<MeasurementKind> measurementKindSet = agent.getEnabledMeasurements();
+            final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
 
-            for (MeasurementKind i : agent.getSupportedMeasurements()) {
-                featureListItems.add(new FeatureListItem(i.getId(), measurementKindLocalization.localize(i.getId()), measurementKindSet.contains(i)));
+            for (int i : agent.getSupportedMeasurements()) {
+                featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
             }
         }
 
@@ -91,7 +91,7 @@ public class DeviceConfigurationFragment extends Fragment {
         for (int i = 0; i < adapter.getCount(); i++) {
             final FeatureListItem item = (FeatureListItem) listViewFeatures.getAdapter().getItem(i);
 
-            MeasurementKind k = MeasurementKind.find(item.getFeatureId());
+            int k = item.getFeatureId();
 
             if (item.isActive()) {
                 if (!agent.getEnabledMeasurements().contains(k)) {
