@@ -8,17 +8,17 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.ProtocolState;
+import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
-import pt.uninova.util.messaging.Dispatcher;
+import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
 public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
-    final private static MeasurementKind channelName = MeasurementKind.HEART_RATE;
+    final private static int kind = Measurement.TYPE_HEART_RATE;
     final private static int wearProtocolDisable = 1000, wearProtocolEnable = 1001;
     final String TAG = "WearOSHeartRateProtocol";
     CitizenHubService service;
@@ -28,7 +28,7 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
         Log.d(TAG, "Entered");
         this.service = service;
 
-        connection.addChannelListener(new BaseChannelListener(channelName) {
+        connection.addChannelListener(new BaseChannelListener(kind) {
             @Override
             public void onChange(double value, Date timestamp) {
                 final int heartRate = (int) value;
@@ -38,11 +38,11 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
                     getSampleDispatcher().dispatch(sample);
                 }
                 else{
-                    Set<MeasurementKind> enabledMeasurements = getAgent().getEnabledMeasurements();
-                    if(value==wearProtocolDisable && enabledMeasurements.contains(MeasurementKind.HEART_RATE))
-                        getAgent().disableMeasurement(MeasurementKind.HEART_RATE);
-                    else if(value==wearProtocolEnable && !enabledMeasurements.contains(MeasurementKind.HEART_RATE))
-                        getAgent().enableMeasurement(MeasurementKind.HEART_RATE);
+                    Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
+                    if(value==wearProtocolDisable && enabledMeasurements.contains(Measurement.TYPE_HEART_RATE))
+                        getAgent().disableMeasurement(Measurement.TYPE_HEART_RATE);
+                    else if(value==wearProtocolEnable && !enabledMeasurements.contains(Measurement.TYPE_HEART_RATE))
+                        getAgent().enableMeasurement(Measurement.TYPE_HEART_RATE);
                 }
             }
         });
@@ -50,13 +50,13 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(ProtocolState.DISABLED);
+        setState(Protocol.STATE_DISABLED);
         service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol","false");
     }
 
     @Override
     public void enable() {
-        setState(ProtocolState.ENABLED);
+        setState(Protocol.STATE_ENABLED);
         service.getWearOSMessageService().sendMessage("WearOSHeartRateProtocol","true");
     }
 }

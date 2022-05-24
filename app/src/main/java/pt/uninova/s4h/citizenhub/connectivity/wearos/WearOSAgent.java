@@ -21,7 +21,7 @@ public class WearOSAgent extends AbstractAgent {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear");
 
     static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            Measurement.TYPE_ACTIVITY,
+            Measurement.TYPE_STEPS_SNAPSHOT,
             Measurement.TYPE_HEART_RATE
     )));
 
@@ -59,7 +59,7 @@ public class WearOSAgent extends AbstractAgent {
     @Override
     protected MeasuringProtocol getMeasuringProtocol(int kind) {
         switch (kind) {
-            case Measurement.TYPE_ACTIVITY:
+            case Measurement.TYPE_STEPS_SNAPSHOT:
                 return new WearOSStepsProtocol(this.connection, getSampleDispatcher(), this, service);
             case Measurement.TYPE_HEART_RATE:
                 return new WearOSHeartRateProtocol(this.connection, getSampleDispatcher(), this, service);

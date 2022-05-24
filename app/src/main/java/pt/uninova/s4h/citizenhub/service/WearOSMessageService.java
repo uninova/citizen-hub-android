@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
-import pt.uninova.s4h.citizenhub.persistence.MeasurementKind;
 
 
 public class WearOSMessageService extends FragmentActivity implements MessageClient.OnMessageReceivedListener {
@@ -90,7 +89,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
                 Date time = new Date(Long.parseLong(messageParsed[1]));
                 System.out.println("MeasurementValue: " + messageParsed[0] +
                         " | MeasurementTime: " + time +
-                        " | MeasurementKind: " + MeasurementKind.find(Integer.parseInt(messageParsed[2])) +
+                        " | MeasurementKind: " + Integer.parseInt(messageParsed[2]) +
                         " | from nodeID: " + messageEvent.getSourceNodeId() +
                         " | from path: " + messageEvent.getPath());
             }

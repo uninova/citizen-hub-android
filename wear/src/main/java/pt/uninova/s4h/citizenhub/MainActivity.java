@@ -139,19 +139,21 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         Date now = new Date();
         double value = event.values[0];
         MeasurementKind kind = MeasurementKind.UNKNOWN;
+        String msg = "";
 
         switch (event.sensor.getType()) {
+
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
                 listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
+                msg = value + "," + now.getTime() + "," + kind.getId();
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
                 listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
-                System.out.println(value + " " + now.getTime() + " " + ++counter);
+                msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
                 break;
         }
-        String msg = value + "," + now.getTime() + "," + kind.getId();
         String dataPath = citizenHubPath + nodeIdString;
         new SendMessage(dataPath, msg).start();
     }
