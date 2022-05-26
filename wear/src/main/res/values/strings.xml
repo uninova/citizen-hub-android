@@ -17,4 +17,14 @@
     <string name="show_data_protocols_heartrate">Sending: Heart Rate</string>
     <string name="show_data_protocols_steps">Sending: Steps</string>
     <string name="show_data_protocols_heartrate_steps">Sending: Heart Rate, Steps</string>
+    <string name="fragment_about_developed_by">Developed by</string>
+    <string name="fragment_about_visit_s4h">Visit smart4health.eu\n for more info</string>
+    <string name="fragment_data_title">Recent Measurements</string>
+    <string name="fragment_data_hr_placeholder">Heart Rate:</string>
+    <string name="fragment_data_steps_placeholder">Steps:</string>
+    <string name="fragment_data_next_page">Settings >></string>
+    <string name="fragment_greeting_next_page">Swipe Right >></string>
+    <string name="fragment_settings_title">Enable Measurements</string>
+    <string name="fragment_settings_hr">Heart Rate</string>
+    <string name="fragment_settings_steps">"    "Steps"    "</string>
 </resources>

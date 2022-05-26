@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +11,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -42,16 +36,10 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
 
     public static String nodeIdString;
     private String citizenHubPath = "/citizenhub_";
-    private String configPath = "_config";
     public static int stepsTotal = 0;
     public static double heartRate = 0;
-    private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
-    private Switch switchHeartRate, switchSteps;
     private SensorManager mSensorManager;
     private Sensor mStepSensor, mHeartSensor;
-    private Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
-    private int counter = 0;
-    private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
     private FragmentStateAdapter pagerAdapter;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
@@ -138,7 +126,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     public void onSensorChanged(SensorEvent event) {
         Date now = new Date();
         double value = event.values[0];
-        MeasurementKind kind = MeasurementKind.UNKNOWN;
+        MeasurementKind kind;
         String msg = "";
 
         switch (event.sensor.getType()) {

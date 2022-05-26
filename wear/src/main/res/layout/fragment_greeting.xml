@@ -33,6 +33,6 @@
             android:fontFamily="@font/primus_regular"
             android:gravity="center"
             android:paddingTop="10dp"
-            android:text="Swipe Right >>" />
+            android:text="@string/fragment_greeting_next_page" />
     </LinearLayout>
 </ScrollView>

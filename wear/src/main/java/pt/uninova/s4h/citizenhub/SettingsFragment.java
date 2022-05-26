@@ -13,15 +13,12 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
-import org.w3c.dom.Text;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import persistence.MeasurementKind;
 
 public class SettingsFragment extends Fragment {
@@ -29,7 +26,6 @@ public class SettingsFragment extends Fragment {
     private Switch switchHeartRate, switchSteps;
     private TextView textPhoneConnected;
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
-    private String nodeIdString;
     private String citizenHubPath = "/citizenhub_";
 
     @Override
@@ -41,44 +37,35 @@ public class SettingsFragment extends Fragment {
         switchSteps = view.findViewById(R.id.switchSteps);
         textPhoneConnected = view.findViewById(R.id.textInfo);
 
-        MainActivity.protocolPhoneConnected.observe((LifecycleOwner) view.getContext(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean)
-                    textPhoneConnected.setText(R.string.show_data_phone_connected);
-                else
-                    textPhoneConnected.setText(R.string.show_data_phone_not_connected);
-            }
+        MainActivity.protocolPhoneConnected.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if(aBoolean)
+                textPhoneConnected.setText(R.string.show_data_phone_connected);
+            else
+                textPhoneConnected.setText(R.string.show_data_phone_not_connected);
         });
 
-        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                removeListeners();
-                if(aBoolean) {
-                    textPhoneConnected.setText(R.string.show_data_phone_connected);
-                    switchSteps.setChecked(true);
-                }
-                else {
-                    switchSteps.setChecked(false);
-                }
-                enableListeners();
+        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            removeListeners();
+            if(aBoolean) {
+                textPhoneConnected.setText(R.string.show_data_phone_connected);
+                switchSteps.setChecked(true);
             }
+            else {
+                switchSteps.setChecked(false);
+            }
+            enableListeners();
         });
 
-        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                removeListeners();
-                if(aBoolean) {
-                    textPhoneConnected.setText(R.string.show_data_phone_connected);
-                    switchHeartRate.setChecked(true);
-                }
-                else {
-                    switchHeartRate.setChecked(false);
-                }
-                enableListeners();
+        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            removeListeners();
+            if(aBoolean) {
+                textPhoneConnected.setText(R.string.show_data_phone_connected);
+                switchHeartRate.setChecked(true);
             }
+            else {
+                switchHeartRate.setChecked(false);
+            }
+            enableListeners();
         });
 
         heartRateListener = (compoundButton, isChecked) -> {
@@ -98,7 +85,6 @@ public class SettingsFragment extends Fragment {
         };
 
         enableListeners();
-
 
         return view;
     }
@@ -132,7 +118,6 @@ public class SettingsFragment extends Fragment {
             try {
                 Task<Node> t = Wearable.getNodeClient(getContext()).getLocalNode();
                 Node n = Tasks.await(t);
-                System.out.println("Node associated: " + n.getId() + " Message: " + message);
                 List<Node> nodes = Tasks.await(nodeListTask);
                 for (Node node : nodes) {
                     Task<Integer> sendMessageTask =
@@ -148,6 +133,4 @@ public class SettingsFragment extends Fragment {
             }
         }
     }
-
-
 }
