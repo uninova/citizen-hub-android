@@ -34,7 +34,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="@string/fragment_authentication_login_requirement_text"
+        android:text="@string/login_fragment_login_text_view"
         android:textColor="@color/colorS4HDarkGreyVariant"
         android:textSize="6pt" />
 

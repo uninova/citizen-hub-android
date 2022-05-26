@@ -68,7 +68,7 @@
     <string name="fragment_authentication_button_login">login</string>
     <string name="fragment_authentication_img_s4h_logo_image_content">img_s4h_logo</string>
     <string name="fragment_authentication_login_requirement_text">CitizenHub requires you to register and login in the Smart4Health platform</string>
-    <string name="fragment_authentication_login_text_view">Your health and well-being data in one place</string>
+    <string name="fragment_authentication_login_text_view">Collect health and well-being data in a single app</string>
     <string name="fragment_authentication_orange_circular_shape">Orange circular Shape</string>
     <string name="fragment_authentication_text_login">login</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
@@ -376,9 +376,9 @@
         <item>6</item>
     </string-array>
     <string-array name="empty_array" />
-    <string name="login_fragment_login_text_view">By authenticating you will be able to upload and keep track of your health reports.</string>
+    <string name="login_fragment_login_text_view">You can use Citizen Hub to connect to the Smart4Health platform</string>
     <string name="fragment_smart4health_account_log_in_title">Login</string>
-    <string name="fragment_authentication_skip_text">You may skip authentication and authenticate later\n\n<b><i>Skip</i></b></string>
+    <string name="fragment_authentication_skip_text"><b><i>Skip</i></b></string>
     <string name="fragment_summary_text_view_blood_pressure_text">Systolic: %1$.1f mmHg Diastolic: %2$.1f:mmHg</string>
     <string name="fragment_about_email_type" translatable="false">plain/text</string>
     <string name="fragment_authentication_spannable_string_citizen" translatable="false">Citizen</string>
