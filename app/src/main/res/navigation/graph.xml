@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/device_connection_method_fragment"
         android:name="pt.uninova.s4h.citizenhub.MethodConnectionFragment"
-        android:label="@string/fragment_device_connection_method_label"
+        android:label="@string/fragment_device_list_label"
         tools:layout="@layout/fragment_device_list">
 
         <action
