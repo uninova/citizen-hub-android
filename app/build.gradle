@@ -60,7 +60,9 @@ android {
 
         buildConfigField("String", "SMART_BEAR_API_KEY", "\"${properties["smartBearApiKey"]}\"")
         buildConfigField("String", "SMART_BEAR_URL", "\"${properties["smartBearUrl"]}\"")
-        buildConfigField("String", "SMART4HEALTH_APP_URL\n", "\"${properties["smart4HealthAppUrl"]}\"")
+        buildConfigField("String", "SMART4HEALTH_APP_URL", "\"${properties["smart4HealthAppUrl"]}\"")
+
+        flavor.resValue "string", "smart4HealthAppUrl", "${properties["smart4HealthAppUrl"]}"
 
         if (flavor.name != "stable" && properties["skipAuth"] != null) {
             buildConfigField("Boolean", "SKIP_AUTH", properties["skipAuth"])
@@ -105,8 +107,6 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-
-
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
