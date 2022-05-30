@@ -34,7 +34,6 @@
                 android:fontFamily="@font/neosanspro"
                 android:maxLines="1"
                 android:text="@string/fragment_device_list_item_text_view_title"
-                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <ImageView
