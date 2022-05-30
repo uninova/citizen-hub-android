@@ -397,6 +397,8 @@
     <string name="open_source_licenses_fragment_label">Open Source Licenses</string>
 
     <!-- Model 2 -->
+    <string name="drawer_smart4health_title">Smart4Health Platform</string>
+
     <string name="heart_rate_title">Average heart rate</string>
     <string name="heart_rate_value" translatable="false">%1$.0f bpm</string>
 
@@ -454,8 +456,6 @@
     <string name="measurement_type.26">Motion</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
-    <string name="drawer_smart4health_title"> Smart4Health Platform</string>
-    <string name="smart4health_url">http://app.smart4health.eu</string>
 
 </resources>
 
