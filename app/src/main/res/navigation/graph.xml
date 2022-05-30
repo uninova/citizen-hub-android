@@ -153,7 +153,7 @@
     <activity
         android:id="@+id/smart4health_fragment"
         app:action="android.intent.action.VIEW"
-        app:data="@string/smart4health_url"/>
+        app:data="@string/smart4HealthAppUrl" />
 
     <fragment
         android:id="@+id/accounts_fragment"
