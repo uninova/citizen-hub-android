@@ -8,7 +8,7 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.FeatureDao;
-import pt.uninova.s4h.citizenhub.persistence.entity.Feature;
+import pt.uninova.s4h.citizenhub.persistence.entity.DeviceEnabledMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class FeatureRepository {
@@ -19,9 +19,9 @@ public class FeatureRepository {
         featureDao = citizenHubDatabase.featureDao();
     }
 
-    public void add(Feature feature) {
+    public void add(DeviceEnabledMeasurement deviceEnabledMeasurement) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.insert(new Feature(feature.getDevice_address(), feature.getKind()));
+            featureDao.insert(new DeviceEnabledMeasurement(deviceEnabledMeasurement.getDevice_address(), deviceEnabledMeasurement.getKind()));
         });
     }
 
@@ -30,19 +30,19 @@ public class FeatureRepository {
     }
 
 
-    public LiveData<List<Feature>> getAllLive() {
+    public LiveData<List<DeviceEnabledMeasurement>> getAllLive() {
         return featureDao.getAllLive();
     }
 
-    public void remove(Feature feature) {
+    public void remove(DeviceEnabledMeasurement deviceEnabledMeasurement) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.delete(feature);
+            featureDao.delete(deviceEnabledMeasurement);
         });
     }
 
     public void remove(String device_address, Integer measurementKind) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.delete(new Feature(device_address, measurementKind));
+            featureDao.delete(new DeviceEnabledMeasurement(device_address, measurementKind));
         });
     }
 
@@ -52,9 +52,9 @@ public class FeatureRepository {
         });
     }
 
-    public void update(Feature feature) {
+    public void update(DeviceEnabledMeasurement deviceEnabledMeasurement) {
         CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.update(feature);
+            featureDao.update(deviceEnabledMeasurement);
         });
     }
 }
