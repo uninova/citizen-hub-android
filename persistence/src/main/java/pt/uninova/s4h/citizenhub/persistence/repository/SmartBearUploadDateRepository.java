@@ -20,18 +20,11 @@ public class SmartBearUploadDateRepository {
         dao = citizenHubDatabase.smartBearUploadDateDao();
     }
 
-    public void add(SmartBearUploadDateRecord record) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            dao.insert(record);
-        });
+    public void create(SmartBearUploadDateRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> dao.insert(record));
     }
 
-    public void obtainDaysWithData(Observer<List<LocalDate>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            final List<LocalDate> localDates = dao.selectDaysWithValues();
-
-            observer.observe(localDates);
-        });
+    public void readDaysWithData(Observer<List<LocalDate>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(dao.selectDaysWithValues()));
     }
-
 }

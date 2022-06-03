@@ -21,12 +21,11 @@ public class BloodPressureMeasurementRepository {
         bloodPressureMeasurementDao = citizenHubDatabase.bloodPressureMeasurementDao();
     }
 
-    public void add(BloodPressureMeasurementRecord record) {
+    public void create(BloodPressureMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> bloodPressureMeasurementDao.insert(record));
     }
 
-    public LiveData<List<BloodPressureMeasurementRecord>> get(LocalDate localDate) {
-        return bloodPressureMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<BloodPressureMeasurementRecord>> read(LocalDate localDate) {
+        return bloodPressureMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
-
 }

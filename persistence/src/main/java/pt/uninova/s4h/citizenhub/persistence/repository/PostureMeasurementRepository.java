@@ -26,11 +26,11 @@ public class PostureMeasurementRepository {
         CitizenHubDatabase.executorService().execute(() -> postureMeasurementDao.insert(record));
     }
 
-    public LiveData<List<PostureMeasurementRecord>> get(LocalDate localDate) {
-        return postureMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<PostureMeasurementRecord>> read(LocalDate localDate) {
+        return postureMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<List<PostureClassificationSum>> getClassificationSum(LocalDate localDate) {
-        return postureMeasurementDao.getSum(localDate, localDate.plusDays(1));
+    public LiveData<List<PostureClassificationSum>> readClassificationSum(LocalDate localDate) {
+        return postureMeasurementDao.selectClassificationSumLiveData(localDate, localDate.plusDays(1));
     }
 }

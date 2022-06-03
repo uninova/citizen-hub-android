@@ -7,54 +7,57 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
-import pt.uninova.s4h.citizenhub.persistence.dao.FeatureDao;
-import pt.uninova.s4h.citizenhub.persistence.entity.DeviceEnabledMeasurement;
+import pt.uninova.s4h.citizenhub.persistence.dao.EnabledMeasurementDao;
+import pt.uninova.s4h.citizenhub.persistence.entity.EnabledMeasurementRecord;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class FeatureRepository {
-    private final FeatureDao featureDao;
+public class EnabledMeasurementRepository {
 
-    public FeatureRepository(Context context) {
+    private final EnabledMeasurementDao enabledMeasurementDao;
+
+    public EnabledMeasurementRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
-        featureDao = citizenHubDatabase.featureDao();
+
+        enabledMeasurementDao = citizenHubDatabase.enabledMeasurementDao();
     }
 
-    public void add(DeviceEnabledMeasurement deviceEnabledMeasurement) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.insert(new DeviceEnabledMeasurement(deviceEnabledMeasurement.getDevice_address(), deviceEnabledMeasurement.getKind()));
-        });
+    public void create(EnabledMeasurementRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.insert(record));
     }
 
-    public void obtainKindsFromDevice(String address, Observer<List<Integer>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(featureDao.getKindsFromDevice(address)));
+    public void create(String deviceAddress, Integer measurementType) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.insert(deviceAddress, measurementType));
     }
 
-
-    public LiveData<List<DeviceEnabledMeasurement>> getAllLive() {
-        return featureDao.getAllLive();
+    public void delete(EnabledMeasurementRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.delete(record));
     }
 
-    public void remove(DeviceEnabledMeasurement deviceEnabledMeasurement) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.delete(deviceEnabledMeasurement);
-        });
+    public void delete(Long deviceId) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.delete(deviceId));
     }
 
-    public void remove(String device_address, Integer measurementKind) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.delete(new DeviceEnabledMeasurement(device_address, measurementKind));
-        });
+    public void delete(Long deviceId, Integer measurementType) {
+        delete(new EnabledMeasurementRecord(deviceId, measurementType));
     }
 
-    public void removeAll(String address) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.deleteAll(address);
-        });
+    public void delete(String deviceAddress, Integer measurementType) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.delete(deviceAddress, measurementType));
     }
 
-    public void update(DeviceEnabledMeasurement deviceEnabledMeasurement) {
-        CitizenHubDatabase.executorService().execute(() -> {
-            featureDao.update(deviceEnabledMeasurement);
-        });
+    public LiveData<List<EnabledMeasurementRecord>> read() {
+        return enabledMeasurementDao.selectLiveData();
+    }
+
+    public void read(Long deviceId, Observer<List<EnabledMeasurementRecord>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(enabledMeasurementDao.select(deviceId)));
+    }
+
+    public void read(String address, Observer<List<EnabledMeasurementRecord>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(enabledMeasurementDao.select(address)));
+    }
+
+    public void update(EnabledMeasurementRecord record) {
+        CitizenHubDatabase.executorService().execute(() -> enabledMeasurementDao.update(record));
     }
 }
