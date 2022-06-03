@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/report_master_fragment"
-        android:name="pt.uninova.s4h.citizenhub.ReportMasterFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.report.ReportMasterFragment"
         android:label="@string/fragment_report_label"
         tools:layout="@layout/fragment_report_master">
 
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/report_detail_fragment"
-        android:name="pt.uninova.s4h.citizenhub.ReportDetailFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.report.ReportDetailFragment"
         android:label="@string/fragment_report_label"
         tools:layout="@layout/fragment_report_detail" />
 
@@ -155,7 +155,7 @@
 
     </fragment>
 
-    <activity
+    <fragment
         android:id="@+id/settings_fragment"
         android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
         android:label="@string/fragment_settings_label"
