@@ -73,11 +73,11 @@ public class SummaryFragment extends ServiceFragment {
         bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-    private void onDailyDataExistenceUpdate(Boolean exists) {
+    private void onDailyDataExistenceUpdate(Integer count) {
         final View view = requireView();
         final TextView noDataTextView = view.findViewById(R.id.fragment_summary_text_view_no_data);
 
-        if (exists) {
+        if (count > 0) {
             noDataTextView.setVisibility(View.GONE);
         } else {
             AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
@@ -194,7 +194,6 @@ public class SummaryFragment extends ServiceFragment {
             activityCaloriesTextView.setVisibility(hasCalories ? View.VISIBLE : View.GONE);
             activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
         }
-
     }
 
     @Override
