@@ -387,4 +387,5 @@
     <string name="measurement_type.28">Position</string>
     <string name="lumbar_training_calories_label">Calories</string>
     <string name="drawer_smart4health_title">Plateforme Smart4Health</string>
+    <string name="measurement_type.29">Posture</string>
 </resources>
