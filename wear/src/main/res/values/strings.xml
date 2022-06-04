@@ -23,7 +23,7 @@
     <string name="fragment_data_hr_placeholder">Heart Rate:</string>
     <string name="fragment_data_steps_placeholder">Steps:</string>
     <string name="fragment_data_next_page">Settings >></string>
-    <string name="fragment_greeting_next_page">Swipe Right >></string>
+    <string name="fragment_greeting_next_page">Swipe Left</string>
     <string name="fragment_settings_title">Enable Measurements</string>
     <string name="fragment_settings_hr">Heart Rate</string>
     <string name="fragment_settings_steps">"    "Steps"    "</string>
