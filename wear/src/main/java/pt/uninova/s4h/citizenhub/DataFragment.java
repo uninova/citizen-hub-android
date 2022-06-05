@@ -22,13 +22,24 @@ public class DataFragment extends Fragment {
         textDataSteps = view.findViewById(R.id.textDataSteps);
         textHeartRate = view.findViewById(R.id.textDataHearRate);
 
-
         textDataSteps.setText(getString(R.string.show_data_steps, MainActivity.stepsTotal));
         textHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
 
-        MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> textHeartRate.setText(s));
+        //TODO: not tested, still missing disabling sensor
+        MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> {
+            if(Boolean.TRUE.equals(MainActivity.protocolHeartRate.getValue()))
+                textHeartRate.setText(s);
+            else
+                textHeartRate.setText(R.string.fragment_data_protocol_disabled);
+        });
 
-        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
+        //TODO: not tested, still missing disabling sensor
+        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> {
+            if(Boolean.TRUE.equals(MainActivity.protocolSteps.getValue()))
+                textDataSteps.setText(s);
+            else
+                textDataSteps.setText(R.string.fragment_data_protocol_disabled);
+        });
 
         return view;
     }

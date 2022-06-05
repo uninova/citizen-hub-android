@@ -26,7 +26,7 @@ public class SettingsFragment extends Fragment {
     private Switch switchHeartRate, switchSteps;
     private TextView textPhoneConnected;
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
-    private String citizenHubPath = "/citizenhub_";
+    private final String citizenHubPath = "/citizenhub_";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,16 +114,17 @@ public class SettingsFragment extends Fragment {
             message = msg;
         }
         public void run() {
-            Task<List<Node>> nodeListTask = Wearable.getNodeClient(getContext()).getConnectedNodes();
+            Task<List<Node>> nodeListTask = Wearable.getNodeClient(requireContext()).getConnectedNodes();
             try {
-                Task<Node> t = Wearable.getNodeClient(getContext()).getLocalNode();
+                Task<Node> t = Wearable.getNodeClient(requireContext()).getLocalNode();
                 Node n = Tasks.await(t);
                 List<Node> nodes = Tasks.await(nodeListTask);
                 for (Node node : nodes) {
                     Task<Integer> sendMessageTask =
-                            Wearable.getMessageClient(getActivity()).sendMessage(node.getId(), path, message.getBytes());
+                            Wearable.getMessageClient(requireActivity()).sendMessage(node.getId(), path, message.getBytes());
                     try {
                         Integer result = Tasks.await(sendMessageTask);
+                        System.out.println(result);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }

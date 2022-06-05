@@ -7,11 +7,11 @@ import com.google.android.gms.wearable.WearableListenerService;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class WearOSMessageService extends WearableListenerService {
-    String citizenHubPath = "/citizenhub_";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        if(messageEvent.getPath().equals(citizenHubPath+"WearOSHeartRateProtocol"))
+        String citizenHubPath = "/citizenhub_";
+        if(messageEvent.getPath().equals(citizenHubPath +"WearOSHeartRateProtocol"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
@@ -19,7 +19,7 @@ public class WearOSMessageService extends WearableListenerService {
             messageIntent.putExtra("WearOSHeartRateProtocol", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenHubPath+"WearOSStepsProtocol"))
+        if(messageEvent.getPath().equals(citizenHubPath +"WearOSStepsProtocol"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
@@ -27,7 +27,7 @@ public class WearOSMessageService extends WearableListenerService {
             messageIntent.putExtra("WearOSStepsProtocol", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenHubPath+"WearOSAgent"))
+        if(messageEvent.getPath().equals(citizenHubPath +"WearOSAgent"))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();

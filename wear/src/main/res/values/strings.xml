@@ -27,4 +27,5 @@
     <string name="fragment_settings_title">Enable Measurements</string>
     <string name="fragment_settings_hr">Heart Rate</string>
     <string name="fragment_settings_steps">"    "Steps"    "</string>
+    <string name="fragment_data_protocol_disabled">"Disabled"</string>
 </resources>

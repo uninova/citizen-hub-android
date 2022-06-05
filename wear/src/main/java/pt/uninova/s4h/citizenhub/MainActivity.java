@@ -30,17 +30,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/*** Wear works with Bluetooth, ensure phone connectivity & permissions ***/
-
 public class MainActivity extends FragmentActivity implements SensorEventListener {
 
     public static String nodeIdString;
-    private String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
     public static double heartRate = 0;
-    private SensorManager mSensorManager;
-    private Sensor mStepSensor, mHeartSensor;
-    private FragmentStateAdapter pagerAdapter;
+    private SensorManager sensorManager;
+    private Sensor stepSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
     static MutableLiveData<String> listenSteps = new MutableLiveData<>();
@@ -49,9 +45,9 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
 
     private void sensorsManager() {
-        mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
-        mHeartSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
+        heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
     }
 
     @Override
@@ -69,7 +65,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         sensorsManager();
 
         viewPager = findViewById(R.id.viewPager);
-        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
@@ -88,11 +84,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                     e.printStackTrace();
                 }
 
-                if (mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-                    mSensorManager.registerListener(MainActivity.this, mStepSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+                if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+                    sensorManager.registerListener(MainActivity.this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
                 }
-                if (mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
-                    mSensorManager.registerListener(MainActivity.this, mHeartSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+                if (sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
+                    sensorManager.registerListener(MainActivity.this, heartSensor, SensorManager.SENSOR_DELAY_NORMAL);
                 }
             }
         }.start();
@@ -101,11 +97,8 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
-            // Otherwise, select the previous step.
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
@@ -142,6 +135,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                 msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
                 break;
         }
+        String citizenHubPath = "/citizenhub_";
         String dataPath = citizenHubPath + nodeIdString;
         new SendMessage(dataPath, msg).start();
     }
@@ -149,7 +143,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
-    public class Receiver extends BroadcastReceiver {
+    public static class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("WearOSHeartRateProtocol")){
@@ -183,6 +177,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                             Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
                     try {
                         Integer result = Tasks.await(sendMessageTask);
+                        System.out.println(result);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }
