@@ -90,6 +90,9 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                 if (sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
                     sensorManager.registerListener(MainActivity.this, heartSensor, SensorManager.SENSOR_DELAY_NORMAL);
                 }
+                //TODO: temporary
+                //to deactivate sensor (HR light should go out)
+                sensorManager.unregisterListener(MainActivity.this);
             }
         }.start();
     }
@@ -141,7 +144,8 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
 
     public static class Receiver extends BroadcastReceiver {
         @Override
