@@ -81,6 +81,14 @@
         tools:layout="@layout/fragment_device_search">
 
         <action
+            android:id="@+id/action_device_search_fragment_to_location_not_supported_fragment"
+            app:destination="@+id/fragment_location_not_supported" />
+
+        <action
+            android:id="@+id/action_device_search_fragment_to_location_disabled_fragment"
+            app:destination="@+id/fragment_location_disabled" />
+
+        <action
             android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
             app:destination="@+id/device_configuration_add_fragment" />
 
