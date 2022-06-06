@@ -82,11 +82,11 @@
 
         <action
             android:id="@+id/action_device_search_fragment_to_location_not_supported_fragment"
-            app:destination="@+id/fragment_location_not_supported" />
+            app:destination="@+id/location_not_supported_fragment" />
 
         <action
             android:id="@+id/action_device_search_fragment_to_location_disabled_fragment"
-            app:destination="@+id/fragment_location_disabled" />
+            app:destination="@+id/location_disabled_fragment" />
 
         <action
             android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"

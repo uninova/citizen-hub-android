@@ -105,4 +105,6 @@ public class DeviceSearchFragment extends BluetoothFragment {
             scanner = null;
         }
     }
+
+
 }
