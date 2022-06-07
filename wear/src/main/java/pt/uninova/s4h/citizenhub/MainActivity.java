@@ -9,12 +9,15 @@ import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
+import android.location.GnssAntennaInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +31,7 @@ import persistence.MeasurementKind;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends FragmentActivity implements SensorEventListener {
@@ -35,14 +39,15 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     public static String nodeIdString;
     public static int stepsTotal = 0;
     public static double heartRate = 0;
-    private SensorManager sensorManager;
-    private Sensor stepSensor, heartSensor;
+    public static SensorManager sensorManager;
+    public static Sensor stepSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
     static MutableLiveData<String> listenSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
+    public static SensorEventListener stepsListener, heartRateListener;
 
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -64,6 +69,62 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         permissionRequest();
         sensorsManager();
 
+        heartRateListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                Date now = new Date();
+                double value = event.values[0];
+                MeasurementKind kind;
+                String msg = "";
+
+                switch (event.sensor.getType()) {
+                    case Sensor.TYPE_HEART_RATE:
+                        kind = MeasurementKind.HEART_RATE;
+                        listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
+                        msg = value + "," + now.getTime() + "," + kind.getId();
+                        break;
+                    case Sensor.TYPE_STEP_DETECTOR:
+                        kind = MeasurementKind.STEPS;
+                        listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
+                        msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
+                        break;
+                }
+                String citizenHubPath = "/citizenhub_";
+                String dataPath = citizenHubPath + nodeIdString;
+                new SendMessage(dataPath, msg).start();
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {}
+        };
+
+        stepsListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                Date now = new Date();
+                double value = event.values[0];
+                MeasurementKind kind;
+                String msg = "";
+
+                switch (event.sensor.getType()) {
+                    case Sensor.TYPE_HEART_RATE:
+                        kind = MeasurementKind.HEART_RATE;
+                        listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
+                        msg = value + "," + now.getTime() + "," + kind.getId();
+                        break;
+                    case Sensor.TYPE_STEP_DETECTOR:
+                        kind = MeasurementKind.STEPS;
+                        listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
+                        msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
+                        break;
+                }
+                String citizenHubPath = "/citizenhub_";
+                String dataPath = citizenHubPath + nodeIdString;
+                new SendMessage(dataPath, msg).start();
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {}
+        };
+
         viewPager = findViewById(R.id.viewPager);
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
@@ -73,7 +134,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
-
         new Thread() {
             @Override
             public void run() {
@@ -83,16 +143,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-                    sensorManager.registerListener(MainActivity.this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
-                }
-                if (sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
-                    sensorManager.registerListener(MainActivity.this, heartSensor, SensorManager.SENSOR_DELAY_NORMAL);
-                }
-                //TODO: temporary
-                //to deactivate sensor (HR light should go out)
-                sensorManager.unregisterListener(MainActivity.this);
             }
         }.start();
     }
@@ -181,7 +231,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                             Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
                     try {
                         Integer result = Tasks.await(sendMessageTask);
-                        System.out.println(result);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }

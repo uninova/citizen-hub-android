@@ -1,5 +1,8 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +52,12 @@ public class SettingsFragment extends Fragment {
             if(aBoolean) {
                 textPhoneConnected.setText(R.string.show_data_phone_connected);
                 switchSteps.setChecked(true);
+                if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null){
+                    MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepSensor,SensorManager.SENSOR_DELAY_NORMAL);
+                }
+                else{
+                    MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener);
+                }
             }
             else {
                 switchSteps.setChecked(false);
@@ -61,9 +70,15 @@ public class SettingsFragment extends Fragment {
             if(aBoolean) {
                 textPhoneConnected.setText(R.string.show_data_phone_connected);
                 switchHeartRate.setChecked(true);
+                if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
+                    MainActivity.sensorManager.registerListener(MainActivity.heartRateListener, MainActivity.heartSensor,SensorManager.SENSOR_DELAY_NORMAL);
+                }
             }
             else {
                 switchHeartRate.setChecked(false);
+                if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
+                    MainActivity.sensorManager.unregisterListener(MainActivity.heartRateListener, MainActivity.heartSensor);
+                }
             }
             enableListeners();
         });
@@ -124,7 +139,6 @@ public class SettingsFragment extends Fragment {
                             Wearable.getMessageClient(requireActivity()).sendMessage(node.getId(), path, message.getBytes());
                     try {
                         Integer result = Tasks.await(sendMessageTask);
-                        System.out.println(result);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }

@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 public class DataFragment extends Fragment {
 
-    public TextView textDataSteps, textHeartRate;
+    public TextView textDataSteps, textDataHeartRate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -20,26 +20,14 @@ public class DataFragment extends Fragment {
                 R.layout.fragment_data, container, false);
 
         textDataSteps = view.findViewById(R.id.textDataSteps);
-        textHeartRate = view.findViewById(R.id.textDataHearRate);
+        textDataHeartRate = view.findViewById(R.id.textDataHearRate);
 
         textDataSteps.setText(getString(R.string.show_data_steps, MainActivity.stepsTotal));
-        textHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
+        textDataHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
 
-        //TODO: not tested, still missing disabling sensor
-        MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> {
-            if(Boolean.TRUE.equals(MainActivity.protocolHeartRate.getValue()))
-                textHeartRate.setText(s);
-            else
-                textHeartRate.setText(R.string.fragment_data_protocol_disabled);
-        });
+        MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRate.setText(s));
 
-        //TODO: not tested, still missing disabling sensor
-        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> {
-            if(Boolean.TRUE.equals(MainActivity.protocolSteps.getValue()))
-                textDataSteps.setText(s);
-            else
-                textDataSteps.setText(R.string.fragment_data_protocol_disabled);
-        });
+        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
 
         return view;
     }

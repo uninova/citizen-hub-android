@@ -122,6 +122,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
                     if(connectionMap.containsKey(node.getId())) {
                         Task<Integer> sendMessageTask =
                                 Wearable.getMessageClient(context).sendMessage(nodeIdString, path, message.getBytes());
+                        System.out.println("NODEID é : " + nodeIdString);
                         try {
                             Integer result = Tasks.await(sendMessageTask);
                         } catch (ExecutionException | InterruptedException exception) {
@@ -160,6 +161,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
                     List<Node> nodes = Tasks.await(nodeTaskList);
                     for (Node node : nodes) {
                         nodeIdString = node.getId();
+                        System.out.println("NODEID é : " + nodeIdString);
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
