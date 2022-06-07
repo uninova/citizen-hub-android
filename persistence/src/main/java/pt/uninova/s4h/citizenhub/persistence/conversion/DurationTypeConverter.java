@@ -13,6 +13,9 @@ public class DurationTypeConverter {
 
     @TypeConverter
     public static Duration toDuration(Long millis) {
+        if (millis == null)
+            return null;
+
         return Duration.ofMillis(millis);
     }
 }
