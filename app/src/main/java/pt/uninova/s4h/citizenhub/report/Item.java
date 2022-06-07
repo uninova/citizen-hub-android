@@ -2,25 +2,22 @@ package pt.uninova.s4h.citizenhub.report;
 
 public class Item {
 
-    private LocalizedLabel label;
-    private final int value;
+    private final LocalizedString label;
+    private final LocalizedString value;
 
-    private Item(int value){
+    public Item(LocalizedString label, LocalizedString value){
+        this.label = label;
         this.value = value;
     }
 
     /***************************************
      * This section only has get functions *
      ***************************************/
-    public String getString(){
-        return getLabel().getLocalizedString();
-    }
-
-    public LocalizedLabel getLabel(){
+    public LocalizedString getLabel(){
         return label;
     }
 
-    public int getValue(){
+    public LocalizedString getValue(){
         return value;
     }
 

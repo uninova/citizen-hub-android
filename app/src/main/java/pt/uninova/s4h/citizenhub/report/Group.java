@@ -1,37 +1,36 @@
 package pt.uninova.s4h.citizenhub.report;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Group {
 
-    LocalizedLabel label;
-    List<Group> group;
-    List<Item> item;
+    private final LocalizedString label;
+    private final List<Group> groupList;
+    private final List<Item> itemList;
 
     /*
      *
      * */
-    public Group(){
-
-    }
-
-    public boolean fillInfo(){
-        return true;
+    public Group(LocalizedString label){
+        this.label = label;
+        this.groupList = new LinkedList<>();
+        this.itemList = new LinkedList<>();
     }
 
     /***************************************
-     * This section only has get functions *
+1     * This section only has get functions *
      ***************************************/
-    public LocalizedLabel getLocalizedLabel(){
+    public LocalizedString getLabel(){
         return label;
     }
 
-    public List<Group> getListGroups() {
-        return group;
+    public List<Group> getGroupList() {
+        return groupList;
     }
 
-    public List<Item> getListItems(){
-        return item;
+    public List<Item> getItemList(){
+        return itemList;
     }
 
 }

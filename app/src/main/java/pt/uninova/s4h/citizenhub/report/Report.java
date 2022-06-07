@@ -1,27 +1,25 @@
 package pt.uninova.s4h.citizenhub.report;
 
-import java.time.LocalDateTime;
+import android.content.Context;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.ReportUtil;
+import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 
 public class Report {
 
     private final String title;
-    private final LocalDateTime date;
-    private List<Group> dailyInfo;
+    private final LocalDate date;
+    private final List<Group> groups;
 
-    public Report(String title, LocalDateTime date){
+    public Report(String title, LocalDate date){
         this.title = title;
         this.date = date;
-    }
-
-    public boolean fillInfo(){
-        boolean infoFilled = false;
-        // fazer a query par obter os dados do dia
-        // ciclo para percorrer cada valor da query e adicionar aos grupos ou items
-        Group info = new Group();
-        infoFilled = info.fillInfo();
-        dailyInfo.add(info);
-        return infoFilled;
+        this.groups = new LinkedList<>();
     }
 
     /***************************************
@@ -31,12 +29,12 @@ public class Report {
         return title;
     }
 
-    public LocalDateTime getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
-    public List<Group> getDailyInfo() {
-        return dailyInfo;
+    public List<Group> getGroups() {
+        return groups;
     }
 
 }

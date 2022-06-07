@@ -1,10 +1,10 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class LabelTimestamp implements LocalizedLabel{
+public class StringTimestamp implements LocalizedString {
 
     private final String timestamp;
 
-    public LabelTimestamp(String timestamp){
+    public StringTimestamp(String timestamp){
         this.timestamp = timestamp;
     }
 

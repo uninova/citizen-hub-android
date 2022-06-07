@@ -1,11 +1,11 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringType implements LocalizedString {
+public class StringValue implements LocalizedString{
 
-    private final String type;
+    private final String value;
 
-    public StringType(String type){
-        this.type = type;
+    public StringValue (String value){
+        this.value = value;
     }
 
     /***************************************
@@ -13,7 +13,6 @@ public class StringType implements LocalizedString {
      ***************************************/
     @Override
     public String getLocalizedString() {
-        return type;
+        return value;
     }
-
 }
