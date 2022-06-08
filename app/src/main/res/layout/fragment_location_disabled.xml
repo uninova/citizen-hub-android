@@ -51,7 +51,7 @@
         style="@style/Widget.Citizen.Button"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:text="@string/fragment_location_disabled_return" />
+        android:text="@string/fragment_location_disabled_button_text" />
 
     <Space
         android:layout_width="match_parent"
