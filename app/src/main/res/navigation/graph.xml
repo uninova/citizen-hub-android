@@ -75,6 +75,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/location_not_supported_fragment"
+        android:name="pt.uninova.s4h.citizenhub.location.LocationNotSupportedFragment"
+        android:label="@string/fragment_location_not_supported_label"
+        tools:layout="@layout/fragment_location_not_supported"/>
+
+    <fragment
+        android:id="@+id/location_disabled_fragment"
+        android:name="pt.uninova.s4h.citizenhub.location.LocationDisabledFragment"
+        android:label="Location Disabled"
+        tools:layout="@layout/fragment_location_disabled"/>
+
+    <fragment
         android:id="@+id/device_search_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragment"
         android:label="@string/fragment_device_search_label"
