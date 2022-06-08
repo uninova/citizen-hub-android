@@ -1,0 +1,52 @@
+Com a aplicação Citizen Hub, damos-lhe a possibilidade de se conectar a diferentes dispositivos inteligentes, sensores, wearables e aplicativos para recolher dados relacionados com a saúde e com o bem-estar. A proteção dos seus dados pessoais é muito importante para nós. Este politica de privacidade descreve a forma como a aplicação Citizen Hub lida com seus dados pessoais. As secções 1 a 3 informam-no sobre os seus direitos legais e as secções 4 a 6 explicam como os seus dados pessoais são tratados quando se regista e utiliza a aplicação Citizen Hub. 
+
+
+1. Recolha e tratamento de dados pessoais
+
+1.1. A aplicação Citizen Hub só é armazenada no seu telemóvel pessoal e a sua utilização não implica qualquer recolha de dados pessoais. 
+
+1.2 Todos os dados recolhidos são armazenados apenas no seu telemóvel pessoal. Caso você decida transmitir e armazenar dados fora do seu telemóvel pessoal, você deve consultar os Termos de Uso e a polícia de privacidade desses sistemas externos. 
+
+1.3 Caso você solicite suporte por e-mail, necessitaremos do seu endereço de e-mail para lhe fornecer uma resposta. Apenas usaremos esta informação, bem como a data e a hora de seu contato, para processar o seu pedido. Os seus dados não serão transmitidos a terceiros, apenas serão utilizados internamente pelo departamento responsável pelo seu pedido. 
+
+
+2. Os seus direitos
+
+2.1 Você pode pedir, a qualquer momento, para aceder, retificar, apagar, restringir o processamento ou receber seus dados pessoais em formato portátil, bem como para se opor ao seu tratamento. 
+
+2.2 Pode solicitar a confirmação de que os seus dados pessoais estão a ser tratados. Neste caso, forneceremos uma cópia dos dados que estão sendo processados. 
+
+2.3. Você tem o direito de retirar o seu consentimento para o processamento dos dados nos termos mencionados anteriormente. Isso não afeta o processamento anteriormente realizado. 
+
+2.4 Para exercer os seus direitos envie um e-mail para dpo@unl.pt
+
+
+3. Finalidades e bases jurídicas do tratamento dos seus dados pessoais
+
+3.1. Suporte/Contato
+
+Quando entrar em contato conosco usando o e-mail de contato fornecido na aplicação Citizen Hub, os dados fornecidos (por exemplo, seu endereço de e-mail e nome, bem como o conteúdo de sua questão) serão armazenados por nós para processar e responder às suas questões ou preocupações ou para fornecer o suporte que precisa para utilizar a aplicação Citizen Hub.
+
+Apagamos os dados que surgem neste contexto após o armazenamento deixar de ser necessário (geralmente depois de respondermos totalmente ao seu pedido), ou restringimos o processamento se houver obrigações legais de armazenamento. Dependendo do conteúdo do seu pedido, a base legal para o processamento descrito acima é o art. 6, parágrafo 1. 1 alínea f) do RGPD (o tratamento é necessário para salvaguardar os interesses legítimos do responsável pelo tratamento) ou do artigo 6.º, n.º 1, subparágrafo. 1 alínea b) GDPR (o processamento é necessário para a execução de um contrato com o titular dos dados) se você já tiver uma conta de utilizador conosco e tiver dúvidas sobre o uso da aplicação Citizen Hub. O objetivo do processamento de dados é processar a sua questão. Isto também constituirá um interesse legítimo no processamento dos dados. 
+
+3.2. Obrigação de fornecer dados pessoais
+
+Se deseja entrar em contato conosco, deve fornecer os dados pessoais necessários para processar e responder a sua pergunta. Se não nos fornecer esses dados, não é possível processar e responder ao seu pedido. Apagaremos os dados recolhidos neste contexto após o armazenamento deixar de ser necessário ou restringiremos o processamento se houver obrigações legais de armazenamento. 
+
+A base jurídica é o artigo 6.º, n.º 1, subparágrafo. 1 alíneas b) e f) do RGPD. O objetivo do processamento de dados é processar o seu pedido. Isto também constituirá um interesse legítimo no processamento dos dados. 
+
+3.3. Inexistência de tomada de decisão automatizada, incluindo definição de perfis
+
+Observe que ao utilizar a aplicação Citizen Hub e as funcionalidades da aplicação Citizen Hub, não estará sujeito a qualquer decisão baseada exclusivamente no processamento automatizado — incluindo a criação de perfis — que tenha efeito legal sobre si ou que o prejudique de forma semelhante.
+
+
+4. Armazenamento dos seus dados
+
+Todos os dados pessoais e dados recolhidos pela aplicação Citizen Hub são armazenados exclusivamente no seu telemóvel pessoal. Caso decida transmitir e armazenar dados fora do seu telemóvel pessoal, deve consultar os Termos de Uso e a polícia de privacidade desses sistemas externos. 
+
+
+5. Duração do armazenamento e eliminação dos dados
+
+Todos os dados pessoais e dados recolhidos pela aplicação Citizen Hub são armazenados exclusivamente no seu telemóvel pessoal. Caso decida transmitir e armazenar dados fora do seu telemóvel pessoal, deve consultar os Termos de Uso e a polícia de privacidade desses sistemas externos. 
+
+ 

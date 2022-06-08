@@ -1,0 +1,44 @@
+A aplicação Citizen Hub (a seguir também: «app») permite uma interface fácil de usar para integrar diversos dispositivos inteligentes e facilitar a recolha de dados relacionados com a saúde e o bem-estar de forma agregada. Esta aplicação é disponibilizada pelo UNINOVA — Instituto de Desenvolvimento de Novas Tecnologias, FCT Campus, 2829-516 Caparica e pela Knowledgebiz Consulting, Parque Tecnológico da Mutela, Av. Aliança Povo MFA, Ed.3 Gab R204B 2804-537 Almada, Portugal (a seguir: «nós» ou «provedor»). Para si (doravante: «você» ou «Utilizador») da aplicação, aplicam-se as disposições contratuais nos seguintes termos de utilização: 
+
+
+1. Registo e login, relação contratual e conta de utilizador
+
+Não há registo, login, relação contratual ou conta de utilizador. 
+
+
+2. Prazo e rescisão
+
+Não existe relação contratual e, portanto, não há termo nem rescisão. 
+
+
+3. Uso dos serviços, obrigações do utilizador, comportamento proibido
+
+3.1 A aplicação Citizen Hub é gratuita para si. Não assumimos qualquer garantia para determinadas funcionalidades ou uma certa disponibilidade, e reservamo-nos ao direito de alterar as funcionalidades dos nossos serviços, salvo acordo em contrário, irrazoável para o utilizador ou prescrito por lei. 
+
+3.2 Só pode utilizar a aplicação Citizen Hub para recolher dados relacionados com a saúde ou o bem-estar e só poderá disponibilizar ou copiar tais documentos com terceiros (por exemplo, em aplicações ou serviços de terceiros) se estiver autorizado a fazê-lo e não infringa quaisquer direitos de terceiros. O utilizador é obrigado a verificar os regulamentos estatutários ao usar o serviço. Além disso, e em particular, não pode usar os serviços: 
+
+- para fins comerciais, em particular, revender os Serviços.
+- para recolher, armazenar ou transmitir dados pessoais de outras pessoas. 
+
+3.3 Não pode utilizar a aplicação Citizen Hub para fins comerciais sem o nosso consentimento prévio. 
+
+
+4. Responsabilidade
+
+4.1 O provedor não é responsável por erros ou problemas que possam ocorrer devido a irregularidades de serviço ou interupção (temporária ou permanente). 
+
+4.2 O provedor não é responsável por qualquer dano resultante do uso indevido ou impossibilidade de uso. 
+
+
+5. Validade dos Termos de Uso
+
+Reservamo-nos ao direito de alterar, atualizar ou eliminar, parcial ou totalmente, estes Termos de Uso com efeito para o futuro. O utilizador deve consultar regularmente esta página para confirmar se quaisquer modificações foram feitas. 
+
+
+6. Disposições finais, diversas
+
+6.1 Os termos de utilização estão sujeitos à lei portuguesa. 
+
+6.2 Se o utilizador não tiver jurisdição em Portugal ou for comerciante, o local de jurisdição será Lisboa. Um local de jurisdição obrigatório para os consumidores ao abrigo do direito da UE não é afetado. 
+
+6.3 O sítio Web da UE para resolução de litígios pode ser consultado no endereço: http://ec.europa.eu/consumers/odr/  
