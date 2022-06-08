@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,31 @@ public class DataFragment extends Fragment {
         textDataSteps = view.findViewById(R.id.textDataSteps);
         textDataHeartRate = view.findViewById(R.id.textDataHearRate);
 
-        textDataSteps.setText(getString(R.string.show_data_steps, MainActivity.stepsTotal));
-        textDataHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
+        enableObservers(view);
 
+        return view;
+    }
+
+    private void enableObservers(View view){
         MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRate.setText(s));
 
         MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
 
-        return view;
+        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if(aBoolean)
+                textDataSteps.setText(getString(R.string.show_data_steps, MainActivity.stepsTotal));
+            else
+                textDataSteps.setText(R.string.fragment_data_steps_protocol_disabled);
+            textDataSteps.setGravity(Gravity.CENTER);
+        });
+
+        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if(aBoolean)
+                textDataHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
+
+            else
+                textDataHeartRate.setText(R.string.fragment_data_heartrate_protocol_disabled);
+            textDataHeartRate.setGravity(Gravity.CENTER);
+        });
     }
 }

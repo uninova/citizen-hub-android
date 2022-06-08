@@ -18,9 +18,9 @@ public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new GreetingFragment();
             case 1:
-                return new DataFragment();
-            case 2:
                 return new SettingsFragment();
+            case 2:
+                return new DataFragment();
             default:
                 return new AboutFragment();
         }

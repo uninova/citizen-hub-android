@@ -41,7 +41,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/primus_bold"
-                    android:text="@string/fragment_data_hr_placeholder"
+                    android:text="@string/fragment_data_heartrate_protocol_disabled"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp" />
@@ -66,16 +66,15 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/primus_bold"
-                    android:text="@string/fragment_data_steps_placeholder"
+                    android:text="@string/fragment_data_steps_protocol_disabled"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp" />
             </LinearLayout>
 
         </LinearLayout>
-
         <TextView
-            android:id="@+id/textInfo"
+            android:id="@+id/textInfoNextFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -18,7 +18,7 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.steps");
     final private static int kind = Measurement.TYPE_STEPS_SNAPSHOT;
     private static final String TAG = "WearOSStepsProtocol";
-    final private static int wearProtocolDisable = 1000, wearProtocolEnable = 1001;
+    final private static int wearProtocolDisable = 100000, wearProtocolEnable = 100001;
     CitizenHubService service;
 
     protected WearOSStepsProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent, CitizenHubService service) {

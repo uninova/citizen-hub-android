@@ -34,13 +34,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends FragmentActivity implements SensorEventListener {
+public class MainActivity extends FragmentActivity {
 
     public static String nodeIdString;
+    private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
     public static double heartRate = 0;
     public static SensorManager sensorManager;
-    public static Sensor stepSensor, heartSensor;
+    public static Sensor stepsSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
     static MutableLiveData<String> listenSteps = new MutableLiveData<>();
@@ -52,7 +53,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        stepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
     }
 
     @Override
@@ -72,26 +73,10 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         heartRateListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                Date now = new Date();
-                double value = event.values[0];
-                MeasurementKind kind;
-                String msg = "";
-
-                switch (event.sensor.getType()) {
-                    case Sensor.TYPE_HEART_RATE:
-                        kind = MeasurementKind.HEART_RATE;
-                        listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
-                        msg = value + "," + now.getTime() + "," + kind.getId();
-                        break;
-                    case Sensor.TYPE_STEP_DETECTOR:
-                        kind = MeasurementKind.STEPS;
-                        listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
-                        msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
-                        break;
+                if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                    listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
+                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + MeasurementKind.HEART_RATE.getId()).start();
                 }
-                String citizenHubPath = "/citizenhub_";
-                String dataPath = citizenHubPath + nodeIdString;
-                new SendMessage(dataPath, msg).start();
             }
             @Override
             public void onAccuracyChanged(Sensor sensor, int i) {}
@@ -100,26 +85,10 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                Date now = new Date();
-                double value = event.values[0];
-                MeasurementKind kind;
-                String msg = "";
-
-                switch (event.sensor.getType()) {
-                    case Sensor.TYPE_HEART_RATE:
-                        kind = MeasurementKind.HEART_RATE;
-                        listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
-                        msg = value + "," + now.getTime() + "," + kind.getId();
-                        break;
-                    case Sensor.TYPE_STEP_DETECTOR:
-                        kind = MeasurementKind.STEPS;
-                        listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
-                        msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
-                        break;
+                if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+                    listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
+                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + MeasurementKind.STEPS.getId()).start();
                 }
-                String citizenHubPath = "/citizenhub_";
-                String dataPath = citizenHubPath + nodeIdString;
-                new SendMessage(dataPath, msg).start();
             }
             @Override
             public void onAccuracyChanged(Sensor sensor, int i) {}
@@ -129,6 +98,11 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
+        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
+
+        new SendMessage(citizenHubPath + nodeIdString,"Ready");
     }
 
     @Override
@@ -168,35 +142,6 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        Date now = new Date();
-        double value = event.values[0];
-        MeasurementKind kind;
-        String msg = "";
-
-        switch (event.sensor.getType()) {
-
-            case Sensor.TYPE_HEART_RATE:
-                kind = MeasurementKind.HEART_RATE;
-                listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
-                msg = value + "," + now.getTime() + "," + kind.getId();
-                break;
-            case Sensor.TYPE_STEP_DETECTOR:
-                kind = MeasurementKind.STEPS;
-                listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
-                msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
-                break;
-        }
-        String citizenHubPath = "/citizenhub_";
-        String dataPath = citizenHubPath + nodeIdString;
-        new SendMessage(dataPath, msg).start();
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
     public static class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -207,7 +152,7 @@ public class MainActivity extends FragmentActivity implements SensorEventListene
                 protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
             }
             if (intent.hasExtra("WearOSAgent")){
-                protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
+                protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
             }
         }
     }
