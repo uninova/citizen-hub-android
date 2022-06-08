@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.Location;
+package pt.uninova.s4h.citizenhub.location;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
