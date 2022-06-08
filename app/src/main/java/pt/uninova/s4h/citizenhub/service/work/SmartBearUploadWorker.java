@@ -34,7 +34,7 @@ public class SmartBearUploadWorker extends Worker {
 
             SmartBearClient client = new SmartBearClient(BuildConfig.SMART_BEAR_URL, BuildConfig.SMART_BEAR_API_KEY);
 
-            smartBearUploadDateRepository.obtainDaysWithData(value -> {
+            smartBearUploadDateRepository.readDaysWithData(value -> {
                 for (LocalDate i : value) {
                     if (i.compareTo(LocalDate.now()) < 0) {
 //                        measurementRepository.obtainHourlySum(i, Measurement.TYPE_POSTURE_CORRECT, value1 -> {

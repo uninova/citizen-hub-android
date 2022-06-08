@@ -11,15 +11,19 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
+
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import persistence.MeasurementKind;
 
 import java.util.Date;
@@ -28,17 +32,21 @@ import java.util.concurrent.ExecutionException;
 
 /*** Wear works with Bluetooth, ensure phone connectivity & permissions ***/
 
-public class MainActivity extends WearableActivity implements SensorEventListener {
+public class MainActivity extends FragmentActivity implements SensorEventListener {
 
-    String nodeIdString;
-    double heartRate = 0;
-    String citizenHubPath = "/citizenhub_";
-    int stepsTotal = 0;
-    private TextView textHeartRate, textSteps, textInfoPhone, textInfoProtocols;
+    public static String nodeIdString;
+    private String citizenHubPath = "/citizenhub_";
+    public static int stepsTotal = 0;
+    public static double heartRate = 0;
     private SensorManager mSensorManager;
     private Sensor mStepSensor, mHeartSensor;
-    Boolean wearOSHeartRateProtocol = false, wearOSStepsProtocol = false, wearOSAgent = false;
-    private int counter = 0;
+    private FragmentStateAdapter pagerAdapter;
+    private ViewPager2 viewPager;
+    static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
+    static MutableLiveData<String> listenSteps = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
+    static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
 
     private void sensorsManager() {
         mSensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
@@ -53,22 +61,17 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        textSteps = findViewById(R.id.textSteps);
-        textHeartRate = findViewById(R.id.textHearRate);
-        textInfoPhone = findViewById(R.id.textInfo);
-        textInfoProtocols = findViewById(R.id.textInfo2);
-
-        textSteps.setText(getString(R.string.show_data_steps, stepsTotal));
-        textHeartRate.setText(getString(R.string.show_data_heartrate, heartRate));
-        textInfoPhone.setText(getString(R.string.show_data_phone_not_connected));
-        textInfoProtocols.setText(getString(R.string.show_data_protocols_no_data));
-
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, newFilter);
 
         permissionRequest();
         sensorsManager();
+
+        viewPager = findViewById(R.id.viewPager);
+        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
 
     @Override
@@ -95,6 +98,18 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         }.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
+    }
+
     public void permissionRequest() {
         if (checkSelfPermission(Manifest.permission.BODY_SENSORS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -111,22 +126,24 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onSensorChanged(SensorEvent event) {
         Date now = new Date();
         double value = event.values[0];
-        MeasurementKind kind = MeasurementKind.UNKNOWN;
+        MeasurementKind kind;
+        String msg = "";
 
         switch (event.sensor.getType()) {
+
             case Sensor.TYPE_HEART_RATE:
                 kind = MeasurementKind.HEART_RATE;
-                textHeartRate.setText(getString(R.string.show_data_heartrate, value));
+                listenHeartRate.setValue(getString(R.string.show_data_heartrate, value));
+                msg = value + "," + now.getTime() + "," + kind.getId();
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 kind = MeasurementKind.STEPS;
-                textSteps.setText(getString(R.string.show_data_steps, (stepsTotal+= value)));
-                System.out.println(value + " " + now.getTime() + " " + ++counter);
+                listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+= value)));
+                msg = stepsTotal + "," + now.getTime() + "," + kind.getId();
                 break;
         }
-        String msg = value + "," + now.getTime() + "," + kind.getId();
-        String datapath = citizenHubPath + nodeIdString;
-        new SendMessage(datapath, msg).start();
+        String dataPath = citizenHubPath + nodeIdString;
+        new SendMessage(dataPath, msg).start();
     }
 
     @Override
@@ -136,39 +153,14 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("WearOSHeartRateProtocol")){
-                wearOSHeartRateProtocol = Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol"));
+                protocolHeartRate.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
             }
             if (intent.hasExtra("WearOSStepsProtocol")){
-                wearOSStepsProtocol = Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol"));
+                protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
             }
             if (intent.hasExtra("WearOSAgent")){
-                wearOSAgent = Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol"));
+                protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
             }
-            setScreenInfoText();
-        }
-    }
-
-    private void setScreenInfoText(){
-        if (wearOSAgent)
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-        else
-            textInfoPhone.setText(R.string.show_data_phone_not_connected);
-        if (wearOSStepsProtocol && wearOSHeartRateProtocol) {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_heartrate_steps);
-        }
-        else if (wearOSHeartRateProtocol)
-        {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_heartrate);
-        }
-        else if (wearOSStepsProtocol)
-        {
-            textInfoPhone.setText(R.string.show_data_phone_connected);
-            textInfoProtocols.setText(R.string.show_data_protocols_steps);
-        }
-        else{
-            textInfoProtocols.setText(R.string.show_data_protocols_no_data);
         }
     }
 

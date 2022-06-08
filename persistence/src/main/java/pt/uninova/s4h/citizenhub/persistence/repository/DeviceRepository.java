@@ -23,24 +23,24 @@ public class DeviceRepository {
         CitizenHubDatabase.executorService().execute(() -> deviceDao.insert(record));
     }
 
-    public void delete(String address) {
-        CitizenHubDatabase.executorService().execute(() -> deviceDao.delete(address));
+    public void delete() {
+        CitizenHubDatabase.executorService().execute(deviceDao::delete);
     }
 
     public void delete(DeviceRecord record) {
         CitizenHubDatabase.executorService().execute(() -> deviceDao.delete(record));
     }
 
-    public void deleteAll() {
-        CitizenHubDatabase.executorService().execute(deviceDao::deleteAll);
+    public void delete(String address) {
+        CitizenHubDatabase.executorService().execute(() -> deviceDao.delete(address));
+    }
+
+    public void read(Observer<List<DeviceRecord>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.select()));
     }
 
     public void read(String address, Observer<DeviceRecord> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.select(address)));
-    }
-
-    public void readAll(Observer<List<DeviceRecord>> observer) {
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(deviceDao.selectAll()));
     }
 
     public void update(DeviceRecord record) {

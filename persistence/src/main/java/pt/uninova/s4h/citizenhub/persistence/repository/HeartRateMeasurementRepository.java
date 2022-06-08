@@ -10,6 +10,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.HeartRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.HeartRateMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
 
 public class HeartRateMeasurementRepository {
 
@@ -21,16 +22,19 @@ public class HeartRateMeasurementRepository {
         heartRateMeasurementDao = citizenHubDatabase.heartRateMeasurementDao();
     }
 
-    public void add(HeartRateMeasurementRecord record) {
+    public void create(HeartRateMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> heartRateMeasurementDao.insert(record));
     }
 
-    public LiveData<List<HeartRateMeasurementRecord>> get(LocalDate localDate) {
-        return heartRateMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<HeartRateMeasurementRecord>> read(LocalDate localDate) {
+        return heartRateMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Double> getAverage(LocalDate localDate) {
-        return heartRateMeasurementDao.getAverage(localDate, localDate.plusDays(1));
+    public LiveData<AggregateSummary> readAggregate(LocalDate localDate) {
+        return heartRateMeasurementDao.selectAggregateLiveData(localDate, localDate.plusDays(1));
     }
 
+    public LiveData<Double> readAverage(LocalDate localDate) {
+        return heartRateMeasurementDao.selectAverageLiveData(localDate, localDate.plusDays(1));
+    }
 }

@@ -25,8 +25,8 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ui.lobby.LobbyActivity;
 
 public class Smart4HealthAccountFragment extends Fragment {
-    private AccountsViewModel viewModel;
 
+    private AccountsViewModel viewModel;
 
     @Nullable
     @Override

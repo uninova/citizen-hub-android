@@ -37,7 +37,7 @@ public class ReportMasterFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         calendarView = view.findViewById(R.id.fragment_report_calendar_view);
@@ -50,7 +50,7 @@ public class ReportMasterFragment extends Fragment {
 
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             model.setDetailDate(LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
-            Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
+            //Navigation.findNavController(requireView()).navigate(ReportMasterFragmentDirections.actionReportMasterFragmentToReportDetailFragment());
         });
 
         calendarView.addDecorator(new CurrentDateDecorator(getContext()));

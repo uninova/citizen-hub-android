@@ -25,22 +25,14 @@ public interface LumbarExtensionTrainingDao {
     void delete(LumbarExtensionTrainingMeasurementRecord record);
 
     @Query("DELETE FROM lumbar_extension_training_measurement")
-    void deleteAll();
-
-    @Query(value = "SELECT lumbar_extension_training_measurement.* FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<LumbarExtensionTrainingMeasurementRecord>> get(LocalDate from, LocalDate to);
-
-    @Query(value = "SELECT duration, repetitions, weight, calories_measurement.value AS calories FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id LEFT JOIN calories_measurement ON sample.id = calories_measurement.sample_id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<LumbarExtensionTrainingSummary> getLatest(LocalDate from, LocalDate to);
+    void delete();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(LumbarExtensionTrainingMeasurementRecord record);
+    long insert(LumbarExtensionTrainingMeasurementRecord record);
 
     @Query("INSERT INTO lumbar_extension_training_measurement (sample_id, duration, score, repetitions, weight) VALUES (:sampleId, :duration, :score, :repetitions, :weight)")
     @TypeConverters(DurationTypeConverter.class)
-    void insert(long sampleId, Duration duration, Double score, Integer repetitions, Integer weight);
+    long insert(Long sampleId, Duration duration, Double score, Integer repetitions, Integer weight);
 
     @Query("SELECT lumbar_extension_training_measurement.* FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
@@ -48,4 +40,13 @@ public interface LumbarExtensionTrainingDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(LumbarExtensionTrainingMeasurementRecord record);
+
+    @Query(value = "SELECT lumbar_extension_training_measurement.* FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<List<LumbarExtensionTrainingMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
+
+    @Query(value = "SELECT duration, repetitions, weight, calories_measurement.value AS calories FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id LEFT JOIN calories_measurement ON sample.id = calories_measurement.sample_id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<LumbarExtensionTrainingSummary> selectLatestLiveData(LocalDate from, LocalDate to);
+
 }
