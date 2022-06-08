@@ -462,6 +462,8 @@
     <string name="fragment_bluetooth_unsupported_text_view">Bluetooth is not supported on this device</string>
     <string name="fragment_bluetooth_disabled_text_view">Bluetooth is currently disabled.\n Bluetooth pairing requires your device to have bluetooth enabled, press the button below to turn it on in Android Settings</string>
     <string name="fragment_bluetooth_disabled_button_text">Bluetooth device settings</string>
+    <string name="fragment_bluetooth_unsupported_label">Bluetooth Unsupported</string>
+    <string name="fragment_bluetooth_disabled_label">Bluetooth Disabled</string>
 </resources>
 
 

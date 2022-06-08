@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.DeviceSearchFragment;
-import pt.uninova.s4h.citizenhub.DeviceSearchFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 
 public class LocationDisabledFragment extends Fragment {
@@ -49,7 +47,7 @@ public class LocationDisabledFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(isLocationEnabled(getContext())){
+        if (isLocationEnabled(getContext())) {
             Navigation.findNavController(requireView()).navigate(LocationDisabledFragmentDirections.actionLocationDisabledFragmentToDeviceSearchFragment());
         }
 
