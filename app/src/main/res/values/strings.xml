@@ -455,11 +455,13 @@
     <string name="measurement_type.26">Motion</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
-    <string name="fragment_location_disabled_button_text">Device location Settings</string>
+    <string name="fragment_location_disabled_button_text">Device location settings</string>
     <string name="fragment_location_not_supported_text_view">Location is not supported on this device</string>
     <string name="fragment_location_disabled_text_view">Location is currently disabled.\n Bluetooth pairing requires your device to have location enabled, press the button below to turn it on in Android Settings</string>
     <string name="fragment_location_not_supported_label">Location not supported</string>
     <string name="fragment_bluetooth_unsupported_text_view">Bluetooth is not supported on this device</string>
+    <string name="fragment_bluetooth_disabled_text_view">Bluetooth is currently disabled.\n Bluetooth pairing requires your device to have bluetooth enabled, press the button below to turn it on in Android Settings</string>
+    <string name="fragment_bluetooth_disabled_button_text">Bluetooth device settings</string>
 </resources>
 
 
