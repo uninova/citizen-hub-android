@@ -83,6 +83,14 @@
         />
 
     <fragment
+        android:id="@+id/bluetooth_not_supported_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.bluetooth.BluetoothUnsupportedFragment"
+        android:label="@string/fragment_bluetooth_unsupported_label"
+        tools:layout="@layout/fragment_bluetooth_unsupported"
+        app:destination="@id/device_search_fragment"
+        />
+
+    <fragment
         android:id="@+id/location_disabled_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.location.LocationDisabledFragment"
         android:label="Location Disabled"
@@ -97,6 +105,21 @@
     </fragment>
 
     <fragment
+        android:id="@+id/bluetooth_disabled_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.bluetooth.BluetoothDisabledFragment"
+        android:label="@string/fragment_bluetooth_disabled_label"
+        tools:layout="@layout/fragment_bluetooth_disabled">
+
+        <action
+            android:id="@+id/action_location_disabled_fragment_to_bluetooth_disabled_fragment"
+            app:destination="@+id/bluetooth_disabled_fragment"
+            app:popUpTo="@id/device_search_fragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+
+
+    <fragment
         android:id="@+id/device_search_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceSearchFragment"
         android:label="@string/fragment_device_search_label"
@@ -105,6 +128,11 @@
         <action
             android:id="@+id/action_device_search_fragment_to_location_not_supported_fragment"
             app:destination="@+id/location_not_supported_fragment"
+            />
+
+        <action
+            android:id="@+id/action_device_search_fragment_to_bluetooth_not_supported_fragment"
+            app:destination="@+id/bluetooth_not_supported_fragment"
             />
 
         <action
