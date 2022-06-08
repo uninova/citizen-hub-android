@@ -46,13 +46,6 @@
         android:layout_height="0dp"
         android:layout_weight="0.1" />
 
-    <Button
-        android:id="@+id/fragment_location_not_supported_button"
-        style="@style/Widget.Citizen.Button"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:text="@string/fragment_location_disabled_return" />
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
