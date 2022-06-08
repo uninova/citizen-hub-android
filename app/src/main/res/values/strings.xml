@@ -465,6 +465,7 @@
     <string name="fragment_bluetooth_unsupported_label">Bluetooth Unsupported</string>
     <string name="fragment_bluetooth_disabled_label">Bluetooth Disabled</string>
     <string name="fragment_bluetooth_denied_text_view">Bluetooth permissions were not granted</string>
+    <string name="fragment_bluetooth_denied_label">Bluetooth Permissions Denied</string>
 </resources>
 
 
