@@ -13,7 +13,6 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTraining
 import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
@@ -24,7 +23,7 @@ public class SummaryViewModel extends AndroidViewModel {
 
 
     private final LiveData<List<BloodPressureMeasurementRecord>> dailyBloodPressureMeasurement;
-    private final LiveData<Boolean> dailyDataExistence;
+    private final LiveData<Integer> dailyDataExistence;
     private final LiveData<Double> dailyHeartRate;
     private final LiveData<LumbarExtensionTrainingSummary> dailyLumbarExtensionTraining;
     private final LiveData<List<PostureClassificationSum>> dailyPostureMeasurement;
@@ -42,12 +41,12 @@ public class SummaryViewModel extends AndroidViewModel {
 
         final LocalDate now = LocalDate.now();
 
-        dailyLumbarExtensionTraining = lumbarExtensionTrainingRepository.getLatest(now);
-        dailyBloodPressureMeasurement = bloodPressureMeasurementRepository.get(now);
-        dailyDataExistence = sampleRepository.hasRecords(now);
-        dailyHeartRate = heartRateMeasurementRepository.getAverage(now);
-        dailyPostureMeasurement = postureMeasurementRepository.getClassificationSum(now);
-        dailyWalkingInformation = stepsSnapshotMeasurementRepository.getLatest(now);
+        dailyLumbarExtensionTraining = lumbarExtensionTrainingRepository.readLatest(now);
+        dailyBloodPressureMeasurement = bloodPressureMeasurementRepository.read(now);
+        dailyDataExistence = sampleRepository.readCount(now);
+        dailyHeartRate = heartRateMeasurementRepository.readAverage(now);
+        dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
+        dailyWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
     }
 
     public LiveData<LumbarExtensionTrainingSummary> getDailyLumbarExtensionTraining() {
@@ -58,7 +57,7 @@ public class SummaryViewModel extends AndroidViewModel {
         return dailyBloodPressureMeasurement;
     }
 
-    public LiveData<Boolean> getDailyDataExistence() {
+    public LiveData<Integer> getDailyDataExistence() {
         return dailyDataExistence;
     }
 

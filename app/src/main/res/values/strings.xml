@@ -220,7 +220,7 @@
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
     <string name="layout_fragment_user_sign_out">Sign Out</string>
-    <string name="layout_list_item_feature_unknown_feature">unknown feature</string>
+    <string name="layout_list_item_feature_unknown_feature">unknown enabledMeasurementRecord</string>
     <string name="layout_nav_header_main_logo_content_description">Smart 4 Health icon</string>
     <string name="layout_nav_header_main_poweredby">Powered By</string>
     <string name="location_disable_button">Don\'t turn on location</string>
@@ -457,6 +457,7 @@
     <string name="measurement_type.26">Motion</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
+    <string name="measurement_type.29">Posture</string>
 
 </resources>
 

@@ -373,13 +373,14 @@ public class ReportDetailFragment extends Fragment {
         respirationGroup = view.findViewById(R.id.respirationGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
         getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
+
         model.obtainSummary(this::onSummaryChanged);
         model.obtainWorkTimeSummary(this::onSummaryWorkTimeChanged);
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
         LumbarExtensionTrainingRepository lumbarRepository = new LumbarExtensionTrainingRepository(requireActivity().getApplication());
 
         try {
-            lumbarExtensionTrainingMeasurementRecord = lumbarRepository.get(LocalDate.now()).getValue().get(0);
+            lumbarExtensionTrainingMeasurementRecord = lumbarRepository.read(LocalDate.now()).getValue().get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

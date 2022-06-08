@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 import pt.uninova.s4h.citizenhub.data.BloodPressureMeasurement;
 import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
@@ -53,12 +54,8 @@ public abstract class SampleDao {
         stepsSnapshotMeasurementDao = database.stepsSnapshotMeasurementDao();
     }
 
-    @Query("SELECT COUNT(*) > 0 FROM sample WHERE timestamp >= :from AND timestamp < :to")
-    @TypeConverters(EpochTypeConverter.class)
-    public abstract LiveData<Boolean> hasRows(LocalDate from, LocalDate to);
-
     @Insert
-    public abstract long insert(SampleRecord sampleRecord);
+    public abstract long insert(SampleRecord record);
 
     @Query("INSERT INTO sample (device_id, timestamp) VALUES ((SELECT id FROM device WHERE device.address = :address), :timestamp)")
     @TypeConverters(EpochTypeConverter.class)
@@ -120,5 +117,13 @@ public abstract class SampleDao {
 
         return sampleId;
     }
-}
 
+    @Query("SELECT DISTINCT (timestamp / 86400 * 86400) AS timestamp FROM sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
+    @TypeConverters(EpochTypeConverter.class)
+    public abstract List<LocalDate> select(LocalDate from, LocalDate to);
+
+    @Query("SELECT COUNT(*) FROM sample WHERE timestamp >= :from AND timestamp < :to")
+    @TypeConverters(EpochTypeConverter.class)
+    public abstract LiveData<Integer> selectCountLiveData(LocalDate from, LocalDate to);
+
+}

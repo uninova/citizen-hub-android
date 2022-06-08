@@ -21,16 +21,15 @@ public class PulseRateMeasurementRepository {
         pulseRateMeasurementDao = citizenHubDatabase.pulseRateMeasurementDao();
     }
 
-    public void add(PulseRateMeasurementRecord record) {
+    public void create(PulseRateMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> pulseRateMeasurementDao.insert(record));
     }
 
-    public LiveData<List<PulseRateMeasurementRecord>> get(LocalDate localDate) {
-        return pulseRateMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<PulseRateMeasurementRecord>> read(LocalDate localDate) {
+        return pulseRateMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Double> getAverage(LocalDate localDate) {
-        return pulseRateMeasurementDao.getAverage(localDate, localDate.plusDays(1));
+    public LiveData<Double> readAverage(LocalDate localDate) {
+        return pulseRateMeasurementDao.selectAverageLiveData(localDate, localDate.plusDays(1));
     }
-
 }
