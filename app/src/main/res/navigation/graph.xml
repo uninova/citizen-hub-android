@@ -111,10 +111,9 @@
         tools:layout="@layout/fragment_bluetooth_disabled">
 
         <action
-            android:id="@+id/action_location_disabled_fragment_to_bluetooth_disabled_fragment"
-            app:destination="@+id/bluetooth_disabled_fragment"
+            android:id="@+id/action_bluetooth_disabled_fragment_to_device_search_fragment"
+            app:destination="@+id/device_search_fragment"
             app:popUpTo="@id/device_search_fragment"
-            app:popUpToInclusive="true"
             />
     </fragment>
 
@@ -139,7 +138,10 @@
             android:id="@+id/action_device_search_fragment_to_location_disabled_fragment"
             app:destination="@+id/location_disabled_fragment"
       />
-
+        <action
+            android:id="@+id/action_device_search_fragment_to_bluetooth_disabled_fragment"
+            app:destination="@+id/bluetooth_disabled_fragment"
+            />
 
         <action
             android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"

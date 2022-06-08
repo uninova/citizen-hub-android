@@ -464,6 +464,7 @@
     <string name="fragment_bluetooth_disabled_button_text">Bluetooth device settings</string>
     <string name="fragment_bluetooth_unsupported_label">Bluetooth Unsupported</string>
     <string name="fragment_bluetooth_disabled_label">Bluetooth Disabled</string>
+    <string name="fragment_bluetooth_denied_text_view">Bluetooth permissions were not granted</string>
 </resources>
 
 

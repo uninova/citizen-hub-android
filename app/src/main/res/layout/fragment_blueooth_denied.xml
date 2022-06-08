@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bluetooth_denied_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <ImageView
+        android:id="@+id/citizen_hub_logo_with_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:contentDescription="@string/citizen_hub_logo_with_text"
+        app:srcCompat="@drawable/img_citizen_hub_logo_png" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <TextView
+        android:id="@+id/fragment_bluetooth_denied_text_view"
+        style="@style/AppTheme.About.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:drawableStart="@android:drawable/ic_dialog_alert"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/colorS4HOrange"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/fragment_bluetooth_denied_text_view"
+        android:textColor="@color/colorS4HDarkGreyVariant"
+        android:textSize="6pt" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+</LinearLayout>

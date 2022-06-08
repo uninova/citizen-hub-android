@@ -69,12 +69,12 @@ public class DeviceSearchFragment extends BluetoothFragment {
 
     @Override
     protected void onBluetoothDisabled() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToBluetoothDisabledFragment());
     }
 
     @Override
     protected void onBluetoothUnsupported() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToBluetoothNotSupportedFragment());
     }
 
     @Override

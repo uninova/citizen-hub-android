@@ -46,7 +46,7 @@ public class BluetoothDisabledFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (isBluetoothEnabled()) {
-            Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.location.LocationDisabledFragmentDirections.actionLocationDisabledFragmentToDeviceSearchFragment());
+            Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.bluetooth.BluetoothDisabledFragmentDirections.actionBluetoothDisabledFragmentToDeviceSearchFragment());
         }
 
     }
