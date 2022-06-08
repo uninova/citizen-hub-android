@@ -58,7 +58,7 @@
     <string name="fragment_about_button_text_licenses_of_use">termos e condições</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Informação sobre Licença de Código Aberto</string>
     <string name="fragment_about_button_text_privacy_policy_button">política de privacidade</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Desenvolvido por]]></string>
     <string name="fragment_about_european_commission_info">Este trabalho foi desenvolvido pelo projecto SMART4HEALTH financiado
         pelo programa de investigação e inovação Horizon 2020 da União Europeia ao abrigo do acordo de subvenção n.º 826117</string>
