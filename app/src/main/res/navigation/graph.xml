@@ -76,13 +76,13 @@
 
     <fragment
         android:id="@+id/location_not_supported_fragment"
-        android:name="pt.uninova.s4h.citizenhub.location.LocationNotSupportedFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.location.LocationNotSupportedFragment"
         android:label="@string/fragment_location_not_supported_label"
         tools:layout="@layout/fragment_location_not_supported"/>
 
     <fragment
         android:id="@+id/location_disabled_fragment"
-        android:name="pt.uninova.s4h.citizenhub.location.LocationDisabledFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.location.LocationDisabledFragment"
         android:label="Location Disabled"
         tools:layout="@layout/fragment_location_disabled"/>
 

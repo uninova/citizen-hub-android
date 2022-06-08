@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.location;
+package pt.uninova.s4h.citizenhub.ui.location;
 
 import android.content.Intent;
 import android.os.Bundle;
