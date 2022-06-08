@@ -57,7 +57,7 @@
     <string name="fragment_about_button_text_licenses_of_use">Nutzungsbedingungen</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Informationen zur Open-Source-Lizenz</string>
     <string name="fragment_about_button_text_privacy_policy_button">Datenschutzrichtlinien</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Entwickelt von]]></string>
     <string name="fragment_about_european_commission_info">"Diese Entwicklung erfolgte im Smart4Health Projekt, das eine Förderung durch das Horizon 2020 Forschungs- und Innovationsprogramm der Europäischen Union unter der Zuwendungsvereinbarung Nr. 826117 erhielt. "</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
