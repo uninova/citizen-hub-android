@@ -2,9 +2,18 @@ package pt.uninova.s4h.citizenhub.persistence;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.DeleteColumn;
+import androidx.room.DeleteTable;
+import androidx.room.RenameColumn;
+import androidx.room.RenameTable;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.AutoMigrationSpec;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +51,10 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
 
 
 @Database(
-        autoMigrations = {},
+        autoMigrations = {
+                @AutoMigration(from = 36, to = 37, spec = CitizenHubDatabase.AutoMigrationFrom36To37.class),
+                @AutoMigration(from = 37, to = 100, spec = CitizenHubDatabase.AutoMigrationFrom37To100.class)
+        },
         entities = {
                 BloodPressureMeasurementRecord.class,
                 CaloriesMeasurementRecord.class,
@@ -63,6 +75,22 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
         version = 100)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
+    @RenameColumn(tableName = "lumbar_training", fromColumnName = "trainingLength", toColumnName = "duration")
+    @RenameTable(fromTableName = "lumbar_training", toTableName = "lumbar_extension_training_measurement")
+    static class AutoMigrationFrom36To37 implements AutoMigrationSpec {
+    }
+
+    @DeleteTable.Entries({
+            @DeleteTable(tableName = "feature"),
+            @DeleteTable(tableName = "measurement")
+    })
+    @DeleteColumn(tableName = "device", columnName = "state")
+    @DeleteColumn(tableName = "lumbar_extension_training_measurement", columnName = "calories")
+    @DeleteColumn(tableName = "lumbar_extension_training_measurement", columnName = "timestamp")
+    @RenameColumn(tableName = "device", fromColumnName = "type", toColumnName = "agent")
+    static class AutoMigrationFrom37To100 implements AutoMigrationSpec {
+    }
+
     private static final int NUMBER_OF_THREADS = 4;
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private static volatile CitizenHubDatabase INSTANCE;
@@ -72,6 +100,7 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
             synchronized (CitizenHubDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), CitizenHubDatabase.class, "citizen_hub_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
