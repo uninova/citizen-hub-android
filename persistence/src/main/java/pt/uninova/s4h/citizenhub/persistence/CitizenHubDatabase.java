@@ -25,6 +25,7 @@ import pt.uninova.s4h.citizenhub.persistence.dao.HeartRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.LumbarExtensionTrainingDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.PostureMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.PulseRateMeasurementDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.ReportDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.SampleDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.SettingDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearUploadDateDao;
@@ -128,6 +129,8 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public abstract PostureMeasurementDao postureMeasurementDao();
 
     public abstract PulseRateMeasurementDao pulseRateMeasurementDao();
+
+    public abstract ReportDao reportDao();
 
     public abstract SampleDao sampleDao();
 
