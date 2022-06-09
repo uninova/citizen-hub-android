@@ -42,6 +42,10 @@ public class SettingsFragment extends Fragment {
         enableObservers(view);
 
         heartRateListener = (compoundButton, isChecked) -> {
+            if(isChecked)
+                MainActivity.protocolHeartRate.setValue(true);
+            else
+                MainActivity.protocolHeartRate.setValue(false);
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.HEART_RATE;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
@@ -50,6 +54,10 @@ public class SettingsFragment extends Fragment {
         };
 
         stepsListener = (compoundButton, isChecked) -> {
+            if(isChecked)
+                MainActivity.protocolSteps.setValue(true);
+            else
+                MainActivity.protocolSteps.setValue(false);
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.STEPS;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
