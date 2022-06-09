@@ -48,6 +48,8 @@ public class ReportUtil {
     //Timestamp
     private Instant timestamp;
 
+    private Long id;
+
     //Blood Pressure
     public Double getSystolic(){
         return systolic;
@@ -151,4 +153,9 @@ public class ReportUtil {
     public Instant getTimestamp(){return timestamp;}
 
     public void setTimestamp(Instant timestamp){this.timestamp=timestamp;}
+
+    //ID
+    public Long getId(){return id;}
+
+    public void setId(Long id){this.id=id;}
 }

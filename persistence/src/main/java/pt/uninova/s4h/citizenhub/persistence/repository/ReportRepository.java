@@ -24,16 +24,24 @@ public class ReportRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getSimpleDailyRecords(localDate, localDate.plusDays(1))));
     }
 
-    public void getWorkTimeSimpleRecords(LocalDate localDate, Observer<List<ReportUtil>> observer){
+    public void getWorkTimeSimpleRecords(LocalDate localDate, Observer<ReportUtil> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getWorkTimeSimpleRecords(localDate, localDate.plusDays(1))));
     }
 
-    public void getNotWorkTimeSimpleRecords(LocalDate localDate, Observer<List<ReportUtil>> observer){
+    public void getNotWorkTimeSimpleRecords(LocalDate localDate, Observer<ReportUtil> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getNotWorkTimeSimpleRecords(localDate, localDate.plusDays(1))));
     }
 
     public void getBloodPressure(LocalDate localDate, Observer<List<ReportUtil>> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getBloodPressure(localDate, localDate.plusDays(1))));
+    }
+
+    public void getWorkTimeBloodPressure(LocalDate localDate, Observer<List<ReportUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getWorkTimeBloodPressure(localDate, localDate.plusDays(1))));
+    }
+
+    public void getNotWorkTimeBloodPressure(LocalDate localDate, Observer<List<ReportUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getNotWorkTimeBloodPressure(localDate, localDate.plusDays(1))));
     }
 
     public void getCalories(Observer<List<ReportUtil>> observer, LocalDate localDate){
@@ -52,12 +60,24 @@ public class ReportRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getLumbarExtensionTraining(localDate, localDate.plusDays(1))));
     }
 
+    public void getWorkTimeLumbarExtensionTraining(LocalDate localDate, Observer<List<ReportUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getWorkTimeLumbarExtensionTraining(localDate, localDate.plusDays(1))));
+    }
+
+    public void getNotWorkTimeLumbarExtensionTraining(LocalDate localDate, Observer<List<ReportUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getNotWorkTimeLumbarExtensionTraining(localDate, localDate.plusDays(1))));
+    }
+
     public void getPosture(Observer<List<ReportUtil>> observer, LocalDate localDate){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getPosture(localDate, localDate.plusDays(1))));
     }
 
     public void getSteps(Observer<List<ReportUtil>> observer, LocalDate localDate){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getSteps(localDate, localDate.plusDays(1))));
+    }
+
+    public void getSampleId(Observer<List<ReportUtil>> observer, LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getSampleID(localDate, localDate.plusDays(1))));
     }
 
 }
