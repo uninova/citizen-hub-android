@@ -9,15 +9,12 @@ import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
-import android.location.GnssAntennaInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
@@ -28,10 +25,14 @@ import com.google.android.gms.wearable.Wearable;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends FragmentActivity {
@@ -49,12 +50,7 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
-
-    private void sensorsManager() {
-        sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
-        heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        stepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-    }
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        dataBaseHelper = new DataBaseHelper(MainActivity.this);
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -75,7 +73,11 @@ public class MainActivity extends FragmentActivity {
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                     listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
+                    long timestamp = new Date().getTime();
                     new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + MeasurementKind.HEART_RATE.getId()).start();
+                    HeartRateMeasurement heartRateMeasurement = new HeartRateMeasurement((int)event.values[0]);
+                    if(!DataBaseHelper.addMeasurement(heartRateMeasurement, dataBaseHelper, timestamp))
+                        System.out.println("Failed to insert value in DB.");
                 }
             }
             @Override
@@ -87,7 +89,11 @@ public class MainActivity extends FragmentActivity {
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
+                    long timestamp = new Date().getTime();
                     new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + MeasurementKind.STEPS.getId()).start();
+                    StepsSnapshotMeasurement stepsSnapshotMeasurement = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal);
+                    if(!DataBaseHelper.addMeasurement(stepsSnapshotMeasurement, dataBaseHelper, timestamp))
+                        System.out.println("Failed to insert value in DB.");
                 }
             }
             @Override
@@ -140,6 +146,12 @@ public class MainActivity extends FragmentActivity {
         } else {
             Log.d("Permissions", "ALREADY GRANTED");
         }
+    }
+
+    private void sensorsManager() {
+        sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
+        heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        stepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
     }
 
     public static class Receiver extends BroadcastReceiver {
