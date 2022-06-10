@@ -81,7 +81,6 @@ public class SettingsFragment extends Fragment {
         MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             enabledCheckedListeners(false);
             if(aBoolean) {
-                textPhoneConnected.setText(R.string.show_data_phone_connected);
                 switchSteps.setChecked(true);
                 enableStepsSensor(true);
             }
@@ -95,7 +94,6 @@ public class SettingsFragment extends Fragment {
         MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             enabledCheckedListeners(false);
             if(aBoolean) {
-                textPhoneConnected.setText(R.string.show_data_phone_connected);
                 switchHeartRate.setChecked(true);
                 enableHeartRateSensor(true);
             }

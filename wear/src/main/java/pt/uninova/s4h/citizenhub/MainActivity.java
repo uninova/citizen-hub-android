@@ -147,9 +147,17 @@ public class MainActivity extends FragmentActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("WearOSHeartRateProtocol")){
                 protocolHeartRate.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
+                if (Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")))
+                    protocolPhoneConnected.setValue(true);
+                else
+                    protocolPhoneConnected.setValue(false);
             }
             if (intent.hasExtra("WearOSStepsProtocol")){
                 protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
+                if (Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")))
+                    protocolPhoneConnected.setValue(true);
+                else
+                    protocolPhoneConnected.setValue(false);
             }
             if (intent.hasExtra("WearOSAgent")){
                 protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
