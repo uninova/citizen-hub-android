@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ public class SettingsFragment extends Fragment {
     private TextView textPhoneConnected;
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
     private final String citizenHubPath = "/citizenhub_";
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,10 +45,8 @@ public class SettingsFragment extends Fragment {
         enableObservers(view);
 
         heartRateListener = (compoundButton, isChecked) -> {
-            if(isChecked)
-                MainActivity.protocolHeartRate.setValue(true);
-            else
-                MainActivity.protocolHeartRate.setValue(false);
+            MainActivity.protocolHeartRate.setValue(isChecked);
+            sharedPreferences.edit().putBoolean("HeartRate", isChecked).apply();
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.HEART_RATE;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
@@ -54,10 +55,8 @@ public class SettingsFragment extends Fragment {
         };
 
         stepsListener = (compoundButton, isChecked) -> {
-            if(isChecked)
-                MainActivity.protocolSteps.setValue(true);
-            else
-                MainActivity.protocolSteps.setValue(false);
+            MainActivity.protocolSteps.setValue(isChecked);
+            sharedPreferences.edit().putBoolean("Steps", isChecked).apply();
             Date now = new Date();
             MeasurementKind kind = MeasurementKind.STEPS;
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
@@ -66,6 +65,10 @@ public class SettingsFragment extends Fragment {
         };
 
         enabledCheckedListeners(true);
+
+        sharedPreferences = requireActivity().getSharedPreferences("switchesSharedPreferences", Context.MODE_PRIVATE);
+        MainActivity.protocolSteps.setValue(sharedPreferences.getBoolean("Steps", false));
+        MainActivity.protocolHeartRate.setValue(sharedPreferences.getBoolean("HeartRate", false));
 
         return view;
     }

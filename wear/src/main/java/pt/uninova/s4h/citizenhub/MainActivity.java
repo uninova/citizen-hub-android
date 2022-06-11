@@ -26,8 +26,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
-import pt.uninova.s4h.citizenhub.data.Measurement;
-import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 
@@ -114,17 +112,14 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
-                    nodeIdString = localNode.getId();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
+                nodeIdString = localNode.getId();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
             }
-        }.start();
+        }).start();
     }
 
     @Override
