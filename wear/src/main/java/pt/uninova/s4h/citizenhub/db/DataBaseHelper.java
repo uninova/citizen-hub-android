@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.db;
 
 import android.content.ContentValues;
 import android.content.Context;

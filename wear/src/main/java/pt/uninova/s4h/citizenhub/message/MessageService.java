@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.message;
 
 import android.content.Intent;
 import com.google.android.gms.wearable.MessageEvent;
@@ -6,7 +6,7 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-public class WearOSMessageService extends WearableListenerService {
+public class MessageService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {

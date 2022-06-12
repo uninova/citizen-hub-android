@@ -28,6 +28,9 @@ import persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
+import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
+import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
 import java.util.Date;
 import java.util.List;
