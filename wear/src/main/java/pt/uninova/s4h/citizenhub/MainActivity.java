@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -32,6 +33,7 @@ import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -52,6 +54,7 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
     DataBaseHelper dataBaseHelper;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class MainActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         dataBaseHelper = new DataBaseHelper(MainActivity.this);
+
+        sharedPreferences = this.getSharedPreferences("checkForStepsReset", Context.MODE_PRIVATE);
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -73,8 +78,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
                     long timestamp = new Date().getTime();
+                    listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
                     new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + MeasurementKind.HEART_RATE.getId()).start();
                     HeartRateMeasurement heartRateMeasurement = new HeartRateMeasurement((int)event.values[0]);
                     if(!DataBaseHelper.addMeasurement(heartRateMeasurement, dataBaseHelper, timestamp))
@@ -89,9 +94,12 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                    listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
+                    if(!checkForStepsReset())
+                        stepsTotal = 0;
                     long timestamp = new Date().getTime();
-                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + MeasurementKind.STEPS.getId()).start();
+                    sharedPreferences.edit().putLong("dayFromLastSteps", timestamp).apply();
+                    listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
+                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + timestamp + "," + MeasurementKind.STEPS.getId()).start();
                     StepsSnapshotMeasurement stepsSnapshotMeasurement = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal);
                     if(!DataBaseHelper.addMeasurement(stepsSnapshotMeasurement, dataBaseHelper, timestamp))
                         System.out.println("Failed to insert value in DB.");
@@ -150,6 +158,22 @@ public class MainActivity extends FragmentActivity {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         stepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+    }
+
+    private Boolean checkForStepsReset(){
+        long recordedDate = sharedPreferences.getLong("dayFromLastSteps", 0);
+        if(recordedDate == 0)
+            return true;
+        Date dateRecorded = new Date(recordedDate);
+        Calendar calendarRecordedDate = Calendar.getInstance();
+        calendarRecordedDate.setTime(dateRecorded);
+
+        Date currentDay = new Date();
+        Calendar calendarCurrentDate = Calendar.getInstance();
+        calendarCurrentDate.setTime(currentDay);
+
+        return calendarRecordedDate.get(Calendar.DAY_OF_YEAR) == calendarCurrentDate.get(Calendar.DAY_OF_YEAR)
+            && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR);
     }
 
     public static class Receiver extends BroadcastReceiver {
