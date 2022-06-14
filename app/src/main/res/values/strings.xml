@@ -97,7 +97,6 @@
     <string name="fragment_device_search_bluetooth_warning_title">Citizen Hub can\'t scan for devices without bluetooth turned on</string>
     <string name="fragment_device_search_cancel_option">Cancel</string>
     <string name="fragment_device_search_label">Device Search…</string>
-    <string name="fragment_device_connection_method_label">Connection Methods</string>
     <string name="fragment_device_search_location_not_enabled_title">Location not enabled.</string>
     <string name="fragment_device_search_location_open_settings_button">Open settings</string>
     <string name="fragment_device_search_location_warning_title">Citizen Hub can\'t scan for devices without location turned on</string>
@@ -402,6 +401,9 @@
 
     <string name="heart_rate_title">Average heart rate</string>
     <string name="heart_rate_value" translatable="false">%1$.0f bpm</string>
+
+    <string name="breathing_rate_title">Average breathing rate</string>
+    <string name="breathing_rate_value" translatable="false">%1$.0f rpm</string>
 
     <string name="posture_title">Posture</string>
     <string name="posture_correct_label">Correct</string>
