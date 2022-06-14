@@ -13,6 +13,9 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.data.BloodPressureMeasurement;
 import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
+import pt.uninova.s4h.citizenhub.data.BreathingRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.BreathingSequenceMeasurement;
+import pt.uninova.s4h.citizenhub.data.BreathingValue;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.CaloriesSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
@@ -33,6 +36,8 @@ import pt.uninova.s4h.citizenhub.persistence.entity.SampleRecord;
 public abstract class SampleDao {
 
     private final BloodPressureMeasurementDao bloodPressureMeasurementDao;
+    private final BreathingMeasurementDao breathingMeasurementDao;
+    private final BreathingRateMeasurementDao breathingRateMeasurementDao;
     private final CaloriesMeasurementDao caloriesMeasurementDao;
     private final CaloriesSnapshotMeasurementDao caloriesSnapshotMeasurementDao;
     private final DistanceSnapshotMeasurementDao distanceSnapshotMeasurementDao;
@@ -44,6 +49,8 @@ public abstract class SampleDao {
 
     public SampleDao(CitizenHubDatabase database) {
         bloodPressureMeasurementDao = database.bloodPressureMeasurementDao();
+        breathingMeasurementDao = database.breathingMeasurementDao();
+        breathingRateMeasurementDao = database.breathingRateMeasurementDao();
         caloriesMeasurementDao = database.caloriesMeasurementDao();
         caloriesSnapshotMeasurementDao = database.caloriesSnapshotMeasurementDao();
         distanceSnapshotMeasurementDao = database.distanceSnapshotMeasurementDao();
@@ -71,6 +78,20 @@ public abstract class SampleDao {
                     final BloodPressureValue bloodPressureValue = ((BloodPressureMeasurement) measurement).getValue();
 
                     bloodPressureMeasurementDao.insert(sampleId, bloodPressureValue.getSystolic(), bloodPressureValue.getDiastolic(), bloodPressureValue.getMeanArterialPressure());
+                    break;
+                case Measurement.TYPE_BREATHING:
+                    final BreathingSequenceMeasurement breathingSequenceMeasurement = (BreathingSequenceMeasurement) measurement;
+                    int offset = 0;
+
+                    for (BreathingValue i : breathingSequenceMeasurement.getValue()) {
+                        breathingMeasurementDao.insert(sampleId, offset++, i.getType(), i.getValue());
+                    }
+
+                    break;
+                case Measurement.TYPE_BREATHING_RATE:
+                    final BreathingRateMeasurement breathingRateMeasurement = ((BreathingRateMeasurement) measurement);
+
+                    breathingRateMeasurementDao.insert(sampleId, breathingRateMeasurement.getValue());
                     break;
                 case Measurement.TYPE_CALORIES:
                     final CaloriesMeasurement caloriesMeasurement = (CaloriesMeasurement) measurement;

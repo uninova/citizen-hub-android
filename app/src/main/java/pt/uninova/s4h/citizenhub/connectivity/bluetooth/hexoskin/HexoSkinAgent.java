@@ -19,7 +19,7 @@ public class HexoSkinAgent extends BluetoothAgent {
     static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             Measurement.TYPE_STEPS_SNAPSHOT,
             Measurement.TYPE_HEART_RATE,
-            Measurement.TYPE_RESPIRATION_RATE
+            Measurement.TYPE_BREATHING_RATE
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -40,12 +40,12 @@ public class HexoSkinAgent extends BluetoothAgent {
     @Override
     public MeasuringProtocol getMeasuringProtocol(int measurementKind) {
         switch (measurementKind) {
-            case Measurement.TYPE_STEPS_SNAPSHOT:
-                return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(), this);
+            case Measurement.TYPE_BREATHING_RATE:
+                return new HexoSkinRespirationProtocol(this.getConnection(), getSampleDispatcher(), this);
             case Measurement.TYPE_HEART_RATE:
                 return new HexoSkinHeartRateProtocol(this.getConnection(), getSampleDispatcher(), this);
-            case Measurement.TYPE_RESPIRATION_RATE:
-                return new HexoSkinRespirationProtocol(this.getConnection(), getSampleDispatcher(), this);
+            case Measurement.TYPE_STEPS_SNAPSHOT:
+                return new HexoSkinAccelerometerProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
         return null;
@@ -55,5 +55,4 @@ public class HexoSkinAgent extends BluetoothAgent {
     public String getName() {
         return "HexoSkin";
     }
-
 }

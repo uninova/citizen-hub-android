@@ -21,7 +21,6 @@ import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
@@ -71,6 +70,22 @@ public class SummaryFragment extends ServiceFragment {
         final CardView bloodPressureCardView = view.findViewById(R.id.bloodPressureCardView);
 
         bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
+    private void onDailyBreathingRateUpdate(Double value) {
+        final View view = requireView();
+
+        boolean hasBreathingRate = value != null;
+
+        if (hasBreathingRate) {
+            TextView breathingRateValueTextView = view.findViewById(R.id.breathingRateValueTextView);
+
+            breathingRateValueTextView.setText(getString(R.string.breathing_rate_value, value));
+        }
+
+        final CardView breathingRateCardView = view.findViewById(R.id.breathingRateCardView);
+
+        breathingRateCardView.setVisibility(hasBreathingRate ? View.VISIBLE : View.GONE);
     }
 
     private void onDailyDataExistenceUpdate(Integer count) {
@@ -198,6 +213,7 @@ public class SummaryFragment extends ServiceFragment {
 
     @Override
     public void onServiceConnected() {
+        model.getDailyBreathingRateMeasurement().observe(getViewLifecycleOwner(), this::onDailyBreathingRateUpdate);
         model.getDailyLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onDailyLumbarExtensionTrainingUpdate);
         model.getDailyBloodPressureMeasurement().observe(getViewLifecycleOwner(), this::onDailyBloodPressureMeasurementUpdate);
         model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);

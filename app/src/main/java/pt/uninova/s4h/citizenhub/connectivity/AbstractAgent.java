@@ -62,7 +62,9 @@ public abstract class AbstractAgent implements Agent {
 
     @Override
     public void disable() {
-        for (final int i : this.measurementMap.keySet()) {
+        final Integer[] measurements = this.measurementMap.keySet().toArray(new Integer[0]);
+
+        for (final int i : measurements) {
             disableMeasurement(i);
         }
 

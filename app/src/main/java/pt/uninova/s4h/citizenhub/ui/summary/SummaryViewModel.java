@@ -12,6 +12,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementReco
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.BreathingRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
@@ -21,8 +22,8 @@ import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurement
 
 public class SummaryViewModel extends AndroidViewModel {
 
-
     private final LiveData<List<BloodPressureMeasurementRecord>> dailyBloodPressureMeasurement;
+    private final LiveData<Double> dailyBreathingRate;
     private final LiveData<Integer> dailyDataExistence;
     private final LiveData<Double> dailyHeartRate;
     private final LiveData<LumbarExtensionTrainingSummary> dailyLumbarExtensionTraining;
@@ -33,6 +34,7 @@ public class SummaryViewModel extends AndroidViewModel {
         super(application);
 
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(application);
+        BreathingRateMeasurementRepository breathingRateMeasurementRepository = new BreathingRateMeasurementRepository(application);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(application);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(application);
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(application);
@@ -43,6 +45,7 @@ public class SummaryViewModel extends AndroidViewModel {
 
         dailyLumbarExtensionTraining = lumbarExtensionTrainingRepository.readLatest(now);
         dailyBloodPressureMeasurement = bloodPressureMeasurementRepository.read(now);
+        dailyBreathingRate = breathingRateMeasurementRepository.readAverage(now);
         dailyDataExistence = sampleRepository.readCount(now);
         dailyHeartRate = heartRateMeasurementRepository.readAverage(now);
         dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
@@ -55,6 +58,10 @@ public class SummaryViewModel extends AndroidViewModel {
 
     public LiveData<List<BloodPressureMeasurementRecord>> getDailyBloodPressureMeasurement() {
         return dailyBloodPressureMeasurement;
+    }
+
+    public LiveData<Double> getDailyBreathingRateMeasurement() {
+        return dailyBreathingRate;
     }
 
     public LiveData<Integer> getDailyDataExistence() {
