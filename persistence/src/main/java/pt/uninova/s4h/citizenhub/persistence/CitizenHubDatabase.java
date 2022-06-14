@@ -16,6 +16,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pt.uninova.s4h.citizenhub.persistence.dao.BloodPressureMeasurementDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.BreathingMeasurementDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.BreathingRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.DeviceDao;
@@ -32,6 +34,8 @@ import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearUploadDateDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.StepsSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.TagDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.BreathingRateMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.BreathingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesSnapshotMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
@@ -50,10 +54,13 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
 @Database(
         autoMigrations = {
                 @AutoMigration(from = 36, to = 37, spec = CitizenHubDatabase.AutoMigrationFrom36To37.class),
-                @AutoMigration(from = 37, to = 100, spec = CitizenHubDatabase.AutoMigrationFrom37To100.class)
+                @AutoMigration(from = 37, to = 100, spec = CitizenHubDatabase.AutoMigrationFrom37To100.class),
+                @AutoMigration(from = 100, to = 101, spec = CitizenHubDatabase.AutoMigrationFrom100To101.class)
         },
         entities = {
                 BloodPressureMeasurementRecord.class,
+                BreathingMeasurementRecord.class,
+                BreathingRateMeasurementRecord.class,
                 CaloriesMeasurementRecord.class,
                 CaloriesSnapshotMeasurementRecord.class,
                 DeviceRecord.class,
@@ -69,7 +76,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
                 StepsSnapshotMeasurementRecord.class,
                 TagRecord.class
         },
-        version = 100)
+        version = 101)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     @RenameColumn(tableName = "lumbar_training", fromColumnName = "trainingLength", toColumnName = "duration")
@@ -86,6 +93,9 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     @DeleteColumn(tableName = "lumbar_extension_training_measurement", columnName = "timestamp")
     @RenameColumn(tableName = "device", fromColumnName = "type", toColumnName = "agent")
     static class AutoMigrationFrom37To100 implements AutoMigrationSpec {
+    }
+
+    static class AutoMigrationFrom100To101 implements AutoMigrationSpec {
     }
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -109,6 +119,10 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public static ExecutorService executorService() {
         return EXECUTOR_SERVICE;
     }
+
+    public abstract BreathingMeasurementDao breathingMeasurementDao();
+
+    public abstract BreathingRateMeasurementDao breathingRateMeasurementDao();
 
     public abstract BloodPressureMeasurementDao bloodPressureMeasurementDao();
 
