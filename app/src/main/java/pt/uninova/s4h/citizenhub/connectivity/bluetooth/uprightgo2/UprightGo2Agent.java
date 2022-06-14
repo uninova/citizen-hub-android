@@ -17,7 +17,7 @@ public class UprightGo2Agent extends BluetoothAgent {
     static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.uprightgo2");
 
     static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            Measurement.TYPE_POSTURE_CORRECT
+            Measurement.TYPE_POSTURE
     )));
 
     static private final Set<UUID> supportedProtocolsIds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
@@ -39,7 +39,7 @@ public class UprightGo2Agent extends BluetoothAgent {
     protected MeasuringProtocol getMeasuringProtocol(int kind) {
         System.out.println("UprightGo2Agent.getMeasuringProtocol kind=" + kind);
 
-        if (kind == Measurement.TYPE_POSTURE_CORRECT) {
+        if (kind == Measurement.TYPE_POSTURE) {
             return new UprightGo2PostureProtocol(this.getConnection(), getSampleDispatcher(), this);
         }
 
