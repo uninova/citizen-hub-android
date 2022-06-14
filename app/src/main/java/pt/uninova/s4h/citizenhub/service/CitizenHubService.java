@@ -139,16 +139,7 @@ public class CitizenHubService extends LifecycleService {
 
         agentFactoryMap.put(Connection.CONNECTION_KIND_BLUETOOTH, new BluetoothAgentFactory(this));
         agentFactoryMap.put(Connection.CONNECTION_KIND_WEAROS, new WearOsAgentFactory(this));
-
-        //            for (Measurement<?> m : sample.getMeasurements()) {
-        //                if (m.getType() == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-        //                    final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
-        //
-        //                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingMeasurementRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
-        //                } else if (m.getType() == Measurement.TYPE_BLOOD_PRESSURE) {
-        //                    sampleRepository.addSample(sample);
-        //                }
-        //            }
+        
         final Observer<Sample> databaseWriter = sample -> {
             final WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(getApplicationContext());
 
