@@ -19,7 +19,7 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
 
     final public static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("wearos.wear.heartrate");
     final private static int kind = Measurement.TYPE_HEART_RATE;
-    final private static int wearProtocolDisable = 1000, wearProtocolEnable = 1001;
+    final private static int wearProtocolDisable = 100000, wearProtocolEnable = 100001;
     final String TAG = "WearOSHeartRateProtocol";
     CitizenHubService service;
 

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="42dp"
         android:layout_marginEnd="10dp"
         android:orientation="vertical">
 
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/primus_regular"
             android:text="@string/fragment_settings_title"
             android:textAlignment="center"
@@ -102,13 +102,23 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textInfo"
+            android:id="@+id/textInfoPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/primus_regular"
             android:text="@string/show_data_phone_not_connected"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textInfoNextFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/primus_regular"
+            android:text="@string/fragment_settings_next_page"
             android:textAlignment="center"
             android:textSize="12sp" />
     </LinearLayout>
