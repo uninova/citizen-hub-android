@@ -12,13 +12,7 @@
 
         <TextView
             android:id="@+id/textViewConnectionMethodsInfo"
-            style="@style/AppTheme.ConnectionMethod.Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center"
+            style="@style/AppTheme.ConnectionMethod.TextView"
             android:text="@string/dialog_connection_search_text" />
 
         <ListView
