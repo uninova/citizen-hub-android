@@ -136,7 +136,6 @@ public class CitizenHubService extends LifecycleService {
         final Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
         final DeviceRepository deviceRepository = new DeviceRepository(getApplication());
         final EnabledMeasurementRepository enabledMeasurementRepository = new EnabledMeasurementRepository(getApplication());
-        final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getApplication());
         final SampleRepository sampleRepository = new SampleRepository(getApplication());
         final TagRepository tagRepository = new TagRepository(getApplication());
 
