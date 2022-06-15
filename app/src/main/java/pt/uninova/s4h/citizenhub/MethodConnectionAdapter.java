@@ -13,8 +13,28 @@ import java.util.ArrayList;
 
 public class MethodConnectionAdapter extends ArrayAdapter<String> {
 
+    String bluetoothConnectionMethod = "Bluetooth", wearConnectionMethod = "WearOS";
+
     public MethodConnectionAdapter(@NonNull Context context, ArrayList<String> methods) {
         super(context, 0, methods);
+    }
+
+    private int getImageResource(String name){
+        if(name.equals(bluetoothConnectionMethod))
+            return R.drawable.ic_bluetooth;
+        else if (name.equals(wearConnectionMethod))
+            return R.drawable.ic_wearos;
+        else
+            return 0;
+    }
+
+    private void setClickListener(String name, View convertView){
+        if(name.equals(bluetoothConnectionMethod))
+            convertView.setOnClickListener(view -> Navigation.findNavController(convertView)
+                    .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchFragment()));
+        else if (name.equals(wearConnectionMethod))
+            convertView.setOnClickListener(view -> Navigation.findNavController(convertView)
+                    .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchWearosFragment()));
     }
 
     @Override
@@ -25,20 +45,9 @@ public class MethodConnectionAdapter extends ArrayAdapter<String> {
 
         ImageView methodImage = convertView.findViewById(R.id.image_method);
         TextView methodName = convertView.findViewById(R.id.text_view_title_method);
-        View finalConvertView = convertView;
-
-        if(name.equals("Bluetooth")) {
-            methodImage.setImageResource(R.drawable.ic_bluetooth);
-            methodName.setText(R.string.fragment_device_connection_method_bluetooth);
-            convertView.setOnClickListener(view -> Navigation.findNavController(finalConvertView)
-                    .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchFragment()));
-        }
-        else if (name.equals("WearOS")){
-            methodImage.setImageResource(R.drawable.ic_wearos);
-            methodName.setText(R.string.fragment_device_connection_method_wear);
-            convertView.setOnClickListener(view -> Navigation.findNavController(finalConvertView)
-                    .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchWearosFragment()));
-        }
+        methodImage.setImageResource(getImageResource(name));
+        methodName.setText(name);
+        setClickListener(name, convertView);
 
         return convertView;
     }
