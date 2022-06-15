@@ -13,14 +13,11 @@
         <TextView
             android:id="@+id/textViewConnectionMethodsInfo"
             style="@style/AppTheme.ConnectionMethod.TextView"
-            android:text="@string/dialog_connection_search_text" />
+            android:text="@string/dialog_connection_search_text"/>
 
         <ListView
             android:id="@+id/listViewConnectionMethods"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp" />
+            style="@style/AppTheme.ConnectionMethod.ListView"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

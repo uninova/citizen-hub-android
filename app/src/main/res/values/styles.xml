@@ -109,6 +109,13 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <style name="AppTheme.ConnectionMethod.ListView">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+    </style>
+
     <style name="AppTheme.Summary" />
 
     <style name="AppTheme.Summary.Item">
