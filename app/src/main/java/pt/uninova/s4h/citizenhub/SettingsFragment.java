@@ -21,13 +21,11 @@ import java.util.List;
 import java.util.Set;
 
 
-
-
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_EDIT_TEXT_PREFERENCE = "workdays";
     private static final String KEY_WORK_TIME_START = "workStart";
     private static final String KEY_WORK_TIME_END = "workEnd";
-    public static List<String> days;
+    public static Set<String> days;
     public static String workStart = "09:00";
     public static String workEnd = "17:00";
     private SharedPreferences preferences;
@@ -35,7 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        days = new ArrayList<>();
+        days = new HashSet<>();
         preferences = PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext());
     }
 
@@ -101,8 +99,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             if (preference instanceof MultiSelectListPreference) {
                 MultiSelectListPreference pref = (MultiSelectListPreference) preference;
                 if (getCurrentEntries(pref).size() > 0) {
-                    days = (getCurrentEntries(pref));
-                    preferences.edit().putStringSet("weekdays", new HashSet<>(days)).apply();
+                    days.clear();
+
+                    for (String i : getCurrentEntries(pref)) {
+                        days.add(i.toLowerCase());
+                    }
+
+                    preferences.edit().putStringSet("weekdays", days).apply();
 
                     pref.setSummary(getString(R.string.fragment_settings_current_work_days_text) + getCurrentEntries(pref));
                 } else {
