@@ -22,9 +22,12 @@
     <string name="fragment_data_title">Recent Measurements</string>
     <string name="fragment_data_hr_placeholder">Heart Rate:</string>
     <string name="fragment_data_steps_placeholder">Steps:</string>
-    <string name="fragment_data_next_page">Settings >></string>
     <string name="fragment_greeting_next_page">Swipe Left</string>
+    <string name="fragment_settings_next_page">Recent Measurements >></string>
+    <string name="fragment_data_next_page">More Info >></string>
     <string name="fragment_settings_title">Enable Measurements</string>
     <string name="fragment_settings_hr">Heart Rate</string>
     <string name="fragment_settings_steps">"    "Steps"    "</string>
+    <string name="fragment_data_heartrate_protocol_disabled">Heart Rate: - bpm"</string>
+    <string name="fragment_data_steps_protocol_disabled">"Steps: -"</string>
 </resources>

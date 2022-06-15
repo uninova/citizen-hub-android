@@ -35,9 +35,9 @@ import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.Tag;
 import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.EnabledMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.entity.Feature;
-import pt.uninova.s4h.citizenhub.persistence.repository.FeatureRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.EnabledMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
@@ -132,23 +132,14 @@ public class CitizenHubService extends LifecycleService {
     private void initAgentOrchestrator() {
         final Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
         final DeviceRepository deviceRepository = new DeviceRepository(getApplication());
-        final FeatureRepository featureRepository = new FeatureRepository(getApplication());
+        final EnabledMeasurementRepository enabledMeasurementRepository = new EnabledMeasurementRepository(getApplication());
         final LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getApplication());
         final SampleRepository sampleRepository = new SampleRepository(getApplication());
         final TagRepository tagRepository = new TagRepository(getApplication());
 
         agentFactoryMap.put(Connection.CONNECTION_KIND_BLUETOOTH, new BluetoothAgentFactory(this));
         agentFactoryMap.put(Connection.CONNECTION_KIND_WEAROS, new WearOsAgentFactory(this));
-
-        //            for (Measurement<?> m : sample.getMeasurements()) {
-        //                if (m.getType() == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-        //                    final MedXTrainingValue value = (MedXTrainingValue) m.getValue();
-        //
-        //                    lumbarExtensionTrainingRepository.create(new LumbarExtensionTrainingMeasurementRecord(value.getTimestamp(), (int) value.getDuration().getSeconds(), value.getScore(), value.getRepetitions(), value.getWeight(), value.getCalories()));
-        //                } else if (m.getType() == Measurement.TYPE_BLOOD_PRESSURE) {
-        //                    sampleRepository.addSample(sample);
-        //                }
-        //            }
+        
         final Observer<Sample> databaseWriter = sample -> {
             final WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(getApplicationContext());
 
@@ -167,13 +158,13 @@ public class CitizenHubService extends LifecycleService {
 
                 agent.addAgentListener(new AgentListener() {
                     @Override
-                    public void onMeasurementDisabled(Agent agent, int measurementKind) {
-                        featureRepository.remove(new Feature(agent.getSource().getAddress(), measurementKind));
+                    public void onMeasurementDisabled(Agent agent, int measurementType) {
+                        enabledMeasurementRepository.delete(agent.getSource().getAddress(), measurementType);
                     }
 
                     @Override
-                    public void onMeasurementEnabled(Agent agent, int measurementKind) {
-                        featureRepository.add(new Feature(agent.getSource().getAddress(), measurementKind));
+                    public void onMeasurementEnabled(Agent agent, int measurementType) {
+                        enabledMeasurementRepository.create(agent.getSource().getAddress(), measurementType);
                     }
                 });
             }
@@ -195,13 +186,14 @@ public class CitizenHubService extends LifecycleService {
             }
         });
 
-        deviceRepository.readAll(value -> {
+        deviceRepository.read(value -> {
             for (DeviceRecord i : value) {
                 orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
                     agent.enable();
-                    featureRepository.obtainKindsFromDevice(i.getAddress(), kindList -> {
-                        for (int kind : kindList) {
-                            agent.enableMeasurement(kind);
+
+                    enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
+                        for (final EnabledMeasurementRecord j : enabledMeasurements) {
+                            agent.enableMeasurement(j.getMeasurementType());
                         }
                     });
                 });

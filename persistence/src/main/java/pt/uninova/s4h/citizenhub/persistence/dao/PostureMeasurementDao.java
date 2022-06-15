@@ -16,18 +16,18 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSu
 @Dao
 public interface PostureMeasurementDao {
 
-    @Query(value = "SELECT posture_measurement.* FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<PostureMeasurementRecord>> get(LocalDate from, LocalDate to);
-
-    @Query("SELECT posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<PostureClassificationSum>> getSum(LocalDate from, LocalDate to);
-
     @Insert
     long insert(PostureMeasurementRecord record);
 
     @Query("INSERT INTO posture_measurement (sample_id, classification, duration) VALUES (:sampleId, :classification, :duration)")
-    void insert(Long sampleId, Integer classification, Double duration);
+    long insert(Long sampleId, Integer classification, Double duration);
+
+    @Query(value = "SELECT posture_measurement.* FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<List<PostureMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
+
+    @Query("SELECT posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<List<PostureClassificationSum>> selectClassificationSumLiveData(LocalDate from, LocalDate to);
 
 }

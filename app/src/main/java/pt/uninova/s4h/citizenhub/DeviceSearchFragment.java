@@ -64,17 +64,17 @@ public class DeviceSearchFragment extends BluetoothFragment {
 
     @Override
     protected void onBluetoothDenied() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToBluetoothDeniedFragment());
     }
 
     @Override
     protected void onBluetoothDisabled() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToBluetoothDisabledFragment());
     }
 
     @Override
     protected void onBluetoothUnsupported() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToBluetoothNotSupportedFragment());
     }
 
     @Override
@@ -88,12 +88,12 @@ public class DeviceSearchFragment extends BluetoothFragment {
 
     @Override
     protected void onLocationDisabled() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToLocationDisabledFragment());
     }
 
     @Override
     protected void onLocationUnsupported() {
-        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceListFragment());
+        Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToLocationNotSupportedFragment());
     }
 
     @Override
@@ -105,4 +105,6 @@ public class DeviceSearchFragment extends BluetoothFragment {
             scanner = null;
         }
     }
+
+
 }

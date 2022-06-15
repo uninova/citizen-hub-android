@@ -22,19 +22,19 @@ public class StepsSnapshotMeasurementRepository {
         stepsSnapshotMeasurementDao = citizenHubDatabase.stepsSnapshotMeasurementDao();
     }
 
-    public void add(StepsSnapshotMeasurementRecord record) {
+    public void create(StepsSnapshotMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> stepsSnapshotMeasurementDao.insert(record));
     }
 
-    public LiveData<List<StepsSnapshotMeasurementRecord>> get(LocalDate localDate) {
-        return stepsSnapshotMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<StepsSnapshotMeasurementRecord>> read(LocalDate localDate) {
+        return stepsSnapshotMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Integer> getMaximum(LocalDate localDate) {
-        return stepsSnapshotMeasurementDao.getMaximum(localDate, localDate.plusDays(1));
+    public LiveData<Integer> readMaximum(LocalDate localDate) {
+        return stepsSnapshotMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<WalkingInformation> getLatest(LocalDate localDate) {
-        return stepsSnapshotMeasurementDao.getLatest(localDate, localDate.plusDays(1));
+    public LiveData<WalkingInformation> readLatestWalkingInformation(LocalDate localDate) {
+        return stepsSnapshotMeasurementDao.selectLatestWalkingInformationLiveData(localDate, localDate.plusDays(1));
     }
 }

@@ -15,17 +15,18 @@ import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesMeasurementRecord;
 @Dao
 public interface CaloriesMeasurementDao {
 
+    @Insert
+    long insert(CaloriesMeasurementRecord record);
+
+    @Query("INSERT INTO calories_measurement (sample_id, value) VALUES (:sampleId, :value)")
+    long insert(Long sampleId, Double value);
+
     @Query(value = "SELECT calories_measurement.* FROM calories_measurement INNER JOIN sample ON calories_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<CaloriesMeasurementRecord>> get(LocalDate from, LocalDate to);
+    LiveData<List<CaloriesMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
 
     @Query(value = "SELECT MAX(value) FROM calories_measurement INNER JOIN sample ON calories_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<Double> getMaximum(LocalDate from, LocalDate to);
+    LiveData<Double> selectMaximumLiveData(LocalDate from, LocalDate to);
 
-    @Insert
-    void insert(CaloriesMeasurementRecord record);
-
-    @Query("INSERT INTO calories_measurement (sample_id, value) VALUES (:sampleId, :value)")
-    void insert(Long sampleId, Double value);
 }

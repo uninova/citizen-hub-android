@@ -11,25 +11,25 @@ import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.DistanceSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.DistanceSnapshotMeasurementRecord;
 
-public class DailyDistanceMeasurementRepository {
+public class DistanceSnapshotMeasurementRepository {
 
     private final DistanceSnapshotMeasurementDao distanceSnapshotMeasurementDao;
 
-    public DailyDistanceMeasurementRepository(Context context) {
+    public DistanceSnapshotMeasurementRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
 
         distanceSnapshotMeasurementDao = citizenHubDatabase.distanceSnapshotMeasurementDao();
     }
 
-    public void add(DistanceSnapshotMeasurementRecord record) {
+    public void create(DistanceSnapshotMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> distanceSnapshotMeasurementDao.insert(record));
     }
 
-    public LiveData<List<DistanceSnapshotMeasurementRecord>> get(LocalDate localDate) {
-        return distanceSnapshotMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<DistanceSnapshotMeasurementRecord>> read(LocalDate localDate) {
+        return distanceSnapshotMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Double> getMaximum(LocalDate localDate) {
-        return distanceSnapshotMeasurementDao.getMaximum(localDate, localDate.plusDays(1));
+    public LiveData<Double> readMaximum(LocalDate localDate) {
+        return distanceSnapshotMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
 }

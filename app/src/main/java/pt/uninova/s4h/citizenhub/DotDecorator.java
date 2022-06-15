@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class DotDecorator implements DayViewDecorator {
 
-    final private int color;
-    final private Set<LocalDate> localDates;
+    private final int color;
+    private Set<LocalDate> localDates;
 
     public DotDecorator(int color) {
         this(color, new HashSet<>());
@@ -30,6 +30,10 @@ public class DotDecorator implements DayViewDecorator {
 
     public Set<LocalDate> getLocalDates() {
         return localDates;
+    }
+
+    public void setLocalDates(Set<LocalDate> localDates) {
+        this.localDates = localDates;
     }
 
     @Override

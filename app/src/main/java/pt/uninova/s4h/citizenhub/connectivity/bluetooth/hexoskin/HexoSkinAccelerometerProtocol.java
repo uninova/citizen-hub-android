@@ -13,6 +13,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.data.ActivityMeasurement;
 import pt.uninova.s4h.citizenhub.data.CadenceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 
@@ -54,7 +55,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                         lastStepCount = 0;
                     }
 
-                    // measurements[measurementIndex++] = new StepsSnapshotMeasurement(stepCount - lastStepCount);
+                    measurements[measurementIndex++] = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, stepCount);
 
                     lastStepCount = stepCount;
                 }

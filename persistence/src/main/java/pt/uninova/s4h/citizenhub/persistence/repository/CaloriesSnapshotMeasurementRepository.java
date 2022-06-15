@@ -11,25 +11,25 @@ import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesSnapshotMeasurementRecord;
 
-public class DailyCaloriesMeasurementRepository {
+public class CaloriesSnapshotMeasurementRepository {
 
     private final CaloriesSnapshotMeasurementDao caloriesSnapshotMeasurementDao;
 
-    public DailyCaloriesMeasurementRepository(Context context) {
+    public CaloriesSnapshotMeasurementRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
 
         caloriesSnapshotMeasurementDao = citizenHubDatabase.caloriesSnapshotMeasurementDao();
     }
 
-    public void add(CaloriesSnapshotMeasurementRecord record) {
+    public void create(CaloriesSnapshotMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> caloriesSnapshotMeasurementDao.insert(record));
     }
 
-    public LiveData<List<CaloriesSnapshotMeasurementRecord>> get(LocalDate localDate) {
-        return caloriesSnapshotMeasurementDao.get(localDate, localDate.plusDays(1));
+    public LiveData<List<CaloriesSnapshotMeasurementRecord>> read(LocalDate localDate) {
+        return caloriesSnapshotMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Double> getMaximum(LocalDate localDate) {
-        return caloriesSnapshotMeasurementDao.getMaximum(localDate, localDate.plusDays(1));
+    public LiveData<Double> readMaximum(LocalDate localDate) {
+        return caloriesSnapshotMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
 }

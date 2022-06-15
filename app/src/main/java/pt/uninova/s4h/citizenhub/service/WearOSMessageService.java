@@ -3,7 +3,6 @@ package pt.uninova.s4h.citizenhub.service;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.Task;
@@ -21,16 +20,14 @@ import java.util.concurrent.ExecutionException;
 
 import pt.uninova.s4h.citizenhub.connectivity.wearos.WearOSConnection;
 
-
 public class WearOSMessageService extends FragmentActivity implements MessageClient.OnMessageReceivedListener {
 
     private String nodeIdString, mobileIDString;
     private static final String TAG = "WearOSMessageService";
-    private Map<String,WearOSConnection> connectionMap = new HashMap<>();
+    private final Map<String,WearOSConnection> connectionMap = new HashMap<>();
     String citizenHubPath = "/citizenhub_";
     String checkConnectionPath = "checkConnection";
     Context appContext;
-    private MessageClient client;
 
     @Override
     protected void onDestroy() {
@@ -79,23 +76,20 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
         Wearable.getMessageClient(service).addListener(this);
         WearOSConnection wearOSConnection = new WearOSConnection(address);
         connectionMap.put(address, wearOSConnection);
-        new SendMessage(citizenHubPath+"bf405e51","Connected",appContext).start();
+        new SendMessage(citizenHubPath,"Ready",appContext).start();
 
-        MessageClient.OnMessageReceivedListener listener = new MessageClient.OnMessageReceivedListener() {
-            @Override
-            public void onMessageReceived(@NonNull MessageEvent messageEvent) {
-                String message = new String(messageEvent.getData());
-                String[] messageParsed = message.split(",",3);
-                Date time = new Date(Long.parseLong(messageParsed[1]));
-                System.out.println("MeasurementValue: " + messageParsed[0] +
-                        " | MeasurementTime: " + time +
-                        " | MeasurementKind: " + Integer.parseInt(messageParsed[2]) +
-                        " | from nodeID: " + messageEvent.getSourceNodeId() +
-                        " | from path: " + messageEvent.getPath());
-            }
+        MessageClient.OnMessageReceivedListener listener = messageEvent -> {
+            String message = new String(messageEvent.getData());
+            String[] messageParsed = message.split(",",3);
+            Date time = new Date(Long.parseLong(messageParsed[1]));
+            System.out.println("MeasurementValue: " + messageParsed[0] +
+                    " | MeasurementTime: " + time +
+                    " | MeasurementKind: " + Integer.parseInt(messageParsed[2]) +
+                    " | from nodeID: " + messageEvent.getSourceNodeId() +
+                    " | from path: " + messageEvent.getPath());
         };
 
-        client = Wearable.getMessageClient(service);
+        MessageClient client = Wearable.getMessageClient(service);
         client.addListener(listener);
 
         return wearOSConnection;
@@ -121,7 +115,7 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
 
                     if(connectionMap.containsKey(node.getId())) {
                         Task<Integer> sendMessageTask =
-                                Wearable.getMessageClient(context).sendMessage(nodeIdString, path, message.getBytes());
+                                Wearable.getMessageClient(context).sendMessage(node.getId(), path, message.getBytes());
                         try {
                             Integer result = Tasks.await(sendMessageTask);
                         } catch (ExecutionException | InterruptedException exception) {
@@ -138,12 +132,10 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
     class GetConnectedNode extends Thread {
         String type;
         Context context;
-
         GetConnectedNode(String t, Context c) {
             type=t;
             context = c;
         }
-
         public void run() {
             if(type.equals("mobile")){
                 Task<Node> nodeTask = Wearable.getNodeClient(context).getLocalNode();
@@ -153,7 +145,6 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
-
             }else if(type.equals("wear")){
                 Task<List<Node>> nodeTaskList = Wearable.getNodeClient(context).getConnectedNodes();
                 try {
