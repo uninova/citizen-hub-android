@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MethodConnectionFragment extends Fragment {
 
     List<String> connectionMethodsAvailable = new ArrayList<>(Arrays.asList("Bluetooth", "WearOS"));
-    private MethodConnectionAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MethodConnectionFragment extends Fragment {
 
         ListView listConnectionMethods = result.findViewById(R.id.listViewConnectionMethods);
         ArrayList<String> connectionMethods = new ArrayList<>(connectionMethodsAvailable);
-        adapter = new MethodConnectionAdapter(getContext(),connectionMethods);
+        MethodConnectionAdapter adapter = new MethodConnectionAdapter(requireContext(), connectionMethods);
         listConnectionMethods.setAdapter(adapter);
         return result;
     }

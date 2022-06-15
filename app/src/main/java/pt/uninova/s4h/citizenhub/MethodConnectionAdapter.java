@@ -25,18 +25,17 @@ public class MethodConnectionAdapter extends ArrayAdapter<String> {
 
         ImageView methodImage = convertView.findViewById(R.id.image_method);
         TextView methodName = convertView.findViewById(R.id.text_view_title_method);
+        View finalConvertView = convertView;
 
         if(name.equals("Bluetooth")) {
             methodImage.setImageResource(R.drawable.ic_bluetooth);
-            methodName.setText("Bluetooth");
-            View finalConvertView = convertView;
+            methodName.setText(R.string.fragment_device_connection_method_bluetooth);
             convertView.setOnClickListener(view -> Navigation.findNavController(finalConvertView)
                     .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchFragment()));
         }
         else if (name.equals("WearOS")){
             methodImage.setImageResource(R.drawable.ic_wearos);
-            methodName.setText("WearOS");
-            View finalConvertView = convertView;
+            methodName.setText(R.string.fragment_device_connection_method_wear);
             convertView.setOnClickListener(view -> Navigation.findNavController(finalConvertView)
                     .navigate(MethodConnectionFragmentDirections.actionDeviceConnectionMethodFragmentToDeviceSearchWearosFragment()));
         }
