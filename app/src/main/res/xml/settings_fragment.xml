@@ -9,7 +9,7 @@
 
         </PreferenceCategory>
         <MultiSelectListPreference
-            android:key="workdays"
+            android:key="workDays"
             android:title="@string/fragment_settings_work_days"
             android:summary="@string/fragment_settings_work_days_title"
             android:entries="@array/workdays"
