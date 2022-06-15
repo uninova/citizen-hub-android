@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,14 +17,14 @@ import java.util.Set;
 
 public class WorkTimeRangeConverter {
 
-    private static final String KEY_WORK_DAYS = "workdays";
+    private static final String KEY_WORK_DAYS = "workDays";
     private static final String KEY_WORK_TIME_START = "workStart";
     private static final String KEY_WORK_TIME_END = "workEnd";
     private static volatile WorkTimeRangeConverter instance = null;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     private LocalTime workStart;
     private LocalTime workEnd;
-    private Set<String> workDays;
+    private Set<DayOfWeek> workDays;
 
     private WorkTimeRangeConverter(Context context) {
         workDays = new HashSet<>();
@@ -47,29 +48,23 @@ public class WorkTimeRangeConverter {
     }
 
     public void load(Context context) {
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         workStart = stringToLocalTime(preferences.getString(KEY_WORK_TIME_START, "09:00"));
         workEnd = stringToLocalTime(preferences.getString(KEY_WORK_TIME_END, "17:00"));
         workDays.clear();
 
-        for (String i : preferences.getStringSet("weekdays", new HashSet<>())) {
-            workDays.add(i.toLowerCase());
+        for (String i : preferences.getStringSet(KEY_WORK_DAYS, new HashSet<>())) {
+            workDays.add(DayOfWeek.of(Integer.parseInt(i)));
         }
     }
 
     public boolean isWorkTime(LocalDateTime localDateTime) {
-        return workDays.contains(localDateTime.getDayOfWeek().name().toLowerCase()) && localDateTime.toLocalTime().isAfter(workStart) && localDateTime.toLocalTime().isBefore(workEnd);
+        return workDays.contains(localDateTime.getDayOfWeek()) && localDateTime.toLocalTime().isAfter(workStart) && localDateTime.toLocalTime().isBefore(workEnd);
     }
 
-    public void refreshTimeVariables(Context context, Set<String> weekdays) {
-        refreshWeekDays(weekdays);
+    public void refreshTimeVariables(Context context) {
         load(context);
-    }
-
-    public void refreshWeekDays(Set<String> weekDays) {
-        workDays = weekDays;
     }
 
     public LocalTime getWorkStart() {
