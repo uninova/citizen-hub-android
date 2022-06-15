@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class WorkTimeRangeConverter {
@@ -22,11 +23,11 @@ public class WorkTimeRangeConverter {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     private LocalTime workStart;
     private LocalTime workEnd;
-    private List<String> workDays;
+    private Set<String> workDays;
 
     private WorkTimeRangeConverter(Context context) {
+        workDays = new HashSet<>();
         load(context);
-        workDays = new ArrayList<>();
     }
 
     public static WorkTimeRangeConverter getInstance(Context context) {
@@ -51,41 +52,23 @@ public class WorkTimeRangeConverter {
 
         workStart = stringToLocalTime(preferences.getString(KEY_WORK_TIME_START, "09:00"));
         workEnd = stringToLocalTime(preferences.getString(KEY_WORK_TIME_END, "17:00"));
-        Set<String> workDaysSet = preferences.getStringSet("weekdays", new HashSet<>());
+        workDays.clear();
 
-        if (workDaysSet != null & workDays != null) {
-            workDays.clear();
-            workDays.addAll(workDaysSet);
+        for (String i : preferences.getStringSet("weekdays", new HashSet<>())) {
+            workDays.add(i.toLowerCase());
         }
     }
 
-    public int isNowWorkTime() {
-
-        if (workDays != null) {
-            for (String day : workDays) {
-
-                if (day.equalsIgnoreCase(LocalDateTime.now().getDayOfWeek().name())) {
-
-                    LocalTime now = LocalTime.parse(LocalTime.now().format(formatter));
-
-                    if (now.isAfter(workStart) && now.isBefore(workEnd)) {
-                        return 1;
-                    }
-
-                    return 0;
-                }
-            }
-        }
-
-        return 0;
+    public boolean isWorkTime(LocalDateTime localDateTime) {
+        return workDays.contains(localDateTime.getDayOfWeek().name().toLowerCase()) && localDateTime.toLocalTime().isAfter(workStart) && localDateTime.toLocalTime().isBefore(workEnd);
     }
 
-    public void refreshTimeVariables(Context context, List<String> weekdays) {
+    public void refreshTimeVariables(Context context, Set<String> weekdays) {
         refreshWeekDays(weekdays);
         load(context);
     }
 
-    public void refreshWeekDays(List<String> weekDays) {
+    public void refreshWeekDays(Set<String> weekDays) {
         workDays = weekDays;
     }
 
