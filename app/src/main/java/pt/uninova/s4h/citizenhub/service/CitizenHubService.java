@@ -15,7 +15,10 @@ import androidx.lifecycle.LifecycleService;
 import androidx.preference.PreferenceManager;
 import androidx.work.WorkManager;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -139,12 +142,12 @@ public class CitizenHubService extends LifecycleService {
 
         agentFactoryMap.put(Connection.CONNECTION_KIND_BLUETOOTH, new BluetoothAgentFactory(this));
         agentFactoryMap.put(Connection.CONNECTION_KIND_WEAROS, new WearOsAgentFactory(this));
-        
+
         final Observer<Sample> databaseWriter = sample -> {
             final WorkTimeRangeConverter workTimeRangeConverter = WorkTimeRangeConverter.getInstance(getApplicationContext());
 
             sampleRepository.create(sample, sampleId -> {
-                if (workTimeRangeConverter.isNowWorkTime() > 0) {
+                if (workTimeRangeConverter.isWorkTime(LocalDateTime.ofInstant(sample.getTimestamp(), ZoneId.systemDefault()))) {
                     tagRepository.create(sampleId, Tag.LABEL_CONTEXT_WORK);
                 }
             });
