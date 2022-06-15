@@ -304,7 +304,7 @@
     <string name="welcome_slide_view_pager_thank_you_message">Vielen Dank für die Verwendung von CitizenHub</string>
     <string name="welcome_slide_view_pager_welcome_title">Willkommen</string>
     <string name="fragment_settings_choose_work_days_text">Wählen Sie Ihre Arbeitstage</string>
-    <string name="fragment_settings_current_work_days_text">Aktuelle Arbeitstage: </string>
+    <string name="fragment_settings_current_work_days_text">Aktuelle Arbeitstage:</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Datei konnte nicht hochgeladen werden. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Datei wurde erfolgreich hochgeladen. "</string>
     <string name="fragment_logout_toast_failure_text">"Nicht ausloggen. "</string>
