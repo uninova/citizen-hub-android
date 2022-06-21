@@ -114,6 +114,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         return new Pair<>(serviceUuid, characteristicUuid);
     }
 
+
+    public void connect(BluetoothDevice bluetoothDevice, int bluetoothTransport) {
+        bluetoothDevice.connectGatt(null, true, this, bluetoothTransport);
+    }
+
     public void connect(BluetoothDevice bluetoothDevice) {
         bluetoothDevice.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
     }

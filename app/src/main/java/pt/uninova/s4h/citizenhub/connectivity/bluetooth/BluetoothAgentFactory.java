@@ -61,6 +61,9 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
             }
         });
 
-        bluetoothConnection.connect(bluetoothDevice);
+        if (bluetoothDevice.getName().startsWith("HX"))
+            bluetoothConnection.connect(bluetoothDevice, BluetoothDevice.TRANSPORT_AUTO);
+        else
+            bluetoothConnection.connect(bluetoothDevice);
     }
 }

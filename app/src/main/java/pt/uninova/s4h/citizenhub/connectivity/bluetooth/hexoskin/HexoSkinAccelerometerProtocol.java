@@ -12,6 +12,9 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.data.ActivityMeasurement;
 import pt.uninova.s4h.citizenhub.data.CadenceMeasurement;
+import pt.uninova.s4h.citizenhub.data.CaloriesSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
@@ -42,7 +45,7 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                 boolean isActivityPresent = (flag & 0x02) != 0;
                 boolean isCadencePresent = (flag & 0x04) != 0;
 
-                final int measurementSize = (isStepCountPresent ? 1 : 0) + (isActivityPresent ? 1 : 0) + (isCadencePresent ? 1 : 0);
+                final int measurementSize = (isStepCountPresent ? 3 : 0) + (isActivityPresent ? 1 : 0) + (isCadencePresent ? 1 : 0);
                 int measurementIndex = 0;
 
                 pt.uninova.s4h.citizenhub.data.Measurement<?>[] measurements = new pt.uninova.s4h.citizenhub.data.Measurement[measurementSize];
@@ -56,6 +59,8 @@ public class HexoSkinAccelerometerProtocol extends BluetoothMeasuringProtocol {
                     }
 
                     measurements[measurementIndex++] = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, stepCount);
+                    measurements[measurementIndex++] = new DistanceSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, stepCount * 0.762);
+                    measurements[measurementIndex++] = new CaloriesSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, stepCount * 0.04);
 
                     lastStepCount = stepCount;
                 }
