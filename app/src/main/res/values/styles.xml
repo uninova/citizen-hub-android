@@ -355,4 +355,18 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="BluetoothAndLocationRequestsTextView" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">@color/colorS4HDarkGreyVariant</item>
+        <item name="android:fontFamily">@font/primus</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawableStart">@android:drawable/ic_dialog_alert</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingRight">40dp</item>
+    </style>
+
 </resources>

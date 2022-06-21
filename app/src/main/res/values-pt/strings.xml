@@ -58,7 +58,7 @@
     <string name="fragment_about_button_text_licenses_of_use">termos e condições</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Informação sobre Licença de Código Aberto</string>
     <string name="fragment_about_button_text_privacy_policy_button">política de privacidade</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Desenvolvido por]]></string>
     <string name="fragment_about_european_commission_info">Este trabalho foi desenvolvido pelo projecto SMART4HEALTH financiado
         pelo programa de investigação e inovação Horizon 2020 da União Europeia ao abrigo do acordo de subvenção n.º 826117</string>
@@ -294,7 +294,7 @@
     <string name="fragment_logout_toast_failure_text">"Não foi possível terminar sessão. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Ficheiro carregado com sucesso. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"O ficheiro não foi carregado. "</string>
-    <string name="fragment_settings_current_work_days_text">Dias de trabalho atuais:" "</string>
+    <string name="fragment_settings_current_work_days_text">Dias de trabalho atuais:</string>
     <string name="fragment_settings_choose_work_days_text">Escolha os seus dias de trabalho</string>
     <string name="welcome_slide_view_pager_welcome_title">Bem-vindo</string>
     <string name="welcome_slide_view_pager_thank_you_message">Obrigado por utilizar o CitizenHub</string>
@@ -415,5 +415,8 @@
     <string name="measurement_type.27">Posição</string>
     <string name="measurement_type.28">Posição</string>
     <string name="lumbar_training_calories_label">Calorias</string>
+    <string name="drawer_smart4health_title">Plataforma Smart4Health</string>
+    <string name="measurement_type.29">Postura</string>
+    <string name="breathing_rate_title">Frequência respiratória média</string>
 
 </resources>

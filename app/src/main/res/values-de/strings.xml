@@ -57,7 +57,7 @@
     <string name="fragment_about_button_text_licenses_of_use">Nutzungsbedingungen</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Informationen zur Open-Source-Lizenz</string>
     <string name="fragment_about_button_text_privacy_policy_button">Datenschutzrichtlinien</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Entwickelt von]]></string>
     <string name="fragment_about_european_commission_info">"Diese Entwicklung erfolgte im Smart4Health Projekt, das eine Förderung durch das Horizon 2020 Forschungs- und Innovationsprogramm der Europäischen Union unter der Zuwendungsvereinbarung Nr. 826117 erhielt. "</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
@@ -304,7 +304,7 @@
     <string name="welcome_slide_view_pager_thank_you_message">Vielen Dank für die Verwendung von CitizenHub</string>
     <string name="welcome_slide_view_pager_welcome_title">Willkommen</string>
     <string name="fragment_settings_choose_work_days_text">Wählen Sie Ihre Arbeitstage</string>
-    <string name="fragment_settings_current_work_days_text">Aktuelle Arbeitstage: </string>
+    <string name="fragment_settings_current_work_days_text">Aktuelle Arbeitstage:</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Datei konnte nicht hochgeladen werden. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Datei wurde erfolgreich hochgeladen. "</string>
     <string name="fragment_logout_toast_failure_text">"Nicht ausloggen. "</string>
@@ -386,5 +386,8 @@
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
     <string name="lumbar_training_calories_label">Kalorien</string>
+    <string name="drawer_smart4health_title">Smart4Health-Plattform</string>
+    <string name="measurement_type.29">Haltung</string>
+    <string name="breathing_rate_title">Durchschnittliche atemfrequenz</string>
 
 </resources>

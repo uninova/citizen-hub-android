@@ -56,7 +56,7 @@
     <string name="fragment_about_button_text_licenses_of_use">terms and conditions</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Open Source License info</string>
     <string name="fragment_about_button_text_privacy_policy_button">privacy policy</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Developed by]]></string>
     <string name="fragment_about_european_commission_info">This work has been developed by SMART4HEALTH project funded by the European Union\'s Horizon 2020 research and innovation programme under grant agreement No 826117</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
@@ -68,7 +68,7 @@
     <string name="fragment_authentication_button_login">login</string>
     <string name="fragment_authentication_img_s4h_logo_image_content">img_s4h_logo</string>
     <string name="fragment_authentication_login_requirement_text">CitizenHub requires you to register and login in the Smart4Health platform</string>
-    <string name="fragment_authentication_login_text_view">Your health and well-being data in one place</string>
+    <string name="fragment_authentication_login_text_view">Collect health and well-being data in a single app</string>
     <string name="fragment_authentication_orange_circular_shape">Orange circular Shape</string>
     <string name="fragment_authentication_text_login">login</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
@@ -222,7 +222,7 @@
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
     <string name="layout_fragment_user_sign_out">Sign Out</string>
-    <string name="layout_list_item_feature_unknown_feature">unknown feature</string>
+    <string name="layout_list_item_feature_unknown_feature">unknown enabledMeasurementRecord</string>
     <string name="layout_nav_header_main_logo_content_description">Smart 4 Health icon</string>
     <string name="layout_nav_header_main_poweredby">Powered By</string>
     <string name="location_disable_button">Don\'t turn on location</string>
@@ -311,7 +311,7 @@
     <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
-    <string name="fragment_settings_current_work_days_text">Current work days: " "</string>
+    <string name="fragment_settings_current_work_days_text">Current work days:</string>
     <string name="fragment_settings_choose_work_days_text">Choose your working days</string>
     <string name="welcome_slide_view_pager_welcome_title">Welcome</string>
     <string name="welcome_slide_view_pager_thank_you_message">Thank you for using CitizenHub</string>
@@ -369,19 +369,19 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
-    <string-array name="workday_values">
-        <item>0</item>
+    <string-array name="workday_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
     <string-array name="empty_array" />
-    <string name="login_fragment_login_text_view">By authenticating you will be able to upload and keep track of your health reports.</string>
+    <string name="login_fragment_login_text_view">You can use Citizen Hub to connect to the Smart4Health platform</string>
     <string name="fragment_smart4health_account_log_in_title">Login</string>
-    <string name="fragment_authentication_skip_text">You may skip authentication and authenticate later\n\n<b><i>Skip</i></b></string>
+    <string name="fragment_authentication_skip_text"><b><i>Skip</i></b></string>
     <string name="fragment_summary_text_view_blood_pressure_text">Systolic: %1$.1f mmHg Diastolic: %2$.1f:mmHg</string>
     <string name="fragment_about_email_type" translatable="false">plain/text</string>
     <string name="fragment_authentication_spannable_string_citizen" translatable="false">Citizen</string>
@@ -400,8 +400,13 @@
     <string name="open_source_licenses_fragment_label">Open Source Licenses</string>
 
     <!-- Model 2 -->
+    <string name="drawer_smart4health_title">Smart4Health Platform</string>
+
     <string name="heart_rate_title">Average heart rate</string>
     <string name="heart_rate_value" translatable="false">%1$.0f bpm</string>
+
+    <string name="breathing_rate_title">Average breathing rate</string>
+    <string name="breathing_rate_value" translatable="false">%1$.0f rpm</string>
 
     <string name="posture_title">Posture</string>
     <string name="posture_correct_label">Correct</string>
@@ -457,7 +462,18 @@
     <string name="measurement_type.26">Motion</string>
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
-
+    <string name="measurement_type.29">Posture</string>
+    <string name="fragment_location_disabled_button_text">Device location settings</string>
+    <string name="fragment_location_not_supported_text_view">Location is not supported on this device</string>
+    <string name="fragment_location_disabled_text_view">Location is currently disabled.\n Bluetooth pairing requires your device to have location enabled, press the button below to turn it on in Android Settings</string>
+    <string name="fragment_location_not_supported_label">Location not supported</string>
+    <string name="fragment_bluetooth_unsupported_text_view">Bluetooth is not supported on this device</string>
+    <string name="fragment_bluetooth_disabled_text_view">Bluetooth is currently disabled.\n Bluetooth pairing requires your device to have bluetooth enabled, press the button below to turn it on in Android Settings</string>
+    <string name="fragment_bluetooth_disabled_button_text">Bluetooth device settings</string>
+    <string name="fragment_bluetooth_unsupported_label">Bluetooth Unsupported</string>
+    <string name="fragment_bluetooth_disabled_label">Bluetooth Disabled</string>
+    <string name="fragment_bluetooth_denied_text_view">Bluetooth permissions were not granted</string>
+    <string name="fragment_bluetooth_denied_label">Bluetooth Permissions Denied</string>
 </resources>
 
 

@@ -15,17 +15,18 @@ import pt.uninova.s4h.citizenhub.persistence.entity.PulseRateMeasurementRecord;
 @Dao
 public interface PulseRateMeasurementDao {
 
+    @Insert
+    long insert(PulseRateMeasurementRecord record);
+
+    @Query("INSERT INTO pulse_rate_measurement (sample_id, value) VALUES (:sampleId, :value)")
+    long insert(Long sampleId, Double value);
+
     @Query(value = "SELECT pulse_rate_measurement.* FROM pulse_rate_measurement INNER JOIN sample ON pulse_rate_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<PulseRateMeasurementRecord>> get(LocalDate from, LocalDate to);
+    LiveData<List<PulseRateMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
 
     @Query("SELECT AVG(value) FROM pulse_rate_measurement INNER JOIN sample ON pulse_rate_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<Double> getAverage(LocalDate from, LocalDate to);
+    LiveData<Double> selectAverageLiveData(LocalDate from, LocalDate to);
 
-    @Insert
-    void insert(PulseRateMeasurementRecord record);
-
-    @Query("INSERT INTO pulse_rate_measurement (sample_id, value) VALUES (:sampleId, :value)")
-    void insert(Long sampleId, Double value);
 }

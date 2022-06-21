@@ -73,14 +73,15 @@ public abstract class BluetoothFragment extends Fragment {
                 final Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 
                 ActivityResultLauncher<Intent> enableBluetoothLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         requestPermissionLauncher.launch(permissions);
                     } else {
                         onBluetoothDisabled();
                     }
                 });
-
                 enableBluetoothLauncher.launch(intent);
+
             }
 
         }

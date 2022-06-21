@@ -57,7 +57,7 @@
     <string name="fragment_about_button_text_licenses_of_use">Conditions générales d\'utilisation</string>
     <string name="fragment_about_button_text_open_source_licenses_fragment">Informations sur la licence Open Source</string>
     <string name="fragment_about_button_text_privacy_policy_button">politique de confidentialité</string>
-    <string name="fragment_about_contact_email">helpdesk@smart4health.eu</string>
+    <string name="fragment_about_contact_email">citizenhub@uninova.pt</string>
     <string name="fragment_about_developedBy"><![CDATA[Développé par]]>.</string>
     <string name="fragment_about_european_commission_info">Cette plateforme a été développée par le projet SMART4HEALTH, financé par le programme de recherche et d\'innovation Horizon 2020 de l\'Union européenne, contrat n° 826117.</string>
     <string name="fragment_about_image_view__kbz_logo">KBZ_Logo</string>
@@ -276,7 +276,7 @@
     <string name="fragment_logout_toast_failure_text">"Echec de la déconnexion. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Fichier téléchargé avec succès. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Echec du téléchargement du fichier. "</string>
-    <string name="fragment_settings_current_work_days_text">Journées de travail en cours: </string>
+    <string name="fragment_settings_current_work_days_text">Journées de travail en cours:</string>
     <string name="fragment_settings_choose_work_days_text">Choisissez vos jours ouvrables</string>
     <string name="welcome_slide_view_pager_welcome_title">Bienvenue</string>
     <string name="welcome_slide_view_pager_thank_you_message">Merci d’avoir utilisé CitizenHub</string>
@@ -386,4 +386,7 @@
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
     <string name="lumbar_training_calories_label">Calories</string>
+    <string name="drawer_smart4health_title">Plateforme Smart4Health</string>
+    <string name="measurement_type.29">Posture</string>
+    <string name="breathing_rate_title">Fréquence respiratoire moyenne</string>
 </resources>

@@ -15,13 +15,14 @@ import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementReco
 @Dao
 public interface BloodPressureMeasurementDao {
 
-    @Query(value = "SELECT blood_pressure_measurement.* FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
-    @TypeConverters(EpochTypeConverter.class)
-    LiveData<List<BloodPressureMeasurementRecord>> get(LocalDate from, LocalDate to);
-
     @Insert
-    void insert(BloodPressureMeasurementRecord record);
+    long insert(BloodPressureMeasurementRecord record);
 
     @Query("INSERT INTO blood_pressure_measurement (sample_id, systolic, diastolic, mean_arterial_pressure) VALUES (:sampleId, :systolic, :diastolic, :meanArterialPressure)")
-    void insert(Long sampleId, Double systolic, Double diastolic, Double meanArterialPressure);
+    long insert(Long sampleId, Double systolic, Double diastolic, Double meanArterialPressure);
+
+    @Query("SELECT blood_pressure_measurement.* FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
+    @TypeConverters(EpochTypeConverter.class)
+    LiveData<List<BloodPressureMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
+
 }

@@ -1,0 +1,44 @@
+Die Anwendung Citizen Hub (im Folgenden auch: „App“) ermöglicht eine benutzerfreundliche Schnittstelle zur Integration verschiedener intelligenter Geräte und erleichtert die Erfassung gesundheitsbezogener und gesundheitsbezogener Daten auf aggregierte Weise. Diese App wird bereitgestellt von UNINOVA – Instituto de Desenvolvimento de Novas Tecnologias, FCT Campus, 2829-516 Caparica und von Knowledgebiz Consulting, Parque Tecnológico da Mutela, Av. Aliança Povo MFA, Ed.3 Gab R204B 2804-537 Almada, Portugal (im Folgenden: „wir“ oder „Anbieter“. Für Ihre (im Folgenden: „Sie“ oder „Nutzer“) Nutzung der App, gelten die vertraglichen Bestimmungen der folgenden Nutzungsbedingungen: 
+
+
+1. Registrierung und Login, Vertragsverhältnis und Benutzerkonto
+
+Es gibt keine Registrierung, Anmeldung, Vertragsverhältnis oder Benutzerkonto. 
+
+
+2. Laufzeit und Kündigung
+
+Es besteht kein Vertragsverhältnis und somit keine Laufzeit oder Kündigung. 
+
+
+3. Nutzung der Dienste, Nutzerverpflichtungen, verbotenes Verhalten
+
+3.1 Die Citizen Hub App ist für Sie kostenlos. Wir übernehmen keine Garantie oder Gewährleistung für bestimmte Funktionalitäten oder eine bestimmte Verfügbarkeit, und wir behalten uns das Recht vor, Funktionalitäten unserer Dienstleistungen zu ändern, es sei denn, es wurde etwas anderes vereinbart, für den Nutzer unangemessen oder gesetzlich vorgeschrieben. 
+
+3.2 Sie dürfen die Citizen Hub-App nur für die Erhebung gesundheitsbezogener oder gesundheitsbezogener Daten nutzen und dürfen solche Dokumente nur dann an Dritte weitergeben oder kopieren (z. B. in Apps oder Diensten Dritter), wenn Sie dazu berechtigt sind und keine Rechte Dritter verletzen. Sie sind verpflichtet, bei der Nutzung des Dienstes die gesetzlichen Vorschriften einzuhalten. Darüber hinaus und insbesondere dürfen Sie die Dienste nicht nutzen: 
+
+— zu kommerziellen oder anderen geschäftlichen Zwecken, insbesondere nicht zum Weiterverkauf anbieten. 
+— zur Erhebung, Speicherung oder Übermittlung personenbezogener Daten über andere Personen. 
+
+3.3 Sie dürfen die Citizen Hub App ohne unsere vorherige Zustimmung nicht für geschäftliche Zwecke nutzen. 
+
+
+4. Haftungsausschluss
+
+4.1 Der Anbieter haftet nicht für Fehler oder Probleme, die aufgrund von Leistungsunregelmäßigkeiten oder Unregelmäßigkeiten (vorübergehend oder dauerhaft) auftreten können. 
+
+4.2 Der Anbieter haftet nicht für Schäden, die durch Missbrauch oder Unmöglichkeit der Nutzung entstehen. 
+
+
+5. Gültigkeit der Nutzungsbedingungen
+
+Wir behalten uns das Recht vor, diese Nutzungsbedingungen mit Wirkung für die Zukunft zu ändern, zu aktualisieren oder zu beseitigen, parcialy oder vollständig. Der Benutzer muss diese Seite regelmäßig konsultieren, um zu bestätigen, ob Änderungen vorgenommen wurden. 
+
+
+6. Schlussbestimmungen, Sonstiges
+
+6.1 Die Nutzungsbedingungen unterliegen dem portugiesischen Recht. 
+
+6.2 Wenn der Nutzer keinen Gerichtsstand in Portugal hat oder Kaufmann ist, ist der Gerichtsstand Lissabon. Ein zwingender Gerichtsstand für Verbraucher nach EU-Recht bleibt unberührt. 
+
+6.3 Die EU-Website zur Online-Streitbeilegung finden Sie hier: http://ec.europa.eu/consumers/odr/  

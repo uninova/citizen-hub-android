@@ -114,6 +114,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         return new Pair<>(serviceUuid, characteristicUuid);
     }
 
+
+    public void connect(BluetoothDevice bluetoothDevice, int bluetoothTransport) {
+        bluetoothDevice.connectGatt(null, true, this, bluetoothTransport);
+    }
+
     public void connect(BluetoothDevice bluetoothDevice) {
         bluetoothDevice.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
     }
@@ -143,24 +148,34 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void disableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
-        final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
+        final BluetoothGattService service = gatt.getService(serviceUuid);
 
-        gatt.setCharacteristicNotification(characteristic, false);
-        writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+        if (service != null) {
+            final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
+
+            if (characteristic != null) {
+                gatt.setCharacteristicNotification(characteristic, false);
+                writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+            }
+        }
     }
-
 
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
         enableNotifications(serviceUuid, characteristicUuid, false);
     }
 
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid, boolean acknowledge) {
-        final BluetoothGattCharacteristic characteristic = gatt.getService(serviceUuid).getCharacteristic(characteristicUuid);
+        final BluetoothGattService service = gatt.getService(serviceUuid);
 
-        gatt.setCharacteristicNotification(characteristic, true);
-        writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        if (service != null) {
+            final BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
+
+            if (characteristic != null) {
+                gatt.setCharacteristicNotification(characteristic, true);
+                writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            }
+        }
     }
-
 
     @Override
     public String getAddress() {
@@ -324,17 +339,23 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.onServicesDiscovered status=" + status);
+        }
+
         if (status == BluetoothGatt.GATT_SUCCESS) {
             setState(BluetoothConnectionState.READY);
 
-            for (BluetoothGattService i : gatt.getServices()) {
-                System.out.println("  s " + i.getUuid());
+            if (BuildConfig.DEBUG) {
+                for (BluetoothGattService i : gatt.getServices()) {
+                    System.out.println(" > " + i.getUuid());
 
-                for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
-                    System.out.println("    c " + j.getUuid());
+                    for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
+                        System.out.println(" >> " + j.getUuid());
 
-                    for (BluetoothGattDescriptor k : j.getDescriptors()) {
-                        System.out.println("      d " + k.getUuid());
+                        for (BluetoothGattDescriptor k : j.getDescriptors()) {
+                            System.out.println(" >>> " + k.getUuid());
+                        }
                     }
                 }
             }

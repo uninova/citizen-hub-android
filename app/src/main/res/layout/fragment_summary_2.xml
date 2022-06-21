@@ -42,7 +42,43 @@
                             <TextView
                                 android:id="@+id/heartRateValueTextView"
                                 style="@style/SummaryCardInformationText.Value"
-                                android:text="@string/fragment_summary_text_view_heart_rate_text" />
+                                android:text="@string/heart_rate_value" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- End Card -->
+
+        <!-- Begin Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/breathingRateCardView"
+            style="@style/SummaryCard">
+
+            <LinearLayout style="@style/SummaryCardContent">
+
+                <TextView
+                    style="@style/SummaryCardTitle"
+                    android:text="@string/breathing_rate_title" />
+
+                <LinearLayout style="@style/SummaryCardBody">
+
+                    <ImageView
+                        style="@style/SummaryCardImage"
+                        android:contentDescription="@string/content_description_fragment_summary_image_view_posture"
+                        app:srcCompat="@drawable/ic_lungs" />
+
+                    <LinearLayout style="@style/SummaryCardInformation">
+
+                        <LinearLayout style="@style/SummaryCardInformationRow">
+
+
+                            <TextView
+                                android:id="@+id/breathingRateValueTextView"
+                                style="@style/SummaryCardInformationText.Value"
+                                android:text="@string/breathing_rate_value" />
 
                         </LinearLayout>
 
