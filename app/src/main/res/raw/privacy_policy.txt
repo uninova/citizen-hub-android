@@ -1,74 +1,52 @@
 With our Citizen Hub application, we enable you to connect to different smart devices, sensors, wearables and applications to collect health-related and wellbeing data. The protection of your personal data is very important to us. This information describes how Citizen Hub application handles your personal data. Sections 1 to 3 inform you about your legal rights and Sections 4 to 6 explain how your personal data is processed when you register for and use the Citizen Hub application.
 
 
+1. Personal data Collection and treatment
 
-1. Controller and data protection officer
+1.1. Citizen Hub application is only stored in your personal mobile phone and its use does not entail any collection of personal data.
 
-All personal data and collected data by the Citizen Hub application is only stored in your personal mobile phone. All data transmitted outside your personal mobile phone is transmitted and stored to the Smart4health platform. Therefore, the Terms of Use and privacy police of the Smart4Health platform apply.
+1.2 All data collected is only stored in your personal mobile phone. In case you decide to transmit and store data outside your personal mobile phone, you must refer to the Terms of Use and privacy police of the such outside systems.
 
+1.3 In case you ask for support by email, we will need your email address to provide you an answer. We will only use this information, as well as date and time of your contact, to process your request. Your data will not be passed on to third parties by us, but only used internally by the department that is responsible for your concern.
 
 
 2. Your rights
 
-All rights regarding personal data followed by the Smart4Health platform applies 
+2.1 You may ask, at any moment, to access, rectify, erase, restrict processing, or receive your personal data in a portable format as well as to object to its treatment.
+
+2.2 You may ask for confirmation that your personal data are being processed. In this case we will provide you a copy of de data being processed.
+
+2.3. You are entitled to withdraw your consent for data processing in the terms previously mentioned. This does does not affect the processing previously performed.
+
+2.4 To exercise your rights send an email to dpo@unl.pt
 
 
+3. Purposes and legal bases of the processing of your personal data
 
-3. Supplementary note about your right of objection
-
-All rights of objection followed by the Smart4Health platform applies 
-
-
-
-4. Purposes and legal bases of the processing of your personal data
-
-
-
-a. Registration for the Citizen Hub application
-
-You can register for Citizen Hub application using our app.
-
-All you need to register for the Citizen Hub application is to create an account in the Smart4Health platform. The Citizen Hub application will use the same credentials you use in the Smart4health platform registration
-After successful registration you can access use the Citizen Hub application and its functionalities.
-
-
-
-b. Usage of the functionalities and storage of your health-related and wellbeing-related data
-
-As a registered user you can safely connect smart devices, sensors, wearables and applications to collect health-related and wellbeing-related data in your Citizen Hub application. You can check your real time activity, daily activity,  and generate reports to be uploaded into the Smart4Health platform.
-All legal basis for processing of your data stored in the Smart4Health platform are the ones followed by the Smart4Health platform.
-
-
-
-c. Support/Contact
+3.1. Support/Contact
 
 When you contact us using the contact email provided in the Citizen Hub application, the data you provide (for example, your email address and your name as well as the content of your inquiry) will be stored by us in order to process and answer your questions or concerns or to provide the support you require when using the Citizen Hub application.
 
 We delete the data arising in this context after the storage is no longer necessary (usually after we fully answer your request), or restrict the processing if there are legal storage obligations. Depending on the content of your request, the legal basis for the processing described above is Art. 6 para. 1 subpara. 1 point (f) GDPR (processing is necessary to safeguard the legitimate interests of the controller) or Art. 6 para. 1 subpara. 1 point (b) GDPR (processing is necessary for the performance of a contract with the data subject) if you already have a user account with us and have queries regarding the use of the Citizen Hub application. The purpose of data processing is to process your inquiry. This will also constitute a legitimate interest in the processing of the data.
 
+3.2. Obligation to provide personal data
 
-
-e. Obligation to provide personal data
-
-If you wish to register for the Citizen Hub application or contact us, you must provide the personal data required for registration and/or for processing and answering your inquiry. If you do not provide us with this data, it is not possible for us to create a user account for you or to process and answer your request. We will erase the data collected in this context after the storage is no longer necessary or restrict the processing if there are legal storage obligations.
+If you wish to contact us, you must provide the personal data required for processing and answering your inquiry. If you do not provide us with this data, it is not possible for us to process and answer your request. We will erase the data collected in this context after the storage is no longer necessary or restrict the processing if there are legal storage obligations.
 
 The legal basis is art. 6 para. 1 subpara. 1 point (b) and (f) GDPR. The purpose of data processing is to process your inquiry. This will also constitute a legitimate interest in the processing of the data.
 
+3.3. Non-existence of automated decision-making including profiling
+
+Please note that when using the Citizen Hub application and Citizen Hub application functionalities, you will not be subject to any decision based exclusively on automated processing - including profiling - which has legal effect on you or significantly impairs you in a similar manner.
 
 
-f. Non-existence of automated decision-making including profiling
+4. Storage of your data
 
-Please note that when using the Citizen Hub application and Citizen Hub application functionalities, you will not be subject to any decision based exclusively on automated processing – including profiling – which has legal effect on you or significantly impairs you in a similar manner.
-
-
-
-5. Storage of your data 
-
-All personal data and collected data by the Citizen Hub application is stored exclusively in your personal mobile phone. All data transmitted outside your personal mobile phone is transmitted and stored to the Smart4health platform. Therefore, the Terms of Use and privacy police of the Smart4Health platform apply.
+All personal data and collected data by the Citizen Hub application is stored exclusively in your personal mobile phone. In case you decide to transmit and store data outside your personal mobile phone, you must refer to the Terms of Use and privacy police of the such outside systems.
 
 
+5. Storage duration and deletion of data
 
-6. Storage duration and deletion of data
+All personal data and collected data by the Citizen Hub application is stored exclusively in your personal mobile phone. In case you decide to transmit and store data outside your personal mobile phone, you must refer to the Terms of Use and privacy police of the such outside systems.
 
-All personal data and collected data by the Citizen Hub application is stored exclusively in your personal mobile phone. All data transmitted outside your personal mobile phone is transmitted and stored to the Smart4health platform. Therefore, the Terms of Use and privacy police of the Smart4Health platform apply.
 

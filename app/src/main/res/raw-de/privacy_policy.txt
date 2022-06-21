@@ -1,0 +1,52 @@
+Mit unserer Citizen Hub-Anwendung ermöglichen wir Ihnen, sich mit verschiedenen intelligenten Geräten, Sensoren, Wearables und Anwendungen zu verbinden, um Gesundheits- und Wohlbefindensdaten zu sammeln. Der Schutz Ihrer personenbezogenen Daten ist uns sehr wichtig. Diese Informationen beschreiben, wie Citizen Hub-Anwendung mit Ihren personenbezogenen Daten umgeht. Die Abschnitte 1 bis 3 informieren Sie über Ihre gesetzlichen Rechte und die Abschnitte 4 bis 6 erläutern, wie Ihre personenbezogenen Daten verarbeitet werden, wenn Sie sich für die Citizen Hub-Anwendung registrieren und diese nutzen. 
+
+
+1. Erhebung und Verarbeitung personenbezogener Daten
+
+1.1. Citizen Hub-Anwendung wird nur in Ihrem persönlichen Mobiltelefon gespeichert und ihre Verwendung beinhaltet keine Erhebung personenbezogener Daten. 
+
+1.2 Alle erhobenen Daten werden nur in Ihrem persönlichen Mobiltelefon gespeichert. Wenn Sie sich entscheiden, Daten außerhalb Ihres persönlichen Mobiltelefons zu übermitteln und zu speichern, müssen Sie sich auf die Nutzungsbedingungen und Datenschutzrichtlinien dieser externen Systeme beziehen. 
+
+1.3 Falls Sie per E-Mail um Unterstützung bitten, benötigen wir Ihre E-Mail-Adresse, um Ihnen eine Antwort zu geben. Wir verwenden diese Informationen sowie Datum und Uhrzeit Ihrer Kontaktaufnahme nur zur Bearbeitung Ihrer Anfrage. Ihre Daten werden von uns nicht an Dritte weitergegeben, sondern nur intern von der für Sie zuständigen Abteilung verwendet. 
+
+
+2. Ihre Rechte
+
+2.1 Sie können jederzeit auffordern, auf Ihre personenbezogenen Daten zuzugreifen, diese zu berichtigen, zu löschen, die Verarbeitung einzuschränken oder Ihre personenbezogenen Daten in einem tragbaren Format zu erhalten sowie deren Verarbeitung zu widersprechen. 
+
+2.2 Sie können eine Bestätigung über die Verarbeitung Ihrer personenbezogenen Daten verlangen. In diesem Fall stellen wir Ihnen eine Kopie der verarbeiteten Daten zur Verfügung. 
+
+2.3. Sie haben das Recht, Ihre Einwilligung zur Datenverarbeitung gemäß den zuvor genannten Bedingungen zu widerrufen. Dies hat keinen Einfluss auf die zuvor durchgeführte Verarbeitung. 
+
+2.4 Zur Ausübung Ihrer Rechte senden Sie eine E-Mail an dpo@unl.pt
+
+
+3. Zwecke und Rechtsgrundlagen der Verarbeitung Ihrer personenbezogenen Daten
+
+3.1. Support/Kontakt
+
+Wenn Sie uns über die in der Citizen Hub-Anwendung angegebene Kontakt-E-Mail kontaktieren, werden die von Ihnen angegebenen Daten (z. B. Ihre E-Mail-Adresse und Ihr Name sowie der Inhalt Ihrer Anfrage) von uns gespeichert, um Ihre Fragen oder Anliegen zu bearbeiten und zu beantworten oder den von Ihnen benötigten Support bei der Nutzung der Citizen Hub-Anwendung zu leisten. 
+
+Wir löschen die in diesem Zusammenhang entstehenden Daten, nachdem die Speicherung nicht mehr erforderlich ist (in der Regel nach vollständiger Beantwortung Ihrer Anfrage) oder beschränken die Verarbeitung, wenn gesetzliche Aufbewahrungspflichten bestehen. Rechtsgrundlage für die oben beschriebene Verarbeitung ist je nach Inhalt Ihres Anliegens Art. 6 Abs. 1 Abs. 1 lit. f DSGVO (Verarbeitung ist zur Wahrung berechtigter Interessen des Verantwortlichen erforderlich) oder Art. 6 Abs. 1 Abs. 1 lit. b DSGVO (Verarbeitung ist zur Erfüllung eines Vertrags mit der betroffenen Person erforderlich), wenn Sie bereits über ein Nutzerkonto bei uns verfügen und Fragen zur Nutzung der Citizen Hub-Anwendung haben. Zweck der Datenverarbeitung ist die Bearbeitung Ihrer Anfrage. Dies stellt auch ein berechtigtes Interesse an der Verarbeitung der Daten dar. 
+
+3.2. Verpflichtung zur Bereitstellung personenbezogener Daten
+
+Wenn Sie uns kontaktieren möchten, müssen Sie die für die Bearbeitung und Beantwortung Ihrer Anfrage erforderlichen personenbezogenen Daten angeben. Wenn Sie uns diese Daten nicht zur Verfügung stellen, ist es uns nicht möglich, Ihre Anfrage zu bearbeiten und zu beantworten. Die in diesem Zusammenhang erhobenen Daten löschen wir, nachdem die Speicherung nicht mehr erforderlich ist, oder beschränken die Verarbeitung, sofern gesetzliche Aufbewahrungspflichten bestehen. 
+
+Rechtsgrundlage ist Art. 6 Abs. 1 Abs. 1 lit. b und f DSGVO. Zweck der Datenverarbeitung ist die Bearbeitung Ihrer Anfrage. Dies stellt auch ein berechtigtes Interesse an der Verarbeitung der Daten dar. 
+
+3.3. Fehlende automatisierte Entscheidungsfindung einschließlich Profiling
+
+Bitte beachten Sie, dass Sie bei der Nutzung der Citizen Hub-Anwendung und der Citizen Hub-Anwendungsfunktionen keiner Entscheidung unterliegen, die ausschließlich auf einer automatisierten Verarbeitung – einschließlich Profiling – beruht, die für Sie rechtliche Auswirkungen hat oder Sie in ähnlicher Weise erheblich beeinträchtigt. 
+
+
+4. Speicherung Ihrer Daten
+
+Alle personenbezogenen Daten und gesammelten Daten durch die Citizen Hub-Anwendung werden ausschließlich in Ihrem persönlichen Mobiltelefon gespeichert. Wenn Sie sich entscheiden, Daten außerhalb Ihres persönlichen Mobiltelefons zu übermitteln und zu speichern, müssen Sie sich auf die Nutzungsbedingungen und Datenschutzrichtlinien dieser externen Systeme beziehen. 
+
+
+5. Speicherdauer und Löschung der Daten
+
+Alle personenbezogenen Daten und gesammelten Daten durch die Citizen Hub-Anwendung werden ausschließlich in Ihrem persönlichen Mobiltelefon gespeichert. Wenn Sie sich entscheiden, Daten außerhalb Ihres persönlichen Mobiltelefons zu übermitteln und zu speichern, müssen Sie sich auf die Nutzungsbedingungen und Datenschutzrichtlinien dieser externen Systeme beziehen. 
+
+ 
