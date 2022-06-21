@@ -1,12 +1,16 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.util.Log;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
+
 import pt.uninova.s4h.citizenhub.connectivity.AbstractMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
+import pt.uninova.s4h.citizenhub.data.CaloriesSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
@@ -22,24 +26,25 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     CitizenHubService service;
 
     protected WearOSStepsProtocol(WearOSConnection connection, Dispatcher<Sample> sampleDispatcher, WearOSAgent agent, CitizenHubService service) {
-        super(ID, agent,sampleDispatcher);
+        super(ID, agent, sampleDispatcher);
         Log.d(TAG, "Entered");
         this.service = service;
 
         connection.addChannelListener(new BaseChannelListener(kind) {
             @Override
             public void onChange(double value, Date timestamp) {
-                if(value<wearProtocolDisable) {
+                if (value < wearProtocolDisable) {
                     final int steps = (int) value;
                     final Sample sample = new Sample(getAgent().getSource(),
-                            new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT,steps));
+                            new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps),
+                            new DistanceSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps * 0.762),
+                            new CaloriesSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps * 0.04));
                     getSampleDispatcher().dispatch(sample);
-                }
-                else{
+                } else {
                     Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
-                    if(value==wearProtocolDisable && enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))
+                    if (value == wearProtocolDisable && enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))
                         getAgent().disableMeasurement(Measurement.TYPE_STEPS_SNAPSHOT);
-                    else if(value==wearProtocolEnable && !enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))
+                    else if (value == wearProtocolEnable && !enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))
                         getAgent().enableMeasurement(Measurement.TYPE_STEPS_SNAPSHOT);
                 }
             }
@@ -49,12 +54,12 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
     @Override
     public void disable() {
         setState(Protocol.STATE_DISABLED);
-        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","false");
+        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol", "false");
     }
 
     @Override
     public void enable() {
         setState(Protocol.STATE_ENABLED);
-        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol","true");
+        service.getWearOSMessageService().sendMessage("WearOSStepsProtocol", "true");
     }
 }
