@@ -93,6 +93,79 @@
         <item name="android:paddingLeft">5dp</item>
     </style>
 
+    <style name="AppTheme.ConnectionMethod"/>
+
+    <style name="AppTheme.ConnectionMethod.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/primus</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethod.ListView">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethod.Layout">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethodList"/>
+
+    <style name="AppTheme.ConnectionMethodList.Layout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethodList.CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethodList.CardView.Layout">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/device_item_outline_medium_dark</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethodList.CardView.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignTop">@+id/image_method</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_toEndOf">@id/image_method</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:text">@string/fragment_device_list_item_text_view_title</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+    </style>
+
+    <style name="AppTheme.ConnectionMethodList.CardView.ImageView">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
     <style name="AppTheme.Summary" />
 
     <style name="AppTheme.Summary.Item">

@@ -1,51 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    style="@style/AppTheme.ConnectionMethodList.Layout">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        style="@style/AppTheme.ConnectionMethodList.CardView"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="15dp"
         app:cardPreventCornerOverlap="true">
 
-
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/device_item_outline_medium_dark"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:padding="8dp">
+            style="@style/AppTheme.ConnectionMethodList.CardView.Layout">
 
             <TextView
                 android:id="@+id/text_view_title_method"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/image_method"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_toEndOf="@id/image_method"
-                android:ellipsize="none"
-                android:fontFamily="@font/neosanspro"
-                android:maxLines="1"
-                android:text="@string/fragment_device_list_item_text_view_title"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                style="@style/AppTheme.ConnectionMethodList.CardView.TextView"/>
 
             <ImageView
                 android:id="@+id/image_method"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="2dp"
-                app:srcCompat="@drawable/ic_bluetooth" />
-
+                style="@style/AppTheme.ConnectionMethodList.CardView.ImageView"
+                app:srcCompat="@drawable/ic_bluetooth"/>
 
         </RelativeLayout>
-
     </androidx.cardview.widget.CardView>
 </FrameLayout>
