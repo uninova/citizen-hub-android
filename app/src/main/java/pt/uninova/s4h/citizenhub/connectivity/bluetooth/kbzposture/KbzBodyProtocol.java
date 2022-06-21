@@ -104,6 +104,10 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
         getConnection().removeCharacteristicListener(writeListener);
         getConnection().removeConnectionStateChangeListener(connectionStateObserver);
 
+        getConnection().writeCharacteristic(KBZ_SERVICE, KBZ_CHARACTERISTIC, new byte[]{0 & 0xFF});
+
+        posture.stop();
+
         super.disable();
     }
 
