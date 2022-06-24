@@ -190,15 +190,19 @@ public class CitizenHubService extends LifecycleService {
 
         deviceRepository.read(value -> {
             for (DeviceRecord i : value) {
-                orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
-                    agent.enable();
+                try {
+                    orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(i.getAgent()).asSubclass(Agent.class), agent -> {
+                        agent.enable();
 
-                    enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
-                        for (final EnabledMeasurementRecord j : enabledMeasurements) {
-                            agent.enableMeasurement(j.getMeasurementType());
-                        }
+                        enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
+                            for (final EnabledMeasurementRecord j : enabledMeasurements) {
+                                agent.enableMeasurement(j.getMeasurementType());
+                            }
+                        });
                     });
-                });
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
