@@ -2,7 +2,10 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import androidx.core.content.ContextCompat;
@@ -30,7 +33,6 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole.activity");
 
-    Context context;
     long lastTime = 0;
     int miliForTimer = 120000; //2 minutes
 
@@ -78,9 +80,8 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         }
     };
 
-    public DigitsoleActivityProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, BluetoothAgent agent, Context context) {
+    public DigitsoleActivityProtocol(BluetoothConnection connection, Dispatcher<Sample> dispatcher, BluetoothAgent agent) {
         super(ID, connection, dispatcher, agent);
-        this.context = context;
     }
 
     @Override
@@ -110,18 +111,6 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     }
 
     private void runTimer() {
-        ContextCompat.getMainExecutor(context).execute(() -> {
-            //set Countdown
-            new CountDownTimer(miliForTimer, 1000) {
-                @Override
-                public void onTick(long millisecondsUntilDone) {
-                }
-
-                @Override
-                public void onFinish() {
-                    enable();
-                }
-            }.start();
-        });
+        new Handler(Looper.getMainLooper()).postDelayed(this::enable, 1000);
     }
 }

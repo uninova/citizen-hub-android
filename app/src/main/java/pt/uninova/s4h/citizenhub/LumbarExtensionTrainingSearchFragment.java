@@ -48,9 +48,9 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
                 scanner.stop();
             }
 
-            final BluetoothConnection bluetoothConnection = new BluetoothConnection();
             final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
             final BluetoothDevice bluetoothDevice = adapter.getRemoteDevice(device.getAddress());
+            final BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDevice);
 
             bluetoothConnection.addConnectionStateChangeListener(state -> {
                 if (state.getOldState() == BluetoothConnectionState.CONNECTED && state.getNewState() == BluetoothConnectionState.READY) {
@@ -74,7 +74,7 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
                 }
             });
 
-            bluetoothDevice.connectGatt(requireContext(), false, bluetoothConnection, BluetoothDevice.TRANSPORT_LE);
+            bluetoothConnection.connect(BluetoothDevice.TRANSPORT_LE);
         });
 
         recyclerView.setLayoutManager(layoutManager);

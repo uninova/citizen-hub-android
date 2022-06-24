@@ -14,13 +14,19 @@ public class WearOsAgentFactory implements AgentFactory<WearOSAgent> {
 
     @Override
     public void create(String address, Observer<WearOSAgent> observer) {
-        WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address,service);
+        WearOSConnection wearOSConnection = service.getWearOSMessageService().connect(address, service);
 
         wearOSConnection.addConnectionStateChangeListener(value -> {
             if (value.getNewState() == WearOSConnectionState.READY) {
                 observer.observe(new WearOSAgent(wearOSConnection, service));
             }
         });
+
         wearOSConnection.enable();
+    }
+
+    @Override
+    public void create(String address, Class<?> c, Observer<WearOSAgent> observer) {
+        create(address, observer);
     }
 }

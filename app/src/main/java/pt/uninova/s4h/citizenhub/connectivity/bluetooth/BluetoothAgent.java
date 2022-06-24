@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public abstract class BluetoothAgent extends AbstractAgent {
 
@@ -23,14 +25,36 @@ public abstract class BluetoothAgent extends AbstractAgent {
 
     final private BluetoothConnection connection;
 
+    final private Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> observer = (value) -> {
+        if (value.getNewState() == BluetoothConnectionState.READY)
+            setState(AGENT_STATE_ENABLED);
+        else {
+            setState(AGENT_STATE_INACTIVE);
+        }
+    };
+
     protected BluetoothAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements, BluetoothConnection connection) {
         super(id, connection.getSource(), supportedProtocolsIds, supportedMeasurements);
 
         this.connection = connection;
     }
 
+    @Override
+    public void disable() {
+        connection.removeConnectionStateChangeListener(observer);
+        connection.disconnect();
+        this.setState(AGENT_STATE_DISABLED);
+    }
+
+    @Override
+    public void enable() {
+        this.connection.addConnectionStateChangeListener(observer);
+
+        if (connection.getState() == BluetoothConnectionState.DISCONNECTED)
+            this.connection.connect();
+    }
+
     public BluetoothConnection getConnection() {
         return connection;
     }
-
 }

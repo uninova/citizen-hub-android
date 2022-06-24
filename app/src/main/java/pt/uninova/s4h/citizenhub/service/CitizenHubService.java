@@ -18,7 +18,6 @@ import androidx.work.WorkManager;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +40,6 @@ import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.EnabledMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.EnabledMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
 import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
@@ -190,15 +188,19 @@ public class CitizenHubService extends LifecycleService {
 
         deviceRepository.read(value -> {
             for (DeviceRecord i : value) {
-                orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agent -> {
-                    agent.enable();
+                try {
+                    orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(i.getAgent()).asSubclass(Agent.class), agent -> {
+                        agent.enable();
 
-                    enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
-                        for (final EnabledMeasurementRecord j : enabledMeasurements) {
-                            agent.enableMeasurement(j.getMeasurementType());
-                        }
+                        enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
+                            for (final EnabledMeasurementRecord j : enabledMeasurements) {
+                                agent.enableMeasurement(j.getMeasurementType());
+                            }
+                        });
                     });
-                });
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -60,15 +60,19 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     private final Map<Triple<UUID, UUID, UUID>, Set<DescriptorListener>> descriptorListenerMap;
     private final Dispatcher<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> stateChangedMessageDispatcher;
 
+    private final BluetoothDevice device;
     private BluetoothGatt gatt;
 
     private BluetoothConnectionState state;
 
-    public BluetoothConnection() {
+    public BluetoothConnection(BluetoothDevice device) {
+        this.device = device;
+
         runnables = new ConcurrentLinkedQueue<>();
         characteristicListenerMap = new ConcurrentHashMap<>();
         descriptorListenerMap = new ConcurrentHashMap<>();
         stateChangedMessageDispatcher = new Dispatcher<>();
+
         state = BluetoothConnectionState.DISCONNECTED;
     }
 
@@ -114,13 +118,12 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         return new Pair<>(serviceUuid, characteristicUuid);
     }
 
-
-    public void connect(BluetoothDevice bluetoothDevice, int bluetoothTransport) {
-        bluetoothDevice.connectGatt(null, true, this, bluetoothTransport);
+    public void connect() {
+        device.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
     }
 
-    public void connect(BluetoothDevice bluetoothDevice) {
-        bluetoothDevice.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
+    public void connect(int bluetoothTransport) {
+        device.connectGatt(null, true, this, bluetoothTransport);
     }
 
     public void close() {
@@ -129,8 +132,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         runnables.clear();
 
         stateChangedMessageDispatcher.close();
+
         if (gatt != null) {
-            gatt.disconnect();
+            disconnect();
             gatt.close();
         }
     }
@@ -158,6 +162,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
                 writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
             }
         }
+    }
+
+    public void disconnect() {
+        gatt.disconnect();
     }
 
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
@@ -188,7 +196,11 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public BluetoothDevice getDevice() {
-        return gatt.getDevice();
+        return device;
+    }
+
+    public BluetoothConnectionState getState() {
+        return this.state;
     }
 
     public Device getSource() {

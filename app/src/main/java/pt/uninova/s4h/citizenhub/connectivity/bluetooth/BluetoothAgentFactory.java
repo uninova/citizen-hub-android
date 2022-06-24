@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
@@ -28,7 +31,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
-        BluetoothConnection bluetoothConnection = new BluetoothConnection();
+        BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDevice);
 
         bluetoothConnection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
 
@@ -53,7 +56,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                     } else if (name.startsWith("A&D")) {
                         observer.observe(new BloodPressureMonitorAgent(source));
                     } else if (name.startsWith("ZTEZ")) {
-                        observer.observe(new DigitsoleAgent(source, context));
+                        observer.observe(new DigitsoleAgent(source));
                     } else {
                         observer.observe(null);
                     }
@@ -61,9 +64,22 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
             }
         });
 
-        if (bluetoothDevice.getName().startsWith("HX"))
-            bluetoothConnection.connect(bluetoothDevice, BluetoothDevice.TRANSPORT_AUTO);
-        else
-            bluetoothConnection.connect(bluetoothDevice);
+        bluetoothConnection.connect();
+    }
+
+    @Override
+    public void create(String address, Class<?> c, Observer<BluetoothAgent> observer) {
+        try {
+            final Constructor<?> constructor = c.getConstructor(BluetoothConnection.class);
+
+            final BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
+            final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+            final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
+            final BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDevice);
+
+            observer.observe((BluetoothAgent) constructor.newInstance(bluetoothConnection));
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import static java.lang.Class.forName;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import care.data4life.fhir.r4.model.Age;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.UUIDv5;
@@ -61,6 +64,24 @@ public class AgentOrchestrator {
             tellOnDeviceAdded(device);
 
             factory.create(device.getAddress(), (agent) -> {
+                put(device, agent);
+                agent.addSampleObserver(ingester);
+                tellOnAgentAttached(device, agent);
+                observer.observe(agent);
+            });
+        } else {
+            observer.observe(null);
+        }
+    }
+
+    public void add(Device device, Class<? extends Agent> agentClass, Observer<Agent> observer) {
+        final AgentFactory<? extends Agent> factory = agentFactoryMap.get(device.getConnectionKind());
+
+        if (factory != null) {
+            put(device, null);
+            tellOnDeviceAdded(device);
+
+            factory.create(device.getAddress(), agentClass, (agent) -> {
                 put(device, agent);
                 agent.addSampleObserver(ingester);
                 tellOnAgentAttached(device, agent);
