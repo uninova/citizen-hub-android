@@ -11,11 +11,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
+import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class ReportViewModel extends AndroidViewModel {
 
@@ -42,10 +47,25 @@ public class ReportViewModel extends AndroidViewModel {
         postureMeasurementRepository = new PostureMeasurementRepository(application);
         sampleRepository = new SampleRepository(application);
 
+
         final int year = currentDate.getYear();
         final int month = currentDate.getMonthValue();
 
         setMonthView(year, month);
+    }
+
+    public void getWorkTimeReport(Application application, Observer<Report> observerWorkTimeReport){
+
+        DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplication().getBaseContext());
+        dailyReportGenerator.generateWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, observerWorkTimeReport);
+
+    }
+
+    public void getNotWorkTimeReport(Application application, Observer<Report> observerNotWorkTimeReport){
+
+        DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplication().getBaseContext());
+        dailyReportGenerator.generateNotWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, observerNotWorkTimeReport);
+
     }
 
     public LocalDate getCurrentDate() {

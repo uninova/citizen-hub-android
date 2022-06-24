@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvLabel"
+        style="@style/ReportDetailValueType"
+        android:layout_marginStart="60dp"
+        android:layout_weight="10"
+        android:tag="label"
+        android:text="Value"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvValueMyTime"
+        style="@style/ReportDetailValue"
+        android:layout_weight="1"
+        android:tag="value"
+        android:text="Value"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvValueWorkTime"
+        style="@style/ReportDetailValue"
+        android:layout_weight="1"
+        android:tag="value"
+        android:text="Value"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvUnits"
+        style="@style/ReportDetailUnits"
+        android:layout_weight="1"
+        android:tag="value"
+        android:text="Value"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints">
+    </TextView>
+
+</TableRow>

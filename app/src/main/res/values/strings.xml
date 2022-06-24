@@ -440,6 +440,32 @@
     <string name="lumbar_training_calories_label">Calories</string>
     <string name="lumbar_training_calories_value" translatable="false">%1$.2f kcal</string>
 
+    <string name="report_calories_label">Calories</string>
+    <string name="report_calories_units">kcal</string>
+    <string name="report_distance_label">Distance</string>
+    <string name="report_distance_units">m</string>
+    <string name="report_steps_label">Steps</string>
+
+    <string name="report_correct_posture_label">Correct</string>
+    <string name="report_incorrect_posture_label">Incorrect</string>
+
+    <string name="report_hr_maximum_label">Maximum</string>
+    <string name="report_hr_minimum_label">Minimum</string>
+    <string name="report_hr_average_label">Average</string>
+    <string name="report_hr_units">bpm</string>
+
+    <string name="report_bp_systolic_label">Systolic</string>
+    <string name="report_bp_diastolic_label">Diastolic</string>
+    <string name="report_bp_average_label">Average</string>
+    <string name="report_bp_units">mmHg</string>
+    <string name="report_pulse_rate">Pulse Rate</string>
+
+    <string name="report_lumbar_training_score_label">Score</string>
+    <string name="report_lumbar_training_weight_label">Weight</string>
+    <string name="report_lumbar_training_weight_units">kg</string>
+    <string name="report_lumbar_training_repetitions_label">Repetitions</string>
+    <string name="report_lumbar_training_duration_label">Duration</string>
+
     <string name="measurement_type.0">Unknown</string>
     <string name="measurement_type.1">Heart rate</string>
     <string name="measurement_type.2">Activity</string>

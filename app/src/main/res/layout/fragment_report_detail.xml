@@ -8,6 +8,127 @@
     tools:visibility="visible">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/fragment_report_detail_text_view_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="100dp"
+            android:fontFamily="@font/neo_sans_pro_bold"
+            android:text="@string/fragment_report_detail_title_date_day_month"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:textSize="11.3pt"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/fragment_report_detail_text_view_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/neo_sans_pro_bold"
+            android:text="@string/fragment_report_detail_title_date_year"
+            android:textAlignment="center"
+            android:textColor="@color/colorS4HOrange"
+            android:textSize="6.85pt"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_report_detail_text_view_day"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_day"
+            tools:visibility="visible" />
+
+        <TableLayout
+            android:id="@+id/reportTableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:weightSum="13"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_report_detail_text_view_year"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_year">
+
+            <TableRow
+                android:id="@+id/trColumnCaptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_report_detail_text_view_year"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_report_detail_text_view_year">
+
+                <TextView
+                    android:id="@+id/tvInfoFirstColumn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="left"
+                    android:paddingLeft="30dp"
+                    android:textSize="5pt"
+                    android:textColor="@color/colorS4HOrange"
+                    android:textStyle="italic"
+                    android:visibility="invisible"
+                    tools:ignore="MissingConstraints"/>
+
+                <TextView
+                    android:id="@+id/tvInfoSecondColumn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="right"
+                    android:text="MyTime"
+                    android:textSize="5pt"
+                    android:textColor="@color/colorS4HOrange"
+                    android:textStyle="italic"
+                    android:visibility="visible"
+                    tools:ignore="MissingConstraints"/>
+
+                <TextView
+                    android:id="@+id/tvInfoThirdColumn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="right"
+                    android:text="MyWork"
+                    android:textSize="5pt"
+                    android:textColor="@color/colorS4HOrange"
+                    android:textStyle="italic"
+                    android:visibility="visible"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/tvInfoFourthColumn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="left"
+                    android:text="Units"
+                    android:textSize="5pt"
+                    android:textColor="@color/colorS4HOrange"
+                    android:textStyle="italic"
+                    android:visibility="invisible"
+                    tools:ignore="MissingConstraints"/>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:visibility="visible">
@@ -743,6 +864,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout-->
 
 </ScrollView>

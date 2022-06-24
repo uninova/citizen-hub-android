@@ -1,33 +1,46 @@
 package pt.uninova.s4h.citizenhub.ui.report;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.telephony.TelephonyCallback;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.Group;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
+
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.data.PostureValue;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
-import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
+import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+import pt.uninova.s4h.citizenhub.report.Group;
+import pt.uninova.s4h.citizenhub.report.Item;
+import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class ReportDetailFragment extends Fragment {
 
     private ReportViewModel model;
+
+    private MeasurementKindLocalization measurementKindLocalization;
 
     private String monthToString(int month) {
         switch (month) {
@@ -65,13 +78,16 @@ public class ReportDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
+
+        measurementKindLocalization = new MeasurementKindLocalization(getContext());
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
 
-        Button uploadPdfButton = view.findViewById(R.id.uploadButton);
+        /*Button uploadPdfButton = view.findViewById(R.id.uploadButton);
         Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
         AccountsViewModel viewModel = new AccountsViewModel(requireActivity().getApplication());
 
@@ -89,77 +105,14 @@ public class ReportDetailFragment extends Fragment {
         } else {
             viewPdfButton.setVisibility(View.GONE);
             uploadPdfButton.setVisibility(View.GONE);
-        }
+        }*/
 
         return view;
-    }
-
-    private void onDailyDataExistenceUpdate(Integer count) {
-        final View view = requireView();
-        final TextView noDataTextView = view.findViewById(R.id.fragment_report_detail_view_no_data);
-
-        if (count > 0) {
-            noDataTextView.setVisibility(View.GONE);
-        } else {
-            noDataTextView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void onDailyHeartRateUpdate(AggregateSummary value) {
-        final View view = requireView();
-
-        boolean hasHeartRate = value != null && value.getAverage() != null && value.getMaximum() != null && value.getMinimum() != null;
-
-        if (hasHeartRate) {
-            TextView heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
-            TextView heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
-            TextView heartRateMin = view.findViewById(R.id.fragment_report_detail_heart_rate_min);
-
-            heartRateAvg.setText(getString(R.string.heart_rate_value, value.getAverage()));
-            heartRateMax.setText(getString(R.string.heart_rate_value, value.getMaximum()));
-            heartRateMin.setText(getString(R.string.heart_rate_value, value.getMinimum()));
-        }
-
-        final Group heartRateGroup = view.findViewById(R.id.hearRateGroup);
-
-        heartRateGroup.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
-    }
-
-    private void onDailyPostureMeasurementUpdate(List<PostureClassificationSum> records) {
-        final View view = requireView();
-        final Map<Integer, Double> values = new HashMap<>();
-
-        for (PostureClassificationSum i : records) {
-            if (i.getClassification() == PostureValue.CLASSIFICATION_CORRECT || i.getClassification() == PostureValue.CLASSIFICATION_INCORRECT) {
-                values.put(i.getClassification(), i.getDuration());
-            }
-        }
-
-        boolean hasPosture = !values.isEmpty();
-
-        if (hasPosture) {
-            int pc = values.containsKey(PostureValue.CLASSIFICATION_CORRECT) ? values.get(PostureValue.CLASSIFICATION_CORRECT).intValue() : 0;
-            int pi = values.containsKey(PostureValue.CLASSIFICATION_INCORRECT) ? values.get(PostureValue.CLASSIFICATION_INCORRECT).intValue() : 0;
-
-            TextView postureCorrectTextView = view.findViewById(R.id.fragment_report_total_time_posture_ok);
-            TextView postureIncorrectTextView = view.findViewById(R.id.fragment_report_total_time_posture_not_ok);
-
-            postureCorrectTextView.setText(getString(R.string.posture_correct_value, secondsToString(pc)));
-            postureIncorrectTextView.setText(getString(R.string.posture_incorrect_value, secondsToString(pi)));
-        }
-
-        final View postureGroup = view.findViewById(R.id.postureGroup);
-
-        postureGroup.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);
-        model.getDailyHeartRateSummary().observe(getViewLifecycleOwner(), this::onDailyHeartRateUpdate);
-        model.getDailyPostureMeasurement().observe(getViewLifecycleOwner(), this::onDailyPostureMeasurementUpdate);
 
         LocalDate currentDate = model.getCurrentDate();
 
@@ -172,6 +125,171 @@ public class ReportDetailFragment extends Fragment {
 
         infoTextView_day.setText(String.format("%s %s", day, month));
         infoTextView_year.setText(year);
+
+        Observer<Report> observerWorkTimeReport = workTimeData -> {
+
+            Observer<Report> observerNotWorkTimeReport = notWorkTimeData -> {
+
+                List<Group> groupsWorkTimeData = workTimeData.getGroups();
+                List<Group> groupsNotWorkTimeData = notWorkTimeData.getGroups();
+
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                TableLayout tableLayout = view.findViewById(R.id.reportTableLayout);
+
+                requireActivity().runOnUiThread(() -> {
+
+                    for (Group groupNotWorkTime : groupsNotWorkTimeData) {
+
+                        String labelNotWorkTime = groupNotWorkTime.getLabel().getLocalizedString();
+
+                        displayTitle(tableLayout, labelNotWorkTime);
+
+                        if (labelNotWorkTime.equals(measurementKindLocalization.localize(Measurement.TYPE_BLOOD_PRESSURE)) ||
+                                labelNotWorkTime.equals(measurementKindLocalization.localize(Measurement.TYPE_LUMBAR_EXTENSION_TRAINING))) {
+                            for (Group group : groupNotWorkTime.getGroupList()) {
+                                String timestamp = group.getLabel().getLocalizedString();
+                                displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")) + " - MyTime");
+                                for (Item item : group.getItemList()) {
+                                    addNewRow(tableLayout,
+                                            item.getLabel().getLocalizedString(),
+                                            "-",
+                                            decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())),
+                                            item.getUnits().getLocalizedString());
+                                }
+                            }
+                            for(Group groupWorkTime : groupsWorkTimeData){
+                                String labelWorkTime = groupWorkTime.getLabel().getLocalizedString();
+                                if(labelWorkTime.equals(labelNotWorkTime)){
+                                    for(Group group : groupsWorkTimeData){
+                                        String timestamp = group.getLabel().getLocalizedString();
+                                        displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")) + " - MyWork");
+                                        for(Item item : group.getItemList()){
+                                            addNewRow(tableLayout,
+                                                    item.getLabel().getLocalizedString(),
+                                                    "-",
+                                                    decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())),
+                                                    item.getUnits().getLocalizedString());
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            boolean hasGroup = false;
+                            for (Group groupWorkTime : groupsWorkTimeData){
+                                String labelWorkTime = groupWorkTime.getLabel().getLocalizedString();
+                                if(labelNotWorkTime.equals(labelWorkTime)){
+                                    hasGroup = true;
+                                    for (Item itemNotWorkTime : groupNotWorkTime.getItemList()){
+                                        String itemLabel = itemNotWorkTime.getLabel().getLocalizedString();
+                                        for(Item itemWorkTime : groupWorkTime.getItemList()){
+                                            if(itemLabel.equals(itemWorkTime.getLabel().getLocalizedString())){
+                                                addNewRow(tableLayout,
+                                                        itemNotWorkTime.getLabel().getLocalizedString(),
+                                                        decimalFormat.format(Double.valueOf(itemNotWorkTime.getValue().getLocalizedString())),
+                                                        decimalFormat.format(Double.valueOf(itemWorkTime.getValue().getLocalizedString())),
+                                                        itemNotWorkTime.getUnits().getLocalizedString());
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if(!hasGroup){
+                                for (Item item : groupNotWorkTime.getItemList()) {
+                                    addNewRow(tableLayout,
+                                            item.getLabel().getLocalizedString(),
+                                            decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())),
+                                            "0",
+                                            item.getUnits().getLocalizedString());
+                                }
+                            }
+                        }
+                    }
+
+                    for (Group groupWorkTime : groupsWorkTimeData){
+                        String labelWorkTime = groupWorkTime.getLabel().getLocalizedString();
+                        boolean hasGroup = false;
+                        for (Group groupNotWorkTime : groupsNotWorkTimeData) {
+                            if (labelWorkTime.equals(groupNotWorkTime.getLabel().getLocalizedString())) {
+                                hasGroup = true;
+                            }
+                        }
+                        if(!hasGroup){
+                            if(labelWorkTime.equals(measurementKindLocalization.localize(Measurement.TYPE_BLOOD_PRESSURE)) ||
+                                    labelWorkTime.equals(measurementKindLocalization.localize(Measurement.TYPE_LUMBAR_EXTENSION_TRAINING))){
+                                for (Group group : groupWorkTime.getGroupList()) {
+                                    String timestamp = group.getLabel().getLocalizedString();
+                                    displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")) + " - MyWork");
+                                    for (Item item : group.getItemList()) {
+                                        addNewRow(tableLayout,
+                                                item.getLabel().getLocalizedString(),
+                                                "-",
+                                                decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())),
+                                                item.getUnits().getLocalizedString());
+                                    }
+                                }
+                            }
+                            else{
+                                for (Item item : groupWorkTime.getItemList()) {
+                                    addNewRow(tableLayout,
+                                            item.getLabel().getLocalizedString(),
+                                            "0",
+                                            decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())),
+                                            item.getUnits().getLocalizedString());
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+
+            model.getNotWorkTimeReport(getActivity().getApplication(), observerNotWorkTimeReport);
+        };
+
+        model.getWorkTimeReport(getActivity().getApplication(), observerWorkTimeReport);
+
+    }
+
+    private void displayTitle(TableLayout tableLayout, String title){
+        View vTitle = LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_title, null);
+        TextView tvTitle = vTitle.findViewById(R.id.tvTitle);
+        tvTitle.setText(title);
+        tableLayout.addView(vTitle);
+    }
+
+    private void addNewRow(TableLayout tableLayout, String label, String valueMyTime, String valueWorkTime, String units){
+        View v = LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_rows, null);
+        TextView tvLabel = v.findViewById(R.id.tvLabel);
+        TextView tvValueMyTime = v.findViewById(R.id.tvValueMyTime);
+        TextView tvValueWorkTime = v.findViewById(R.id.tvValueWorkTime);
+        TextView tvUnits = v.findViewById(R.id.tvUnits);
+
+        tvLabel.setText(label);
+
+        if(valueMyTime.equals("-")) {
+            tvValueMyTime.setVisibility(View.INVISIBLE);
+        }
+        else {
+            tvValueMyTime.setText(valueMyTime);
+        }
+
+        tvValueWorkTime.setText(valueWorkTime);
+
+        if(units.equals("-")) {
+            tvUnits.setVisibility(View.INVISIBLE);
+        }
+        else {
+            tvUnits.setText(units);
+        }
+
+        tableLayout.addView(v);
+    }
+
+    private void displayTimestamp(TableLayout tableLayout, String timestamp){
+        View vTimestamp = (View) LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_timestamp, null);
+        TextView tvTimestamp = vTimestamp.findViewById(R.id.tvTimestamp);
+        tvTimestamp.setText(timestamp);
+        tableLayout.addView(vTimestamp);
     }
 
     private String secondsToString(int value) {
