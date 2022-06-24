@@ -25,17 +25,15 @@ public class DigitsoleAgent extends BluetoothAgent {
             DigitsoleActivityProtocol.ID
     )));
 
-    private Context context;
 
-    public DigitsoleAgent(BluetoothConnection connection, Context context) {
+    public DigitsoleAgent(BluetoothConnection connection) {
         super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
-        this.context = context;
     }
 
     @Override
     protected MeasuringProtocol getMeasuringProtocol(int kind) {
         if (kind == Measurement.TYPE_STEPS_SNAPSHOT) {
-            return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this, context);
+            return new DigitsoleActivityProtocol(getConnection(), getSampleDispatcher(), this);
         }
         return null;
     }
