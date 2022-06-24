@@ -4,10 +4,12 @@ public class Item {
 
     private final LocalizedString label;
     private final LocalizedString value;
+    private final LocalizedString units;
 
-    public Item(LocalizedString label, LocalizedString value){
+    public Item(LocalizedString label, LocalizedString value, LocalizedString units){
         this.label = label;
         this.value = value;
+        this.units = units;
     }
 
     /***************************************
@@ -20,5 +22,7 @@ public class Item {
     public LocalizedString getValue(){
         return value;
     }
+
+    public LocalizedString getUnits() { return units; }
 
 }

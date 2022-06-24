@@ -48,9 +48,9 @@ public class ReportDetailFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
 
 
-        Button uploadPdfButton = view.findViewById(R.id.uploadButton);
-        Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
-        AccountsViewModel viewModel = new AccountsViewModel(requireActivity().getApplication());
+        /*Button uploadPdfButton = view.findViewById(R.id.uploadButton);
+        //Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
+        //AccountsViewModel viewModel = new AccountsViewModel(requireActivity().getApplication());
         if (viewModel.hasSmart4HealthAccount()) {
 
             viewPdfButton.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class ReportDetailFragment extends Fragment {
         } else {
             viewPdfButton.setVisibility(View.GONE);
             uploadPdfButton.setVisibility(View.GONE);
-        }
+        }*/
 
         return view;
     }
@@ -349,7 +349,7 @@ public class ReportDetailFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
 
-        infoTextView_day = view.findViewById(R.id.fragment_report_detail_text_view_day);
+        /*infoTextView_day = view.findViewById(R.id.fragment_report_detail_text_view_day);
         infoTextView_year = view.findViewById(R.id.fragment_report_detail_text_view_year);
         heartRateAvg = view.findViewById(R.id.fragment_report_detail_heart_rate_average);
         heartRateMax = view.findViewById(R.id.fragment_report_detail_heart_rate_max);
@@ -372,7 +372,7 @@ public class ReportDetailFragment extends Fragment {
         bloodPressureGroup = view.findViewById(R.id.bloodPressureGroup);
         respirationGroup = view.findViewById(R.id.respirationGroup);
         lumbarExtensionTrainingGroup = view.findViewById(R.id.lumbarExtensionTrainingGroup);
-        getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);
+        getInfoTextView_noData = view.findViewById(R.id.fragment_report_detail_view_no_data);*/
 
         model.obtainSummary(this::onSummaryChanged);
         model.obtainWorkTimeSummary(this::onSummaryWorkTimeChanged);

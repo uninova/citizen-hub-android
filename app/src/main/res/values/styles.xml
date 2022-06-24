@@ -72,8 +72,20 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
 
-    <style name="ReportDetailTitle">
+    <!--style name="ReportDetailTitle">
         <item name="android:layout_width">114.520dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button_rounded_darkblue_right_side_12dp</item>
+        <item name="android:fontFamily">@font/primus</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">6.85pt</item>
+    </style-->
+
+    <style name="ReportDetailTitle">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/button_rounded_darkblue_right_side_12dp</item>
         <item name="android:fontFamily">@font/primus</item>
@@ -84,14 +96,14 @@
         <item name="android:textSize">6.85pt</item>
     </style>
 
-    <style name="ReportDetailUnits">
+    <!--style name="ReportDetailUnits">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/neosanspro</item>
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
         <item name="android:textSize">5.9pt</item>
         <item name="android:paddingLeft">5dp</item>
-    </style>
+    </style-->
 
     <style name="AppTheme.Summary" />
 
@@ -145,7 +157,7 @@
         <item name="android:padding">8dp</item>
     </style>
 
-    <style name="ReportDetailValueType">
+    <!--style name="ReportDetailValueType">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/neosanspro</item>
         <item name="android:layout_height">wrap_content</item>
@@ -153,16 +165,55 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
 
+    </style-->
+
+    <style name="ReportDetailValueType">
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HTurquoise</item>
     </style>
 
     <style name="ReportDetailValue">
+        <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+
+    <style name="ReportDetailUnits">
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+
+    <!--style name="ReportDetailValue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">5.9pt</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
-    </style>
+    </style-->
 
     <style name="DialogSwitch">
         <item name="android:textColor">@color/colorS4HDarkBlue</item>

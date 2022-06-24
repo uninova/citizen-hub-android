@@ -696,7 +696,7 @@ public class ReportViewModel extends AndroidViewModel {
         return out.toByteArray();
     }
 
-    public byte[] doPdf(String[] info) throws IOException {
+    /*public byte[] doPdf(String[] info) throws IOException {
         PdfDocument document = new PdfDocument();
         Resources res = getApplication().getResources();
 
@@ -1021,7 +1021,7 @@ public class ReportViewModel extends AndroidViewModel {
         document.close();
 
         return out.toByteArray();
-    }
+    }*/
 
     public LiveData<Set<LocalDate>> getAvailableReportDates() {
         return availableReportsLive;

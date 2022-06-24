@@ -363,6 +363,32 @@
     <string name="lumbar_training_repetitions_label">Wiederholungen</string>
     <string name="lumbar_training_duration_label">Dauer</string>
 
+    <string name="report_calories_label">Calorias</string>
+    <string name="report_calories_units">kcal</string>
+    <string name="report_distance_label">Distância</string>
+    <string name="report_distance_units">m</string>
+    <string name="report_steps_label">Passos</string>
+
+    <string name="report_correct_posture_label">Correta</string>
+    <string name="report_incorrect_posture_label">Incorreta</string>
+
+    <string name="report_hr_maximum_label">Máximo</string>
+    <string name="report_hr_minimum_label">Mínimo</string>
+    <string name="report_hr_average_label">Médio</string>
+    <string name="report_hr_units">bpm</string>
+
+    <string name="report_bp_systolic_label">Sistólica</string>
+    <string name="report_bp_diastolic_label">Diastólica</string>
+    <string name="report_bp_average_label">Média</string>
+    <string name="report_bp_units">mmHg</string>
+    <string name="report_pulse_rate">Pulsação</string>
+
+    <string name="report_lumbar_training_score_label">Pontuação</string>
+    <string name="report_lumbar_training_weight_label">Peso</string>
+    <string name="report_lumbar_training_weight_units">kg</string>
+    <string name="report_lumbar_training_repetitions_label">Repetições</string>
+    <string name="report_lumbar_training_duration_label">Duração</string>
+
     <string name="measurement_type.0">Unbekannt</string>
     <string name="measurement_type.1">Pulsschlag</string>
     <string name="measurement_type.2">Aktivität</string>
