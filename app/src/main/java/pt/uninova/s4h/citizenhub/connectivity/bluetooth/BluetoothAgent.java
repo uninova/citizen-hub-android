@@ -43,6 +43,7 @@ public abstract class BluetoothAgent extends AbstractAgent {
     public void disable() {
         connection.removeConnectionStateChangeListener(observer);
         connection.disconnect();
+
         this.setState(AGENT_STATE_DISABLED);
     }
 
@@ -50,8 +51,12 @@ public abstract class BluetoothAgent extends AbstractAgent {
     public void enable() {
         this.connection.addConnectionStateChangeListener(observer);
 
-        if (connection.getState() == BluetoothConnectionState.DISCONNECTED)
+        if (connection.getState() == BluetoothConnectionState.READY) {
+            this.setState(AGENT_STATE_ENABLED);
+        } else {
+            this.setState(AGENT_STATE_INACTIVE);
             this.connection.connect();
+        }
     }
 
     public BluetoothConnection getConnection() {

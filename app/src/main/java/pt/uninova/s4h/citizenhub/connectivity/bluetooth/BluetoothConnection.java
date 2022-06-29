@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import care.data4life.fhir.r4.model.DocumentReference;
 import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -165,7 +166,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void disconnect() {
-        gatt.disconnect();
+        if (gatt != null) {
+            gatt.disconnect();
+        }
     }
 
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
@@ -173,14 +176,16 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void enableNotifications(final UUID serviceUuid, final UUID characteristicUuid, boolean acknowledge) {
-        final BluetoothGattService service = gatt.getService(serviceUuid);
+        if (gatt != null) {
+            final BluetoothGattService service = gatt.getService(serviceUuid);
 
-        if (service != null) {
-            final BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
+            if (service != null) {
+                final BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
 
-            if (characteristic != null) {
-                gatt.setCharacteristicNotification(characteristic, true);
-                writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                if (characteristic != null) {
+                    gatt.setCharacteristicNotification(characteristic, true);
+                    writeDescriptor(serviceUuid, characteristicUuid, BluetoothAgent.UUID_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION, acknowledge ? BluetoothGattDescriptor.ENABLE_INDICATION_VALUE : BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                }
             }
         }
     }
