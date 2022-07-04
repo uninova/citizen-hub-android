@@ -5,62 +5,37 @@ import androidx.room.TypeConverter;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
-
-import pt.uninova.s4h.citizenhub.util.Pair;
+import java.time.ZoneId;
 
 public class EpochTypeConverter {
 
     @TypeConverter
-    public static Long fromDate(Date date) {
-        return date == null ? null : date.getTime() / 1000L;
-    }
-
-    @TypeConverter
-    public static Long fromInstant(Instant instant) {
-        return instant == null ? null : instant.getEpochSecond();
+    public static Long fromInstant(Instant value) {
+        return value == null ? null : value.toEpochMilli();
     }
 
     @TypeConverter
     public static Long fromLocalDate(LocalDate value) {
-        return value == null ? null : value.toEpochDay() * 86400L;
+        return value == null ? null : value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     @TypeConverter
     public static Long fromLocalDateTime(LocalDateTime value) {
-        return value == null ? null : value.toEpochSecond(ZoneOffset.UTC);
-    }
-
-    @TypeConverter
-    public static Long fromPair(Pair<Integer, Integer> month) {
-        return month == null ? null : LocalDate.of(month.getFirst(), month.getSecond(), 1).toEpochDay() * 86400L;
-    }
-
-    @TypeConverter
-    public static Date toDate(Long value) {
-        return value == null ? null : new Date(value * 1000L);
+        return value == null ? null : value.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     @TypeConverter
     public static Instant toInstant(Long value) {
-        return value == null ? null : Instant.ofEpochSecond(value);
+        return value == null ? null : Instant.ofEpochMilli(value);
     }
 
     @TypeConverter
     public static LocalDate toLocalDate(Long value) {
-        return value == null ? null : LocalDate.ofEpochDay(value / 86400L);
+        return value == null ? null : Instant.ofEpochMilli(value).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     @TypeConverter
     public static LocalDateTime toLocalDateTime(Long value) {
-        return value == null ? null : LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
-
-    }
-
-    @TypeConverter
-    public static LocalDateTime toLocalDateTime(Integer value) {
-        return value == null ? null : LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
-
+        return value == null ? null : Instant.ofEpochMilli(value).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
