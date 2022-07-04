@@ -77,8 +77,7 @@ public class KbzBodyProtocol extends BluetoothMeasuringProtocol {
 
         this.posture.addObserver(value -> {
             final int classification = value.getFirst() ? PostureValue.CLASSIFICATION_CORRECT : PostureValue.CLASSIFICATION_INCORRECT;
-            final double duration = value.getSecond().toNanos() * 0.000000001;
-            final Measurement<?> measurement = new PostureMeasurement(new PostureValue(classification, duration));
+            final Measurement<?> measurement = new PostureMeasurement(new PostureValue(classification, value.getSecond()));
             final Sample sample = new Sample(getAgent().getSource(), measurement);
 
             getSampleDispatcher().dispatch(sample);

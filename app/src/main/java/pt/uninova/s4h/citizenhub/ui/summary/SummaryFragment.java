@@ -151,11 +151,11 @@ public class SummaryFragment extends ServiceFragment {
 
     private void onDailyPostureMeasurementUpdate(List<PostureClassificationSum> records) {
         final View view = requireView();
-        final Map<Integer, Double> values = new HashMap<>();
+        final Map<Integer, Long> values = new HashMap<>();
 
         for (PostureClassificationSum i : records) {
             if (i.getClassification() == PostureValue.CLASSIFICATION_CORRECT || i.getClassification() == PostureValue.CLASSIFICATION_INCORRECT) {
-                values.put(i.getClassification(), i.getDuration());
+                values.put(i.getClassification(), i.getDuration().getSeconds());
             }
         }
 
