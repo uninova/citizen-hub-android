@@ -6,9 +6,11 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.TypeConverters;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.PostureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
@@ -19,15 +21,16 @@ public interface PostureMeasurementDao {
     @Insert
     long insert(PostureMeasurementRecord record);
 
+    @TypeConverters(DurationTypeConverter.class)
     @Query("INSERT INTO posture_measurement (sample_id, classification, duration) VALUES (:sampleId, :classification, :duration)")
-    long insert(Long sampleId, Integer classification, Double duration);
+    long insert(Long sampleId, Integer classification, Duration duration);
 
-    @Query(value = "SELECT posture_measurement.* FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
+    @Query(value = "SELECT posture_measurement.* FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     LiveData<List<PostureMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
 
-    @Query("SELECT posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification")
     @TypeConverters(EpochTypeConverter.class)
+    @Query("SELECT posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification")
     LiveData<List<PostureClassificationSum>> selectClassificationSumLiveData(LocalDate from, LocalDate to);
 
 }
