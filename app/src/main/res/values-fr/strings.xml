@@ -363,27 +363,40 @@
     <string name="lumbar_training_repetitions_label">Répétitions</string>
     <string name="lumbar_training_duration_label">Durée</string>
 
+    <!-- Strings used for the report -->
+    <string name="report_upload">Télécharger le PDF</string>
+
+    <string name="report_complete_report">Rapport Complet</string>
+    <string name="report_work_time_report">Rapport de Temps de Travail</string>
+    <string name="report_not_work_time_report">Rapport de Temps non Travaillé</string>
+
+    <string name="report_br_maximum_label">Maximale</string>
+    <string name="report_br_minimum_label">Minimale</string>
+    <string name="report_br_average_label">Moyenne</string>
+    <string name="report_br_units">rpm</string>
+
     <string name="report_calories_label">Calories</string>
     <string name="report_calories_units">kcal</string>
     <string name="report_distance_label">Distance</string>
     <string name="report_distance_units">m</string>
     <string name="report_steps_label">Pas</string>
 
-    <string name="report_correct_posture_label">Correta</string>
-    <string name="report_incorrect_posture_label">Incorreta</string>
+    <string name="report_correct_posture_label">Correct</string>
+    <string name="report_incorrect_posture_label">Incorrecte</string>
 
-    <string name="report_hr_maximum_label">Máximo</string>
-    <string name="report_hr_minimum_label">Mínimo</string>
-    <string name="report_hr_average_label">Médio</string>
+    <string name="report_hr_maximum_label">Maximale</string>
+    <string name="report_hr_minimum_label">Minimale</string>
+    <string name="report_hr_average_label">Moyenne</string>
     <string name="report_hr_units">bpm</string>
 
     <string name="report_bp_systolic_label">Systolique</string>
     <string name="report_bp_diastolic_label">Diastolique</string>
-    <string name="report_bp_average_label">Média</string>
+    <string name="report_bp_average_label">Moyenne</string>
     <string name="report_bp_units">mmHg</string>
-    <string name="report_pulse_rate">Pulsação</string>
+    <string name="report_pulse_rate">Pulsation</string>
 
     <string name="report_lumbar_training_score_label">Score</string>
+    <string name="report_lumbar_training_score_units">%</string>
     <string name="report_lumbar_training_weight_label">Masse</string>
     <string name="report_lumbar_training_weight_units">kg</string>
     <string name="report_lumbar_training_repetitions_label">Répétitions</string>

@@ -83,11 +83,18 @@ public interface ReportDao {
     @TypeConverters(EpochTypeConverter.class)
     ReportUtil getWorkTimeSimpleRecords(LocalDate from, LocalDate to);
 
-    @Query("SELECT dailyCalories.calories, dailyDistance.distance, "
+    @Query("SELECT breathingRate.maxBreathingRate, breathingRate.minBreathingRate, breathingRate.avgBreathingRate, "
+            + " dailyCalories.calories, dailyDistance.distance, "
             + " heartRate.maxHeartRate, heartRate.minHeartRate, heartRate.avgHeartRate, "
             + " correctPosture.correctPostureDuration, wrongPosture.wrongPostureDuration, "
             + " dailySteps.steps"
             + " FROM "
+
+            + "(SELECT MAX(value) AS maxBreathingRate, MIN(value) AS minBreathingRate, AVG(value) AS avgBreathingRate FROM breathing_rate_measurement "
+            + " INNER JOIN sample ON breathing_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + " (SELECT tag.label FROM tag WHERE tag.sample_id = breathing_rate_measurement.sample_id AND tag.label = 1)) breathingRate,"
 
             + " (SELECT MAX(value) AS calories FROM calories_snapshot_measurement "
             + " INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "

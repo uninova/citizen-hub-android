@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pt.uninova.s4h.citizenhub">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <uses-feature android:name="android.hardware.bluetooth_le" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

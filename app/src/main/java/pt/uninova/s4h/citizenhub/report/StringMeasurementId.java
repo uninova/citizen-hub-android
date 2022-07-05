@@ -17,6 +17,11 @@ public class StringMeasurementId implements LocalizedString {
     /***************************************
      * This section only has get functions *
      ***************************************/
+
+    public int getMeasurementId(){
+         return measurementId;
+    }
+
     @Override
     public String getLocalizedString(){
         return measurementKindLocalization.localize(measurementId);
