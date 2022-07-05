@@ -15,6 +15,11 @@ public class ReportUtil {
     private Double meanArterialPressure;
     private Double pulseRate;
 
+    //Breathing
+    private Double maxBreathingRate;
+    private Double minBreathingRate;
+    private Double avgBreathingRate;
+
     //Calories
     private Double calories;
 
@@ -74,6 +79,19 @@ public class ReportUtil {
     }
 
     public void setPulseRate(Double pulseRate) { this.pulseRate = pulseRate; }
+
+    //Breathing Rate
+    public Double getMaxBreathingRate(){ return maxBreathingRate; }
+
+    public void setMaxBreathingRate(Double maxBreathingRate) { this.maxBreathingRate = maxBreathingRate; }
+
+    public Double getMinBreathingRate(){ return minBreathingRate; }
+
+    public void setMinBreathingRate(Double minBreathingRate) { this.minBreathingRate = minBreathingRate; }
+
+    public Double getAvgBreathingRate(){ return avgBreathingRate; }
+
+    public void setAvgBreathingRate(Double avgBreathingRate) { this.avgBreathingRate = avgBreathingRate; }
 
     //Calories
     public Double getCalories(){ return calories; }

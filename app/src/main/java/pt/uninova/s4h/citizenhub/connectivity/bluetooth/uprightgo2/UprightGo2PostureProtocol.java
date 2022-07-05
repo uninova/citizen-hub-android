@@ -139,7 +139,7 @@ public class UprightGo2PostureProtocol extends BluetoothMeasuringProtocol {
 
         if (lastTimestamp != null) {
             final Duration duration = Duration.between(lastTimestamp, now);
-            final double seconds = duration.toNanos() * 0.000000001;
+            final double seconds = duration.toMillis();
 
             final int classification = lastGoodPosture ? PostureValue.CLASSIFICATION_CORRECT : PostureValue.CLASSIFICATION_INCORRECT;
 

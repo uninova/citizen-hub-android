@@ -388,6 +388,18 @@
     <string name="lumbar_training_repetitions_label">Repetições</string>
     <string name="lumbar_training_duration_label">Duração</string>
 
+    <!-- Strings used for the report -->
+    <string name="report_upload">Carregar PDF</string>
+
+    <string name="report_complete_report">Relatório Diário</string>
+    <string name="report_work_time_report">Relatório Tempo de Trabalho</string>
+    <string name="report_not_work_time_report">Relatório fora Tempo de Trabalho</string>
+
+    <string name="report_br_maximum_label">Máximo</string>
+    <string name="report_br_minimum_label">Mínimo</string>
+    <string name="report_br_average_label">Média</string>
+    <string name="report_br_units">rpm</string>
+
     <string name="report_calories_label">Calorias</string>
     <string name="report_calories_units">kcal</string>
     <string name="report_distance_label">Distância</string>
@@ -409,6 +421,7 @@
     <string name="report_pulse_rate">Pulsação</string>
 
     <string name="report_lumbar_training_score_label">Pontuação</string>
+    <string name="report_lumbar_training_score_units">%</string>
     <string name="report_lumbar_training_weight_label">Peso</string>
     <string name="report_lumbar_training_weight_units">kg</string>
     <string name="report_lumbar_training_repetitions_label">Repetições</string>

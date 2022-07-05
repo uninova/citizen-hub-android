@@ -26,13 +26,14 @@ import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class DailyReportGeneratorPDF {
+public class DailyReportGeneratorPDFV2 {
 
     private final Context context;
 
     private final Paint logoBackGroundPaint;
     private final Paint titlePaint;
-    private final Paint darkTextPaint;
+    private final Paint darkTextPaintAlignLeft;
+    private final Paint darkTextPaintAlignRight;
     private final Paint darkItalicTextPaint;
     private final Paint whiteTextPaint;
     private final Paint whiteItalicTextPaint;
@@ -43,7 +44,7 @@ public class DailyReportGeneratorPDF {
     private final Path path;
     private final float[] corners;
 
-    public DailyReportGeneratorPDF (Context context){
+    public DailyReportGeneratorPDFV2 (Context context){
         this.context = context;
 
         this.logoBackGroundPaint = new Paint();
@@ -57,11 +58,17 @@ public class DailyReportGeneratorPDF {
         titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
         titlePaint.setTextSize(18);
 
-        this.darkTextPaint = new Paint();
-        darkTextPaint.setColor(Color.parseColor("#000000"));
-        darkTextPaint.setTextAlign(Paint.Align.LEFT);
-        darkTextPaint.setTypeface(Typeface.DEFAULT);
-        darkTextPaint.setTextSize(12);
+        this.darkTextPaintAlignLeft = new Paint();
+        darkTextPaintAlignLeft.setColor(Color.parseColor("#000000"));
+        darkTextPaintAlignLeft.setTextAlign(Paint.Align.LEFT);
+        darkTextPaintAlignLeft.setTypeface(Typeface.DEFAULT);
+        darkTextPaintAlignLeft.setTextSize(12);
+
+        this.darkTextPaintAlignRight = new Paint();
+        darkTextPaintAlignRight.setColor(Color.parseColor("#000000"));
+        darkTextPaintAlignRight.setTextAlign(Paint.Align.RIGHT);
+        darkTextPaintAlignRight.setTypeface(Typeface.DEFAULT);
+        darkTextPaintAlignRight.setTextSize(12);
 
         this.darkItalicTextPaint = new Paint();
         darkItalicTextPaint.setColor(Color.parseColor("#000000"));
@@ -77,7 +84,7 @@ public class DailyReportGeneratorPDF {
 
         this.whiteItalicTextPaint = new Paint();
         whiteItalicTextPaint.setColor(Color.parseColor("#ffffff"));
-        whiteItalicTextPaint.setTextAlign(Paint.Align.LEFT);
+        whiteItalicTextPaint.setTextAlign(Paint.Align.RIGHT);
         whiteItalicTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         whiteItalicTextPaint.setTextSize(12);
 
@@ -112,7 +119,7 @@ public class DailyReportGeneratorPDF {
         this.path = new Path();
     }
 
-    public void generateWorkTimeReportPDF(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
+    /*public void generateWorkTimeReportPDF(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
 
         PdfDocument document = new PdfDocument();
 
@@ -304,7 +311,7 @@ public class DailyReportGeneratorPDF {
 
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
         dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
-    }
+    }*/
 
     public void generateCompleteReport(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
 
@@ -317,8 +324,6 @@ public class DailyReportGeneratorPDF {
         canvas.setDensity(72);
 
         CanvasWriter canvasWriter = new CanvasWriter(canvas);
-
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -333,13 +338,8 @@ public class DailyReportGeneratorPDF {
                 int x = 50; //30
                 int y = 80;
                 canvas.drawRoundRect(x, y, 550, y + 70, 10, 10, backgroundPaint); //570
-                canvasWriter.addText("Complete Daily Report", x + 165, y + 28, titlePaint);
-                canvasWriter.addText("Results of: " + date.toString(), x + 165, y + 53, titlePaint);
-
-                //x += 20;
-
-                /*canvas.drawRect(x, y + 60, 550, y + 90, rectFillPaint);
-                canvasWriter.addText("Results of: " + date.toString(), 200, y + 80, titlePaint);*/
+                canvasWriter.addText(res.getString(R.string.report_complete_report), x + 165, y + 28, titlePaint);
+                canvasWriter.addText(date.toString(), x + 165, y + 53, titlePaint);
 
                 y += 110; // 120
 
@@ -354,21 +354,23 @@ public class DailyReportGeneratorPDF {
                     path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                     canvas.drawPath(path, rectFillPaint);
                     canvasWriter.addText(measurementKindLocalization.localize(notWorkTimeLabel), x + 20, y - 4, whiteTextPaint);
+                    canvasWriter.addText("MyTime", x + 300, y - 4, whiteItalicTextPaint);
+                    canvasWriter.addText("MyWork", x + 420, y - 4, whiteItalicTextPaint);
 
                     y += 20;
 
                     if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                         for (Group group : groupNotWorkTime.getGroupList()) {
                             String timestamp = group.getLabel().getLocalizedString();
-                            canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaint);
-                            canvasWriter.addTextInFront(" - MyTime", darkItalicTextPaint);
+                            canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaintAlignLeft);
+                            //canvasWriter.addTextInFront(" - MyTime", darkItalicTextPaint);
                             y += 20;
                             for (Item item : group.getItemList()) {
-                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaint);
-                                canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())), x + 360, y, darkTextPaint);
-                                if(!item.getUnits().getLocalizedString().equals("-")){
-                                    canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
-                                }
+                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                canvasWriter.addText(item.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
+                                if(!item.getUnits().getLocalizedString().equals("-"))
+                                    canvasWriter.addText(item.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
+                                canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
                                 y += 20;
                             }
                         }
@@ -377,15 +379,15 @@ public class DailyReportGeneratorPDF {
                             if (notWorkTimeLabel == workTimeLabel) {
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
-                                    canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaint);
+                                    canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaintAlignLeft);
                                     canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
                                     y += 20;
                                     for (Item item : group.getItemList()) {
-                                        canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaint);
-                                        canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())), x + 360, y, darkTextPaint);
-                                        if(!item.getUnits().getLocalizedString().equals("-")){
-                                            canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
-                                        }
+                                        canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                        canvasWriter.addText("-", x + 300, y, darkTextPaintAlignRight);
+                                        canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
+                                        if(!item.getUnits().getLocalizedString().equals("-"))
+                                            canvasWriter.addText(item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                         y += 20;
                                     }
                                     y += 20;
@@ -393,8 +395,6 @@ public class DailyReportGeneratorPDF {
                             }
                         }
                     } else {
-                        canvasWriter.addText("MyTime", x + 240, y - 24, whiteItalicTextPaint);
-                        canvasWriter.addText("MyWork", x + 360, y - 24, whiteItalicTextPaint);
                         boolean hasItem = false;
                         for (Group groupWorkTime : groupsWorkTimeData) {
                             if (((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId() == ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId()) {
@@ -402,11 +402,14 @@ public class DailyReportGeneratorPDF {
                                 for (Item itemNotWorkTime : groupNotWorkTime.getItemList()) {
                                     for (Item itemWorkTime : groupWorkTime.getItemList()) {
                                         if (itemNotWorkTime.getLabel().getLocalizedString().equals(itemWorkTime.getLabel().getLocalizedString())) {
-                                            canvasWriter.addText(itemNotWorkTime.getLabel().getLocalizedString(), x + 40, y, darkTextPaint);
-                                            canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(itemNotWorkTime.getValue().getLocalizedString())), x + 240, y, darkTextPaint);
-                                            canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(itemWorkTime.getValue().getLocalizedString())), x + 360, y, darkTextPaint);
+                                            canvasWriter.addText(itemNotWorkTime.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                            canvasWriter.addText(itemNotWorkTime.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
                                             if(!itemNotWorkTime.getUnits().getLocalizedString().equals("-")){
-                                                canvasWriter.addText(" " + itemNotWorkTime.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
+                                                canvasWriter.addText(" " + itemNotWorkTime.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
+                                            }
+                                            canvasWriter.addText(itemWorkTime.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
+                                            if(!itemWorkTime.getUnits().getLocalizedString().equals("-")){
+                                                canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                             }
                                             y += 20;
                                             break;
@@ -417,12 +420,12 @@ public class DailyReportGeneratorPDF {
                         }
                         if (!hasItem) {
                             for (Item item : groupNotWorkTime.getItemList()) {
-                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaint);
-                                canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())), x + 240, y, darkTextPaint);
-                                canvasWriter.addText(" 0", x + 360, y, darkTextPaint);
+                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                canvasWriter.addText(item.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
                                 if(!item.getUnits().getLocalizedString().equals("-")){
-                                    canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
+                                    canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
                                 }
+                                canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
                                 y += 20;
                             }
 
@@ -448,19 +451,22 @@ public class DailyReportGeneratorPDF {
                     if (!hasGroup) {
                         path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                         canvas.drawPath(path, rectFillPaint);
-                        canvasWriter.addText(measurementKindLocalization.localize(workTimeLabel), x + 20, y, darkTextPaint);
+                        canvasWriter.addText(measurementKindLocalization.localize(workTimeLabel), x + 20, y, darkTextPaintAlignLeft);
+                        canvasWriter.addText("MyTime", x + 300, y - 24, whiteItalicTextPaint);
+                        canvasWriter.addText("MyWork", x + 420, y - 24, whiteItalicTextPaint);
                         y += 20;
                         if (workTimeLabel == Measurement.TYPE_BLOOD_PRESSURE ||
                                 workTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                             for (Group group : groupWorkTime.getGroupList()) {
-                                canvasWriter.addText(group.getLabel().getLocalizedString(), x + 25, y, darkTextPaint);
-                                canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
+                                canvasWriter.addText(group.getLabel().getLocalizedString(), x + 25, y, darkTextPaintAlignLeft);
+                                //canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
                                 y += 20;
                                 for (Item item : group.getItemList()) {
-                                    canvasWriter.addText(item.getLabel().getLocalizedString() + ":", x + 40, y, darkTextPaint);
-                                    canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())), x + 360, y, darkTextPaint);
+                                    canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                    canvasWriter.addText("-", x + 300, y, darkTextPaintAlignRight);
+                                    canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
                                     if(!item.getUnits().getLocalizedString().equals("-")){
-                                        canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
+                                        canvasWriter.addText(item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                     }
                                     y += 20;
                                 }
@@ -468,14 +474,12 @@ public class DailyReportGeneratorPDF {
                             }
                         }
                         else {
-                            canvasWriter.addText("MyTime", x + 240, y - 24, whiteItalicTextPaint);
-                            canvasWriter.addText("MyWork", x + 360, y - 24, whiteItalicTextPaint);
                             for (Item item : groupWorkTime.getItemList()) {
-                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaint);
-                                canvasWriter.addText(" 0", x + 240, y, darkTextPaint);
-                                canvasWriter.addText(" " + decimalFormat.format(Double.valueOf(item.getValue().getLocalizedString())), x + 360, y, darkTextPaint);
+                                canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
+                                canvasWriter.addText("-", x + 240, y, darkTextPaintAlignRight);
+                                canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
                                 if(!item.getUnits().getLocalizedString().equals("-")){
-                                    canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 440, y, darkTextPaint);
+                                    canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                 }
                                 y += 20;
                             }

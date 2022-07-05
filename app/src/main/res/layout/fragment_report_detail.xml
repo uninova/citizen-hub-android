@@ -100,6 +100,21 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:gravity="right"
+                    android:text="Units"
+                    android:textSize="5pt"
+                    android:textColor="@color/colorS4HOrange"
+                    android:textStyle="italic"
+                    android:visibility="invisible"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/tvInfoFourthColumn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="right"
                     android:text="MyWork"
                     android:textSize="5pt"
                     android:textColor="@color/colorS4HOrange"
@@ -108,7 +123,7 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:id="@+id/tvInfoFourthColumn"
+                    android:id="@+id/tvInfoFifthColumn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

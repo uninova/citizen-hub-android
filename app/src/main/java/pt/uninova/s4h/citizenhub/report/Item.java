@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.report;
 
+import java.text.DecimalFormat;
+
 public class Item {
 
     private final LocalizedString label;
@@ -24,5 +26,12 @@ public class Item {
     }
 
     public LocalizedString getUnits() { return units; }
+
+    public String getValueWithUnits(){
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        if(getUnits().getLocalizedString().equals("-"))
+            return decimalFormat.format(Double.valueOf(getValue().getLocalizedString()));
+        return (decimalFormat.format(Double.valueOf(getValue().getLocalizedString())) + " " + getUnits().getLocalizedString());
+    }
 
 }
