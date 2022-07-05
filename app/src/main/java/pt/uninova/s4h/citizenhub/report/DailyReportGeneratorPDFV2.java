@@ -337,11 +337,11 @@ public class DailyReportGeneratorPDFV2 {
 
                 int x = 50; //30
                 int y = 80;
-                canvas.drawRoundRect(x, y, 550, y + 70, 10, 10, backgroundPaint); //570
-                canvasWriter.addText(res.getString(R.string.report_complete_report), x + 165, y + 28, titlePaint);
-                canvasWriter.addText(date.toString(), x + 165, y + 53, titlePaint);
+                canvas.drawRoundRect(x, y, 550, y + 45, 10, 10, backgroundPaint); //570
+                canvasWriter.addText(res.getString(R.string.report_complete_report), x + 10, y + 28, titlePaint);
+                canvasWriter.addText(date.toString(), x + 395, y + 28, titlePaint);
 
-                y += 110; // 120
+                y += 90; // 120, 110
 
                 List<Group> groupsWorkTimeData = workTimeData.getGroups();
                 List<Group> groupsNotWorkTimeData = notWorkTimeData.getGroups();
@@ -354,16 +354,15 @@ public class DailyReportGeneratorPDFV2 {
                     path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                     canvas.drawPath(path, rectFillPaint);
                     canvasWriter.addText(measurementKindLocalization.localize(notWorkTimeLabel), x + 20, y - 4, whiteTextPaint);
-                    canvasWriter.addText("MyTime", x + 300, y - 4, whiteItalicTextPaint);
-                    canvasWriter.addText("MyWork", x + 420, y - 4, whiteItalicTextPaint);
+                    canvasWriter.addText("MyTime", x + 330, y - 4, whiteItalicTextPaint);
+                    canvasWriter.addText("MyWork", x + 450, y - 4, whiteItalicTextPaint);
 
-                    y += 20;
+                    y += 25;
 
                     if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                         for (Group group : groupNotWorkTime.getGroupList()) {
                             String timestamp = group.getLabel().getLocalizedString();
                             canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaintAlignLeft);
-                            //canvasWriter.addTextInFront(" - MyTime", darkItalicTextPaint);
                             y += 20;
                             for (Item item : group.getItemList()) {
                                 canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
@@ -373,6 +372,7 @@ public class DailyReportGeneratorPDFV2 {
                                 canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
                                 y += 20;
                             }
+                            y += 5;
                         }
                         for (Group groupWorkTime : groupsWorkTimeData) {
                             int workTimeLabel = ((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId();
@@ -380,7 +380,7 @@ public class DailyReportGeneratorPDFV2 {
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
                                     canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), x + 25, y, darkTextPaintAlignLeft);
-                                    canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
+                                    //canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
                                     y += 20;
                                     for (Item item : group.getItemList()) {
                                         canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
@@ -390,10 +390,11 @@ public class DailyReportGeneratorPDFV2 {
                                             canvasWriter.addText(item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                         y += 20;
                                     }
-                                    y += 20;
+                                    y += 5;
                                 }
                             }
                         }
+                        y += 38;
                     } else {
                         boolean hasItem = false;
                         for (Group groupWorkTime : groupsWorkTimeData) {
@@ -405,7 +406,7 @@ public class DailyReportGeneratorPDFV2 {
                                             canvasWriter.addText(itemNotWorkTime.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                             canvasWriter.addText(itemNotWorkTime.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
                                             if(!itemNotWorkTime.getUnits().getLocalizedString().equals("-")){
-                                                canvasWriter.addText(" " + itemNotWorkTime.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
+                                                canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
                                             }
                                             canvasWriter.addText(itemWorkTime.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
                                             if(!itemWorkTime.getUnits().getLocalizedString().equals("-")){
@@ -428,16 +429,15 @@ public class DailyReportGeneratorPDFV2 {
                                 canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
                                 y += 20;
                             }
-
                         }
+                        y += 43;
                     }
-                    y += 40;
                     RectF rectAround = new RectF(x, rectHeight, 550, y - 50);
                     canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
                 }
 
                 for (Group groupWorkTime : groupsWorkTimeData) {
-                    int rectHeight = y - 10;
+                    int rectHeight = y - 20;
                     boolean hasGroup = false;
                     int workTimeLabel = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
 
@@ -452,14 +452,13 @@ public class DailyReportGeneratorPDFV2 {
                         path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                         canvas.drawPath(path, rectFillPaint);
                         canvasWriter.addText(measurementKindLocalization.localize(workTimeLabel), x + 20, y, darkTextPaintAlignLeft);
-                        canvasWriter.addText("MyTime", x + 300, y - 24, whiteItalicTextPaint);
-                        canvasWriter.addText("MyWork", x + 420, y - 24, whiteItalicTextPaint);
-                        y += 20;
+                        canvasWriter.addText("MyTime", x + 320, y - 24, whiteItalicTextPaint);
+                        canvasWriter.addText("MyWork", x + 440, y - 24, whiteItalicTextPaint);
+                        y += 25;
                         if (workTimeLabel == Measurement.TYPE_BLOOD_PRESSURE ||
                                 workTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                             for (Group group : groupWorkTime.getGroupList()) {
                                 canvasWriter.addText(group.getLabel().getLocalizedString(), x + 25, y, darkTextPaintAlignLeft);
-                                //canvasWriter.addTextInFront(" - MyWork", darkItalicTextPaint);
                                 y += 20;
                                 for (Item item : group.getItemList()) {
                                     canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
@@ -470,8 +469,9 @@ public class DailyReportGeneratorPDFV2 {
                                     }
                                     y += 20;
                                 }
-                                y += 20;
+                                y += 5;
                             }
+                            y += 38;
                         }
                         else {
                             for (Item item : groupWorkTime.getItemList()) {
@@ -483,8 +483,8 @@ public class DailyReportGeneratorPDFV2 {
                                 }
                                 y += 20;
                             }
+                            y += 43;
                         }
-                        y += 40;
                         RectF rectAround = new RectF(x, rectHeight - 10, 550, y);
                         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
                     }

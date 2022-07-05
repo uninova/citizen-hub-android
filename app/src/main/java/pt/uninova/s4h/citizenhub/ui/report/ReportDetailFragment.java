@@ -319,9 +319,11 @@ public class ReportDetailFragment extends Fragment {
                         displayTitle(tableLayout, measurementKindLocalization.localize(labelNotWorkTime));
 
                         if (labelNotWorkTime == Measurement.TYPE_BLOOD_PRESSURE || labelNotWorkTime == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+                            boolean addPadding = false;
                             for (Group group : groupNotWorkTime.getGroupList()) {
                                 String timestamp = group.getLabel().getLocalizedString();
-                                displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")));
+                                displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), addPadding);
+                                addPadding = true;
                                 for (Item item : group.getItemList()) {
                                     addNewRow(tableLayout,
                                             item.getLabel().getLocalizedString(),
@@ -333,9 +335,9 @@ public class ReportDetailFragment extends Fragment {
                             for(Group groupWorkTime : groupsWorkTimeData){
                                 int labelWorkTime = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
                                 if(labelWorkTime == labelNotWorkTime){
-                                    for(Group group : groupsWorkTimeData){
+                                    for(Group group : groupWorkTime.getGroupList()){
                                         String timestamp = group.getLabel().getLocalizedString();
-                                        displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")));
+                                        displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), addPadding);
                                         for(Item item : group.getItemList()){
                                             addNewRow(tableLayout,
                                                     item.getLabel().getLocalizedString(),
@@ -391,9 +393,11 @@ public class ReportDetailFragment extends Fragment {
                         if(!hasGroup){
                             displayTitle(tableLayout, measurementKindLocalization.localize(labelWorkTime));
                             if(labelWorkTime == Measurement.TYPE_BLOOD_PRESSURE || labelWorkTime == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING){
+                                boolean addPadding = false;
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
-                                    displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")) + " - MyWork");
+                                    displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), addPadding);
+                                    addPadding = true;
                                     for (Item item : group.getItemList()) {
                                         addNewRow(tableLayout,
                                                 item.getLabel().getLocalizedString(),
@@ -486,9 +490,11 @@ public class ReportDetailFragment extends Fragment {
         tableLayout.addView(v);
     }
 
-    private void displayTimestamp(TableLayout tableLayout, String timestamp){
+    private void displayTimestamp(TableLayout tableLayout, String timestamp, boolean addPadding){
         View vTimestamp = (View) LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_timestamp, null);
         TextView tvTimestamp = vTimestamp.findViewById(R.id.tvTimestamp);
+        if(addPadding)
+            tvTimestamp.setPadding(0, 15, 0, 0);
         tvTimestamp.setText(timestamp);
         tableLayout.addView(vTimestamp);
     }
