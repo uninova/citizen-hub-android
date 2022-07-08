@@ -3,6 +3,7 @@ package pt.uninova.s4h.citizenhub.interoperability;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.Random;
 public class DailyPostureReport {
 
     public static DailyPostureReport generateRandom(String patientId, LocalDate localDate) {
-        final ZoneOffset offset = ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now());
-        final Instant startTime = localDate.atStartOfDay().toInstant(offset);
-        final Instant endTime = localDate.plusDays(1).atStartOfDay().minusSeconds(1).toInstant(offset);
+        final Instant startTime = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        final Instant endTime = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1).toInstant();
+
         final int[] hourlyGoodPosture = new int[24];
         final int[] hourlyBadPosture = new int[24];
 
@@ -49,6 +50,10 @@ public class DailyPostureReport {
     private final int[] hourlyBadPosture;
     private final int[] hourlyGoodPosture;
 
+    public DailyPostureReport(String patientId, LocalDate day, int[] hourlyGoodPosture, int[] hourlyBadPosture) {
+        this(patientId, day.atStartOfDay(ZoneId.systemDefault()).toInstant(), day.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1).toInstant(), hourlyGoodPosture, hourlyBadPosture);
+    }
+
     public DailyPostureReport(String patientId, Instant startTime, Instant endTime, int[] hourlyGoodPosture, int[] hourlyBadPosture) {
         this.patientId = patientId;
         this.startTime = startTime;
@@ -76,5 +81,4 @@ public class DailyPostureReport {
     public Instant getStartTime() {
         return startTime;
     }
-
 }

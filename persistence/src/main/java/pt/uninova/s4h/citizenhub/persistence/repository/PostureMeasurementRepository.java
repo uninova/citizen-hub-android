@@ -10,7 +10,9 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.PostureMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.PostureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.HourlyPosture;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class PostureMeasurementRepository {
 
@@ -28,6 +30,10 @@ public class PostureMeasurementRepository {
 
     public LiveData<List<PostureMeasurementRecord>> read(LocalDate localDate) {
         return postureMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public void read(LocalDate localDate, Observer<List<HourlyPosture>> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectHourlyPosture(localDate)));
     }
 
     public LiveData<List<PostureClassificationSum>> readClassificationSum(LocalDate localDate) {
