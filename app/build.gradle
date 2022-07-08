@@ -78,6 +78,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        resources.excludes.add("META-INF/DEPENDENCIES")
+    }
+
     namespace 'pt.uninova.s4h.citizenhub'
 }
 
@@ -86,6 +90,7 @@ dependencies {
     def d4l_fhir_helper_sdk_version = "1.9.0"
     def desugar_version = "1.1.5"
     def fragment_version = "1.5.0"
+    def hapi_fhir_version = "6.0.2"
     def lifecycle_version = "2.5.0"
     def preference_version = "1.2.0"
     def okhttp_version = "4.9.3"
@@ -107,6 +112,9 @@ dependencies {
     implementation "androidx.preference:preference:$preference_version"
 
     implementation "androidx.work:work-runtime:$work_version"
+
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-android:$hapi_fhir_version"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:$hapi_fhir_version"
 
     implementation("care.data4life.hc-sdk-kmp:sdk-android:$d4l_sdk_android_version") {
         exclude group: 'care.data4life.hc-sdk-kmp', module: 'securestore-jvm'
