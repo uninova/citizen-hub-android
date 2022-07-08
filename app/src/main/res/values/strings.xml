@@ -491,7 +491,7 @@
     <string name="measurement_type.9">Respiration</string>
     <string name="measurement_type.11">Unknown</string>
     <string name="measurement_type.12">Unknown</string>
-    <string name="measurement_type.16">Unknown</string>
+    <string name="measurement_type.16">Lumbar extension training</string>
     <string name="measurement_type.17">Blood pressure</string>
     <string name="measurement_type.21">Blood pressure</string>
     <string name="measurement_type.22">Blood pressure</string>
@@ -502,6 +502,7 @@
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
     <string name="measurement_type.29">Posture</string>
+
     <string name="fragment_location_disabled_button_text">Device location settings</string>
     <string name="fragment_location_not_supported_text_view">Location is not supported on this device</string>
     <string name="fragment_location_disabled_text_view">Location is currently disabled.\n Bluetooth pairing requires your device to have location enabled, press the button below to turn it on in Android Settings</string>
