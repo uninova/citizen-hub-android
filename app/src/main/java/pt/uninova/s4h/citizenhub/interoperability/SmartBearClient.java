@@ -1,12 +1,31 @@
 package pt.uninova.s4h.citizenhub.interoperability;
 
+import org.checkerframework.checker.units.qual.C;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Narrative;
+import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Period;
+import org.hl7.fhir.r4.model.Quantity;
+import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.SampledData;
+import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.utils.client.network.FhirRequestBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleBuilder;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,8 +62,106 @@ public class SmartBearClient implements Uploader<DailyPostureReport> {
 
     @Override
     public void upload(DailyPostureReport content, Observer<Response> observer) {
-        final String jsonPlaceholder = "{\"resourceType\":\"Bundle\",\"type\":\"transaction\",\"entry\":[{\"request\":{\"method\":\"POST\",\"url\":\"Observation\"},\"fullUrl\":\"urn:uuid:%6$s\",\"resource\":{\"resourceType\":\"Observation\",\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://snomed.info/sct\",\"code\":\"51093005\",\"display\":\"Bodyposturenormal\"}],\"text\":\"Theamountoftimespentinanormalposture\"},\"category\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/observation-category\",\"code\":\"activity\",\"display\":\"Activity\"}]}],\"subject\":{\"reference\":\"Patient/%1$s\"},\"effectivePeriod\":{\"start\":\"%2$s\",\"end\":\"%3$s\"},\"valueSampledData\":{\"origin\":{\"value\":0,\"unit\":\"second\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"s\"},\"period\":3600000,\"lowerLimit\":0,\"upperLimit\":3600,\"dimensions\":1,\"data\":\"%4$s\"}}},{\"request\":{\"method\":\"POST\",\"url\":\"Observation\"},\"fullUrl\":\"urn:uuid:%7$s\",\"resource\":{\"resourceType\":\"Observation\",\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://snomed.info/sct\",\"code\":\"249858009\",\"display\":\"Poorposture\"}],\"text\":\"Theamountoftimespentinapoorposture\"},\"category\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/observation-category\",\"code\":\"activity\",\"display\":\"Activity\"}]}],\"subject\":{\"reference\":\"Patient/%1$s\"},\"effectivePeriod\":{\"start\":\"%2$s\",\"end\":\"%3$s\"},\"valueSampledData\":{\"origin\":{\"value\":0,\"unit\":\"second\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"s\"},\"period\":3600000,\"lowerLimit\":0,\"upperLimit\":3600,\"dimensions\":1,\"data\":\"%5$s\"}}},{\"request\":{\"method\":\"POST\",\"url\":\"DiagnosticReport\"},\"resource\":{\"resourceType\":\"DiagnosticReport\",\"status\":\"final\",\"text\":{\"status\":\"empty\"},\"code\":{\"coding\":[{\"system\":\"http://snomed.info/sct\",\"code\":\"298341003\",\"display\":\"Findingofbodyposture\"}],\"text\":\"Dailyreportaboutthepostureofapatient\"},\"subject\":{\"reference\":\"Patient/%1$s\"},\"effectivePeriod\":{\"start\":\"%2$s\",\"end\":\"%3$s\"},\"result\":[{\"reference\":\"urn:uuid:%6$s\"},{\"reference\":\"urn:uuid:%7$s\"}]}}]}";
-        final String body = String.format(jsonPlaceholder, content.getPatientId(), content.getStartTime().toString(), content.getEndTime().toString(), parseHourlyAggregate(content.getHourlyGoodPosture()), parseHourlyAggregate(content.getHourlyBadPosture()), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        final Period effectivePeriod = new Period();
+
+        effectivePeriod.setStart(Date.from(content.getStartTime()))
+                .setEnd(Date.from(content.getEndTime()));
+
+        final Reference subject = new Reference(String.format("Patient/%s", content.getPatientId()));
+
+        final Quantity origin = new Quantity();
+
+        origin.setCode("s")
+                .setSystem("http://unitsofmeasure.org")
+                .setUnit("second")
+                .setValue(0);
+
+        final Observation correctPostureObservation = new Observation();
+
+        correctPostureObservation.getCode()
+                .addCoding()
+                .setCode("51093005")
+                .setDisplay("Body posture normal")
+                .setSystem("http://snomed.info/sct");
+
+        correctPostureObservation.setEffective(effectivePeriod);
+        correctPostureObservation.setId(IdType.newRandomUuid());
+        correctPostureObservation.setStatus(Observation.ObservationStatus.FINAL);
+        correctPostureObservation.setSubject(subject);
+
+        correctPostureObservation.getValueSampledData()
+                .setData(parseHourlyAggregate(content.getHourlyGoodPosture()))
+                .setDimensions(1)
+                .setLowerLimit(0)
+                .setOrigin(origin)
+                .setPeriod(3600000)
+                .setUpperLimit(3600);
+
+        final Observation incorrectPostureObservation = new Observation();
+
+        incorrectPostureObservation.getCode()
+                .addCoding()
+                .setCode("249858009")
+                .setDisplay("Poor posture")
+                .setSystem("http://snomed.info/sct");
+
+        incorrectPostureObservation.setEffective(effectivePeriod);
+        incorrectPostureObservation.setId(IdType.newRandomUuid());
+        incorrectPostureObservation.setStatus(Observation.ObservationStatus.FINAL);
+        incorrectPostureObservation.setSubject(subject);
+
+        incorrectPostureObservation.getValueSampledData()
+                .setData(parseHourlyAggregate(content.getHourlyBadPosture()))
+                .setDimensions(1)
+                .setLowerLimit(0)
+                .setOrigin(origin)
+                .setPeriod(3600000)
+                .setUpperLimit(3600);
+
+        final DiagnosticReport diagnosticReport = new DiagnosticReport();
+
+        diagnosticReport.getCode()
+                .addCoding()
+                .setCode("298341003")
+                .setDisplay("Finding of body posture")
+                .setSystem("http://snomed.info/sct");
+
+        diagnosticReport.setEffective(effectivePeriod);
+
+        diagnosticReport.addResult(new Reference(correctPostureObservation.getIdElement().getValue()));
+        diagnosticReport.addResult(new Reference(incorrectPostureObservation.getIdElement().getValue()));
+
+        diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.FINAL);
+        diagnosticReport.setSubject(subject);
+        diagnosticReport.getText()
+                .setStatus(Narrative.NarrativeStatus.EMPTY);
+
+        final Bundle bundle = new Bundle();
+
+        bundle.setType(Bundle.BundleType.TRANSACTION);
+
+        bundle.addEntry()
+                .setFullUrl(correctPostureObservation.getIdElement().getValue())
+                .setResource(correctPostureObservation)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setFullUrl(incorrectPostureObservation.getIdElement().getValue())
+                .setResource(incorrectPostureObservation)
+                .getRequest()
+                .setUrl("Observation")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        bundle.addEntry()
+                .setResource(diagnosticReport)
+                .getRequest()
+                .setUrl("DiagnosticReport")
+                .setMethod(Bundle.HTTPVerb.POST);
+
+        final FhirContext fhirContext = FhirContext.forR4();
+        final String body = fhirContext.newJsonParser().encodeResourceToString(bundle);
 
         final RequestBody reqBody = RequestBody.create(body, MediaType.get("application/json"));
         final Request request = new Request.Builder()
