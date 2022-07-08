@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -25,7 +26,6 @@ import com.google.android.gms.wearable.Wearable;
 
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import persistence.MeasurementKind;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                     long timestamp = new Date().getTime();
                     listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
-                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + MeasurementKind.HEART_RATE.getId()).start();
+                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
                     HeartRateMeasurement heartRateMeasurement = new HeartRateMeasurement((int)event.values[0]);
                     if(!DataBaseHelper.addMeasurement(heartRateMeasurement, dataBaseHelper, timestamp))
                         System.out.println("Failed to insert value in DB.");
@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity {
                     long timestamp = new Date().getTime();
                     sharedPreferences.edit().putLong("dayFromLastSteps", timestamp).apply();
                     listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
-                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + timestamp + "," + MeasurementKind.STEPS.getId()).start();
+                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + timestamp + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                     StepsSnapshotMeasurement stepsSnapshotMeasurement = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal);
                     if(!DataBaseHelper.addMeasurement(stepsSnapshotMeasurement, dataBaseHelper, timestamp))
                         System.out.println("Failed to insert value in DB.");

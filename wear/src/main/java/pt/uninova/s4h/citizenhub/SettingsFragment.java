@@ -23,7 +23,8 @@ import java.util.concurrent.ExecutionException;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import persistence.MeasurementKind;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 
 public class SettingsFragment extends Fragment {
 
@@ -48,8 +49,7 @@ public class SettingsFragment extends Fragment {
             MainActivity.protocolHeartRate.setValue(isChecked);
             sharedPreferences.edit().putBoolean("HeartRate", isChecked).apply();
             Date now = new Date();
-            MeasurementKind kind = MeasurementKind.HEART_RATE;
-            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
+            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE;
             String dataPath = citizenHubPath + MainActivity.nodeIdString;
             new SendMessage(dataPath, msg).start();
         };
@@ -58,8 +58,7 @@ public class SettingsFragment extends Fragment {
             MainActivity.protocolSteps.setValue(isChecked);
             sharedPreferences.edit().putBoolean("Steps", isChecked).apply();
             Date now = new Date();
-            MeasurementKind kind = MeasurementKind.STEPS;
-            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + kind.getId();
+            String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT;
             String dataPath = citizenHubPath + MainActivity.nodeIdString;
             new SendMessage(dataPath, msg).start();
         };
