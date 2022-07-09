@@ -33,7 +33,6 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFragment {
 
     private ProgressDialog dialog;
-    //TODO just for testing purposes, delete later
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {

@@ -11,9 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.icu.util.LocaleData;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
@@ -148,9 +146,9 @@ public class MainActivity extends FragmentActivity {
             requestPermissions(
                     new String[]{Manifest.permission.BODY_SENSORS},
                     21);
-            Log.d("Permissions", "REQUESTED");
+            System.out.println("Permissions REQUESTED");
         } else {
-            Log.d("Permissions", "ALREADY GRANTED");
+            System.out.println("Permissions ALREADY GRANTED");
         }
     }
 
@@ -217,7 +215,7 @@ public class MainActivity extends FragmentActivity {
                     Task<Integer> sendMessageTask =
                             Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
                     try {
-                        Integer result = Tasks.await(sendMessageTask);
+                        Tasks.await(sendMessageTask);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }

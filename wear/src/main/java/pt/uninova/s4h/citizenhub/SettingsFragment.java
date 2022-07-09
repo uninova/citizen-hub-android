@@ -162,7 +162,7 @@ public class SettingsFragment extends Fragment {
                     Task<Integer> sendMessageTask =
                             Wearable.getMessageClient(requireActivity()).sendMessage(node.getId(), path, message.getBytes());
                     try {
-                        Integer result = Tasks.await(sendMessageTask);
+                        Tasks.await(sendMessageTask);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }
