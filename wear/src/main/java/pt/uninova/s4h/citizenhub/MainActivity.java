@@ -14,27 +14,28 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
-import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
-import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
-import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
+import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
+import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
 public class MainActivity extends FragmentActivity {
 
@@ -53,6 +54,7 @@ public class MainActivity extends FragmentActivity {
     public static SensorEventListener stepsListener, heartRateListener;
     DataBaseHelper dataBaseHelper;
     SharedPreferences sharedPreferences;
+    final SampleRepository sampleRepository = new SampleRepository(getApplication());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +78,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    long timestamp = new Date().getTime();
                     listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
                     new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
-                    HeartRateMeasurement heartRateMeasurement = new HeartRateMeasurement((int)event.values[0]);
-                    if(!DataBaseHelper.addMeasurement(heartRateMeasurement, dataBaseHelper, timestamp))
-                        System.out.println("Failed to insert value in DB.");
+
+                    Sample sample = new Sample(null, new HeartRateMeasurement((int)event.values[0]));
+                    sampleRepository.create(sample, sampleId -> {});
                 }
             }
             @Override
@@ -94,13 +95,12 @@ public class MainActivity extends FragmentActivity {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     if(!checkForStepsReset())
                         stepsTotal = 0;
-                    long timestamp = new Date().getTime();
-                    sharedPreferences.edit().putLong("dayFromLastSteps", timestamp).apply();
+                    sharedPreferences.edit().putLong("dayFromLastSteps", new Date().getTime()).apply();
                     listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
-                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + timestamp + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
-                    StepsSnapshotMeasurement stepsSnapshotMeasurement = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal);
-                    if(!DataBaseHelper.addMeasurement(stepsSnapshotMeasurement, dataBaseHelper, timestamp))
-                        System.out.println("Failed to insert value in DB.");
+                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+
+                    Sample sample = new Sample(null, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
+                    sampleRepository.create(sample, sampleId -> {});
                 }
             }
             @Override
@@ -111,9 +111,7 @@ public class MainActivity extends FragmentActivity {
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        viewPager.setCurrentItem(2);
-        viewPager.setCurrentItem(1);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
 
         new SendMessage(citizenHubPath + nodeIdString,"Ready");
     }
