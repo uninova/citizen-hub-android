@@ -29,17 +29,20 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
+import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
 public class MainActivity extends FragmentActivity {
 
     public static String nodeIdString;
+    private Device wearDevice;
     private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
     public static double heartRate = 0;
@@ -52,9 +55,10 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
-    DataBaseHelper dataBaseHelper;
     SharedPreferences sharedPreferences;
-    final SampleRepository sampleRepository = new SampleRepository(getApplication());
+    SampleRepository sampleRepository;
+    HeartRateMeasurementRepository heartRateMeasurementRepository;
+    StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        dataBaseHelper = new DataBaseHelper(MainActivity.this);
 
         sharedPreferences = this.getSharedPreferences("checkForStepsReset", Context.MODE_PRIVATE);
 
@@ -73,6 +75,11 @@ public class MainActivity extends FragmentActivity {
 
         permissionRequest();
         sensorsManager();
+        setDevice();
+
+        sampleRepository = new SampleRepository(getApplication());
+        heartRateMeasurementRepository = new HeartRateMeasurementRepository(getApplication());
+        stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getApplication());
 
         heartRateListener = new SensorEventListener() {
             @Override
@@ -81,7 +88,7 @@ public class MainActivity extends FragmentActivity {
                     listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
                     new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
 
-                    Sample sample = new Sample(null, new HeartRateMeasurement((int)event.values[0]));
+                    Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
                     sampleRepository.create(sample, sampleId -> {});
                 }
             }
@@ -99,7 +106,7 @@ public class MainActivity extends FragmentActivity {
                     listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
                     new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
 
-                    Sample sample = new Sample(null, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
+                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
                     sampleRepository.create(sample, sampleId -> {});
                 }
             }
@@ -172,6 +179,18 @@ public class MainActivity extends FragmentActivity {
             && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR);
     }
 
+    private void setDevice(){
+        new Thread(() -> {
+            try {
+                Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
+                nodeIdString = localNode.getId();
+                wearDevice = new Device(nodeIdString,"WearOS Device",2);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
     public static class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -207,6 +226,7 @@ public class MainActivity extends FragmentActivity {
             try {
                 Task<Node> t = Wearable.getNodeClient(getApplicationContext()).getLocalNode();
                 Node n = Tasks.await(t);
+                nodeIdString = n.getId();
                 System.out.println("Node associated: " + n.getId() + " Message: " + message);
                 List<Node> nodes = Tasks.await(nodeListTask);
                 for (Node node : nodes) {
