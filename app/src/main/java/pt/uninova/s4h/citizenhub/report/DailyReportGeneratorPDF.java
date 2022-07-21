@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -146,7 +145,7 @@ public class DailyReportGeneratorPDF {
             for (Group group : groupsReportData) {
 
                 int rectHeight = y - 20;
-                int groupLabel = ((StringMeasurementId)group.getLabel()).getMeasurementId();
+                int groupLabel = ((MeasurementTypeLocalizedResource)group.getLabel()).getMeasurementType();
 
                 path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                 canvas.drawPath(path, rectFillPaint);
@@ -243,7 +242,7 @@ public class DailyReportGeneratorPDF {
             for (Group group : groupsReportData) {
 
                 int rectHeight = y - 20;
-                int groupLabel = ((StringMeasurementId)group.getLabel()).getMeasurementId();
+                int groupLabel = ((MeasurementTypeLocalizedResource)group.getLabel()).getMeasurementType();
 
                 path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                 canvas.drawPath(path, rectFillPaint);
@@ -349,7 +348,7 @@ public class DailyReportGeneratorPDF {
                 for (Group groupNotWorkTime : groupsNotWorkTimeData) {
 
                     int rectHeight = y - 20;
-                    int notWorkTimeLabel = ((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId();
+                    int notWorkTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
 
                     path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                     canvas.drawPath(path, rectFillPaint);
@@ -373,7 +372,7 @@ public class DailyReportGeneratorPDF {
                             }
                         }
                         for (Group groupWorkTime : groupsWorkTimeData) {
-                            int workTimeLabel = ((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId();
+                            int workTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
                             if (notWorkTimeLabel == workTimeLabel) {
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
@@ -397,7 +396,7 @@ public class DailyReportGeneratorPDF {
                         canvasWriter.addText("MyWork", x + 360, y - 24, whiteItalicTextPaint);
                         boolean hasItem = false;
                         for (Group groupWorkTime : groupsWorkTimeData) {
-                            if (((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId() == ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId()) {
+                            if (((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType() == ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType()) {
                                 hasItem = true;
                                 for (Item itemNotWorkTime : groupNotWorkTime.getItemList()) {
                                     for (Item itemWorkTime : groupWorkTime.getItemList()) {
@@ -436,10 +435,10 @@ public class DailyReportGeneratorPDF {
                 for (Group groupWorkTime : groupsWorkTimeData) {
                     int rectHeight = y - 10;
                     boolean hasGroup = false;
-                    int workTimeLabel = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
+                    int workTimeLabel = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
 
                     for (Group groupNotWorkTime : groupsNotWorkTimeData) {
-                        if (workTimeLabel == ((StringMeasurementId) groupNotWorkTime.getLabel()).getMeasurementId()) {
+                        if (workTimeLabel == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
                             hasGroup = true;
                             break;
                         }
