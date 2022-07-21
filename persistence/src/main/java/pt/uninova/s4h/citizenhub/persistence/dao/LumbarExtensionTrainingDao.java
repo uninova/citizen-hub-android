@@ -34,6 +34,9 @@ public interface LumbarExtensionTrainingDao {
     @TypeConverters(DurationTypeConverter.class)
     long insert(Long sampleId, Duration duration, Double score, Integer repetitions, Integer weight);
 
+    @Query("SELECT * FROM lumbar_extension_training_measurement WHERE sample_id = :sampleId")
+    LumbarExtensionTrainingMeasurementRecord select(Long sampleId);
+
     @Query("SELECT lumbar_extension_training_measurement.* FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
     List<LumbarExtensionTrainingMeasurementRecord> select(LocalDate from, LocalDate to);

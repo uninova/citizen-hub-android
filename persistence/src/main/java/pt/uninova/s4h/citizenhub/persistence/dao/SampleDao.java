@@ -139,6 +139,9 @@ public abstract class SampleDao {
         return sampleId;
     }
 
+    @Query("SELECT * FROM sample WHERE id = :sampleId")
+    public abstract SampleRecord select(Long sampleId);
+
     @Query("SELECT DISTINCT (timestamp / 86400 * 86400) AS timestamp FROM sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
     public abstract List<LocalDate> select(LocalDate from, LocalDate to);

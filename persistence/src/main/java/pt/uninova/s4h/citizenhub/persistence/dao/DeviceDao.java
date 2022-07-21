@@ -29,6 +29,9 @@ public interface DeviceDao {
     @Query("SELECT * FROM device")
     List<DeviceRecord> select();
 
+    @Query("SELECT * FROM device WHERE id = :deviceId")
+    DeviceRecord select(Long deviceId);
+
     @Query("SELECT * FROM device WHERE address = :address")
     DeviceRecord select(String address);
 

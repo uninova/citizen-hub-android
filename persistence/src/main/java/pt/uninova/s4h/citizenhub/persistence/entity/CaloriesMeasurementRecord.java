@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
+
 @Entity(tableName = "calories_measurement",
         foreignKeys = {
                 @ForeignKey(
@@ -53,5 +55,9 @@ public class CaloriesMeasurementRecord {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public CaloriesMeasurement toCaloriesMeasurement() {
+        return new CaloriesMeasurement(value);
     }
 }
