@@ -45,7 +45,7 @@ public class LumbarExtensionTrainingProtocol extends BluetoothMeasuringProtocol 
                 final int repetitions = byteBuffer.getInt();
                 final int weight = byteBuffer.getInt();
 
-                final Sample sample = new Sample(getAgent().getSource(), new LumbarExtensionTrainingMeasurement(new LumbarExtensionTrainingValue(Duration.ofSeconds(length), (double) score, repetitions, weight)), new CaloriesMeasurement((double) calories));
+                final Sample sample = new Sample(Instant.ofEpochSecond(timestamp), getAgent().getSource(), new LumbarExtensionTrainingMeasurement(new LumbarExtensionTrainingValue(Duration.ofSeconds(length), (double) score, repetitions, weight)), new CaloriesMeasurement((double) calories));
 
                 getSampleDispatcher().dispatch(sample);
             }

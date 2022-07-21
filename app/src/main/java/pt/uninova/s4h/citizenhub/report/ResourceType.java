@@ -1,11 +1,11 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringUnits implements LocalizedString {
+public class ResourceType implements LocalizedResource {
 
-    private final String units;
+    private final String type;
 
-    public StringUnits(String units){
-        this.units = units;
+    public ResourceType(String type){
+        this.type = type;
     }
 
     /***************************************
@@ -13,7 +13,7 @@ public class StringUnits implements LocalizedString {
      ***************************************/
     @Override
     public String getLocalizedString() {
-        return units;
+        return type;
     }
 
 }

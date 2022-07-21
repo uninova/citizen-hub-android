@@ -10,11 +10,19 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.preference.PreferenceManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -22,6 +30,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import care.data4life.sdk.Data4LifeClient;
+import care.data4life.sdk.lang.D4LException;
+import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.WorkTimeRangeConverter;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -42,6 +53,9 @@ import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.EnabledMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
+import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.report.Smart4HealthReportGenerator;
+import pt.uninova.s4h.citizenhub.service.work.LumbarExtensionTrainingUploader;
 import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
 import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -147,6 +161,37 @@ public class CitizenHubService extends LifecycleService {
                 if (workTimeRangeConverter.isWorkTime(LocalDateTime.ofInstant(sample.getTimestamp(), ZoneId.systemDefault()))) {
                     tagRepository.create(sampleId, Tag.LABEL_CONTEXT_WORK);
                 }
+
+                Data4LifeClient.getInstance().isUserLoggedIn(new ResultListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        if (aBoolean) {
+                            if (sample.getMeasurements()[0].getType() == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+                                final WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+
+                                final Constraints constraints = new Constraints.Builder()
+                                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                                        .build();
+
+                                final Data data = new Data.Builder()
+                                        .putLong("sampleId", sampleId)
+                                        .build();
+
+                                final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(LumbarExtensionTrainingUploader.class)
+                                        .setInputData(data)
+                                        .setConstraints(constraints)
+                                        .build();
+
+                                workManager.enqueueUniqueWork(Instant.now().toString(), ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull D4LException e) {
+                        e.printStackTrace();
+                    }
+                });
             });
         };
 

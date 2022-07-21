@@ -1,12 +1,7 @@
 package pt.uninova.s4h.citizenhub.ui.report;
 
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.telephony.TelephonyCallback;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,17 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,21 +21,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
-import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDF;
 import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
 import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
 import pt.uninova.s4h.citizenhub.report.Report;
-import pt.uninova.s4h.citizenhub.report.StringMeasurementId;
+import pt.uninova.s4h.citizenhub.report.MeasurementTypeLocalizedResource;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -314,7 +299,7 @@ public class ReportDetailFragment extends Fragment {
 
                     for (Group groupNotWorkTime : groupsNotWorkTimeData) {
 
-                        int labelNotWorkTime = ((StringMeasurementId)groupNotWorkTime.getLabel()).getMeasurementId();
+                        int labelNotWorkTime = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
 
                         displayTitle(tableLayout, measurementKindLocalization.localize(labelNotWorkTime));
 
@@ -333,7 +318,7 @@ public class ReportDetailFragment extends Fragment {
                                 }
                             }
                             for(Group groupWorkTime : groupsWorkTimeData){
-                                int labelWorkTime = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
+                                int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
                                 if(labelWorkTime == labelNotWorkTime){
                                     for(Group group : groupWorkTime.getGroupList()){
                                         String timestamp = group.getLabel().getLocalizedString();
@@ -351,7 +336,7 @@ public class ReportDetailFragment extends Fragment {
                         } else {
                             boolean hasGroup = false;
                             for (Group groupWorkTime : groupsWorkTimeData){
-                                int labelWorkTime = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
+                                int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
                                 if(labelNotWorkTime == labelWorkTime){
                                     hasGroup = true;
                                     for (Item itemNotWorkTime : groupNotWorkTime.getItemList()){
@@ -382,10 +367,10 @@ public class ReportDetailFragment extends Fragment {
                     }
 
                     for (Group groupWorkTime : groupsWorkTimeData){
-                        int labelWorkTime = ((StringMeasurementId)groupWorkTime.getLabel()).getMeasurementId();
+                        int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
                         boolean hasGroup = false;
                         for (Group groupNotWorkTime : groupsNotWorkTimeData) {
-                            if (labelWorkTime == ((StringMeasurementId) groupNotWorkTime.getLabel()).getMeasurementId()) {
+                            if (labelWorkTime == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
                                 hasGroup = true;
                                 break;
                             }
