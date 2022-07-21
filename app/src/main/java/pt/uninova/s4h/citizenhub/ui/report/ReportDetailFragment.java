@@ -121,7 +121,7 @@ public class ReportDetailFragment extends Fragment {
 
         menu.findItem(R.id.upload_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            Observer<byte[]> observer = pdfData ->{
+            Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -299,7 +299,7 @@ public class ReportDetailFragment extends Fragment {
 
                     for (Group groupNotWorkTime : groupsNotWorkTimeData) {
 
-                        int labelNotWorkTime = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+                        int labelNotWorkTime = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
 
                         displayTitle(tableLayout, measurementKindLocalization.localize(labelNotWorkTime));
 
@@ -317,13 +317,13 @@ public class ReportDetailFragment extends Fragment {
                                             item.getUnits().getLocalizedString());
                                 }
                             }
-                            for(Group groupWorkTime : groupsWorkTimeData){
-                                int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
-                                if(labelWorkTime == labelNotWorkTime){
-                                    for(Group group : groupWorkTime.getGroupList()){
+                            for (Group groupWorkTime : groupsWorkTimeData) {
+                                int labelWorkTime = ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType();
+                                if (labelWorkTime == labelNotWorkTime) {
+                                    for (Group group : groupWorkTime.getGroupList()) {
                                         String timestamp = group.getLabel().getLocalizedString();
                                         displayTimestamp(tableLayout, timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), addPadding);
-                                        for(Item item : group.getItemList()){
+                                        for (Item item : group.getItemList()) {
                                             addNewRow(tableLayout,
                                                     item.getLabel().getLocalizedString(),
                                                     "-",
@@ -335,14 +335,14 @@ public class ReportDetailFragment extends Fragment {
                             }
                         } else {
                             boolean hasGroup = false;
-                            for (Group groupWorkTime : groupsWorkTimeData){
-                                int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
-                                if(labelNotWorkTime == labelWorkTime){
+                            for (Group groupWorkTime : groupsWorkTimeData) {
+                                int labelWorkTime = ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType();
+                                if (labelNotWorkTime == labelWorkTime) {
                                     hasGroup = true;
-                                    for (Item itemNotWorkTime : groupNotWorkTime.getItemList()){
+                                    for (Item itemNotWorkTime : groupNotWorkTime.getItemList()) {
                                         String itemLabel = itemNotWorkTime.getLabel().getLocalizedString();
-                                        for(Item itemWorkTime : groupWorkTime.getItemList()){
-                                            if(itemLabel.equals(itemWorkTime.getLabel().getLocalizedString())){
+                                        for (Item itemWorkTime : groupWorkTime.getItemList()) {
+                                            if (itemLabel.equals(itemWorkTime.getLabel().getLocalizedString())) {
                                                 addNewRow(tableLayout,
                                                         itemNotWorkTime.getLabel().getLocalizedString(),
                                                         itemNotWorkTime.getValue().getLocalizedString(),
@@ -354,7 +354,7 @@ public class ReportDetailFragment extends Fragment {
                                     }
                                 }
                             }
-                            if(!hasGroup){
+                            if (!hasGroup) {
                                 for (Item item : groupNotWorkTime.getItemList()) {
                                     addNewRow(tableLayout,
                                             item.getLabel().getLocalizedString(),
@@ -366,8 +366,8 @@ public class ReportDetailFragment extends Fragment {
                         }
                     }
 
-                    for (Group groupWorkTime : groupsWorkTimeData){
-                        int labelWorkTime = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
+                    for (Group groupWorkTime : groupsWorkTimeData) {
+                        int labelWorkTime = ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType();
                         boolean hasGroup = false;
                         for (Group groupNotWorkTime : groupsNotWorkTimeData) {
                             if (labelWorkTime == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
@@ -375,9 +375,9 @@ public class ReportDetailFragment extends Fragment {
                                 break;
                             }
                         }
-                        if(!hasGroup){
+                        if (!hasGroup) {
                             displayTitle(tableLayout, measurementKindLocalization.localize(labelWorkTime));
-                            if(labelWorkTime == Measurement.TYPE_BLOOD_PRESSURE || labelWorkTime == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING){
+                            if (labelWorkTime == Measurement.TYPE_BLOOD_PRESSURE || labelWorkTime == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                                 boolean addPadding = false;
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
@@ -391,8 +391,7 @@ public class ReportDetailFragment extends Fragment {
                                                 item.getUnits().getLocalizedString());
                                     }
                                 }
-                            }
-                            else{
+                            } else {
                                 for (Item item : groupWorkTime.getItemList()) {
                                     addNewRow(tableLayout,
                                             item.getLabel().getLocalizedString(),
@@ -413,7 +412,7 @@ public class ReportDetailFragment extends Fragment {
 
     }
 
-    private void displayTitle(TableLayout tableLayout, String title){
+    private void displayTitle(TableLayout tableLayout, String title) {
         View vTitle = LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_title, null);
         TextView tvTitle = vTitle.findViewById(R.id.tvTitle);
         tvTitle.setText(title);
@@ -448,7 +447,7 @@ public class ReportDetailFragment extends Fragment {
         tableLayout.addView(v);
     }*/
 
-    private void addNewRow(TableLayout tableLayout, String label, String valueMyTime, String valueWorkTime, String units){
+    private void addNewRow(TableLayout tableLayout, String label, String valueMyTime, String valueWorkTime, String units) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_rows, null);
         TextView tvLabel = v.findViewById(R.id.tvLabel);
         TextView tvValueMyTime = v.findViewById(R.id.tvValueMyTime);
@@ -458,27 +457,25 @@ public class ReportDetailFragment extends Fragment {
 
         tvLabel.setText(label);
         tvValueMyTime.setText(valueMyTime);
-        if(valueMyTime.equals("-") || units.equals("-")) {
+        if (valueMyTime.equals("-") || units.equals("-")) {
             tvUnitsMyTime.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             tvUnitsMyTime.setText(units);
         }
         tvValueWorkTime.setText(valueWorkTime);
-        if(valueWorkTime.equals("-") || units.equals("-")) {
+        if (valueWorkTime.equals("-") || units.equals("-")) {
             tvUnitsWorkTime.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             tvUnitsWorkTime.setText(units);
         }
 
         tableLayout.addView(v);
     }
 
-    private void displayTimestamp(TableLayout tableLayout, String timestamp, boolean addPadding){
+    private void displayTimestamp(TableLayout tableLayout, String timestamp, boolean addPadding) {
         View vTimestamp = (View) LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_timestamp, null);
         TextView tvTimestamp = vTimestamp.findViewById(R.id.tvTimestamp);
-        if(addPadding)
+        if (addPadding)
             tvTimestamp.setPadding(0, 15, 0, 0);
         tvTimestamp.setText(timestamp);
         tableLayout.addView(vTimestamp);

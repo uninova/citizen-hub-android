@@ -104,7 +104,7 @@ public class DailyReportGenerator {
             MeasurementTypeLocalizedResource label = new MeasurementTypeLocalizedResource(localization, Measurement.TYPE_BLOOD_PRESSURE);
             Group groupBloodPressure = new Group(label);
             for (ReportUtil reportUtil : observeBloodPressure) {
-                TimestampLocalizedResource timestamp = new TimestampLocalizedResource(reportUtil.getTimestamp());
+                LocalizedResource timestamp = new IsoTimestampLocalizedResource(reportUtil.getTimestamp());
                 Group group = new Group(timestamp);
                 group.getItemList().add(new Item(new ResourceType(resources.getString(R.string.report_bp_average_label)), new ResourceValue(decimalFormat.format(reportUtil.getMeanArterialPressure())), new ResourceUnits(resources.getString(R.string.report_bp_units))));
                 group.getItemList().add(new Item(new ResourceType(resources.getString(R.string.report_bp_diastolic_label)), new ResourceValue(decimalFormat.format(reportUtil.getDiastolic())), new ResourceUnits(resources.getString(R.string.report_bp_units))));
@@ -123,7 +123,7 @@ public class DailyReportGenerator {
             MeasurementTypeLocalizedResource label = new MeasurementTypeLocalizedResource(localization, Measurement.TYPE_LUMBAR_EXTENSION_TRAINING);
             Group groupLumbarExtension = new Group(label);
             for (ReportUtil reportUtil : observerLumbarExtension) {
-                TimestampLocalizedResource timestamp = new TimestampLocalizedResource(reportUtil.getTimestamp());
+                LocalizedResource timestamp = new IsoTimestampLocalizedResource(reportUtil.getTimestamp());
                 Group group = new Group(timestamp);
                 System.out.println("Report: " + reportUtil.getLumbarExtensionDuration());
                 System.out.println("Report: " + reportUtil.getLumbarExtensionDuration().getSeconds());
