@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Group {
 
-    private final LocalizedString label;
+    private final LocalizedResource label;
     private final List<Group> groupList;
     private final List<Item> itemList;
 
     /*
      *
      * */
-    public Group(LocalizedString label){
+    public Group(LocalizedResource label){
         this.label = label;
         this.groupList = new LinkedList<>();
         this.itemList = new LinkedList<>();
@@ -21,7 +21,7 @@ public class Group {
     /***************************************
 1     * This section only has get functions *
      ***************************************/
-    public LocalizedString getLabel(){
+    public LocalizedResource getLabel(){
         return label;
     }
 

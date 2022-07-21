@@ -1,10 +1,10 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringType implements LocalizedString {
+public class ResourceType implements LocalizedResource {
 
     private final String type;
 
-    public StringType(String type){
+    public ResourceType(String type){
         this.type = type;
     }
 

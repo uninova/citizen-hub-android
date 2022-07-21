@@ -4,11 +4,11 @@ import java.text.DecimalFormat;
 
 public class Item {
 
-    private final LocalizedString label;
-    private final LocalizedString value;
-    private final LocalizedString units;
+    private final LocalizedResource label;
+    private final LocalizedResource value;
+    private final LocalizedResource units;
 
-    public Item(LocalizedString label, LocalizedString value, LocalizedString units){
+    public Item(LocalizedResource label, LocalizedResource value, LocalizedResource units){
         this.label = label;
         this.value = value;
         this.units = units;
@@ -17,15 +17,15 @@ public class Item {
     /***************************************
      * This section only has get functions *
      ***************************************/
-    public LocalizedString getLabel(){
+    public LocalizedResource getLabel(){
         return label;
     }
 
-    public LocalizedString getValue(){
+    public LocalizedResource getValue(){
         return value;
     }
 
-    public LocalizedString getUnits() { return units; }
+    public LocalizedResource getUnits() { return units; }
 
     public String getValueWithUnits(){
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
