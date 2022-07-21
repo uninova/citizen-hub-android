@@ -9,6 +9,8 @@ import androidx.room.TypeConverters;
 
 import java.time.Duration;
 
+import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingMeasurement;
+import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingValue;
 import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 
 @Entity(tableName = "lumbar_extension_training_measurement",
@@ -89,5 +91,9 @@ public class LumbarExtensionTrainingMeasurementRecord {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public LumbarExtensionTrainingMeasurement toLumbarExtensionTrainingMeasurement() {
+        return new LumbarExtensionTrainingMeasurement(new LumbarExtensionTrainingValue(duration, score, repetitions, weight));
     }
 }
