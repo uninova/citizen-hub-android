@@ -1,10 +1,10 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringTimestamp implements LocalizedString {
+public class ResourceTimestamp implements LocalizedResource {
 
     private final String timestamp;
 
-    public StringTimestamp(String timestamp){
+    public ResourceTimestamp(String timestamp){
         this.timestamp = timestamp;
     }
 
