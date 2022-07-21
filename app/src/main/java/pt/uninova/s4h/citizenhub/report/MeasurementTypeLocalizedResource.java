@@ -4,19 +4,21 @@ import android.content.Context;
 
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 
-public class MeasurementTypeLocalizedString implements LocalizedString {
+public class MeasurementTypeLocalizedResource implements LocalizedResource {
 
     private final int measurementType;
     private final MeasurementKindLocalization measurementKindLocalization;
 
-    public MeasurementTypeLocalizedString(Context context, int measurementType) {
+    public MeasurementTypeLocalizedResource(Context context, int measurementType) {
         this.measurementType = measurementType;
         this.measurementKindLocalization = new MeasurementKindLocalization(context);
     }
 
-    /***************************************
-     * This section only has get functions *
-     ***************************************/
+    public MeasurementTypeLocalizedResource(MeasurementKindLocalization measurementKindLocalization, int measurementType) {
+        this.measurementType = measurementType;
+        this.measurementKindLocalization = measurementKindLocalization;
+    }
+
 
     public int getMeasurementType() {
         return measurementType;

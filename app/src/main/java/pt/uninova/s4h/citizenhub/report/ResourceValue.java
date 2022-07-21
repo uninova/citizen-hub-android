@@ -1,10 +1,10 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringValue implements LocalizedString{
+public class ResourceValue implements LocalizedResource {
 
     private final String value;
 
-    public StringValue (String value){
+    public ResourceValue(String value){
         this.value = value;
     }
 

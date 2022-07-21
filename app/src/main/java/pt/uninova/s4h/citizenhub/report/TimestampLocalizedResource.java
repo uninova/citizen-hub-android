@@ -1,19 +1,29 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class ResourceTimestamp implements LocalizedResource {
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
-    private final String timestamp;
+public class TimestampLocalizedResource implements LocalizedResource {
 
-    public ResourceTimestamp(String timestamp){
+    private final Instant timestamp;
+
+    public TimestampLocalizedResource(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
-    /***************************************
-     * This section only has get functions *
-     ***************************************/
     @Override
     public String getLocalizedString() {
-        return timestamp;
+        final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)
+                .withLocale(Locale.getDefault())
+                .withZone(ZoneId.systemDefault());
+
+        return formatter.format(timestamp.atZone(ZoneId.systemDefault()));
     }
 
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 }

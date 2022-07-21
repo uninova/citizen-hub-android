@@ -1,10 +1,10 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public class StringUnits implements LocalizedString {
+public class ResourceUnits implements LocalizedResource {
 
     private final String units;
 
-    public StringUnits(String units){
+    public ResourceUnits(String units){
         this.units = units;
     }
 

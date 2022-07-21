@@ -1,6 +1,6 @@
 package pt.uninova.s4h.citizenhub.report;
 
-public interface LocalizedString {
+public interface LocalizedResource {
 
     String getLocalizedString();
     
