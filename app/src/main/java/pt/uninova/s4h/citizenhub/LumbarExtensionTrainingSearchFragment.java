@@ -10,11 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import java.time.Instant;
+
+import care.data4life.sdk.Data4LifeClient;
+import care.data4life.sdk.lang.D4LException;
+import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
@@ -25,6 +37,7 @@ import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.service.work.LumbarExtensionTrainingUploader;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
@@ -63,9 +76,38 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
                             agent.removeSampleObserver(this);
                             bluetoothConnection.close();
 
-                            sampleRepository.create(sample);
+                            final WorkManager workManager = WorkManager.getInstance(requireContext());
 
-                            navigateToSummaryFragment();
+                            sampleRepository.create(sample, sampleId -> {
+                                Data4LifeClient.getInstance().isUserLoggedIn(new ResultListener<Boolean>() {
+                                    @Override
+                                    public void onSuccess(Boolean aBoolean) {
+                                        if (aBoolean) {
+                                            final Constraints constraints = new Constraints.Builder()
+                                                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                                                    .build();
+
+                                            final Data data = new Data.Builder()
+                                                    .putLong("sampleId", sampleId)
+                                                    .build();
+
+                                            final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(LumbarExtensionTrainingUploader.class)
+                                                    .setInputData(data)
+                                                    .setConstraints(constraints)
+                                                    .build();
+
+                                            workManager.enqueueUniqueWork(Instant.now().toString(), ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull D4LException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+
+                                navigateToSummaryFragment();
+                            });
                         }
                     });
 
