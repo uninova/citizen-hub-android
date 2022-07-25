@@ -94,27 +94,40 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void updatePreference(String key) {
         if (key.equals(KEY_WORK_DAYS)) {
-            Preference preference = findPreference(key);
+            try {
+                Preference preference = findPreference(key);
 
-            if (preference != null) {
-                List<DayOfWeek> daysOfWeek = getDaysOfWeek((MultiSelectListPreference) preference);
+                if (preference != null) {
+                    List<DayOfWeek> daysOfWeek = getDaysOfWeek((MultiSelectListPreference) preference);
 
-                if (daysOfWeek.size() > 0) {
-                    Set<String> values = new HashSet<>();
-                    final StringBuilder dayString = new StringBuilder();
+                    if (daysOfWeek.size() > 0) {
+                        Set<String> values = new HashSet<>();
+                        final StringBuilder dayString = new StringBuilder();
 
-                    for (DayOfWeek i : daysOfWeek) {
-                        dayString.append(" ");
-                        dayString.append(i.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
-                        values.add(String.valueOf(i.getValue()));
+                        for (DayOfWeek i : daysOfWeek) {
+                            dayString.append(" ");
+                            dayString.append(i.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
+                            values.add(String.valueOf(i.getValue()));
+                        }
+
+                        preferences.edit().putStringSet(KEY_WORK_DAYS, values).apply();
+                        preference.setSummary(getString(R.string.fragment_settings_current_work_days_text) + dayString);
+                    } else {
+                        preferences.edit().remove(KEY_WORK_DAYS).apply();
+                        preference.setSummary(getString(R.string.fragment_settings_choose_work_days_text));
                     }
-
-                    preferences.edit().putStringSet(KEY_WORK_DAYS, values).apply();
-                    preference.setSummary(getString(R.string.fragment_settings_current_work_days_text) + dayString);
-                } else {
-                    preferences.edit().remove(KEY_WORK_DAYS).apply();
-                    preference.setSummary(getString(R.string.fragment_settings_choose_work_days_text));
                 }
+            } catch (Exception e) {
+                final SharedPreferences.Editor editor = preferences.edit();
+
+                editor.remove(KEY_WORK_DAYS);
+                editor.remove(KEY_WORK_TIME_START);
+                editor.remove(KEY_WORK_TIME_END);
+
+                editor.apply();
+
+                Preference preference = findPreference(KEY_WORK_DAYS);
+                preference.setSummary(getString(R.string.fragment_settings_choose_work_days_text));
             }
         }
 
