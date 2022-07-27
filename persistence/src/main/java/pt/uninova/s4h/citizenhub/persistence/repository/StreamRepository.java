@@ -11,11 +11,11 @@ import pt.uninova.s4h.citizenhub.persistence.dao.StreamDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.StreamRecord;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class EnabledMeasurementRepository {
+public class StreamRepository {
 
     private final StreamDao streamDao;
 
-    public EnabledMeasurementRepository(Context context) {
+    public StreamRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
 
         streamDao = citizenHubDatabase.enabledMeasurementDao();
