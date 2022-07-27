@@ -22,7 +22,9 @@ import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.DeviceDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.DistanceSnapshotMeasurementDao;
-import pt.uninova.s4h.citizenhub.persistence.dao.EnabledMeasurementDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.Smart4HealthDailyReportDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearDailyReportDao;
+import pt.uninova.s4h.citizenhub.persistence.dao.StreamDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.HeartRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.LumbarExtensionTrainingDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.PostureMeasurementDao;
@@ -30,7 +32,6 @@ import pt.uninova.s4h.citizenhub.persistence.dao.PulseRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.ReportDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.SampleDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.SettingDao;
-import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearUploadDateDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.StepsSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.dao.TagDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
@@ -40,14 +41,15 @@ import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesSnapshotMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.DistanceSnapshotMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.EnabledMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.Smart4HealthDailyReportRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.StreamRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.HeartRateMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.PostureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.PulseRateMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.SampleRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.SettingRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.StepsSnapshotMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
 
@@ -55,7 +57,8 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
         autoMigrations = {
                 @AutoMigration(from = 36, to = 37, spec = CitizenHubDatabase.AutoMigrationFrom36To37.class),
                 @AutoMigration(from = 37, to = 100, spec = CitizenHubDatabase.AutoMigrationFrom37To100.class),
-                @AutoMigration(from = 100, to = 101, spec = CitizenHubDatabase.AutoMigrationFrom100To101.class)
+                @AutoMigration(from = 100, to = 101, spec = CitizenHubDatabase.AutoMigrationFrom100To101.class),
+                @AutoMigration(from = 101, to = 102, spec = CitizenHubDatabase.AutoMigrationFrom101To102.class)
         },
         entities = {
                 BloodPressureMeasurementRecord.class,
@@ -65,18 +68,19 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
                 CaloriesSnapshotMeasurementRecord.class,
                 DeviceRecord.class,
                 DistanceSnapshotMeasurementRecord.class,
-                EnabledMeasurementRecord.class,
                 HeartRateMeasurementRecord.class,
                 LumbarExtensionTrainingMeasurementRecord.class,
                 PostureMeasurementRecord.class,
                 PulseRateMeasurementRecord.class,
                 SampleRecord.class,
                 SettingRecord.class,
-                SmartBearUploadDateRecord.class,
+                Smart4HealthDailyReportRecord.class,
+                SmartBearDailyReportRecord.class,
                 StepsSnapshotMeasurementRecord.class,
+                StreamRecord.class,
                 TagRecord.class
         },
-        version = 101)
+        version = 102)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     @RenameColumn(tableName = "lumbar_training", fromColumnName = "trainingLength", toColumnName = "duration")
@@ -96,6 +100,12 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     }
 
     static class AutoMigrationFrom100To101 implements AutoMigrationSpec {
+    }
+
+    @RenameTable(fromTableName = "enabled_measurement", toTableName = "stream")
+    @RenameTable(fromTableName = "smart_bear_upload_date", toTableName = "smart_bear_daily_report")
+    @DeleteColumn(tableName = "tag", columnName = "id")
+    static class AutoMigrationFrom101To102 implements AutoMigrationSpec {
     }
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -134,7 +144,6 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract DistanceSnapshotMeasurementDao distanceSnapshotMeasurementDao();
 
-    public abstract EnabledMeasurementDao enabledMeasurementDao();
 
     public abstract HeartRateMeasurementDao heartRateMeasurementDao();
 
@@ -150,9 +159,13 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
 
     public abstract SettingDao settingDao();
 
-    public abstract SmartBearUploadDateDao smartBearUploadDateDao();
+    public abstract Smart4HealthDailyReportDao smart4HealthDailyReportDao();
+
+    public abstract SmartBearDailyReportDao smartBearUploadDateDao();
 
     public abstract StepsSnapshotMeasurementDao stepsSnapshotMeasurementDao();
+
+    public abstract StreamDao enabledMeasurementDao();
 
     public abstract TagDao tagDao();
 
