@@ -9,15 +9,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
-import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
 
 @Dao
 public interface SmartBearUploadDateDao {
 
     @Insert
-    long insert(SmartBearUploadDateRecord record);
+    long insert(SmartBearDailyReportRecord record);
 
-    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM posture_measurement LEFT JOIN sample ON posture_measurement.sample_id = sample_id EXCEPT SELECT date FROM smart_bear_upload_date")
+    @Query("SELECT DISTINCT (timestamp / 86400) * 86400 FROM posture_measurement LEFT JOIN sample ON posture_measurement.sample_id = sample_id EXCEPT SELECT date FROM smart_bear_daily_report")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> selectDaysWithValues();
 

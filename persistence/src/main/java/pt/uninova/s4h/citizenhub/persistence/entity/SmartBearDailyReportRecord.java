@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 
-@Entity(tableName = "smart_bear_upload_date")
+@Entity(tableName = "smart_bear_daily_report")
 public class SmartBearUploadDateRecord {
 
     @PrimaryKey
