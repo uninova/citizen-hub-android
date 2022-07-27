@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -23,12 +24,16 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 public class PostureMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
     @ColumnInfo(name = "sample_id")
+    @NonNull
     private Long sampleId;
 
+    @NonNull
     private Integer classification;
     @TypeConverters(DurationTypeConverter.class)
+    @NonNull
     private Duration duration;
 
     public PostureMeasurementRecord(Long id, Long sampleId, Integer classification, Duration duration) {

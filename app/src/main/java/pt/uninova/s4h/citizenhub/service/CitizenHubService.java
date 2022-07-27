@@ -20,7 +20,6 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -48,13 +47,11 @@ import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.Tag;
 import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.EnabledMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.StreamRecord;
 import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.EnabledMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.StreamRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
-import pt.uninova.s4h.citizenhub.report.Report;
-import pt.uninova.s4h.citizenhub.report.Smart4HealthReportGenerator;
 import pt.uninova.s4h.citizenhub.service.work.LumbarExtensionTrainingUploader;
 import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
 import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
@@ -147,7 +144,7 @@ public class CitizenHubService extends LifecycleService {
     private void initAgentOrchestrator() {
         final Map<Integer, AgentFactory<? extends Agent>> agentFactoryMap = new HashMap<>();
         final DeviceRepository deviceRepository = new DeviceRepository(getApplication());
-        final EnabledMeasurementRepository enabledMeasurementRepository = new EnabledMeasurementRepository(getApplication());
+        final StreamRepository streamRepository = new StreamRepository(getApplication());
         final SampleRepository sampleRepository = new SampleRepository(getApplication());
         final TagRepository tagRepository = new TagRepository(getApplication());
 
@@ -204,12 +201,12 @@ public class CitizenHubService extends LifecycleService {
                 agent.addAgentListener(new AgentListener() {
                     @Override
                     public void onMeasurementDisabled(Agent agent, int measurementType) {
-                        enabledMeasurementRepository.delete(agent.getSource().getAddress(), measurementType);
+                        streamRepository.delete(agent.getSource().getAddress(), measurementType);
                     }
 
                     @Override
                     public void onMeasurementEnabled(Agent agent, int measurementType) {
-                        enabledMeasurementRepository.create(agent.getSource().getAddress(), measurementType);
+                        streamRepository.create(agent.getSource().getAddress(), measurementType);
                     }
                 });
             }
@@ -237,8 +234,8 @@ public class CitizenHubService extends LifecycleService {
                     orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(i.getAgent()).asSubclass(Agent.class), agent -> {
                         agent.enable();
 
-                        enabledMeasurementRepository.read(i.getAddress(), enabledMeasurements -> {
-                            for (final EnabledMeasurementRecord j : enabledMeasurements) {
+                        streamRepository.read(i.getAddress(), enabledMeasurements -> {
+                            for (final StreamRecord j : enabledMeasurements) {
                                 agent.enableMeasurement(j.getMeasurementType());
                             }
                         });

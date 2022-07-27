@@ -6,21 +6,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
-import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearUploadDateDao;
-import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
+import pt.uninova.s4h.citizenhub.persistence.dao.SmartBearDailyReportDao;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class SmartBearUploadDateRepository {
+public class SmartBearDailyReportRepository {
 
-    private final SmartBearUploadDateDao dao;
+    private final SmartBearDailyReportDao dao;
 
-    public SmartBearUploadDateRepository(Context context) {
+    public SmartBearDailyReportRepository(Context context) {
         final CitizenHubDatabase citizenHubDatabase = CitizenHubDatabase.getInstance(context);
 
         dao = citizenHubDatabase.smartBearUploadDateDao();
     }
 
-    public void create(SmartBearUploadDateRecord record) {
+    public void create(SmartBearDailyReportRecord record) {
         CitizenHubDatabase.executorService().execute(() -> dao.insert(record));
     }
 

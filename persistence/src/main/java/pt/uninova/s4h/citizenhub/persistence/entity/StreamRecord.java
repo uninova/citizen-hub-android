@@ -5,17 +5,25 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
-@Entity(tableName = "enabled_measurement", primaryKeys = {"device_id", "measurement_type"}, foreignKeys = @ForeignKey(onDelete = ForeignKey.CASCADE, entity = DeviceRecord.class, parentColumns = "id", childColumns = "device_id"))
-public class EnabledMeasurementRecord {
+@Entity(
+        tableName = "stream",
+        primaryKeys = {"device_id", "measurement_type"},
+        foreignKeys = @ForeignKey(
+                onDelete = ForeignKey.CASCADE,
+                entity = DeviceRecord.class,
+                parentColumns = "id",
+                childColumns = "device_id")
+)
+public class StreamRecord {
 
-    @NonNull
     @ColumnInfo(name = "device_id")
-    private Long deviceId;
     @NonNull
+    private Long deviceId;
     @ColumnInfo(name = "measurement_type")
+    @NonNull
     private Integer measurementType;
 
-    public EnabledMeasurementRecord(Long deviceId, Integer measurementType) {
+    public StreamRecord(Long deviceId, Integer measurementType) {
         this.deviceId = deviceId;
         this.measurementType = measurementType;
     }

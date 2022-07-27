@@ -8,16 +8,15 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.interoperability.DailyPostureReport;
 import pt.uninova.s4h.citizenhub.interoperability.SmartBearClient;
-import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearUploadDateRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.HourlyPosture;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.SmartBearUploadDateRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.SmartBearDailyReportRepository;
 
 public class SmartBearUploadWorker extends Worker {
 
@@ -35,13 +34,13 @@ public class SmartBearUploadWorker extends Worker {
             final int patientId = preferences.getInt("accounts.smartbear.id", -1);
 
             final PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getApplicationContext());
-            final SmartBearUploadDateRepository smartBearUploadDateRepository = new SmartBearUploadDateRepository(getApplicationContext());
+            final SmartBearDailyReportRepository smartBearDailyReportRepository = new SmartBearDailyReportRepository(getApplicationContext());
 
             final SmartBearClient client = new SmartBearClient(BuildConfig.SMART_BEAR_URL, BuildConfig.SMART_BEAR_API_KEY);
 
             final LocalDate now = LocalDate.now();
 
-            smartBearUploadDateRepository.readDaysWithData(value -> {
+            smartBearDailyReportRepository.readDaysWithData(value -> {
                 for (LocalDate i : value) {
                     if (i.compareTo(now) < 0) {
                         postureMeasurementRepository.read(i, hourlyPostures -> {
@@ -57,7 +56,7 @@ public class SmartBearUploadWorker extends Worker {
 
                             client.upload(dailyPostureReport, response -> {
                                 if (response.isSuccessful()) {
-                                    smartBearUploadDateRepository.create(new SmartBearUploadDateRecord(i));
+                                    smartBearDailyReportRepository.create(new SmartBearDailyReportRecord(i));
                                 }
                             });
 

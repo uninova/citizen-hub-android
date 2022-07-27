@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,6 +8,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tag",
+        primaryKeys = {"sample_id", "label"},
         foreignKeys = {
                 @ForeignKey(
                         entity = SampleRecord.class,
@@ -17,22 +19,16 @@ import androidx.room.PrimaryKey;
 )
 public class TagRecord {
 
-    @PrimaryKey(autoGenerate = true)
-    private Long id;
-
     @ColumnInfo(name = "sample_id")
+    @NonNull
     private Long sampleId;
 
+    @NonNull
     private Integer label;
 
-    public TagRecord(Long id, Long sampleId, Integer label) {
-        this.id = id;
+    public TagRecord(Long sampleId, Integer label) {
         this.sampleId = sampleId;
         this.label = label;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Integer getLabel() {
@@ -41,10 +37,6 @@ public class TagRecord {
 
     public Long getSampleId() {
         return sampleId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setLabel(Integer label) {
