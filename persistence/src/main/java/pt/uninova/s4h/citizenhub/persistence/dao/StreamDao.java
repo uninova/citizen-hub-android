@@ -12,7 +12,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.entity.StreamRecord;
 
 @Dao
-public interface EnabledMeasurementDao {
+public interface StreamDao {
 
     @Delete
     void delete(StreamRecord record);

@@ -12,7 +12,7 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
 
 @Dao
-public interface SmartBearUploadDateDao {
+public interface SmartBearDailyReportDao {
 
     @Insert
     long insert(SmartBearDailyReportRecord record);
