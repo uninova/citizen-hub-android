@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -11,11 +12,14 @@ import java.util.Objects;
 public class DeviceRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
 
+    @NonNull
     private String address;
     private String name;
     @ColumnInfo(name = "connection_kind")
+    @NonNull
     private Integer connectionKind;
     private String agent;
 

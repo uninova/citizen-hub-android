@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -24,15 +25,18 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 public class SampleRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
+
+    @TypeConverters(EpochTypeConverter.class)
+    @NonNull
+    private Instant timestamp;
 
     @ColumnInfo(name = "device_id")
     private Long deviceId;
 
-    @TypeConverters(EpochTypeConverter.class)
-    private Instant timestamp;
 
-    public SampleRecord(Long id, Long deviceId, Instant timestamp) {
+    public SampleRecord(Long id, Instant timestamp, Long deviceId) {
         this.id = id;
         this.deviceId = deviceId;
         this.timestamp = timestamp;

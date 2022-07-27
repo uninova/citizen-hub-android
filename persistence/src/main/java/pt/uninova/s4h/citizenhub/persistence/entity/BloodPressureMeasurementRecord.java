@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -19,14 +20,19 @@ import androidx.room.PrimaryKey;
 public class BloodPressureMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
 
     @ColumnInfo(name = "sample_id")
+    @NonNull
     private Long sampleId;
 
+    @NonNull
     private Double systolic;
+    @NonNull
     private Double diastolic;
     @ColumnInfo(name = "mean_arterial_pressure")
+    @NonNull
     private Double meanArterialPressure;
 
     public BloodPressureMeasurementRecord(Long id, Long sampleId, Double systolic, Double diastolic, Double meanArterialPressure) {

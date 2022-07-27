@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -20,11 +21,14 @@ import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 public class CaloriesMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
 
     @ColumnInfo(name = "sample_id")
+    @NonNull
     private Long sampleId;
 
+    @NonNull
     private Double value;
 
     public CaloriesMeasurementRecord(Long id, Long sampleId, Double value) {

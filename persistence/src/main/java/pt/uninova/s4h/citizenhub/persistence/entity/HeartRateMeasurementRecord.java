@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -18,11 +19,14 @@ import androidx.room.PrimaryKey;
 public class HeartRateMeasurementRecord {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private Long id;
 
     @ColumnInfo(name = "sample_id")
+    @NonNull
     private Long sampleId;
 
+    @NonNull
     private Integer value;
 
     public HeartRateMeasurementRecord(Long id, Long sampleId, Integer value) {
