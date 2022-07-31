@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -90,6 +91,8 @@ public class MainActivity extends FragmentActivity {
 
                     Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
                     sampleRepository.create(sample, sampleId -> {});
+
+                    printDBValues();//TODO temporary, delete this
                 }
             }
             @Override
@@ -121,6 +124,13 @@ public class MainActivity extends FragmentActivity {
         viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
 
         new SendMessage(citizenHubPath + nodeIdString,"Ready");
+    }
+
+    private void printDBValues(){
+        final LocalDate now = LocalDate.now();
+
+        heartRateMeasurementRepository.readAverageObserved(now, value -> System.out.println("Average HeartRate is: " + value));
+        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> System.out.println("Maximum Steps are: " + value));
     }
 
     @Override
