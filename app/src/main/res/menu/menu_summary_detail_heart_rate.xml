@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_average"
+        android:title="Average"/>
+    <item
+        android:id="@+id/nav_max"
+        android:title="Max"/>
+    <item
+        android:id="@+id/nav_min"
+        android:title="Min"/>
+
+</menu>

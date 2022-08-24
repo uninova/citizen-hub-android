@@ -10,6 +10,7 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.HeartRateMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
 
 @Dao
@@ -36,5 +37,40 @@ public interface HeartRateMeasurementDao {
     @Query("SELECT AVG(heart_rate_measurement.value) FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to")
     @TypeConverters(EpochTypeConverter.class)
     Double selectAverage(LocalDate from, LocalDate to);
+    
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, heart_rate_measurement.value AS value "
+            + " FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
+            + " SELECT MAX(value) AS value, hour AS time FROM agg GROUP BY hour")
+    @TypeConverters(EpochTypeConverter.class)
+    List<ActivityDetailUtil> selectLastDay(LocalDate localDate);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, heart_rate_measurement.value AS value "
+            + " FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<ActivityDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, heart_rate_measurement.value AS value "
+            + " FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT AVG(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<ActivityDetailUtil> selectAverageLastThirtyDays(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, heart_rate_measurement.value AS value "
+            + " FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<ActivityDetailUtil> selectMaxLastThirtyDays(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, heart_rate_measurement.value AS value "
+            + " FROM heart_rate_measurement INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MIN(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<ActivityDetailUtil> selectMinLastThirtyDays(LocalDate from, LocalDate to);
 
 }

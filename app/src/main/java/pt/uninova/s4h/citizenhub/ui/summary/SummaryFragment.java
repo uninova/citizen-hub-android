@@ -7,14 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -118,6 +120,16 @@ public class SummaryFragment extends ServiceFragment {
         final CardView heartRateCardView = view.findViewById(R.id.heartRateCardView);
 
         heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
+
+        if (hasHeartRate) {
+            heartRateCardView.setClickable(true);
+            heartRateCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment);
+                }
+            });
+        }
     }
 
     private void onDailyLumbarExtensionTrainingUpdate(LumbarExtensionTrainingSummary record) {
@@ -172,26 +184,35 @@ public class SummaryFragment extends ServiceFragment {
 
         final CardView postureCardView = view.findViewById(R.id.postureCardView);
         postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
+
+        if (hasPosture) {
+            postureCardView.setClickable(true);
+            postureCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment);
+                }
+            });
+        }
     }
 
     public void onDailyStepsAllUpdate(Integer steps) {
         if (steps != null) {
-            if (steps != 0) {
-                final View view = requireView();
+            final View view = requireView();
 
-                final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-                final CardView activityCardView = view.findViewById(R.id.activityCardView);
+            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
-                activityCardView.setVisibility(View.VISIBLE);
-                activityStepsTextView.setVisibility(View.VISIBLE);
-                activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
-                }
-            }
+            activityCardView.setVisibility(View.VISIBLE);
+            activityStepsTextView.setVisibility(View.VISIBLE);
+            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+
+            onActivityUpdate();
+        }
     }
 
     public void onDailyDistanceAllUpdate(Double distance) {
         if (distance != null) {
-            if (distance != 0){
             final View view = requireView();
 
             final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
@@ -200,22 +221,38 @@ public class SummaryFragment extends ServiceFragment {
             activityCardView.setVisibility(View.VISIBLE);
             activityDistanceTextView.setVisibility(View.VISIBLE);
             activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
-            }
+
+            onActivityUpdate();
         }
     }
 
     public void onDailyCaloriesAllUpdate(Double calories) {
-        if (calories != null){
-            if (calories != 0){
-                final View view = requireView();
+        if (calories != null) {
+            final View view = requireView();
 
-                final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-                final CardView activityCardView = view.findViewById(R.id.activityCardView);
+            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
-                activityCardView.setVisibility(View.VISIBLE);
-                activityCaloriesTextView.setVisibility(View.VISIBLE);
-                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
-            }
+            activityCardView.setVisibility(View.VISIBLE);
+            activityCaloriesTextView.setVisibility(View.VISIBLE);
+            activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
+
+            onActivityUpdate();
+        }
+    }
+
+    public void onActivityUpdate() {
+        final View view = requireView();
+        final CardView activityCardView = view.findViewById(R.id.activityCardView);
+
+        if (!activityCardView.isClickable()) {
+            activityCardView.setClickable(true);
+            activityCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                }
+            });
         }
     }
 
