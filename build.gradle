@@ -16,10 +16,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io'} // Material to design graphs in summary details
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.android.tools.build:gradle:7.2.2'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
     }
 }

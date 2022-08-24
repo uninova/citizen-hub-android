@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.ReportDao;

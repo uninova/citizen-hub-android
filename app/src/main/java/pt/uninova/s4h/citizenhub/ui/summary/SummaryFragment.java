@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,6 +121,16 @@ public class SummaryFragment extends ServiceFragment {
         final CardView heartRateCardView = view.findViewById(R.id.heartRateCardView);
 
         heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
+
+        if(hasHeartRate) {
+            heartRateCardView.setClickable(true);
+            heartRateCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment);
+                }
+            });
+        }
     }
 
     private void onDailyLumbarExtensionTrainingUpdate(LumbarExtensionTrainingSummary record) {
@@ -174,6 +185,16 @@ public class SummaryFragment extends ServiceFragment {
 
         final CardView postureCardView = view.findViewById(R.id.postureCardView);
         postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
+
+        if(hasPosture){
+            postureCardView.setClickable(true);
+            postureCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment);
+                }
+            });
+        }
     }
 
     public void onDailyWalkingInformationUpdate(WalkingInformation record) {
@@ -208,6 +229,16 @@ public class SummaryFragment extends ServiceFragment {
             activityDistanceTextView.setVisibility(hasDistance ? View.VISIBLE : View.GONE);
             activityCaloriesTextView.setVisibility(hasCalories ? View.VISIBLE : View.GONE);
             activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
+
+            if (hasActivity){
+                activityCardView.setClickable(true);
+                activityCardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                    }
+                });
+            }
         }
     }
 

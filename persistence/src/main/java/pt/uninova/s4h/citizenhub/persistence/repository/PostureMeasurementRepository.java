@@ -10,6 +10,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.PostureMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.PostureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.HourlyPosture;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -38,5 +39,29 @@ public class PostureMeasurementRepository {
 
     public LiveData<List<PostureClassificationSum>> readClassificationSum(LocalDate localDate) {
         return postureMeasurementDao.selectClassificationSumLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public void readLastDayCorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastDayCorrectPosture(localDate)));
+    }
+
+    public void readLastDayIncorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastDayIncorrectPosture(localDate)));
+    }
+
+    public void readLastSevenDaysCorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastSevenDaysCorrectPosture(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastSevenDaysIncorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastSevenDaysIncorrectPosture(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastThirtyDaysCorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastThirtyDaysCorrectPosture(localDate.minusDays(30), localDate)));
+    }
+
+    public void readLastThirtyDaysIncorrectPosture(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(postureMeasurementDao.selectLastThirtyDaysIncorrectPosture(localDate.minusDays(30), localDate)));
     }
 }

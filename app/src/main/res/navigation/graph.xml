@@ -10,7 +10,39 @@
         android:id="@+id/summary_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryFragment"
         android:label="@string/fragment_summary_label"
-        tools:layout="@layout/fragment_summary" />
+        tools:layout="@layout/fragment_summary">
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_activity_fragment"
+            app:destination="@+id/summary_detail_activity_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_posture_fragment"
+            app:destination="@+id/summary_detail_posture_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_heart_rate_fragment"
+            app:destination="@+id/summary_detail_heart_rate_fragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/summary_detail_activity_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailActivityFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_summary_detail_activity"/>
+
+    <fragment
+        android:id="@+id/summary_detail_posture_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailPostureFragment"
+        android:label="Posture"
+        tools:layout="@layout/fragment_summary_detail_posture"/>
+
+    <fragment
+        android:id="@+id/summary_detail_heart_rate_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailHeartRateFragment"
+        android:label="HeartRate"
+        tools:layout="@layout/fragment_summary_detail_heart_rate"/>
 
     <fragment
         android:id="@+id/report_master_fragment"
