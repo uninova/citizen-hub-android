@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -178,17 +178,17 @@ public class SummaryDetailPostureFragment extends Fragment {
     private void dailyPosture() {
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
 
-        Observer<List<ActivityDetailUtil>> observerCorrect = correct -> {
+        Observer<List<SummaryDetailUtil>> observerCorrect = correct -> {
 
-            Observer<List<ActivityDetailUtil>> observerIncorrect = incorrect -> {
+            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> {
 
                 setBarChartDataTwoColumns(correct, incorrect, 24);
 
                 int correctPostureTime = 0;
                 int incorrectPostureTime = 0;
-                for (ActivityDetailUtil data : correct)
+                for (SummaryDetailUtil data : correct)
                     correctPostureTime += data.getValue();
-                for (ActivityDetailUtil data : incorrect)
+                for (SummaryDetailUtil data : incorrect)
                     incorrectPostureTime += data.getValue();
 
                 List<PieEntry> pieEntries = new ArrayList<>();
@@ -210,8 +210,8 @@ public class SummaryDetailPostureFragment extends Fragment {
     private void weeklyPosture() {
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
 
-        Observer<List<ActivityDetailUtil>> observerCorrect = correctPosture -> {
-            Observer<List<ActivityDetailUtil>> observerIncorrect = incorrectPosture -> setBarChartDataTwoColumns(correctPosture, incorrectPosture, 7);
+        Observer<List<SummaryDetailUtil>> observerCorrect = correctPosture -> {
+            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrectPosture -> setBarChartDataTwoColumns(correctPosture, incorrectPosture, 7);
             postureMeasurementRepository.readLastSevenDaysIncorrectPosture(LocalDate.now(), observerIncorrect);
         };
 
@@ -223,56 +223,24 @@ public class SummaryDetailPostureFragment extends Fragment {
     }
 
     private void monthlyCorrectPosture() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Correct Posture", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart,getString(R.string.summary_detail_posture_correct), 30);
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
         postureMeasurementRepository.readLastThirtyDaysCorrectPosture(LocalDate.now(), observer);
     }
 
     private void monthlyIncorrectPosture() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Incorrect Posture", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_posture_incorrect), 30);
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
         postureMeasurementRepository.readLastThirtyDaysIncorrectPosture(LocalDate.now(), observer);
     }
 
-    private void setBarChartData(List<ActivityDetailUtil> list, String label, int max) {
-        List<BarEntry> entries = new ArrayList<>();
-        int currentTime = 1;
-
-        for (ActivityDetailUtil data : list) {
-            if (data.getTime() + 1 != currentTime) {
-                while (currentTime != data.getTime()) {
-                    entries.add(new BarEntry(currentTime, 0));
-                    currentTime++;
-                }
-            }
-            entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
-            currentTime++;
-        }
-
-        if (currentTime != max) {
-            while (currentTime != max) {
-                entries.add(new BarEntry(currentTime, 0));
-                currentTime++;
-            }
-        }
-
-        BarDataSet barDataSet = new BarDataSet(entries, label);
-        ArrayList<IBarDataSet> dataSet = new ArrayList<>();
-        dataSet.add(barDataSet);
-        BarData barData = new BarData(dataSet);
-        barChart.setData(barData);
-        barChart.getDescription().setText(label);
-        barChart.notifyDataSetChanged();
-        barChart.invalidate();
-    }
-
-    private void setBarChartDataTwoColumns(List<ActivityDetailUtil> correctPosture, List<ActivityDetailUtil> incorrectPosture, int max){
+    private void setBarChartDataTwoColumns(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
         List<BarEntry> entriesCorrectPosture = new ArrayList<>();
         List<BarEntry> entriesIncorrectPosture = new ArrayList<>();
 
         int currentTime = 0;
 
-        for (ActivityDetailUtil data : correctPosture) {
+        for (SummaryDetailUtil data : correctPosture) {
             if (currentTime != data.getTime()) {
                 while (currentTime != data.getTime()) {
                     currentTime++;
@@ -292,7 +260,7 @@ public class SummaryDetailPostureFragment extends Fragment {
 
         currentTime = 0;
 
-        for (ActivityDetailUtil data : incorrectPosture) {
+        for (SummaryDetailUtil data : incorrectPosture) {
             if (currentTime != data.getTime()) {
                 while (currentTime != data.getTime()) {
                     currentTime++;
@@ -310,9 +278,9 @@ public class SummaryDetailPostureFragment extends Fragment {
             }
         }
 
-        BarDataSet barDataSetCorrectPosture = new BarDataSet(entriesCorrectPosture, "Correct Posture");
+        BarDataSet barDataSetCorrectPosture = new BarDataSet(entriesCorrectPosture, getString(R.string.summary_detail_posture_correct));
         barDataSetCorrectPosture.setColor(Color.parseColor("#42c5f5"));
-        BarDataSet barDataSetIncorrectPosture = new BarDataSet(entriesIncorrectPosture, "Incorrect Posture");
+        BarDataSet barDataSetIncorrectPosture = new BarDataSet(entriesIncorrectPosture, getString(R.string.summary_detail_posture_incorrect));
         barDataSetIncorrectPosture.setColor(Color.parseColor("#82e4ff"));
         ArrayList<IBarDataSet> dataSet = new ArrayList<>();
         dataSet.add(barDataSetCorrectPosture);
@@ -322,41 +290,6 @@ public class SummaryDetailPostureFragment extends Fragment {
         //barChart.groupBars(0.2f, 0.25f, 0.05f);
         barChart.notifyDataSetChanged();
         barChart.invalidate();
-    }
-
-    private void setLineChartData(List<ActivityDetailUtil> list, String label, int max) {
-        List<Entry> entries = new ArrayList<>();
-        int currentTime = 1;
-
-        for (ActivityDetailUtil data : list) {
-            //System.out.println(data.getValue() + " " + data.getTime());
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entries.add(new BarEntry(currentTime, 0));
-                }
-            }
-            entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
-            currentTime++;
-        }
-
-        if (currentTime != max) {
-            while (currentTime != max) {
-                currentTime++;
-                entries.add(new BarEntry(currentTime, 0));
-            }
-        }
-
-        LineDataSet lineDataSet = new LineDataSet(entries, label);
-        lineDataSet.setMode(LineDataSet.Mode.LINEAR);
-        lineDataSet.setDrawFilled(true);
-        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSet);
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.getDescription().setText(label);
-        lineChart.notifyDataSetChanged();
-        lineChart.invalidate();
     }
 
 }

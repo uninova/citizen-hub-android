@@ -1,6 +1,6 @@
 package pt.uninova.s4h.citizenhub.persistence.entity.util;
 
-public class ActivityDetailUtil {
+public class SummaryDetailUtil {
 
     private Double value;
 
