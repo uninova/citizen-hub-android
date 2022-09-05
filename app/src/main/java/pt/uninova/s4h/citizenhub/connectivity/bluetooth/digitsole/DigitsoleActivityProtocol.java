@@ -16,7 +16,9 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtoc
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -60,11 +62,14 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         @Override
         public void onChange(byte[] value) {
             int steps = value[4] & 0xff;
-            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)steps));
+            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)5));
             getSampleDispatcher().dispatch(sampleSteps);
 
+            final Sample sampleStepsFake = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, 20));
+            getSampleDispatcher().dispatch(sampleStepsFake);
+
             int distance = value[40] & 0xff;
-            final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)distance));
+            final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)5));
             getSampleDispatcher().dispatch(sampleDistance);
 
             lastTime = System.currentTimeMillis();
