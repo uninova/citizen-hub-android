@@ -15,26 +15,17 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.CaloriesSnapshotMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.DistanceSnapshotMeasurementRepository;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class SummaryDetailActivityFragment extends Fragment {
 
@@ -230,125 +221,57 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void dailySteps() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Steps", 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_steps), 24);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
-
     }
 
     private void weeklySteps() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Steps", 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart,getString(R.string.summary_detail_activity_steps), 7);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthlySteps() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Steps", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_steps), 30);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastThirtyDays(LocalDate.now(), observer);
     }
 
     private void dailyDistance() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Distance", 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_distance), 24);
         DistanceSnapshotMeasurementRepository distanceSnapshotMeasurementRepository = new DistanceSnapshotMeasurementRepository(getContext());
         distanceSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyDistance() {
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Distance", 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_distance), 7);
         DistanceSnapshotMeasurementRepository distanceSnapshotMeasurementRepository = new DistanceSnapshotMeasurementRepository(getContext());
         distanceSnapshotMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthlyDistance(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Distance", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_distance), 30);
         DistanceSnapshotMeasurementRepository distanceSnapshotMeasurementRepository = new DistanceSnapshotMeasurementRepository(getContext());
         distanceSnapshotMeasurementRepository.readLastThirtyDays(LocalDate.now(), observer);
     }
 
     private void dailyCalories(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Calories", 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_calories), 24);
         CaloriesSnapshotMeasurementRepository caloriesSnapshotMeasurementRepository = new CaloriesSnapshotMeasurementRepository(getContext());
         caloriesSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyCalories(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Calories", 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_calories), 7);
         CaloriesSnapshotMeasurementRepository caloriesSnapshotMeasurementRepository = new CaloriesSnapshotMeasurementRepository(getContext());
         caloriesSnapshotMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthlyCalories(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setBarChartData(data, "Calories", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_calories), 30);
         CaloriesSnapshotMeasurementRepository caloriesSnapshotMeasurementRepository = new CaloriesSnapshotMeasurementRepository(getContext());
         caloriesSnapshotMeasurementRepository.readLastThirtyDays(LocalDate.now(), observer);
-    }
-
-    private void setBarChartData(List<ActivityDetailUtil> list, String label, int max) {
-        int currentTime = 0;
-        List<BarEntry> entries = new ArrayList<>();
-
-        for (ActivityDetailUtil data : list) {
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entries.add(new BarEntry(currentTime, 0));
-                }
-            }
-            entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
-            currentTime++;
-        }
-
-        if(currentTime != max){
-            while(currentTime != max){
-                entries.add(new BarEntry(currentTime, 0));
-                currentTime++;
-            }
-        }
-
-        BarDataSet barDataSet = new BarDataSet(entries, label);
-        ArrayList<IBarDataSet> dataSet = new ArrayList<>();
-        dataSet.add(barDataSet);
-        BarData barData = new BarData(dataSet);
-        barChart.setData(barData);
-        barChart.getDescription().setText(label);
-        barChart.notifyDataSetChanged();
-        barChart.invalidate();
-    }
-
-    private void setLineChartData(List<ActivityDetailUtil> list, String label, int max) {
-        List<Entry> entries = new ArrayList<>();
-        int currentTime = 1;
-
-        for (ActivityDetailUtil data : list) {
-            //System.out.println(data.getValue() + " " + data.getTime());
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entries.add(new BarEntry(currentTime, 0));
-                }
-            }
-            entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
-            currentTime++;
-        }
-
-        if (currentTime != max) {
-            while (currentTime != max) {
-                currentTime++;
-                entries.add(new BarEntry(currentTime, 0));
-            }
-        }
-
-        LineDataSet lineDataSet = new LineDataSet(entries, label);
-        lineDataSet.setMode(LineDataSet.Mode.LINEAR);
-        lineDataSet.setDrawFilled(true);
-        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSet);
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.getDescription().setText(label);
-        lineChart.notifyDataSetChanged();
-        lineChart.invalidate();
     }
 
 }

@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/nav_average"
-        android:title="Average"/>
+        android:title="@string/summary_detail_posture_average"/>
     <item
         android:id="@+id/nav_correct_posture"
-        android:title="Correct Posture"/>
+        android:title="@string/summary_detail_posture_correct"/>
     <item
         android:id="@+id/nav_incorrect_posture"
-        android:title="Incorrect Posture"/>
+        android:title="@string/summary_detail_posture_incorrect"/>
 
 </menu>

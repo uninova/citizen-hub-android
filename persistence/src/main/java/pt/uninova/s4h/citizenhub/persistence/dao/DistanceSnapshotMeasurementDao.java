@@ -11,7 +11,7 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.DistanceSnapshotMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 
 @Dao
 public interface DistanceSnapshotMeasurementDao {
@@ -35,20 +35,20 @@ public interface DistanceSnapshotMeasurementDao {
             + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
             + " SELECT MAX(value) AS value, hour AS time FROM agg GROUP BY hour")
     @TypeConverters(EpochTypeConverter.class)
-    List<ActivityDetailUtil> selectLastDay(LocalDate localDate);
+    List<SummaryDetailUtil> selectLastDay(LocalDate localDate);
 
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, distance_snapshot_measurement.value AS value "
             + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
-    List<ActivityDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
+    List<SummaryDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
 
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, distance_snapshot_measurement.value AS value "
             + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
-    List<ActivityDetailUtil> selectLastThirtyDays(LocalDate from, LocalDate to);
+    List<SummaryDetailUtil> selectLastThirtyDays(LocalDate from, LocalDate to);
 
 }

@@ -479,6 +479,28 @@
     <string name="report_lumbar_training_repetitions_label">Repetitions</string>
     <string name="report_lumbar_training_duration_label">Duration</string>
 
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_day">Day</string>
+    <string name="summary_detail_time_week">Week</string>
+    <string name="summary_detail_time_month">Month</string>
+
+    <string name="summary_detail_activity_steps">Steps</string>
+    <string name="summary_detail_activity_calories">Calories</string>
+    <string name="summary_detail_activity_distance">Distance</string>
+
+    <string name="summary_detail_posture_correct">Correct</string>
+    <string name="summary_detail_posture_incorrect">Incorrect</string>
+    <string name="summary_detail_posture_average">Average</string>
+
+    <string name="summary_detail_heart_rate_maximum">Max</string>
+    <string name="summary_detail_heart_rate_minimum">Min</string>
+    <string name="summary_detail_heart_rate_average">Average</string>
+
+    <string name="summary_detail_blood_pressure_systolic">Systolic</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
+    <string name="summary_detail_blood_pressure_mean">Mean</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulse Rate</string>
+
     <string name="measurement_type.0">Unknown</string>
     <string name="measurement_type.1">Heart rate</string>
     <string name="measurement_type.2">Activity</string>

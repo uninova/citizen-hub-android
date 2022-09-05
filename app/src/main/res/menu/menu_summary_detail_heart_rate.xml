@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/nav_average"
-        android:title="Average"/>
+        android:title="@string/summary_detail_heart_rate_average"/>
     <item
         android:id="@+id/nav_max"
-        android:title="Max"/>
+        android:title="@string/summary_detail_heart_rate_maximum"/>
     <item
         android:id="@+id/nav_min"
-        android:title="Min"/>
+        android:title="@string/summary_detail_heart_rate_minimum"/>
 
 </menu>

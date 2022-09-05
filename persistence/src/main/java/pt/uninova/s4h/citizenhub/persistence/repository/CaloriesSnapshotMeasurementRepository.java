@@ -10,7 +10,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.CaloriesSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.CaloriesSnapshotMeasurementRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class CaloriesSnapshotMeasurementRepository {
@@ -35,15 +35,15 @@ public class CaloriesSnapshotMeasurementRepository {
         return caloriesSnapshotMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
 
-    public void readLastDay(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+    public void readLastDay(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(caloriesSnapshotMeasurementDao.selectLastDay(localDate)));
     }
 
-    public void readLastSevenDays(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+    public void readLastSevenDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(caloriesSnapshotMeasurementDao.selectLastSevenDays(localDate.minusDays(7), localDate)));
     }
 
-    public void readLastThirtyDays(LocalDate localDate, Observer<List<ActivityDetailUtil>> observer){
+    public void readLastThirtyDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(caloriesSnapshotMeasurementDao.selectLastThirtyDays(localDate.minusDays(30), localDate)));
     }
 }

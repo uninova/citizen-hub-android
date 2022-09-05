@@ -14,19 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.ActivityDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -125,68 +119,33 @@ public class SummaryDetailHeartRateFragment extends Fragment {
     }
 
     private void dailyHeartRate(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Heart Rate", 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, "Heart Rate", 24);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyHeartRate(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Heart Rate", 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, "Heart Rate", 7);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthlyAverageHeartRate(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Heart Rate", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_average), 30);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.readAverageLastThirtyDays(LocalDate.now(), observer);
     }
 
     private void monthlyMaxHeartRate(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Heart Rate", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_maximum), 30);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.readMaxLastThirtyDays(LocalDate.now(), observer);
     }
 
     private void monthlyMinHeartRate(){
-        Observer<List<ActivityDetailUtil>> observer = data -> setLineChartData(data, "Heart Rate", 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_minimum), 30);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.readMinLastThirtyDays(LocalDate.now(), observer);
-    }
-
-    private void setLineChartData(List<ActivityDetailUtil> list, String label, int max) {
-        List<Entry> entries = new ArrayList<>();
-        int currentTime = 1;
-
-        for (ActivityDetailUtil data : list) {
-            //System.out.println(data.getValue() + " " + data.getTime());
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entries.add(new BarEntry(currentTime, 0));
-                }
-            }
-            entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
-            currentTime++;
-        }
-
-        if (currentTime != max) {
-            while (currentTime != max) {
-                currentTime++;
-                entries.add(new BarEntry(currentTime, 0));
-            }
-        }
-
-        LineDataSet lineDataSet = new LineDataSet(entries, label);
-        lineDataSet.setMode(LineDataSet.Mode.LINEAR);
-        lineDataSet.setDrawFilled(true);
-        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSet);
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.getDescription().setText(label);
-        lineChart.notifyDataSetChanged();
-        lineChart.invalidate();
     }
 
 }

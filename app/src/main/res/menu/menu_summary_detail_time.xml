@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/nav_day"
-        android:title="Day"/>
+        android:title="@string/summary_detail_time_day"/>
     <item
         android:id="@+id/nav_week"
-        android:title="Week"/>
+        android:title="@string/summary_detail_time_week"/>
     <item
         android:id="@+id/nav_month"
-        android:title="Month"/>
+        android:title="@string/summary_detail_time_month"/>
 
 </menu>

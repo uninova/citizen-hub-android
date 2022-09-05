@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/nav_steps"
-        android:title="Steps"/>
+        android:title="@string/summary_detail_activity_steps"/>
     <item
         android:id="@+id/nav_distance"
-        android:title="Distance"/>
+        android:title="@string/summary_detail_activity_distance"/>
     <item
         android:id="@+id/nav_calories"
-        android:title="Calories"/>
+        android:title="@string/summary_detail_activity_calories"/>
 
 </menu>
