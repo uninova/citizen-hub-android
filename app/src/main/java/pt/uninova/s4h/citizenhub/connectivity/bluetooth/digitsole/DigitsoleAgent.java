@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
-import android.content.Context;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

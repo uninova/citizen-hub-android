@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 102,
-    "identityHash": "ebc125b34a1153dfef75138b79785f75",
+    "identityHash": "d355fbe303a3339b45995922c9e98e17",
     "entities": [
       {
         "tableName": "blood_pressure_measurement",
@@ -359,6 +359,60 @@
         "foreignKeys": []
       },
       {
+        "tableName": "distance_measurement",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sample_id` INTEGER NOT NULL, `value` REAL NOT NULL, FOREIGN KEY(`sample_id`) REFERENCES `sample`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sampleId",
+            "columnName": "sample_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_distance_measurement_sample_id",
+            "unique": false,
+            "columnNames": [
+              "sample_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_distance_measurement_sample_id` ON `${TABLE_NAME}` (`sample_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "sample",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "sample_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
         "tableName": "distance_snapshot_measurement",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sample_id` INTEGER NOT NULL, `type` INTEGER NOT NULL, `value` REAL NOT NULL, FOREIGN KEY(`sample_id`) REFERENCES `sample`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
@@ -660,7 +714,7 @@
       },
       {
         "tableName": "sample",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `device_id` INTEGER, `timestamp` INTEGER NOT NULL, FOREIGN KEY(`device_id`) REFERENCES `device`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `device_id` INTEGER, FOREIGN KEY(`device_id`) REFERENCES `device`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -669,16 +723,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "deviceId",
-            "columnName": "device_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "timestamp",
             "columnName": "timestamp",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "deviceId",
+            "columnName": "device_id",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -808,6 +862,60 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "steps_measurement",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sample_id` INTEGER NOT NULL, `value` REAL NOT NULL, FOREIGN KEY(`sample_id`) REFERENCES `sample`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sampleId",
+            "columnName": "sample_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_steps_measurement_sample_id",
+            "unique": false,
+            "columnNames": [
+              "sample_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_steps_measurement_sample_id` ON `${TABLE_NAME}` (`sample_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "sample",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "sample_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "steps_snapshot_measurement",
@@ -961,7 +1069,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ebc125b34a1153dfef75138b79785f75')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd355fbe303a3339b45995922c9e98e17')"
     ]
   }
 }

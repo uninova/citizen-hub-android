@@ -1,14 +1,9 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
-import android.content.Context;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.HashMap;
 import java.util.UUID;
-
-import androidx.core.content.ContextCompat;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
@@ -19,9 +14,9 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
+import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -65,9 +60,17 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         @Override
         public void onChange(byte[] value) {
             int steps = value[4] & 0xff;
-            final Sample sample = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps));
-            getSampleDispatcher().dispatch(sample);
+            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)steps));
+            getSampleDispatcher().dispatch(sampleSteps);
+
+            int distance = value[40] & 0xff;
+            final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)distance));
+            getSampleDispatcher().dispatch(sampleDistance);
+
             lastTime = System.currentTimeMillis();
+
+            System.out.println("Steps: " + steps);
+            System.out.println("Distance: " + distance);
         }
     };
 
