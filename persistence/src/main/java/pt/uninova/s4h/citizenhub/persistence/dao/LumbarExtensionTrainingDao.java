@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 
 @Dao
 public interface LumbarExtensionTrainingDao {
@@ -51,5 +52,89 @@ public interface LumbarExtensionTrainingDao {
     @Query(value = "SELECT duration, repetitions, weight, calories_measurement.value AS calories FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id LEFT JOIN calories_measurement ON sample.id = calories_measurement.sample_id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1")
     @TypeConverters(EpochTypeConverter.class)
     LiveData<LumbarExtensionTrainingSummary> selectLatestLiveData(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, lumbar_extension_training_measurement.duration AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
+            + " SELECT value  AS value, hour AS time FROM agg GROUP BY hour")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastDayDuration(LocalDate localDate);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, lumbar_extension_training_measurement.duration AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastSevenDaysDuration(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, lumbar_extension_training_measurement.duration AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT AVG(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastThirtyDaysDuration(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, lumbar_extension_training_measurement.score AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
+            + " SELECT value  AS value, hour AS time FROM agg GROUP BY hour")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastDayScore(LocalDate localDate);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, lumbar_extension_training_measurement.score AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastSevenDaysScore(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, lumbar_extension_training_measurement.score AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT AVG(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastThirtyDaysScore(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, lumbar_extension_training_measurement.repetitions AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
+            + " SELECT value  AS value, hour AS time FROM agg GROUP BY hour")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastDayRepetitions(LocalDate localDate);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, lumbar_extension_training_measurement.repetitions AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastSevenDaysRepetitions(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, lumbar_extension_training_measurement.repetitions AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT AVG(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastThirtyDaysRepetitions(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, lumbar_extension_training_measurement.weight AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
+            + " SELECT value  AS value, hour AS time FROM agg GROUP BY hour")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastDayWeight(LocalDate localDate);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, lumbar_extension_training_measurement.weight AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastSevenDaysWeight(LocalDate from, LocalDate to);
+
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, lumbar_extension_training_measurement.weight AS value "
+            + " FROM lumbar_extension_training_measurement INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
+            + " SELECT AVG(value) AS value, day AS time FROM agg GROUP BY day")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectLastThirtyDaysWeight(LocalDate from, LocalDate to);
 
 }

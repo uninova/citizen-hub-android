@@ -407,22 +407,32 @@
     <string name="summary_detail_time_week">Week</string>
     <string name="summary_detail_time_month">Month</string>
 
+    <string name="summary_detail_activity">Activity</string>
     <string name="summary_detail_activity_steps">Steps</string>
     <string name="summary_detail_activity_calories">Calories</string>
     <string name="summary_detail_activity_distance">Distance</string>
 
+    <string name="summary_detail_posture">Posture</string>
     <string name="summary_detail_posture_correct">Correct</string>
     <string name="summary_detail_posture_incorrect">Correct</string>
     <string name="summary_detail_posture_average">Average</string>
 
+    <string name="summary_detail_hear_rate">Heart Rate</string>
     <string name="summary_detail_heart_rate_maximum">Max</string>
     <string name="summary_detail_heart_rate_minimum">Min</string>
     <string name="summary_detail_heart_rate_average">Average</string>
 
+    <string name="summary_detail_blood_pressure">Blood Pressure</string>
     <string name="summary_detail_blood_pressure_systolic">Systolic</string>
     <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
     <string name="summary_detail_blood_pressure_mean">Mean</string>
     <string name="summary_detail_blood_pressure_pulse_rate">Pulse Rate</string>
+
+    <string name="summary_detail_lumbar_extension">Lumbar Extension</string>
+    <string name="summary_detail_lumbar_extension_duration">Duration</string>
+    <string name="summary_detail_lumbar_extension_score">Score</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Repetitions</string>
+    <string name="summary_detail_lumbar_extension_weight">Weight</string>
 
     <string name="measurement_type.0">Unbekannt</string>
     <string name="measurement_type.1">Pulsschlag</string>

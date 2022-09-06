@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -129,26 +130,27 @@ public class SummaryViewModel extends AndroidViewModel {
         yAxisRight.setEnabled(false);
     }
 
+    public void setupPieChart(PieChart pieChart){
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setDrawSliceText(false);
+    }
+
     public void setBarChartData(List<SummaryDetailUtil> list, BarChart barChart, String label, int max) {
         List<BarEntry> entries = new ArrayList<>();
-        int currentTime = 1;
+        int currentTime = 0;
 
         for (SummaryDetailUtil data : list) {
-            if (data.getTime() + 1 != currentTime) {
-                while (currentTime != data.getTime()) {
-                    entries.add(new BarEntry(currentTime, 0));
-                    currentTime++;
-                }
+            while (currentTime < data.getTime() + 1) {
+                entries.add(new BarEntry(currentTime, 0));
+                currentTime++;
             }
             entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
             currentTime++;
         }
 
-        if (currentTime != max) {
-            while (currentTime != max) {
-                entries.add(new BarEntry(currentTime, 0));
-                currentTime++;
-            }
+        while (currentTime < max) {
+            entries.add(new BarEntry(currentTime, 0));
+            currentTime++;
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, label);
@@ -157,31 +159,25 @@ public class SummaryViewModel extends AndroidViewModel {
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
         barChart.getDescription().setText(label);
-        barChart.notifyDataSetChanged();
         barChart.invalidate();
     }
 
     public void setLineChartData(List<SummaryDetailUtil> list, LineChart lineChart, String label, int max) {
         List<Entry> entries = new ArrayList<>();
-        int currentTime = 1;
+        int currentTime = 0;
 
         for (SummaryDetailUtil data : list) {
-            //System.out.println(data.getValue() + " " + data.getTime());
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entries.add(new BarEntry(currentTime, 0));
-                }
+            while (currentTime < data.getTime() + 1) {
+                entries.add(new BarEntry(currentTime, 0));
+                currentTime++;
             }
             entries.add(new BarEntry(data.getTime() + 1, data.getValue()));
             currentTime++;
         }
 
-        if (currentTime != max) {
-            while (currentTime != max) {
-                currentTime++;
-                entries.add(new BarEntry(currentTime, 0));
-            }
+        while (currentTime < max) {
+            entries.add(new BarEntry(currentTime, 0));
+            currentTime++;
         }
 
         LineDataSet lineDataSet = new LineDataSet(entries, label);
@@ -192,7 +188,6 @@ public class SummaryViewModel extends AndroidViewModel {
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
         lineChart.getDescription().setText(label);
-        lineChart.notifyDataSetChanged();
         lineChart.invalidate();
     }
 }

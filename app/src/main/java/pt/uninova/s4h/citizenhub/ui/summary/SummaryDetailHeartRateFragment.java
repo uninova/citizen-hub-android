@@ -49,27 +49,12 @@ public class SummaryDetailHeartRateFragment extends Fragment {
 
         bottomNavigationViewHeartRate = requireView().findViewById(R.id.nav_view_heart_rate);
         bottomNavigationViewHeartRate.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedHeartRate);
+        bottomNavigationViewHeartRate.setVisibility(View.INVISIBLE); // !!!!! Não devia ser preciso
+
         lineChart = requireView().findViewById(R.id.line_chart);
+        model.setupLineChart(lineChart);
 
-        setupLineChart();
         dailyHeartRate();
-
-    }
-
-    private void setupLineChart() {
-        lineChart.setDrawGridBackground(false);
-        lineChart.getDescription().setText("Steps");
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-
-        YAxis yAxisLeft = lineChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setDrawGridLines(false);
-
-        YAxis yAxisRight = lineChart.getAxisRight();
-        yAxisRight.setEnabled(false);
     }
 
     /*

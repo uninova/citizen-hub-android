@@ -69,7 +69,15 @@ public class SummaryFragment extends ServiceFragment {
         }
 
         final CardView bloodPressureCardView = view.findViewById(R.id.bloodPressureCardView);
-
+        if(!bloodPressureMeasurementRecords.isEmpty()) {
+            bloodPressureCardView.setClickable(true);
+            bloodPressureCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_blood_pressure_fragment);
+                }
+            });
+        }
         bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
@@ -157,6 +165,13 @@ public class SummaryFragment extends ServiceFragment {
             lumbarExtensionTrainingWeightTextView.setText(getString(R.string.lumbar_training_weight_value, record.getWeight()));
 
             lumbarExtensionTrainingCardView.setVisibility(View.VISIBLE);
+            lumbarExtensionTrainingCardView.setClickable(true);
+            lumbarExtensionTrainingCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_lumbar_extension_fragment);
+                }
+            });
         }
     }
 

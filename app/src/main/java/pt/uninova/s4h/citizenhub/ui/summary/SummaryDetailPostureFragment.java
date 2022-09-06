@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
@@ -61,54 +62,20 @@ public class SummaryDetailPostureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        barChart = requireView().findViewById(R.id.bar_chart);
-        lineChart = requireView().findViewById(R.id.line_chart);
-        pieChart = requireView().findViewById(R.id.pie_chart);
-
         BottomNavigationView bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
         bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
 
         bottomNavigationViewPosture = requireView().findViewById(R.id.nav_view_posture);
         bottomNavigationViewPosture.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedPosture);
-        bottomNavigationViewPosture.setVisibility(View.INVISIBLE);
 
-        setupBarChart();
-        setupLineChart();
+        barChart = requireView().findViewById(R.id.bar_chart);
+        lineChart = requireView().findViewById(R.id.line_chart);
+        pieChart = requireView().findViewById(R.id.pie_chart);
+
+        model.setupBarChart(barChart);
+        model.setupLineChart(lineChart);
+        model.setupPieChart(pieChart);
         dailyPosture();
-    }
-
-    private void setupBarChart() {
-        barChart.setDrawGridBackground(false);
-        barChart.setScaleEnabled(true);
-        barChart.setFitBars(true);
-        barChart.getDescription().setEnabled(false);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setDrawGridLines(false);
-
-        YAxis yAxisRight = barChart.getAxisRight();
-        yAxisRight.setEnabled(false);
-    }
-
-    private void setupLineChart() {
-        lineChart.setDrawGridBackground(false);
-        lineChart.getDescription().setText("Steps");
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-
-        YAxis yAxisLeft = lineChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setDrawGridLines(false);
-
-        YAxis yAxisRight = lineChart.getAxisRight();
-        yAxisRight.setEnabled(false);
     }
 
     /*
@@ -192,12 +159,12 @@ public class SummaryDetailPostureFragment extends Fragment {
                     incorrectPostureTime += data.getValue();
 
                 List<PieEntry> pieEntries = new ArrayList<>();
-                pieEntries.add(new PieEntry(correctPostureTime, 0));
-                pieEntries.add(new PieEntry(incorrectPostureTime, 1));
-                PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
-                pieDataSet.setColors(Color.BLUE, Color.RED);
-                PieData pieData = new PieData(pieDataSet);
-                pieChart.setData(pieData);
+                pieEntries.add(new PieEntry(correctPostureTime, getString(R.string.summary_detail_posture_correct)));
+                pieEntries.add(new PieEntry(incorrectPostureTime, getString(R.string.summary_detail_posture_incorrect)));
+                PieDataSet dataSet = new PieDataSet(pieEntries, "");
+                dataSet.setColors(Color.parseColor("#42c5f5"), Color.parseColor("#82e4ff"));
+                PieData data = new PieData(dataSet);
+                pieChart.setData(data);
                 pieChart.invalidate();
 
             };
@@ -241,37 +208,32 @@ public class SummaryDetailPostureFragment extends Fragment {
         int currentTime = 0;
 
         for (SummaryDetailUtil data : correctPosture) {
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entriesCorrectPosture.add(new BarEntry(currentTime, 0));
-                }
+
+            while (currentTime < data.getTime() + 1) {
+                entriesCorrectPosture.add(new BarEntry(currentTime, 0));
+                currentTime++;
             }
             entriesCorrectPosture.add(new BarEntry(data.getTime() + 1, data.getValue()));
             currentTime++;
         }
 
-        if (currentTime != max) {
-            while (currentTime != max) {
-                entriesIncorrectPosture.add(new BarEntry(currentTime, 0));
-                currentTime++;
-            }
+        while (currentTime < max) {
+            entriesIncorrectPosture.add(new BarEntry(currentTime, 0));
+            currentTime++;
         }
 
         currentTime = 0;
 
         for (SummaryDetailUtil data : incorrectPosture) {
-            if (currentTime != data.getTime()) {
-                while (currentTime != data.getTime()) {
-                    currentTime++;
-                    entriesIncorrectPosture.add(new BarEntry(currentTime, 0));
-                }
+            while (currentTime < data.getTime() + 1) {
+                entriesIncorrectPosture.add(new BarEntry(currentTime, 0));
+                currentTime++;
             }
             entriesIncorrectPosture.add(new BarEntry(data.getTime() + 1, data.getValue()));
             currentTime++;
         }
 
-        if (currentTime != max) {
+        if (currentTime < max) {
             while (currentTime != max) {
                 entriesIncorrectPosture.add(new BarEntry(currentTime, 0));
                 currentTime++;
@@ -288,7 +250,6 @@ public class SummaryDetailPostureFragment extends Fragment {
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
         //barChart.groupBars(0.2f, 0.25f, 0.05f);
-        barChart.notifyDataSetChanged();
         barChart.invalidate();
     }
 

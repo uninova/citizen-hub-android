@@ -24,6 +24,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.SampleRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class LumbarExtensionTrainingRepository {
@@ -97,5 +98,53 @@ public class LumbarExtensionTrainingRepository {
 
     public void update(LumbarExtensionTrainingMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(record));
+    }
+
+    public void readLastDayDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayDuration(localDate)));
+    }
+
+    public void readLastSevenDaysDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysDuration(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastThirtyDaysDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysDuration(localDate.minusDays(30), localDate)));
+    }
+
+    public void readLastDayScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayScore(localDate)));
+    }
+
+    public void readLastSevenDaysScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysScore(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastThirtyDaysScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysScore(localDate.minusDays(30), localDate)));
+    }
+
+    public void readLastDayRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayRepetitions(localDate)));
+    }
+
+    public void readLastSevenDaysRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysRepetitions(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastThirtyDaysRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysRepetitions(localDate.minusDays(30), localDate)));
+    }
+
+    public void readLastDayWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayWeight(localDate)));
+    }
+
+    public void readLastSevenDaysWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysWeight(localDate.minusDays(7), localDate)));
+    }
+
+    public void readLastThirtyDaysWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysWeight(localDate.minusDays(30), localDate)));
     }
 }
