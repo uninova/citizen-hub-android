@@ -57,6 +57,9 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
 
         model.setupBarChart(barChart);
         model.setupLineChart(lineChart);
+
+        dailySystolic();
+        dailyPulseRate();
     }
 
     /*
@@ -67,7 +70,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_day:
-                switch (bottomNavigationViewBloodPressure.getId()) {
+                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
                     case R.id.nav_systolic: dailySystolic(); break;
                     case R.id.nav_diastolic: dailyDiastolic(); break;
                     case R.id.nav_mean: dailyMean(); break;
@@ -75,7 +78,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
                 dailyPulseRate();
                 break;
             case R.id.nav_week:
-                switch (bottomNavigationViewBloodPressure.getId()) {
+                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
                     case R.id.nav_systolic: weeklySystolic(); break;
                     case R.id.nav_diastolic: weeklyDiastolic(); break;
                     case R.id.nav_mean: weeklyMean(); break;
@@ -83,7 +86,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
                 weeklyPulseRate();
                 break;
             case R.id.nav_month:
-                switch (bottomNavigationViewBloodPressure.getId()) {
+                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
                     case R.id.nav_systolic: monthlySystolic(); break;
                     case R.id.nav_diastolic: monthlyDiastolic(); break;
                     case R.id.nav_mean: monthlyMean(); break;
@@ -102,21 +105,24 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_systolic:
-                switch (bottomNavigationViewTime.getId()){
+                System.out.println("Systolic");
+                switch (bottomNavigationViewTime.getSelectedItemId()){
                     case R.id.nav_day: dailySystolic(); break;
                     case R.id.nav_week: weeklySystolic(); break;
                     case R.id.nav_month: monthlySystolic(); break;
                 }
                 break;
             case R.id.nav_diastolic:
-                switch (bottomNavigationViewTime.getId()){
-                    case R.id.nav_day: dailyDiastolic(); break;
+                System.out.println("Diastolic");
+                switch (bottomNavigationViewTime.getSelectedItemId()){
+                    case R.id.nav_day: dailyDiastolic(); System.out.println("Aqyu"); break;
                     case R.id.nav_week: weeklyDiastolic(); break;
                     case R.id.nav_month: monthlyDiastolic(); break;
                 }
                 break;
             case R.id.nav_mean:
-                switch (bottomNavigationViewTime.getId()){
+                System.out.println("Mean");
+                switch (bottomNavigationViewTime.getSelectedItemId()){
                     case R.id.nav_day: dailyMean(); break;
                     case R.id.nav_week: weeklyMean(); break;
                     case R.id.nav_month: monthlyMean(); break;
@@ -130,7 +136,6 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_systolic), 24);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
         bloodPressureMeasurementRepository.readLastDaySystolic(LocalDate.now(), observer);
-
     }
 
     private void weeklySystolic() {

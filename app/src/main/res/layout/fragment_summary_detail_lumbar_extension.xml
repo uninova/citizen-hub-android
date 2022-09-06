@@ -16,24 +16,27 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/menu_summary_detail_time"/>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line_chart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="30dp"
-        android:layout_below="@+id/nav_view_time" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_heart_rate"
+        android:id="@+id/nav_view_lumbar_extension"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:background="@drawable/shape_bottom_navigation_corners"
-        android:layout_below="@+id/line_chart"
-        tools:visibility="invisible"
+        android:layout_below="@+id/nav_view_time"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/menu_summary_detail_heart_rate"/>
+        app:menu="@menu/menu_summary_detail_lumbar_extension"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/nav_view_lumbar_extension"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        tools:visibility="visible" />
 
 </RelativeLayout>

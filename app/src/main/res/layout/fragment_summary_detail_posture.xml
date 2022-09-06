@@ -35,9 +35,12 @@
             android:id="@+id/line_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_margin="30dp"
             android:layout_below="@+id/nav_view_time"
-            tools:visibility="invisible"/>
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="invisible"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view_posture"
@@ -46,19 +49,18 @@
             android:layout_margin="30dp"
             android:background="@drawable/shape_bottom_navigation_corners"
             android:layout_below="@+id/line_chart"
+            android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/menu_summary_detail_posture"
-            tools:visibility="invisible"/>
+            app:menu="@menu/menu_summary_detail_posture"/>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pie_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_margin="30dp"
-            android:layout_below="@+id/bar_chart"
-            tools:visibility="invisible"/>
+            android:layout_below="@+id/bar_chart"/>
 
     </RelativeLayout>
 

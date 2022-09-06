@@ -59,53 +59,10 @@ public class SummaryDetailActivityFragment extends Fragment {
         bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
 
         barChart.setVisibility(View.INVISIBLE);
-        setupBarChart();
-        setupLineChart();
+        model.setupBarChart(barChart);
+        model.setupLineChart(lineChart);
         dailySteps();
 
-    }
-
-    /*
-     * Bar chart initial definitions.
-     * Some definitions are altered depending on the information being displayed.
-     * Those definitions are changed in the other functions.
-     * */
-    private void setupBarChart() {
-        barChart.setDrawGridBackground(false);
-        barChart.setFitBars(true);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //xAxis.setAxisMinimum(1);
-        xAxis.setDrawGridLines(false);
-
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setDrawGridLines(false);
-
-        YAxis yAxisRight = barChart.getAxisRight();
-        yAxisRight.setEnabled(false);
-    }
-
-    /*
-     * Same as the setupBarChart().
-     * */
-    private void setupLineChart() {
-        lineChart.setDrawGridBackground(false);
-        lineChart.getDescription().setText("Steps");
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(24);
-        xAxis.setDrawGridLines(false);
-
-        YAxis yAxisLeft = lineChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setDrawGridLines(false);
-
-        YAxis yAxisRight = lineChart.getAxisRight();
-        yAxisRight.setEnabled(false);
     }
 
     /*
@@ -119,51 +76,30 @@ public class SummaryDetailActivityFragment extends Fragment {
                 System.out.println("Day");
                 barChart.setVisibility(View.INVISIBLE);
                 lineChart.setVisibility(View.VISIBLE);
-                lineChart.getXAxis().setAxisMaximum(24);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps:
-                        dailySteps();
-                        break;
-                    case R.id.nav_distance:
-                        dailyDistance();
-                        break;
-                    case R.id.nav_calories:
-                        dailyCalories();
-                        break;
+                    case R.id.nav_steps: dailySteps(); break;
+                    case R.id.nav_distance: dailyDistance(); break;
+                    case R.id.nav_calories: dailyCalories(); break;
                 }
                 break;
             case R.id.nav_week:
                 System.out.println("Week");
                 barChart.setVisibility(View.VISIBLE);
-                //barChart.getXAxis().setAxisMaximum(7);
                 lineChart.setVisibility(View.INVISIBLE);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps:
-                        weeklySteps();
-                        break;
-                    case R.id.nav_distance:
-                        weeklyDistance();
-                        break;
-                    case R.id.nav_calories:
-                        weeklyCalories();
-                        break;
+                    case R.id.nav_steps: weeklySteps(); break;
+                    case R.id.nav_distance: weeklyDistance(); break;
+                    case R.id.nav_calories: weeklyCalories(); break;
                 }
                 break;
             case R.id.nav_month:
                 System.out.println("Month");
                 barChart.setVisibility(View.VISIBLE);
-                //barChart.getXAxis().setAxisMaximum(30);
                 lineChart.setVisibility(View.INVISIBLE);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps:
-                        monthlySteps();
-                        break;
-                    case R.id.nav_distance:
-                        monthlyDistance();
-                        break;
-                    case R.id.nav_calories:
-                        monthlyCalories();
-                        break;
+                    case R.id.nav_steps: monthlySteps(); break;
+                    case R.id.nav_distance: monthlyDistance(); break;
+                    case R.id.nav_calories: monthlyCalories(); break;
                 }
                 break;
         }
@@ -177,43 +113,25 @@ public class SummaryDetailActivityFragment extends Fragment {
             case R.id.nav_steps:
                 System.out.println("Steps");
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day:
-                        dailySteps();
-                        break;
-                    case R.id.nav_week:
-                        weeklySteps();
-                        break;
-                    case R.id.nav_month:
-                        monthlySteps();
-                        break;
+                    case R.id.nav_day: dailySteps();break;
+                    case R.id.nav_week: weeklySteps(); break;
+                    case R.id.nav_month: monthlySteps(); break;
                 }
                 break;
             case R.id.nav_distance:
                 System.out.println("Distance");
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day:
-                        dailyDistance();
-                        break;
-                    case R.id.nav_week:
-                        weeklyDistance();
-                        break;
-                    case R.id.nav_month:
-                        monthlyDistance();
-                        break;
+                    case R.id.nav_day: dailyDistance(); break;
+                    case R.id.nav_week: weeklyDistance(); break;
+                    case R.id.nav_month: monthlyDistance();break;
                 }
                 break;
             case R.id.nav_calories:
                 System.out.println("Calories");
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day:
-                        dailyCalories();
-                        break;
-                    case R.id.nav_week:
-                        weeklyCalories();
-                        break;
-                    case R.id.nav_month:
-                        monthlyCalories();
-                        break;
+                    case R.id.nav_day: dailyCalories(); break;
+                    case R.id.nav_week: weeklyCalories(); break;
+                    case R.id.nav_month: monthlyCalories(); break;
                 }
                 break;
         }

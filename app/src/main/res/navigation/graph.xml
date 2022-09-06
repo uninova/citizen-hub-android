@@ -24,6 +24,14 @@
             android:id="@+id/action_summary_fragment_to_summary_detail_heart_rate_fragment"
             app:destination="@+id/summary_detail_heart_rate_fragment"/>
 
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_blood_pressure_fragment"
+            app:destination="@+id/summary_detail_blood_pressure_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_lumbar_extension_fragment"
+            app:destination="@+id/summary_detail_lumbar_extension_fragment"/>
+
     </fragment>
 
     <fragment
@@ -43,6 +51,18 @@
         android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailHeartRateFragment"
         android:label="HeartRate"
         tools:layout="@layout/fragment_summary_detail_heart_rate"/>
+
+    <fragment
+        android:id="@+id/summary_detail_blood_pressure_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailBloodPressureFragment"
+        android:label=""
+        tools:layout="@layout/fragment_summary_detail_blood_pressure"/>
+
+    <fragment
+        android:id="@+id/summary_detail_lumbar_extension_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailLumbarExtensionFragment"
+        android:label=""
+        tools:layout="@layout/fragment_summary_detail_lumbar_extension"/>
 
     <fragment
         android:id="@+id/report_master_fragment"
