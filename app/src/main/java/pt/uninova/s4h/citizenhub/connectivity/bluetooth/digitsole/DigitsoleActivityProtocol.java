@@ -14,11 +14,10 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
+import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
-import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsMeasurement;
-import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -62,20 +61,32 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         @Override
         public void onChange(byte[] value) {
             int steps = value[4] & 0xff;
-            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)5));
+            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)steps));
             getSampleDispatcher().dispatch(sampleSteps);
 
-            final Sample sampleStepsFake = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, 20));
-            getSampleDispatcher().dispatch(sampleStepsFake);
+            int distance = value[40];
+            if (distance != -128)
+            {
+                distance = value[40] & 0xff;
+                final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)distance));
+                getSampleDispatcher().dispatch(sampleDistance);
+            }
 
-            int distance = value[40] & 0xff;
-            final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)5));
-            getSampleDispatcher().dispatch(sampleDistance);
+            double calories = steps * 0.04; //sending kcal
+            final Sample sampleCalories = new Sample(getAgent().getSource(), new CaloriesMeasurement(calories));
+            getSampleDispatcher().dispatch(sampleCalories);
+
+            //TODO delete this
+            final Sample samplefakeCalories = new Sample(getAgent().getSource(), new CaloriesMeasurement((double)10));
+            getSampleDispatcher().dispatch(samplefakeCalories);
+            //final Sample sampleStepsFake = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, 20));
+            //getSampleDispatcher().dispatch(sampleStepsFake);
 
             lastTime = System.currentTimeMillis();
 
             System.out.println("Steps: " + steps);
             System.out.println("Distance: " + distance);
+            System.out.println("Calories: " + calories);
         }
     };
 
