@@ -88,9 +88,9 @@ public class ReportDetailFragment extends Fragment {
 
         AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
 
-        if (viewModel.hasSmart4HealthAccount()) {
+        /*if (viewModel.hasSmart4HealthAccount()) {
             setHasOptionsMenu(true);
-        }
+        }*/
 
         /*Button uploadPdfButton = view.findViewById(R.id.uploadButton);
         Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
@@ -114,7 +114,7 @@ public class ReportDetailFragment extends Fragment {
 
         return view;
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.report_upload_pdf_fragment, menu);
@@ -141,9 +141,8 @@ public class ReportDetailFragment extends Fragment {
             //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
 
             return true;
-        });
-
-    }
+        });    }
+ */
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -58,7 +58,8 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
                 @AutoMigration(from = 36, to = 37, spec = CitizenHubDatabase.AutoMigrationFrom36To37.class),
                 @AutoMigration(from = 37, to = 100, spec = CitizenHubDatabase.AutoMigrationFrom37To100.class),
                 @AutoMigration(from = 100, to = 101, spec = CitizenHubDatabase.AutoMigrationFrom100To101.class),
-                @AutoMigration(from = 101, to = 102, spec = CitizenHubDatabase.AutoMigrationFrom101To102.class)
+                @AutoMigration(from = 101, to = 102, spec = CitizenHubDatabase.AutoMigrationFrom101To102.class),
+                @AutoMigration(from = 102, to = 103, spec = CitizenHubDatabase.AutoMigrationFrom102To103.class)
         },
         entities = {
                 BloodPressureMeasurementRecord.class,
@@ -80,7 +81,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.TagRecord;
                 StreamRecord.class,
                 TagRecord.class
         },
-        version = 102)
+        version = 103)
 public abstract class CitizenHubDatabase extends RoomDatabase {
 
     @RenameColumn(tableName = "lumbar_training", fromColumnName = "trainingLength", toColumnName = "duration")
@@ -106,6 +107,9 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     @RenameTable(fromTableName = "smart_bear_upload_date", toTableName = "smart_bear_daily_report")
     @DeleteColumn(tableName = "tag", columnName = "id")
     static class AutoMigrationFrom101To102 implements AutoMigrationSpec {
+    }
+
+    static class AutoMigrationFrom102To103 implements AutoMigrationSpec {
     }
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -143,7 +147,6 @@ public abstract class CitizenHubDatabase extends RoomDatabase {
     public abstract DeviceDao deviceDao();
 
     public abstract DistanceSnapshotMeasurementDao distanceSnapshotMeasurementDao();
-
 
     public abstract HeartRateMeasurementDao heartRateMeasurementDao();
 

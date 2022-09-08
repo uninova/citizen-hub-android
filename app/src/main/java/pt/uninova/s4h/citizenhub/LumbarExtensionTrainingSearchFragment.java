@@ -37,7 +37,7 @@ import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
-import pt.uninova.s4h.citizenhub.service.work.LumbarExtensionTrainingUploader;
+import pt.uninova.s4h.citizenhub.work.LumbarExtensionTrainingUploader;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
