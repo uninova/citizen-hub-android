@@ -22,9 +22,9 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.HourlyPosture;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SmartBearDailyReportRepository;
 
-public class SmartBearUploadWorker extends ListenableWorker {
+public class SmartBearUploader extends ListenableWorker {
 
-    public SmartBearUploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public SmartBearUploader(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
