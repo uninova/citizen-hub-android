@@ -9,10 +9,8 @@ import androidx.work.WorkerParameters;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,14 +37,10 @@ import care.data4life.sdk.helpers.r4.OrganizationBuilder;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.interoperability.DailyPostureReport;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.persistence.entity.SmartBearDailyReportRecord;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.HourlyPosture;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthDailyReportRepository;
 import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
-import pt.uninova.s4h.citizenhub.report.TimestampLocalizedResource;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class Smart4HealthPdfUploader extends ListenableWorker {
