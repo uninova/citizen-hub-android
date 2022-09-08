@@ -1,17 +1,19 @@
-package pt.uninova.s4h.citizenhub.service.work;
+package pt.uninova.s4h.citizenhub.work;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.concurrent.futures.CallbackToFutureAdapter;
 import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
-import androidx.work.impl.utils.futures.SettableFuture;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +54,7 @@ public class LumbarExtensionTrainingUploader extends ListenableWorker {
     }
 
     private Organization getAuthor() {
-        final Organization organization = OrganizationBuilder.buildWith(
+        return OrganizationBuilder.buildWith(
                 getOrganizationType(),
                 "UNINOVA - Instituto de Desenvolvimento de Novas Tecnologias",
                 "Faculdade de Ciências e Tecnologia",
@@ -60,8 +62,6 @@ public class LumbarExtensionTrainingUploader extends ListenableWorker {
                 "Caparica",
                 "(+351) 21 29 48 527",
                 "https://www.uninova.pt/");
-
-        return organization;
     }
 
     private CodeableConcept getGeneralReportCodeableConcept() {
@@ -93,68 +93,69 @@ public class LumbarExtensionTrainingUploader extends ListenableWorker {
     @NonNull
     @Override
     public ListenableFuture<Result> startWork() {
-        final SettableFuture<Result> future = SettableFuture.create();
+        return CallbackToFutureAdapter.getFuture(completer -> {
+            final LumbarExtensionTrainingRepository repository = new LumbarExtensionTrainingRepository(getApplicationContext());
 
-        final LumbarExtensionTrainingRepository repository = new LumbarExtensionTrainingRepository(getApplicationContext());
+            repository.read(sampleId, sample -> {
+                if (sample == null) {
+                    completer.set(Result.success());
+                    return;
+                }
 
-        repository.read(sampleId, sample -> {
-            if (sample == null) {
-                future.set(Result.success());
-                return;
-            }
+                final Smart4HealthReportGenerator generator = new Smart4HealthReportGenerator(getApplicationContext());
+                final Report report = generator.createLumbarExtensionTrainingReport(sample);
+                final IndividualPdfReport pdfReport = new IndividualPdfReport(getApplicationContext(), report);
 
-            final Smart4HealthReportGenerator generator = new Smart4HealthReportGenerator(getApplicationContext());
-            final Report report = generator.createLumbarExtensionTrainingReport(sample);
-            final IndividualPdfReport pdfReport = new IndividualPdfReport(getApplicationContext(), report);
+                final Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
+                final List<Attachment> attachments = new ArrayList<>(1);
 
-            final Fhir4RecordClient client = Data4LifeClient.getInstance().getFhir4();
-            final List<Attachment> attachments = new ArrayList<>(1);
+                final LocalDateTime now = LocalDateTime.now();
 
-            final LocalDateTime now = LocalDateTime.now();
+                final FhirDate date = new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+                final FhirTime time = new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null);
+                final FhirDateTime dateTime = new FhirDateTime(date, time, TimeZone.getDefault());
 
-            final FhirDate date = new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-            final FhirTime time = new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null);
-            final FhirDateTime dateTime = new FhirDateTime(date, time, TimeZone.getDefault());
+                try {
+                    final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", pdfReport.getBytes());
+                    attachments.add(attachment);
 
-            try {
-                final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", pdfReport.getBytes());
-                attachments.add(attachment);
+                    final Instant instant = ((TimestampLocalizedResource) report.getDate()).getTimestamp();
+                    final LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-                final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                        report.getTitle().getLocalizedString(),
-                        CodeSystemDocumentReferenceStatus.CURRENT,
-                        attachments,
-                        getGeneralReportCodeableConcept(),
-                        getAuthor(),
-                        null);
+                    final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
+                            "Citizen Hub " + report.getTitle().getLocalizedString() + " " + localDateTime.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),
+                            CodeSystemDocumentReferenceStatus.CURRENT,
+                            attachments,
+                            getGeneralReportCodeableConcept(),
+                            getAuthor(),
+                            null);
 
-                final Instant instant = ((TimestampLocalizedResource) report.getDate()).getTimestamp();
-                final LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-                final FhirDate dt = new FhirDate(localDateTime.getYear(), localDateTime.getMonthValue(), localDateTime.getDayOfMonth());
-                final FhirTime tm = new FhirTime(localDateTime.getHour(), localDateTime.getMinute(), localDateTime.getSecond(), null, null);
-                final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
+                    final FhirDate dt = new FhirDate(localDateTime.getYear(), localDateTime.getMonthValue(), localDateTime.getDayOfMonth());
+                    final FhirTime tm = new FhirTime(localDateTime.getHour(), localDateTime.getMinute(), localDateTime.getSecond(), null, null);
+                    final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
 
-                documentReference.date = new FhirInstant(dttm);
+                    documentReference.date = new FhirInstant(dttm);
 
-                client.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
-                    @Override
-                    public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
-                        future.set(Result.success());
-                    }
+                    client.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
+                        @Override
+                        public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
+                            completer.set(Result.success());
+                        }
 
-                    @Override
-                    public void onError(@NonNull D4LException e) {
-                        e.printStackTrace();
-                        future.set(Result.failure());
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                future.set(Result.failure());
-            }
+                        @Override
+                        public void onError(@NonNull D4LException e) {
+                            e.printStackTrace();
+                            completer.set(Result.failure());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    completer.setException(e);
+                }
+            });
+
+            return this.toString();
         });
-
-        return future;
     }
 }
