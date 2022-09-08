@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingValue;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -24,10 +25,39 @@ public class Smart4HealthReportGenerator {
         resources = context.getResources();
     }
 
-    public Report createLumbarExtensionTrainingReport(Sample sample) {
-        final Report report = new Report(new MeasurementTypeLocalizedResource(measurementKindLocalization, Measurement.TYPE_LUMBAR_EXTENSION_TRAINING), new TimestampLocalizedResource(sample.getTimestamp()));
+    private Group createBloodPressureGroup(Sample sample) {
+        final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-        report.getGroups().add(createLumbarExtensionTrainingGroup(sample));
+        final MeasurementTypeLocalizedResource title = new MeasurementTypeLocalizedResource(measurementKindLocalization, Measurement.TYPE_BLOOD_PRESSURE);
+        final Group mainGroup = new Group(title);
+
+        final TimestampLocalizedResource timestamp = new TimestampLocalizedResource(sample.getTimestamp());
+        final Group measurementGroup = new Group(timestamp);
+
+        mainGroup.getGroupList().add(measurementGroup);
+
+        final List<Item> measurementGroupItemList = measurementGroup.getItemList();
+
+        final Measurement<?>[] measurements = sample.getMeasurements();
+        final BloodPressureValue val = (BloodPressureValue) measurements[0].getValue();
+
+        measurementGroupItemList.add(new Item(new ResourceType(resources.getString(R.string.report_bp_systolic_label)), new ResourceValue(decimalFormat.format(val.getSystolic())), new ResourceUnits(resources.getString(R.string.report_bp_units))));
+        measurementGroupItemList.add(new Item(new ResourceType(resources.getString(R.string.report_bp_diastolic_label)), new ResourceValue(decimalFormat.format(val.getDiastolic())), new ResourceUnits(resources.getString(R.string.report_bp_units))));
+        measurementGroupItemList.add(new Item(new ResourceType(resources.getString(R.string.report_bp_average_label)), new ResourceValue(decimalFormat.format(val.getMeanArterialPressure())), new ResourceUnits(resources.getString(R.string.report_bp_units))));
+
+        final Double pulse = measurements.length > 1 ? (Double) measurements[1].getValue() : null;
+
+        if (pulse != null) {
+            measurementGroupItemList.add(new Item(new ResourceType(resources.getString(R.string.report_pulse_rate)), new ResourceValue(decimalFormat.format(pulse)), new ResourceUnits(resources.getString(R.string.report_hr_units))));
+        }
+
+        return mainGroup;
+    }
+
+    public Report createBloodPressureReport(Sample sample) {
+        final Report report = new Report(new MeasurementTypeLocalizedResource(measurementKindLocalization, Measurement.TYPE_BLOOD_PRESSURE), new TimestampLocalizedResource(sample.getTimestamp()));
+
+        report.getGroups().add(createBloodPressureGroup(sample));
 
         return report;
     }
@@ -60,6 +90,13 @@ public class Smart4HealthReportGenerator {
         return lumbarExtensionGroup;
     }
 
+    public Report createLumbarExtensionTrainingReport(Sample sample) {
+        final Report report = new Report(new MeasurementTypeLocalizedResource(measurementKindLocalization, Measurement.TYPE_LUMBAR_EXTENSION_TRAINING), new TimestampLocalizedResource(sample.getTimestamp()));
+
+        report.getGroups().add(createLumbarExtensionTrainingGroup(sample));
+
+        return report;
+    }
 
     private String secondsToString(long value) {
         long seconds = value;
