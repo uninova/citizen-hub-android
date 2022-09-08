@@ -453,5 +453,6 @@
     <string name="drawer_smart4health_title">Plataforma Smart4Health</string>
     <string name="measurement_type.29">Postura</string>
     <string name="breathing_rate_title">Frequência respiratória média</string>
+    <string name="report_title">Citizen Hub Relatório Diário %s</string>
 
 </resources>
