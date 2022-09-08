@@ -60,7 +60,7 @@ public class SmartBearUploader extends ListenableWorker {
 
                                 client.upload(dailyPostureReport, response -> {
                                     if (response.isSuccessful()) {
-                                        smartBearDailyReportRepository.create(new SmartBearDailyReportRecord(i));
+                                        smartBearDailyReportRepository.createUTC(i);
                                     }
                                 });
 
