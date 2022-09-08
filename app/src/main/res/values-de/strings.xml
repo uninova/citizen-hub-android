@@ -366,6 +366,8 @@
     <!-- Strings used for the report -->
     <string name="report_upload">PDF hochladen</string>
 
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
+
     <string name="report_complete_report">Kompletter Bericht</string>
     <string name="report_work_time_report">Arbeitszeit-Bericht</string>
     <string name="report_not_work_time_report">Nicht-Arbeitszeit-Bericht</string>
