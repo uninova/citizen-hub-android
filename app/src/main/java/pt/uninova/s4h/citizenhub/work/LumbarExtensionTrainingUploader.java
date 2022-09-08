@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
+import androidx.work.impl.utils.futures.SettableFuture;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -31,7 +31,6 @@ import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.SdkContract.Fhir4RecordClient;
 import care.data4life.sdk.call.Callback;
 import care.data4life.sdk.call.Fhir4Record;
-import care.data4life.sdk.helpers.lang.DataRestrictionException;
 import care.data4life.sdk.helpers.r4.AttachmentBuilder;
 import care.data4life.sdk.helpers.r4.DocumentReferenceBuilder;
 import care.data4life.sdk.helpers.r4.OrganizationBuilder;
@@ -50,6 +49,45 @@ public class LumbarExtensionTrainingUploader extends ListenableWorker {
         super(context, workerParams);
 
         sampleId = workerParams.getInputData().getLong("sampleId", -1);
+    }
+
+    private Organization getAuthor() {
+        final Organization organization = OrganizationBuilder.buildWith(
+                getOrganizationType(),
+                "UNINOVA - Instituto de Desenvolvimento de Novas Tecnologias",
+                "Faculdade de Ciências e Tecnologia",
+                "2829-516",
+                "Caparica",
+                "(+351) 21 29 48 527",
+                "https://www.uninova.pt/");
+
+        return organization;
+    }
+
+    private CodeableConcept getGeneralReportCodeableConcept() {
+        final Coding coding = new Coding();
+
+        coding.code = "general-report";
+        coding.display = "General report";
+        coding.system = "http://fhir.smart4health.eu/CodeSystem/s4h-user-doc-type";
+
+        final CodeableConcept concept = new CodeableConcept();
+
+        concept.coding = Collections.singletonList(coding);
+
+        return concept;
+    }
+
+    private CodeableConcept getOrganizationType() {
+        final Coding organizationType = new Coding();
+
+        organizationType.code = "edu";
+
+        final CodeableConcept codeableConcept = new CodeableConcept();
+
+        codeableConcept.coding = Collections.singletonList(organizationType);
+
+        return codeableConcept;
     }
 
     @NonNull
@@ -119,45 +157,4 @@ public class LumbarExtensionTrainingUploader extends ListenableWorker {
 
         return future;
     }
-
-    private Organization getAuthor() {
-        final Organization organization = OrganizationBuilder.buildWith(
-                getOrganizationType(),
-                "UNINOVA - Instituto de Desenvolvimento de Novas Tecnologias",
-                "Faculdade de Ciências e Tecnologia",
-                "2829-516",
-                "Caparica",
-                "(+351) 21 29 48 527",
-                "https://www.uninova.pt/");
-
-        return organization;
-    }
-
-    private CodeableConcept getOrganizationType() {
-        final Coding organizationType = new Coding();
-
-        organizationType.code = "edu";
-
-        final CodeableConcept codeableConcept = new CodeableConcept();
-
-        codeableConcept.coding = Collections.singletonList(organizationType);
-
-        return codeableConcept;
-    }
-
-    private CodeableConcept getGeneralReportCodeableConcept() {
-        final Coding coding = new Coding();
-
-        coding.code = "general-report";
-        coding.display = "General report";
-        coding.system = "http://fhir.smart4health.eu/CodeSystem/s4h-user-doc-type";
-
-        final CodeableConcept concept = new CodeableConcept();
-
-        concept.coding = Collections.singletonList(coding);
-
-        return concept;
-    }
-
-
 }
