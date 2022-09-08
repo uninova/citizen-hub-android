@@ -47,6 +47,4 @@ Toutes les données personnelles et les données collectées par l’application
 
 5. Durée de stockage et suppression des données
 
-Toutes les données personnelles et les données collectées par l’application Citizen Hub sont stockées exclusivement sur votre téléphone portable personnel. Si vous décidez de transmettre et de stocker des données en dehors de votre téléphone portable personnel, vous devez vous référer aux Conditions d’utilisation et à la police de confidentialité de ces systèmes externes. 
-
- 
+Toutes les données personnelles et les données collectées par l’application Citizen Hub sont stockées exclusivement sur votre téléphone portable personnel. Si vous décidez de transmettre et de stocker des données en dehors de votre téléphone portable personnel, vous devez vous référer aux Conditions d’utilisation et à la police de confidentialité de ces systèmes externes.

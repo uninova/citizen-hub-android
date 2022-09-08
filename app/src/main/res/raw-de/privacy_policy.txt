@@ -47,6 +47,4 @@ Alle personenbezogenen Daten und gesammelten Daten durch die Citizen Hub-Anwendu
 
 5. Speicherdauer und Löschung der Daten
 
-Alle personenbezogenen Daten und gesammelten Daten durch die Citizen Hub-Anwendung werden ausschließlich in Ihrem persönlichen Mobiltelefon gespeichert. Wenn Sie sich entscheiden, Daten außerhalb Ihres persönlichen Mobiltelefons zu übermitteln und zu speichern, müssen Sie sich auf die Nutzungsbedingungen und Datenschutzrichtlinien dieser externen Systeme beziehen. 
-
- 
+Alle personenbezogenen Daten und gesammelten Daten durch die Citizen Hub-Anwendung werden ausschließlich in Ihrem persönlichen Mobiltelefon gespeichert. Wenn Sie sich entscheiden, Daten außerhalb Ihres persönlichen Mobiltelefons zu übermitteln und zu speichern, müssen Sie sich auf die Nutzungsbedingungen und Datenschutzrichtlinien dieser externen Systeme beziehen.
