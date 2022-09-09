@@ -67,7 +67,7 @@ public class LumbarExtensionTrainingSearchFragment extends BluetoothFragment {
 
             bluetoothConnection.addConnectionStateChangeListener(state -> {
                 if (state.getOldState() == BluetoothConnectionState.CONNECTED && state.getNewState() == BluetoothConnectionState.READY) {
-                    final MedXAgent agent = new MedXAgent(bluetoothConnection);
+                    final MedXAgent agent = new MedXAgent(bluetoothConnection, getContext());
 
                     agent.addSampleObserver(new Observer<Sample>() {
                         @Override

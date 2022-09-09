@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
+import android.content.Context;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -26,8 +29,8 @@ public class UprightGo2Agent extends BluetoothAgent {
             UprightGo2VibrationProtocol.ID
     )));
 
-    public UprightGo2Agent(BluetoothConnection connection) {
-        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
+    public UprightGo2Agent(BluetoothConnection connection, Context context) {
+        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection, new RoomSettingsManager(context, connection.getAddress()));
     }
 
     @Override

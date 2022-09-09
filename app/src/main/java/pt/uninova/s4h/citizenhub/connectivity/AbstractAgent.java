@@ -29,7 +29,9 @@ public abstract class AbstractAgent implements Agent {
 
     private final Set<AgentListener> agentListenerSet;
 
-    protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements) {
+    private final SettingsManager settingsManager;
+
+    protected AbstractAgent(UUID id, Device source, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements, SettingsManager settingsManager) {
         this.id = id;
         this.source = source;
 
@@ -43,6 +45,8 @@ public abstract class AbstractAgent implements Agent {
         this.sampleDispatcher = new Dispatcher<>();
 
         this.agentListenerSet = new HashSet<>();
+
+        this.settingsManager = settingsManager;
     }
 
     @Override
@@ -191,6 +195,11 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    @Override
     public Device getSource() {
         return source;
     }
@@ -209,7 +218,6 @@ public abstract class AbstractAgent implements Agent {
     public Set<UUID> getSupportedProtocolsIds() {
         return this.supportedProtocolsIds;
     }
-
 
     @Override
     public void removeAgentListener(AgentListener agentListener) {
@@ -231,7 +239,7 @@ public abstract class AbstractAgent implements Agent {
         this.stateChangedDispatcher.removeObserver(observer);
     }
 
-    protected void setState(int value) {
+    protected synchronized void setState(int value) {
         if (state != value) {
             final int oldState = state;
 

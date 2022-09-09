@@ -37,6 +37,8 @@ public interface Agent {
 
     Protocol getProtocol(UUID protocolId);
 
+    SettingsManager getSettingsManager();
+
     Device getSource();
 
     int getState();

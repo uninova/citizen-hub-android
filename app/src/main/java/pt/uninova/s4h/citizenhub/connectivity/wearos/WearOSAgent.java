@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
+import android.content.Context;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -33,8 +36,9 @@ public class WearOSAgent extends AbstractAgent {
     final private WearOSConnection connection;
     CitizenHubService service;
 
-    public WearOSAgent(WearOSConnection connection, CitizenHubService service) {
-        super(ID, new Device(connection.getAddress(), Connection.CONNECTION_KIND_WEAROS), supportedProtocolsIds, supportedMeasurementKinds);
+    public WearOSAgent(WearOSConnection connection, CitizenHubService service, Context context) {
+        super(ID, new Device(connection.getAddress(), Connection.CONNECTION_KIND_WEAROS), supportedProtocolsIds, supportedMeasurementKinds, new RoomSettingsManager(context, connection.getAddress()));
+
         this.service = service;
         this.connection = connection;
     }
@@ -42,13 +46,13 @@ public class WearOSAgent extends AbstractAgent {
     @Override
     public void disable() {
         setState(Agent.AGENT_STATE_DISABLED);
-        service.getWearOSMessageService().sendMessage("WearOSAgent","false");
+        service.getWearOSMessageService().sendMessage("WearOSAgent", "false");
     }
 
     @Override
     public void enable() {
         setState(Agent.AGENT_STATE_ENABLED);
-        service.getWearOSMessageService().sendMessage("WearOSAgent","true");
+        service.getWearOSMessageService().sendMessage("WearOSAgent", "true");
     }
 
     @Override
