@@ -212,6 +212,8 @@ public class CitizenHubService extends LifecycleService {
             public void onAgentAttached(Device device, Agent agent) {
                 deviceRepository.updateAgent(device.getAddress(), agent.getClass().getCanonicalName());
 
+                agent.enable();
+
                 agent.addAgentListener(new AgentListener() {
                     @Override
                     public void onMeasurementDisabled(Agent agent, int measurementType) {
@@ -244,16 +246,22 @@ public class CitizenHubService extends LifecycleService {
 
         deviceRepository.read(value -> {
             for (DeviceRecord i : value) {
-                try {
-                    orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(i.getAgent()).asSubclass(Agent.class), agent -> {
-                        agent.enable();
-
-                        streamRepository.read(i.getAddress(), enabledMeasurements -> {
-                            for (final StreamRecord j : enabledMeasurements) {
-                                agent.enableMeasurement(j.getMeasurementType());
-                            }
-                        });
+                final Observer<Agent> agentObserver = (agent) -> {
+                    streamRepository.read(i.getAddress(), enabledMeasurements -> {
+                        for (final StreamRecord j : enabledMeasurements) {
+                            agent.enableMeasurement(j.getMeasurementType());
+                        }
                     });
+                };
+
+                try {
+                    String agentName = i.getAgent();
+
+                    if (agentName == null) {
+                        orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agentObserver);
+                    } else {
+                        orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(agentName).asSubclass(Agent.class), agentObserver);
+                    }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -287,8 +295,8 @@ public class CitizenHubService extends LifecycleService {
     private void initWorkOrchestrator() {
         workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(this));
 
-        workOrchestrator.addPeriodicWork(SmartBearUploader.class,"smartbearuploader", 12, TimeUnit.HOURS);
-        workOrchestrator.addPeriodicWork(Smart4HealthPdfUploader.class,"smart4healthuploader", 12, TimeUnit.HOURS);
+        workOrchestrator.addPeriodicWork(SmartBearUploader.class, "smartbearuploader", 12, TimeUnit.HOURS);
+        workOrchestrator.addPeriodicWork(Smart4HealthPdfUploader.class, "smart4healthuploader", 12, TimeUnit.HOURS);
     }
 
     @Override
