@@ -78,7 +78,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addCharacteristicListener(CharacteristicListener listener) {
-        System.out.println("BluetoothConnection.addCharacteristicListener");
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.addCharacteristicListener " + listener.getServiceUuid() + " " + listener.getCharacteristicUuid());
+        }
+
         final Pair<UUID, UUID> key = characteristicKey(listener);
 
         synchronized (characteristicListenerMap) {
@@ -91,11 +94,18 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> listener) {
-        System.out.println("BluetoothConnection.addConnectionStateChangeListener");
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.addConnectionStateChangeListener");
+        }
+
         stateChangedMessageDispatcher.addObserver(listener);
     }
 
     public void addDescriptorListener(DescriptorListener listener) {
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.addDescriptorListener " + listener.getServiceUuid() + " " + listener.getCharacteristicUuid() + " " + listener.getDescriptorUuid());
+        }
+
         final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
 
         synchronized (descriptorListenerMap) {
@@ -117,6 +127,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
 
     private Pair<UUID, UUID> characteristicKey(UUID serviceUuid, UUID characteristicUuid) {
         return new Pair<>(serviceUuid, characteristicUuid);
+    }
+
+    public void clear() {
+        runnables.clear();
     }
 
     public void connect() {
@@ -153,6 +167,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void disableNotifications(final UUID serviceUuid, final UUID characteristicUuid) {
+        if (gatt == null)
+            return;
+
         final BluetoothGattService service = gatt.getService(serviceUuid);
 
         if (service != null) {
@@ -225,6 +242,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     private synchronized void next() {
+        if (BuildConfig.DEBUG)
+            System.out.println("BluetoothConnection.next " + runnables.size());
+
         runnables.poll();
 
         if (!runnables.isEmpty()) {
@@ -368,10 +388,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
                     System.out.println(" > " + i.getUuid());
 
                     for (BluetoothGattCharacteristic j : i.getCharacteristics()) {
-                        System.out.println(" >> " + j.getUuid());
+                        System.out.println(" > > " + j.getUuid());
 
                         for (BluetoothGattDescriptor k : j.getDescriptors()) {
-                            System.out.println(" >>> " + k.getUuid());
+                            System.out.println(" > > > " + k.getUuid());
                         }
                     }
                 }
@@ -382,6 +402,9 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     private synchronized void push(Runnable runnable) {
+        if (BuildConfig.DEBUG)
+            System.out.println("BluetoothConnection.push " + (runnables.size() + 1));
+
         runnables.add(runnable);
 
         if (runnables.size() == 1) {
@@ -415,6 +438,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void removeCharacteristicListener(CharacteristicListener listener) {
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.removeCharacteristicListener " + listener.getServiceUuid() + " " + listener.getCharacteristicUuid());
+        }
+
         final Pair<UUID, UUID> key = characteristicKey(listener);
 
         if (characteristicListenerMap.containsKey(key)) {
@@ -433,6 +460,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void removeDescriptorListener(DescriptorListener listener) {
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.removeDescriptorListener " + listener.getServiceUuid() + " " + listener.getCharacteristicUuid() + " " + listener.getDescriptorUuid());
+        }
+
         final Triple<UUID, UUID, UUID> key = descriptorKey(listener);
 
         if (descriptorListenerMap.containsKey(key)) {
@@ -469,6 +500,10 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void writeDescriptor(final UUID serviceUuid, final UUID characteristicUuid, final UUID descriptorUuid, final byte[] value) {
+        if (BuildConfig.DEBUG) {
+            System.out.println("BluetoothConnection.writeDescriptor " + serviceUuid + " " + characteristicUuid + " " + descriptorUuid + " " + Arrays.toString(value));
+        }
+
         push(new Runnable() {
             @Override
             public void run() {

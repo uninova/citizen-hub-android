@@ -18,7 +18,7 @@ public class WearOsAgentFactory implements AgentFactory<WearOSAgent> {
 
         wearOSConnection.addConnectionStateChangeListener(value -> {
             if (value.getNewState() == WearOSConnectionState.READY) {
-                observer.observe(new WearOSAgent(wearOSConnection, service));
+                observer.observe(new WearOSAgent(wearOSConnection, service, service.getApplicationContext()));
             }
         });
 

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -26,8 +27,8 @@ public class DigitsoleAgent extends BluetoothAgent {
     )));
 
 
-    public DigitsoleAgent(BluetoothConnection connection) {
-        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
+    public DigitsoleAgent(BluetoothConnection connection, Context context) {
+        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection, new RoomSettingsManager(context, connection.getAddress()));
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
+import pt.uninova.s4h.citizenhub.connectivity.SettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -33,8 +34,8 @@ public abstract class BluetoothAgent extends AbstractAgent {
         }
     };
 
-    protected BluetoothAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements, BluetoothConnection connection) {
-        super(id, connection.getSource(), supportedProtocolsIds, supportedMeasurements);
+    protected BluetoothAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements, BluetoothConnection connection, SettingsManager settingsManager) {
+        super(id, connection.getSource(), supportedProtocolsIds, supportedMeasurements, settingsManager);
 
         this.connection = connection;
     }
