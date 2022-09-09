@@ -65,7 +65,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
             connectDevice.setOnClickListener(v -> {
                 model.addAgent(agent);
-                agent.enable();
 
                 saveFeaturesChosen();
 
