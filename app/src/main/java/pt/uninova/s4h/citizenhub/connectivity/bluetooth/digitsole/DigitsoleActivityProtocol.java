@@ -3,6 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -60,42 +61,32 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     private final CharacteristicListener dataListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG) {
         @Override
         public void onChange(byte[] value) {
-            int steps = value[4] & 0xff;
-            final Sample sampleSteps = new Sample(getAgent().getSource(), new StepsMeasurement((double)steps));
-            getSampleDispatcher().dispatch(sampleSteps);
+            double steps = value[4] & 0xff;
 
-            int distance = value[40];
-            if (distance != -128)
+            double distance = value[40];
+            if (distance == -128)
             {
-                distance = value[40] & 0xff;
-                final Sample sampleDistance = new Sample(getAgent().getSource(), new DistanceMeasurement((double)distance));
-                getSampleDispatcher().dispatch(sampleDistance);
+                distance = 0;
             }
+            else
+                distance = value[40] & 0xff;
 
-            double calories = steps * 0.04; //sending kcal
-            final Sample sampleCalories = new Sample(getAgent().getSource(), new CaloriesMeasurement(calories));
-            getSampleDispatcher().dispatch(sampleCalories);
+            double calories = steps * 0.04;
+            DecimalFormat f = new DecimalFormat("##.00");
+            f.format(calories);
 
-            //TODO delete this
-            final Sample samplefakeCalories = new Sample(getAgent().getSource(), new CaloriesMeasurement((double)10));
-            getSampleDispatcher().dispatch(samplefakeCalories);
-            //final Sample sampleStepsFake = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, 20));
-            //getSampleDispatcher().dispatch(sampleStepsFake);
+            final Sample sample = new Sample(getAgent().getSource(), new StepsMeasurement(steps),
+                    new DistanceMeasurement(distance),
+                    new CaloriesMeasurement(calories));
+            getSampleDispatcher().dispatch(sample);
 
             lastTime = System.currentTimeMillis();
-
-            System.out.println("Steps: " + steps);
-            System.out.println("Distance: " + distance);
-            System.out.println("Calories: " + calories);
         }
     };
 
-    private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> reconnectionListener = new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-        @Override
-        public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-            if (value.getNewState() == BluetoothConnectionState.READY) {
-                value.getSource().enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
-            }
+    private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> reconnectionListener = value -> {
+        if (value.getNewState() == BluetoothConnectionState.READY) {
+            value.getSource().enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
         }
     };
 
