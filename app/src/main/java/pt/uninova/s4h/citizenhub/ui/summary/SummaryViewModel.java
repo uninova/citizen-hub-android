@@ -29,6 +29,8 @@ public class SummaryViewModel extends AndroidViewModel {
     private final LiveData<LumbarExtensionTrainingSummary> dailyLumbarExtensionTraining;
     private final LiveData<List<PostureClassificationSum>> dailyPostureMeasurement;
     private final LiveData<WalkingInformation> dailyWalkingInformation;
+    private final LiveData<WalkingInformation> dailySnapshotWalkingInformation;
+    private final LiveData<Integer> dailyStepsSum;
 
     public SummaryViewModel(Application application) {
         super(application);
@@ -41,7 +43,6 @@ public class SummaryViewModel extends AndroidViewModel {
         SampleRepository sampleRepository = new SampleRepository(application);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(application);
         StepsMeasurementRepository stepsMeasurementRepository = new StepsMeasurementRepository(application);
-        //TODO
 
         final LocalDate now = LocalDate.now();
 
@@ -51,7 +52,9 @@ public class SummaryViewModel extends AndroidViewModel {
         dailyDataExistence = sampleRepository.readCount(now);
         dailyHeartRate = heartRateMeasurementRepository.readAverage(now);
         dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
-        dailyWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
+        dailyWalkingInformation = stepsMeasurementRepository.readLatestWalkingInformation(now);
+        dailySnapshotWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
+        dailyStepsSum = stepsMeasurementRepository.getStepsSum(now);
     }
 
     public LiveData<LumbarExtensionTrainingSummary> getDailyLumbarExtensionTraining() {
@@ -80,5 +83,13 @@ public class SummaryViewModel extends AndroidViewModel {
 
     public LiveData<WalkingInformation> getDailyWalkingInformation() {
         return dailyWalkingInformation;
+    }
+
+    public LiveData<WalkingInformation> getDailySnapshotWalkingInformation() {
+        return dailySnapshotWalkingInformation;
+    }
+
+    public LiveData<Integer> getDailyStepsSum() {
+        return dailyStepsSum;
     }
 }

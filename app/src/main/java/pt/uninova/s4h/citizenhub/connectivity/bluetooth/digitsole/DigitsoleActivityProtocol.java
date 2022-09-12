@@ -16,9 +16,12 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
+import pt.uninova.s4h.citizenhub.data.CaloriesSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.data.StepsMeasurement;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -79,6 +82,16 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
                     new DistanceMeasurement(distance),
                     new CaloriesMeasurement(calories));
             getSampleDispatcher().dispatch(sample);
+
+            //TODO delete these fake measurements
+            final Sample fakeMeasurement = new Sample(getAgent().getSource(), new StepsMeasurement((double)5),
+                    new DistanceMeasurement((double)5),
+                    new CaloriesMeasurement((double)5));
+            getSampleDispatcher().dispatch(fakeMeasurement);
+            final Sample fakeSnapshotMeasurement = new Sample(getAgent().getSource(), new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_DAY, 6),
+                    new DistanceSnapshotMeasurement(DistanceSnapshotMeasurement.TYPE_DAY, 6),
+                    new CaloriesSnapshotMeasurement(CaloriesSnapshotMeasurement.TYPE_DAY, 6));
+            getSampleDispatcher().dispatch(fakeSnapshotMeasurement);
 
             lastTime = System.currentTimeMillis();
         }

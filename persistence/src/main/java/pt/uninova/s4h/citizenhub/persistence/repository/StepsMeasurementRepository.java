@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.StepsMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.StepsMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 
 public class StepsMeasurementRepository {
 
@@ -26,5 +27,13 @@ public class StepsMeasurementRepository {
 
     public LiveData<List<StepsMeasurementRecord>> read(LocalDate localDate) {
         return stepsMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public LiveData<WalkingInformation> readLatestWalkingInformation(LocalDate localDate) {
+        return stepsMeasurementDao.selectLatestWalkingInformationLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public LiveData<Integer> getStepsSum (LocalDate localDate) {
+        return stepsMeasurementDao.getStepsSum(localDate, localDate.plusDays(1));
     }
 }

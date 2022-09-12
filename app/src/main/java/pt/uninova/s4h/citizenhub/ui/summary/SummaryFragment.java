@@ -210,6 +210,20 @@ public class SummaryFragment extends ServiceFragment {
         }
     }
 
+    public void onDailyStepsSumUpdate(Integer steps) {
+        if (steps != null) {
+            final View view = requireView();
+
+            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+
+            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+            activityStepsTextView.setVisibility(View.VISIBLE);
+            activityCardView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onServiceConnected() {
         model.getDailyBreathingRateMeasurement().observe(getViewLifecycleOwner(), this::onDailyBreathingRateUpdate);
@@ -218,7 +232,9 @@ public class SummaryFragment extends ServiceFragment {
         model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);
         model.getDailyHeartRate().observe(getViewLifecycleOwner(), this::onDailyHeartRateUpdate);
         model.getDailyPostureMeasurement().observe(getViewLifecycleOwner(), this::onDailyPostureMeasurementUpdate);
-        model.getDailyWalkingInformation().observe(getViewLifecycleOwner(), this::onDailyWalkingInformationUpdate);
+        //model.getDailyWalkingInformation().observe(getViewLifecycleOwner(), this::onDailyWalkingInformationUpdate);
+        //model.getDailySnapshotWalkingInformation().observe(getViewLifecycleOwner(), this:: onDailyWalkingInformationUpdate);
+        model.getDailyStepsSum().observe(getViewLifecycleOwner(), this::onDailyStepsSumUpdate);
     }
 
     private String secondsToString(long value) {
