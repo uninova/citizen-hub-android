@@ -39,5 +39,5 @@ public interface StepsMeasurementDao {
 
     @Query(value = "SELECT steps + snapshotSteps FROM (SELECT SUM(steps_measurement.value) AS steps FROM steps_measurement INNER JOIN sample ON steps_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1) CROSS JOIN (SELECT steps_snapshot_measurement.value AS snapshotSteps FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1)")
     @TypeConverters(EpochTypeConverter.class)
-    LiveData<Integer> getStepsSum(LocalDate from, LocalDate to);
+    LiveData<Integer> getStepsAllTypes(LocalDate from, LocalDate to);
 }

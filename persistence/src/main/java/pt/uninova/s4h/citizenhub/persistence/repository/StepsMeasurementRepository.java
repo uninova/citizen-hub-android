@@ -33,7 +33,7 @@ public class StepsMeasurementRepository {
         return stepsMeasurementDao.selectLatestWalkingInformationLiveData(localDate, localDate.plusDays(1));
     }
 
-    public LiveData<Integer> getStepsSum (LocalDate localDate) {
-        return stepsMeasurementDao.getStepsSum(localDate, localDate.plusDays(1));
+    public LiveData<Integer> getStepsAllTypes (LocalDate localDate) {
+        return stepsMeasurementDao.getStepsAllTypes(localDate, localDate.plusDays(1));
     }
 }

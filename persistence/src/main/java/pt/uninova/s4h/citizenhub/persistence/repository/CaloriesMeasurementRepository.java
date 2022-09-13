@@ -31,4 +31,8 @@ public class CaloriesMeasurementRepository {
     public LiveData<Double> readMaximum(LocalDate localDate) {
         return caloriesMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
+
+    public LiveData<Double> getCaloriesAllTypes (LocalDate localDate) {
+        return caloriesMeasurementDao.getCaloriesAllTypes(localDate, localDate.plusDays(1));
+    }
 }

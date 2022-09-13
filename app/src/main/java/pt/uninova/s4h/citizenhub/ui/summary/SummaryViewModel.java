@@ -13,6 +13,8 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSu
 import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.BreathingRateMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.CaloriesMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.DistanceMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
@@ -30,7 +32,9 @@ public class SummaryViewModel extends AndroidViewModel {
     private final LiveData<List<PostureClassificationSum>> dailyPostureMeasurement;
     private final LiveData<WalkingInformation> dailyWalkingInformation;
     private final LiveData<WalkingInformation> dailySnapshotWalkingInformation;
-    private final LiveData<Integer> dailyStepsSum;
+    private final LiveData<Integer> dailyStepsAllTypes;
+    private final LiveData<Double> dailyDistanceAllTypes;
+    private final LiveData<Double> dailyCaloriesAllTypes;
 
     public SummaryViewModel(Application application) {
         super(application);
@@ -43,6 +47,8 @@ public class SummaryViewModel extends AndroidViewModel {
         SampleRepository sampleRepository = new SampleRepository(application);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(application);
         StepsMeasurementRepository stepsMeasurementRepository = new StepsMeasurementRepository(application);
+        DistanceMeasurementRepository distanceMeasurementRepository = new DistanceMeasurementRepository(application);
+        CaloriesMeasurementRepository caloriesMeasurementRepository = new CaloriesMeasurementRepository(application);
 
         final LocalDate now = LocalDate.now();
 
@@ -54,7 +60,9 @@ public class SummaryViewModel extends AndroidViewModel {
         dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
         dailyWalkingInformation = stepsMeasurementRepository.readLatestWalkingInformation(now);
         dailySnapshotWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
-        dailyStepsSum = stepsMeasurementRepository.getStepsSum(now);
+        dailyStepsAllTypes = stepsMeasurementRepository.getStepsAllTypes(now);
+        dailyDistanceAllTypes = distanceMeasurementRepository.getDistanceAllTypes(now);
+        dailyCaloriesAllTypes = caloriesMeasurementRepository.getCaloriesAllTypes(now);
     }
 
     public LiveData<LumbarExtensionTrainingSummary> getDailyLumbarExtensionTraining() {
@@ -89,7 +97,9 @@ public class SummaryViewModel extends AndroidViewModel {
         return dailySnapshotWalkingInformation;
     }
 
-    public LiveData<Integer> getDailyStepsSum() {
-        return dailyStepsSum;
-    }
+    public LiveData<Integer> getDailyStepsAllTypes() {return dailyStepsAllTypes;}
+
+    public LiveData<Double> getDailyDistanceAllTypes(){return dailyDistanceAllTypes;}
+
+    public LiveData<Double> getDailyCaloriesAllTypes(){return dailyCaloriesAllTypes;}
 }

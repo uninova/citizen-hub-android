@@ -31,4 +31,8 @@ public class DistanceMeasurementRepository {
     public LiveData<Double> readMaximum(LocalDate localDate) {
         return distanceMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
+
+    public LiveData<Double> getDistanceAllTypes (LocalDate localDate) {
+        return distanceMeasurementDao.getDistanceAllTypes(localDate, localDate.plusDays(1));
+    }
 }
