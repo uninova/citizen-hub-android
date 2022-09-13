@@ -175,54 +175,18 @@ public class SummaryFragment extends ServiceFragment {
         postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
     }
 
-    public void onDailyWalkingInformationUpdate(WalkingInformation record) {
-        if (record != null) {
-            final View view = requireView();
-
-            final boolean hasSteps = record.getSteps() != null;
-            final boolean hasDistance = record.getDistance() != null;
-            final boolean hasCalories = record.getCalories() != null;
-
-            final boolean hasActivity = hasSteps || hasDistance || hasCalories;
-
-            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-
-            if (hasSteps) {
-                activityStepsTextView.setText(getString(R.string.activity_steps_value, record.getSteps()));
-            }
-
-            if (hasDistance) {
-                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, record.getCalories()));
-            }
-
-            if (hasCalories) {
-                activityDistanceTextView.setText(getString(R.string.activity_distance_value, record.getDistance()));
-            }
-
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityStepsTextView.setVisibility(hasSteps ? View.VISIBLE : View.GONE);
-            activityDistanceTextView.setVisibility(hasDistance ? View.VISIBLE : View.GONE);
-            activityCaloriesTextView.setVisibility(hasCalories ? View.VISIBLE : View.GONE);
-            activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
-        }
-    }
-
     public void onDailyStepsAllUpdate(Integer steps) {
         if (steps != null) {
             final View view = requireView();
-
-            final boolean hasSteps = steps != 0;
 
             final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
 
             activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
 
             final CardView activityCardView = view.findViewById(R.id.activityCardView);
-            activityStepsTextView.setVisibility(View.VISIBLE);
+
             activityCardView.setVisibility(View.VISIBLE);
+            activityStepsTextView.setVisibility(View.VISIBLE);
         }
     }
     public void onDailyDistanceAllUpdate(Double distance) {
@@ -234,8 +198,9 @@ public class SummaryFragment extends ServiceFragment {
             activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
 
             final CardView activityCardView = view.findViewById(R.id.activityCardView);
-            activityDistanceTextView.setVisibility(View.VISIBLE);
+
             activityCardView.setVisibility(View.VISIBLE);
+            activityDistanceTextView.setVisibility(View.VISIBLE);
         }
     }
     public void onDailyCaloriesAllUpdate(Double calories) {
@@ -247,8 +212,9 @@ public class SummaryFragment extends ServiceFragment {
             activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
 
             final CardView activityCardView = view.findViewById(R.id.activityCardView);
-            activityCaloriesTextView.setVisibility(View.VISIBLE);
+
             activityCardView.setVisibility(View.VISIBLE);
+            activityCaloriesTextView.setVisibility(View.VISIBLE);
         }
     }
 

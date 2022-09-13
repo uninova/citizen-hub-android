@@ -30,8 +30,6 @@ public class SummaryViewModel extends AndroidViewModel {
     private final LiveData<Double> dailyHeartRate;
     private final LiveData<LumbarExtensionTrainingSummary> dailyLumbarExtensionTraining;
     private final LiveData<List<PostureClassificationSum>> dailyPostureMeasurement;
-    private final LiveData<WalkingInformation> dailyWalkingInformation;
-    private final LiveData<WalkingInformation> dailySnapshotWalkingInformation;
     private final LiveData<Integer> dailyStepsAllTypes;
     private final LiveData<Double> dailyDistanceAllTypes;
     private final LiveData<Double> dailyCaloriesAllTypes;
@@ -58,8 +56,6 @@ public class SummaryViewModel extends AndroidViewModel {
         dailyDataExistence = sampleRepository.readCount(now);
         dailyHeartRate = heartRateMeasurementRepository.readAverage(now);
         dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
-        dailyWalkingInformation = stepsMeasurementRepository.readLatestWalkingInformation(now);
-        dailySnapshotWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
         dailyStepsAllTypes = stepsMeasurementRepository.getStepsAllTypes(now);
         dailyDistanceAllTypes = distanceMeasurementRepository.getDistanceAllTypes(now);
         dailyCaloriesAllTypes = caloriesMeasurementRepository.getCaloriesAllTypes(now);
@@ -87,14 +83,6 @@ public class SummaryViewModel extends AndroidViewModel {
 
     public LiveData<List<PostureClassificationSum>> getDailyPostureMeasurement() {
         return dailyPostureMeasurement;
-    }
-
-    public LiveData<WalkingInformation> getDailyWalkingInformation() {
-        return dailyWalkingInformation;
-    }
-
-    public LiveData<WalkingInformation> getDailySnapshotWalkingInformation() {
-        return dailySnapshotWalkingInformation;
     }
 
     public LiveData<Integer> getDailyStepsAllTypes() {return dailyStepsAllTypes;}
