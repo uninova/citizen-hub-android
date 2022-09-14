@@ -28,12 +28,11 @@ public interface Smart4HealthDailyReportDao {
     @Query("INSERT OR REPLACE INTO smart4health_daily_report (date, pdf) VALUES (:date, :value);")
     long insertOrReplacePdf(long date, Boolean value);
 
-    @Query("SELECT DISTINCT (timestamp / 86400000) * 86400000 FROM posture_measurement LEFT JOIN sample ON posture_measurement.sample_id = sample_id EXCEPT SELECT date FROM smart4health_daily_report")
+    @Query("SELECT DISTINCT (timestamp / 86400000) * 86400000 FROM sample EXCEPT SELECT date FROM smart4health_daily_report;")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> selectDaysWithValues();
 
-    @Query("SELECT DISTINCT (timestamp + (:offset * 3600000) / 86400000) * 86400000 FROM posture_measurement LEFT JOIN sample ON posture_measurement.sample_id = sample_id EXCEPT SELECT date FROM smart4health_daily_report")
+    @Query("SELECT DISTINCT (timestamp + (:offset * 3600000) / 86400000) * 86400000 FROM sample EXCEPT SELECT date FROM smart4health_daily_report;")
     @TypeConverters(EpochTypeConverter.class)
     List<LocalDate> selectDaysWithValues(int offset);
-
 }
