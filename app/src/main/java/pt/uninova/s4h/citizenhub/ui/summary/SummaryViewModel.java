@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.BreathingRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.CaloriesMeasurementRepository;
@@ -20,7 +19,6 @@ import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingR
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.StepsMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
 
 public class SummaryViewModel extends AndroidViewModel {
 
@@ -43,7 +41,6 @@ public class SummaryViewModel extends AndroidViewModel {
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(application);
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(application);
         SampleRepository sampleRepository = new SampleRepository(application);
-        StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(application);
         StepsMeasurementRepository stepsMeasurementRepository = new StepsMeasurementRepository(application);
         DistanceMeasurementRepository distanceMeasurementRepository = new DistanceMeasurementRepository(application);
         CaloriesMeasurementRepository caloriesMeasurementRepository = new CaloriesMeasurementRepository(application);
