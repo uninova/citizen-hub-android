@@ -176,43 +176,47 @@ public class SummaryFragment extends ServiceFragment {
 
     public void onDailyStepsAllUpdate(Integer steps) {
         if (steps != null){
-            final View view = requireView();
+            if (steps != 0) {
+                final View view = requireView();
 
-            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+                final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+                final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
-            activityCardView.setVisibility(View.VISIBLE);
-            activityStepsTextView.setVisibility(View.VISIBLE);
+                activityCardView.setVisibility(View.VISIBLE);
+                activityStepsTextView.setVisibility(View.VISIBLE);
 
-            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+                activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+            }
         }
     }
     public void onDailyDistanceAllUpdate(Double distance) {
         if (distance != null)
         {
-            final View view = requireView();
+            if (distance != 0){
+                final View view = requireView();
+                final CardView activityCardView = view.findViewById(R.id.activityCardView);
+                final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+                activityCardView.setVisibility(View.VISIBLE);
+                activityDistanceTextView.setVisibility(View.VISIBLE);
 
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityDistanceTextView.setVisibility(View.VISIBLE);
-
-            activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
+                activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
+            }
         }
     }
     public void onDailyCaloriesAllUpdate(Double calories) {
         if (calories != null)
         {
-            final View view = requireView();
+            if (calories != 0) {
+                final View view = requireView();
 
-            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+                final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+                final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
-            activityCardView.setVisibility(View.VISIBLE);
-            activityCaloriesTextView.setVisibility(View.VISIBLE);
+                activityCardView.setVisibility(View.VISIBLE);
+                activityCaloriesTextView.setVisibility(View.VISIBLE);
 
-            activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
+                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
+            }
         }
     }
 
