@@ -22,7 +22,6 @@ import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 
 public class SummaryFragment extends ServiceFragment {
 
@@ -176,46 +175,50 @@ public class SummaryFragment extends ServiceFragment {
     }
 
     public void onDailyStepsAllUpdate(Integer steps) {
-        if (steps != null) {
-            final View view = requireView();
+        System.out.println("Got in Daily Steps, Steps: " + steps);
+        final View view = requireView();
 
-            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+        final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+        final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+        final CardView activityCardView = view.findViewById(R.id.activityCardView);
+        final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
 
-            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+        activityCardView.setVisibility(View.VISIBLE);
+        activityCaloriesTextView.setVisibility(View.VISIBLE);
+        activityDistanceTextView.setVisibility(View.VISIBLE);
+        activityStepsTextView.setVisibility(View.VISIBLE);
 
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityStepsTextView.setVisibility(View.VISIBLE);
-        }
+        activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
     }
     public void onDailyDistanceAllUpdate(Double distance) {
-        if (distance != null) {
-            final View view = requireView();
+        final View view = requireView();
 
-            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+        final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+        final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+        final CardView activityCardView = view.findViewById(R.id.activityCardView);
+        final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
 
-            activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
+        activityCardView.setVisibility(View.VISIBLE);
+        activityCaloriesTextView.setVisibility(View.VISIBLE);
+        activityDistanceTextView.setVisibility(View.VISIBLE);
+        activityStepsTextView.setVisibility(View.VISIBLE);
 
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityDistanceTextView.setVisibility(View.VISIBLE);
-        }
+        activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
     }
     public void onDailyCaloriesAllUpdate(Double calories) {
-        if (calories != null) {
-            final View view = requireView();
+        final View view = requireView();
 
-            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+        final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
+        final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+        final CardView activityCardView = view.findViewById(R.id.activityCardView);
+        final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
 
-            activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
+        activityCardView.setVisibility(View.VISIBLE);
+        activityCaloriesTextView.setVisibility(View.VISIBLE);
+        activityDistanceTextView.setVisibility(View.VISIBLE);
+        activityStepsTextView.setVisibility(View.VISIBLE);
 
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityCaloriesTextView.setVisibility(View.VISIBLE);
-        }
+        activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
     }
 
     @Override

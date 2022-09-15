@@ -76,11 +76,14 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
             f.format(calories);
 
             final Sample sample = new Sample(getAgent().getSource(), new StepsMeasurement(steps),
-                    new DistanceMeasurement(distance),
+                    new DistanceMeasurement(steps),
                     new CaloriesMeasurement(calories));
             getSampleDispatcher().dispatch(sample);
 
-            //TODO delete these fake measurements
+            //TODO delete these
+            System.out.println("Distance: " + distance);
+            System.out.println("Calories: " + calories);
+            System.out.println("Steps: " + steps);
             /*final Sample fakeMeasurement = new Sample(getAgent().getSource(), new StepsMeasurement((double)5),
                     new DistanceMeasurement((double)5),
                     new CaloriesMeasurement((double)5));
