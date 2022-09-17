@@ -175,7 +175,7 @@ public class SummaryFragment extends ServiceFragment {
     }
 
     public void onDailyStepsAllUpdate(Integer steps) {
-        if (steps != null){
+        if (steps != null) {
             if (steps != 0) {
                 final View view = requireView();
 
@@ -190,23 +190,22 @@ public class SummaryFragment extends ServiceFragment {
         }
     }
     public void onDailyDistanceAllUpdate(Double distance) {
-        if (distance != null)
-        {
+        if (distance != null) {
             if (distance != 0){
-                final View view = requireView();
-                final CardView activityCardView = view.findViewById(R.id.activityCardView);
-                final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-                activityCardView.setVisibility(View.VISIBLE);
-                activityDistanceTextView.setVisibility(View.VISIBLE);
+            final View view = requireView();
 
-                activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+
+            activityCardView.setVisibility(View.VISIBLE);
+            activityDistanceTextView.setVisibility(View.VISIBLE);
+            activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
             }
         }
     }
     public void onDailyCaloriesAllUpdate(Double calories) {
-        if (calories != null)
-        {
-            if (calories != 0) {
+        if (calories != null){
+            if (calories != 0){
                 final View view = requireView();
 
                 final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);

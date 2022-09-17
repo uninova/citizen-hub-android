@@ -63,16 +63,10 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         public void onChange(byte[] value) {
             double steps = value[4] & 0xff;
 
-            double distance = value[40];
-            if (distance == -128)
-            {
-                distance = 0;
-            }
-            else
-                distance = value[40] & 0xff;
-
-            double calories = steps * 0.04;
             DecimalFormat f = new DecimalFormat("##.00");
+            double distance = steps * 0.76;
+            f.format(distance);
+            double calories = steps * 0.04;
             f.format(calories);
 
             final Sample sample = new Sample(getAgent().getSource(), new StepsMeasurement(steps),
