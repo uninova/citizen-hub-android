@@ -1,14 +1,9 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
-import android.content.Context;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.HashMap;
 import java.util.UUID;
-
-import androidx.core.content.ContextCompat;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
@@ -27,14 +22,14 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
-    private static final UUID UUID_SERVICE_DATA = UUID.fromString("99ddcdab-a80c-4f94-be5d-c66b9fba40cf");
+    public static final UUID UUID_SERVICE_DATA = UUID.fromString("99ddcdab-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_ACTIVITYLOG = UUID.fromString("99dd0106-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_COLLECTINGSTATE = UUID.fromString("99dd0014-a80c-4f94-be5d-c66b9fba40cf");
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole.activity");
 
     long lastTime = 0;
-    int miliForTimer = 120000; //2 minutes
+    int miliForTimer = 120000;
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE) {
         private boolean once0x02 = false;
