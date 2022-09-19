@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleActivityProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzBodyProtocol;
@@ -55,7 +56,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                         observer.observe(new UprightGo2Agent(source));
                     } else if (name.startsWith("A&D")) {
                         observer.observe(new BloodPressureMonitorAgent(source));
-                    } else if (name.startsWith("ZTEZ")) {
+                    } else if (source.hasService(DigitsoleActivityProtocol.UUID_SERVICE_DATA)) {
                         observer.observe(new DigitsoleAgent(source));
                     } else {
                         observer.observe(null);

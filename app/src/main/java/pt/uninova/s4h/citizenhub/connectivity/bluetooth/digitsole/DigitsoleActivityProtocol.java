@@ -24,7 +24,7 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
-    private static final UUID UUID_SERVICE_DATA = UUID.fromString("99ddcdab-a80c-4f94-be5d-c66b9fba40cf");
+    public static final UUID UUID_SERVICE_DATA = UUID.fromString("99ddcdab-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_ACTIVITYLOG = UUID.fromString("99dd0106-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_COLLECTINGSTATE = UUID.fromString("99dd0014-a80c-4f94-be5d-c66b9fba40cf");
 
@@ -80,7 +80,20 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> reconnectionListener = value -> {
         if (value.getNewState() == BluetoothConnectionState.READY) {
-            value.getSource().enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
+            //value.getSource().enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
+            //System.out.println("GOT HERE1");
+        }
+        else if (value.getNewState() == BluetoothConnectionState.CONNECTED){
+            //System.out.println("GOT HERE2");
+        }
+        else if (value.getNewState() == BluetoothConnectionState.DISCONNECTED)
+        {
+            //System.out.println("GOT HERE3");.
+            //final BluetoothConnection connection = getConnection();
+            //connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG);
+            //connection.removeCharacteristicListener(dataListener);
+            //connection.removeCharacteristicListener(activationListener);
+
         }
     };
 
@@ -108,6 +121,8 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         //Last segment is old or first time connecting, enabling...
         runTimer();
         final BluetoothConnection connection = getConnection();
+        //System.out.println(connection.getState());
+        //connection.addConnectionStateChangeListener(reconnectionListener);
         connection.addCharacteristicListener(activationListener);
         connection.addCharacteristicListener(dataListener);
         connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
@@ -116,5 +131,13 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     private void runTimer() {
         new Handler(Looper.getMainLooper()).postDelayed(this::enable, 1000);
+        /*new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("GOT HERE4");
+                final BluetoothConnection connection = getConnection();
+                connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x00});
+            }
+        }, 1000);*/
     }
 }
