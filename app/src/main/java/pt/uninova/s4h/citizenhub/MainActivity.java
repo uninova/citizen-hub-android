@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (bugreport != null) {
             final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setMessage("It seems Citizen Hub has crashed the last time it was used.\n\nDo you want to submit a bug report?")
-                    .setPositiveButton("Send Report", (dialog, which) -> {
+                    .setMessage(getString(R.string.bugreport_message))
+                    .setPositiveButton(R.string.bugreport_positive_button, (dialog, which) -> {
                         Thread t = new Thread(() -> {
                             Looper.prepare();
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                             try (final Response response = client.newCall(request).execute()) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Report sent", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), R.string.bugreport_confirmation, Toast.LENGTH_SHORT).show();
                                     preferences.edit().remove("bugreport").apply();
                                 }
                             } catch (IOException ex) {
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         t.start();
 
                     })
-                    .setNegativeButton("Ignore", (dialog, which) -> {
+                    .setNegativeButton(R.string.bugreport_negative_button, (dialog, which) -> {
                         preferences.edit().remove("bugreport").apply();
                     })
                     .create();

@@ -430,4 +430,21 @@
     <string name="breathing_rate_title">Durchschnittliche atemfrequenz</string>
     <string name="report_title">Citizen Hub Tagesbericht %s</string>
 
+    <string name="fragment_location_disabled_button_text">Standorteinstellungen des Geräts</string>
+    <string name="fragment_location_not_supported_text_view">Der Standort wird auf diesem Gerät nicht unterstützt</string>
+    <string name="fragment_location_disabled_text_view">Der Standort ist derzeit deaktiviert.\nFür die Bluetooth-Kopplung muss auf Ihrem Gerät die Standortbestimmung aktiviert sein.\nDrücken Sie die Taste unten, um es in den Android-Einstellungen zu aktivieren.</string>
+    <string name="fragment_location_not_supported_label">Standort wird nicht unterstützt</string>
+    <string name="fragment_bluetooth_unsupported_text_view">Bluetooth wird auf diesem Gerät nicht unterstützt</string>
+    <string name="fragment_bluetooth_disabled_text_view">Bluetooth ist derzeit deaktiviert.\nFür die Bluetooth-Kopplung muss Bluetooth auf Ihrem Gerät aktiviert sein.\nDrücken Sie die Taste unten, um es in den Android-Einstellungen zu aktivieren.</string>
+    <string name="fragment_bluetooth_disabled_button_text">Bluetooth-Geräteeinstellungen</string>
+    <string name="fragment_bluetooth_unsupported_label">Bluetooth wird nicht unterstützt</string>
+    <string name="fragment_bluetooth_disabled_label">Bluetooth deaktiviert</string>
+    <string name="fragment_bluetooth_denied_text_view">Bluetooth-Berechtigungen verweigert</string>
+    <string name="fragment_bluetooth_denied_label">Bluetooth-Berechtigungen verweigert</string>
+
+    <string name="bugreport_message">Es scheint, dass Citizen Hub bei der letzten Verwendung abgestürzt ist.\n\nMöchten Sie einen Fehlerbericht einreichen?</string>
+    <string name="bugreport_positive_button">Senden</string>
+    <string name="bugreport_negative_button">Ignorieren</string>
+    <string name="bugreport_confirmation">Bericht gesendet</string>
+
 </resources>
