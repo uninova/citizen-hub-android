@@ -184,18 +184,18 @@ public class SummaryFragment extends ServiceFragment {
 
                 activityCardView.setVisibility(View.VISIBLE);
                 activityStepsTextView.setVisibility(View.VISIBLE);
-
                 activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
+                }
             }
-        }
     }
+
     public void onDailyDistanceAllUpdate(Double distance) {
         if (distance != null) {
             if (distance != 0){
             final View view = requireView();
 
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
             final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
             activityCardView.setVisibility(View.VISIBLE);
             activityDistanceTextView.setVisibility(View.VISIBLE);
@@ -203,6 +203,7 @@ public class SummaryFragment extends ServiceFragment {
             }
         }
     }
+
     public void onDailyCaloriesAllUpdate(Double calories) {
         if (calories != null){
             if (calories != 0){
@@ -213,7 +214,6 @@ public class SummaryFragment extends ServiceFragment {
 
                 activityCardView.setVisibility(View.VISIBLE);
                 activityCaloriesTextView.setVisibility(View.VISIBLE);
-
                 activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
             }
         }

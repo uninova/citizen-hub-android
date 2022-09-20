@@ -38,6 +38,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
         @Override
         public void onWrite(byte[] value) {
+            System.out.println("RAN ACTIVATIONLISTENER");
             switch (value[0]) {
                 case 0x00:
                     getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x02});
@@ -61,6 +62,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     private final CharacteristicListener dataListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG) {
         @Override
         public void onChange(byte[] value) {
+            System.out.println("RAN DATALISTENER");
             double steps = value[4] & 0xff;
 
             DecimalFormat f = new DecimalFormat("##.00");
@@ -80,20 +82,16 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> reconnectionListener = value -> {
         if (value.getNewState() == BluetoothConnectionState.READY) {
-            //value.getSource().enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
-            //System.out.println("GOT HERE1");
+            //enable();
+            System.out.println("GOT HERE1 " + getConnection().getState());
         }
         else if (value.getNewState() == BluetoothConnectionState.CONNECTED){
-            //System.out.println("GOT HERE2");
+            System.out.println("GOT HERE2 " + getConnection().getState());
         }
         else if (value.getNewState() == BluetoothConnectionState.DISCONNECTED)
         {
-            //System.out.println("GOT HERE3");.
-            //final BluetoothConnection connection = getConnection();
-            //connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG);
-            //connection.removeCharacteristicListener(dataListener);
-            //connection.removeCharacteristicListener(activationListener);
-
+            System.out.println("GOT HERE3" + getConnection().getState());
+            disable(); //TODO confirm need for this
         }
     };
 
@@ -103,6 +101,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
+        System.out.println("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN DISABLE");
         final BluetoothConnection connection = getConnection();
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG);
         connection.removeCharacteristicListener(dataListener);
@@ -112,32 +111,27 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void enable() {
+        System.out.println("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN ENABLE");
         long currentTime = System.currentTimeMillis();
+        runTimer();
         //Last segment is recent, restarting timer...
-        if (currentTime - lastTime < (miliForTimer)) {
-            runTimer();
-            return;
+        if ((currentTime - lastTime) < miliForTimer) {
+            System.out.println("Last segment is recent...");
         }
         //Last segment is old or first time connecting, enabling...
-        runTimer();
-        final BluetoothConnection connection = getConnection();
-        //System.out.println(connection.getState());
-        //connection.addConnectionStateChangeListener(reconnectionListener);
-        connection.addCharacteristicListener(activationListener);
-        connection.addCharacteristicListener(dataListener);
-        connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
-        connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x00});
+        else{
+            final BluetoothConnection connection = getConnection();
+            //System.out.println(connection.getState());
+            System.out.println("Doing enable");
+            connection.addConnectionStateChangeListener(reconnectionListener);
+            connection.addCharacteristicListener(activationListener);
+            connection.addCharacteristicListener(dataListener);
+            connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITYLOG, true);
+            connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x00});
+        }
     }
 
     private void runTimer() {
-        new Handler(Looper.getMainLooper()).postDelayed(this::enable, 1000);
-        /*new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("GOT HERE4");
-                final BluetoothConnection connection = getConnection();
-                connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTINGSTATE, new byte[]{0x00});
-            }
-        }, 1000);*/
+        new Handler(Looper.getMainLooper()).postDelayed(this::enable, miliForTimer);
     }
 }
