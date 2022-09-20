@@ -455,4 +455,21 @@
     <string name="breathing_rate_title">Frequência respiratória média</string>
     <string name="report_title">Citizen Hub Relatório Diário %s</string>
 
+    <string name="fragment_location_disabled_button_text">Definições de localização do dispositivo</string>
+    <string name="fragment_location_not_supported_text_view">Localização não é suportada neste dispositivo</string>
+    <string name="fragment_location_disabled_text_view">Localização está desativada.\nO emparelhamento Bluetooth requer que o seu dispositivo tenha a Localização ligada.\nPressione o botão para ligar a Localização nas definições do Android.</string>
+    <string name="fragment_location_not_supported_label">Localização não suportada</string>
+    <string name="fragment_bluetooth_unsupported_text_view">Bluetooth não é suportado neste dispositivo</string>
+    <string name="fragment_bluetooth_disabled_text_view">Bluetooth está desativado.\nO emparelhamento Bluetooth requer que o seu dispositivo tenha o Bluetooth ligada.\nPressione o botão para ligar o Bluetooth nas definições do Android.</string>
+    <string name="fragment_bluetooth_disabled_button_text">Bluetooth device settings</string>
+    <string name="fragment_bluetooth_unsupported_label">Bluetooth não suportado</string>
+    <string name="fragment_bluetooth_disabled_label">Bluetooth desativado</string>
+    <string name="fragment_bluetooth_denied_text_view">Permissões Bluetooth negadas</string>
+    <string name="fragment_bluetooth_denied_label">Permissões Bluetooth negadas</string>
+
+    <string name="bugreport_message">Aparentemente, o Citizen Hub terminou abruptamente da última vez que foi utilizado.\n\nDeseja submeter um relatório de erro?</string>
+    <string name="bugreport_positive_button">Enviar</string>
+    <string name="bugreport_negative_button">Ignorar</string>
+    <string name="bugreport_confirmation">Relatório enviado</string>
+
 </resources>
