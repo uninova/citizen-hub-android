@@ -30,7 +30,7 @@ public interface CaloriesSnapshotMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<Double> selectMaximumLiveData(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, calories_snapshot_measurement.value AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, calories_snapshot_measurement.value AS value "
             + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
             + " SELECT MAX(value) AS value, hour AS time FROM agg GROUP BY hour")

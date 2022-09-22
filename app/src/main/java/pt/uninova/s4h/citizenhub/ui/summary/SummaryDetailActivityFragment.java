@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,10 +32,12 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class SummaryDetailActivityFragment extends Fragment {
 
     private SummaryViewModel model;
-    private LineChart lineChart;
     private BarChart barChart;
     private BottomNavigationView bottomNavigationViewTime;
     private BottomNavigationView bottomNavigationViewActivity;
+    private TabLayout tabLayout;
+    private TabLayout tabLayoutActivity;
+    private TextView textView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,6 @@ public class SummaryDetailActivityFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         barChart = requireView().findViewById(R.id.bar_chart);
-        lineChart = requireView().findViewById(R.id.line_chart);
 
         bottomNavigationViewActivity = requireView().findViewById(R.id.nav_view_activity);
         bottomNavigationViewActivity.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedActivity);
@@ -58,11 +61,102 @@ public class SummaryDetailActivityFragment extends Fragment {
         bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
         bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
 
-        barChart.setVisibility(View.INVISIBLE);
-        model.setupBarChart(barChart);
-        model.setupLineChart(lineChart);
-        dailySteps();
+        textView = requireView().findViewById(R.id.tv_activity);
 
+        tabLayout = requireView().findViewById(R.id.tab_layout);
+        tabLayoutActivity = requireView().findViewById(R.id.tab_layout_activity);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+
+                if(pos == 0) {
+                    System.out.println("Day");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutActivity.getSelectedTabPosition()) {
+                        case 0: dailySteps(); break;
+                        case 1: dailyDistance(); break;
+                        case 2: dailyCalories(); break;
+                    }
+                } else if(pos == 1) {
+                    System.out.println("Week");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutActivity.getSelectedTabPosition()) {
+                        case 0: weeklySteps(); break;
+                        case 1: weeklyDistance(); break;
+                        case 2: weeklyCalories(); break;
+                    }
+                } else if(pos == 2) {
+                    System.out.println("Month");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutActivity.getSelectedTabPosition()) {
+                        case 0: monthlySteps(); break;
+                        case 1: monthlyDistance(); break;
+                        case 2: monthlyCalories(); break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        tabLayoutActivity.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+
+                if(pos == 0) {
+                    System.out.println("Steps");
+                    textView.setText(getString(R.string.summary_detail_activity_steps));
+                    barChart.highlightValue(null);
+                    switch(tabLayout.getSelectedTabPosition()) {
+                        case 0: dailySteps(); break;
+                        case 1: weeklySteps(); break;
+                        case 2: monthlySteps(); break;
+                    }
+                } else if(pos == 1) {
+                    System.out.println("Distance");
+                    textView.setText(getString(R.string.summary_detail_activity_distance));
+                    barChart.highlightValue(null);
+                    switch(tabLayout.getSelectedTabPosition()) {
+                        case 0: dailyDistance(); break;
+                        case 1: weeklyDistance(); break;
+                        case 2: monthlyDistance(); break;
+                    }
+                } else if(pos == 2) {
+                    System.out.println("Calories");
+                    textView.setText(getString(R.string.summary_detail_activity_calories));
+                    barChart.highlightValue(null);
+                    switch(tabLayout.getSelectedTabPosition()) {
+                        case 0: dailyCalories(); break;
+                        case 1: weeklyCalories(); break;
+                        case 2: monthlyCalories(); break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        model.setupBarChart(barChart);
+        dailySteps();
     }
 
     /*
@@ -74,8 +168,6 @@ public class SummaryDetailActivityFragment extends Fragment {
         switch (id) {
             case R.id.nav_day:
                 System.out.println("Day");
-                barChart.setVisibility(View.INVISIBLE);
-                lineChart.setVisibility(View.VISIBLE);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
                     case R.id.nav_steps: dailySteps(); break;
                     case R.id.nav_distance: dailyDistance(); break;
@@ -84,8 +176,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 break;
             case R.id.nav_week:
                 System.out.println("Week");
-                barChart.setVisibility(View.VISIBLE);
-                lineChart.setVisibility(View.INVISIBLE);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
                     case R.id.nav_steps: weeklySteps(); break;
                     case R.id.nav_distance: weeklyDistance(); break;
@@ -94,8 +184,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 break;
             case R.id.nav_month:
                 System.out.println("Month");
-                barChart.setVisibility(View.VISIBLE);
-                lineChart.setVisibility(View.INVISIBLE);
                 switch (bottomNavigationViewActivity.getSelectedItemId()) {
                     case R.id.nav_steps: monthlySteps(); break;
                     case R.id.nav_distance: monthlyDistance(); break;
@@ -112,6 +200,7 @@ public class SummaryDetailActivityFragment extends Fragment {
         switch (id) {
             case R.id.nav_steps:
                 System.out.println("Steps");
+                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_steps));
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
                     case R.id.nav_day: dailySteps();break;
                     case R.id.nav_week: weeklySteps(); break;
@@ -120,6 +209,7 @@ public class SummaryDetailActivityFragment extends Fragment {
                 break;
             case R.id.nav_distance:
                 System.out.println("Distance");
+                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_distance));
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
                     case R.id.nav_day: dailyDistance(); break;
                     case R.id.nav_week: weeklyDistance(); break;
@@ -128,6 +218,7 @@ public class SummaryDetailActivityFragment extends Fragment {
                 break;
             case R.id.nav_calories:
                 System.out.println("Calories");
+                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_calories));
                 switch (bottomNavigationViewTime.getSelectedItemId()) {
                     case R.id.nav_day: dailyCalories(); break;
                     case R.id.nav_week: weeklyCalories(); break;
@@ -139,7 +230,7 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void dailySteps() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_steps), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_steps), 24);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
@@ -157,7 +248,7 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void dailyDistance() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_distance), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_distance), 24);
         DistanceSnapshotMeasurementRepository distanceSnapshotMeasurementRepository = new DistanceSnapshotMeasurementRepository(getContext());
         distanceSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
@@ -175,7 +266,7 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void dailyCalories(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_activity_calories), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_calories), 24);
         CaloriesSnapshotMeasurementRepository caloriesSnapshotMeasurementRepository = new CaloriesSnapshotMeasurementRepository(getContext());
         caloriesSnapshotMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }

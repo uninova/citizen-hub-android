@@ -428,9 +428,9 @@
     <string name="report_lumbar_training_duration_label">Duração</string>
 
     <!-- Strings used in summary detail fragments-->
-    <string name="summary_detail_time_day">Dia</string>
-    <string name="summary_detail_time_week">Semana</string>
-    <string name="summary_detail_time_month">Mês</string>
+    <string name="summary_detail_time_today">Hoje</string>
+    <string name="summary_detail_time_last_week">Última Semana</string>
+    <string name="summary_detail_time_last_month">Último Mês</string>
 
     <string name="summary_detail_activity">Actividade</string>
     <string name="summary_detail_activity_steps">Passos</string>
