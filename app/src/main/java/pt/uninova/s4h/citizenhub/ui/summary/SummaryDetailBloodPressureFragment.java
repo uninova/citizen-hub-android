@@ -14,8 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -31,6 +33,8 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     private BarChart barChart;
     private BottomNavigationView bottomNavigationViewTime;
     private BottomNavigationView bottomNavigationViewBloodPressure;
+    private TabLayout tabLayoutPrimary;
+    private TabLayout tabLayoutSecondary;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,95 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
 
         bottomNavigationViewBloodPressure = requireView().findViewById(R.id.nav_view_blood_pressure);
         bottomNavigationViewBloodPressure.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedBloodPressure);
+
+        tabLayoutPrimary = requireView().findViewById(R.id.tab_layout_primary);
+        tabLayoutSecondary = requireView().findViewById((R.id.tab_layout_secondary));
+
+        tabLayoutPrimary.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+
+                if(pos == 0) {
+                    System.out.println("Day");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
+                        case 0: dailySystolic(); break;
+                        case 1: dailyDiastolic(); break;
+                        case 2: dailyMean(); break;
+                    }
+                } else if(pos == 1) {
+                    System.out.println("Week");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
+                        case 0: weeklySystolic(); break;
+                        case 1: weeklyDiastolic(); break;
+                        case 2: weeklyMean(); break;
+                    }
+                } else if(pos == 2) {
+                    System.out.println("Month");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
+                        case 0: monthlySystolic(); break;
+                        case 1: monthlyDiastolic(); break;
+                        case 2: monthlyMean(); break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        tabLayoutSecondary.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+
+                if(pos == 0) {
+                    System.out.println("Day");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
+                        case 0: dailySystolic(); break;
+                        case 1: weeklySystolic(); break;
+                        case 2: monthlySystolic(); break;
+                    }
+                } else if(pos == 1) {
+                    System.out.println("Week");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
+                        case 0: dailyDiastolic(); break;
+                        case 1: weeklyDiastolic(); break;
+                        case 2: monthlyDiastolic(); break;
+                    }
+                } else if(pos == 2) {
+                    System.out.println("Month");
+                    barChart.highlightValue(null);
+                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
+                        case 0: dailyMean(); break;
+                        case 1: weeklyMean(); break;
+                        case 2: monthlyMean(); break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         model.setupBarChart(barChart);
         model.setupLineChart(lineChart);
@@ -187,19 +280,19 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     }
 
     private void dailyPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_blood_pressure_pulse_rate), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 24);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_blood_pressure_pulse_rate), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 7);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_blood_pressure_pulse_rate), 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 30);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastThirtyDays(LocalDate.now(), observer);
     }

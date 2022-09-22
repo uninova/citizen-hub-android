@@ -15,6 +15,8 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -128,73 +130,73 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
     }
 
     private void dailyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_duration), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_duration)}, 24);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastDayDuration(LocalDate.now(), observer);
     }
 
     private void weeklyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_duration), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_duration)}, 7);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastSevenDaysDuration(LocalDate.now(), observer);
     }
 
     private void monthlyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_score), 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 30);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastThirtyDaysDuration(LocalDate.now(), observer);
     }
 
     private void dailyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_score), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 24);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastDayScore(LocalDate.now(), observer);
     }
 
     private void weeklyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_score), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 7);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastSevenDaysScore(LocalDate.now(), observer);
     }
 
     private void monthlyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_score), 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 30);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastThirtyDaysScore(LocalDate.now(), observer);
     }
 
     private void dailyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_repetitions), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 24);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastDayRepetitions(LocalDate.now(), observer);
     }
 
     private void weeklyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_repetitions), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 7);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastSevenDaysRepetitions(LocalDate.now(), observer);
     }
 
     private void monthlyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_repetitions), 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 30);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastThirtyDaysRepetitions(LocalDate.now(), observer);
     }
 
     private void dailyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_weight), 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 24);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastDayWeight(LocalDate.now(), observer);
     }
 
     private void weeklyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_weight), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 7);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastSevenDaysWeight(LocalDate.now(), observer);
     }
 
     private void monthlyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_lumbar_extension_weight), 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 30);
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
         lumbarExtensionTrainingRepository.readLastThirtyDaysWeight(LocalDate.now(), observer);
     }

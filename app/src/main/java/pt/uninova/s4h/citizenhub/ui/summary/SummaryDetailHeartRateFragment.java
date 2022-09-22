@@ -15,8 +15,12 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -28,7 +32,6 @@ public class SummaryDetailHeartRateFragment extends Fragment {
 
     private SummaryViewModel model;
     private LineChart lineChart;
-    private BottomNavigationView bottomNavigationViewHeartRate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,93 +47,83 @@ public class SummaryDetailHeartRateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
+        TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
 
-        bottomNavigationViewHeartRate = requireView().findViewById(R.id.nav_view_heart_rate);
-        bottomNavigationViewHeartRate.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedHeartRate);
-        bottomNavigationViewHeartRate.setVisibility(View.INVISIBLE); // !!!!! Não devia ser preciso
+                if(pos == 0) {
+                    System.out.println("Day");
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().setAxisMaximum(23);
+                    dailyHeartRate();
+                } else if(pos == 1) {
+                    System.out.println("Week");
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
+                    weeklyHeartRate();
+                } else if(pos == 2) {
+                    System.out.println("Month");
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
+                    monthlyHeartRate();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         lineChart = requireView().findViewById(R.id.line_chart);
         model.setupLineChart(lineChart);
+        // Specific to this fragment
+        lineChart.getXAxis().setAxisMaximum(23);
 
         dailyHeartRate();
     }
 
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                System.out.println("Day");
-                bottomNavigationViewHeartRate.setVisibility(View.INVISIBLE);
-                dailyHeartRate();
-                break;
-            case R.id.nav_week:
-                System.out.println("Week");
-                bottomNavigationViewHeartRate.setVisibility(View.INVISIBLE);
-                weeklyHeartRate();
-                break;
-            case R.id.nav_month:
-                System.out.println("Month");
-                bottomNavigationViewHeartRate.setVisibility(View.VISIBLE);
-                monthlyAverageHeartRate();
-                break;
-        }
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedHeartRate(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_average:
-                System.out.println("Average");
-                monthlyAverageHeartRate();
-                break;
-            case R.id.nav_max:
-                System.out.println("Max");
-                monthlyMaxHeartRate();
-                break;
-            case R.id.nav_min:
-                System.out.println("Min");
-                monthlyMinHeartRate();
-                break;
-        }
-        return true;
-    }
-
     private void dailyHeartRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, "Heart Rate", 24);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
-        heartRateMeasurementRepository.readLastDay(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerAvg = dataAvg -> {
+            Observer<List<SummaryDetailUtil>> observerMax = dataMax -> {
+                Observer<List<SummaryDetailUtil>> observerMin = dataMin -> model.setLineChartData(Arrays.asList(dataAvg, dataMax, dataMin), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 24);
+                heartRateMeasurementRepository.readMinLastDay(observerMin, LocalDate.now());
+            };
+            heartRateMeasurementRepository.readMaxLastDay(observerMax, LocalDate.now());
+        };
+        heartRateMeasurementRepository.readAvgLastDay(observerAvg, LocalDate.now());
     }
 
     private void weeklyHeartRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, "Heart Rate", 7);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
-        heartRateMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerAvg = dataAvg -> {
+            Observer<List<SummaryDetailUtil>> observerMax = dataMax -> {
+                Observer<List<SummaryDetailUtil>> observerMin = dataMin -> model.setLineChartData(Arrays.asList(dataAvg, dataMax, dataMin), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 7);
+                heartRateMeasurementRepository.readMinLastSevenDays(observerMin, LocalDate.now());
+            };
+            heartRateMeasurementRepository.readMaxLastSevenDays(observerMax, LocalDate.now());
+        };
+        heartRateMeasurementRepository.readAvgLastSevenDays(observerAvg, LocalDate.now());
     }
 
-    private void monthlyAverageHeartRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_average), 30);
+    private void monthlyHeartRate(){
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
-        heartRateMeasurementRepository.readAverageLastThirtyDays(LocalDate.now(), observer);
-    }
-
-    private void monthlyMaxHeartRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_maximum), 30);
-        HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
-        heartRateMeasurementRepository.readMaxLastThirtyDays(LocalDate.now(), observer);
-    }
-
-    private void monthlyMinHeartRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(data, lineChart, getString(R.string.summary_detail_heart_rate_minimum), 30);
-        HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
-        heartRateMeasurementRepository.readMinLastThirtyDays(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerAvg = dataAvg -> {
+            Observer<List<SummaryDetailUtil>> observerMax = dataMax -> {
+                Observer<List<SummaryDetailUtil>> observerMin = dataMin -> model.setLineChartData(Arrays.asList(dataAvg, dataMax, dataMin), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 30 );
+                heartRateMeasurementRepository.readMinLastThirtyDays(observerMin, LocalDate.now());
+            };
+            heartRateMeasurementRepository.readMaxLastThirtyDays(observerMax, LocalDate.now());
+        };
+        heartRateMeasurementRepository.readAvgLastThirtyDays(observerAvg, LocalDate.now());
     }
 
 }

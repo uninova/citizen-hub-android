@@ -43,23 +43,39 @@ public class HeartRateMeasurementRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAverage(localDate, localDate.plusDays(1))));
     }
     
-    public void readLastDay(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectLastDay(localDate)));
+    public void readAvgLastDay(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAvgLastDay(localDate)));
     }
 
-    public void readLastSevenDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectLastSevenDays(localDate.minusDays(7), localDate)));
+    public void readMaxLastDay(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMaxLastDay(localDate)));
     }
 
-    public void readAverageLastThirtyDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAverageLastThirtyDays(localDate.minusDays(30), localDate)));
+    public void readMinLastDay(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMinLastDay(localDate)));
     }
 
-    public void readMaxLastThirtyDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+    public void readAvgLastSevenDays(Observer<List<SummaryDetailUtil>> observer , LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAvgLastSevenDays(localDate.minusDays(7), localDate)));
+    }
+
+    public void readMaxLastSevenDays(Observer<List<SummaryDetailUtil>> observer , LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMaxLastSevenDays(localDate.minusDays(7), localDate)));
+    }
+
+    public void readMinLastSevenDays(Observer<List<SummaryDetailUtil>> observer , LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMinLastSevenDays(localDate.minusDays(7), localDate)));
+    }
+
+    public void readAvgLastThirtyDays(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAvgLastThirtyDays(localDate.minusDays(30), localDate)));
+    }
+
+    public void readMaxLastThirtyDays(Observer<List<SummaryDetailUtil>> observer , LocalDate localDate){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMaxLastThirtyDays(localDate.minusDays(30), localDate)));
     }
 
-    public void readMinLastThirtyDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
+    public void readMinLastThirtyDays(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectMinLastThirtyDays(localDate.minusDays(30), localDate)));
     }
 
