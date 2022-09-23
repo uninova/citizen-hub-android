@@ -10,7 +10,6 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorS4HWhite"
         app:tabIndicatorColor="@color/colorS4HDarkBlue"
         app:tabTextColor="@color/colorS4HDarkBlue"
         app:tabTextAppearance="@style/SummaryDetailPrimaryTabLayout">
@@ -37,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tab_layout"
-        app:tabBackground="@color/colorS4HWhite"
         app:tabIndicatorColor="@color/colorS4HDarkBlue"
         app:tabTextColor="@color/colorS4HDarkBlue"
         app:tabTextAppearance="@style/SummaryDetailSecondaryTabLayout"
