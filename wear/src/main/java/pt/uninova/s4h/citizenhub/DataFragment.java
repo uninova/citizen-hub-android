@@ -1,8 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import androidx.lifecycle.LifecycleOwner;
 public class DataFragment extends Fragment {
 
     public TextView textDataSteps, textDataHeartRate, textDataHeartRateAverage;
-    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
