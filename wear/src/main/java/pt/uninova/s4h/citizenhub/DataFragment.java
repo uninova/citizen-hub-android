@@ -35,7 +35,8 @@ public class DataFragment extends Fragment {
 
         MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
 
-        /*MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+        /* TODO: do not delete this after merging
+        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             if(aBoolean)
             {
                 final LocalDate now = LocalDate.now();
@@ -43,7 +44,7 @@ public class DataFragment extends Fragment {
             }
             else
                 textDataSteps.setText(R.string.fragment_data_steps_protocol_disabled);
-            //textDataSteps.setGravity(Gravity.CENTER);
+            textDataSteps.setGravity(Gravity.CENTER);
         });
 
         MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
@@ -54,7 +55,7 @@ public class DataFragment extends Fragment {
             }
             else
                 textDataHeartRate.setText(R.string.fragment_data_heartrate_protocol_disabled);
-            //textDataHeartRate.setGravity(Gravity.CENTER);
+            textDataHeartRate.setGravity(Gravity.CENTER);
         });*/
     }
 }
