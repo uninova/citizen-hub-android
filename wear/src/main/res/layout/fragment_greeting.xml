@@ -12,27 +12,20 @@
 
         <ImageView
             android:id="@+id/imageViewCitizenHub"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="170dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            android:src="@drawable/img_citizen_hub_logo_png" />
-
-        <ImageView
-            android:id="@+id/imageViewSmart4Health"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="5dp"
-            android:src="@drawable/img_s4h_logo" />
+            android:src="@drawable/img_citizen_hub_logo_text" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewSwipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="21dp"
             android:fontFamily="@font/primus_regular"
             android:gravity="center"
-            android:paddingTop="10dp"
-            android:text="@string/fragment_greeting_next_page" />
+            android:text="@string/fragment_greeting_next_page"
+            android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

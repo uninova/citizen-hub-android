@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 public class DataFragment extends Fragment {
 
-    public TextView textDataSteps, textDataHeartRate;
+    public TextView textDataSteps, textDataHeartRate, textDataHeartRateAverage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,6 +21,7 @@ public class DataFragment extends Fragment {
 
         textDataSteps = view.findViewById(R.id.textDataSteps);
         textDataHeartRate = view.findViewById(R.id.textDataHearRate);
+        textDataHeartRateAverage = view.findViewById(R.id.textDataHearRateAverage);
 
         enableObservers(view);
 
@@ -31,23 +31,30 @@ public class DataFragment extends Fragment {
     private void enableObservers(View view){
         MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRate.setText(s));
 
+        MainActivity.listenHeartRateAverage.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRateAverage.setText(s));
+
         MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
 
-        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+        /*MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             if(aBoolean)
-                textDataSteps.setText(getString(R.string.show_data_steps, MainActivity.stepsTotal));
+            {
+                final LocalDate now = LocalDate.now();
+                MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> getString(R.string.show_data_steps, value.intValue()));
+            }
             else
                 textDataSteps.setText(R.string.fragment_data_steps_protocol_disabled);
-            textDataSteps.setGravity(Gravity.CENTER);
+            //textDataSteps.setGravity(Gravity.CENTER);
         });
 
         MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             if(aBoolean)
-                textDataHeartRate.setText(getString(R.string.show_data_heartrate, MainActivity.heartRate));
-
+            {
+                final LocalDate now = LocalDate.now();
+                MainActivity.heartRateMeasurementRepository.readAverageObserved(now, value -> getString(R.string.show_data_heartrate_average, value));
+            }
             else
                 textDataHeartRate.setText(R.string.fragment_data_heartrate_protocol_disabled);
-            textDataHeartRate.setGravity(Gravity.CENTER);
-        });
+            //textDataHeartRate.setGravity(Gravity.CENTER);
+        });*/
     }
 }

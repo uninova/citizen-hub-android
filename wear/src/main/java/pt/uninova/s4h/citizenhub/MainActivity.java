@@ -42,14 +42,16 @@ import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 public class MainActivity extends FragmentActivity {
 
     public static String nodeIdString;
+    public static StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
+    public static HeartRateMeasurementRepository heartRateMeasurementRepository;
     private Device wearDevice;
     private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
-    public static double heartRate = 0;
     public static SensorManager sensorManager;
     public static Sensor stepsSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
+    static MutableLiveData<String> listenHeartRateAverage = new MutableLiveData<>();
     static MutableLiveData<String> listenSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
@@ -57,8 +59,7 @@ public class MainActivity extends FragmentActivity {
     public static SensorEventListener stepsListener, heartRateListener;
     SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
-    HeartRateMeasurementRepository heartRateMeasurementRepository;
-    StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class MainActivity extends FragmentActivity {
                     sampleRepository.create(sample, sampleId -> {});
 
                     final LocalDate now = LocalDate.now();
-                    heartRateMeasurementRepository.readAverageObserved(now, value -> System.out.println("Avg HR is: " + value));
+                    heartRateMeasurementRepository.readAverageObserved(now, value -> listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value)));
                 }
             }
             @Override
@@ -104,14 +105,16 @@ public class MainActivity extends FragmentActivity {
                     if(!checkForStepsReset())
                         stepsTotal = 0;
                     sharedPreferences.edit().putLong("dayFromLastSteps", new Date().getTime()).apply();
-                    listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
-                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
 
+                    stepsTotal+=event.values[0];
                     Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
                     sampleRepository.create(sample, sampleId -> {});
-
                     final LocalDate now = LocalDate.now();
-                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> System.out.println("Max Steps are: " + value));
+                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+                        stepsTotal = value.intValue();
+                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
+                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                    });
                 }
             }
             @Override
