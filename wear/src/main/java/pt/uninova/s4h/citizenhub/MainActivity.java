@@ -128,6 +128,10 @@ public class MainActivity extends FragmentActivity {
         viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
 
         new SendMessage(citizenHubPath + nodeIdString,"Ready");
+
+        final LocalDate now = LocalDate.now();
+        MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> MainActivity.listenSteps.postValue(getString(R.string.show_data_steps, value.intValue())));
+        MainActivity.heartRateMeasurementRepository.readAverageObserved(now, value -> MainActivity.listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value)));
     }
 
     @Override
