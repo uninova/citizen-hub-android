@@ -103,7 +103,11 @@ public class MainActivity extends FragmentActivity {
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     if(!checkForStepsReset())
+                    {
                         stepsTotal = 0;
+                        final LocalDate now = LocalDate.now();
+                        MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> MainActivity.listenSteps.postValue(getString(R.string.show_data_steps, value.intValue())));
+                    }
                     sharedPreferences.edit().putLong("dayFromLastSteps", new Date().getTime()).apply();
 
                     stepsTotal+=event.values[0];
@@ -130,8 +134,18 @@ public class MainActivity extends FragmentActivity {
         new SendMessage(citizenHubPath + nodeIdString,"Ready");
 
         final LocalDate now = LocalDate.now();
-        MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> MainActivity.listenSteps.postValue(getString(R.string.show_data_steps, value.intValue())));
-        MainActivity.heartRateMeasurementRepository.readAverageObserved(now, value -> MainActivity.listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value)));
+        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+            if(value != null)
+                listenSteps.postValue(getString(R.string.show_data_steps, value.intValue()));
+            else
+                listenSteps.postValue(getString(R.string.show_data_steps, 0));
+        });
+        heartRateMeasurementRepository.readAverageObserved(now, value -> {
+            if(value != null)
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
+            else
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, 0));
+        });
     }
 
     @Override
