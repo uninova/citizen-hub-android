@@ -32,28 +32,5 @@ public class DataFragment extends Fragment {
         MainActivity.listenHeartRate.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRate.setText(s));
         MainActivity.listenHeartRateAverage.observe((LifecycleOwner) view.getContext(), s -> textDataHeartRateAverage.setText(s));
         MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> textDataSteps.setText(s));
-
-        /* TODO: do not delete this after merging
-        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
-            if(aBoolean)
-            {
-                final LocalDate now = LocalDate.now();
-                MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> textDataSteps.setText(getString(R.string.show_data_steps, value.intValue())));
-            }
-            else
-                textDataSteps.setText(R.string.fragment_data_steps_protocol_disabled);
-            textDataSteps.setGravity(Gravity.CENTER);
-        });
-
-        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
-            if(aBoolean)
-            {
-                final LocalDate now = LocalDate.now();
-                MainActivity.heartRateMeasurementRepository.readAverageObserved(now, value -> textDataHeartRateAverage.setText(getString(R.string.show_data_heartrate_average, value)));
-            }
-            else
-                textDataHeartRate.setText(R.string.fragment_data_heartrate_protocol_disabled);
-            textDataHeartRate.setGravity(Gravity.CENTER);
-        });*/
     }
 }
