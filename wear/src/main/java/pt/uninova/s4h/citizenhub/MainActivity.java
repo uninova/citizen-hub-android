@@ -12,13 +12,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,8 +65,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         sharedPreferences = this.getSharedPreferences("checkForStepsReset", Context.MODE_PRIVATE);
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
@@ -90,6 +88,9 @@ public class MainActivity extends FragmentActivity {
 
                     Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
                     sampleRepository.create(sample, sampleId -> {});
+
+                    final LocalDate now = LocalDate.now();
+                    heartRateMeasurementRepository.readAverageObserved(now, value -> System.out.println("Avg HR is: " + value));
                 }
             }
             @Override
@@ -108,6 +109,9 @@ public class MainActivity extends FragmentActivity {
 
                     Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
                     sampleRepository.create(sample, sampleId -> {});
+
+                    final LocalDate now = LocalDate.now();
+                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> System.out.println("Max Steps are: " + value));
                 }
             }
             @Override
