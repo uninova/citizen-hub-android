@@ -31,7 +31,7 @@ public interface CaloriesMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<Double> selectMaximumLiveData(LocalDate from, LocalDate to);
 
-    @Query(value = "SELECT IFNULL(calories,0) + IFNULL(snapshotCalories, 0) FROM (SELECT SUM(calories_measurement.value) AS calories FROM calories_measurement INNER JOIN sample ON calories_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1) LEFT JOIN (SELECT calories_snapshot_measurement.value AS snapshotCalories FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample_id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1)")
+    @Query(value = "SELECT IFNULL(calories,0) + IFNULL(snapshotCalories, 0) FROM (SELECT SUM(calories_measurement.value) AS calories FROM calories_measurement INNER JOIN sample ON calories_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1) LEFT JOIN (SELECT calories_snapshot_measurement.value AS snapshotCalories FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1)")
     @TypeConverters(EpochTypeConverter.class)
     LiveData<Double> getCaloriesAllTypes(LocalDate from, LocalDate to);
 
