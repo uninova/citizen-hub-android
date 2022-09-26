@@ -76,7 +76,7 @@ public class CitizenHubService extends LifecycleService {
     public static void start(Context context) {
         final Intent intent = new Intent(context, CitizenHubService.class);
 
-        context.startService(intent);
+        context.startForegroundService(intent);
     }
 
     public static void stop(Context context) {
