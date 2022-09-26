@@ -95,7 +95,7 @@ public class DeviceSearchFragmentWearOS extends Fragment {
                         Wearable.NodeApi.getConnectedNodes(client).await();
                 List<Node> nodes = result.getNodes();
                 if (nodes.size() > 0) {
-                    //TODO: showing multiple devices is not tested yet
+                    // showing multiple devices is not tested yet
                     for (Node node : nodes) {
                         String nodeId = node.getId();
                         String nodeName = node.getDisplayName();

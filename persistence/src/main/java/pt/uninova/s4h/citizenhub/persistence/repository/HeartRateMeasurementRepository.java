@@ -2,15 +2,15 @@ package pt.uninova.s4h.citizenhub.persistence.repository;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import java.time.LocalDate;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.HeartRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.HeartRateMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class HeartRateMeasurementRepository {
 
@@ -36,5 +36,9 @@ public class HeartRateMeasurementRepository {
 
     public LiveData<Double> readAverage(LocalDate localDate) {
         return heartRateMeasurementDao.selectAverageLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public void readAverageObserved(LocalDate localDate, Observer<Double> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAverage(localDate, localDate.plusDays(1))));
     }
 }
