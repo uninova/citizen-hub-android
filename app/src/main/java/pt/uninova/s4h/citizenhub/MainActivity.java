@@ -131,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
         client.isUserLoggedIn(new ResultListener<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
-                nav_Menu.findItem(R.id.smart4health_fragment).setVisible(aBoolean);
+                runOnUiThread(() -> nav_Menu.findItem(R.id.smart4health_fragment).setVisible(aBoolean));
             }
 
             @Override
             public void onError(@NonNull D4LException e) {
-                nav_Menu.findItem(R.id.smart4health_fragment).setVisible(false);
+                runOnUiThread(() -> nav_Menu.findItem(R.id.smart4health_fragment).setVisible(false));
             }
         });
     }
