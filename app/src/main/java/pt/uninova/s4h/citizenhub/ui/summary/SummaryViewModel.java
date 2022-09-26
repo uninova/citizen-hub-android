@@ -161,7 +161,6 @@ public class SummaryViewModel extends AndroidViewModel {
     public void setupPieChart(PieChart pieChart) {
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setDrawSliceText(false);
     }
 
     public String[] setLabels(int max) {
@@ -251,7 +250,6 @@ public class SummaryViewModel extends AndroidViewModel {
                 //entries.add(new BarEntry(currentTime, 0));
                 currentTime++;
             }
-            System.out.println(data.getTime());
             entries.add(new BarEntry(data.getTime(), data.getValue()));
             currentTime++;
         }

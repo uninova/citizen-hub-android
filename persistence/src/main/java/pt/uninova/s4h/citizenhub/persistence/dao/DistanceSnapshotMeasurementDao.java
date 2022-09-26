@@ -36,14 +36,14 @@ public interface DistanceSnapshotMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDay(LocalDate localDate);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, distance_snapshot_measurement.value AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, distance_snapshot_measurement.value AS value "
             + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, distance_snapshot_measurement.value AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, distance_snapshot_measurement.value AS value "
             + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")

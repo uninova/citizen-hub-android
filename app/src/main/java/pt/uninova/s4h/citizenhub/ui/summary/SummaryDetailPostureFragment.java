@@ -33,9 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
@@ -110,7 +108,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         model.setupLineChart(lineChart);
         model.setupPieChart(pieChart);
         // Specific to this fragment
-        lineChart.getAxisLeft().setEnabled(false);
+        lineChart.getAxisLeft().setAxisMaximum(100);
 
         dailyPosture();
     }
@@ -159,9 +157,10 @@ public class SummaryDetailPostureFragment extends Fragment {
                     incorrectPostureTime += data.getValue();
 
                 List<PieEntry> pieEntries = new ArrayList<>();
-                pieEntries.add(new PieEntry(correctPostureTime, getString(R.string.summary_detail_posture_correct)));
-                pieEntries.add(new PieEntry(incorrectPostureTime, getString(R.string.summary_detail_posture_incorrect)));
+                pieEntries.add(new PieEntry(correctPostureTime, secondsToString(correctPostureTime / 1000)));
+                pieEntries.add(new PieEntry(incorrectPostureTime, secondsToString(incorrectPostureTime / 1000)));
                 PieDataSet dataSet = new PieDataSet(pieEntries, "");
+                dataSet.setDrawValues(false);
                 dataSet.setColors(ContextCompat.getColor(requireContext(), R.color.colorS4HLightBlue), ContextCompat.getColor(requireContext(), R.color.colorS4HOrange));
                 PieData data = new PieData(dataSet);
                 pieChart.setData(data);
@@ -281,19 +280,44 @@ public class SummaryDetailPostureFragment extends Fragment {
     }*/
 
     private void setAreaChart(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
-        List<Entry> entriesCorrectPosture = new ArrayList<>();
-        List<Entry> entriesIncorrectPosture = new ArrayList<>();
+        float[] valuesCorrectPosture = new float[max];
+        float[] valuesIncorrectPosture = new float[max];
         float[] offset = new float[max];
 
-        int currentTime = 0;
+        for (SummaryDetailUtil data : incorrectPosture) {
+            valuesIncorrectPosture[Math.round(data.getTime())] = data.getValue();
+            offset[Math.round(data.getTime())] = data.getValue();
+        }
 
         for (SummaryDetailUtil data : correctPosture) {
+            valuesCorrectPosture[Math.round(data.getTime())] = data.getValue() + offset[Math.round(data.getTime())];
+        }
+
+        int currentTime = 0;
+        float total;
+        List<Entry> entriesCorrectPosture = new ArrayList<>();
+        List<Entry> entriesIncorrectPosture = new ArrayList<>();
+
+        while(currentTime < max){
+            total = valuesCorrectPosture[currentTime] + valuesIncorrectPosture[currentTime];
+            if(total > 3600000){
+                valuesCorrectPosture[currentTime] = valuesCorrectPosture[currentTime] * 3600000 / total;
+                valuesIncorrectPosture[currentTime] = valuesIncorrectPosture[currentTime] * 3600000 / total;
+            }
+            System.out.println(valuesCorrectPosture[currentTime]);
+            System.out.println(valuesIncorrectPosture[currentTime]);
+            entriesCorrectPosture.add(new BarEntry(currentTime, valuesCorrectPosture[currentTime] * 100 / 3600000));
+            entriesIncorrectPosture.add(new BarEntry(currentTime, valuesIncorrectPosture[currentTime] * 100 / 3600000));
+            currentTime++;
+        }
+
+        /*for (SummaryDetailUtil data : correctPosture) {
             while (currentTime < data.getTime()) {
                 entriesCorrectPosture.add(new BarEntry(currentTime, 0));
                 offset[currentTime] = 0;
                 currentTime++;
             }
-            entriesCorrectPosture.add(new BarEntry(data.getTime(), data.getValue()));
+            entriesCorrectPosture.add(new BarEntry(data.getTime(), data.getValue() * 100 / 3600000));
             offset[currentTime] = data.getValue();
             currentTime++;
         }
@@ -318,14 +342,14 @@ public class SummaryDetailPostureFragment extends Fragment {
         while (currentTime < max) {
             entriesIncorrectPosture.add(new BarEntry(currentTime, offset[currentTime]));
             currentTime++;
-        }
+        }*/
 
         LineDataSet lineDataSetCorrectPosture = setLineDataSet(entriesCorrectPosture, getString(R.string.summary_detail_posture_correct), ContextCompat.getColor(requireContext(), R.color.colorS4HLightBlue));
         LineDataSet lineDataSetIncorrectPosture = setLineDataSet(entriesIncorrectPosture, getString(R.string.summary_detail_posture_incorrect), ContextCompat.getColor(requireContext(), R.color.colorS4HOrange));
 
         ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSetIncorrectPosture);
         dataSet.add(lineDataSetCorrectPosture);
+        dataSet.add(lineDataSetIncorrectPosture);
 
         LineData lineData = new LineData(dataSet);
         lineData.setValueFormatter(new MyValueFormatter());
@@ -346,6 +370,23 @@ public class SummaryDetailPostureFragment extends Fragment {
         lineDataSet.setFillAlpha(255);
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         return lineDataSet;
+    }
+
+    private String secondsToString(long value) {
+        long seconds = value;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
     }
 
 }
