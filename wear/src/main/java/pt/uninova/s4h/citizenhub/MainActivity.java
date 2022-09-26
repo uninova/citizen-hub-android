@@ -144,7 +144,7 @@ public class MainActivity extends FragmentActivity {
             if(value != null)
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
             else
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, 0));
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, 0.00));
         });
     }
 
