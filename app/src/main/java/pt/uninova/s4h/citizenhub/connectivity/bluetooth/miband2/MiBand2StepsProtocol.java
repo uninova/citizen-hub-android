@@ -51,17 +51,17 @@ public class MiBand2StepsProtocol extends BluetoothMeasuringProtocol {
                 if (value.length > 5) {
                     newDistance = val.getInt(5);
                     newCalories = val.getInt(9);
+                } else {
+                    newDistance = newSteps * 0.5;
+                    newCalories = newSteps * 0.04;
                 }
 
                 if (newSteps != steps || newDistance != distance || newCalories != calories) {
-                    final Measurement<?>[] measurements = new Measurement[value.length > 5 ? 3 : 1];
+                    final Measurement<?>[] measurements = new Measurement[3];
 
                     measurements[0] = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, newSteps);
-
-                    if (value.length > 5) {
-                        measurements[1] = new DistanceSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, newDistance);
-                        measurements[2] = new CaloriesSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, newCalories);
-                    }
+                    measurements[1] = new DistanceSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, newDistance);
+                    measurements[2] = new CaloriesSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, newCalories);
 
                     final Sample sample = new Sample(getAgent().getSource(), measurements);
 
