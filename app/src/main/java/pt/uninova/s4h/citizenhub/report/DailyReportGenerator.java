@@ -25,6 +25,9 @@ public class DailyReportGenerator {
     }
 
     private void groupSimpleRecords(ReportUtil reportUtil, List<Group> groups) {
+        if (reportUtil == null)
+            return;
+
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         System.out.println("Entered Simples Daily Reports.");
         if (reportUtil.getCalories() != null || reportUtil.getDistance() != null || reportUtil.getSteps() != null) {
