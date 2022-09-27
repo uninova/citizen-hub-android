@@ -47,7 +47,7 @@
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tv_correct"
+                android:layout_toStartOf="@+id/tv_correct"
                 android:background="@drawable/rectangle_light_blue"/>
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_toLeftOf="@+id/view_incorrect"
+                android:layout_toStartOf="@+id/view_incorrect"
                 android:gravity="center"
                 android:text="@string/summary_detail_heart_rate_average"
                 android:textAlignment="center"
@@ -67,7 +67,7 @@
                 android:id="@+id/view_incorrect"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toLeftOf="@+id/tv_incorrect"
+                android:layout_toStartOf="@+id/tv_incorrect"
                 android:layout_marginEnd="10dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/rectangle_orange"/>
@@ -76,7 +76,7 @@
                 android:id="@+id/tv_incorrect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:text="@string/summary_detail_posture_incorrect"
@@ -86,28 +86,6 @@
                 android:textStyle="bold"/>
 
         </RelativeLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:background="@drawable/shape_bottom_navigation_corners"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/menu_summary_detail_time"
-            android:visibility="invisible"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bar_chart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@+id/tab_layout"
-            android:layout_marginTop="80dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="30dp"
-            android:visibility="invisible"/>
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart"

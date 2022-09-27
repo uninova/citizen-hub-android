@@ -33,8 +33,6 @@ public class SummaryDetailActivityFragment extends Fragment {
 
     private SummaryViewModel model;
     private BarChart barChart;
-    private BottomNavigationView bottomNavigationViewTime;
-    private BottomNavigationView bottomNavigationViewActivity;
     private TabLayout tabLayout;
     private TabLayout tabLayoutActivity;
     private TextView textView;
@@ -54,12 +52,6 @@ public class SummaryDetailActivityFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         barChart = requireView().findViewById(R.id.bar_chart);
-
-        bottomNavigationViewActivity = requireView().findViewById(R.id.nav_view_activity);
-        bottomNavigationViewActivity.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedActivity);
-
-        bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
 
         textView = requireView().findViewById(R.id.tv_activity);
 
@@ -157,76 +149,6 @@ public class SummaryDetailActivityFragment extends Fragment {
 
         model.setupBarChart(barChart);
         dailySteps();
-    }
-
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                System.out.println("Day");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: dailySteps(); break;
-                    case R.id.nav_distance: dailyDistance(); break;
-                    case R.id.nav_calories: dailyCalories(); break;
-                }
-                break;
-            case R.id.nav_week:
-                System.out.println("Week");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: weeklySteps(); break;
-                    case R.id.nav_distance: weeklyDistance(); break;
-                    case R.id.nav_calories: weeklyCalories(); break;
-                }
-                break;
-            case R.id.nav_month:
-                System.out.println("Month");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: monthlySteps(); break;
-                    case R.id.nav_distance: monthlyDistance(); break;
-                    case R.id.nav_calories: monthlyCalories(); break;
-                }
-                break;
-        }
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedActivity(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_steps:
-                System.out.println("Steps");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_steps));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailySteps();break;
-                    case R.id.nav_week: weeklySteps(); break;
-                    case R.id.nav_month: monthlySteps(); break;
-                }
-                break;
-            case R.id.nav_distance:
-                System.out.println("Distance");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_distance));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyDistance(); break;
-                    case R.id.nav_week: weeklyDistance(); break;
-                    case R.id.nav_month: monthlyDistance();break;
-                }
-                break;
-            case R.id.nav_calories:
-                System.out.println("Calories");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_calories));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyCalories(); break;
-                    case R.id.nav_week: weeklyCalories(); break;
-                    case R.id.nav_month: monthlyCalories(); break;
-                }
-                break;
-        }
-        return true;
     }
 
     private void dailySteps() {

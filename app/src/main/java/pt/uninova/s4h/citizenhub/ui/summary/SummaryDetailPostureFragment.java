@@ -43,7 +43,6 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class SummaryDetailPostureFragment extends Fragment {
 
     private SummaryViewModel model;
-    private BarChart barChart;
     private LineChart lineChart;
     private PieChart pieChart;
 
@@ -61,10 +60,6 @@ public class SummaryDetailPostureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
-
-        barChart = requireView().findViewById(R.id.bar_chart);
         lineChart = requireView().findViewById(R.id.line_chart);
         pieChart = requireView().findViewById(R.id.pie_chart);
 
@@ -104,39 +99,12 @@ public class SummaryDetailPostureFragment extends Fragment {
             }
         });
 
-        model.setupBarChart(barChart);
         model.setupLineChart(lineChart);
         model.setupPieChart(pieChart);
         // Specific to this fragment
         lineChart.getAxisLeft().setAxisMaximum(100);
 
         dailyPosture();
-    }
-
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                System.out.println("Day");
-                pieChart.setVisibility(View.VISIBLE);
-                dailyPosture();
-                break;
-            case R.id.nav_week:
-                System.out.println("Week");
-                pieChart.setVisibility(View.INVISIBLE);
-                weeklyPosture();
-                break;
-            case R.id.nav_month:
-                System.out.println("Month");
-                pieChart.setVisibility(View.INVISIBLE);
-                monthlyPosture();
-                break;
-        }
-        return true;
     }
 
     private void dailyPosture() {
@@ -193,7 +161,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         postureMeasurementRepository.readLastThirtyDaysCorrectPosture(LocalDate.now(), observerCorrect);
     }
 
-    private void setStackedBar(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
+    /*private void setStackedBar(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
         float[] yValsCorrectPosture = new float[max];
         float[] yValsIncorrectPosture = new float[max];
 
@@ -227,7 +195,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(model.setLabels(max)));
         //barChart.groupBars(0.2f, 0.25f, 0.05f);
         barChart.invalidate();
-    }
+    }*/
 
     /*private void setBarChartDataTwoColumns(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
         List<BarEntry> entriesCorrectPosture = new ArrayList<>();

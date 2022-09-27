@@ -23,6 +23,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.PulseRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -30,11 +31,6 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
 
     private SummaryViewModel model;
     private LineChart lineChart;
-    private BarChart barChart;
-    private BottomNavigationView bottomNavigationViewTime;
-    private BottomNavigationView bottomNavigationViewBloodPressure;
-    private TabLayout tabLayoutPrimary;
-    private TabLayout tabLayoutSecondary;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,47 +46,30 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        barChart = view.findViewById(R.id.bar_chart);
         lineChart = view.findViewById(R.id.line_chart);
 
-        bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
+        TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
 
-        bottomNavigationViewBloodPressure = requireView().findViewById(R.id.nav_view_blood_pressure);
-        bottomNavigationViewBloodPressure.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedBloodPressure);
-
-        tabLayoutPrimary = requireView().findViewById(R.id.tab_layout_primary);
-        tabLayoutSecondary = requireView().findViewById((R.id.tab_layout_secondary));
-
-        tabLayoutPrimary.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
                     System.out.println("Day");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
-                        case 0: dailySystolic(); break;
-                        case 1: dailyDiastolic(); break;
-                        case 2: dailyMean(); break;
-                    }
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().setAxisMaximum(23);
+                    dailyBloodPressure();
                 } else if(pos == 1) {
                     System.out.println("Week");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
-                        case 0: weeklySystolic(); break;
-                        case 1: weeklyDiastolic(); break;
-                        case 2: weeklyMean(); break;
-                    }
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
+                    weeklyBloodPressure();
                 } else if(pos == 2) {
                     System.out.println("Month");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutSecondary.getSelectedTabPosition()) {
-                        case 0: monthlySystolic(); break;
-                        case 1: monthlyDiastolic(); break;
-                        case 2: monthlyMean(); break;
-                    }
+                    lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
+                    monthlyBloodPressure();
                 }
             }
 
@@ -105,178 +84,45 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
             }
         });
 
-        tabLayoutSecondary.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int pos = tab.getPosition();
-
-                if(pos == 0) {
-                    System.out.println("Day");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
-                        case 0: dailySystolic(); break;
-                        case 1: weeklySystolic(); break;
-                        case 2: monthlySystolic(); break;
-                    }
-                } else if(pos == 1) {
-                    System.out.println("Week");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
-                        case 0: dailyDiastolic(); break;
-                        case 1: weeklyDiastolic(); break;
-                        case 2: monthlyDiastolic(); break;
-                    }
-                } else if(pos == 2) {
-                    System.out.println("Month");
-                    barChart.highlightValue(null);
-                    switch(tabLayoutPrimary.getSelectedTabPosition()) {
-                        case 0: dailyMean(); break;
-                        case 1: weeklyMean(); break;
-                        case 2: monthlyMean(); break;
-                    }
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        model.setupBarChart(barChart);
         model.setupLineChart(lineChart);
-
-        dailySystolic();
-        dailyPulseRate();
+        lineChart.getXAxis().setAxisMaximum(23);
+        dailyBloodPressure();
     }
 
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
-                    case R.id.nav_systolic: dailySystolic(); break;
-                    case R.id.nav_diastolic: dailyDiastolic(); break;
-                    case R.id.nav_mean: dailyMean(); break;
-                }
-                dailyPulseRate();
-                break;
-            case R.id.nav_week:
-                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
-                    case R.id.nav_systolic: weeklySystolic(); break;
-                    case R.id.nav_diastolic: weeklyDiastolic(); break;
-                    case R.id.nav_mean: weeklyMean(); break;
-                }
-                weeklyPulseRate();
-                break;
-            case R.id.nav_month:
-                switch (bottomNavigationViewBloodPressure.getSelectedItemId()) {
-                    case R.id.nav_systolic: monthlySystolic(); break;
-                    case R.id.nav_diastolic: monthlyDiastolic(); break;
-                    case R.id.nav_mean: monthlyMean(); break;
-                }
-                monthPulseRate();
-                break;
-        }
-        return true;
-    }
-
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedBloodPressure(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_systolic:
-                System.out.println("Systolic");
-                switch (bottomNavigationViewTime.getSelectedItemId()){
-                    case R.id.nav_day: dailySystolic(); break;
-                    case R.id.nav_week: weeklySystolic(); break;
-                    case R.id.nav_month: monthlySystolic(); break;
-                }
-                break;
-            case R.id.nav_diastolic:
-                System.out.println("Diastolic");
-                switch (bottomNavigationViewTime.getSelectedItemId()){
-                    case R.id.nav_day: dailyDiastolic(); System.out.println("Aqyu"); break;
-                    case R.id.nav_week: weeklyDiastolic(); break;
-                    case R.id.nav_month: monthlyDiastolic(); break;
-                }
-                break;
-            case R.id.nav_mean:
-                System.out.println("Mean");
-                switch (bottomNavigationViewTime.getSelectedItemId()){
-                    case R.id.nav_day: dailyMean(); break;
-                    case R.id.nav_week: weeklyMean(); break;
-                    case R.id.nav_month: monthlyMean(); break;
-                }
-                break;
-        }
-        return true;
-    }
-
-    private void dailySystolic() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_systolic), 24);
+    private void dailyBloodPressure() {
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastDaySystolic(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerSystolic = dataSystolic -> {
+            Observer<List<SummaryDetailUtil>> observerDiastolic = dataDiastolic -> {
+                Observer<List<SummaryDetailUtil>> observerMean = dataMean -> model.setLineChartData(Arrays.asList(dataSystolic, dataDiastolic, dataMean), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 24);
+                bloodPressureMeasurementRepository.readLastDayMean(LocalDate.now(), observerMean);
+            };
+            bloodPressureMeasurementRepository.readLastDayDiastolic(LocalDate.now(), observerDiastolic);
+        };
+        bloodPressureMeasurementRepository.readLastDaySystolic(LocalDate.now(), observerSystolic);
     }
 
-    private void weeklySystolic() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_systolic), 7);
+    private void weeklyBloodPressure() {
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastSevenDaysSystolic(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerSystolic = dataSystolic -> {
+            Observer<List<SummaryDetailUtil>> observerDiastolic = dataDiastolic -> {
+                Observer<List<SummaryDetailUtil>> observerMean = dataMean -> model.setLineChartData(Arrays.asList(dataSystolic, dataDiastolic, dataMean), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 7);
+                bloodPressureMeasurementRepository.readLastSevenDaysMean(LocalDate.now(), observerMean);
+            };
+            bloodPressureMeasurementRepository.readLastSevenDaysDiastolic(LocalDate.now(), observerDiastolic);
+        };
+        bloodPressureMeasurementRepository.readLastSevenDaysSystolic(LocalDate.now(), observerSystolic);
     }
 
-    private void monthlySystolic() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_systolic), 30);
+    private void monthlyBloodPressure() {
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastThirtyDaysSystolic(LocalDate.now(), observer);
-    }
-
-    private void dailyDiastolic() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_diastolic), 24);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastDayDiastolic(LocalDate.now(), observer);
-    }
-
-    private void weeklyDiastolic() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_diastolic), 7);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastSevenDaysDiastolic(LocalDate.now(), observer);
-    }
-
-    private void monthlyDiastolic(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_diastolic), 30);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastThirtyDaysDiastolic(LocalDate.now(), observer);
-    }
-
-    private void dailyMean(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_mean), 24);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastDayMean(LocalDate.now(), observer);
-    }
-
-    private void weeklyMean(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_mean), 7);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastSevenDaysMean(LocalDate.now(), observer);
-    }
-
-    private void monthlyMean(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_blood_pressure_mean), 30);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.readLastThirtyDaysMean(LocalDate.now(), observer);
+        Observer<List<SummaryDetailUtil>> observerSystolic = dataSystolic -> {
+            Observer<List<SummaryDetailUtil>> observerDiastolic = dataDiastolic -> {
+                Observer<List<SummaryDetailUtil>> observerMean = dataMean -> model.setLineChartData(Arrays.asList(dataSystolic, dataDiastolic, dataMean), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 30);
+                bloodPressureMeasurementRepository.readLastThirtyDaysMean(LocalDate.now(), observerMean);
+            };
+            bloodPressureMeasurementRepository.readLastThirtyDaysDiastolic(LocalDate.now(), observerDiastolic);
+        };
+        bloodPressureMeasurementRepository.readLastThirtyDaysSystolic(LocalDate.now(), observerSystolic);
     }
 
     private void dailyPulseRate(){

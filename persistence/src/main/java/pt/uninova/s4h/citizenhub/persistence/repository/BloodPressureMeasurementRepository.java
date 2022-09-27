@@ -36,11 +36,11 @@ public class BloodPressureMeasurementRepository {
     }
 
     public void readLastSevenDaysSystolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysSystolic(localDate.minusDays(7), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysSystolic(localDate.minusDays(6), localDate)));
     }
 
     public void readLastThirtyDaysSystolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysSystolic(localDate.minusDays(30), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysSystolic(localDate.minusDays(29), localDate)));
     }
 
     public void readLastDayDiastolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
@@ -48,11 +48,11 @@ public class BloodPressureMeasurementRepository {
     }
 
     public void readLastSevenDaysDiastolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysDiastolic(localDate.minusDays(7), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysDiastolic(localDate.minusDays(6), localDate)));
     }
 
     public void readLastThirtyDaysDiastolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysDiastolic(localDate.minusDays(30), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysDiastolic(localDate.minusDays(29), localDate)));
     }
 
     public void readLastDayMean(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
@@ -60,11 +60,11 @@ public class BloodPressureMeasurementRepository {
     }
 
     public void readLastSevenDaysMean(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysMean(localDate.minusDays(7), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastSevenDaysMean(localDate.minusDays(6), localDate)));
     }
 
     public void readLastThirtyDaysMean(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysMean(localDate.minusDays(30), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastThirtyDaysMean(localDate.minusDays(29), localDate)));
     }
 
 }

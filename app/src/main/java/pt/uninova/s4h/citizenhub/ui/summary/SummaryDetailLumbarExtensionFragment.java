@@ -1,23 +1,28 @@
 package pt.uninova.s4h.citizenhub.ui.summary;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.tabs.TabLayout;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
@@ -28,8 +33,6 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
 
     private SummaryViewModel model;
     private LineChart lineChart;
-    private BottomNavigationView bottomNavigationViewTime;
-    private BottomNavigationView bottomNavigationViewLumbarExtension;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,159 +49,101 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lineChart = requireView().findViewById(R.id.line_chart);
+
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        TextView textView = view.findViewById(R.id.text_view);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+
+                if(pos == 0) {
+                    System.out.println("Duration");
+                    lineChart.highlightValue(null);
+                    textView.setText(getString(R.string.summary_detail_lumbar_extension_duration));
+                    getDuration();
+                } else if(pos == 1) {
+                    System.out.println("Score");
+                    lineChart.highlightValue(null);
+                    textView.setText(getString(R.string.summary_detail_lumbar_extension_score));
+                    getScore();
+                } else if(pos == 2) {
+                    System.out.println("Repetitions");
+                    lineChart.highlightValue(null);
+                    textView.setText(getString(R.string.summary_detail_lumbar_extension_repetitions));
+                    getRepetitions();
+                } else if(pos == 3) {
+                    System.out.println("Weight");
+                    lineChart.highlightValue(null);
+                    textView.setText(getString(R.string.summary_detail_lumbar_extension_weight));
+                    getWeight();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         model.setupLineChart(lineChart);
-
-        bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
-
-        bottomNavigationViewLumbarExtension = requireView().findViewById(R.id.nav_view_lumbar_extension);
-        bottomNavigationViewLumbarExtension.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedLumbarExtension);
-
-        model.setupLineChart(lineChart);
-        dailyDuration();
+        getRepetitions();
     }
 
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                switch (bottomNavigationViewLumbarExtension.getSelectedItemId()) {
-                    case R.id.nav_duration: dailyDuration(); break;
-                    case R.id.nav_score: dailyScore(); break;
-                    case R.id.nav_repetitions: dailyRepetitions(); break;
-                    case R.id.nav_weight: dailyWeight(); break;
-                }
-                break;
-            case R.id.nav_week:
-                switch (bottomNavigationViewLumbarExtension.getSelectedItemId()) {
-                    case R.id.nav_duration: weeklyDuration(); break;
-                    case R.id.nav_score: weeklyScore(); break;
-                    case R.id.nav_repetitions: weeklyRepetitions(); break;
-                    case R.id.nav_weight: weeklyWeight(); break;
-                }
-                break;
-            case R.id.nav_month:
-                switch (bottomNavigationViewLumbarExtension.getSelectedItemId()) {
-                    case R.id.nav_duration: monthlyDuration(); break;
-                    case R.id.nav_score: monthlyScore(); break;
-                    case R.id.nav_repetitions: monthlyRepetitions(); break;
-                    case R.id.nav_weight: monthlyWeight(); break;
-                }
-                break;
+    private void getDuration(){
+        Observer<List<SummaryDetailUtil>> observer = data -> setLineChartData(data, getString(R.string.summary_detail_lumbar_extension_duration));
+        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
+        lumbarExtensionTrainingRepository.selectDuration(observer);
+    }
+
+    private void getScore(){
+        Observer<List<SummaryDetailUtil>> observer = data -> setLineChartData(data, getString(R.string.summary_detail_lumbar_extension_score));
+        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
+        lumbarExtensionTrainingRepository.selectScore(observer);
+    }
+
+    private void getRepetitions(){
+        Observer<List<SummaryDetailUtil>> observer = data -> setLineChartData(data, getString(R.string.summary_detail_lumbar_extension_repetitions));
+        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
+        lumbarExtensionTrainingRepository.selectRepetitions(observer);
+    }
+
+    private void getWeight(){
+        Observer<List<SummaryDetailUtil>> observer = data -> setLineChartData(data, getString(R.string.summary_detail_lumbar_extension_weight));
+        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
+        lumbarExtensionTrainingRepository.selectWeight(observer);
+    }
+
+    private void setLineChartData(List<SummaryDetailUtil> list, String label){
+        List<Entry> entries = new ArrayList<>();
+        int x = 0;
+        if(list.size() == 1)
+            x++;
+        for(SummaryDetailUtil data : list){
+            entries.add(new BarEntry(x++, data.getValue()));
         }
-        return true;
-    }
 
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedLumbarExtension(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_duration:
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyDuration(); break;
-                    case R.id.nav_week: weeklyDuration(); break;
-                    case R.id.nav_month: monthlyDuration(); break;
-                }
-                break;
-            case R.id.nav_score:
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyScore(); break;
-                    case R.id.nav_week: weeklyScore(); break;
-                    case R.id.nav_month: monthlyScore(); break;
-                }
-                break;
-            case R.id.nav_repetitions:
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyRepetitions(); break;
-                    case R.id.nav_week: weeklyRepetitions(); break;
-                    case R.id.nav_month: monthlyRepetitions(); break;
-                }
-                break;
-            case R.id.nav_weight:
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyWeight(); break;
-                    case R.id.nav_week: weeklyWeight(); break;
-                    case R.id.nav_month: monthlyWeight(); break;
-                }
-                break;
-        }
-        return true;
-    }
+        LineDataSet lineDataSet = new LineDataSet(entries, label);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setColor(requireContext().getColor(R.color.colorS4HLightBlue));
+        lineDataSet.setCircleColor(requireContext().getColor(R.color.colorS4HLightBlue));
+        lineDataSet.setCircleHoleColor(requireContext().getColor(R.color.colorS4HLightBlue));
 
-    private void dailyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_duration)}, 24);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastDayDuration(LocalDate.now(), observer);
-    }
+        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
+        dataSet.add(lineDataSet);
 
-    private void weeklyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_duration)}, 7);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastSevenDaysDuration(LocalDate.now(), observer);
-    }
-
-    private void monthlyDuration() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 30);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastThirtyDaysDuration(LocalDate.now(), observer);
-    }
-
-    private void dailyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 24);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastDayScore(LocalDate.now(), observer);
-    }
-
-    private void weeklyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 7);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastSevenDaysScore(LocalDate.now(), observer);
-    }
-
-    private void monthlyScore() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_score)}, 30);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastThirtyDaysScore(LocalDate.now(), observer);
-    }
-
-    private void dailyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 24);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastDayRepetitions(LocalDate.now(), observer);
-    }
-
-    private void weeklyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 7);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastSevenDaysRepetitions(LocalDate.now(), observer);
-    }
-
-    private void monthlyRepetitions() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_repetitions)}, 30);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastThirtyDaysRepetitions(LocalDate.now(), observer);
-    }
-
-    private void dailyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 24);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastDayWeight(LocalDate.now(), observer);
-    }
-
-    private void weeklyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 7);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastSevenDaysWeight(LocalDate.now(), observer);
-    }
-
-    private void monthlyWeight() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_lumbar_extension_weight)}, 30);
-        LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(getContext());
-        lumbarExtensionTrainingRepository.readLastThirtyDaysWeight(LocalDate.now(), observer);
+        LineData lineData = new LineData(dataSet);
+        lineData.setValueFormatter(new MyValueFormatter());
+        lineChart.setData(lineData);
+        lineChart.invalidate();
     }
 
 }

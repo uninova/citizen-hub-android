@@ -26,63 +26,63 @@ public interface BloodPressureMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<List<BloodPressureMeasurementRecord>> selectLiveData(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, blood_pressure_measurement.systolic AS value " +
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, blood_pressure_measurement.systolic AS value " +
             " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id " +
             " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) " +
             " SELECT value AS value, hour AS time FROM agg GROUP BY hour ")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDaySystolic(LocalDate localDate);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, blood_pressure_measurement.systolic AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, blood_pressure_measurement.systolic AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDaysSystolic(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, blood_pressure_measurement.systolic AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, blood_pressure_measurement.systolic AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastThirtyDaysSystolic(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, blood_pressure_measurement.diastolic AS value " +
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, blood_pressure_measurement.diastolic AS value " +
             " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id " +
             " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) " +
             " SELECT value AS value, hour AS time FROM agg GROUP BY hour ")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDayDiastolic(LocalDate localDate);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, blood_pressure_measurement.diastolic AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, blood_pressure_measurement.diastolic AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDaysDiastolic(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, blood_pressure_measurement.diastolic AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, blood_pressure_measurement.diastolic AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastThirtyDaysDiastolic(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate - 3600000) / 3600000) % 24 AS hour, blood_pressure_measurement.mean_arterial_pressure AS value " +
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, blood_pressure_measurement.mean_arterial_pressure AS value " +
             " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id " +
             " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) " +
             " SELECT value AS value, hour AS time FROM agg GROUP BY hour ")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDayMean(LocalDate localDate);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, blood_pressure_measurement.mean_arterial_pressure AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, blood_pressure_measurement.mean_arterial_pressure AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDaysMean(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, blood_pressure_measurement.mean_arterial_pressure AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, blood_pressure_measurement.mean_arterial_pressure AS value "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
             + " SELECT value AS value, day AS time FROM agg GROUP BY day")
