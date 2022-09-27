@@ -36,7 +36,7 @@ public interface StepsMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<WalkingInformation> selectLatestWalkingInformationLiveData(LocalDate from, LocalDate to);
 
-    @Query(value = "SELECT IFNULL(steps,0) + IFNULL(snapshotSteps,0) FROM (SELECT SUM(steps_measurement.value) AS steps FROM steps_measurement INNER JOIN sample ON steps_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1) LEFT JOIN (SELECT steps_snapshot_measurement.value AS snapshotSteps FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp DESC LIMIT 1)")
+    @Query(value = "WITH sample_window(id) AS (SELECT id FROM sample WHERE timestamp >= :from AND timestamp < :to), discreet (value) AS (SELECT IFNULL(SUM(steps_measurement.value), 0) AS value FROM sample_window INNER JOIN steps_measurement ON sample_window.id = steps_measurement.sample_id), snapshot (value) AS (SELECT IFNULL(MAX(steps_snapshot_measurement.value), 0) AS value FROM sample_window INNER JOIN steps_snapshot_measurement ON sample_window.id = steps_snapshot_measurement.sample_id) SELECT discreet.value + snapshot.value AS value FROM discreet, snapshot;")
     @TypeConverters(EpochTypeConverter.class)
     LiveData<Integer> getStepsAllTypes(LocalDate from, LocalDate to);
 }
