@@ -32,14 +32,14 @@ public interface CaloriesSnapshotMeasurementDao {
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, calories_snapshot_measurement.value AS value "
             + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
-            + " SELECT MAX(value) AS value, hour AS time FROM agg GROUP BY hour")
+            + " SELECT MAX(value) AS value1, hour AS time FROM agg GROUP BY hour")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDay(LocalDate localDate);
 
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, calories_snapshot_measurement.value AS value "
             + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
-            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+            + " SELECT MAX(value) AS value1, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
 
@@ -47,7 +47,7 @@ public interface CaloriesSnapshotMeasurementDao {
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, calories_snapshot_measurement.value AS value "
             + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
-            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+            + " SELECT MAX(value) AS value1, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastThirtyDays(LocalDate from, LocalDate to);
 }
