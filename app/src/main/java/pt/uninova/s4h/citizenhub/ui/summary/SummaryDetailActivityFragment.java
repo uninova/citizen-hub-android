@@ -64,7 +64,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
-                    System.out.println("Day");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: dailySteps(); break;
@@ -72,7 +71,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: dailyCalories(); break;
                     }
                 } else if(pos == 1) {
-                    System.out.println("Week");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: weeklySteps(); break;
@@ -80,7 +78,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: weeklyCalories(); break;
                     }
                 } else if(pos == 2) {
-                    System.out.println("Month");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: monthlySteps(); break;
@@ -107,7 +104,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
-                    System.out.println("Steps");
                     textView.setText(getString(R.string.summary_detail_activity_steps));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -116,7 +112,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: monthlySteps(); break;
                     }
                 } else if(pos == 1) {
-                    System.out.println("Distance");
                     textView.setText(getString(R.string.summary_detail_activity_distance));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -125,7 +120,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: monthlyDistance(); break;
                     }
                 } else if(pos == 2) {
-                    System.out.println("Calories");
                     textView.setText(getString(R.string.summary_detail_activity_calories));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -158,7 +152,7 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void weeklySteps() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart,getString(R.string.summary_detail_activity_steps), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_steps), 7);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
