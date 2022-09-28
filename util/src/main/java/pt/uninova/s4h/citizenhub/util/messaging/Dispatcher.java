@@ -32,22 +32,21 @@ public class Dispatcher<T> implements Closeable {
         }
     }
 
-    public synchronized void dispatch(T message) {
+    public void dispatch(T message) {
         synchronized (observerSet) {
             dispatching = true;
         }
 
-        for (Observer<T> observer : observerSet) {
-            observer.observe(message);
-        }
+        final Iterator<Observer<T>> observerIterator = observerSet.iterator();
 
-        final Iterator<Observer<T>> i = delayedRemoval.iterator();
+        while (observerIterator.hasNext()) {
+            final Observer<T> observer = observerIterator.next();
 
-        while (i.hasNext()) {
-            final Observer<T> observer = i.next();
-
-            observerSet.remove(observer);
-            i.remove();
+            if (delayedRemoval.contains(observer)) {
+                observerIterator.remove();
+            } else {
+                observer.observe(message);
+            }
         }
 
         synchronized (observerSet) {
