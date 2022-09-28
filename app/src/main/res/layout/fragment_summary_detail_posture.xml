@@ -42,7 +42,7 @@
             android:layout_below="@+id/tab_layout">
 
             <View
-                android:id="@+id/view_avg"
+                android:id="@+id/view_correct"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
@@ -57,7 +57,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/view_incorrect"
                 android:gravity="center"
-                android:text="@string/summary_detail_heart_rate_average"
+                android:text="@string/summary_detail_posture_correct"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp"
