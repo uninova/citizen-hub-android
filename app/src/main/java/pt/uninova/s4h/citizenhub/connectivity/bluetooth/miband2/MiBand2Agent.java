@@ -53,6 +53,9 @@ public class MiBand2Agent extends BluetoothAgent {
 
         if (value.getNewState() == Protocol.STATE_ENABLED) {
             setState(Agent.AGENT_STATE_ENABLED);
+
+            final SetTimeProtocol setTimeProtocol = new SetTimeProtocol(getConnection(), this);
+            setTimeProtocol.enable();
         }
     };
 
@@ -79,7 +82,6 @@ public class MiBand2Agent extends BluetoothAgent {
             System.out.println("MiBand2Agent.onStart");
         }
 
-        //authenticationProtocol.addStateObserver(authenticationObserver);
         authenticationProtocol.enable();
     }
 
@@ -88,7 +90,6 @@ public class MiBand2Agent extends BluetoothAgent {
             System.out.println("MiBand2Agent.onStop");
         }
 
-        //authenticationProtocol.removeStateObserver(authenticationObserver);
         setState(Agent.AGENT_STATE_INACTIVE);
         getConnection().clear();
     }
