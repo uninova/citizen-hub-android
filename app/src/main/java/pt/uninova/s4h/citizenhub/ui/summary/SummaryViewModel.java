@@ -113,10 +113,6 @@ public class SummaryViewModel extends AndroidViewModel {
     public LiveData<Double> getDailyDistanceAllTypes(){return dailyDistanceAllTypes;}
 
     public LiveData<Double> getDailyCaloriesAllTypes(){return dailyCaloriesAllTypes;}
-    
-    public LiveData<WalkingInformation> getDailyWalkingInformation() {
-        return dailyWalkingInformation;
-    }
 
     public void setupBarChart(BarChart barChart) {
         barChart.setDrawGridBackground(false);
@@ -201,7 +197,7 @@ public class SummaryViewModel extends AndroidViewModel {
                 entries.add(new BarEntry(currentTime, -1));
                 currentTime++;
             }
-            entries.add(new BarEntry(data.getTime(), data.getValue()));
+            entries.add(new BarEntry(data.getTime(), data.getValue1()));
             currentTime++;
         }
 
@@ -241,6 +237,68 @@ public class SummaryViewModel extends AndroidViewModel {
         lineChart.invalidate();
     }
 
+    public void setLineChartDataTest(List<SummaryDetailUtil> list, LineChart lineChart, String[] label, int max) {
+        List<Entry> entries1 = new ArrayList<>();
+        List<Entry> entries2 = new ArrayList<>();
+        List<Entry> entries3 = new ArrayList<>();
+        float time;
+
+        for (SummaryDetailUtil data : list) {
+            time = data.getTime();
+            entries1.add(new BarEntry(time, data.getValue1()));
+            if(data.getValue2() != null)
+                entries2.add(new BarEntry(time, data.getValue2()));
+            if(data.getValue3() != null)
+                entries3.add(new BarEntry(time, data.getValue3()));
+        }
+
+        LineDataSet lineDataSet1 = getLineDataSet(entries1, label[0], 0);
+        LineDataSet lineDataSet2 = getLineDataSet(entries2, label[1], 1);
+        LineDataSet lineDataSet3 = getLineDataSet(entries3, label[2], 2);
+
+        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
+        dataSet.add(lineDataSet1);
+        if (lineDataSet2 != null)
+            dataSet.add(lineDataSet2);
+        if (lineDataSet3 != null)
+            dataSet.add(lineDataSet3);
+
+        LineData lineData = new LineData(dataSet);
+        lineData.setValueFormatter(new MyValueFormatter());
+        lineChart.setData(lineData);
+        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(setLabels(max)));
+        lineChart.invalidate();
+    }
+
+    private LineDataSet getLineDataSet(List<Entry> entries, String label, int color){
+        if (entries.size() < 1)
+            return null;
+
+        LineDataSet lineDataSet = new LineDataSet(entries, label);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawCircleHole(true);
+        switch (color) {
+            case 0:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                break;
+            case 1:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HOrange));
+                break;
+            case 2:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                break;
+        }
+        return lineDataSet;
+    }
+
     public LineDataSet setLineChartDataSet(List<SummaryDetailUtil> list, String label, int max, int color) {
         List<Entry> entries = new ArrayList<>();
         int currentTime = 0;
@@ -250,7 +308,7 @@ public class SummaryViewModel extends AndroidViewModel {
                 //entries.add(new BarEntry(currentTime, 0));
                 currentTime++;
             }
-            entries.add(new BarEntry(data.getTime(), data.getValue()));
+            entries.add(new BarEntry(data.getTime(), data.getValue1()));
             currentTime++;
         }
 
