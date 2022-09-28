@@ -6,37 +6,9 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_primary"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorS4HWhite"
-        app:tabIndicatorColor="@color/colorS4HDarkBlue"
-        app:tabTextColor="@color/colorS4HDarkBlue"
-        app:tabTextAppearance="@style/SummaryDetailPrimaryTabLayout">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/summary_detail_time_today"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/summary_detail_time_last_week"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/summary_detail_time_last_month"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tab_layout_primary"
-        app:tabBackground="@color/colorS4HWhite"
         app:tabIndicatorColor="@color/colorS4HDarkBlue"
         app:tabTextColor="@color/colorS4HDarkBlue"
         app:tabTextAppearance="@style/SummaryDetailSecondaryTabLayout"
@@ -64,40 +36,45 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_time"
+    <RelativeLayout
+        android:id="@+id/relative_layout_avg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:background="@drawable/shape_bottom_navigation_corners"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/menu_summary_detail_time"
-        android:visibility="invisible"/>
+        android:layout_marginVertical="40dp"
+        android:layout_below="@+id/tab_layout">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_lumbar_extension"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:background="@drawable/shape_bottom_navigation_corners"
-        android:layout_below="@+id/nav_view_time"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/menu_summary_detail_lumbar_extension"
-        android:visibility="invisible"/>
+        <View
+            android:id="@+id/view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/text_view"
+            android:background="@drawable/rectangle_light_blue"/>
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="@string/summary_detail_lumbar_extension_duration"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_below="@+id/nav_view_lumbar_extension"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        tools:visibility="visible" />
+        android:layout_below="@+id/tab_layout"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="15dp"
+        tools:visibility="visible"/>
 
 </RelativeLayout>

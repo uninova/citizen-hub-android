@@ -9,7 +9,6 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorS4HWhite"
         app:tabIndicatorColor="@color/colorS4HDarkBlue"
         app:tabTextColor="@color/colorS4HDarkBlue"
         app:tabTextAppearance="@style/SummaryDetailPrimaryTabLayout">
@@ -44,7 +43,7 @@
             android:layout_height="20dp"
             android:layout_marginEnd="10dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tv_avg"
+            android:layout_toStartOf="@+id/tv_avg"
             android:background="@drawable/rectangle_light_blue"/>
 
         <TextView
@@ -52,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_toLeftOf="@+id/view_max"
+            android:layout_toStartOf="@+id/view_max"
             android:gravity="center"
             android:text="@string/summary_detail_heart_rate_average"
             android:textAlignment="center"
@@ -64,14 +63,14 @@
             android:id="@+id/view_max"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_toLeftOf="@+id/tv_max"
+            android:layout_toStartOf="@+id/tv_max"
             android:layout_marginEnd="10dp"
             android:layout_centerVertical="true"
             android:background="@drawable/rectangle_orange"/>
 
         <TextView
             android:id="@+id/tv_max"
-            android:layout_toLeftOf="@+id/view_min"
+            android:layout_toStartOf="@+id/view_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -88,12 +87,12 @@
             android:layout_height="20dp"
             android:layout_marginEnd="10dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tv_min"
+            android:layout_toStartOf="@+id/tv_min"
             android:background="@drawable/rectangle_turquoise"/>
 
         <TextView
             android:id="@+id/tv_min"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

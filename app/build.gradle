@@ -8,8 +8,8 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 26
         targetSdkVersion 32
-        versionCode 120220725
-        versionName "0.10.2"
+        versionCode 120220928
+        versionName "0.11.8"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -86,12 +86,13 @@ android {
 }
 
 dependencies {
+    def concurrent_version = "1.1.0"
     def d4l_sdk_android_version = "1.16.0"
     def d4l_fhir_helper_sdk_version = "1.9.0"
     def desugar_version = "1.1.5"
-    def fragment_version = "1.5.0"
+    def fragment_version = "1.5.2"
     def hapi_fhir_version = "6.0.2"
-    def lifecycle_version = "2.5.0"
+    def lifecycle_version = "2.5.1"
     def preference_version = "1.2.0"
     def okhttp_version = "4.9.3"
     def work_version = "2.7.1"
@@ -101,6 +102,8 @@ dependencies {
     implementation(project(":util"))
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_version"
+
+    implementation "androidx.concurrent:concurrent-futures:$concurrent_version"
 
     implementation "androidx.fragment:fragment:$fragment_version"
 

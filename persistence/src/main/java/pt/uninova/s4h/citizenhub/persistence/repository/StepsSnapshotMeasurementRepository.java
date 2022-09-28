@@ -2,11 +2,10 @@ package pt.uninova.s4h.citizenhub.persistence.repository;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import java.time.LocalDate;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.StepsSnapshotMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.StepsSnapshotMeasurementRecord;
@@ -36,6 +35,10 @@ public class StepsSnapshotMeasurementRepository {
         return stepsSnapshotMeasurementDao.selectMaximumLiveData(localDate, localDate.plusDays(1));
     }
 
+    public void readMaximumObserved(LocalDate localDate, Observer<Double> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectMaximum(localDate, localDate.plusDays(1))));
+    }
+
     public LiveData<WalkingInformation> readLatestWalkingInformation(LocalDate localDate) {
         return stepsSnapshotMeasurementDao.selectLatestWalkingInformationLiveData(localDate, localDate.plusDays(1));
     }
@@ -45,10 +48,10 @@ public class StepsSnapshotMeasurementRepository {
     }
 
     public void readLastSevenDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectLastSevenDays(localDate.minusDays(7), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectLastSevenDays(localDate.minusDays(6), localDate)));
     }
 
     public void readLastThirtyDays(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectLastThirtyDays(localDate.minusDays(30), localDate)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectLastThirtyDays(localDate.minusDays(29), localDate)));
     }
 }

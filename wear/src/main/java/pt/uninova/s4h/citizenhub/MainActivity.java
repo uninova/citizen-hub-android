@@ -12,58 +12,59 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.WindowManager;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-import persistence.MeasurementKind;
-import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
-import pt.uninova.s4h.citizenhub.data.SnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
-import pt.uninova.s4h.citizenhub.db.DataBaseHelper;
-import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
-import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
-
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
+import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
+import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
+import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
+
 public class MainActivity extends FragmentActivity {
 
     public static String nodeIdString;
+    public static StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
+    public static HeartRateMeasurementRepository heartRateMeasurementRepository;
+    private Device wearDevice;
     private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
-    public static double heartRate = 0;
     public static SensorManager sensorManager;
     public static Sensor stepsSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
+    static MutableLiveData<String> listenHeartRateAverage = new MutableLiveData<>();
     static MutableLiveData<String> listenSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
-    DataBaseHelper dataBaseHelper;
     SharedPreferences sharedPreferences;
+    SampleRepository sampleRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        dataBaseHelper = new DataBaseHelper(MainActivity.this);
 
         sharedPreferences = this.getSharedPreferences("checkForStepsReset", Context.MODE_PRIVATE);
 
@@ -73,17 +74,24 @@ public class MainActivity extends FragmentActivity {
 
         permissionRequest();
         sensorsManager();
+        setDevice();
+
+        sampleRepository = new SampleRepository(getApplication());
+        heartRateMeasurementRepository = new HeartRateMeasurementRepository(getApplication());
+        stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getApplication());
 
         heartRateListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    long timestamp = new Date().getTime();
                     listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
-                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + MeasurementKind.HEART_RATE.getId()).start();
-                    HeartRateMeasurement heartRateMeasurement = new HeartRateMeasurement((int)event.values[0]);
-                    if(!DataBaseHelper.addMeasurement(heartRateMeasurement, dataBaseHelper, timestamp))
-                        System.out.println("Failed to insert value in DB.");
+                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
+
+                    Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
+                    sampleRepository.create(sample, sampleId -> {});
+
+                    final LocalDate now = LocalDate.now();
+                    heartRateMeasurementRepository.readAverageObserved(now, value -> listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value)));
                 }
             }
             @Override
@@ -95,14 +103,22 @@ public class MainActivity extends FragmentActivity {
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     if(!checkForStepsReset())
+                    {
                         stepsTotal = 0;
-                    long timestamp = new Date().getTime();
-                    sharedPreferences.edit().putLong("dayFromLastSteps", timestamp).apply();
-                    listenSteps.setValue(getString(R.string.show_data_steps, (stepsTotal+=event.values[0])));
-                    new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + timestamp + "," + MeasurementKind.STEPS.getId()).start();
-                    StepsSnapshotMeasurement stepsSnapshotMeasurement = new StepsSnapshotMeasurement(SnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal);
-                    if(!DataBaseHelper.addMeasurement(stepsSnapshotMeasurement, dataBaseHelper, timestamp))
-                        System.out.println("Failed to insert value in DB.");
+                        final LocalDate now = LocalDate.now();
+                        MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> MainActivity.listenSteps.postValue(getString(R.string.show_data_steps, value.intValue())));
+                    }
+                    sharedPreferences.edit().putLong("dayFromLastSteps", new Date().getTime()).apply();
+
+                    stepsTotal+=event.values[0];
+                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
+                    sampleRepository.create(sample, sampleId -> {});
+                    final LocalDate now = LocalDate.now();
+                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+                        stepsTotal = value.intValue();
+                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
+                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                    });
                 }
             }
             @Override
@@ -113,11 +129,23 @@ public class MainActivity extends FragmentActivity {
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        viewPager.setCurrentItem(2);
-        viewPager.setCurrentItem(1);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
 
         new SendMessage(citizenHubPath + nodeIdString,"Ready");
+
+        final LocalDate now = LocalDate.now();
+        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+            if(value != null)
+                listenSteps.postValue(getString(R.string.show_data_steps, value.intValue()));
+            else
+                listenSteps.postValue(getString(R.string.show_data_steps, 0));
+        });
+        heartRateMeasurementRepository.readAverageObserved(now, value -> {
+            if(value != null)
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
+            else
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, 0.00));
+        });
     }
 
     @Override
@@ -148,9 +176,9 @@ public class MainActivity extends FragmentActivity {
             requestPermissions(
                     new String[]{Manifest.permission.BODY_SENSORS},
                     21);
-            Log.d("Permissions", "REQUESTED");
+            System.out.println("Permissions REQUESTED");
         } else {
-            Log.d("Permissions", "ALREADY GRANTED");
+            System.out.println("Permissions ALREADY GRANTED");
         }
     }
 
@@ -174,6 +202,18 @@ public class MainActivity extends FragmentActivity {
 
         return calendarRecordedDate.get(Calendar.DAY_OF_YEAR) == calendarCurrentDate.get(Calendar.DAY_OF_YEAR)
             && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR);
+    }
+
+    private void setDevice(){
+        new Thread(() -> {
+            try {
+                Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
+                nodeIdString = localNode.getId();
+                wearDevice = new Device(nodeIdString,"WearOS Device",2);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public static class Receiver extends BroadcastReceiver {
@@ -211,13 +251,14 @@ public class MainActivity extends FragmentActivity {
             try {
                 Task<Node> t = Wearable.getNodeClient(getApplicationContext()).getLocalNode();
                 Node n = Tasks.await(t);
+                nodeIdString = n.getId();
                 System.out.println("Node associated: " + n.getId() + " Message: " + message);
                 List<Node> nodes = Tasks.await(nodeListTask);
                 for (Node node : nodes) {
                     Task<Integer> sendMessageTask =
                             Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
                     try {
-                        Integer result = Tasks.await(sendMessageTask);
+                        Tasks.await(sendMessageTask);
                     } catch (ExecutionException | InterruptedException exception) {
                         exception.printStackTrace();
                     }

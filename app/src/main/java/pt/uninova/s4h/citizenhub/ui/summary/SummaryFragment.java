@@ -24,7 +24,6 @@ import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
 
 public class SummaryFragment extends ServiceFragment {
 
@@ -130,7 +129,7 @@ public class SummaryFragment extends ServiceFragment {
 
         heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
 
-        if(hasHeartRate) {
+        if (hasHeartRate) {
             heartRateCardView.setClickable(true);
             heartRateCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -201,7 +200,7 @@ public class SummaryFragment extends ServiceFragment {
         final CardView postureCardView = view.findViewById(R.id.postureCardView);
         postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
 
-        if(hasPosture){
+        if (hasPosture) {
             postureCardView.setClickable(true);
             postureCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,48 +211,63 @@ public class SummaryFragment extends ServiceFragment {
         }
     }
 
-    public void onDailyWalkingInformationUpdate(WalkingInformation record) {
-        if (record != null) {
+    public void onDailyStepsAllUpdate(Integer steps) {
+        if (steps != null) {
             final View view = requireView();
 
-            final boolean hasSteps = record.getSteps() != null;
-            final boolean hasDistance = record.getDistance() != null;
-            final boolean hasCalories = record.getCalories() != null;
-
-            final boolean hasActivity = hasSteps || hasDistance || hasCalories;
-
             final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-
-            if (hasSteps) {
-                activityStepsTextView.setText(getString(R.string.activity_steps_value, record.getSteps()));
-            }
-
-            if (hasDistance) {
-                activityCaloriesTextView.setText(getString(R.string.activity_calories_value, record.getCalories()));
-            }
-
-            if (hasCalories) {
-                activityDistanceTextView.setText(getString(R.string.activity_distance_value, record.getDistance()));
-            }
-
             final CardView activityCardView = view.findViewById(R.id.activityCardView);
 
-            activityStepsTextView.setVisibility(hasSteps ? View.VISIBLE : View.GONE);
-            activityDistanceTextView.setVisibility(hasDistance ? View.VISIBLE : View.GONE);
-            activityCaloriesTextView.setVisibility(hasCalories ? View.VISIBLE : View.GONE);
-            activityCardView.setVisibility(hasActivity ? View.VISIBLE : View.GONE);
+            activityCardView.setVisibility(View.VISIBLE);
+            activityStepsTextView.setVisibility(View.VISIBLE);
+            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
 
-            if (hasActivity){
-                activityCardView.setClickable(true);
-                activityCardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
-                    }
-                });
-            }
+            onActivityUpdate();
+        }
+    }
+
+    public void onDailyDistanceAllUpdate(Double distance) {
+        if (distance != null) {
+            final View view = requireView();
+
+            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+
+            activityCardView.setVisibility(View.VISIBLE);
+            activityDistanceTextView.setVisibility(View.VISIBLE);
+            activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
+
+            onActivityUpdate();
+        }
+    }
+
+    public void onDailyCaloriesAllUpdate(Double calories) {
+        if (calories != null) {
+            final View view = requireView();
+
+            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
+            final CardView activityCardView = view.findViewById(R.id.activityCardView);
+
+            activityCardView.setVisibility(View.VISIBLE);
+            activityCaloriesTextView.setVisibility(View.VISIBLE);
+            activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
+
+            onActivityUpdate();
+        }
+    }
+
+    public void onActivityUpdate() {
+        final View view = requireView();
+        final CardView activityCardView = view.findViewById(R.id.activityCardView);
+
+        if (!activityCardView.isClickable()) {
+            activityCardView.setClickable(true);
+            activityCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                }
+            });
         }
     }
 
@@ -265,7 +279,9 @@ public class SummaryFragment extends ServiceFragment {
         model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);
         model.getDailyHeartRate().observe(getViewLifecycleOwner(), this::onDailyHeartRateUpdate);
         model.getDailyPostureMeasurement().observe(getViewLifecycleOwner(), this::onDailyPostureMeasurementUpdate);
-        model.getDailyWalkingInformation().observe(getViewLifecycleOwner(), this::onDailyWalkingInformationUpdate);
+        model.getDailyStepsAllTypes().observe(getViewLifecycleOwner(), this::onDailyStepsAllUpdate);
+        model.getDailyDistanceAllTypes().observe(getViewLifecycleOwner(), this::onDailyDistanceAllUpdate);
+        model.getDailyCaloriesAllTypes().observe(getViewLifecycleOwner(), this::onDailyCaloriesAllUpdate);
     }
 
     private String secondsToString(long value) {

@@ -29,19 +29,22 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.WalkingInformation;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.BreathingRateMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.CaloriesMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.DistanceMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.LumbarExtensionTrainingRepository;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.StepsMeasurementRepository;
 
 public class SummaryViewModel extends AndroidViewModel {
 
@@ -51,7 +54,9 @@ public class SummaryViewModel extends AndroidViewModel {
     private final LiveData<Double> dailyHeartRate;
     private final LiveData<LumbarExtensionTrainingSummary> dailyLumbarExtensionTraining;
     private final LiveData<List<PostureClassificationSum>> dailyPostureMeasurement;
-    private final LiveData<WalkingInformation> dailyWalkingInformation;
+    private final LiveData<Integer> dailyStepsAllTypes;
+    private final LiveData<Double> dailyDistanceAllTypes;
+    private final LiveData<Double> dailyCaloriesAllTypes;
 
     public SummaryViewModel(Application application) {
         super(application);
@@ -62,7 +67,9 @@ public class SummaryViewModel extends AndroidViewModel {
         LumbarExtensionTrainingRepository lumbarExtensionTrainingRepository = new LumbarExtensionTrainingRepository(application);
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(application);
         SampleRepository sampleRepository = new SampleRepository(application);
-        StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(application);
+        StepsMeasurementRepository stepsMeasurementRepository = new StepsMeasurementRepository(application);
+        DistanceMeasurementRepository distanceMeasurementRepository = new DistanceMeasurementRepository(application);
+        CaloriesMeasurementRepository caloriesMeasurementRepository = new CaloriesMeasurementRepository(application);
 
         final LocalDate now = LocalDate.now();
 
@@ -72,7 +79,9 @@ public class SummaryViewModel extends AndroidViewModel {
         dailyDataExistence = sampleRepository.readCount(now);
         dailyHeartRate = heartRateMeasurementRepository.readAverage(now);
         dailyPostureMeasurement = postureMeasurementRepository.readClassificationSum(now);
-        dailyWalkingInformation = stepsSnapshotMeasurementRepository.readLatestWalkingInformation(now);
+        dailyStepsAllTypes = stepsMeasurementRepository.getStepsAllTypes(now);
+        dailyDistanceAllTypes = distanceMeasurementRepository.getDistanceAllTypes(now);
+        dailyCaloriesAllTypes = caloriesMeasurementRepository.getCaloriesAllTypes(now);
     }
 
     public LiveData<LumbarExtensionTrainingSummary> getDailyLumbarExtensionTraining() {
@@ -99,9 +108,11 @@ public class SummaryViewModel extends AndroidViewModel {
         return dailyPostureMeasurement;
     }
 
-    public LiveData<WalkingInformation> getDailyWalkingInformation() {
-        return dailyWalkingInformation;
-    }
+    public LiveData<Integer> getDailyStepsAllTypes() {return dailyStepsAllTypes;}
+
+    public LiveData<Double> getDailyDistanceAllTypes(){return dailyDistanceAllTypes;}
+
+    public LiveData<Double> getDailyCaloriesAllTypes(){return dailyCaloriesAllTypes;}
 
     public void setupBarChart(BarChart barChart) {
         barChart.setDrawGridBackground(false);
@@ -146,7 +157,6 @@ public class SummaryViewModel extends AndroidViewModel {
     public void setupPieChart(PieChart pieChart) {
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setDrawSliceText(false);
     }
 
     public String[] setLabels(int max) {
@@ -187,7 +197,7 @@ public class SummaryViewModel extends AndroidViewModel {
                 entries.add(new BarEntry(currentTime, -1));
                 currentTime++;
             }
-            entries.add(new BarEntry(data.getTime(), data.getValue()));
+            entries.add(new BarEntry(data.getTime(), data.getValue1()));
             currentTime++;
         }
 
@@ -227,6 +237,68 @@ public class SummaryViewModel extends AndroidViewModel {
         lineChart.invalidate();
     }
 
+    public void setLineChartDataTest(List<SummaryDetailUtil> list, LineChart lineChart, String[] label, int max) {
+        List<Entry> entries1 = new ArrayList<>();
+        List<Entry> entries2 = new ArrayList<>();
+        List<Entry> entries3 = new ArrayList<>();
+        float time;
+
+        for (SummaryDetailUtil data : list) {
+            time = data.getTime();
+            entries1.add(new BarEntry(time, data.getValue1()));
+            if(data.getValue2() != null)
+                entries2.add(new BarEntry(time, data.getValue2()));
+            if(data.getValue3() != null)
+                entries3.add(new BarEntry(time, data.getValue3()));
+        }
+
+        LineDataSet lineDataSet1 = getLineDataSet(entries1, label[0], 0);
+        LineDataSet lineDataSet2 = getLineDataSet(entries2, label[1], 1);
+        LineDataSet lineDataSet3 = getLineDataSet(entries3, label[2], 2);
+
+        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
+        dataSet.add(lineDataSet1);
+        if (lineDataSet2 != null)
+            dataSet.add(lineDataSet2);
+        if (lineDataSet3 != null)
+            dataSet.add(lineDataSet3);
+
+        LineData lineData = new LineData(dataSet);
+        lineData.setValueFormatter(new MyValueFormatter());
+        lineChart.setData(lineData);
+        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(setLabels(max)));
+        lineChart.invalidate();
+    }
+
+    private LineDataSet getLineDataSet(List<Entry> entries, String label, int color){
+        if (entries.size() < 1)
+            return null;
+
+        LineDataSet lineDataSet = new LineDataSet(entries, label);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawCircleHole(true);
+        switch (color) {
+            case 0:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                break;
+            case 1:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HOrange));
+                break;
+            case 2:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                break;
+        }
+        return lineDataSet;
+    }
+
     public LineDataSet setLineChartDataSet(List<SummaryDetailUtil> list, String label, int max, int color) {
         List<Entry> entries = new ArrayList<>();
         int currentTime = 0;
@@ -236,8 +308,7 @@ public class SummaryViewModel extends AndroidViewModel {
                 //entries.add(new BarEntry(currentTime, 0));
                 currentTime++;
             }
-            System.out.println(data.getTime());
-            entries.add(new BarEntry(data.getTime(), data.getValue()));
+            entries.add(new BarEntry(data.getTime(), data.getValue1()));
             currentTime++;
         }
 

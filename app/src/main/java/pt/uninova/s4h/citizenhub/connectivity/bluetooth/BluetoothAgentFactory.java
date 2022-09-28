@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleActivityProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzBodyProtocol;
@@ -46,17 +47,17 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                     final String name = device.getName();
 
                     if (name.startsWith("HX")) {
-                        observer.observe(new HexoSkinAgent(source));
+                        observer.observe(new HexoSkinAgent(source, context));
                     } else if (name.startsWith("MI")) {
-                        observer.observe(new MiBand2Agent(source));
+                        observer.observe(new MiBand2Agent(source, context));
                     } else if (source.hasService(KbzBodyProtocol.KBZ_SERVICE)) {
-                        observer.observe(new KbzPostureAgent(source));
+                        observer.observe(new KbzPostureAgent(source, context));
                     } else if (name.startsWith("UprightGO2")) {
-                        observer.observe(new UprightGo2Agent(source));
+                        observer.observe(new UprightGo2Agent(source, context));
                     } else if (name.startsWith("A&D")) {
-                        observer.observe(new BloodPressureMonitorAgent(source));
-                    } else if (name.startsWith("ZTEZ")) {
-                        observer.observe(new DigitsoleAgent(source));
+                        observer.observe(new BloodPressureMonitorAgent(source, context));
+                    } else if (source.hasService(DigitsoleActivityProtocol.UUID_SERVICE_DATA)) {
+                        observer.observe(new DigitsoleAgent(source, context));
                     } else {
                         observer.observe(null);
                     }
@@ -70,14 +71,14 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
     @Override
     public void create(String address, Class<?> c, Observer<BluetoothAgent> observer) {
         try {
-            final Constructor<?> constructor = c.getConstructor(BluetoothConnection.class);
+            final Constructor<?> constructor = c.getConstructor(BluetoothConnection.class, Context.class);
 
             final BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
             final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
             final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
             final BluetoothConnection bluetoothConnection = new BluetoothConnection(bluetoothDevice);
 
-            observer.observe((BluetoothAgent) constructor.newInstance(bluetoothConnection));
+            observer.observe((BluetoothAgent) constructor.newInstance(bluetoothConnection, context));
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

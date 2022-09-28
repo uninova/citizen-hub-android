@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.service.work;
+package pt.uninova.s4h.citizenhub.work;
 
 import android.content.Context;
 
@@ -7,9 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.ListenableWorker;
-import androidx.work.OneTimeWorkRequest;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -23,14 +24,17 @@ public class WorkOrchestrator {
         workManager.cancelAllWork();
     }
 
-    public void addPeriodicWork(Class<? extends ListenableWorker> worker, int time, TimeUnit timeUnit) {
-        final PeriodicWorkRequest.Builder periodicWorkBuilder = new PeriodicWorkRequest.Builder(worker,
-                time,
-                timeUnit);
+    public void addPeriodicWork(Class<? extends ListenableWorker> worker, String name, int time, TimeUnit timeUnit) {
+        final Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        final PeriodicWorkRequest.Builder periodicWorkBuilder = new PeriodicWorkRequest.Builder(worker, time, timeUnit);
+        periodicWorkBuilder.setConstraints(constraints);
 
         final PeriodicWorkRequest periodicWork = periodicWorkBuilder.build();
 
-        workManager.enqueueUniquePeriodicWork("smartbearuploader",
+        workManager.enqueueUniquePeriodicWork(name,
                 ExistingPeriodicWorkPolicy.REPLACE,
                 periodicWork);
     }

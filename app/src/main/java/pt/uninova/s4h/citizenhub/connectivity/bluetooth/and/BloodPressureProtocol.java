@@ -66,7 +66,6 @@ public class BloodPressureProtocol extends BluetoothMeasuringProtocol {
     public void enable() {
         getConnection().addCharacteristicListener(onChange);
         getConnection().addConnectionStateChangeListener(onReady);
-        // TODO: Improve first enable
         getConnection().enableNotifications(BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE, BluetoothAgent.UUID_CHARACTERISTIC_BLOOD_PRESSURE_MEASUREMENT, true);
 
         super.enable();

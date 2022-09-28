@@ -33,8 +33,6 @@ public class SummaryDetailActivityFragment extends Fragment {
 
     private SummaryViewModel model;
     private BarChart barChart;
-    private BottomNavigationView bottomNavigationViewTime;
-    private BottomNavigationView bottomNavigationViewActivity;
     private TabLayout tabLayout;
     private TabLayout tabLayoutActivity;
     private TextView textView;
@@ -55,12 +53,6 @@ public class SummaryDetailActivityFragment extends Fragment {
 
         barChart = requireView().findViewById(R.id.bar_chart);
 
-        bottomNavigationViewActivity = requireView().findViewById(R.id.nav_view_activity);
-        bottomNavigationViewActivity.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedActivity);
-
-        bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
-
         textView = requireView().findViewById(R.id.tv_activity);
 
         tabLayout = requireView().findViewById(R.id.tab_layout);
@@ -72,7 +64,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
-                    System.out.println("Day");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: dailySteps(); break;
@@ -80,7 +71,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: dailyCalories(); break;
                     }
                 } else if(pos == 1) {
-                    System.out.println("Week");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: weeklySteps(); break;
@@ -88,7 +78,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: weeklyCalories(); break;
                     }
                 } else if(pos == 2) {
-                    System.out.println("Month");
                     barChart.highlightValue(null);
                     switch(tabLayoutActivity.getSelectedTabPosition()) {
                         case 0: monthlySteps(); break;
@@ -115,7 +104,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
-                    System.out.println("Steps");
                     textView.setText(getString(R.string.summary_detail_activity_steps));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -124,7 +112,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: monthlySteps(); break;
                     }
                 } else if(pos == 1) {
-                    System.out.println("Distance");
                     textView.setText(getString(R.string.summary_detail_activity_distance));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -133,7 +120,6 @@ public class SummaryDetailActivityFragment extends Fragment {
                         case 2: monthlyDistance(); break;
                     }
                 } else if(pos == 2) {
-                    System.out.println("Calories");
                     textView.setText(getString(R.string.summary_detail_activity_calories));
                     barChart.highlightValue(null);
                     switch(tabLayout.getSelectedTabPosition()) {
@@ -159,76 +145,6 @@ public class SummaryDetailActivityFragment extends Fragment {
         dailySteps();
     }
 
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                System.out.println("Day");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: dailySteps(); break;
-                    case R.id.nav_distance: dailyDistance(); break;
-                    case R.id.nav_calories: dailyCalories(); break;
-                }
-                break;
-            case R.id.nav_week:
-                System.out.println("Week");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: weeklySteps(); break;
-                    case R.id.nav_distance: weeklyDistance(); break;
-                    case R.id.nav_calories: weeklyCalories(); break;
-                }
-                break;
-            case R.id.nav_month:
-                System.out.println("Month");
-                switch (bottomNavigationViewActivity.getSelectedItemId()) {
-                    case R.id.nav_steps: monthlySteps(); break;
-                    case R.id.nav_distance: monthlyDistance(); break;
-                    case R.id.nav_calories: monthlyCalories(); break;
-                }
-                break;
-        }
-        return true;
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedActivity(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_steps:
-                System.out.println("Steps");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_steps));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailySteps();break;
-                    case R.id.nav_week: weeklySteps(); break;
-                    case R.id.nav_month: monthlySteps(); break;
-                }
-                break;
-            case R.id.nav_distance:
-                System.out.println("Distance");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_distance));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyDistance(); break;
-                    case R.id.nav_week: weeklyDistance(); break;
-                    case R.id.nav_month: monthlyDistance();break;
-                }
-                break;
-            case R.id.nav_calories:
-                System.out.println("Calories");
-                ((TextView)requireView().findViewById(R.id.tv_activity)).setText(getString(R.string.summary_detail_activity_calories));
-                switch (bottomNavigationViewTime.getSelectedItemId()) {
-                    case R.id.nav_day: dailyCalories(); break;
-                    case R.id.nav_week: weeklyCalories(); break;
-                    case R.id.nav_month: monthlyCalories(); break;
-                }
-                break;
-        }
-        return true;
-    }
-
     private void dailySteps() {
         Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_steps), 24);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
@@ -236,7 +152,7 @@ public class SummaryDetailActivityFragment extends Fragment {
     }
 
     private void weeklySteps() {
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart,getString(R.string.summary_detail_activity_steps), 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setBarChartData(data, barChart, getString(R.string.summary_detail_activity_steps), 7);
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getContext());
         stepsSnapshotMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }

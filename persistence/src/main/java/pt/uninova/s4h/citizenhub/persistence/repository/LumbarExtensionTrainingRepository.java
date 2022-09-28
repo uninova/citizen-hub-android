@@ -100,51 +100,19 @@ public class LumbarExtensionTrainingRepository {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(record));
     }
 
-    public void readLastDayDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayDuration(localDate)));
+    public void selectDuration(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectDuration()));
     }
 
-    public void readLastSevenDaysDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysDuration(localDate.minusDays(7), localDate)));
+    public void selectScore(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectScore()));
     }
 
-    public void readLastThirtyDaysDuration(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysDuration(localDate.minusDays(30), localDate)));
+    public void selectRepetitions(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectRepetitions()));
     }
 
-    public void readLastDayScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayScore(localDate)));
-    }
-
-    public void readLastSevenDaysScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysScore(localDate.minusDays(7), localDate)));
-    }
-
-    public void readLastThirtyDaysScore(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysScore(localDate.minusDays(30), localDate)));
-    }
-
-    public void readLastDayRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayRepetitions(localDate)));
-    }
-
-    public void readLastSevenDaysRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysRepetitions(localDate.minusDays(7), localDate)));
-    }
-
-    public void readLastThirtyDaysRepetitions(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysRepetitions(localDate.minusDays(30), localDate)));
-    }
-
-    public void readLastDayWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastDayWeight(localDate)));
-    }
-
-    public void readLastSevenDaysWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastSevenDaysWeight(localDate.minusDays(7), localDate)));
-    }
-
-    public void readLastThirtyDaysWeight(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectLastThirtyDaysWeight(localDate.minusDays(30), localDate)));
+    public void selectWeight(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectWeight()));
     }
 }

@@ -1,5 +1,8 @@
 package pt.uninova.s4h.citizenhub.persistence.dao;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -35,24 +38,28 @@ public interface StepsSnapshotMeasurementDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<Integer> selectMaximumLiveData(LocalDate from, LocalDate to);
 
+    @Query(value = "SELECT MAX(value) FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id WHERE sample.timestamp >= :from AND sample.timestamp < :to")
+    @TypeConverters(EpochTypeConverter.class)
+    Double selectMaximum(LocalDate from, LocalDate to);
+    
     @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, steps_snapshot_measurement.value AS value "
             + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000) "
-            + " SELECT MAX(value) AS value, hour AS time FROM agg GROUP BY hour")
+            + " SELECT MAX(value) AS value1, hour AS time FROM agg GROUP BY hour")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastDay(LocalDate localDate);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 7 AS day, steps_snapshot_measurement.value AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 7 AS day, steps_snapshot_measurement.value AS value "
             + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
-            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+            + " SELECT MAX(value) AS value1, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastSevenDays(LocalDate from, LocalDate to);
 
-    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from - 86400000) / 86400000) % 30 AS day, steps_snapshot_measurement.value AS value "
+    @Query(value = "WITH agg AS(SELECT ((sample.timestamp - :from) / 86400000) % 30 AS day, steps_snapshot_measurement.value AS value "
             + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to + 86400000) "
-            + " SELECT MAX(value) AS value, day AS time FROM agg GROUP BY day")
+            + " SELECT MAX(value) AS value1, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
     List<SummaryDetailUtil> selectLastThirtyDays(LocalDate from, LocalDate to);
 

@@ -33,9 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
@@ -45,7 +43,6 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class SummaryDetailPostureFragment extends Fragment {
 
     private SummaryViewModel model;
-    private BarChart barChart;
     private LineChart lineChart;
     private PieChart pieChart;
 
@@ -63,10 +60,6 @@ public class SummaryDetailPostureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView bottomNavigationViewTime = requireView().findViewById(R.id.nav_view_time);
-        bottomNavigationViewTime.setOnNavigationItemSelectedListener(this::onNavigationItemSelectedTime);
-
-        barChart = requireView().findViewById(R.id.bar_chart);
         lineChart = requireView().findViewById(R.id.line_chart);
         pieChart = requireView().findViewById(R.id.pie_chart);
 
@@ -106,39 +99,12 @@ public class SummaryDetailPostureFragment extends Fragment {
             }
         });
 
-        model.setupBarChart(barChart);
         model.setupLineChart(lineChart);
         model.setupPieChart(pieChart);
         // Specific to this fragment
-        lineChart.getAxisLeft().setEnabled(false);
+        lineChart.getAxisLeft().setAxisMaximum(100);
 
         dailyPosture();
-    }
-
-    /*
-     *
-     * */
-    @SuppressLint("NonConstantResourceId")
-    private boolean onNavigationItemSelectedTime(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_day:
-                System.out.println("Day");
-                pieChart.setVisibility(View.VISIBLE);
-                dailyPosture();
-                break;
-            case R.id.nav_week:
-                System.out.println("Week");
-                pieChart.setVisibility(View.INVISIBLE);
-                weeklyPosture();
-                break;
-            case R.id.nav_month:
-                System.out.println("Month");
-                pieChart.setVisibility(View.INVISIBLE);
-                monthlyPosture();
-                break;
-        }
-        return true;
     }
 
     private void dailyPosture() {
@@ -154,14 +120,15 @@ public class SummaryDetailPostureFragment extends Fragment {
                 int correctPostureTime = 0;
                 int incorrectPostureTime = 0;
                 for (SummaryDetailUtil data : correct)
-                    correctPostureTime += data.getValue();
+                    correctPostureTime += data.getValue1();
                 for (SummaryDetailUtil data : incorrect)
-                    incorrectPostureTime += data.getValue();
+                    incorrectPostureTime += data.getValue1();
 
                 List<PieEntry> pieEntries = new ArrayList<>();
-                pieEntries.add(new PieEntry(correctPostureTime, getString(R.string.summary_detail_posture_correct)));
-                pieEntries.add(new PieEntry(incorrectPostureTime, getString(R.string.summary_detail_posture_incorrect)));
+                pieEntries.add(new PieEntry(correctPostureTime, secondsToString(correctPostureTime / 1000)));
+                pieEntries.add(new PieEntry(incorrectPostureTime, secondsToString(incorrectPostureTime / 1000)));
                 PieDataSet dataSet = new PieDataSet(pieEntries, "");
+                dataSet.setDrawValues(false);
                 dataSet.setColors(ContextCompat.getColor(requireContext(), R.color.colorS4HLightBlue), ContextCompat.getColor(requireContext(), R.color.colorS4HOrange));
                 PieData data = new PieData(dataSet);
                 pieChart.setData(data);
@@ -194,7 +161,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         postureMeasurementRepository.readLastThirtyDaysCorrectPosture(LocalDate.now(), observerCorrect);
     }
 
-    private void setStackedBar(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
+    /*private void setStackedBar(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
         float[] yValsCorrectPosture = new float[max];
         float[] yValsIncorrectPosture = new float[max];
 
@@ -228,7 +195,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(model.setLabels(max)));
         //barChart.groupBars(0.2f, 0.25f, 0.05f);
         barChart.invalidate();
-    }
+    }*/
 
     /*private void setBarChartDataTwoColumns(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
         List<BarEntry> entriesCorrectPosture = new ArrayList<>();
@@ -281,42 +248,32 @@ public class SummaryDetailPostureFragment extends Fragment {
     }*/
 
     private void setAreaChart(List<SummaryDetailUtil> correctPosture, List<SummaryDetailUtil> incorrectPosture, int max){
-        List<Entry> entriesCorrectPosture = new ArrayList<>();
-        List<Entry> entriesIncorrectPosture = new ArrayList<>();
+        float[] valuesCorrectPosture = new float[max];
+        float[] valuesIncorrectPosture = new float[max];
         float[] offset = new float[max];
 
-        int currentTime = 0;
+        for (SummaryDetailUtil data : incorrectPosture) {
+            valuesIncorrectPosture[Math.round(data.getTime())] = data.getValue1();
+            offset[Math.round(data.getTime())] = data.getValue1();
+        }
 
         for (SummaryDetailUtil data : correctPosture) {
-            while (currentTime < data.getTime()) {
-                entriesCorrectPosture.add(new BarEntry(currentTime, 0));
-                offset[currentTime] = 0;
-                currentTime++;
+            valuesCorrectPosture[Math.round(data.getTime())] = data.getValue1() + offset[Math.round(data.getTime())];
+        }
+
+        int currentTime = 0;
+        float total;
+        List<Entry> entriesCorrectPosture = new ArrayList<>();
+        List<Entry> entriesIncorrectPosture = new ArrayList<>();
+
+        while(currentTime < max){
+            total = valuesCorrectPosture[currentTime] + valuesIncorrectPosture[currentTime];
+            if(total > 3600000){
+                valuesCorrectPosture[currentTime] = valuesCorrectPosture[currentTime] * 3600000 / total;
+                valuesIncorrectPosture[currentTime] = valuesIncorrectPosture[currentTime] * 3600000 / total;
             }
-            entriesCorrectPosture.add(new BarEntry(data.getTime(), data.getValue()));
-            offset[currentTime] = data.getValue();
-            currentTime++;
-        }
-
-        while (currentTime < max) {
-            entriesCorrectPosture.add(new BarEntry(currentTime, 0));
-            offset[currentTime] = 0;
-            currentTime++;
-        }
-
-        currentTime = 0;
-
-        for (SummaryDetailUtil data : incorrectPosture) {
-            while (currentTime < data.getTime()) {
-                entriesIncorrectPosture.add(new BarEntry(currentTime, offset[currentTime]));
-                currentTime++;
-            }
-            entriesIncorrectPosture.add(new BarEntry(data.getTime(), data.getValue() + offset[currentTime]));
-            currentTime++;
-        }
-
-        while (currentTime < max) {
-            entriesIncorrectPosture.add(new BarEntry(currentTime, offset[currentTime]));
+            entriesCorrectPosture.add(new BarEntry(currentTime, valuesCorrectPosture[currentTime] * 100 / 3600000));
+            entriesIncorrectPosture.add(new BarEntry(currentTime, valuesIncorrectPosture[currentTime] * 100 / 3600000));
             currentTime++;
         }
 
@@ -324,8 +281,8 @@ public class SummaryDetailPostureFragment extends Fragment {
         LineDataSet lineDataSetIncorrectPosture = setLineDataSet(entriesIncorrectPosture, getString(R.string.summary_detail_posture_incorrect), ContextCompat.getColor(requireContext(), R.color.colorS4HOrange));
 
         ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSetIncorrectPosture);
         dataSet.add(lineDataSetCorrectPosture);
+        dataSet.add(lineDataSetIncorrectPosture);
 
         LineData lineData = new LineData(dataSet);
         lineData.setValueFormatter(new MyValueFormatter());
@@ -346,6 +303,23 @@ public class SummaryDetailPostureFragment extends Fragment {
         lineDataSet.setFillAlpha(255);
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         return lineDataSet;
+    }
+
+    private String secondsToString(long value) {
+        long seconds = value;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
     }
 
 }

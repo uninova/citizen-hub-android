@@ -17,11 +17,11 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
+import androidx.work.ListenableWorker;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -52,9 +52,11 @@ import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.StreamRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
-import pt.uninova.s4h.citizenhub.service.work.LumbarExtensionTrainingUploader;
-import pt.uninova.s4h.citizenhub.service.work.SmartBearUploadWorker;
-import pt.uninova.s4h.citizenhub.service.work.WorkOrchestrator;
+import pt.uninova.s4h.citizenhub.work.BloodPressureUploader;
+import pt.uninova.s4h.citizenhub.work.LumbarExtensionTrainingUploader;
+import pt.uninova.s4h.citizenhub.work.Smart4HealthPdfUploader;
+import pt.uninova.s4h.citizenhub.work.SmartBearUploader;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class CitizenHubService extends LifecycleService {
@@ -74,7 +76,7 @@ public class CitizenHubService extends LifecycleService {
     public static void start(Context context) {
         final Intent intent = new Intent(context, CitizenHubService.class);
 
-        context.startService(intent);
+        context.startForegroundService(intent);
     }
 
     public static void stop(Context context) {
@@ -159,36 +161,48 @@ public class CitizenHubService extends LifecycleService {
                     tagRepository.create(sampleId, Tag.LABEL_CONTEXT_WORK);
                 }
 
-                Data4LifeClient.getInstance().isUserLoggedIn(new ResultListener<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean aBoolean) {
-                        if (aBoolean) {
-                            if (sample.getMeasurements()[0].getType() == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                                final WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+                final int type = sample.getMeasurements()[0].getType();
 
-                                final Constraints constraints = new Constraints.Builder()
-                                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                                        .build();
+                if (type == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING || type == Measurement.TYPE_BLOOD_PRESSURE) {
+                    Data4LifeClient.getInstance().isUserLoggedIn(new ResultListener<Boolean>() {
+                        @Override
+                        public void onSuccess(Boolean aBoolean) {
+                            if (aBoolean) {
+                                Class<? extends ListenableWorker> c = null;
 
-                                final Data data = new Data.Builder()
-                                        .putLong("sampleId", sampleId)
-                                        .build();
+                                if (type == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+                                    c = LumbarExtensionTrainingUploader.class;
+                                } else if (type == Measurement.TYPE_BLOOD_PRESSURE) {
+                                    c = BloodPressureUploader.class;
+                                }
 
-                                final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(LumbarExtensionTrainingUploader.class)
-                                        .setInputData(data)
-                                        .setConstraints(constraints)
-                                        .build();
+                                if (c != null) {
+                                    final WorkManager workManager = WorkManager.getInstance(getApplicationContext());
 
-                                workManager.enqueueUniqueWork(Instant.now().toString(), ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+                                    final Constraints constraints = new Constraints.Builder()
+                                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                                            .build();
+
+                                    final Data data = new Data.Builder()
+                                            .putLong("sampleId", sampleId)
+                                            .build();
+
+                                    final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(c)
+                                            .setInputData(data)
+                                            .setConstraints(constraints)
+                                            .build();
+
+                                    workManager.enqueueUniqueWork("smart4health_pdf_" + sampleId, ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onError(@NonNull D4LException e) {
-                        e.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onError(@NonNull D4LException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             });
         };
 
@@ -197,6 +211,8 @@ public class CitizenHubService extends LifecycleService {
             @Override
             public void onAgentAttached(Device device, Agent agent) {
                 deviceRepository.updateAgent(device.getAddress(), agent.getClass().getCanonicalName());
+
+                agent.enable();
 
                 agent.addAgentListener(new AgentListener() {
                     @Override
@@ -230,16 +246,22 @@ public class CitizenHubService extends LifecycleService {
 
         deviceRepository.read(value -> {
             for (DeviceRecord i : value) {
-                try {
-                    orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(i.getAgent()).asSubclass(Agent.class), agent -> {
-                        agent.enable();
-
-                        streamRepository.read(i.getAddress(), enabledMeasurements -> {
-                            for (final StreamRecord j : enabledMeasurements) {
-                                agent.enableMeasurement(j.getMeasurementType());
-                            }
-                        });
+                final Observer<Agent> agentObserver = (agent) -> {
+                    streamRepository.read(i.getAddress(), enabledMeasurements -> {
+                        for (final StreamRecord j : enabledMeasurements) {
+                            agent.enableMeasurement(j.getMeasurementType());
+                        }
                     });
+                };
+
+                try {
+                    String agentName = i.getAgent();
+
+                    if (agentName == null) {
+                        orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), agentObserver);
+                    } else {
+                        orchestrator.add(new Device(i.getAddress(), i.getName(), i.getConnectionKind()), Class.forName(agentName).asSubclass(Agent.class), agentObserver);
+                    }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -273,7 +295,8 @@ public class CitizenHubService extends LifecycleService {
     private void initWorkOrchestrator() {
         workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(this));
 
-        workOrchestrator.addPeriodicWork(SmartBearUploadWorker.class, 12, TimeUnit.HOURS);
+        workOrchestrator.addPeriodicWork(SmartBearUploader.class, "smartbearuploader", 12, TimeUnit.HOURS);
+        workOrchestrator.addPeriodicWork(Smart4HealthPdfUploader.class, "smart4healthuploader", 12, TimeUnit.HOURS);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.persistence.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -18,8 +19,11 @@ public class Smart4HealthDailyReportRecord {
     private LocalDate date;
 
     @NonNull
+    @ColumnInfo(defaultValue = "0")
     private Boolean fhir;
+
     @NonNull
+    @ColumnInfo(defaultValue = "0")
     private Boolean pdf;
 
     public Smart4HealthDailyReportRecord(LocalDate date, Boolean fhir, Boolean pdf) {

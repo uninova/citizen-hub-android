@@ -13,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -28,24 +30,22 @@ public class DailyReportGeneratorPDFV2 {
 
     private final Context context;
 
-    private final Paint logoBackGroundPaint;
     private final Paint titlePaint;
     private final Paint darkTextPaintAlignLeft;
     private final Paint darkTextPaintAlignRight;
     private final Paint darkItalicTextPaint;
     private final Paint whiteTextPaint;
     private final Paint whiteItalicTextPaint;
-    private final Paint boldTextPaint;
     private final Paint backgroundPaint;
     private final Paint rectPaint;
     private final Paint rectFillPaint;
     private final Path path;
     private final float[] corners;
 
-    public DailyReportGeneratorPDFV2 (Context context){
+    public DailyReportGeneratorPDFV2(Context context) {
         this.context = context;
 
-        this.logoBackGroundPaint = new Paint();
+        Paint logoBackGroundPaint = new Paint();
         logoBackGroundPaint.setStyle(Paint.Style.FILL);
         logoBackGroundPaint.setColor(Color.parseColor("#f0f0f0"));
         logoBackGroundPaint.setAntiAlias(true);
@@ -86,7 +86,7 @@ public class DailyReportGeneratorPDFV2 {
         whiteItalicTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         whiteItalicTextPaint.setTextSize(12);
 
-        this.boldTextPaint = new Paint();
+        Paint boldTextPaint = new Paint();
         boldTextPaint.setColor(Color.parseColor("#000000"));
         boldTextPaint.setTextAlign(Paint.Align.LEFT);
         boldTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -311,7 +311,7 @@ public class DailyReportGeneratorPDFV2 {
         dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
     }*/
 
-    public void generateCompleteReport(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
+    public void generateCompleteReport(Observer<byte[]> observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
 
         PdfDocument document = new PdfDocument();
 
@@ -331,10 +331,10 @@ public class DailyReportGeneratorPDFV2 {
 
             Observer<Report> observerNotWorkTimeReport = notWorkTimeData -> {
 
-                drawCitizenHub(canvas, res);
+                drawLogo(canvas, res);
 
                 int x = 50; //30
-                int y = 80;
+                int y = 110;
                 canvas.drawRoundRect(x, y, 550, y + 45, 10, 10, backgroundPaint); //570
                 canvasWriter.addText(res.getString(R.string.report_complete_report), x + 10, y + 28, titlePaint);
                 canvasWriter.addText(date.toString(), x + 395, y + 28, titlePaint);
@@ -347,7 +347,7 @@ public class DailyReportGeneratorPDFV2 {
                 for (Group groupNotWorkTime : groupsNotWorkTimeData) {
 
                     int rectHeight = y - 20;
-                    int notWorkTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+                    int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
 
                     path.addRoundRect(new RectF(x, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
                     canvas.drawPath(path, rectFillPaint);
@@ -365,7 +365,7 @@ public class DailyReportGeneratorPDFV2 {
                             for (Item item : group.getItemList()) {
                                 canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                 canvasWriter.addText(item.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
-                                if(!item.getUnits().getLocalizedString().equals("-"))
+                                if (!item.getUnits().getLocalizedString().equals("-"))
                                     canvasWriter.addText(item.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
                                 canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
                                 y += 20;
@@ -373,7 +373,7 @@ public class DailyReportGeneratorPDFV2 {
                             y += 5;
                         }
                         for (Group groupWorkTime : groupsWorkTimeData) {
-                            int workTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+                            int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                             if (notWorkTimeLabel == workTimeLabel) {
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     String timestamp = group.getLabel().getLocalizedString();
@@ -384,7 +384,7 @@ public class DailyReportGeneratorPDFV2 {
                                         canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                         canvasWriter.addText("-", x + 300, y, darkTextPaintAlignRight);
                                         canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
-                                        if(!item.getUnits().getLocalizedString().equals("-"))
+                                        if (!item.getUnits().getLocalizedString().equals("-"))
                                             canvasWriter.addText(item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                         y += 20;
                                     }
@@ -396,18 +396,18 @@ public class DailyReportGeneratorPDFV2 {
                     } else {
                         boolean hasItem = false;
                         for (Group groupWorkTime : groupsWorkTimeData) {
-                            if (((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType() == ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType()) {
+                            if (((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType() == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
                                 hasItem = true;
                                 for (Item itemNotWorkTime : groupNotWorkTime.getItemList()) {
                                     for (Item itemWorkTime : groupWorkTime.getItemList()) {
                                         if (itemNotWorkTime.getLabel().getLocalizedString().equals(itemWorkTime.getLabel().getLocalizedString())) {
                                             canvasWriter.addText(itemNotWorkTime.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                             canvasWriter.addText(itemNotWorkTime.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
-                                            if(!itemNotWorkTime.getUnits().getLocalizedString().equals("-")){
+                                            if (!itemNotWorkTime.getUnits().getLocalizedString().equals("-")) {
                                                 canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
                                             }
                                             canvasWriter.addText(itemWorkTime.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
-                                            if(!itemWorkTime.getUnits().getLocalizedString().equals("-")){
+                                            if (!itemWorkTime.getUnits().getLocalizedString().equals("-")) {
                                                 canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                             }
                                             y += 20;
@@ -421,7 +421,7 @@ public class DailyReportGeneratorPDFV2 {
                             for (Item item : groupNotWorkTime.getItemList()) {
                                 canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                 canvasWriter.addText(item.getValue().getLocalizedString(), x + 300, y, darkTextPaintAlignRight);
-                                if(!item.getUnits().getLocalizedString().equals("-")){
+                                if (!item.getUnits().getLocalizedString().equals("-")) {
                                     canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 310, y, darkItalicTextPaint);
                                 }
                                 canvasWriter.addText("-", x + 420, y, darkTextPaintAlignRight);
@@ -437,7 +437,7 @@ public class DailyReportGeneratorPDFV2 {
                 for (Group groupWorkTime : groupsWorkTimeData) {
                     int rectHeight = y - 20;
                     boolean hasGroup = false;
-                    int workTimeLabel = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
+                    int workTimeLabel = ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType();
 
                     for (Group groupNotWorkTime : groupsNotWorkTimeData) {
                         if (workTimeLabel == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
@@ -462,7 +462,7 @@ public class DailyReportGeneratorPDFV2 {
                                     canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                     canvasWriter.addText("-", x + 300, y, darkTextPaintAlignRight);
                                     canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
-                                    if(!item.getUnits().getLocalizedString().equals("-")){
+                                    if (!item.getUnits().getLocalizedString().equals("-")) {
                                         canvasWriter.addText(item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                     }
                                     y += 20;
@@ -470,13 +470,12 @@ public class DailyReportGeneratorPDFV2 {
                                 y += 5;
                             }
                             y += 38;
-                        }
-                        else {
+                        } else {
                             for (Item item : groupWorkTime.getItemList()) {
                                 canvasWriter.addText(item.getLabel().getLocalizedString(), x + 40, y, darkTextPaintAlignLeft);
                                 canvasWriter.addText("-", x + 240, y, darkTextPaintAlignRight);
                                 canvasWriter.addText(item.getValue().getLocalizedString(), x + 420, y, darkTextPaintAlignRight);
-                                if(!item.getUnits().getLocalizedString().equals("-")){
+                                if (!item.getUnits().getLocalizedString().equals("-")) {
                                     canvasWriter.addText(" " + item.getUnits().getLocalizedString(), x + 430, y, darkItalicTextPaint);
                                 }
                                 y += 20;
@@ -517,25 +516,24 @@ public class DailyReportGeneratorPDFV2 {
 
     }
 
-    private void drawCitizenHub (Canvas canvas, Resources res){
-        canvas.drawRect(0, 0, 595, 70, logoBackGroundPaint);
+    private void drawLogo(Canvas canvas, Resources resources) {
+        final Drawable citizenHubLogo = ResourcesCompat.getDrawable(resources, R.drawable.ic_citizen_hub_logo, null);
 
-        Drawable citizenHubLogo = res.getDrawable(R.drawable.ic_citizen_hub_logo, null);
-        citizenHubLogo.setBounds(5, 5, citizenHubLogo.getIntrinsicWidth(), citizenHubLogo.getIntrinsicHeight());
+        citizenHubLogo.setBounds(0, 0, citizenHubLogo.getIntrinsicWidth(), citizenHubLogo.getIntrinsicHeight());
         canvas.save();
-        canvas.translate(50, 5);
-        canvas.scale(1.5f, 1.5f);
+        canvas.translate(60, 40);
+        canvas.scale(1.0f, 1.0f);
         citizenHubLogo.draw(canvas);
         canvas.restore();
 
-        Drawable citizenHub = res.getDrawable(R.drawable.logo_citizen_hub_text_only, null);
-        citizenHub.setBounds(5, 5, citizenHub.getIntrinsicWidth(), citizenHub.getIntrinsicHeight());
+        final Drawable citizenHub = ResourcesCompat.getDrawable(resources, R.drawable.logo_citizen_hub_text_only, null);
+
+        citizenHub.setBounds(0, 0, citizenHub.getIntrinsicWidth(), citizenHub.getIntrinsicHeight());
         canvas.save();
-        canvas.translate(80, 3);
-        canvas.scale(3f, 4.5f);
+        canvas.translate(100, 50);
+        canvas.scale(2f, 2f);
         citizenHub.draw(canvas);
         canvas.restore();
-
     }
 
 }

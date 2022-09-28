@@ -48,5 +48,3 @@ All personal data and collected data by the Citizen Hub application is stored ex
 5. Storage duration and deletion of data
 
 All personal data and collected data by the Citizen Hub application is stored exclusively in your personal mobile phone. In case you decide to transmit and store data outside your personal mobile phone, you must refer to the Terms of Use and privacy police of the such outside systems.
-
-

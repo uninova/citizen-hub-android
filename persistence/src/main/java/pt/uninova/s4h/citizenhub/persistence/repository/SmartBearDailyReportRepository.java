@@ -24,6 +24,14 @@ public class SmartBearDailyReportRepository {
         CitizenHubDatabase.executorService().execute(() -> dao.insert(record));
     }
 
+    public void createUTC(LocalDate date) {
+        CitizenHubDatabase.executorService().execute(() -> dao.insert(date.toEpochDay() * 86400000));
+    }
+
+    public void create(SmartBearDailyReportRecord record, Observer<Long> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(dao.insert(record)));
+    }
+
     public void readDaysWithData(Observer<List<LocalDate>> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(dao.selectDaysWithValues()));
     }
