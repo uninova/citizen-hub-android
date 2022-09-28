@@ -10,6 +10,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.BloodPressureMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailBloodPressureUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -29,6 +30,14 @@ public class BloodPressureMeasurementRepository {
 
     public LiveData<List<BloodPressureMeasurementRecord>> read(LocalDate localDate) {
         return bloodPressureMeasurementDao.selectLiveData(localDate, localDate.plusDays(1));
+    }
+
+    public void selectLastDay(LocalDate localDate, Observer<List<SummaryDetailBloodPressureUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectLastDay(localDate)));
+    }
+
+    public void selectSeveralDays(LocalDate localDate, int days, Observer<List<SummaryDetailBloodPressureUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(bloodPressureMeasurementDao.selectSeveralDays(localDate.minusDays(days - 1), localDate, days)));
     }
 
     public void readLastDaySystolic(LocalDate localDate, Observer<List<SummaryDetailUtil>> observer){

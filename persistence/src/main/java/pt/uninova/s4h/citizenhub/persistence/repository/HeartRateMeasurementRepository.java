@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.dao.HeartRateMeasurementDao;
 import pt.uninova.s4h.citizenhub.persistence.entity.HeartRateMeasurementRecord;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailHeartRateUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.AggregateSummary;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -42,7 +43,15 @@ public class HeartRateMeasurementRepository {
     public void readAverageObserved(LocalDate localDate, Observer<Double> observer){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAverage(localDate, localDate.plusDays(1))));
     }
-    
+
+    public void selectLastDay(LocalDate localDate, Observer<List<SummaryDetailHeartRateUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectLastDay(localDate)));
+    }
+
+    public void selectSeveralDays(LocalDate localDate, int days, Observer<List<SummaryDetailHeartRateUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectSeveralDays(localDate.minusDays(days - 1), localDate, days)));
+    }
+
     public void readAvgLastDay(Observer<List<SummaryDetailUtil>> observer, LocalDate localDate){
         CitizenHubDatabase.executorService().execute(() -> observer.observe(heartRateMeasurementDao.selectAvgLastDay(localDate)));
     }
