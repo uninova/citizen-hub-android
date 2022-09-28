@@ -1,66 +1,33 @@
 package pt.uninova.s4h.citizenhub.util.messaging;
 
 import java.io.Closeable;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Dispatcher<T> implements Closeable {
 
-    final private Set<Observer<T>> observerSet;
-    final private Set<Observer<T>> delayedRemoval;
-
-    private boolean dispatching;
+    private final Set<Observer<T>> observerSet;
 
     public Dispatcher() {
-        observerSet = new HashSet<>();
-        delayedRemoval = new HashSet<>();
-
-        dispatching = false;
+        observerSet = ConcurrentHashMap.newKeySet();
     }
 
     public void addObserver(Observer<T> observer) {
-        synchronized (observerSet) {
-            this.observerSet.add(observer);
-        }
+        this.observerSet.add(observer);
     }
 
     @Override
     public void close() {
-        synchronized (observerSet) {
-            observerSet.clear();
-        }
+        observerSet.clear();
     }
 
     public void dispatch(T message) {
-        synchronized (observerSet) {
-            dispatching = true;
-        }
-
-        final Iterator<Observer<T>> observerIterator = observerSet.iterator();
-
-        while (observerIterator.hasNext()) {
-            final Observer<T> observer = observerIterator.next();
-
-            if (delayedRemoval.contains(observer)) {
-                observerIterator.remove();
-            } else {
-                observer.observe(message);
-            }
-        }
-
-        synchronized (observerSet) {
-            dispatching = false;
+        for (Observer<T> observer : observerSet) {
+            observer.observe(message);
         }
     }
 
     public void removeObserver(Observer<T> observer) {
-        synchronized (observerSet) {
-            if (dispatching) {
-                delayedRemoval.add(observer);
-            } else {
-                this.observerSet.remove(observer);
-            }
-        }
+        this.observerSet.remove(observer);
     }
 }
