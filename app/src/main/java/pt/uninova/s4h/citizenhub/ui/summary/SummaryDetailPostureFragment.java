@@ -120,9 +120,9 @@ public class SummaryDetailPostureFragment extends Fragment {
                 int correctPostureTime = 0;
                 int incorrectPostureTime = 0;
                 for (SummaryDetailUtil data : correct)
-                    correctPostureTime += data.getValue();
+                    correctPostureTime += data.getValue1();
                 for (SummaryDetailUtil data : incorrect)
-                    incorrectPostureTime += data.getValue();
+                    incorrectPostureTime += data.getValue1();
 
                 List<PieEntry> pieEntries = new ArrayList<>();
                 pieEntries.add(new PieEntry(correctPostureTime, secondsToString(correctPostureTime / 1000)));
@@ -253,12 +253,12 @@ public class SummaryDetailPostureFragment extends Fragment {
         float[] offset = new float[max];
 
         for (SummaryDetailUtil data : incorrectPosture) {
-            valuesIncorrectPosture[Math.round(data.getTime())] = data.getValue();
-            offset[Math.round(data.getTime())] = data.getValue();
+            valuesIncorrectPosture[Math.round(data.getTime())] = data.getValue1();
+            offset[Math.round(data.getTime())] = data.getValue1();
         }
 
         for (SummaryDetailUtil data : correctPosture) {
-            valuesCorrectPosture[Math.round(data.getTime())] = data.getValue() + offset[Math.round(data.getTime())];
+            valuesCorrectPosture[Math.round(data.getTime())] = data.getValue1() + offset[Math.round(data.getTime())];
         }
 
         int currentTime = 0;
@@ -272,45 +272,10 @@ public class SummaryDetailPostureFragment extends Fragment {
                 valuesCorrectPosture[currentTime] = valuesCorrectPosture[currentTime] * 3600000 / total;
                 valuesIncorrectPosture[currentTime] = valuesIncorrectPosture[currentTime] * 3600000 / total;
             }
-            System.out.println(valuesCorrectPosture[currentTime]);
-            System.out.println(valuesIncorrectPosture[currentTime]);
             entriesCorrectPosture.add(new BarEntry(currentTime, valuesCorrectPosture[currentTime] * 100 / 3600000));
             entriesIncorrectPosture.add(new BarEntry(currentTime, valuesIncorrectPosture[currentTime] * 100 / 3600000));
             currentTime++;
         }
-
-        /*for (SummaryDetailUtil data : correctPosture) {
-            while (currentTime < data.getTime()) {
-                entriesCorrectPosture.add(new BarEntry(currentTime, 0));
-                offset[currentTime] = 0;
-                currentTime++;
-            }
-            entriesCorrectPosture.add(new BarEntry(data.getTime(), data.getValue() * 100 / 3600000));
-            offset[currentTime] = data.getValue();
-            currentTime++;
-        }
-
-        while (currentTime < max) {
-            entriesCorrectPosture.add(new BarEntry(currentTime, 0));
-            offset[currentTime] = 0;
-            currentTime++;
-        }
-
-        currentTime = 0;
-
-        for (SummaryDetailUtil data : incorrectPosture) {
-            while (currentTime < data.getTime()) {
-                entriesIncorrectPosture.add(new BarEntry(currentTime, offset[currentTime]));
-                currentTime++;
-            }
-            entriesIncorrectPosture.add(new BarEntry(data.getTime(), data.getValue() + offset[currentTime]));
-            currentTime++;
-        }
-
-        while (currentTime < max) {
-            entriesIncorrectPosture.add(new BarEntry(currentTime, offset[currentTime]));
-            currentTime++;
-        }*/
 
         LineDataSet lineDataSetCorrectPosture = setLineDataSet(entriesCorrectPosture, getString(R.string.summary_detail_posture_correct), ContextCompat.getColor(requireContext(), R.color.colorS4HLightBlue));
         LineDataSet lineDataSetIncorrectPosture = setLineDataSet(entriesIncorrectPosture, getString(R.string.summary_detail_posture_incorrect), ContextCompat.getColor(requireContext(), R.color.colorS4HOrange));

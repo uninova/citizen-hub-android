@@ -125,7 +125,7 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
         if(list.size() == 1)
             x++;
         for(SummaryDetailUtil data : list){
-            entries.add(new BarEntry(x++, data.getValue()));
+            entries.add(new BarEntry(x++, data.getValue1()));
         }
 
         LineDataSet lineDataSet = new LineDataSet(entries, label);
