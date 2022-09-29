@@ -27,7 +27,7 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
     private final Context context;
-
+    private Class<?> agentClass;
     public BluetoothAgentFactory(Context context) {
         this.context = context;
     }
@@ -52,6 +52,12 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                     value.getSource().removeConnectionStateChangeListener(this);
                     final String name = device.getName();
 
+                    BluetoothAgentMatcher agentMatcher = new BluetoothAgentMatcher(source.getServices(),context);
+                    agentClass = agentMatcher.matchAgent();
+                    if(agentClass!=null){
+                       initAgent(agentClass,source,observer);
+                    }
+
                     if (name.startsWith("HX")) {
                         observer.observe(new HexoSkinAgent(source, context));
                     }
@@ -75,6 +81,21 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         });
 
         bluetoothConnection.connect();
+    }
+
+    private void initAgent(Class <?> agentClass, BluetoothConnection source, Observer observer){
+        try {
+
+            Class<?> agent = Class.forName(agentClass.getName());
+            Class<?>[] parameters = new Class[] {BluetoothConnection.class, Context.class};
+            Constructor<?> constructor = agent.getConstructor(parameters);
+
+            Object o = constructor.newInstance(source, context);
+            observer.observe((BluetoothAgent) o);
+
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<UUID> serviceToUUIDList(List<BluetoothGattService> serviceList) {
