@@ -28,9 +28,28 @@ public class BluetoothAgentMatcher {
         fillAgentList();
     }
 
-    private Class<?> matchAgent() {
 
-
+    public Class<?> matchAgent() {
+        Class<?> key = null;
+        for (Map.Entry<Class<?>, List<UUID>> entry : agentList.entrySet()) {
+                boolean doesMatch = true;
+            for (UUID uuid: entry.getValue()
+                 ) {
+                if(serviceList.contains(uuid)){
+                    System.out.println("Possible agent: "+ entry.getKey() + "\nHas service: " + uuid);
+                }
+                else{
+                    System.out.println("XXX Not a: "+ entry.getKey() + "\nXXX No service: " + uuid);
+                    doesMatch = false;
+                    key = null;
+                }
+                if(doesMatch) {
+                    System.out.println("MATCHOU: " + key);
+                    key = entry.getKey();
+                }
+            }
+        }
+        return key;
     }
 
     public List<UUID> serviceToUUIDList(List<BluetoothGattService> serviceList) {
@@ -77,6 +96,7 @@ public class BluetoothAgentMatcher {
     public void setServiceList(List<UUID> serviceList) {
         this.serviceList = serviceList;
     }
+
 
     public Map<Class<?>, List<UUID>> getAgentList() {
         return agentList;
