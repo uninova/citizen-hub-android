@@ -17,13 +17,11 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 public class BluetoothAgentMatcher {
 
     private List<UUID> serviceList;
-    private Context context;
     private Map<Class<?>, List<UUID>> agentList;
 
 
-    public BluetoothAgentMatcher(List<BluetoothGattService> serviceList, Context context) {
+    public BluetoothAgentMatcher(List<BluetoothGattService> serviceList) {
         this.serviceList = serviceToUUIDList(serviceList);
-        this.context = context;
         agentList = new HashMap<>();
         fillAgentList();
     }
