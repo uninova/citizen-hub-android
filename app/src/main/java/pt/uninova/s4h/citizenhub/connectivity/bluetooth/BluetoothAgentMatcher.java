@@ -16,15 +16,31 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 
 public class BluetoothAgentMatcher {
 
-    private List<BluetoothGattService> serviceList;
+    private List<UUID> serviceList;
     private Context context;
     private Map<Class<?>, List<UUID>> agentList;
 
 
     public BluetoothAgentMatcher(List<BluetoothGattService> serviceList, Context context) {
-        this.serviceList = serviceList;
+        this.serviceList = serviceToUUIDList(serviceList);
         this.context = context;
         agentList = new HashMap<>();
+        fillAgentList();
+    }
+
+    private Class<?> matchAgent() {
+
+
+    }
+
+    public List<UUID> serviceToUUIDList(List<BluetoothGattService> serviceList) {
+        List<UUID> uuidList = new ArrayList<>();
+        for (BluetoothGattService service : serviceList
+        ) {
+            uuidList.add(service.getUuid());
+        }
+        System.out.println("Lista: " + uuidList);
+        return uuidList;
     }
 
     private Map<Class<?>, List<UUID>> fillAgentList() {
@@ -54,11 +70,11 @@ public class BluetoothAgentMatcher {
         return kbzUUIDS;
     }
 
-    public List<BluetoothGattService> getServiceList() {
+    public List<UUID> getServiceList() {
         return serviceList;
     }
 
-    public void setServiceList(List<BluetoothGattService> serviceList) {
+    public void setServiceList(List<UUID> serviceList) {
         this.serviceList = serviceList;
     }
 
