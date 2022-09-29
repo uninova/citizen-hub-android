@@ -62,11 +62,10 @@ public class BluetoothAgentMatcher {
         return uuidList;
     }
 
-    private Map<Class<?>, List<UUID>> fillAgentList() {
+    private void fillAgentList() {
         agentList.put(MiBand2Agent.class, setMiBand2Services());
         agentList.put(KbzBodyProtocol.class, setKbzServices());
         agentList.put(DigitsoleAgent.class, setDigitSoleServices());
-        return agentList;
     }
 
     private List<UUID> setDigitSoleServices() {
@@ -80,7 +79,7 @@ public class BluetoothAgentMatcher {
         miBandUUIDS.add(MiBand2Agent.UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_1);
         miBandUUIDS.add(MiBand2Agent.XIAOMI_MIBAND2_SERVICE_AUTH);
         miBandUUIDS.add(MiBand2Agent.UUID_SERVICE_HEART_RATE);
-        return setMiBand2Services();
+        return miBandUUIDS;
     }
 
     private List<UUID> setKbzServices() {
