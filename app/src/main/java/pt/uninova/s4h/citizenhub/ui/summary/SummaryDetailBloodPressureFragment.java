@@ -1,9 +1,7 @@
 package pt.uninova.s4h.citizenhub.ui.summary;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,20 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailBloodPressureUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.PulseRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -38,7 +33,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
-        chartFunctions = new ChartFunctions();
+        chartFunctions = new ChartFunctions(getContext());
     }
 
     @Override
@@ -50,7 +45,6 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lineChart = view.findViewById(R.id.line_chart);
-
         TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -84,13 +78,13 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
             }
         });
 
-        model.setupLineChart(lineChart);
+        chartFunctions.setupLineChart(lineChart, model.getChartViewMarker());
         lineChart.getXAxis().setAxisMaximum(23);
         dailyBloodPressure();
     }
 
     private void dailyBloodPressure() {
-        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> model.setLineChartDataTest(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 24);
+        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 24);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
         bloodPressureMeasurementRepository.selectLastDay(LocalDate.now(), observer);
         /*BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
@@ -105,7 +99,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     }
 
     private void weeklyBloodPressure() {
-        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> model.setLineChartDataTest(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 7);
+        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 7);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
         bloodPressureMeasurementRepository.selectSeveralDays(LocalDate.now(), 7, observer);
         /*BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
@@ -120,7 +114,7 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     }
 
     private void monthlyBloodPressure() {
-        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> model.setLineChartDataTest(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 30);
+        Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseBloodPressureUtil(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 30);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
         bloodPressureMeasurementRepository.selectSeveralDays(LocalDate.now(), 30, observer);
        /* BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
@@ -135,19 +129,19 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
     }
 
     private void dailyPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 24);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 24);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 7);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 7);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastSevenDays(LocalDate.now(), observer);
     }
 
     private void monthPulseRate(){
-        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Arrays.asList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 30);
+        Observer<List<SummaryDetailUtil>> observer = data -> model.setLineChartData(Collections.singletonList(data), lineChart, new String[]{getString(R.string.summary_detail_blood_pressure_pulse_rate)}, 30);
         PulseRateMeasurementRepository pulseRateMeasurementRepository = new PulseRateMeasurementRepository(getContext());
         pulseRateMeasurementRepository.readLastThirtyDays(LocalDate.now(), observer);
     }

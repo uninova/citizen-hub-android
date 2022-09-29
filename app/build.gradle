@@ -27,7 +27,7 @@ android {
         debug {
             debuggable true
             matchingFallbacks = ['release']
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug2"
             versionNameSuffix = "-debug"
         }
     }

@@ -33,11 +33,13 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
 
     private SummaryViewModel model;
     private LineChart lineChart;
+    private ChartFunctions chartFunctions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
+        chartFunctions = new ChartFunctions(getContext());
     }
 
     @Override
@@ -91,7 +93,7 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
             }
         });
 
-        model.setupLineChart(lineChart);
+        chartFunctions.setupLineChart(lineChart, model.getChartViewMarker());
         getRepetitions();
     }
 
@@ -141,7 +143,7 @@ public class SummaryDetailLumbarExtensionFragment extends Fragment {
         dataSet.add(lineDataSet);
 
         LineData lineData = new LineData(dataSet);
-        lineData.setValueFormatter(new MyValueFormatter());
+        lineData.setValueFormatter(new ChartValueFormatter());
         lineChart.setData(lineData);
         lineChart.invalidate();
     }

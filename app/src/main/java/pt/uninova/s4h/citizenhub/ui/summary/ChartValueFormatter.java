@@ -4,7 +4,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DecimalFormat;
 
-public class MyValueFormatter extends ValueFormatter {
+public class ChartValueFormatter extends ValueFormatter {
 
     private final DecimalFormat mFormat = new DecimalFormat("###,###,###");
 

@@ -8,12 +8,11 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.material.tabs.TabLayout;
 
 import pt.uninova.s4h.citizenhub.R;
 
 @SuppressLint("ViewConstructor")
-public class MyMarkerView extends MarkerView {
+public class ChartMarkerView extends MarkerView {
     private final TextView tvContent;
 
     /**
@@ -22,7 +21,7 @@ public class MyMarkerView extends MarkerView {
      * @param context
      * @param layoutResource the layout resource to use for the MarkerView
      */
-    public MyMarkerView(Context context, int layoutResource) {
+    public ChartMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
         tvContent = findViewById(R.id.tvContent);
     }
@@ -31,7 +30,7 @@ public class MyMarkerView extends MarkerView {
     // content (user-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(new MyValueFormatter().getFormattedValue(e.getY()));
+        tvContent.setText(new ChartValueFormatter().getFormattedValue(e.getY()));
         // This will perform necessary laying
         super.refreshContent(e, highlight);
     }

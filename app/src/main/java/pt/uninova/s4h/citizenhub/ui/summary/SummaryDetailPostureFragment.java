@@ -43,6 +43,7 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class SummaryDetailPostureFragment extends Fragment {
 
     private SummaryViewModel model;
+    private ChartFunctions chartFunctions;
     private LineChart lineChart;
     private PieChart pieChart;
 
@@ -50,6 +51,7 @@ public class SummaryDetailPostureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(SummaryViewModel.class);
+        chartFunctions = new ChartFunctions(getContext());
     }
 
     @Override
@@ -99,8 +101,8 @@ public class SummaryDetailPostureFragment extends Fragment {
             }
         });
 
-        model.setupLineChart(lineChart);
-        model.setupPieChart(pieChart);
+        chartFunctions.setupLineChart(lineChart, model.getChartViewMarker());
+        chartFunctions.setupPieChart(pieChart);
         // Specific to this fragment
         lineChart.getAxisLeft().setAxisMaximum(100);
 
@@ -115,7 +117,8 @@ public class SummaryDetailPostureFragment extends Fragment {
             Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> {
 
                 //setStackedBar(correct, incorrect, 24);
-                setAreaChart(correct, incorrect, 24);
+                //setAreaChart(correct, incorrect, 24);
+                chartFunctions.setAreaChart(lineChart, correct, incorrect, new String[] {getString(R.string.summary_detail_posture_correct), getString(R.string.summary_detail_posture_incorrect)}, 30);
 
                 int correctPostureTime = 0;
                 int incorrectPostureTime = 0;
@@ -145,7 +148,8 @@ public class SummaryDetailPostureFragment extends Fragment {
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
         Observer<List<SummaryDetailUtil>> observerCorrect = correct -> {
             //Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setStackedBar(correct, incorrect, 7);
-            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setAreaChart(correct, incorrect, 7);
+            //Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setAreaChart(correct, incorrect, 7);
+            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> chartFunctions.setAreaChart(lineChart, correct, incorrect, new String[] {getString(R.string.summary_detail_posture_correct), getString(R.string.summary_detail_posture_incorrect)}, 7);
             postureMeasurementRepository.readLastSevenDaysIncorrectPosture(LocalDate.now(), observerIncorrect);
         };
         postureMeasurementRepository.readLastSevenDaysCorrectPosture(LocalDate.now(), observerCorrect);
@@ -155,7 +159,8 @@ public class SummaryDetailPostureFragment extends Fragment {
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
         Observer<List<SummaryDetailUtil>> observerCorrect = correct -> {
             //Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setStackedBar(correct, incorrect, 30);
-            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setAreaChart(correct, incorrect, 30);
+            //Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> setAreaChart(correct, incorrect, 30);
+            Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> chartFunctions.setAreaChart(lineChart, correct, incorrect, new String[] {getString(R.string.summary_detail_posture_correct), getString(R.string.summary_detail_posture_incorrect)}, 30);
             postureMeasurementRepository.readLastThirtyDaysIncorrectPosture(LocalDate.now(), observerIncorrect);
         };
         postureMeasurementRepository.readLastThirtyDaysCorrectPosture(LocalDate.now(), observerCorrect);
@@ -285,11 +290,10 @@ public class SummaryDetailPostureFragment extends Fragment {
         dataSet.add(lineDataSetIncorrectPosture);
 
         LineData lineData = new LineData(dataSet);
-        lineData.setValueFormatter(new MyValueFormatter());
+        lineData.setValueFormatter(new ChartValueFormatter());
 
         lineChart.setData(lineData);
         lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(model.setLabels(max)));
-        //barChart.groupBars(0.2f, 0.25f, 0.05f);
         lineChart.invalidate();
     }
 
