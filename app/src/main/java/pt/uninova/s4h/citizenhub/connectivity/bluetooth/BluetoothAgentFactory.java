@@ -58,24 +58,24 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                        initAgent(agentClass,source,observer);
                     }
 
-                    if (name.startsWith("HX")) {
-                        observer.observe(new HexoSkinAgent(source, context));
-                    }
-                    //TODO create collection with <Agent,uuidList>
-                    //(services,observer, context)
-                    else if (isMiBand(serviceList)) {
-                        observer.observe(new MiBand2Agent(source, context));
-                    } else if (source.hasService(KbzBodyProtocol.KBZ_SERVICE)) {
-                        observer.observe(new KbzPostureAgent(source, context));
-                    } else if (name.startsWith("UprightGO2")) {
-                        observer.observe(new UprightGo2Agent(source, context));
-                    } else if (name.startsWith("A&D")) {
-                        observer.observe(new BloodPressureMonitorAgent(source, context));
-                    } else if (source.hasService(DigitsoleActivityProtocol.UUID_SERVICE_DATA)) {
-                        observer.observe(new DigitsoleAgent(source, context));
-                    } else {
-                        observer.observe(null);
-                    }
+//                    if (name.startsWith("HX")) {
+//                        observer.observe(new HexoSkinAgent(source, context));
+//                    }
+//                    //TODO create collection with <Agent,uuidList>
+//                    //(services,observer, context)
+//                    else if (isMiBand(serviceList)) {
+//                        observer.observe(new MiBand2Agent(source, context));
+//                    } else if (source.hasService(KbzBodyProtocol.KBZ_SERVICE)) {
+//                        observer.observe(new KbzPostureAgent(source, context));
+//                    } else if (name.startsWith("UprightGO2")) {
+//                        observer.observe(new UprightGo2Agent(source, context));
+//                    } else if (name.startsWith("A&D")) {
+//                        observer.observe(new BloodPressureMonitorAgent(source, context));
+//                    } else if (source.hasService(DigitsoleActivityProtocol.UUID_SERVICE_DATA)) {
+//                        observer.observe(new DigitsoleAgent(source, context));
+//                    } else {
+//                        observer.observe(null);
+//                    }
                 }
             }
         });
