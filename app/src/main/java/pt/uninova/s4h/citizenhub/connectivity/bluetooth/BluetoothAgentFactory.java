@@ -14,20 +14,14 @@ import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleActivityProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzBodyProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
     private final Context context;
     private Class<?> agentClass;
+
     public BluetoothAgentFactory(Context context) {
         this.context = context;
     }
@@ -52,10 +46,10 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                     value.getSource().removeConnectionStateChangeListener(this);
                     final String name = device.getName();
 
-                    BluetoothAgentMatcher agentMatcher = new BluetoothAgentMatcher(source.getServices());
-                    agentClass = agentMatcher.matchAgent();
-                    if(agentClass!=null){
-                       initAgent(agentClass,source,observer);
+                    BluetoothAgentMatchers agentMatcher = new BluetoothAgentMatchers(source);
+                    agentClass = agentMatcher.runAgentMatchers();
+                    if (agentClass != null) {
+                        initAgent(agentClass, source, observer);
                     }
                 }
             }
@@ -64,11 +58,11 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         bluetoothConnection.connect();
     }
 
-    private void initAgent(Class <?> agentClass, BluetoothConnection source, Observer observer){
+    private void initAgent(Class<?> agentClass, BluetoothConnection source, Observer observer) {
         try {
 
             Class<?> agent = Class.forName(agentClass.getName());
-            Class<?>[] parameters = new Class[] {BluetoothConnection.class, Context.class};
+            Class<?>[] parameters = new Class[]{BluetoothConnection.class, Context.class};
             Constructor<?> constructor = agent.getConstructor(parameters);
 
             Object o = constructor.newInstance(source, context);
@@ -85,7 +79,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         ) {
             uuidList.add(service.getUuid());
         }
-        System.out.println("Lista: "+ uuidList);
+        System.out.println("Lista: " + uuidList);
         return uuidList;
     }
 
@@ -105,7 +99,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                 isMiBand2 = false;
             }
         }
-        System.out.println("É MESMO?: "+ isMiBand2);
+        System.out.println("É MESMO?: " + isMiBand2);
         return isMiBand2;
     }
 
