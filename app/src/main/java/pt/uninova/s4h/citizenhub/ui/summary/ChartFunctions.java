@@ -17,6 +17,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailBloodPressureUtil;
@@ -133,7 +137,7 @@ public class ChartFunctions {
             }
         } else if (max == 7) {
             while (i < max) {
-                labels[i] = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).substring(0, 3);
+                labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)).substring(0, 3);
                 cal.add(Calendar.DATE, + 1);
                 i++;
             }
@@ -154,7 +158,7 @@ public class ChartFunctions {
     * barChart (BarChart) - a barChart
     * label (String) - the label of the information to be displayed
     * max (int) - represents the maximum of the X axis */
-    public void setBarChartData(List<SummaryDetailUtil> list, BarChart barChart, String label, int max) {
+    public void setBarChartData(BarChart barChart, List<SummaryDetailUtil> list, String label, int max) {
         List<BarEntry> entries = new ArrayList<>();
         int currentTime = 0;
 
@@ -187,7 +191,41 @@ public class ChartFunctions {
         barChart.invalidate();
     }
 
-    public void setLineChartData(List<SummaryDetailUtil> list, LineChart lineChart, String[] label, int max) {
+    private void setStackedBar(BarChart barChart, List<SummaryDetailUtil> list1, List<SummaryDetailUtil> list2, String[] labels, int max){
+        float[] values1 = new float[max];
+        float[] values2 = new float[max];
+
+        List<BarEntry> entries = new ArrayList<>();
+
+        for (SummaryDetailUtil data : list1) {
+            values1[Math.round(data.getTime())] = data.getValue1();
+        }
+
+        for (SummaryDetailUtil data : list2) {
+            values2[Math.round(data.getTime())] = data.getValue1();
+        }
+
+        for (int i = 0; i < max; i++){
+            entries.add(new BarEntry(i, new float[]{values1[i], values2[i]}));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entries, null);
+        barDataSet.setColors(ContextCompat.getColor(context, R.color.colorS4HLightBlue), ContextCompat.getColor(context, R.color.colorS4HOrange));
+        barDataSet.setStackLabels(labels);
+
+        ArrayList<IBarDataSet> dataSet = new ArrayList<>();
+        dataSet.add(barDataSet);
+
+        BarData barData = new BarData(dataSet);
+        barData.setValueFormatter(new ChartValueFormatter());
+
+        barChart.setData(barData);
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(setLabels(max)));
+        //barChart.groupBars(0.2f, 0.25f, 0.05f);
+        barChart.invalidate();
+    }
+
+    public void setLineChartData(LineChart lineChart, List<SummaryDetailUtil> list, String[] label, int max) {
         List<Entry> entries1 = new ArrayList<>();
         List<Entry> entries2 = new ArrayList<>();
         List<Entry> entries3 = new ArrayList<>();
@@ -305,5 +343,100 @@ public class ChartFunctions {
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         return lineDataSet;
     }
+
+    public void setPieChart(PieChart pieChart, List<SummaryDetailUtil> list1, List<SummaryDetailUtil> list2){
+        int value1 = 0;
+        int value2 = 0;
+        for (SummaryDetailUtil data : list1)
+            value1 += data.getValue1();
+        for (SummaryDetailUtil data : list2)
+            value2 += data.getValue1();
+
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(value1, secondsToString(value1 / 1000)));
+        pieEntries.add(new PieEntry(value2, secondsToString(value2 / 1000)));
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
+        dataSet.setDrawValues(false);
+        dataSet.setColors(ContextCompat.getColor(context, R.color.colorS4HLightBlue), ContextCompat.getColor(context, R.color.colorS4HOrange));
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.invalidate();
+    }
+
+    private String secondsToString(long value) {
+        long seconds = value;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
+    }
+
+    /* public void setLineChartData(List<List<SummaryDetailUtil>> list, LineChart lineChart, String[] label, int max) {
+        int color = 0;
+        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
+
+        for (List<SummaryDetailUtil> data : list) {
+            dataSet.add(setLineChartDataSet(data, label[color], max, color));
+            color++;
+        }
+
+        LineData lineData = new LineData(dataSet);
+        lineData.setValueFormatter(new ChartValueFormatter());
+        lineChart.setData(lineData);
+        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(setLabels(max)));
+        lineChart.invalidate();
+    }
+
+    public LineDataSet setLineChartDataSet(List<SummaryDetailUtil> list, String label, int max, int color) {
+        List<Entry> entries = new ArrayList<>();
+        int currentTime = 0;
+
+        for (SummaryDetailUtil data : list) {
+            while (currentTime < data.getTime()) {
+                //entries.add(new BarEntry(currentTime, 0));
+                currentTime++;
+            }
+            entries.add(new BarEntry(data.getTime(), data.getValue1()));
+            currentTime++;
+        }
+
+        while (currentTime < max) {
+            //entries.add(new BarEntry(currentTime, 0));
+            currentTime++;
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(entries, label);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawCircleHole(true);
+        switch (color) {
+            case 0:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HLightBlue));
+                break;
+            case 1:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HOrange));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HOrange));
+                break;
+            case 2:
+                lineDataSet.setColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                lineDataSet.setCircleHoleColor(getApplication().getColor(R.color.colorS4HTurquoise));
+                break;
+        }
+        return lineDataSet;
+    }*/
 
 }

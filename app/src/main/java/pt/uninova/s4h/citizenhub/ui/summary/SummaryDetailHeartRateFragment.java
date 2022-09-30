@@ -82,19 +82,19 @@ public class SummaryDetailHeartRateFragment extends Fragment {
     }
 
     private void dailyHeartRate(){
-        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseHeartRateUtil(data), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 24);
+        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseHeartRateUtil(data),new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 24);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.selectLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyHeartRate(){
-        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseHeartRateUtil(data), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 7);
+        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseHeartRateUtil(data), new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 7);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.selectSeveralDays(LocalDate.now(), 7, observer);
     }
 
     private void monthlyHeartRate(){
-        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(chartFunctions.parseHeartRateUtil(data), lineChart, new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 30);
+        Observer<List<SummaryDetailHeartRateUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseHeartRateUtil(data), new String[]{getString(R.string.summary_detail_heart_rate_average), getString(R.string.summary_detail_heart_rate_maximum), getString(R.string.summary_detail_heart_rate_minimum)}, 30);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(getContext());
         heartRateMeasurementRepository.selectSeveralDays(LocalDate.now(), 30, observer);
     }
