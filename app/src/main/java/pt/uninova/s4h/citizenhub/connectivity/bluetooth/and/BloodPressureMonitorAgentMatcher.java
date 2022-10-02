@@ -1,19 +1,21 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
+
+import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzBodyProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
-public class KbzPostureAgentMatcher implements AgentMatcher {
+public class BloodPressureMonitorAgentMatcher implements AgentMatcher {
 
     private static final List<UUID> agentServices;
 
     static {
         agentServices = Collections.singletonList(
-                KbzBodyProtocol.KBZ_SERVICE);
+                UUID_SERVICE_BLOOD_PRESSURE);
     }
 
     @Override
@@ -27,14 +29,14 @@ public class KbzPostureAgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println("Kbz Match? " + doesMatch);
+            System.out.println(" Blood Pressure Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return KbzPostureAgent.class;
+        return BloodPressureMonitorAgent.class;
     }
 
     @Override

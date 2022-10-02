@@ -1,11 +1,11 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.LumbarExtensionTrainingProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
 public class MedXAgentMatcher implements AgentMatcher {
 

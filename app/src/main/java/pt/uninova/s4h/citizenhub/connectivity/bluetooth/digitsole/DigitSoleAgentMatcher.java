@@ -1,20 +1,19 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
-
-import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
-public class BloodPressureMonitorAgentMatcher implements AgentMatcher {
+public class DigitSoleAgentMatcher implements AgentMatcher {
 
     private static final List<UUID> agentServices;
 
     static {
         agentServices = Collections.singletonList(
-                UUID_SERVICE_BLOOD_PRESSURE);
+                DigitsoleActivityProtocol.UUID_SERVICE_DATA);
     }
 
     @Override
@@ -28,14 +27,14 @@ public class BloodPressureMonitorAgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println(" Blood Pressure Match? " + doesMatch);
+            System.out.println("DigitSole Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return BloodPressureMonitorAgent.class;
+        return DigitsoleAgent.class;
     }
 
     @Override

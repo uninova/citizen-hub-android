@@ -3,6 +3,8 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2AgentMatcher;
+
 public class BluetoothAgentMatchers {
 
     private static final List<AgentMatcher> agentList = new ArrayList<>();

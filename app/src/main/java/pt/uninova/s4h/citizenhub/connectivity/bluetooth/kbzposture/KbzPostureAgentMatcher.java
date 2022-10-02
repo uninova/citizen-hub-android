@@ -1,19 +1,19 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleActivityProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
-public class DigitSoleAgentMatcher implements AgentMatcher {
+public class KbzPostureAgentMatcher implements AgentMatcher {
 
     private static final List<UUID> agentServices;
 
     static {
         agentServices = Collections.singletonList(
-                DigitsoleActivityProtocol.UUID_SERVICE_DATA);
+                KbzBodyProtocol.KBZ_SERVICE);
     }
 
     @Override
@@ -27,14 +27,14 @@ public class DigitSoleAgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println("DigitSole Match? " + doesMatch);
+            System.out.println("Kbz Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return DigitsoleAgent.class;
+        return KbzPostureAgent.class;
     }
 
     @Override

@@ -1,26 +1,25 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAccelerometerProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinHeartRateProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinRespirationProtocol;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
-public class HexoSkinAgentMatcher implements AgentMatcher {
+public class UprightGo2AgentMatcher implements AgentMatcher {
 
     private static final List<UUID> agentServices;
 
     static {
         agentServices = Collections.unmodifiableList(Arrays.asList(
-                HexoSkinAccelerometerProtocol.ACCELEROMETER_SERVICE_UUID,
-                HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID,
-                HexoSkinHeartRateProtocol.UUID_SERVICE_HEART_RATE,
-                HexoSkinRespirationProtocol.RESPIRATION_SERVICE_UUID));
+                UprightGo2CalibrationProtocol.MEASUREMENTS_SERVICE,
+                UprightGo2PostureProtocol.MEASUREMENTS_SERVICE,
+                UprightGo2VibrationProtocol.VIBRATION_SERVICE));
+        //TODO same UUID's?
     }
+
 
     @Override
     public boolean doesMatch(BluetoothConnection connection) {
@@ -33,14 +32,14 @@ public class HexoSkinAgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println("HexoSkin Match? " + doesMatch);
+            System.out.println("Upright Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return HexoSkinAgent.class;
+        return UprightGo2Agent.class;
     }
 
     @Override
