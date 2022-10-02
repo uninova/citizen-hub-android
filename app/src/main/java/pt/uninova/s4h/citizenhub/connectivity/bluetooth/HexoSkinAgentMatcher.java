@@ -1,19 +1,20 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleActivityProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitsoleAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
 
-public class DigitSoleAgentMatcher implements AgentMatcher {
+public class HexoSkinAgentMatcher implements AgentMatcher {
 
     private static final List<UUID> agentServices;
-
     static {
-        agentServices = Collections.singletonList(
-                DigitsoleActivityProtocol.UUID_SERVICE_DATA);
+        agentServices = Collections.unmodifiableList(Arrays.asList(
+                HexoSkinAgent.UUID_SERVICE_HEART_RATE,
+                HexoSkinAgent.UUID_SERVICE_BLOOD_PRESSURE));
     }
 
     @Override
@@ -27,14 +28,14 @@ public class DigitSoleAgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println("DigitSole Match? " + doesMatch);
+            System.out.println("HexoSkin Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return DigitsoleAgent.class;
+        return HexoSkinAgent.class;
     }
 
     @Override
