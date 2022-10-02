@@ -38,13 +38,8 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
             public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
                 if (value.getNewState() == BluetoothConnectionState.READY) {
                     final BluetoothConnection source = value.getSource();
-                    final BluetoothDevice device = source.getDevice();
-                    List<UUID> serviceList = new ArrayList<>();
-
-                    serviceList = serviceToUUIDList(source.getServices());
 
                     value.getSource().removeConnectionStateChangeListener(this);
-                    final String name = device.getName();
 
                     BluetoothAgentMatchers agentMatcher = new BluetoothAgentMatchers(source);
                     agentClass = agentMatcher.runAgentMatchers();
