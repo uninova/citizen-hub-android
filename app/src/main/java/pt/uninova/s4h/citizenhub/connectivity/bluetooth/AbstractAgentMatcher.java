@@ -3,7 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 import java.util.List;
 import java.util.UUID;
 
-public class AbstractAgentMatcher implements AgentMatcher {
+public abstract class AbstractAgentMatcher implements AgentMatcher {
     List<UUID> agentServices;
     public AbstractAgentMatcher() {
     }
