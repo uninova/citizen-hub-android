@@ -2,29 +2,54 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2Agent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitSoleAgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2AgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2AgentMatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
     private final Context context;
-    private Class<?> agentClass;
+    private static final List<AgentMatcher> agentList;
+
+    static {
+        agentList = Collections.unmodifiableList(Arrays.asList(new MiBand2AgentMatcher(),
+                new BloodPressureMonitorAgentMatcher(),
+                new DigitSoleAgentMatcher(),
+                new HexoSkinAgentMatcher(),
+                new MedXAgentMatcher(),
+                new UprightGo2AgentMatcher()));
+    }
 
     public BluetoothAgentFactory(Context context) {
         this.context = context;
     }
+
+    private Class<?> identifyAgent(BluetoothConnection connection, List<AgentMatcher> agentList) {
+        for (AgentMatcher agent : agentList
+        ) {
+            if (agent.doesMatch(connection)) {
+                return agent.getAgentClass();
+            }
+        }
+        return null;
+    }
+
 
     public void create(String address, Observer<BluetoothAgent> observer) {
         BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
@@ -41,11 +66,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
                     value.getSource().removeConnectionStateChangeListener(this);
 
-                    BluetoothAgentMatchers agentMatcher = new BluetoothAgentMatchers(source);
-                    agentClass = agentMatcher.runAgentMatchers();
-                    if (agentClass != null) {
-                        initAgent(agentClass, source, observer);
-                    }
+                    initAgent(Objects.requireNonNull(identifyAgent(source, agentList)), source, observer);
                 }
             }
         });
@@ -66,16 +87,6 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<UUID> serviceToUUIDList(List<BluetoothGattService> serviceList) {
-        List<UUID> uuidList = new ArrayList<>();
-        for (BluetoothGattService service : serviceList
-        ) {
-            uuidList.add(service.getUuid());
-        }
-        System.out.println("Lista: " + uuidList);
-        return uuidList;
     }
 
     @Override
