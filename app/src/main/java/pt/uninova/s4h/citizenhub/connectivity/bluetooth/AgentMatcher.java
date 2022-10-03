@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface AgentMatcher {
 
-    boolean doesMatch(BluetoothConnection connection);
+    boolean doesMatch(BluetoothConnection connection, List<UUID> agentServices);
 
     Class<?> getAgentClass();
 

@@ -43,7 +43,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
     private Class<?> identifyAgent(BluetoothConnection connection) {
         for (AgentMatcher agent : BluetoothAgentFactory.agentList
         ) {
-            if (agent.doesMatch(connection)) {
+            if (agent.doesMatch(connection,agent.getAgentServices())) {
                 return agent.getAgentClass();
             }
         }

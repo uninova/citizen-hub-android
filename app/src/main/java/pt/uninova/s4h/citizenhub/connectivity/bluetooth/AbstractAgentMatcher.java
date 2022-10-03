@@ -9,12 +9,12 @@ public class AbstractAgentMatcher implements AgentMatcher {
     }
 
     @Override
-    public boolean doesMatch(BluetoothConnection connection) {
+    public boolean doesMatch(BluetoothConnection connection,List<UUID> agentServices) {
         boolean doesMatch = true;
         for (UUID service : agentServices
         ) {
             if (!connection.hasService(service)) {
-               return false;
+                return false;
             }
         }
         System.out.println("Match? " + doesMatch);
