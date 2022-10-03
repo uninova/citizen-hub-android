@@ -6,7 +6,10 @@ import java.util.UUID;
 public interface AgentMatcher {
 
     boolean doesMatch(BluetoothConnection connection);
+
     Class<?> getAgentClass();
+
     List<UUID> getAgentServices();
+//Add doesNameMatch (starts with "string") as a last check?
 
 }

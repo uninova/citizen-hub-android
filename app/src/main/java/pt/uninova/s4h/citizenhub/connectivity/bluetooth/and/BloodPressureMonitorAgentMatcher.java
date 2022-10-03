@@ -1,6 +1,7 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
-import java.util.Arrays;
+import static pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent.UUID_SERVICE_BLOOD_PRESSURE;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -8,14 +9,13 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
-public class MiBand2AgentMatcher implements AgentMatcher {
+public class BloodPressureMonitorAgentMatcher implements AgentMatcher {
+
     private static final List<UUID> agentServices;
 
     static {
-        agentServices = Collections.unmodifiableList(Arrays.asList(
-                MiBand2Agent.UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_1,
-                MiBand2Agent.XIAOMI_MIBAND2_SERVICE_AUTH,
-                MiBand2Agent.UUID_SERVICE_HEART_RATE));
+        agentServices = Collections.singletonList(
+                UUID_SERVICE_BLOOD_PRESSURE);
     }
 
     @Override
@@ -29,14 +29,14 @@ public class MiBand2AgentMatcher implements AgentMatcher {
                 System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
                 doesMatch = false;
             }
-            System.out.println("Mi Band Match? " + doesMatch);
+            System.out.println(" Blood Pressure Match? " + doesMatch);
         }
         return doesMatch;
     }
 
     @Override
     public Class<?> getAgentClass() {
-        return MiBand2Agent.class;
+        return BloodPressureMonitorAgent.class;
     }
 
     @Override

@@ -38,13 +38,8 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
             public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
                 if (value.getNewState() == BluetoothConnectionState.READY) {
                     final BluetoothConnection source = value.getSource();
-                    final BluetoothDevice device = source.getDevice();
-                    List<UUID> serviceList = new ArrayList<>();
-
-                    serviceList = serviceToUUIDList(source.getServices());
 
                     value.getSource().removeConnectionStateChangeListener(this);
-                    final String name = device.getName();
 
                     BluetoothAgentMatchers agentMatcher = new BluetoothAgentMatchers(source);
                     agentClass = agentMatcher.runAgentMatchers();
@@ -81,26 +76,6 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         }
         System.out.println("Lista: " + uuidList);
         return uuidList;
-    }
-
-    public boolean isMiBand(List<UUID> uuidList) {
-        boolean isMiBand2 = true;
-        List<UUID> miBandUUIDS = new ArrayList<>();
-        miBandUUIDS.add(MiBand2Agent.UUID_MEMBER_ANHUI_HUAMI_INFORMATION_TECHNOLOGY_CO_LTD_1);
-        miBandUUIDS.add(MiBand2Agent.XIAOMI_MIBAND2_SERVICE_AUTH);
-        miBandUUIDS.add(MiBand2Agent.UUID_SERVICE_HEART_RATE);
-
-        for (UUID service : miBandUUIDS
-        ) {
-            if (uuidList.contains(service)) {
-                System.out.println("Has service: " + service);
-            } else {
-                System.out.println("not mi band because of service:" + service);
-                isMiBand2 = false;
-            }
-        }
-        System.out.println("É MESMO?: " + isMiBand2);
-        return isMiBand2;
     }
 
     @Override
