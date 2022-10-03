@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole.DigitSoleAgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin.HexoSkinAgentMatcher;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2AgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2AgentMatcher;
@@ -30,6 +31,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
     static {
         agentList = Collections.unmodifiableList(Arrays.asList(new MiBand2AgentMatcher(),
                 new BloodPressureMonitorAgentMatcher(),
+                new KbzPostureAgentMatcher(),
                 new DigitSoleAgentMatcher(),
                 new HexoSkinAgentMatcher(),
                 new MedXAgentMatcher(),
