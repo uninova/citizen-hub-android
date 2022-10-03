@@ -40,8 +40,8 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         this.context = context;
     }
 
-    private Class<?> identifyAgent(BluetoothConnection connection, List<AgentMatcher> agentList) {
-        for (AgentMatcher agent : agentList
+    private Class<?> identifyAgent(BluetoothConnection connection) {
+        for (AgentMatcher agent : BluetoothAgentFactory.agentList
         ) {
             if (agent.doesMatch(connection)) {
                 return agent.getAgentClass();
@@ -66,7 +66,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
                     value.getSource().removeConnectionStateChangeListener(this);
 
-                    initAgent(Objects.requireNonNull(identifyAgent(source, agentList)), source, observer);
+                    initAgent(Objects.requireNonNull(identifyAgent(source)), source, observer);
                 }
             }
         });
