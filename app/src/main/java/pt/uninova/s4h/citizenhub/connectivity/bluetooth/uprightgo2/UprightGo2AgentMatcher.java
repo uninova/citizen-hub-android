@@ -5,36 +5,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractAgentMatcher;
 
-public class UprightGo2AgentMatcher implements AgentMatcher {
+public class UprightGo2AgentMatcher extends AbstractAgentMatcher {
 
     private static final List<UUID> agentServices;
 
     static {
         agentServices = Collections.unmodifiableList(Arrays.asList(
-                UprightGo2CalibrationProtocol.MEASUREMENTS_SERVICE,
-                UprightGo2PostureProtocol.MEASUREMENTS_SERVICE,
-                UprightGo2VibrationProtocol.VIBRATION_SERVICE));
-        //TODO same UUID's?
-    }
-
-
-    @Override
-    public boolean doesMatch(BluetoothConnection connection) {
-        boolean doesMatch = true;
-        for (UUID service : agentServices
-        ) {
-            if (connection.hasService(service)) {
-                System.out.println("Agent " + getAgentClass() + "Has service: " + service);
-            } else {
-                System.out.println("Agent " + getAgentClass() + "DOESN'T HAVE service: " + service);
-                doesMatch = false;
-            }
-            System.out.println("Upright Match? " + doesMatch);
-        }
-        return doesMatch;
+                UprightGo2CalibrationProtocol.MEASUREMENTS_SERVICE
+        ));
     }
 
     @Override

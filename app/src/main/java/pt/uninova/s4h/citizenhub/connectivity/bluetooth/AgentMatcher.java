@@ -10,6 +10,5 @@ public interface AgentMatcher {
     Class<?> getAgentClass();
 
     List<UUID> getAgentServices();
-//Add doesNameMatch (starts with "string") as a last check?
 
 }
