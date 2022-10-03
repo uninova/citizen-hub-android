@@ -2,11 +2,15 @@ package pt.uninova.s4h.citizenhub.ui.report;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,6 +21,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
 import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
 import pt.uninova.s4h.citizenhub.report.MeasurementTypeLocalizedResource;
@@ -77,9 +82,9 @@ public class ReportDetailFragment extends Fragment {
 
         AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
 
-        /*if (viewModel.hasSmart4HealthAccount()) {
+        if (viewModel.hasSmart4HealthAccount()) {
             setHasOptionsMenu(true);
-        }*/
+        }
 
         /*Button uploadPdfButton = view.findViewById(R.id.uploadButton);
         Button viewPdfButton = view.findViewById(R.id.viewPdfButton);
@@ -103,14 +108,14 @@ public class ReportDetailFragment extends Fragment {
 
         return view;
     }
-/*
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.report_upload_pdf_fragment, menu);
 
         menu.findItem(R.id.upload_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            Observer<byte[]> observer = pdfData -> {
+            /*Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -122,16 +127,16 @@ public class ReportDetailFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            };
+            };*/
 
-            DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
-            dailyReportGeneratorPDF.generateCompleteReport(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+            //DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
+            //dailyReportGeneratorPDF.generateCompleteReport(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
             //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
             //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
 
             return true;
-        });    }
- */
+        });
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

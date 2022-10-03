@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.ui.accounts;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,16 +35,51 @@ public class Smart4HealthAccountFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.smart4health_account_fragment, container, false);
 
+        viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_automatic_upload = view.findViewById(R.id.switch_automatic_upload);
+        if(viewModel.hasReportAutomaticUpload())
+            switch_automatic_upload.setChecked(true);
+        switch_automatic_upload.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportAutomaticUpload(compoundButton.isChecked()));
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_activity = view.findViewById(R.id.switch_activity);
+        if(viewModel.hasReportDataActivity())
+            switch_activity.setChecked(true);
+        switch_activity.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataActivity(compoundButton.isChecked()));
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_blood_pressure = view.findViewById(R.id.switch_blood_pressure);
+        if(viewModel.hasReportDataBloodPressure())
+            switch_blood_pressure.setChecked(true);
+        switch_blood_pressure.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataBloodPressure(compoundButton.isChecked()));
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_heart_rate = view.findViewById(R.id.switch_heart_rate);
+        if(viewModel.hasReportDataHeartRate())
+            switch_heart_rate.setChecked(true);
+        switch_heart_rate.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataHeartRate(compoundButton.isChecked()));
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_lumbar_extension_training = view.findViewById(R.id.switch_lumbar_extension_training);
+        if(viewModel.hasReportDataLumbarExtensionTraining())
+            switch_lumbar_extension_training.setChecked(true);
+        switch_lumbar_extension_training.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataLumbarExtensionTraining(compoundButton.isChecked()));
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_posture = view.findViewById(R.id.switch_posture);
+        if(viewModel.hasReportDataPosture())
+            switch_posture.setChecked(true);
+        switch_posture.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataPosture(compoundButton.isChecked()));
+
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.smart4health_account_fragment, menu);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
+        //viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
 
         if (viewModel.hasSmart4HealthAccount()) {
             menu.removeItem(R.id.smart4health_account_fragment_menu_log_in);
