@@ -311,7 +311,9 @@ public class DailyReportGeneratorPDFV2 {
         dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
     }*/
 
-    public void generateCompleteReport(Observer<byte[]> observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
+    public void generateCompleteReport(Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
+
+        DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
 
         PdfDocument document = new PdfDocument();
 
@@ -507,12 +509,10 @@ public class DailyReportGeneratorPDFV2 {
 
             };
 
-            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-            dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerNotWorkTimeReport);
+            dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, true, observerNotWorkTimeReport);
         };
 
-        DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, observerWorkTimeReport);
+        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, true, observerWorkTimeReport);
 
     }
 

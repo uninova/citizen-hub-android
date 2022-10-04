@@ -205,7 +205,7 @@ public class DailyReportGeneratorPDF {
         };
 
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, observerReport);
+        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, true, observerReport);
     }
 
     public void generateNotWorkTimeReportPDF(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
@@ -302,7 +302,7 @@ public class DailyReportGeneratorPDF {
         };
 
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
+        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, true, observerReport);
     }
 
     public void generateCompleteReport(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
@@ -506,11 +506,11 @@ public class DailyReportGeneratorPDF {
             };
 
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-            dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerNotWorkTimeReport);
+            dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, true, observerNotWorkTimeReport);
         };
 
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, observerWorkTimeReport);
+        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, true, observerWorkTimeReport);
 
     }
 

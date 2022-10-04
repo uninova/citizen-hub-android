@@ -53,17 +53,15 @@ public class ReportViewModel extends AndroidViewModel {
         setMonthView(year, month);
     }
 
-    public void getWorkTimeReport(Application application, Observer<Report> observerWorkTimeReport){
-
+    public void getWorkTimeReport(Application application, boolean pdf, Observer<Report> observerWorkTimeReport){
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplication().getBaseContext());
-        dailyReportGenerator.generateWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, observerWorkTimeReport);
+        dailyReportGenerator.generateWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, pdf, observerWorkTimeReport);
 
     }
 
-    public void getNotWorkTimeReport(Application application, Observer<Report> observerNotWorkTimeReport){
-
+    public void getNotWorkTimeReport(Application application, boolean pdf, Observer<Report> observerNotWorkTimeReport){
         DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplication().getBaseContext());
-        dailyReportGenerator.generateNotWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, observerNotWorkTimeReport);
+        dailyReportGenerator.generateNotWorkTimeReport(new ReportRepository(application.getApplicationContext()), currentDate, pdf, observerNotWorkTimeReport);
 
     }
 
