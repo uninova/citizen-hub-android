@@ -74,16 +74,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
                     value.getSource().removeConnectionStateChangeListener(this);
 
-                    if (identifyAgent(source) == null) {
-                        Intent intent = new Intent("nullAgent");
-                        // Adding some data
-                        intent.putExtra("nullAgent", 0);
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-                        System.out.println("NO MATCHHHHHHH");
-                    } else {
                         initAgent((identifyAgent(source)), source, observer);
-                    }
                 }
             }
         });

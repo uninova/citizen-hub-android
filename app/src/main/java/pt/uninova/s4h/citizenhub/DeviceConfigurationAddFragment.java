@@ -1,11 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,8 +40,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         }
     };
 
-    private BroadcastReceiver messageReceiver;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,28 +61,17 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
 
-        IntentFilter intent = new IntentFilter("nullAgent");
-
-        messageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                System.out.println("NULLLLAGENTTTTTTTTTTTTTTTTTTTTTTTTT");
-                Toast.makeText(context, "Agent not supported", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
-                requireActivity().unregisterReceiver(this);
-            }
-        };
-        requireActivity().registerReceiver(messageReceiver, intent);
-
-
         model.identifySelectedDevice(new Observer<Agent>() {
             @Override
             public void observe(Agent agent) {
 
+                if(agent==null){
+                    Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+                }
+
                 DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(DeviceConfigurationAddFragment.this::loadSupportedFeatures);
 
                 connectDevice.setOnClickListener(v -> {
-
 
                     model.addAgent(agent);
 
@@ -141,13 +124,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         });
 
         return view;
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        requireActivity().unregisterReceiver(messageReceiver);
     }
 }
 
