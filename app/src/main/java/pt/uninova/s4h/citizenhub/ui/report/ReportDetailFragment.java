@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.ui.report;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +26,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
 import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
@@ -115,7 +121,7 @@ public class ReportDetailFragment extends Fragment {
 
         menu.findItem(R.id.upload_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            /*Observer<byte[]> observer = pdfData -> {
+            Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -127,13 +133,12 @@ public class ReportDetailFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            };*/
+            };
 
-            //DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
-            //dailyReportGeneratorPDF.generateCompleteReport(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+            DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
+            dailyReportGeneratorPDF.generateCompleteReport(getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization, observer);
             //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
             //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
-
             return true;
         });
     }
@@ -398,11 +403,10 @@ public class ReportDetailFragment extends Fragment {
                 });
             };
 
-            model.getNotWorkTimeReport(getActivity().getApplication(), observerNotWorkTimeReport);
+            model.getNotWorkTimeReport(requireActivity().getApplication(), false, observerNotWorkTimeReport);
         };
 
-        model.getWorkTimeReport(getActivity().getApplication(), observerWorkTimeReport);
-
+        model.getWorkTimeReport(requireActivity().getApplication(), false, observerWorkTimeReport);
     }
 
     private void displayTitle(TableLayout tableLayout, String title) {
