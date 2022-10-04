@@ -151,7 +151,7 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                                         }
                                     };
 
-                                    dailyReportGeneratorPDF.generateCompleteReport(observer, getApplicationContext().getResources(), new ReportRepository(getApplicationContext()), i, measurementKindLocalization);
+                                    dailyReportGeneratorPDF.generateCompleteReport(getApplicationContext().getResources(), new ReportRepository(getApplicationContext()), i, measurementKindLocalization, observer);
                                 }
                             }
 
