@@ -15,12 +15,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 
@@ -61,66 +59,68 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
 
-        model.identifySelectedDevice(new Observer<Agent>() {
-            @Override
-            public void observe(Agent agent) {
+        model.identifySelectedDevice(agent -> {
 
-                if(agent==null){
-                    Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+            if (agent == null) {
+                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+                    }
+                });
+            }
+
+            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(DeviceConfigurationAddFragment.this::loadSupportedFeatures);
+
+            connectDevice.setOnClickListener(v -> {
+
+                model.addAgent(agent);
+
+                DeviceConfigurationAddFragment.this.saveFeaturesChosen();
+
+                if (agent.getSource().getName().startsWith("UprightGO2")) {
+                    new AlertDialog.Builder(DeviceConfigurationAddFragment.this.getContext())
+                            .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
+                            .setMessage(DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
+                                    DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
+                            .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
+
+                                    UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;
+
+                                    //Send Message calibration
+                                    uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
+
+                                    //default - first vibration settings when adding device
+                                    boolean vibration = true;
+                                    int angle = 1;
+                                    int interval = 5;
+                                    int pattern = 0;
+                                    boolean showPattern = true;
+                                    int strength = 1;
+
+                                    //Send Message vibration settings
+                                    uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
+
+                                    handler.sendMessageDelayed(new Message(), 2500);
+
+                                }
+                            })
+                            .setIcon(R.drawable.img_citizen_hub_logo_png)
+                            .show();
                 }
 
-                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(DeviceConfigurationAddFragment.this::loadSupportedFeatures);
+                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+            });
 
-                connectDevice.setOnClickListener(v -> {
-
-                    model.addAgent(agent);
-
-                    DeviceConfigurationAddFragment.this.saveFeaturesChosen();
-
-                    if (agent.getSource().getName().startsWith("UprightGO2")) {
-                        new AlertDialog.Builder(DeviceConfigurationAddFragment.this.getContext())
-                                .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
-                                .setMessage(DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
-                                        DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
-                                .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
-
-                                        UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;
-
-                                        //Send Message calibration
-                                        uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
-
-                                        //default - first vibration settings when adding device
-                                        boolean vibration = true;
-                                        int angle = 1;
-                                        int interval = 5;
-                                        int pattern = 0;
-                                        boolean showPattern = true;
-                                        int strength = 1;
-
-                                        //Send Message vibration settings
-                                        uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
-
-                                        handler.sendMessageDelayed(new Message(), 2500);
-
-                                    }
-                                })
-                                .setIcon(R.drawable.img_citizen_hub_logo_png)
-                                .show();
-                    }
-
-                    Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
-                });
-
-                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
-                });
+            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
+            });
 
 
-            }
         });
 
         return view;

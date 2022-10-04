@@ -52,9 +52,6 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
             }
         }
         connection.close();
-        Intent intent = new Intent("nullAgent");
-        context.sendBroadcast(intent);
-
         return null;
     }
 
@@ -84,14 +81,17 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
     private void initAgent(Class<?> agentClass, BluetoothConnection source, Observer observer) {
         try {
+            if(agentClass==null){
+                observer.observe((BluetoothAgent)null);
+            }
+            else {
+                Class<?> agent = Class.forName(agentClass.getName());
+                Class<?>[] parameters = new Class[]{BluetoothConnection.class, Context.class};
+                Constructor<?> constructor = agent.getConstructor(parameters);
 
-            Class<?> agent = Class.forName(agentClass.getName());
-            Class<?>[] parameters = new Class[]{BluetoothConnection.class, Context.class};
-            Constructor<?> constructor = agent.getConstructor(parameters);
-
-            Object o = constructor.newInstance(source, context);
-            observer.observe((BluetoothAgent) o);
-
+                Object o = constructor.newInstance(source, context);
+                observer.observe((BluetoothAgent) o);
+            }
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
