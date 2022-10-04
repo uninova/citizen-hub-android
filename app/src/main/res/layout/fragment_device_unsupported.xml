@@ -70,6 +70,21 @@
                 android:src="@drawable/ic_devices_unpaired"
                 />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutUnsupportedDeviceContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/buttonUnsupportedDeviceContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buttonUnsupportedDevice" />
+
+        </LinearLayout>
     </LinearLayout>
 
 

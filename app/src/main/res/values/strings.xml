@@ -524,6 +524,7 @@
     <string name="fragment_device_unsupported_message">Device is not supported</string>
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="layout_fragment_device_unsupported_address">Address</string>
+    <string name="buttonUnsupportedDevice">Back</string>
 
 </resources>
 
