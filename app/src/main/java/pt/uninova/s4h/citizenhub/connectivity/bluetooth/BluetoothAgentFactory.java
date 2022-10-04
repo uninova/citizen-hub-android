@@ -51,6 +51,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                 return agent.getAgentClass();
             }
         }
+        connection.close();
         Intent intent = new Intent("nullAgent");
         context.sendBroadcast(intent);
 

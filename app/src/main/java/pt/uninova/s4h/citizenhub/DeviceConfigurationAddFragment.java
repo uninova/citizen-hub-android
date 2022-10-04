@@ -75,6 +75,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 System.out.println("NULLLLAGENTTTTTTTTTTTTTTTTTTTTTTTTT");
                 Toast.makeText(context, "Agent not supported", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+                requireActivity().unregisterReceiver(this);
             }
         };
         requireActivity().registerReceiver(messageReceiver, intent);
