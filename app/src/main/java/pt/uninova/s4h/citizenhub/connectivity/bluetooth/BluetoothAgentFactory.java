@@ -4,13 +4,15 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -45,10 +47,13 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
     private Class<?> identifyAgent(BluetoothConnection connection) {
         for (AgentMatcher agent : BluetoothAgentFactory.agentList
         ) {
-            if (agent.doesMatch(connection,agent.getAgentServices())) {
+            if (agent.doesMatch(connection, agent.getAgentServices())) {
                 return agent.getAgentClass();
             }
         }
+        Intent intent = new Intent("nullAgent");
+        context.sendBroadcast(intent);
+
         return null;
     }
 
@@ -68,7 +73,16 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
                     value.getSource().removeConnectionStateChangeListener(this);
 
-                    initAgent(Objects.requireNonNull(identifyAgent(source)), source, observer);
+                    if (identifyAgent(source) == null) {
+                        Intent intent = new Intent("nullAgent");
+                        // Adding some data
+                        intent.putExtra("nullAgent", 0);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+                        System.out.println("NO MATCHHHHHHH");
+                    } else {
+                        initAgent((identifyAgent(source)), source, observer);
+                    }
                 }
             }
         });
