@@ -102,33 +102,26 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-                    // check if it is a new day
                     if (resetSteps()){
-                        System.out.println("Reset steps");
                         sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
                         sharedPreferences.edit().putInt("offsetStepCounter", -(int) event.values[0]).apply();
                     }
                     else{
                         System.out.println("Did not reset steps");
                     }
-                    // get time
+
                     final LocalDate now = LocalDate.now();
-                    // get value from step counter sensor
+
                     int stepCounter = (int) event.values[0];
-                    // check if stepCounter is greater than last recorded value (check for reboot)
+
                     if(stepCounter<getLastStepCounter())
-                    {
-                        // add offset to existing offset
                         sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
-                    }
-                    // save current step counter sensor value on sharedPreferences
                     sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
-                    //save the day from the step counter sensor value
                     sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
-                    // create sample and send with value from step_counter and offset
+
                     Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter()+getOffsetStepCounter()));
                     sampleRepository.create(sample, sampleId -> {});
-                    // send maximum value saved to phone and UI
+
                     stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
                         if(value != null)
                             stepsTotal = value.intValue();
@@ -137,10 +130,6 @@ public class MainActivity extends FragmentActivity {
                         listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
                         new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                     });
-                    // some prints for testing
-                    System.out.println("lastStepCounter: " + getLastStepCounter());
-                    System.out.println("offsetStepCounter: " + getOffsetStepCounter());
-                    System.out.println("reset? -> " + resetSteps().toString());
                 }
             }
             @Override
