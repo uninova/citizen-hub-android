@@ -109,25 +109,19 @@ public class SettingsFragment extends Fragment {
 
     private void enableHeartRateSensor(Boolean enabled){
         if(MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null){
-            if (enabled){
+            if (enabled)
                 MainActivity.sensorManager.registerListener(MainActivity.heartRateListener, MainActivity.heartSensor,SensorManager.SENSOR_DELAY_NORMAL);
-            }
-            else{
+            else
                 MainActivity.sensorManager.unregisterListener(MainActivity.heartRateListener, MainActivity.heartSensor);
-            }
         }
     }
 
     private void enableStepsSensor(Boolean enabled){
         if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
-            if(enabled){
-                MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsDetectorSensor,SensorManager.SENSOR_DELAY_NORMAL);
+            if(enabled)
                 MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
-            }
-            else{
-                MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener, MainActivity.stepsDetectorSensor);
+            else
                 MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor);
-            }
         }
     }
 

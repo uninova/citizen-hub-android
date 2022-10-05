@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity {
     private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
     public static SensorManager sensorManager;
-    public static Sensor stepsDetectorSensor, stepsCounterSensor, heartSensor;
+    public static Sensor stepsCounterSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
     static MutableLiveData<String> listenHeartRateAverage = new MutableLiveData<>();
@@ -206,7 +206,6 @@ public class MainActivity extends FragmentActivity {
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        stepsDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
     }
 
