@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity {
     private static final String citizenHubPath = "/citizenhub_";
     public static int stepsTotal = 0;
     public static SensorManager sensorManager;
-    public static Sensor stepsSensor, heartSensor;
+    public static Sensor stepsDetectorSensor, stepsCounterSensor, heartSensor;
     private ViewPager2 viewPager;
     static MutableLiveData<String> listenHeartRate = new MutableLiveData<>();
     static MutableLiveData<String> listenHeartRateAverage = new MutableLiveData<>();
@@ -102,6 +102,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+                    System.out.println("HELLO FROM STEP DETECTOR");
                     if(!checkForStepsReset())
                     {
                         stepsTotal = 0;
@@ -115,10 +116,16 @@ public class MainActivity extends FragmentActivity {
                     sampleRepository.create(sample, sampleId -> {});
                     final LocalDate now = LocalDate.now();
                     stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-                        stepsTotal = value.intValue();
-                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
-                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                        if(value != null){
+                            stepsTotal = value.intValue();
+                            listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
+                            new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                        }
                     });
+                }
+
+                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
+                    System.out.println("HELLO FROM STEP COUNTER, got steps: " + event.values[0]);
                 }
             }
             @Override
@@ -144,7 +151,7 @@ public class MainActivity extends FragmentActivity {
             if(value != null)
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
             else
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, 0.00));
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
     }
 
@@ -185,7 +192,8 @@ public class MainActivity extends FragmentActivity {
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        stepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        stepsDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
     }
 
     private Boolean checkForStepsReset(){

@@ -121,10 +121,12 @@ public class SettingsFragment extends Fragment {
     private void enableStepsSensor(Boolean enabled){
         if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null) {
             if(enabled){
-                MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsSensor,SensorManager.SENSOR_DELAY_NORMAL);
+                MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsDetectorSensor,SensorManager.SENSOR_DELAY_NORMAL);
+                MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
             else{
-                MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener, MainActivity.stepsSensor);
+                MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener, MainActivity.stepsDetectorSensor);
+                MainActivity.sensorManager.unregisterListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor);
             }
         }
     }
