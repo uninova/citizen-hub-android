@@ -102,6 +102,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
+                    // check if it is a new day
+                    if (resetSteps()){
+                        System.out.println("Reset steps");
+                        sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
+                        sharedPreferences.edit().putInt("offsetStepCounter", -(int) event.values[0]).apply();
+                    }
+                    else{
+                        System.out.println("Did not reset steps");
+                    }
                     // get time
                     final LocalDate now = LocalDate.now();
                     // get value from step counter sensor
@@ -114,6 +123,8 @@ public class MainActivity extends FragmentActivity {
                     }
                     // save current step counter sensor value on sharedPreferences
                     sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
+                    //save the day from the step counter sensor value
+                    sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
                     // create sample and send with value from step_counter and offset
                     Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter()+getOffsetStepCounter()));
                     sampleRepository.create(sample, sampleId -> {});
@@ -129,9 +140,7 @@ public class MainActivity extends FragmentActivity {
                     // some prints for testing
                     System.out.println("lastStepCounter: " + getLastStepCounter());
                     System.out.println("offsetStepCounter: " + getOffsetStepCounter());
-                    // TODO
-                    // check for new day a reset last and offset
-                    // remove step detector stuff
+                    System.out.println("reset? -> " + resetSteps().toString());
                 }
             }
             @Override
@@ -159,6 +168,22 @@ public class MainActivity extends FragmentActivity {
             else
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
+    }
+
+    private Boolean resetSteps(){
+        long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
+        if(recordedDate == 0)
+            return false;
+        Date dateRecorded = new Date(recordedDate);
+        Calendar calendarRecordedDate = Calendar.getInstance();
+        calendarRecordedDate.setTime(dateRecorded);
+
+        Date currentDay = new Date();
+        Calendar calendarCurrentDate = Calendar.getInstance();
+        calendarCurrentDate.setTime(currentDay);
+
+        return !(calendarRecordedDate.get(Calendar.DAY_OF_YEAR) == calendarCurrentDate.get(Calendar.DAY_OF_YEAR)
+                && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR));
     }
 
     private int getOffsetStepCounter(){
@@ -207,22 +232,6 @@ public class MainActivity extends FragmentActivity {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-    }
-
-    private Boolean checkForStepsReset(){
-        long recordedDate = sharedPreferences.getLong("dayFromLastSteps", 0);
-        if(recordedDate == 0)
-            return true;
-        Date dateRecorded = new Date(recordedDate);
-        Calendar calendarRecordedDate = Calendar.getInstance();
-        calendarRecordedDate.setTime(dateRecorded);
-
-        Date currentDay = new Date();
-        Calendar calendarCurrentDate = Calendar.getInstance();
-        calendarCurrentDate.setTime(currentDay);
-
-        return calendarRecordedDate.get(Calendar.DAY_OF_YEAR) == calendarCurrentDate.get(Calendar.DAY_OF_YEAR)
-            && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR);
     }
 
     private void setDevice(){
