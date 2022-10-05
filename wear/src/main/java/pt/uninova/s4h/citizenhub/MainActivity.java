@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = this.getSharedPreferences("checkForStepsReset", Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 
         IntentFilter newFilter = new IntentFilter(Intent.ACTION_SEND);
         Receiver messageReceiver = new Receiver();
@@ -101,31 +101,37 @@ public class MainActivity extends FragmentActivity {
         stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                    System.out.println("HELLO FROM STEP DETECTOR");
-                    if(!checkForStepsReset())
-                    {
-                        stepsTotal = 0;
-                        final LocalDate now = LocalDate.now();
-                        MainActivity.stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> MainActivity.listenSteps.postValue(getString(R.string.show_data_steps, value.intValue())));
-                    }
-                    sharedPreferences.edit().putLong("dayFromLastSteps", new Date().getTime()).apply();
-
-                    stepsTotal+=event.values[0];
-                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, stepsTotal));
-                    sampleRepository.create(sample, sampleId -> {});
-                    final LocalDate now = LocalDate.now();
-                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-                        if(value != null){
-                            stepsTotal = value.intValue();
-                            listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
-                            new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
-                        }
-                    });
-                }
-
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-                    System.out.println("HELLO FROM STEP COUNTER, got steps: " + event.values[0]);
+                    // get time
+                    final LocalDate now = LocalDate.now();
+                    // get value from step counter sensor
+                    int stepCounter = (int) event.values[0];
+                    // check if stepCounter is greater than last recorded value (check for reboot)
+                    if(stepCounter<getLastStepCounter())
+                    {
+                        // add offset to existing offset
+                        sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
+                    }
+                    // save current step counter sensor value on sharedPreferences
+                    sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
+                    // create sample and send with value from step_counter and offset
+                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter()+getOffsetStepCounter()));
+                    sampleRepository.create(sample, sampleId -> {});
+                    // send maximum value saved to phone and UI
+                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+                        if(value != null)
+                            stepsTotal = value.intValue();
+                        else
+                            stepsTotal = 0;
+                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
+                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                    });
+                    // some prints for testing
+                    System.out.println("lastStepCounter: " + getLastStepCounter());
+                    System.out.println("offsetStepCounter: " + getOffsetStepCounter());
+                    // TODO
+                    // check for new day a reset last and offset
+                    // remove step detector stuff
                 }
             }
             @Override
@@ -153,6 +159,14 @@ public class MainActivity extends FragmentActivity {
             else
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
+    }
+
+    private int getOffsetStepCounter(){
+        return sharedPreferences.getInt("offsetStepCounter",0);
+    }
+
+    private int getLastStepCounter(){
+        return sharedPreferences.getInt("lastStepCounter",0);
     }
 
     @Override
