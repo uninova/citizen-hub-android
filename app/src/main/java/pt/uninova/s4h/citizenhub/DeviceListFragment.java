@@ -58,7 +58,6 @@ public class DeviceListFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
@@ -93,7 +92,11 @@ public class DeviceListFragment extends Fragment {
 
         if (deviceList.size() > 0) {
             for (Device i : deviceList) {
-                adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
+                if (model.getAttachedAgentState(i) == 1) {
+                    adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_connected));
+                } else {
+                    adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
+                }
             }
         }
     }
