@@ -60,7 +60,6 @@ public class MainActivity extends FragmentActivity {
     SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +79,32 @@ public class MainActivity extends FragmentActivity {
         heartRateMeasurementRepository = new HeartRateMeasurementRepository(getApplication());
         stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getApplication());
 
+        startListeners();
+
+        viewPager = findViewById(R.id.viewPager);
+        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
+        viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
+
+        new SendMessage(citizenHubPath + nodeIdString,"Ready");
+
+        final LocalDate now = LocalDate.now();
+        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+            if(value != null)
+                listenSteps.postValue(getString(R.string.show_data_steps, value.intValue()));
+            else
+                listenSteps.postValue(getString(R.string.show_data_steps, 0));
+        });
+        heartRateMeasurementRepository.readAverageObserved(now, value -> {
+            if(value != null)
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
+            else
+                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
+        });
+    }
+
+    public void startListeners(){
         heartRateListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
@@ -105,9 +130,6 @@ public class MainActivity extends FragmentActivity {
                     if (resetSteps()){
                         sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
                         sharedPreferences.edit().putInt("offsetStepCounter", -(int) event.values[0]).apply();
-                    }
-                    else{
-                        System.out.println("Did not reset steps");
                     }
 
                     final LocalDate now = LocalDate.now();
@@ -135,29 +157,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onAccuracyChanged(Sensor sensor, int i) {}
         };
-
-        viewPager = findViewById(R.id.viewPager);
-        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
-
-        new SendMessage(citizenHubPath + nodeIdString,"Ready");
-
-        final LocalDate now = LocalDate.now();
-        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-            if(value != null)
-                listenSteps.postValue(getString(R.string.show_data_steps, value.intValue()));
-            else
-                listenSteps.postValue(getString(R.string.show_data_steps, 0));
-        });
-        heartRateMeasurementRepository.readAverageObserved(now, value -> {
-            if(value != null)
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
-            else
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
-        });
     }
+
 
     private Boolean resetSteps(){
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
@@ -211,9 +212,6 @@ public class MainActivity extends FragmentActivity {
             requestPermissions(
                     new String[]{Manifest.permission.BODY_SENSORS},
                     21);
-            System.out.println("Permissions REQUESTED");
-        } else {
-            System.out.println("Permissions ALREADY GRANTED");
         }
     }
 
