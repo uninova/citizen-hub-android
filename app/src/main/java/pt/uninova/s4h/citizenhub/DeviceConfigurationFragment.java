@@ -60,10 +60,19 @@ public class DeviceConfigurationFragment extends Fragment {
         final Agent agent = model.getSelectedDeviceAgent();
 
         if (agent != null) {
-            final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
 
-            for (int i : agent.getSupportedMeasurements()) {
-                featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
+            if(agent.getState()!=1){
+
+                for (int i : agent.getSupportedMeasurements()) {
+                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), false));
+                }
+            }
+            else {
+                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
+
+                for (int i : agent.getSupportedMeasurements()) {
+                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
+                }
             }
         }
 
@@ -72,6 +81,7 @@ public class DeviceConfigurationFragment extends Fragment {
 
     protected void loadSupportedFeatures() {
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
+        adapter.setSwitchClickable(model.getAttachedAgentState(model.getSelectedDevice().getValue()) == 1);
         listViewFeatures.setAdapter(adapter);
         adapter.updateResults(getSupportedFeatures());
     }
