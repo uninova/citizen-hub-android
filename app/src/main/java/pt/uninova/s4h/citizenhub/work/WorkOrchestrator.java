@@ -8,12 +8,17 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.ListenableWorker;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+
+import pt.uninova.s4h.citizenhub.data.Sample;
 
 public class WorkOrchestrator {
 
@@ -21,10 +26,62 @@ public class WorkOrchestrator {
 
     public WorkOrchestrator(WorkManager workManager) {
         this.workManager = workManager;
-        workManager.cancelAllWork();
+        //workManager.cancelAllWork();
     }
 
-    public void addPeriodicWork(Class<? extends ListenableWorker> worker, String name, int time, TimeUnit timeUnit) {
+    public void enqueueSmartBearUploader(){
+        addPeriodicWork(SmartBearUploader.class, "smartbearuploader", 12, TimeUnit.HOURS);
+    }
+
+    public void cancelSmartBearUploader(){
+        cancelWork("smartbearuploader");
+    }
+
+    public void enqueueSmart4HealthUploader(){
+        addPeriodicWork(Smart4HealthPdfUploader.class, "smart4healthuploader", 12, TimeUnit.HOURS);
+    }
+
+    public void cancelSmart4HealthUploader(){
+        cancelWork("smart4healthuploader");
+    }
+
+    public void enqueueSmart4HealthUniqueWorkBloodPressure(Context context, long sampleId){
+        final WorkManager workManager = WorkManager.getInstance(context);
+        final Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        final Data data = new Data.Builder()
+                .putLong("sampleId", sampleId)
+                .build();
+
+        final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(BloodPressureUploader.class)
+                .setInputData(data)
+                .setConstraints(constraints)
+                .build();
+
+        workManager.enqueueUniqueWork("smart4health_pdf_" + sampleId, ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+    }
+
+    public void enqueueSmart4HealthUniqueWorkLumbarExtension(Context context, long sampleId){
+        final WorkManager workManager = WorkManager.getInstance(context);
+        final Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        final Data data = new Data.Builder()
+                .putLong("sampleId", sampleId)
+                .build();
+
+        final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(LumbarExtensionTrainingUploader.class)
+                .setInputData(data)
+                .setConstraints(constraints)
+                .build();
+
+        workManager.enqueueUniqueWork("smart4health_pdf_" + sampleId, ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+    }
+
+    private void addPeriodicWork(Class<? extends ListenableWorker> worker, String name, int time, TimeUnit timeUnit) {
         final Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
@@ -39,8 +96,8 @@ public class WorkOrchestrator {
                 periodicWork);
     }
 
-    public void cancelWork(String workName) {
-        WorkManager.getInstance().cancelAllWorkByTag(workName);
+    private void cancelWork(String workName) {
+        workManager.cancelAllWorkByTag(workName);
     }
 
     public WorkInfo.State getWorkers(@NonNull Context context, String workName) throws ExecutionException, InterruptedException {

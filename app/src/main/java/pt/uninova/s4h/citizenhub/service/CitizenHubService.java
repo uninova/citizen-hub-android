@@ -168,31 +168,10 @@ public class CitizenHubService extends LifecycleService {
                         @Override
                         public void onSuccess(Boolean aBoolean) {
                             if (aBoolean) {
-                                Class<? extends ListenableWorker> c = null;
-
-                                if (type == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                                    c = LumbarExtensionTrainingUploader.class;
-                                } else if (type == Measurement.TYPE_BLOOD_PRESSURE) {
-                                    c = BloodPressureUploader.class;
-                                }
-
-                                if (c != null) {
-                                    final WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-
-                                    final Constraints constraints = new Constraints.Builder()
-                                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                                            .build();
-
-                                    final Data data = new Data.Builder()
-                                            .putLong("sampleId", sampleId)
-                                            .build();
-
-                                    final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(c)
-                                            .setInputData(data)
-                                            .setConstraints(constraints)
-                                            .build();
-
-                                    workManager.enqueueUniqueWork("smart4health_pdf_" + sampleId, ExistingWorkPolicy.APPEND_OR_REPLACE, workRequest);
+                                if (type == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING && preferences.getBoolean("account.smart4health.report.data.lumbar-extension-training", true)) {
+                                    workOrchestrator.enqueueSmart4HealthUniqueWorkLumbarExtension(getApplicationContext(), sampleId);
+                                } else if (type == Measurement.TYPE_BLOOD_PRESSURE && preferences.getBoolean("account.smart4health.report.data.blood-pressure", true)) {
+                                    workOrchestrator.enqueueSmart4HealthUniqueWorkBloodPressure(getApplicationContext(), sampleId);
                                 }
                             }
                         }
@@ -294,9 +273,8 @@ public class CitizenHubService extends LifecycleService {
 
     private void initWorkOrchestrator() {
         workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(this));
-
-        workOrchestrator.addPeriodicWork(SmartBearUploader.class, "smartbearuploader", 12, TimeUnit.HOURS);
-        workOrchestrator.addPeriodicWork(Smart4HealthPdfUploader.class, "smart4healthuploader", 12, TimeUnit.HOURS);
+        workOrchestrator.enqueueSmartBearUploader();
+        workOrchestrator.enqueueSmart4HealthUploader();
     }
 
     @Override
