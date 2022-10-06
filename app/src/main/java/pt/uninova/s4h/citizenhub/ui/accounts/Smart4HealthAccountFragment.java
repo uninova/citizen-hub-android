@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.WorkManager;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
@@ -25,10 +27,26 @@ import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ui.lobby.LobbyActivity;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class Smart4HealthAccountFragment extends Fragment {
 
     private AccountsViewModel viewModel;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_automatic_upload;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_activity;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_blood_pressure;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_heart_rate;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_lumbar_extension_training;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_posture;
+
+    public Smart4HealthAccountFragment() {
+    }
 
     @Nullable
     @Override
@@ -43,36 +61,80 @@ public class Smart4HealthAccountFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_automatic_upload = view.findViewById(R.id.switch_automatic_upload);
+        switch_automatic_upload = view.findViewById(R.id.switch_automatic_upload);
+        switch_activity = view.findViewById(R.id.switch_activity);
+        switch_blood_pressure = view.findViewById(R.id.switch_blood_pressure);
+        switch_heart_rate = view.findViewById(R.id.switch_heart_rate);
+        switch_lumbar_extension_training = view.findViewById(R.id.switch_lumbar_extension_training);
+        switch_posture = view.findViewById(R.id.switch_posture);
+
+        verifyAllSwitchStatus();
+
         if(viewModel.hasReportAutomaticUpload())
             switch_automatic_upload.setChecked(true);
-        switch_automatic_upload.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportAutomaticUpload(compoundButton.isChecked()));
+        switch_automatic_upload.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportAutomaticUpload(compoundButton.isChecked());
+            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+            if(compoundButton.isChecked())
+                workOrchestrator.cancelSmart4HealthUploader();
+            else
+                workOrchestrator.enqueueSmart4HealthUploader();
+        });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_activity = view.findViewById(R.id.switch_activity);
+
         if(viewModel.hasReportDataActivity())
             switch_activity.setChecked(true);
-        switch_activity.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataActivity(compoundButton.isChecked()));
+        switch_activity.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportDataActivity(compoundButton.isChecked());
+            verifyAllSwitchStatus();
+        });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_blood_pressure = view.findViewById(R.id.switch_blood_pressure);
         if(viewModel.hasReportDataBloodPressure())
             switch_blood_pressure.setChecked(true);
-        switch_blood_pressure.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataBloodPressure(compoundButton.isChecked()));
+        switch_blood_pressure.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportDataBloodPressure(compoundButton.isChecked());
+            verifyAllSwitchStatus();
+        });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_heart_rate = view.findViewById(R.id.switch_heart_rate);
+
         if(viewModel.hasReportDataHeartRate())
             switch_heart_rate.setChecked(true);
-        switch_heart_rate.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataHeartRate(compoundButton.isChecked()));
+        switch_heart_rate.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportDataHeartRate(compoundButton.isChecked());
+            verifyAllSwitchStatus();
+        });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_lumbar_extension_training = view.findViewById(R.id.switch_lumbar_extension_training);
+
         if(viewModel.hasReportDataLumbarExtensionTraining())
             switch_lumbar_extension_training.setChecked(true);
-        switch_lumbar_extension_training.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataLumbarExtensionTraining(compoundButton.isChecked()));
+        switch_lumbar_extension_training.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportDataLumbarExtensionTraining(compoundButton.isChecked());
+            verifyAllSwitchStatus();
+        });
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch switch_posture = view.findViewById(R.id.switch_posture);
+
         if(viewModel.hasReportDataPosture())
             switch_posture.setChecked(true);
-        switch_posture.setOnCheckedChangeListener((compoundButton, b) -> viewModel.setReportDataPosture(compoundButton.isChecked()));
+        switch_posture.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportDataPosture(compoundButton.isChecked());
+            verifyAllSwitchStatus();
+        });
+    }
 
+    private void verifyAllSwitchStatus(){
+        WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+        if(!switch_activity.isChecked() && !switch_blood_pressure.isChecked() && !switch_heart_rate.isChecked() && !switch_lumbar_extension_training.isChecked() && !switch_posture.isChecked()){
+            switch_automatic_upload.setChecked(false);
+            switch_automatic_upload.setClickable(false);
+            workOrchestrator.cancelSmart4HealthUploader();
+        }
+        else {
+            if(!switch_automatic_upload.isClickable()) {
+                switch_automatic_upload.setChecked(true);
+                switch_automatic_upload.setClickable(true);
+                workOrchestrator.enqueueSmart4HealthUploader();
+            }
+        }
     }
 
     @Override
