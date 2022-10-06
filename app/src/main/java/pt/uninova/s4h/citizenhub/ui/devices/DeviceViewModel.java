@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
@@ -67,6 +69,7 @@ public class DeviceViewModel extends AndroidViewModel {
         };
 
         agentOrchestratorListener = new AgentOrchestratorListener() {
+
             @Override
             public void onDeviceAdded(Device device) {
                 final List<Device> deviceList = deviceListLiveData.getValue();
@@ -74,6 +77,15 @@ public class DeviceViewModel extends AndroidViewModel {
                 deviceList.add(device);
                 Collections.sort(deviceList);
                 deviceListLiveData.postValue(deviceList);
+            }
+
+            @Override
+            public void onAgentAttached(Device device, Agent agent) {
+                agent.addStateObserver(value -> {
+                    selectedDeviceLiveData.postValue(device);
+                    selectedAgentLiveData.postValue(agent);
+                });
+
             }
 
             @Override
@@ -123,8 +135,8 @@ public class DeviceViewModel extends AndroidViewModel {
         return agentOrchestratorLiveData.getValue().getAgent(device) != null;
     }
 
-    public int getAttachedAgentState(Device device){
-        if(hasAgentAttached(device)){
+    public int getAttachedAgentState(Device device) {
+        if (hasAgentAttached(device)) {
             return agentOrchestratorLiveData.getValue().getAgent(device).getState();
         }
         return 0;
@@ -159,9 +171,10 @@ public class DeviceViewModel extends AndroidViewModel {
         selectedDeviceLiveData.postValue(device);
     }
 
-    public void addAgent(Agent agent) {
+    public void addAgent(Agent agent) {;
         agentOrchestratorLiveData.getValue().add(agent);
-    }
+        final List<Device> deviceList = deviceListLiveData.getValue();
+        deviceListLiveData.postValue(deviceList);    }
 
     public void identifySelectedDevice(Observer<Agent> observer) {
         agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), observer);

@@ -272,4 +272,10 @@ public abstract class AbstractAgent implements Agent {
             i.onProtocolEnabled(this, protocol);
         }
     }
+
+    protected void tellOnStateChanged(int state){
+        for(AgentListener i : agentListenerSet){
+            i.onStateChanged(this, state);
+        }
+    }
 }
