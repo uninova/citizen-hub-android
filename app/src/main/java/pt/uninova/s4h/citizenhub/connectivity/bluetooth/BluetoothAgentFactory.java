@@ -76,7 +76,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         bluetoothConnection.connect();
     }
 
-    private void initAgent(Class<?> agentClass, BluetoothConnection source, Observer observer) {
+    private void initAgent(Class<?> agentClass, BluetoothConnection source, Observer<BluetoothAgent> observer) {
         try {
             if (agentClass == null) {
                 observer.observe(null);
