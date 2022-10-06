@@ -4,9 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-import android.content.Intent;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -71,7 +68,7 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
                     value.getSource().removeConnectionStateChangeListener(this);
 
-                        initAgent((identifyAgent(source)), source, observer);
+                    initAgent((identifyAgent(source)), source, observer);
                 }
             }
         });
@@ -81,10 +78,9 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
 
     private void initAgent(Class<?> agentClass, BluetoothConnection source, Observer observer) {
         try {
-            if(agentClass==null){
-                observer.observe((BluetoothAgent)null);
-            }
-            else {
+            if (agentClass == null) {
+                observer.observe(null);
+            } else {
                 Class<?> agent = Class.forName(agentClass.getName());
                 Class<?>[] parameters = new Class[]{BluetoothConnection.class, Context.class};
                 Constructor<?> constructor = agent.getConstructor(parameters);

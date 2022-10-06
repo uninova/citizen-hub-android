@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractAgentMatcher;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AgentMatcher;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 
 public class HexoSkinAgentMatcher extends AbstractAgentMatcher {
 
