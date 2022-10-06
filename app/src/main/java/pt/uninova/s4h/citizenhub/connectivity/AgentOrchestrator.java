@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import static java.lang.Class.forName;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import care.data4life.fhir.r4.model.Age;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.UUIDv5;
