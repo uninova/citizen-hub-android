@@ -43,7 +43,7 @@
             android:id="@+id/textUnsupportedDeviceAddress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/layout_fragment_device_unsupported_address"
+            android:text="@string/fragment_device_unsupported_address"
             android:textColor="@color/colorS4HDarkBlue"
             android:fontFamily="@font/primus_bold"
             android:textSize="24sp" />
@@ -82,7 +82,7 @@
                 android:id="@+id/buttonUnsupportedDeviceContinue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/buttonUnsupportedDevice" />
+                android:text="@string/fragment_device_unsupported_device_button_text" />
 
         </LinearLayout>
     </LinearLayout>
