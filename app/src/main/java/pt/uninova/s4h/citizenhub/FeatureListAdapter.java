@@ -19,7 +19,7 @@ class FeatureListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
-
+    private SwitchCompat nameSwitch;
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
@@ -34,7 +34,7 @@ class FeatureListAdapter extends BaseAdapter {
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
 
-        SwitchCompat nameSwitch = vi.findViewById(R.id.switchFeature);
+        nameSwitch = vi.findViewById(R.id.switchFeature);
 
         switchListener = (buttonView, isChecked) -> {
             data.get(position).setActive(isChecked);
@@ -60,6 +60,10 @@ class FeatureListAdapter extends BaseAdapter {
             Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
             this.notifyDataSetChanged();
         }
+    }
+
+    public void setSwitchClickable(boolean isClickable){
+        nameSwitch.setClickable(isClickable);
     }
 
     @Override
