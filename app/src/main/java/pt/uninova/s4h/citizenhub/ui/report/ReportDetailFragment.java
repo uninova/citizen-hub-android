@@ -27,6 +27,7 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
+import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
 import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
 import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
@@ -135,16 +136,28 @@ public class ReportDetailFragment extends Fragment {
                 }
             };
 
-            DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
-            dailyReportGeneratorPDF.generateCompleteReport(getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization, observer);
-            //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
-            //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+            ReportRepository reportRepository = new ReportRepository(requireContext());
+            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+
+            Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                    if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                        DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getContext());
+                        dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
+                        //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+                        //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+                    }
+                };
+                dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerNotWorkTimeReport);
+            };
+            dailyReportGenerator.generateWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerWorkTimeReport);
+
             return true;
         });
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         LocalDate currentDate = model.getCurrentDate();
@@ -470,7 +483,7 @@ public class ReportDetailFragment extends Fragment {
     }
 
     private void displayTimestamp(TableLayout tableLayout, String timestamp, boolean addPadding) {
-        View vTimestamp = (View) LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_timestamp, null);
+        View vTimestamp = LayoutInflater.from(getContext()).inflate(R.layout.fragment_report_timestamp, null);
         TextView tvTimestamp = vTimestamp.findViewById(R.id.tvTimestamp);
         if (addPadding)
             tvTimestamp.setPadding(0, 15, 0, 0);
