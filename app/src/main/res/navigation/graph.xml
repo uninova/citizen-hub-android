@@ -210,6 +210,10 @@
         <action
             android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
             app:destination="@+id/device_list_fragment" />
+        <action
+            android:id="@+id/action_device_configuration_add_fragment_to_deviceUnsupportedFragment"
+            app:destination="@id/deviceUnsupportedFragment"
+            app:popUpTo="@+id/device_list_fragment" />
 
     </fragment>
 
@@ -393,6 +397,15 @@
             app:destination="@id/lumbar_extension_training_fragment"
             app:popUpTo="@id/lumbar_extension_training_fragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceUnsupportedFragment"
+        android:name="pt.uninova.s4h.citizenhub.DeviceUnsupportedFragment"
+        android:label="DeviceUnsupportedFragment" >
+        <action
+            android:id="@+id/action_deviceUnsupportedFragment_to_device_list_fragment"
+            app:destination="@id/device_list_fragment"
+            app:popUpTo="@id/device_list_fragment"/>
     </fragment>
 
 </navigation>
