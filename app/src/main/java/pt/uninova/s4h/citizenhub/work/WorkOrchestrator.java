@@ -97,7 +97,8 @@ public class WorkOrchestrator {
     }
 
     private void cancelWork(String workName) {
-        workManager.cancelAllWorkByTag(workName);
+        //workManager.cancelAllWorkByTag(workName);
+        workManager.cancelUniqueWork(workName);
     }
 
     public WorkInfo.State getWorkers(@NonNull Context context, String workName) throws ExecutionException, InterruptedException {
