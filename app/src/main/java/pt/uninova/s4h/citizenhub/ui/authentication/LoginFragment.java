@@ -17,12 +17,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.work.WorkManager;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class LoginFragment extends Fragment {
 
@@ -82,6 +84,9 @@ public class LoginFragment extends Fragment {
 
                     activity.startActivity(intent);
                     activity.finish();
+
+                    WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                    workOrchestrator.enqueueSmart4HealthUploader();
                 } else {
                     //    loginButton.setVisibility(View.VISIBLE);
                 }
