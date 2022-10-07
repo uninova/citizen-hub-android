@@ -68,17 +68,16 @@ public class Smart4HealthAccountFragment extends Fragment {
         switch_lumbar_extension_training = view.findViewById(R.id.switch_lumbar_extension_training);
         switch_posture = view.findViewById(R.id.switch_posture);
 
-        verifyAllSwitchStatus();
-
         if(viewModel.hasReportAutomaticUpload())
             switch_automatic_upload.setChecked(true);
         switch_automatic_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
             if(compoundButton.isChecked())
-                workOrchestrator.cancelSmart4HealthUploader();
-            else
                 workOrchestrator.enqueueSmart4HealthUploader();
+            else
+                workOrchestrator.cancelSmart4HealthUploader();
+
         });
 
 
@@ -119,6 +118,8 @@ public class Smart4HealthAccountFragment extends Fragment {
             viewModel.setReportDataPosture(compoundButton.isChecked());
             verifyAllSwitchStatus();
         });
+
+        verifyAllSwitchStatus();
     }
 
     private void verifyAllSwitchStatus(){
@@ -157,6 +158,9 @@ public class Smart4HealthAccountFragment extends Fragment {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                         startActivity(intent);
                         activity.finish();
+
+                        WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                        workOrchestrator.cancelSmart4HealthUploader();
                     }
 
                     @Override
@@ -172,7 +176,7 @@ public class Smart4HealthAccountFragment extends Fragment {
             });
         } else {
             menu.removeItem(R.id.smart4health_account_fragment_menu_log_out);
-            menu.findItem(R.id.smart4health_account_fragment_menu_log_out).setOnMenuItemClickListener((MenuItem item) -> {
+            menu.findItem(R.id.smart4health_account_fragment_menu_log_in).setOnMenuItemClickListener((MenuItem item) -> {
                 final Data4LifeClient client = Data4LifeClient.getInstance();
                 client.isUserLoggedIn(new ResultListener<Boolean>() {
                     @Override
@@ -190,6 +194,9 @@ public class Smart4HealthAccountFragment extends Fragment {
 
                             activity.startActivity(intent);
                             activity.finish();
+
+                            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                            workOrchestrator.enqueueSmart4HealthUploader();
                         }
                     }
                 });
