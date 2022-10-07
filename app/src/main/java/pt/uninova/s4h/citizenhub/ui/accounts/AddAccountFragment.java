@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.work.WorkManager;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
 import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class AddAccountFragment extends Fragment {
 
@@ -67,6 +69,9 @@ public class AddAccountFragment extends Fragment {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     activity.startActivity(intent);
                     activity.finish();
+
+                    WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                    workOrchestrator.enqueueSmart4HealthUploader();
                 }
 
             }
