@@ -158,7 +158,6 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                                     Observer<Report> observerWorkTimeReport = workTimeReport -> {
                                         Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
                                             if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
-                                                System.out.println("Aqui");
                                                 dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), i, measurementKindLocalization, observer);
                                                 //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
                                                 //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
