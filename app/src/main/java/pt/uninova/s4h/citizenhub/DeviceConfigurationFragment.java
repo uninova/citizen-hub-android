@@ -81,8 +81,13 @@ public class DeviceConfigurationFragment extends Fragment {
 
     protected void loadSupportedFeatures() {
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
+        if(model.getSelectedDeviceAgent()!=null) {
+            if (model.getSelectedDeviceAgent().getState() != 1) {
+                adapter.setSwitchClickable(false);
+            }
+        }
+
         listViewFeatures.setAdapter(adapter);
-        adapter.setSwitchClickable(model.getAttachedAgentState(model.getSelectedDevice().getValue()) == 1);
         adapter.updateResults(getSupportedFeatures());
     }
 

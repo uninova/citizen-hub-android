@@ -25,7 +25,6 @@ class FeatureListAdapter extends BaseAdapter {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
 
@@ -63,7 +62,11 @@ class FeatureListAdapter extends BaseAdapter {
     }
 
     public void setSwitchClickable(boolean isClickable) {
-        if (nameSwitch != null) this.nameSwitch.setClickable(isClickable);
+        if (nameSwitch != null) {
+            nameSwitch.setOnCheckedChangeListener(null);
+            this.nameSwitch.setClickable(isClickable);
+            nameSwitch.setOnCheckedChangeListener(switchListener);
+        }
     }
 
     @Override

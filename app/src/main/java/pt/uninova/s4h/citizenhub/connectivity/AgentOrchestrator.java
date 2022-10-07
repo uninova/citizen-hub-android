@@ -134,6 +134,7 @@ public class AgentOrchestrator {
 
         if (agent != null) {
             agent.removeSampleObserver(ingester);
+            tellOnAgentRemoved(device,agent);
         }
 
         agentMap.remove(device);
@@ -147,6 +148,12 @@ public class AgentOrchestrator {
     private void tellOnAgentAttached(Device device, Agent agent) {
         for (AgentOrchestratorListener i : listeners) {
             i.onAgentAttached(device, agent);
+        }
+    }
+
+    private void tellOnAgentRemoved(Device device, Agent agent) {
+        for (AgentOrchestratorListener i : listeners) {
+            i.onAgentRemoved(device, agent);
         }
     }
 

@@ -63,7 +63,7 @@ public abstract class BluetoothAgent extends AbstractAgent {
             this.setState(AGENT_STATE_ENABLED);
         } else {
             this.setState(AGENT_STATE_INACTIVE);
-            this.connection.connect();
+            this.connection.disconnect();
         }
     }
 

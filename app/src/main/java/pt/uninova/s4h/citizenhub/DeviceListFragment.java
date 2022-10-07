@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,13 +21,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceListFragment extends Fragment {
 
     private DeviceListAdapter adapter;
     private DeviceViewModel model;
+    BluetoothAdapter mBluetoothAdapter;
 
     private void buildRecycleView(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_devicesList);
@@ -34,10 +39,8 @@ public class DeviceListFragment extends Fragment {
 
         adapter = new DeviceListAdapter(item -> {
             model.selectDevice(item.getDevice());
-
             Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
         });
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -56,8 +59,8 @@ public class DeviceListFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
         model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
+
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
@@ -72,7 +75,6 @@ public class DeviceListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
 
         if (adapter.getItemCount() == 0) {
@@ -80,6 +82,7 @@ public class DeviceListFragment extends Fragment {
         } else {
             noDevices.setVisibility(View.GONE);
         }
+
     }
 
     @Override
@@ -100,4 +103,10 @@ public class DeviceListFragment extends Fragment {
             }
         }
     }
+
+    public static Boolean isBluetoothEnabled() {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return mBluetoothAdapter.isEnabled();
+    }
+
 }

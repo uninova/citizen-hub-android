@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentListener;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -81,9 +81,23 @@ public class DeviceViewModel extends AndroidViewModel {
 
             @Override
             public void onAgentAttached(Device device, Agent agent) {
-                agent.addStateObserver(value -> {
-                    selectedDeviceLiveData.postValue(device);
-                    selectedAgentLiveData.postValue(agent);
+                agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+                    @Override
+                    public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+                        if (!(agent.getState() == Agent.AGENT_STATE_ENABLED)) {
+                            final AgentOrchestrator agentOrchestrator = agentOrchestratorLiveData.getValue();
+                            final Device device = getSelectedDevice().getValue();
+                            final Agent agent = agentOrchestrator.getAgent(device);
+
+                            if (agent != null) {
+                                agent.disable();
+                                if (agent instanceof BluetoothAgent) {
+                                    BluetoothAgent bluetoothAgent = (BluetoothAgent) agent;
+                                    bluetoothAgent.getConnection().close();
+                                }
+                            }
+                        }
+                    }
                 });
 
             }
@@ -96,7 +110,6 @@ public class DeviceViewModel extends AndroidViewModel {
                 deviceListLiveData.postValue(deviceList);
             }
         };
-
         CitizenHubService.bind(application, serviceConnection);
     }
 
@@ -171,10 +184,12 @@ public class DeviceViewModel extends AndroidViewModel {
         selectedDeviceLiveData.postValue(device);
     }
 
-    public void addAgent(Agent agent) {;
+    public void addAgent(Agent agent) {
+        ;
         agentOrchestratorLiveData.getValue().add(agent);
         final List<Device> deviceList = deviceListLiveData.getValue();
-        deviceListLiveData.postValue(deviceList);    }
+        deviceListLiveData.postValue(deviceList);
+    }
 
     public void identifySelectedDevice(Observer<Agent> observer) {
         agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), observer);
