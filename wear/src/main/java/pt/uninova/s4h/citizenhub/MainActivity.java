@@ -12,8 +12,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -31,8 +29,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -106,63 +102,7 @@ public class MainActivity extends FragmentActivity {
             else
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
-
-        //scheduleJob();
-        runTimer();
-
     }
-
-    private void runTimer() {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /*AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                Intent intent = new Intent(getApplicationContext(), StepsService.class);
-                PendingIntent scheduledIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60*1000, scheduledIntent);
-
-                // wake screen here
-                PowerManager pm = (PowerManager) getApplicationContext().getSystemService(getApplicationContext().POWER_SERVICE);
-                String TAG = StepsService.class.getSimpleName();
-                PowerManager.WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
-                wakeLock.acquire(60*1000L);*/
-
-                repeatTimer();
-            }
-        }, 10000);
-        System.out.println("Got in runTimer");
-    }
-
-    private void repeatTimer(){
-        runTimer();
-        //Constraints constraints = new Constraints.Builder().setRequiresCharging(true).setRequiredNetworkType(NetworkType.UNMETERED).build();
-
-        final OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(StepsWork.class)
-                .build();
-
-        WorkManager workManager =  WorkManager.getInstance(this);
-
-        workManager.enqueue(oneTimeWorkRequest);
-        System.out.println("Got in enableTimer");
-    }
-
-    /*
-    public void scheduleJob() {
-        ComponentName componentName = new ComponentName(this, StepsJob.class);
-        @SuppressLint("MissingPermission") JobInfo info = new JobInfo.Builder(123, componentName)
-                .setPersisted(true)
-                .setPeriodic(1000)
-                .build();
-
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = scheduler.schedule(info);
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            System.out.println("Job Scheduled");
-        } else {
-            System.out.println("Job not scheduled");
-        }
-    }*/
 
     public void startListeners(){
         heartRateListener = new SensorEventListener() {
@@ -219,6 +159,11 @@ public class MainActivity extends FragmentActivity {
         };
     }
 
+    public void stopListeners(){
+        sensorManager.unregisterListener(heartRateListener);
+        sensorManager.unregisterListener(stepsListener);
+    }
+
 
     private Boolean resetSteps(){
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
@@ -247,49 +192,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(() -> {
-            try {
-                Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
-                nodeIdString = localNode.getId();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        stepsListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-                    if (resetSteps()){
-                        sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
-                        sharedPreferences.edit().putInt("offsetStepCounter", -(int) event.values[0]).apply();
-                    }
-
-                    final LocalDate now = LocalDate.now();
-
-                    int stepCounter = (int) event.values[0];
-
-                    if(stepCounter<getLastStepCounter())
-                        sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
-                    sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
-                    sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
-
-                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter()+getOffsetStepCounter()));
-                    sampleRepository.create(sample, sampleId -> {});
-
-                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-                        if(value != null)
-                            stepsTotal = value.intValue();
-                        else
-                            stepsTotal = 0;
-                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
-                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
-                    });
-                }
-            }
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
-        };
+        //startListeners();
     }
 
     @Override
@@ -313,7 +216,10 @@ public class MainActivity extends FragmentActivity {
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        System.out.println(heartSensor.isWakeUpSensor() + " " + heartSensor.getReportingMode());
         stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        System.out.println(stepsCounterSensor.isWakeUpSensor() + " " + stepsCounterSensor.getReportingMode());
+
     }
 
     private void setDevice(){
@@ -384,6 +290,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(stepsListener);
+        //stopListeners();
     }
 }

@@ -40,11 +40,6 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/citizenhub_" />
             </intent-filter>
         </service>
-        <service android:name=".StepsService">
-        </service>
-        <service
-            android:name=".StepsJob"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
