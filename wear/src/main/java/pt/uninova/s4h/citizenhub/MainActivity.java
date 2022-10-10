@@ -115,26 +115,7 @@ public class MainActivity  extends FragmentActivity {
         setNotification();
 
         startService();
-        //runTimer();
     }
-
-    private void runTimer() {
-        startService();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stopService();
-                repeatTimer();
-            }
-        }, 20000);
-        System.out.println("Got in runTimer");
-    }
-
-    private void repeatTimer(){
-        runTimer();
-        System.out.println("Got in enableTimer");
-    }
-
 
     public void startService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
