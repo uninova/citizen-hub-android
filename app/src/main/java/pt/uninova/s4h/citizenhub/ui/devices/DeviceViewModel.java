@@ -16,6 +16,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -37,7 +38,7 @@ public class DeviceViewModel extends AndroidViewModel {
         agentOrchestratorLiveData = new MutableLiveData<>();
         deviceListLiveData = new MutableLiveData<>(Collections.emptyList());
         selectedDeviceLiveData = new MutableLiveData<>();
-        selectedAgentLiveData = new MutableLiveData<>(null);
+        selectedAgentLiveData = new MutableLiveData<>();
 
         serviceConnection = new ServiceConnection() {
 
@@ -77,6 +78,18 @@ public class DeviceViewModel extends AndroidViewModel {
             }
 
             @Override
+            public void onAgentAttached(Device device, Agent agent) {
+                agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+                    @Override
+                    public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+                        selectedDeviceLiveData.postValue(device);
+                        selectedAgentLiveData.postValue(agent);
+                    }
+                });
+                selectedAgentLiveData.postValue(agent);
+            }
+
+            @Override
             public void onDeviceRemoved(Device device) {
                 final List<Device> deviceList = deviceListLiveData.getValue();
 
@@ -89,14 +102,13 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public LiveData<Agent> getSelectedAgentLiveData() {
-        if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
-            selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
-        } else {
-            agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), agent -> {
-                selectedAgentLiveData.postValue(agent);
-            });
+        if (agentOrchestratorLiveData.getValue() != null) {
+            if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
+                selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
+            } else {
+                agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), selectedAgentLiveData::postValue);
+            }
         }
-
         return selectedAgentLiveData;
     }
 
@@ -129,7 +141,6 @@ public class DeviceViewModel extends AndroidViewModel {
         }
         return 0;
     }
-
 
 
     @Override
