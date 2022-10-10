@@ -112,19 +112,14 @@ public class MainActivity  extends FragmentActivity {
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
 
-        setNotification();
-
         startService();
+        setNotification();
     }
 
     public void startService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
         ContextCompat.startForegroundService(this, serviceIntent);
-    }
-    public void stopService() {
-        Intent serviceIntent = new Intent(this, ForegroundService.class);
-        stopService(serviceIntent);
     }
     
     private void setNotification(){
