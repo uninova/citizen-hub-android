@@ -62,6 +62,11 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         notifyItemInserted(deviceListItems.size() - 1);
     }
 
+    public void updateItem(int position, DeviceListItem deviceListItem){
+        deviceListItems.set(position,deviceListItem);
+        notifyItemChanged(position);
+    }
+
     public DeviceListItem getItem(int position){
         return deviceListItems.get(position);
     }
