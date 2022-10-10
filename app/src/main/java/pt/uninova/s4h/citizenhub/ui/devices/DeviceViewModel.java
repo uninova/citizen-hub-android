@@ -123,6 +123,15 @@ public class DeviceViewModel extends AndroidViewModel {
         return agentOrchestratorLiveData.getValue().getAgent(device) != null;
     }
 
+    public int getAttachedAgentState(Device device) {
+        if (hasAgentAttached(device)) {
+            return agentOrchestratorLiveData.getValue().getAgent(device).getState();
+        }
+        return 0;
+    }
+
+
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -147,6 +156,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
         agentOrchestrator.remove(device);
     }
+
 
     public void selectDevice(Device device) {
         selectedDeviceLiveData.postValue(device);
