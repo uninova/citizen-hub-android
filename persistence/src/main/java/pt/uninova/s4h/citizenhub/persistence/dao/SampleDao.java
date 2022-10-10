@@ -75,8 +75,8 @@ public abstract class SampleDao {
 
     @Transaction
     public long insert(Sample sample) {
-        if(sample == null){
-            //TODO this is a temporary fix for not reaching here with address on wearOS
+        if(sample == null || sample.getSource() == null || sample.getSource().getAddress() == null){
+            //TODO this is a temporary fix for reaching here on wearOS
             return -1;
         }
         final long sampleId = insert(sample.getSource().getAddress(), sample.getTimestamp());
