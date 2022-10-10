@@ -40,6 +40,10 @@ public class DeviceListItem implements Comparable<DeviceListItem> {
         return imageResource;
     }
 
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(device);
