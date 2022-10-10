@@ -10,8 +10,8 @@ public class DeviceListItem implements Comparable<DeviceListItem> {
     private int imageResource;
 
     public DeviceListItem(Device device, int imageResource) {
-        this.imageResource = imageResource;
         this.device = device;
+        this.imageResource = imageResource;
     }
 
     @Override
