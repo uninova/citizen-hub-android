@@ -1,6 +1,10 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +16,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -24,11 +30,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.wear.ongoing.OngoingActivity;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -39,7 +48,7 @@ import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurement
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity  extends FragmentActivity {
 
     public static String nodeIdString;
     public static StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
@@ -102,6 +111,80 @@ public class MainActivity extends FragmentActivity {
             else
                 listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
         });
+
+        setNotification();
+
+        startService();
+        //runTimer();
+    }
+
+    private void runTimer() {
+        startService();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopService();
+                repeatTimer();
+            }
+        }, 20000);
+        System.out.println("Got in runTimer");
+    }
+
+    private void repeatTimer(){
+        runTimer();
+        System.out.println("Got in enableTimer");
+    }
+
+
+    public void startService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        stopService(serviceIntent);
+    }
+    
+    private void setNotification(){
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                NotificationChannel mChannel = null;
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "OngoingActivity")
+                        .setContentTitle("CitizenHub")
+                        .setSmallIcon(R.drawable.img_logo_figure)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_WORKOUT)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setOngoing(true);
+
+                mChannel = new NotificationChannel("OngoingActivity", "yourSubjectName",NotificationManager.IMPORTANCE_HIGH);
+                builder.setChannelId("OngoingActivity");
+
+                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(mChannel);
+
+                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 1 ,resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(resultPendingIntent);
+                Notification notification = builder.build();
+                notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
+                OngoingActivity ongoingActivity =
+                        new OngoingActivity.Builder(getApplicationContext(), 1, builder)
+                                .setAnimatedIcon(R.drawable.img_logo_figure)
+                                .setTouchIntent(resultPendingIntent)
+                                .setTitle("Citizen Hub")
+                                .setOngoingActivityId(1)
+                                .build();
+
+                ongoingActivity.apply(getApplicationContext());
+                notificationManager.notify(1, notification);
+            }
+        }, 10000);
     }
 
     public void startListeners(){
@@ -164,7 +247,6 @@ public class MainActivity extends FragmentActivity {
         sensorManager.unregisterListener(stepsListener);
     }
 
-
     private Boolean resetSteps(){
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
         if(recordedDate == 0)
@@ -216,10 +298,7 @@ public class MainActivity extends FragmentActivity {
     private void sensorsManager() {
         sensorManager = ((SensorManager) getSystemService(Context.SENSOR_SERVICE));
         heartSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-        System.out.println(heartSensor.isWakeUpSensor() + " " + heartSensor.getReportingMode());
         stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        System.out.println(stepsCounterSensor.isWakeUpSensor() + " " + stepsCounterSensor.getReportingMode());
-
     }
 
     private void setDevice(){
