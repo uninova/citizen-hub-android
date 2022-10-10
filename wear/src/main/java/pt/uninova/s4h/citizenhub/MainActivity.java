@@ -1,10 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,14 +26,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import androidx.wear.ongoing.OngoingActivity;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -113,53 +107,13 @@ public class MainActivity  extends FragmentActivity {
         });
 
         startService();
-        setNotification();
     }
 
     public void startService() {
-        Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
-        ContextCompat.startForegroundService(this, serviceIntent);
-    }
-    
-    private void setNotification(){
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                NotificationChannel mChannel = null;
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "OngoingActivity")
-                        .setContentTitle("CitizenHub")
-                        .setSmallIcon(R.drawable.img_logo_figure)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setCategory(NotificationCompat.CATEGORY_WORKOUT)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setOngoing(true);
-
-                mChannel = new NotificationChannel("OngoingActivity", "yourSubjectName",NotificationManager.IMPORTANCE_HIGH);
-                builder.setChannelId("OngoingActivity");
-
-                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.createNotificationChannel(mChannel);
-
-                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-                PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 1 ,resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(resultPendingIntent);
-                Notification notification = builder.build();
-                notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-
-                OngoingActivity ongoingActivity =
-                        new OngoingActivity.Builder(getApplicationContext(), 1, builder)
-                                .setAnimatedIcon(R.drawable.img_logo_figure)
-                                .setTouchIntent(resultPendingIntent)
-                                .setTitle("Citizen Hub")
-                                .setOngoingActivityId(1)
-                                .build();
-
-                ongoingActivity.apply(getApplicationContext());
-                notificationManager.notify(1, notification);
-            }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent serviceIntent = new Intent(getApplicationContext(), ForegroundService.class);
+            serviceIntent.putExtra("inputExtra", "Citizen Hub");
+            ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
     }
 
@@ -218,11 +172,6 @@ public class MainActivity  extends FragmentActivity {
         };
     }
 
-    public void stopListeners(){
-        sensorManager.unregisterListener(heartRateListener);
-        sensorManager.unregisterListener(stepsListener);
-    }
-
     private Boolean resetSteps(){
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
         if(recordedDate == 0)
@@ -250,7 +199,6 @@ public class MainActivity  extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //startListeners();
     }
 
     @Override
@@ -345,6 +293,5 @@ public class MainActivity  extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //stopListeners();
     }
 }

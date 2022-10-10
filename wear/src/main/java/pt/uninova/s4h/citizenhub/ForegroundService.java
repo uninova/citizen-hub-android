@@ -14,13 +14,10 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.wear.ongoing.OngoingActivity;
 
 public class ForegroundService extends Service {
-    public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private SensorManager sensorManager = null;
-    private Sensor sensor = null;
-    private SensorEventListener sensorListener = null;
-
+    public static final String CHANNEL_ID = "CitizenHubChannel";
 
     @Override
     public void onCreate() {
@@ -31,52 +28,77 @@ public class ForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String input = intent.getStringExtra("inputExtra");
-        createNotificationChannel();
+
+        NotificationChannel serviceChannel = new NotificationChannel(
+                CHANNEL_ID,
+                "Citizen Hub",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(serviceChannel);
+
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Citizen Hub")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.img_logo_figure)
                 .setContentIntent(pendingIntent)
-                .build();
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_WORKOUT)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        Notification notification = builder.build();
+        notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
+        OngoingActivity ongoingActivity =
+                new OngoingActivity.Builder(getApplicationContext(), 1, builder)
+                        .setAnimatedIcon(R.drawable.img_logo_figure)
+                        .setTouchIntent(pendingIntent)
+                        .setTitle("Citizen Hub")
+                        .setOngoingActivityId(1)
+                        .build();
+
+        ongoingActivity.apply(getApplicationContext());
+        manager.notify(1, notification);
 
         startForeground(1, notification);
 
-        System.out.println("I'm here");
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor sensorSteps = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        Sensor sensorHeartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        sensorListener = new SensorEventListener() {
+        SensorEventListener stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    System.out.println("Sensor Event from foreground service: " + event.values[0]);
-                    //stopSelf();
-                }
-                if(event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-                    System.out.println("Sensor Event from foreground service: " + event.values[0]);
-                    //stopSelf();
+                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                    System.out.println("Steps Sensor Event from foreground service: " + event.values[0]);
                 }
             }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {}
+        };
+        SensorEventListener heartRateListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                    System.out.println("HR Sensor Event from foreground service: " + event.values[0]);
+                }
+            }
+
             @Override
             public void onAccuracyChanged(Sensor sensor, int i) {}
         };
 
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        sensorManager.registerListener(sensorListener, sensor,
+        sensorManager.registerListener(stepsListener, sensorSteps,
                 SensorManager.SENSOR_DELAY_NORMAL);
-        System.out.println("REACHED ONSTARTCOMMAND");
-        /* wake screen here */
-        /*PowerManager pm = (PowerManager) getApplicationContext().getSystemService(getApplicationContext().POWER_SERVICE);
-        String TAG = ForegroundService.class.getSimpleName();
-        PowerManager.WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
-        wakeLock.acquire(30*1000L);*/
+        sensorManager.registerListener(heartRateListener, sensorHeartRate,
+                SensorManager.SENSOR_DELAY_NORMAL);
 
-
-
-        //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY;
     }
@@ -89,15 +111,5 @@ public class ForegroundService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    private void createNotificationChannel() {
-        NotificationChannel serviceChannel = new NotificationChannel(
-                CHANNEL_ID,
-                "Foreground Service Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-        );
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(serviceChannel);
     }
 }
