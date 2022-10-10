@@ -38,13 +38,13 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         }
     };
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,18 +60,29 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
 
         model.identifySelectedDevice(agent -> {
-            requireActivity().runOnUiThread(this::loadSupportedFeatures);
+
+            if (agent == null) {
+                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+                    }
+                });
+            }
+
+            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(DeviceConfigurationAddFragment.this::loadSupportedFeatures);
 
             connectDevice.setOnClickListener(v -> {
+
                 model.addAgent(agent);
 
-                saveFeaturesChosen();
+                DeviceConfigurationAddFragment.this.saveFeaturesChosen();
 
                 if (agent.getSource().getName().startsWith("UprightGO2")) {
-                    new AlertDialog.Builder(getContext())
+                    new AlertDialog.Builder(DeviceConfigurationAddFragment.this.getContext())
                             .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
-                            .setMessage(getString(R.string.fragment_device_configuration_warning_calibration_text) +
-                                    getString(R.string.fragment_device_configuration_warning_calibration_text2))
+                            .setMessage(DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
+                                    DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
                             .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -104,7 +115,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
             });
 
-            requireActivity().runOnUiThread(() -> {
+            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.INVISIBLE);
                 connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
             });
