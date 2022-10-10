@@ -1,24 +1,33 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 
+import android.content.Context;
+import android.os.Build;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
+import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class MiBand2Agent extends BluetoothAgent {
 
-    static public final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
+    public static final UUID XIAOMI_MIBAND2_SERVICE_AUTH = UUID.fromString("0000fee1-0000-1000-8000-00805f9b34fb");
+    public static final UUID XIAOMI_MIBAND2_CHARACTERISTIC_AUTH = UUID.fromString("00000009-0000-3512-2118-0009af100700");
+
+    public final static UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.miband2");
 
     static private final Set<Integer> supportedMeasurementKinds = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
             Measurement.TYPE_HEART_RATE,
@@ -30,44 +39,75 @@ public class MiBand2Agent extends BluetoothAgent {
             MiBand2StepsProtocol.ID
     )));
 
-    public MiBand2Agent(BluetoothConnection connection) {
-        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection);
+    private final Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> bluetoothConnectionStateChange = value -> {
+        if (value.getNewState() == BluetoothConnectionState.READY) {
+            onStart();
+        } else if (value.getNewState() == BluetoothConnectionState.DISCONNECTED) {
+            onStop();
+        }
+    };
+
+    private final Observer<StateChangedMessage<Integer, ? extends Protocol>> authenticationObserver = value -> {
+        if (BuildConfig.DEBUG)
+            System.out.println("MiBand2Agent.authenticationObserver " + value.getNewState() + " " + value.getOldState());
+
+        if (value.getNewState() == Protocol.STATE_ENABLED) {
+            setState(Agent.AGENT_STATE_ENABLED);
+
+            final SetTimeProtocol setTimeProtocol = new SetTimeProtocol(getConnection(), this);
+            setTimeProtocol.enable();
+        }
+    };
+
+    private final MiBand2AuthenticationProtocol authenticationProtocol;
+
+    public MiBand2Agent(BluetoothConnection connection, Context context) {
+        super(ID, supportedProtocolsIds, supportedMeasurementKinds, connection, new RoomSettingsManager(context, connection.getAddress()));
+        authenticationProtocol = new MiBand2AuthenticationProtocol(connection, this);
     }
 
-    private void authorize() {
-        final MiBand2AuthenticationProtocol auth = new MiBand2AuthenticationProtocol(getConnection(), this);
+    @Override
+    public void disable() {
+        if (BuildConfig.DEBUG) {
+            System.out.println("MiBand2Agent.disable");
+        }
 
-        auth.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Protocol>>() {
-            @Override
-            public void observe(StateChangedMessage<Integer, ? extends Protocol> value) {
-                if (value.getNewState() == Protocol.STATE_ENABLED) {
-                    MiBand2Agent.this.setState(Agent.AGENT_STATE_ENABLED);
-                    auth.removeStateObserver(this);
-                }
-            }
-        });
+        getConnection().removeConnectionStateChangeListener(bluetoothConnectionStateChange);
+        authenticationProtocol.removeStateObserver(authenticationObserver);
+        super.disable();
+    }
 
-        auth.enable();
+    private void onStart() {
+        if (BuildConfig.DEBUG) {
+            System.out.println("MiBand2Agent.onStart");
+        }
+
+        authenticationProtocol.enable();
+    }
+
+    private void onStop() {
+        if (BuildConfig.DEBUG) {
+            System.out.println("MiBand2Agent.onStop");
+        }
+
+        setState(Agent.AGENT_STATE_INACTIVE);
+        getConnection().clear();
     }
 
     @Override
     public void enable() {
-        authorize();
+        if (BuildConfig.DEBUG) {
+            System.out.println("MiBand2Agent.enable");
+        }
 
-        addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
-            @Override
-            public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-                if (value.getNewState() == AGENT_STATE_ENABLED) {
-                    new SetTimeProtocol(getConnection(), MiBand2Agent.this).enable();
-                    removeStateObserver(this);
-                }
-            }
-        });
-    }
+        getConnection().addConnectionStateChangeListener(bluetoothConnectionStateChange);
+        authenticationProtocol.addStateObserver(authenticationObserver);
 
-    @Override
-    public Set<Integer> getSupportedMeasurements() {
-        return supportedMeasurementKinds;
+        if (getConnection().getState() != BluetoothConnectionState.READY) {
+            getConnection().connect();
+        } else {
+            onStart();
+        }
     }
 
     @Override

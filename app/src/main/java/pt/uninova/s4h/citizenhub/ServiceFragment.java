@@ -46,7 +46,8 @@ public class ServiceFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        requireContext().unbindService(serviceConnection);
+        if (serviceConnection != null)
+            requireContext().unbindService(serviceConnection);
     }
 
     public void onServiceConnected() {

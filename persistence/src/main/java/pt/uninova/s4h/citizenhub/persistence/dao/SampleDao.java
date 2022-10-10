@@ -18,6 +18,7 @@ import pt.uninova.s4h.citizenhub.data.BreathingSequenceMeasurement;
 import pt.uninova.s4h.citizenhub.data.BreathingValue;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
 import pt.uninova.s4h.citizenhub.data.CaloriesSnapshotMeasurement;
+import pt.uninova.s4h.citizenhub.data.DistanceMeasurement;
 import pt.uninova.s4h.citizenhub.data.DistanceSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.LumbarExtensionTrainingMeasurement;
@@ -27,6 +28,7 @@ import pt.uninova.s4h.citizenhub.data.PostureMeasurement;
 import pt.uninova.s4h.citizenhub.data.PostureValue;
 import pt.uninova.s4h.citizenhub.data.PulseRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
+import pt.uninova.s4h.citizenhub.data.StepsMeasurement;
 import pt.uninova.s4h.citizenhub.data.StepsSnapshotMeasurement;
 import pt.uninova.s4h.citizenhub.persistence.CitizenHubDatabase;
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
@@ -40,11 +42,13 @@ public abstract class SampleDao {
     private final BreathingRateMeasurementDao breathingRateMeasurementDao;
     private final CaloriesMeasurementDao caloriesMeasurementDao;
     private final CaloriesSnapshotMeasurementDao caloriesSnapshotMeasurementDao;
+    private final DistanceMeasurementDao distanceMeasurementDao;
     private final DistanceSnapshotMeasurementDao distanceSnapshotMeasurementDao;
     private final HeartRateMeasurementDao heartRateMeasurementDao;
     private final LumbarExtensionTrainingDao lumbarExtensionTrainingDao;
     private final PostureMeasurementDao postureMeasurementDao;
     private final PulseRateMeasurementDao pulseRateMeasurementDao;
+    private final StepsMeasurementDao stepsMeasurementDao;
     private final StepsSnapshotMeasurementDao stepsSnapshotMeasurementDao;
 
     public SampleDao(CitizenHubDatabase database) {
@@ -53,11 +57,13 @@ public abstract class SampleDao {
         breathingRateMeasurementDao = database.breathingRateMeasurementDao();
         caloriesMeasurementDao = database.caloriesMeasurementDao();
         caloriesSnapshotMeasurementDao = database.caloriesSnapshotMeasurementDao();
+        distanceMeasurementDao = database.distanceMeasurementDao();
         distanceSnapshotMeasurementDao = database.distanceSnapshotMeasurementDao();
         heartRateMeasurementDao = database.heartRateMeasurementDao();
         lumbarExtensionTrainingDao = database.lumbarExtensionTrainingDao();
         postureMeasurementDao = database.postureMeasurementDao();
         pulseRateMeasurementDao = database.pulseRateMeasurementDao();
+        stepsMeasurementDao = database.stepsMeasurementDao();
         stepsSnapshotMeasurementDao = database.stepsSnapshotMeasurementDao();
     }
 
@@ -103,6 +109,10 @@ public abstract class SampleDao {
 
                     caloriesSnapshotMeasurementDao.insert(sampleId, caloriesSnapshotMeasurement.getSnapshotType(), caloriesSnapshotMeasurement.getValue());
                     break;
+                case Measurement.TYPE_DISTANCE:
+                    final DistanceMeasurement distanceMeasurement = (DistanceMeasurement) measurement;
+                    distanceMeasurementDao.insert(sampleId, distanceMeasurement.getValue());
+                    break;
                 case Measurement.TYPE_DISTANCE_SNAPSHOT:
                     final DistanceSnapshotMeasurement distanceSnapshotMeasurement = (DistanceSnapshotMeasurement) measurement;
 
@@ -115,22 +125,22 @@ public abstract class SampleDao {
                     break;
                 case Measurement.TYPE_LUMBAR_EXTENSION_TRAINING:
                     final LumbarExtensionTrainingValue lumbarExtensionTrainingValue = ((LumbarExtensionTrainingMeasurement) measurement).getValue();
-
                     lumbarExtensionTrainingDao.insert(sampleId, lumbarExtensionTrainingValue.getDuration(), lumbarExtensionTrainingValue.getScore(), lumbarExtensionTrainingValue.getRepetitions(), lumbarExtensionTrainingValue.getWeight());
                     break;
                 case Measurement.TYPE_POSTURE:
                     final PostureValue postureValue = ((PostureMeasurement) measurement).getValue();
-
                     postureMeasurementDao.insert(sampleId, postureValue.getClassification(), postureValue.getDuration());
                     break;
                 case Measurement.TYPE_PULSE_RATE:
                     final Double pulseRateValue = ((PulseRateMeasurement) measurement).getValue();
-
                     pulseRateMeasurementDao.insert(sampleId, pulseRateValue);
+                    break;
+                case Measurement.TYPE_STEPS:
+                    final StepsMeasurement stepsMeasurement = (StepsMeasurement) measurement;
+                    stepsMeasurementDao.insert(sampleId, stepsMeasurement.getValue());
                     break;
                 case Measurement.TYPE_STEPS_SNAPSHOT:
                     final StepsSnapshotMeasurement stepsSnapshotMeasurement = (StepsSnapshotMeasurement) measurement;
-
                     stepsSnapshotMeasurementDao.insert(sampleId, stepsSnapshotMeasurement.getSnapshotType(), stepsSnapshotMeasurement.getValue());
                     break;
             }
@@ -142,7 +152,7 @@ public abstract class SampleDao {
     @Query("SELECT * FROM sample WHERE id = :sampleId")
     public abstract SampleRecord select(Long sampleId);
 
-    @Query("SELECT DISTINCT (timestamp / 86400 * 86400) AS timestamp FROM sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
+    @Query("SELECT DISTINCT (timestamp / 86400000 * 86400000) AS timestamp FROM sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
     @TypeConverters(EpochTypeConverter.class)
     public abstract List<LocalDate> select(LocalDate from, LocalDate to);
 

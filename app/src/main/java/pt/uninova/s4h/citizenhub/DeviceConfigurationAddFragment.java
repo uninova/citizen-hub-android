@@ -27,7 +27,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     private ProgressBar progressBar;
 
     private ProgressDialog dialog;
-    //TODO just for testing purposes, delete later
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -65,7 +64,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
             connectDevice.setOnClickListener(v -> {
                 model.addAgent(agent);
-                agent.enable();
 
                 saveFeaturesChosen();
 
@@ -77,7 +75,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                             .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    //TODO calibrate and animate
                                     dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
 
                                     UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;

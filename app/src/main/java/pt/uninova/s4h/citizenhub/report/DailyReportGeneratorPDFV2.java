@@ -38,13 +38,12 @@ public class DailyReportGeneratorPDFV2 {
     private final Paint darkItalicTextPaint;
     private final Paint whiteTextPaint;
     private final Paint whiteItalicTextPaint;
-    private final Paint boldTextPaint;
     private final Paint backgroundPaint;
     private final Paint rectPaint;
     private final Paint rectFillPaint;
     private final float[] corners;
 
-    public DailyReportGeneratorPDFV2 (Context context){
+    public DailyReportGeneratorPDFV2(Context context) {
         this.context = context;
 
         this.logoBackgroundPaint = new Paint();
@@ -93,7 +92,7 @@ public class DailyReportGeneratorPDFV2 {
         whiteItalicTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         whiteItalicTextPaint.setTextSize(12);
 
-        this.boldTextPaint = new Paint();
+        Paint boldTextPaint = new Paint();
         boldTextPaint.setColor(Color.parseColor("#000000"));
         boldTextPaint.setTextAlign(Paint.Align.LEFT);
         boldTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -316,7 +315,7 @@ public class DailyReportGeneratorPDFV2 {
         dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
     }*/
 
-    public void generateCompleteReport(Observer observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
+    public void generateCompleteReport(Observer<byte[]> observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -363,7 +362,7 @@ public class DailyReportGeneratorPDFV2 {
                             y = drawComplexGroups(canvasWriter[0], group, 0, y);
                         }
                         for (Group groupWorkTime : groupsWorkTimeData) {
-                            int workTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+                            int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                             if (notWorkTimeLabel == workTimeLabel) {
                                 for (Group group : groupWorkTime.getGroupList()) {
                                     if(!verifyGroupSize(groupWorkTime, y, true)){
@@ -487,19 +486,19 @@ public class DailyReportGeneratorPDFV2 {
     /*private void drawCitizenHub (Canvas canvas, Resources res){
         canvas.drawRect(0, 0, 595, 70, logoBackgroundPaint);
 
-        Drawable citizenHubLogo = res.getDrawable(R.drawable.ic_citizen_hub_logo, null);
-        citizenHubLogo.setBounds(5, 5, citizenHubLogo.getIntrinsicWidth(), citizenHubLogo.getIntrinsicHeight());
+        citizenHubLogo.setBounds(0, 0, citizenHubLogo.getIntrinsicWidth(), citizenHubLogo.getIntrinsicHeight());
         canvas.save();
-        canvas.translate(50, 5);
-        canvas.scale(1.5f, 1.5f);
+        canvas.translate(60, 40);
+        canvas.scale(1.0f, 1.0f);
         citizenHubLogo.draw(canvas);
         canvas.restore();
 
-        Drawable citizenHub = res.getDrawable(R.drawable.logo_citizen_hub_text_only, null);
-        citizenHub.setBounds(5, 5, citizenHub.getIntrinsicWidth(), citizenHub.getIntrinsicHeight());
+        final Drawable citizenHub = ResourcesCompat.getDrawable(resources, R.drawable.logo_citizen_hub_text_only, null);
+
+        citizenHub.setBounds(0, 0, citizenHub.getIntrinsicWidth(), citizenHub.getIntrinsicHeight());
         canvas.save();
-        canvas.translate(80, 3);
-        canvas.scale(3f, 4.5f);
+        canvas.translate(100, 50);
+        canvas.scale(2f, 2f);
         citizenHub.draw(canvas);
         canvas.restore();
     }

@@ -47,6 +47,4 @@ Todos os dados pessoais e dados recolhidos pela aplicação Citizen Hub são arm
 
 5. Duração do armazenamento e eliminação dos dados
 
-Todos os dados pessoais e dados recolhidos pela aplicação Citizen Hub são armazenados exclusivamente no seu telemóvel pessoal. Caso decida transmitir e armazenar dados fora do seu telemóvel pessoal, deve consultar os Termos de Uso e a polícia de privacidade desses sistemas externos. 
-
- 
+Todos os dados pessoais e dados recolhidos pela aplicação Citizen Hub são armazenados exclusivamente no seu telemóvel pessoal. Caso decida transmitir e armazenar dados fora do seu telemóvel pessoal, deve consultar os Termos de Uso e a polícia de privacidade desses sistemas externos.

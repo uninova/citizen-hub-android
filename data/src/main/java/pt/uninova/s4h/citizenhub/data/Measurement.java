@@ -20,6 +20,8 @@ public abstract class Measurement<T> {
     public static final int TYPE_CALORIES = 30;
     public static final int TYPE_POSITION = 32;
     public static final int TYPE_MOTION = 33;
+    public static final int TYPE_DISTANCE = 34;
+    public static final int TYPE_STEPS = 35;
 
     private final int type;
     private final T value;

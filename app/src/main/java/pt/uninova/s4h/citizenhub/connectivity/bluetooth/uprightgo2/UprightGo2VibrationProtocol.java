@@ -98,7 +98,7 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
         } else { //default: 1
             message[4] = 0x46;
         }
-        //still undefined here, same for all, complete later if needed TODO
+        //still undefined here, same for all, complete later if needed
         message[5] = 0x02;
         message[6] = 0x64;
         message[7] = 0x00;

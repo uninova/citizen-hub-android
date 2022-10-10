@@ -3,13 +3,7 @@ package pt.uninova.s4h.citizenhub.localization;
 import android.content.Context;
 import android.content.res.Resources;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-
-import pt.uninova.s4h.citizenhub.CitizenHubApplication;
-import pt.uninova.s4h.citizenhub.R;
-
 
 public class MeasurementKindLocalization {
 
@@ -20,8 +14,8 @@ public class MeasurementKindLocalization {
     }
 
     public String localize(int measurementKind) {
-        Resources resources = context.getResources();
-        System.out.println(String.format(Locale.getDefault(), "measurement_type.%d", measurementKind));
+        //System.out.printf(Locale.getDefault(), "measurement_type.%d%n", measurementKind);
+        final Resources resources = context.getResources();
 
         final int resourceId = resources.getIdentifier(String.format(Locale.getDefault(), "measurement_type.%d", measurementKind), "string", context.getPackageName());
 
