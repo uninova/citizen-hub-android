@@ -112,7 +112,7 @@ public class MainActivity  extends FragmentActivity {
     public void startService() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent serviceIntent = new Intent(getApplicationContext(), ForegroundService.class);
-            serviceIntent.putExtra("inputExtra", "Citizen Hub");
+            serviceIntent.putExtra("inputExtra", "Status: Running");
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
     }

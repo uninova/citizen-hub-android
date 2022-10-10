@@ -1,16 +1,15 @@
 package pt.uninova.s4h.citizenhub.persistence.dao;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.TypeConverters;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.List;
-
 import pt.uninova.s4h.citizenhub.data.BloodPressureMeasurement;
 import pt.uninova.s4h.citizenhub.data.BloodPressureValue;
 import pt.uninova.s4h.citizenhub.data.BreathingRateMeasurement;
@@ -76,6 +75,10 @@ public abstract class SampleDao {
 
     @Transaction
     public long insert(Sample sample) {
+        if(sample == null){
+            //TODO this is a temporary fix for not reaching here with address on wearOS
+            return -1;
+        }
         final long sampleId = insert(sample.getSource().getAddress(), sample.getTimestamp());
 
         for (Measurement<?> measurement : sample.getMeasurements()) {

@@ -42,7 +42,7 @@ public class ForegroundService extends Service {
                 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Citizen Hub")
+                .setContentTitle("Citizen Hub Activity")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.img_logo_figure)
                 .setContentIntent(pendingIntent)
