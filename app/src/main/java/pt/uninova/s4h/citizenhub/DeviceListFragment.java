@@ -82,7 +82,8 @@ public class DeviceListFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-        model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
+        if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
 //        if(model.getSelectedAgentLiveData().getValue()!=null) {
 //            model.getSelectedAgentLiveData().getValue().addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
 //                @Override
@@ -96,6 +97,7 @@ public class DeviceListFragment extends Fragment {
 //                }
 //            });
 //        }
+        }
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
