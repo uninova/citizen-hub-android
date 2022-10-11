@@ -82,7 +82,6 @@ public class DeviceViewModel extends AndroidViewModel {
                 agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
                     @Override
                     public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-                        selectedDeviceLiveData.postValue(device);
                         selectedAgentLiveData.postValue(agent);
                     }
                 });
