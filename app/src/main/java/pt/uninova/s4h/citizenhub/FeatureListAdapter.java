@@ -20,7 +20,7 @@ class FeatureListAdapter extends BaseAdapter {
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
     private static SwitchCompat nameSwitch;
-    private boolean isEnabled;
+    private final boolean isEnabled;
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled) {
         this.data = data;
@@ -58,7 +58,7 @@ class FeatureListAdapter extends BaseAdapter {
 
         TextView text = vi.findViewById(R.id.textFeature);
         text.setText(data.get(position).getLabel());
-        nameSwitch.setEnabled(isEnabled);
+        nameSwitch.setClickable(isEnabled);
         return vi;
     }
 
