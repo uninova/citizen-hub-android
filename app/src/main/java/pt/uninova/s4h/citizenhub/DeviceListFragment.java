@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import static java.util.Objects.requireNonNull;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,7 +39,7 @@ public class DeviceListFragment extends Fragment {
 
     private void buildRecycleView(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_devicesList);
-        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        final RecyclerView.LayoutManager layoutManager = new CustomLinearLayoutManager(requireContext());
 
         adapter = new DeviceListAdapter(item -> {
 
@@ -47,10 +48,24 @@ public class DeviceListFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
         });
 
+        adapter.setHasStableIds(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setItemAnimator(null);
+
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    public class CustomLinearLayoutManager extends LinearLayoutManager {
+        public CustomLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean supportsPredictiveItemAnimations() {
+            return false;
+        }
     }
 
     @Override
@@ -96,12 +111,17 @@ public class DeviceListFragment extends Fragment {
         agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
             @Override
             public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-                new Handler(Looper.getMainLooper()) {
+//                new Handler(Looper.getMainLooper()) {
+//                    @Override
+//                    public void handleMessage(Message inputMessage) {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
-                    public void handleMessage(Message inputMessage) {
+                    public void run() {
                         updateItemAgentState(agent, value.getNewState());
                     }
-                };
+                });
+//                    }
+//                };
             }
         });
     }
@@ -146,7 +166,6 @@ public class DeviceListFragment extends Fragment {
             adapter.getItem(pos).setImageResource(R.drawable.ic_devices_unpaired);
         }
         adapter.updateItem(pos, adapter.getItem(pos));
-
 
     }
 
