@@ -79,14 +79,16 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void loadSupportedFeatures() {
-        FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
-
-        listViewFeatures.setAdapter(adapter);
         if (model.getSelectedDeviceAgent() != null) {
-            if(adapter.getNameSwitch()!=null)
-            adapter.getNameSwitch().setClickable(model.getSelectedDeviceAgent().getState() == 1);
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1);
+
+            listViewFeatures.setAdapter(adapter);
+            adapter.updateResults(getSupportedFeatures());
+        } else {
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
+            listViewFeatures.setAdapter(adapter);
+            adapter.updateResults(getSupportedFeatures());
         }
-        adapter.updateResults(getSupportedFeatures());
     }
 
     @Override

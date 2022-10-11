@@ -20,11 +20,20 @@ class FeatureListAdapter extends BaseAdapter {
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
     private static SwitchCompat nameSwitch;
+    private boolean isEnabled;
+
+    public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled) {
+        this.data = data;
+        Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        isEnabled = isSwitchEnabled;
+    }
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        isEnabled = true;
     }
 
 
@@ -35,7 +44,6 @@ class FeatureListAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.list_item_feature, null);
 
         nameSwitch = vi.findViewById(R.id.switchFeature);
-
         switchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -50,7 +58,7 @@ class FeatureListAdapter extends BaseAdapter {
 
         TextView text = vi.findViewById(R.id.textFeature);
         text.setText(data.get(position).getLabel());
-
+        nameSwitch.setEnabled(isEnabled);
         return vi;
     }
 
