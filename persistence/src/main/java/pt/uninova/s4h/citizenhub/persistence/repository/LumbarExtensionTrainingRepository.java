@@ -24,6 +24,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.SampleRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class LumbarExtensionTrainingRepository {
@@ -97,5 +98,21 @@ public class LumbarExtensionTrainingRepository {
 
     public void update(LumbarExtensionTrainingMeasurementRecord record) {
         CitizenHubDatabase.executorService().execute(() -> lumbarExtensionTrainingDao.update(record));
+    }
+
+    public void selectDuration(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectDuration()));
+    }
+
+    public void selectScore(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectScore()));
+    }
+
+    public void selectRepetitions(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectRepetitions()));
+    }
+
+    public void selectWeight(Observer<List<SummaryDetailUtil>> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(lumbarExtensionTrainingDao.selectWeight()));
     }
 }
