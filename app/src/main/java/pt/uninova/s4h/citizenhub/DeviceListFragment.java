@@ -4,9 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +15,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,8 +49,6 @@ public class DeviceListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         recyclerView.setItemAnimator(null);
-
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     public class CustomLinearLayoutManager extends LinearLayoutManager {
@@ -84,19 +78,6 @@ public class DeviceListFragment extends Fragment {
         model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
         if (model.getSelectedDeviceAgent() != null) {
             model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
-//        if(model.getSelectedAgentLiveData().getValue()!=null) {
-//            model.getSelectedAgentLiveData().getValue().addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
-//                @Override
-//                public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-//                    new Handler(Looper.getMainLooper()) {
-//                        @Override
-//                        public void handleMessage(Message inputMessage) {
-//                            updateItemAgentState(model.getSelectedAgentLiveData().getValue(), value.getNewState());
-//                        }
-//                    };
-//                }
-//            });
-//        }
         }
         Button searchDevices = result.findViewById(R.id.searchButton);
 
@@ -113,9 +94,6 @@ public class DeviceListFragment extends Fragment {
         agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
             @Override
             public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-//                new Handler(Looper.getMainLooper()) {
-//                    @Override
-//                    public void handleMessage(Message inputMessage) {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -127,20 +105,6 @@ public class DeviceListFragment extends Fragment {
             }
         });
     }
-
-//    private void onAgentStateChange(Agent agent) {
-//            model.getSelectedAgentLiveData().getValue().addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
-//                @Override
-//                public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-//                    new Handler(Looper.getMainLooper()) {
-//                        @Override
-//                        public void handleMessage(Message inputMessage) {
-//                            updateItemAgentState(model.getSelectedAgentLiveData().getValue(), value.getNewState());
-//                        }
-//                    };
-//                }
-//            });
-//    }
 
     @Override
     public void onResume() {
