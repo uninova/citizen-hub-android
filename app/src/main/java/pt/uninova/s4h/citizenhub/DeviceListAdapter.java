@@ -11,12 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.LinkedList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.AgentListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentListener;
 import pt.uninova.s4h.citizenhub.data.Device;
-
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
 
@@ -29,6 +24,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     public static class DeviceListViewHolder extends RecyclerView.ViewHolder {
 
         private final OnItemClickListener listener;
+
         public DeviceListViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
 
@@ -55,16 +51,10 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     private final List<DeviceListItem> deviceListItems;
     private final OnItemClickListener listener;
-    private final AgentListener agentListener;
+
     public DeviceListAdapter(OnItemClickListener listener) {
         this.deviceListItems = new LinkedList<>();
         this.listener = listener;
-        this.agentListener = new AgentListener() {
-            @Override
-            public void onStateChanged(Agent agent, int state) {
-                notifyDataSetChanged();
-            }
-        };
     }
 
     public void addItem(DeviceListItem deviceListItem) {
@@ -72,12 +62,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         notifyItemInserted(deviceListItems.size() - 1);
     }
 
-    public void updateItem(int position, DeviceListItem deviceListItem){
-        deviceListItems.set(position,deviceListItem);
+    public void updateItem(int position, DeviceListItem deviceListItem) {
+        deviceListItems.set(position, deviceListItem);
         notifyItemChanged(position);
     }
 
-    public DeviceListItem getItem(int position){
+    public DeviceListItem getItem(int position) {
         return deviceListItems.get(position);
     }
 
