@@ -19,7 +19,7 @@ class FeatureListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
-    private SwitchCompat nameSwitch;
+    private static SwitchCompat nameSwitch;
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
@@ -35,9 +35,13 @@ class FeatureListAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.list_item_feature, null);
 
         nameSwitch = vi.findViewById(R.id.switchFeature);
-        switchListener = (buttonView, isChecked) -> {
-            data.get(position).setActive(isChecked);
-            notifyDataSetChanged();
+
+        switchListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                data.get(position).setActive(isChecked);
+                FeatureListAdapter.this.notifyDataSetChanged();
+            }
         };
 
         nameSwitch.setOnCheckedChangeListener(null);
@@ -50,6 +54,10 @@ class FeatureListAdapter extends BaseAdapter {
         return vi;
     }
 
+    public SwitchCompat getNameSwitch() {
+        return nameSwitch;
+    }
+
     public void updateResults(List<FeatureListItem> results) {
         if (data != null) {
             data.clear();
@@ -58,14 +66,6 @@ class FeatureListAdapter extends BaseAdapter {
             data.addAll(results);
             Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
             this.notifyDataSetChanged();
-        }
-    }
-
-    public void setSwitchClickable(boolean isClickable) {
-        if (nameSwitch != null) {
-            nameSwitch.setOnCheckedChangeListener(null);
-            this.nameSwitch.setClickable(isClickable);
-            nameSwitch.setOnCheckedChangeListener(switchListener);
         }
     }
 

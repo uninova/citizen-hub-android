@@ -19,7 +19,6 @@ import java.util.Set;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
@@ -46,6 +45,7 @@ public class DeviceConfigurationFragment extends Fragment {
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
         addressDevice = result.findViewById(R.id.textConfigurationDeviceAddress);
         listViewFeatures = result.findViewById(R.id.listViewFeature);
+
     }
 
     protected void setupText() {
@@ -61,13 +61,12 @@ public class DeviceConfigurationFragment extends Fragment {
 
         if (agent != null) {
 
-            if(agent.getState()!=1){
+            if (agent.getState() != 1) {
 
                 for (int i : agent.getSupportedMeasurements()) {
                     featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), false));
                 }
-            }
-            else {
+            } else {
                 final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
 
                 for (int i : agent.getSupportedMeasurements()) {
@@ -81,13 +80,12 @@ public class DeviceConfigurationFragment extends Fragment {
 
     protected void loadSupportedFeatures() {
         FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
-        if(model.getSelectedDeviceAgent()!=null) {
-            if (model.getSelectedDeviceAgent().getState() != 1) {
-                adapter.setSwitchClickable(false);
-            }
-        }
 
         listViewFeatures.setAdapter(adapter);
+        if (model.getSelectedDeviceAgent() != null) {
+            if(adapter.getNameSwitch()!=null)
+            adapter.getNameSwitch().setClickable(model.getSelectedDeviceAgent().getState() == 1);
+        }
         adapter.updateResults(getSupportedFeatures());
     }
 
