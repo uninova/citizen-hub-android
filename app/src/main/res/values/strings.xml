@@ -554,6 +554,11 @@
     <string name="bugreport_negative_button">Ignore</string>
     <string name="bugreport_confirmation">Report sent</string>
 
+    <string name="fragment_device_unsupported_message">Device is not supported</string>
+    <string name="fragment_device_unsupported_name">Name</string>
+    <string name="fragment_device_unsupported_address">Address</string>
+    <string name="fragment_device_unsupported_device_button_text">Back</string>
+
 </resources>
 
 
