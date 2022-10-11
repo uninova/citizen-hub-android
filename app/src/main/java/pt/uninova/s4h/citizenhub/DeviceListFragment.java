@@ -1,7 +1,11 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.bluetooth.BluetoothAdapter;
+import static java.util.Objects.requireNonNull;
+
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,16 +35,18 @@ public class DeviceListFragment extends Fragment {
 
     private DeviceListAdapter adapter;
     private DeviceViewModel model;
-    BluetoothAdapter mBluetoothAdapter;
 
     private void buildRecycleView(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_devicesList);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
 
         adapter = new DeviceListAdapter(item -> {
+
             model.selectDevice(item.getDevice());
+
             Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
         });
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -59,8 +65,22 @@ public class DeviceListFragment extends Fragment {
         final View result = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
 
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
+        model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
+//        if(model.getSelectedAgentLiveData().getValue()!=null) {
+//            model.getSelectedAgentLiveData().getValue().addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+//                @Override
+//                public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+//                    new Handler(Looper.getMainLooper()) {
+//                        @Override
+//                        public void handleMessage(Message inputMessage) {
+//                            updateItemAgentState(model.getSelectedAgentLiveData().getValue(), value.getNewState());
+//                        }
+//                    };
+//                }
+//            });
+//        }
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
@@ -72,9 +92,38 @@ public class DeviceListFragment extends Fragment {
         return result;
     }
 
+    private void onAgentStateChange(Agent agent) {
+        agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+            @Override
+            public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+                new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message inputMessage) {
+                        updateItemAgentState(agent, value.getNewState());
+                    }
+                };
+            }
+        });
+    }
+
+//    private void onAgentStateChange(Agent agent) {
+//            model.getSelectedAgentLiveData().getValue().addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+//                @Override
+//                public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+//                    new Handler(Looper.getMainLooper()) {
+//                        @Override
+//                        public void handleMessage(Message inputMessage) {
+//                            updateItemAgentState(model.getSelectedAgentLiveData().getValue(), value.getNewState());
+//                        }
+//                    };
+//                }
+//            });
+//    }
+
     @Override
     public void onResume() {
         super.onResume();
+
         TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
 
         if (adapter.getItemCount() == 0) {
@@ -82,12 +131,23 @@ public class DeviceListFragment extends Fragment {
         } else {
             noDevices.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void updateItemAgentState(Agent agent, int state) {
+        int pos = requireNonNull(model.getDeviceList().getValue()).indexOf(agent.getSource());
+        if (state == 1) {
+            adapter.getItem(pos).setImageResource(R.drawable.ic_devices_connected);
+        } else {
+            adapter.getItem(pos).setImageResource(R.drawable.ic_devices_unpaired);
+        }
+        adapter.updateItem(pos, adapter.getItem(pos));
+
+
     }
 
     public void onDeviceListChanged(List<Device> deviceList) {
@@ -103,10 +163,4 @@ public class DeviceListFragment extends Fragment {
             }
         }
     }
-
-    public static Boolean isBluetoothEnabled() {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return mBluetoothAdapter.isEnabled();
-    }
-
 }

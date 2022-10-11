@@ -18,7 +18,6 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentListener;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -39,7 +38,7 @@ public class DeviceViewModel extends AndroidViewModel {
         agentOrchestratorLiveData = new MutableLiveData<>();
         deviceListLiveData = new MutableLiveData<>(Collections.emptyList());
         selectedDeviceLiveData = new MutableLiveData<>();
-        selectedAgentLiveData = new MutableLiveData<>(null);
+        selectedAgentLiveData = new MutableLiveData<>();
 
         serviceConnection = new ServiceConnection() {
 
@@ -69,7 +68,6 @@ public class DeviceViewModel extends AndroidViewModel {
         };
 
         agentOrchestratorListener = new AgentOrchestratorListener() {
-
             @Override
             public void onDeviceAdded(Device device) {
                 final List<Device> deviceList = deviceListLiveData.getValue();
@@ -84,22 +82,11 @@ public class DeviceViewModel extends AndroidViewModel {
                 agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
                     @Override
                     public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-                        if (!(agent.getState() == Agent.AGENT_STATE_ENABLED)) {
-                            final AgentOrchestrator agentOrchestrator = agentOrchestratorLiveData.getValue();
-                            final Device device = getSelectedDevice().getValue();
-                            final Agent agent = agentOrchestrator.getAgent(device);
-
-                            if (agent != null) {
-                                agent.disable();
-                                if (agent instanceof BluetoothAgent) {
-                                    BluetoothAgent bluetoothAgent = (BluetoothAgent) agent;
-                                    bluetoothAgent.getConnection().close();
-                                }
-                            }
-                        }
+                        selectedDeviceLiveData.postValue(device);
+                        selectedAgentLiveData.postValue(agent);
                     }
                 });
-
+                selectedAgentLiveData.postValue(agent);
             }
 
             @Override
@@ -110,18 +97,18 @@ public class DeviceViewModel extends AndroidViewModel {
                 deviceListLiveData.postValue(deviceList);
             }
         };
+
         CitizenHubService.bind(application, serviceConnection);
     }
 
     public LiveData<Agent> getSelectedAgentLiveData() {
-        if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
-            selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
-        } else {
-            agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), agent -> {
-                selectedAgentLiveData.postValue(agent);
-            });
+        if (agentOrchestratorLiveData.getValue() != null) {
+            if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
+                selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
+            } else {
+                agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), selectedAgentLiveData::postValue);
+            }
         }
-
         return selectedAgentLiveData;
     }
 
@@ -155,6 +142,7 @@ public class DeviceViewModel extends AndroidViewModel {
         return 0;
     }
 
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -180,15 +168,13 @@ public class DeviceViewModel extends AndroidViewModel {
         agentOrchestrator.remove(device);
     }
 
+
     public void selectDevice(Device device) {
         selectedDeviceLiveData.postValue(device);
     }
 
     public void addAgent(Agent agent) {
-        ;
         agentOrchestratorLiveData.getValue().add(agent);
-        final List<Device> deviceList = deviceListLiveData.getValue();
-        deviceListLiveData.postValue(deviceList);
     }
 
     public void identifySelectedDevice(Observer<Agent> observer) {
