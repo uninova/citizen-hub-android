@@ -240,45 +240,6 @@
 
     </style-->
 
-    <style name="ReportDetailValueType">
-        <item name="android:fontFamily">@font/neosanspro</item>
-        <item name="android:gravity">left</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:layout_marginTop">3dp</item>
-        <item name="android:textSize">5.9pt</item>
-        <item name="android:textColor">@color/colorS4HTurquoise</item>
-    </style>
-
-    <style name="ReportDetailValue">
-        <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:layout_marginTop">3dp</item>
-        <item name="android:gravity">right</item>
-        <item name="android:textSize">5.9pt</item>
-        <item name="android:textColor">@color/colorS4HDarkBlue</item>
-    </style>
-
-    <style name="ReportDetailUnits">
-        <item name="android:fontFamily">@font/neosanspro</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:layout_marginStart">2dp</item>
-        <item name="android:layout_marginTop">3dp</item>
-        <item name="android:gravity">left</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:textSize">5.9pt</item>
-        <item name="android:textColor">@color/colorS4HDarkBlue</item>
-    </style>
-
     <!--style name="ReportDetailValue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
@@ -418,6 +379,74 @@
         <item name="android:drawablePadding">10dp</item>
         <item name="android:paddingLeft">40dp</item>
         <item name="android:paddingRight">40dp</item>
+    </style>
+
+    /* Styles used for the report */
+    <style name="ReportDetailValueType">
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HTurquoise</item>
+    </style>
+
+    <style name="ReportDetailValue">
+        <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+
+    <style name="ReportDetailUnits">
+        <item name="android:fontFamily">@font/neosanspro</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">5.9pt</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+    </style>
+
+    <style name="SummaryDetailPrimaryTabLayout">
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="SummaryDetailSecondaryTabLayout">
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>

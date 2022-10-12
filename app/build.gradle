@@ -152,4 +152,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
 
     implementation 'com.android.support:support-annotations:28.0.0'
+
+    // Material to design graphs in summary details
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
 }

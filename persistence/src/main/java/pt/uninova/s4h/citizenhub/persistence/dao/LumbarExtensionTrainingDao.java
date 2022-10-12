@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.persistence.conversion.DurationTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.conversion.EpochTypeConverter;
 import pt.uninova.s4h.citizenhub.persistence.entity.LumbarExtensionTrainingMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 
 @Dao
 public interface LumbarExtensionTrainingDao {
@@ -52,4 +53,23 @@ public interface LumbarExtensionTrainingDao {
     @TypeConverters(EpochTypeConverter.class)
     LiveData<LumbarExtensionTrainingSummary> selectLatestLiveData(LocalDate from, LocalDate to);
 
+    @Query(value = "SELECT lumbar_extension_training_measurement.duration AS value, sample.timestamp AS time FROM lumbar_extension_training_measurement "
+            + " INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id ")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectDuration();
+
+    @Query(value = "SELECT lumbar_extension_training_measurement.score AS value, sample.timestamp AS time FROM lumbar_extension_training_measurement "
+            + " INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id ")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectScore();
+
+    @Query(value = "SELECT lumbar_extension_training_measurement.repetitions AS value, sample.timestamp AS time FROM lumbar_extension_training_measurement "
+            + " INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id ")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectRepetitions();
+
+    @Query(value = "SELECT lumbar_extension_training_measurement.weight AS value, sample.timestamp AS time FROM lumbar_extension_training_measurement "
+            + " INNER JOIN sample ON lumbar_extension_training_measurement.sample_id = sample.id ")
+    @TypeConverters(EpochTypeConverter.class)
+    List<SummaryDetailUtil> selectWeight();
 }

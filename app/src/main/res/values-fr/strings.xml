@@ -366,7 +366,9 @@
     <!-- Strings used for the report -->
     <string name="report_upload">Télécharger le PDF</string>
 
-    <string name="report_complete_report">Rapport Journalier</string>
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
+
+    <string name="report_complete_report">Rapport Complet</string>
     <string name="report_work_time_report">Rapport de Temps de Travail</string>
     <string name="report_not_work_time_report">Rapport de Temps non Travaillé</string>
 
@@ -413,6 +415,38 @@
     <string name="smart4health_heart_rate">Heart Rate</string>
     <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
     <string name="smart4health_posture">Posture</string>
+    
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_today">Today</string>
+    <string name="summary_detail_time_last_week">Last Week</string>
+    <string name="summary_detail_time_last_month">Last Month</string>
+
+    <string name="summary_detail_activity">Activity</string>
+    <string name="summary_detail_activity_steps">Steps</string>
+    <string name="summary_detail_activity_calories">Calories</string>
+    <string name="summary_detail_activity_distance">Distance</string>
+
+    <string name="summary_detail_posture">Posture</string>
+    <string name="summary_detail_posture_correct">Correct</string>
+    <string name="summary_detail_posture_incorrect">Correct</string>
+    <string name="summary_detail_posture_average">Average</string>
+
+    <string name="summary_detail_hear_rate">Heart Rate</string>
+    <string name="summary_detail_heart_rate_maximum">Max</string>
+    <string name="summary_detail_heart_rate_minimum">Min</string>
+    <string name="summary_detail_heart_rate_average">Average</string>
+
+    <string name="summary_detail_blood_pressure">Blood Pressure</string>
+    <string name="summary_detail_blood_pressure_systolic">Systolic</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
+    <string name="summary_detail_blood_pressure_mean">Mean</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulse Rate</string>
+
+    <string name="summary_detail_lumbar_extension">Lumbar Extension</string>
+    <string name="summary_detail_lumbar_extension_duration">Duration</string>
+    <string name="summary_detail_lumbar_extension_score">Score</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Repetitions</string>
+    <string name="summary_detail_lumbar_extension_weight">Weight</string>
 
     <string name="measurement_type.0">Inconnue</string>
     <string name="measurement_type.1">Rythme cardiaque</string>

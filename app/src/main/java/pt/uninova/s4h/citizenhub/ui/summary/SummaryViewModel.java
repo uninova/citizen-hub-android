@@ -1,15 +1,31 @@
 package pt.uninova.s4h.citizenhub.ui.summary;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.BreathingRateMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.CaloriesMeasurementRepository;
@@ -87,4 +103,7 @@ public class SummaryViewModel extends AndroidViewModel {
     public LiveData<Double> getDailyDistanceAllTypes(){return dailyDistanceAllTypes;}
 
     public LiveData<Double> getDailyCaloriesAllTypes(){return dailyCaloriesAllTypes;}
+
+    public ChartMarkerView getChartViewMarker(){return new ChartMarkerView(getApplication().getBaseContext(), R.layout.fragment_summary_detail_line_chart_marker);}
+
 }
