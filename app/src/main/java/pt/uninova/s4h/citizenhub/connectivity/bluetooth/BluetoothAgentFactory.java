@@ -48,7 +48,6 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
                 return agent.getAgentClass();
             }
         }
-        connection.close();
         return null;
     }
 
