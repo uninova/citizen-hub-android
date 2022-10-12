@@ -14,10 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.work.WorkManager;
 
 import java.time.LocalDateTime;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class AdvancedSmartBearAccountGateFragment extends Fragment {
 
@@ -40,6 +42,8 @@ public class AdvancedSmartBearAccountGateFragment extends Fragment {
 
             if (validate(inputCodeEditText.getText().toString())) {
                 Navigation.findNavController(requireView()).navigate(AdvancedSmartBearAccountGateFragmentDirections.actionAdvancedSmartBearAccountGateFragmentToAdvancedSmartBearAccountFragment());
+                WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                workOrchestrator.enqueueSmartBearUploader();
             } else {
                 inputCodeEditText.getText().clear();
             }

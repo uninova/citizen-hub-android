@@ -315,7 +315,7 @@ public class DailyReportGeneratorPDFV2 {
         dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerReport);
     }*/
 
-    public void generateCompleteReport(Observer<byte[]> observerReportPDF, Resources res, ReportRepository reportRepository, LocalDate date, MeasurementKindLocalization measurementKindLocalization) {
+    public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -330,127 +330,116 @@ public class DailyReportGeneratorPDFV2 {
         options.inScaled = false;
         options.inDensity = 72;
 
-        Observer<Report> observerWorkTimeReport = workTimeData -> {
+        List<Group> groupsWorkTime = workTime.getGroups();
+        List<Group> groupsNotWorkTime = notWorkTime.getGroups();
 
-            Observer<Report> observerNotWorkTimeReport = notWorkTimeData -> {
+        drawHeaderAndFooter(canvas[0], canvasWriter[0], res, date);
+        int y = 200;
 
-                drawHeaderAndFooter(canvas[0], canvasWriter[0], res, date);
-                int y = 200;
+        for (Group groupNotWorkTime : groupsNotWorkTime) {
+            if(!verifyGroupSize(groupNotWorkTime, y, false)){
+                writePage(document, page[0], canvasWriter[0]);
+                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+            }
+            int rectHeight = y - 20;
+            int notWorkTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+            y += 25;
 
-                List<Group> groupsWorkTimeData = workTimeData.getGroups();
-                List<Group> groupsNotWorkTimeData = notWorkTimeData.getGroups();
-
-                for (Group groupNotWorkTime : groupsNotWorkTimeData) {
-                    if(!verifyGroupSize(groupNotWorkTime, y, false)){
+            if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+                for (Group group : groupNotWorkTime.getGroupList()) {
+                    if (!verifyGroupSize(group, y, true)) {
+                        drawRect(canvas[0], y + 38, rectHeight);
                         writePage(document, page[0], canvasWriter[0]);
                         y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                        rectHeight = y - 20;
+                        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+                        y += 25;
                     }
-                    int rectHeight = y - 20;
-                    int notWorkTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
-                    drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-                    y += 25;
-
-                    if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                        for (Group group : groupNotWorkTime.getGroupList()) {
-                            if (!verifyGroupSize(group, y, true)) {
+                    y = drawComplexGroups(canvasWriter[0], group, 0, y);
+                }
+                for (Group groupWorkTime : groupsWorkTime) {
+                    int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
+                    if (notWorkTimeLabel == workTimeLabel) {
+                        for (Group group : groupWorkTime.getGroupList()) {
+                            if(!verifyGroupSize(groupWorkTime, y, true)){
                                 drawRect(canvas[0], y + 38, rectHeight);
                                 writePage(document, page[0], canvasWriter[0]);
                                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                                rectHeight = y - 20;
                                 drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
                                 y += 25;
                             }
-                            y = drawComplexGroups(canvasWriter[0], group, 0, y);
-                        }
-                        for (Group groupWorkTime : groupsWorkTimeData) {
-                            int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
-                            if (notWorkTimeLabel == workTimeLabel) {
-                                for (Group group : groupWorkTime.getGroupList()) {
-                                    if(!verifyGroupSize(groupWorkTime, y, true)){
-                                        drawRect(canvas[0], y + 38, rectHeight);
-                                        writePage(document, page[0], canvasWriter[0]);
-                                        y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                                        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-                                        y += 25;
-                                    }
-                                    y = drawComplexGroups(canvasWriter[0], group, 120, y);
-                                }
-                            }
-                        }
-                        y += 38;
-                    }
-                    else {
-                        boolean hasItem = false;
-                        for (Group groupWorkTime : groupsWorkTimeData) {
-                            if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType()) {
-                                hasItem = true;
-                                y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
-                            }
-                        }
-                        if (!hasItem) {
-                            y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
+                            y = drawComplexGroups(canvasWriter[0], group, 120, y);
                         }
                     }
-                    drawRect(canvas[0], y, rectHeight);
                 }
-
-                for (Group groupWorkTime : groupsWorkTimeData) {
-                    boolean hasGroup = false;
-                    int label = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
-                    for (Group groupNotWorkTime : groupsNotWorkTimeData) {
-                        if (label == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
-                            hasGroup = true;
-                            break;
-                        }
+                y += 38;
+            } else {
+                boolean hasItem = false;
+                for (Group groupWorkTime : groupsWorkTime) {
+                    if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType()) {
+                        hasItem = true;
+                        y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
                     }
-                    if (!hasGroup) {
-                        if(!verifyGroupSize(groupWorkTime, y, false)){
+                }
+                if (!hasItem) {
+                    y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
+                }
+            }
+            drawRect(canvas[0], y, rectHeight);
+        }
+        for (Group groupWorkTime : groupsWorkTime) {
+            boolean hasGroup = false;
+            int label = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
+            for (Group groupNotWorkTime : groupsNotWorkTime) {
+                if (label == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
+                    hasGroup = true;
+                    break;
+                }
+            }
+            if (!hasGroup) {
+                if(!verifyGroupSize(groupWorkTime, y, false)) {
+                    writePage(document, page[0], canvasWriter[0]);
+                    y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                }
+                int rectHeight = y - 20;
+                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
+                y += 25;
+                if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
+                    for (Group group : groupWorkTime.getGroupList()) {
+                        if (!verifyGroupSize(group, y, true)) {
+                            drawRect(canvas[0], y, rectHeight);
                             writePage(document, page[0], canvasWriter[0]);
                             y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                            rectHeight = y - 20;
+                            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
+                            y += 25;
                         }
-                        int rectHeight = y - 20;
-                        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
-                        y += 25;
-                        if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                            for (Group group : groupWorkTime.getGroupList()) {
-                                if (!verifyGroupSize(group, y, true)) {
-                                    drawRect(canvas[0], y, rectHeight);
-                                    writePage(document, page[0], canvasWriter[0]);
-                                    y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                                    drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
-                                    y += 25;
-                                }
-                                y = drawComplexGroups(canvasWriter[0], group, 120, y);
-                            }
-                            y += 38;
-                        }
-                        else {
-                            y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
-                        }
-                        drawRect(canvas[0], y, rectHeight);
+                        y = drawComplexGroups(canvasWriter[0], group, 120, y);
                     }
+                    y += 38;
                 }
-
-                writePage(document, page[0], canvasWriter[0]);
-
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                try {
-                    document.writeTo(out);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                else {
+                    y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 }
+                drawRect(canvas[0], y, rectHeight);
+            }
+        }
 
-                byte[] outByteArray = out.toByteArray();
-                document.close();
-                observerReportPDF.observe(outByteArray);
+        writePage(document, page[0], canvasWriter[0]);
 
-            };
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            document.writeTo(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        byte[] outByteArray = out.toByteArray();
+        document.close();
+        observerReportPDF.observe(outByteArray);
 
-            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-            dailyReportGenerator.generateNotWorkTimeReport(reportRepository, date, observerNotWorkTimeReport);
-        };
-
-        DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(context);
-        dailyReportGenerator.generateWorkTimeReport(reportRepository, date, observerWorkTimeReport);
     }
 
     private void drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date){
