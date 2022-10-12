@@ -140,14 +140,15 @@ public class MainActivity  extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-                    if (resetSteps()){
-                        sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
-                        sharedPreferences.edit().putInt("offsetStepCounter", -(int) event.values[0]).apply();
-                    }
-
-                    final LocalDate now = LocalDate.now();
 
                     int stepCounter = (int) event.values[0];
+                    final LocalDate now = LocalDate.now();
+
+                    if (resetSteps()){
+                        sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
+                        sharedPreferences.edit().putInt("offsetStepCounter", -stepCounter).apply();
+                        //TODO test if this catches initial stepCounter values and adds to offset, before starting CH for the 1st time
+                    }
 
                     if(stepCounter<getLastStepCounter())
                         sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
