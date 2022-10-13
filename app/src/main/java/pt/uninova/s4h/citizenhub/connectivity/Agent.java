@@ -49,6 +49,8 @@ public interface Agent {
 
     Set<UUID> getSupportedProtocolsIds();
 
+    Set<UUID> getEnabledProtocols();
+
     void removeAllAgentListeners();
 
     void removeAgentListener(AgentListener agentListener);

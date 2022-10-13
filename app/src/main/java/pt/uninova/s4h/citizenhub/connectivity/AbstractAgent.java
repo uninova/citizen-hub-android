@@ -169,6 +169,11 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
+    public Set<UUID> getEnabledProtocols(){
+        return protocolMap.keySet();
+    }
+
+    @Override
     public UUID getId() {
         return id;
     }

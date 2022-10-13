@@ -19,7 +19,6 @@ class FeatureListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
-    private static SwitchCompat nameSwitch;
     private final boolean isEnabled;
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled) {
@@ -43,17 +42,20 @@ class FeatureListAdapter extends BaseAdapter {
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
 
-        nameSwitch = vi.findViewById(R.id.switchFeature);
+        SwitchCompat nameSwitch = vi.findViewById(R.id.switchFeature);
         switchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 data.get(position).setActive(isChecked);
+                System.out.println("ONCHECKEDCHANGED on/off: " + data.get(position) + " " + isChecked);
                 FeatureListAdapter.this.notifyDataSetChanged();
             }
         };
 
         nameSwitch.setOnCheckedChangeListener(null);
         nameSwitch.setChecked(data.get(position).isActive());
+        System.out.println("NAMESWITCH SET CHECKED WTF is this: " + data.get(position) + " " + data.get(position).isActive());
         nameSwitch.setOnCheckedChangeListener(switchListener);
 
         TextView text = vi.findViewById(R.id.textFeature);
@@ -62,17 +64,24 @@ class FeatureListAdapter extends BaseAdapter {
         return vi;
     }
 
-    public SwitchCompat getNameSwitch() {
-        return nameSwitch;
-    }
-
     public void updateResults(List<FeatureListItem> results) {
+
+        for (FeatureListItem result: results
+             ) {
+            System.out.println(" BEFORE DATA CLEARRRRRRRR - --- - -- - - UPDATING LIST WITH: ID"+ result.getFeatureId() + " label "+ result.getLabel() + " active? " + result.isActive());
+        }
+
         if (data != null) {
             data.clear();
         }
         if (results != null) {
             data.addAll(results);
             Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
+            for (FeatureListItem result: data
+            ) {
+                System.out.println(" AFTER DATA SORT - --- - -- - - UPDATING LIST WITH: ID" + result.getFeatureId() + " label " + result.getLabel() + " active? " + result.isActive());
+            }
+
             this.notifyDataSetChanged();
         }
     }
