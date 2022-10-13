@@ -35,7 +35,6 @@ class FeatureListAdapter extends BaseAdapter {
         isEnabled = true;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
@@ -46,16 +45,13 @@ class FeatureListAdapter extends BaseAdapter {
         switchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 data.get(position).setActive(isChecked);
-                System.out.println("ONCHECKEDCHANGED on/off: " + data.get(position) + " " + isChecked);
                 FeatureListAdapter.this.notifyDataSetChanged();
             }
         };
 
         nameSwitch.setOnCheckedChangeListener(null);
         nameSwitch.setChecked(data.get(position).isActive());
-        System.out.println("NAMESWITCH SET CHECKED WTF is this: " + data.get(position) + " " + data.get(position).isActive());
         nameSwitch.setOnCheckedChangeListener(switchListener);
 
         TextView text = vi.findViewById(R.id.textFeature);
@@ -66,20 +62,11 @@ class FeatureListAdapter extends BaseAdapter {
 
     public void updateResults(List<FeatureListItem> results) {
 
-        for (FeatureListItem result: results
-             ) {
-            System.out.println(" BEFORE DATA CLEARRRRRRRR - --- - -- - - UPDATING LIST WITH: ID"+ result.getFeatureId() + " label "+ result.getLabel() + " active? " + result.isActive());
-        }
-
         if (data != null) {
             data.clear();
         }
         data.addAll(results);
         Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
-        for (FeatureListItem result: data
-        ) {
-            System.out.println(" AFTER DATA SORT - --- - -- - - UPDATING LIST WITH: ID" + result.getFeatureId() + " label " + result.getLabel() + " active? " + result.isActive());
-        }
 
         this.notifyDataSetChanged();
     }
