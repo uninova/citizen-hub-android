@@ -109,11 +109,6 @@ public class DeviceListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     public void updateItemAgentState(Agent agent, int state) {
         int pos = requireNonNull(model.getDeviceList().getValue()).indexOf(agent.getSource());
         if (state == 1) {
