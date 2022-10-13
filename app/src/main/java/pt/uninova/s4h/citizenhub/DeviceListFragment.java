@@ -49,7 +49,7 @@ public class DeviceListFragment extends Fragment {
         recyclerView.setItemAnimator(null);
     }
 
-    public class CustomLinearLayoutManager extends LinearLayoutManager {
+    public static class CustomLinearLayoutManager extends LinearLayoutManager {
         public CustomLinearLayoutManager(Context context) {
             super(context);
         }
@@ -89,9 +89,7 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void onAgentStateChange(Agent agent) {
-        agent.addStateObserver(value -> {
-            requireActivity().runOnUiThread(() -> updateItemAgentState(agent, value.getNewState()));
-        });
+        agent.addStateObserver(value -> requireActivity().runOnUiThread(() -> updateItemAgentState(agent, value.getNewState())));
     }
 
     @Override
