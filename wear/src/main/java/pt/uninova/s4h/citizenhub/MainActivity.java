@@ -144,11 +144,11 @@ public class MainActivity  extends FragmentActivity {
                     int stepCounter = (int) event.values[0];
                     final LocalDate now = LocalDate.now();
 
-                    if (resetSteps()){
+                    if (resetSteps(stepCounter)){
                         sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
                         sharedPreferences.edit().putInt("offsetStepCounter", -stepCounter).apply();
-                        //TODO test if this catches initial stepCounter values and adds to offset, before starting CH for the 1st time
                     }
+                    System.out.println(getLastStepCounter() + "|" + getOffsetStepCounter() + "|" + sharedPreferences.getLong("dayLastStepCounter",0));
 
                     if(stepCounter<getLastStepCounter())
                         sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
@@ -173,10 +173,13 @@ public class MainActivity  extends FragmentActivity {
         };
     }
 
-    private Boolean resetSteps(){
+    private Boolean resetSteps(int steps){
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
-        if(recordedDate == 0)
+        if(recordedDate == 0){
+            if (steps > 0)
+                sharedPreferences.edit().putInt("offsetStepCounter", -steps).apply();
             return false;
+        }
         Date dateRecorded = new Date(recordedDate);
         Calendar calendarRecordedDate = Calendar.getInstance();
         calendarRecordedDate.setTime(dateRecorded);
