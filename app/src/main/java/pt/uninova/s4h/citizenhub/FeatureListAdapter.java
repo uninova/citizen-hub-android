@@ -42,12 +42,9 @@ class FeatureListAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.list_item_feature, null);
 
         SwitchCompat nameSwitch = vi.findViewById(R.id.switchFeature);
-        switchListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                data.get(position).setActive(isChecked);
-                FeatureListAdapter.this.notifyDataSetChanged();
-            }
+        switchListener = (buttonView, isChecked) -> {
+            data.get(position).setActive(isChecked);
+            FeatureListAdapter.this.notifyDataSetChanged();
         };
 
         nameSwitch.setOnCheckedChangeListener(null);
