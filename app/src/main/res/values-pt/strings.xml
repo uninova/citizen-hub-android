@@ -518,4 +518,9 @@
     <string name="bugreport_negative_button">Ignorar</string>
     <string name="bugreport_confirmation">Relatório enviado</string>
 
+    <string name="fragment_device_unsupported_message">Dispositivo não suportado</string>
+    <string name="fragment_device_unsupported_name">Nome</string>
+    <string name="fragment_device_unsupported_address">Endereço</string>
+    <string name="fragment_device_unsupported_device_button_text">Voltar</string>
+
 </resources>

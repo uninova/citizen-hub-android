@@ -493,4 +493,9 @@
     <string name="bugreport_negative_button">Ignorieren</string>
     <string name="bugreport_confirmation">Bericht gesendet</string>
 
+    <string name="fragment_device_unsupported_message">Gerät wird nicht unterstützt</string>
+    <string name="fragment_device_unsupported_name">Name</string>
+    <string name="fragment_device_unsupported_address">Adresse</string>
+    <string name="fragment_device_unsupported_device_button_text">Zurück</string>
+
 </resources>

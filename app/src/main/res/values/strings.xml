@@ -571,7 +571,6 @@
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="fragment_device_unsupported_address">Address</string>
     <string name="fragment_device_unsupported_device_button_text">Back</string>
-    <string name="report_title">Citizen Hub Daily Report %s</string>
 
 </resources>
 
