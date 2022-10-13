@@ -39,7 +39,6 @@ public class DeviceViewModel extends AndroidViewModel {
         deviceListLiveData = new MutableLiveData<>(Collections.emptyList());
         selectedDeviceLiveData = new MutableLiveData<>();
         selectedAgentLiveData = new MutableLiveData<>();
-
         serviceConnection = new ServiceConnection() {
 
             private CitizenHubService service;

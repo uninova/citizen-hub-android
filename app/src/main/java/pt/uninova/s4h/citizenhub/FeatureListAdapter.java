@@ -74,16 +74,14 @@ class FeatureListAdapter extends BaseAdapter {
         if (data != null) {
             data.clear();
         }
-        if (results != null) {
-            data.addAll(results);
-            Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
-            for (FeatureListItem result: data
-            ) {
-                System.out.println(" AFTER DATA SORT - --- - -- - - UPDATING LIST WITH: ID" + result.getFeatureId() + " label " + result.getLabel() + " active? " + result.isActive());
-            }
-
-            this.notifyDataSetChanged();
+        data.addAll(results);
+        Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
+        for (FeatureListItem result: data
+        ) {
+            System.out.println(" AFTER DATA SORT - --- - -- - - UPDATING LIST WITH: ID" + result.getFeatureId() + " label " + result.getLabel() + " active? " + result.isActive());
         }
+
+        this.notifyDataSetChanged();
     }
 
     @Override
