@@ -21,6 +21,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
 
+
         enableAdvancedConfigurations();
         setupViews(view);
         setupText();
@@ -51,5 +52,23 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             advancedDevice.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        model.getSelectedDeviceAgent().addStateObserver(value -> {
+            listViewFeatures.deferNotifyDataSetChanged();
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadSupportedFeatures();
+                }
+            });
+        });
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        model.getSelectedDeviceAgent().removeStateObserver(Object::notifyAll);
+    }
 }

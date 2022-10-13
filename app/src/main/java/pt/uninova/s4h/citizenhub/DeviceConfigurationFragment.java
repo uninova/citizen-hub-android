@@ -35,7 +35,7 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView nameDevice;
     protected TextView addressDevice;
     protected ListView listViewFeatures;
-    private DeviceViewModel model;
+    DeviceViewModel model;
 
     private MeasurementKindLocalization measurementKindLocalization;
 
@@ -101,6 +101,7 @@ public class DeviceConfigurationFragment extends Fragment {
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
     }
 
     protected void saveFeaturesChosen() {

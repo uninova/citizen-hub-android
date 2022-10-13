@@ -26,7 +26,6 @@ public class DeviceViewModel extends AndroidViewModel {
 
     private final ServiceConnection serviceConnection;
     private final AgentOrchestratorListener agentOrchestratorListener;
-
     private final MutableLiveData<AgentOrchestrator> agentOrchestratorLiveData;
     private final MutableLiveData<List<Device>> deviceListLiveData;
     private final MutableLiveData<Device> selectedDeviceLiveData;
