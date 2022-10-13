@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,12 +33,10 @@
                 android:id="@+id/switchFeature"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="false"
                 android:layout_gravity="center"
+                app:thumbTint="@drawable/switch_tint"
                 android:checked="false"
-                android:showText="false"
-                android:splitTrack="false"
-                android:switchTextAppearance="@style/TextAppearance.AppCompat.Display4"
+                android:enabled="true"
                 android:textSize="24sp"
                 />
         </LinearLayout>
