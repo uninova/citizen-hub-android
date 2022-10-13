@@ -24,13 +24,13 @@ public class GreetingFragment extends Fragment {
         ImageView imageCitizen = view.findViewById(R.id.imageViewCitizenHub);
 
         AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-        fadeIn.setDuration(1000);
+        fadeIn.setDuration(500);
         fadeIn.setStartOffset(0);
         AlphaAnimation fadeInImage = new AlphaAnimation(0.0f, 1.0f);
-        fadeInImage.setDuration(3000);
+        fadeInImage.setDuration(2500);
         fadeInImage.setStartOffset(0);
         AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-        fadeOut.setDuration(1500);
+        fadeOut.setDuration(1000);
         fadeOut.setStartOffset(0);
 
         imageCitizen.startAnimation(fadeInImage);

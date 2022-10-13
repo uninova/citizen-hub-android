@@ -3,7 +3,9 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:allowBackup="true"
@@ -38,6 +40,10 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/citizenhub_" />
             </intent-filter>
         </service>
+        <service
+            android:name=".ForegroundService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>
