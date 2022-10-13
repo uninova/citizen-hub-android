@@ -493,4 +493,10 @@
     <string name="bugreport_negative_button">Ignorer</string>
     <string name="bugreport_confirmation">Rapport envoyé</string>
 
+    <string name="fragment_device_unsupported_message">L\'appareil n\'est pas pris en charge</string>
+    <string name="fragment_device_unsupported_name">Nom</string>
+    <string name="fragment_device_unsupported_address">Adresse</string>
+    <string name="fragment_device_unsupported_device_button_text">Arrière</string>
+
+
 </resources>
