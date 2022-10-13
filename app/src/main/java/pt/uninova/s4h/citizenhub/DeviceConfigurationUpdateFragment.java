@@ -33,12 +33,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
 
-        deleteDevice.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                model.removeSelectedDevice();
+        deleteDevice.setOnClickListener(v -> {
+            model.removeSelectedDevice();
 
-                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
-            }
+            Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
 
         return view;

@@ -91,18 +91,8 @@ public class DeviceListFragment extends Fragment {
     }
 
     private void onAgentStateChange(Agent agent) {
-        agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
-            @Override
-            public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateItemAgentState(agent, value.getNewState());
-                    }
-                });
-//                    }
-//                };
-            }
+        agent.addStateObserver(value -> {
+            requireActivity().runOnUiThread(() -> updateItemAgentState(agent, value.getNewState()));
         });
     }
 
