@@ -3,8 +3,8 @@ package pt.uninova.s4h.citizenhub;
 
 public class FeatureListItem {
 
-    private String label;
     private int featureId;
+    private String label;
     private boolean active;
 
     public FeatureListItem(int featureId, String label) {
@@ -13,8 +13,8 @@ public class FeatureListItem {
 
     public FeatureListItem(int featureId, String label, boolean active) {
         this.featureId = featureId;
-        this.active = active;
         this.label = label;
+        this.active = active;
     }
 
     public int getFeatureId() {
@@ -25,6 +25,14 @@ public class FeatureListItem {
         this.featureId = value;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -33,11 +41,5 @@ public class FeatureListItem {
         this.active = active;
     }
 
-    public String getLabel() {
-        return label;
-    }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
 }
