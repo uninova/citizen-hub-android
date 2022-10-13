@@ -69,8 +69,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onPause() {
         super.onPause();
-        if(model.getSelectedDeviceAgent()!=null) {
+        if (model.getSelectedDeviceAgent() != null) {
             model.getSelectedDeviceAgent().removeStateObserver(Object::notifyAll);
         }
-        }
+    }
 }

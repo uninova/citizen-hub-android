@@ -56,7 +56,7 @@ class FeatureListAdapter extends BaseAdapter {
         TextView text = vi.findViewById(R.id.textFeature);
         text.setText(data.get(position).getLabel());
         nameSwitch.setClickable(isEnabled);
-        if(!isEnabled){
+        if (!isEnabled) {
             layoutFeature.setAlpha(0.5f);
         }
         return vi;
