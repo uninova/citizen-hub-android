@@ -23,10 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceListFragment extends Fragment {
 
