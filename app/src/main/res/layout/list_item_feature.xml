@@ -30,14 +30,10 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
+                style="@style/switchCompatStyle"
                 android:id="@+id/switchFeature"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:checked="false"
-                android:textSize="24sp"
-                app:thumbTint="@color/colorS4HWhite"
-                app:trackTint="@color/colorS4HOrange" />
+                />
         </LinearLayout>
     </LinearLayout>
 
