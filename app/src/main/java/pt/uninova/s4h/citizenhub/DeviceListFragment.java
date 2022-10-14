@@ -75,9 +75,7 @@ public class DeviceListFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
         model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-        if (model.getSelectedDeviceAgent() != null) {
-            model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
-        }
+
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
@@ -100,11 +98,22 @@ public class DeviceListFragment extends Fragment {
         super.onResume();
 
         TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
-
+        if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
+        }
         if (adapter.getItemCount() == 0) {
             noDevices.setVisibility(View.VISIBLE);
         } else {
+
             noDevices.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedDeviceAgent().removeStateObserver(Object::notifyAll);
         }
     }
 
