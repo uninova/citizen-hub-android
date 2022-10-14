@@ -8,10 +8,21 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
+
+    private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
+        listViewFeatures.deferNotifyDataSetChanged();
+        requireActivity().runOnUiThread(() -> {
+            System.out.println("observer marado");
+            loadSupportedFeatures();
+        });
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,22 +66,14 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onResume() {
         super.onResume();
-        model.getSelectedDeviceAgent().addStateObserver(value -> {
-            listViewFeatures.deferNotifyDataSetChanged();
-            requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loadSupportedFeatures();
-                }
-            });
-        });
+        model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         if (model.getSelectedDeviceAgent() != null) {
-            model.getSelectedDeviceAgent().removeStateObserver(Object::notifyAll);
+            model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
         }
     }
 }
