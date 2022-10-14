@@ -98,4 +98,13 @@
         android:layout_below="@+id/tab_layout_activity"
         tools:visibility="invisible"/>
 
+    <Button
+        android:id="@+id/test_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="80dp"
+        android:layout_below="@+id/bar_chart"
+        android:text="test"/>
+
+
 </RelativeLayout>
