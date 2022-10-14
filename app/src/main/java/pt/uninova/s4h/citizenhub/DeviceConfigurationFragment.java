@@ -12,14 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
@@ -34,7 +35,7 @@ public class DeviceConfigurationFragment extends Fragment {
     protected TextView nameDevice;
     protected TextView addressDevice;
     protected ListView listViewFeatures;
-    private DeviceViewModel model;
+    DeviceViewModel model;
 
     private MeasurementKindLocalization measurementKindLocalization;
 
@@ -46,6 +47,7 @@ public class DeviceConfigurationFragment extends Fragment {
         nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
         addressDevice = result.findViewById(R.id.textConfigurationDeviceAddress);
         listViewFeatures = result.findViewById(R.id.listViewFeature);
+
     }
 
     protected void setupText() {
@@ -60,10 +62,19 @@ public class DeviceConfigurationFragment extends Fragment {
         final Agent agent = model.getSelectedDeviceAgent();
 
         if (agent != null) {
-            final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
 
-            for (int i : agent.getSupportedMeasurements()) {
-                featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
+            if (agent.getState() != 1 && agent.getEnabledMeasurements()!=null) {
+
+                for (int i : agent.getSupportedMeasurements()) {
+                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i),agent.getEnabledMeasurements().contains(i)));
+                }
+            }
+            else {
+                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
+
+                for (int i : agent.getSupportedMeasurements()) {
+                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
+                }
             }
         }
 
@@ -71,9 +82,17 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void loadSupportedFeatures() {
-        FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
-        listViewFeatures.setAdapter(adapter);
-        adapter.updateResults(getSupportedFeatures());
+        if (model.getSelectedDeviceAgent() != null) {
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1);
+
+            listViewFeatures.setAdapter(adapter);
+            adapter.updateResults(getSupportedFeatures());
+        }
+        else {
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
+            listViewFeatures.setAdapter(adapter);
+            adapter.updateResults(getSupportedFeatures());
+        }
     }
 
     @Override
@@ -82,6 +101,7 @@ public class DeviceConfigurationFragment extends Fragment {
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
     }
 
     protected void saveFeaturesChosen() {

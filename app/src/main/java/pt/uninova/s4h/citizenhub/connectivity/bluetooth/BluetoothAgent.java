@@ -28,7 +28,9 @@ public abstract class BluetoothAgent extends AbstractAgent {
 
     final private Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> observer = (value) -> {
         if (value.getNewState() == BluetoothConnectionState.READY)
+        {
             setState(AGENT_STATE_ENABLED);
+        }
         else {
             setState(AGENT_STATE_INACTIVE);
         }
@@ -56,7 +58,7 @@ public abstract class BluetoothAgent extends AbstractAgent {
             this.setState(AGENT_STATE_ENABLED);
         } else {
             this.setState(AGENT_STATE_INACTIVE);
-            this.connection.connect();
+            this.connection.disconnect();
         }
     }
 

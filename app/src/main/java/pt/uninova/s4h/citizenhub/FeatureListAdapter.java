@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -19,26 +20,33 @@ class FeatureListAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
     private final List<FeatureListItem> data;
     CompoundButton.OnCheckedChangeListener switchListener;
+    private final boolean isEnabled;
+    LinearLayout layoutFeature;
 
+    public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled) {
+        this.data = data;
+        Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        isEnabled = isSwitchEnabled;
+    }
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data) {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        isEnabled = true;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.list_item_feature, null);
-
+        layoutFeature = vi.findViewById(R.id.layoutFeature);
         SwitchCompat nameSwitch = vi.findViewById(R.id.switchFeature);
-
         switchListener = (buttonView, isChecked) -> {
             data.get(position).setActive(isChecked);
-            notifyDataSetChanged();
+            FeatureListAdapter.this.notifyDataSetChanged();
         };
 
         nameSwitch.setOnCheckedChangeListener(null);
@@ -47,19 +55,24 @@ class FeatureListAdapter extends BaseAdapter {
 
         TextView text = vi.findViewById(R.id.textFeature);
         text.setText(data.get(position).getLabel());
+        nameSwitch.setClickable(isEnabled);
 
+        if (!isEnabled) {
+            layoutFeature.setAlpha(0.5f);
+        }
         return vi;
     }
 
+
     public void updateResults(List<FeatureListItem> results) {
+
         if (data != null) {
             data.clear();
         }
-        if (results != null) {
-            data.addAll(results);
-            Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
-            this.notifyDataSetChanged();
-        }
+        data.addAll(results);
+        Collections.sort(data, Comparator.comparing(FeatureListItem::getLabel));
+
+        this.notifyDataSetChanged();
     }
 
     @Override

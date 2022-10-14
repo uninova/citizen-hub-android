@@ -13,7 +13,6 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.data.Device;
 
-
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceListViewHolder> {
 
     public interface OnItemClickListener {
@@ -30,6 +29,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
             super(itemView);
 
             this.listener = listener;
+
         }
 
         public void setItem(DeviceListItem item) {
@@ -60,6 +60,15 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     public void addItem(DeviceListItem deviceListItem) {
         deviceListItems.add(deviceListItem);
         notifyItemInserted(deviceListItems.size() - 1);
+    }
+
+    public void updateItem(int position, DeviceListItem deviceListItem) {
+        deviceListItems.set(position, deviceListItem);
+        notifyItemChanged(position);
+    }
+
+    public DeviceListItem getItem(int position) {
+        return deviceListItems.get(position);
     }
 
     public void clear() {

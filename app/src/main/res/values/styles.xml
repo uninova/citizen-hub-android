@@ -56,8 +56,7 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="preferences">
-    </style>
+    <style name="preferences"></style>
 
     <style name="Drawer">
         <item name="background">@color/colorS4HGreyLight</item>
@@ -69,8 +68,7 @@
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
 
     <!--style name="ReportDetailTitle">
         <item name="android:layout_width">114.520dp</item>
@@ -105,7 +103,7 @@
         <item name="android:paddingLeft">5dp</item>
     </style-->
 
-    <style name="AppTheme.ConnectionMethod"/>
+    <style name="AppTheme.ConnectionMethod" />
 
     <style name="AppTheme.ConnectionMethod.TextView">
         <item name="android:layout_height">wrap_content</item>
@@ -134,7 +132,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="AppTheme.ConnectionMethodList"/>
+    <style name="AppTheme.ConnectionMethodList" />
 
     <style name="AppTheme.ConnectionMethodList.Layout">
         <item name="android:layout_height">wrap_content</item>
@@ -449,4 +447,11 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="switchCompatStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="thumbTint">@color/thumb_selector</item>
+        <item name="trackTint">@color/track_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 </resources>

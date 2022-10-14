@@ -169,6 +169,11 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
+    public Set<UUID> getEnabledProtocols(){
+        return protocolMap.keySet();
+    }
+
+    @Override
     public UUID getId() {
         return id;
     }
@@ -270,6 +275,12 @@ public abstract class AbstractAgent implements Agent {
     protected void tellOnProtocolEnabled(Protocol protocol) {
         for (AgentListener i : agentListenerSet) {
             i.onProtocolEnabled(this, protocol);
+        }
+    }
+
+    protected void tellOnStateChanged(int state){
+        for(AgentListener i : agentListenerSet){
+            i.onStateChanged(this, state);
         }
     }
 }

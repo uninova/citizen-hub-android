@@ -8,10 +8,21 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
+
+    private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
+        listViewFeatures.deferNotifyDataSetChanged();
+        requireActivity().runOnUiThread(() -> {
+            System.out.println("observer marado");
+            loadSupportedFeatures();
+        });
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -20,6 +31,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         deleteDevice = view.findViewById(R.id.buttonDelete);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
+
 
         enableAdvancedConfigurations();
         setupViews(view);
@@ -33,12 +45,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
 
-        deleteDevice.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                model.removeSelectedDevice();
+        deleteDevice.setOnClickListener(v -> {
+            model.removeSelectedDevice();
 
-                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
-            }
+            Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
 
         return view;
@@ -53,5 +63,17 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             advancedDevice.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
+        }
+    }
 }
