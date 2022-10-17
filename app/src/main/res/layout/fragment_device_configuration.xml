@@ -15,9 +15,9 @@
             android:id="@+id/layoutConfigurationNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/layout_fragment_device_configuration_name"
                 android:textColor="@color/colorS4HDarkBlue"
-                android:fontFamily="@font/primus_bold"
+                android:fontFamily="@font/neo_sans_pro_bold"
                 android:textSize="24sp" />
 
 
@@ -36,8 +36,8 @@
             android:id="@+id/layoutConfigurationNameValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/layout_device_configuration_device_name_value"
                 android:textColor="@color/colorS4HLightBlue"
-                android:fontFamily="@font/primus_bold"
+                android:fontFamily="@font/neosanspro_regular"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -56,9 +56,9 @@
             android:id="@+id/layoutConfigurationAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="6dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:orientation="horizontal">
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/layout_device_configuration_device_address_label"
                 android:textColor="@color/colorS4HDarkBlue"
-                android:fontFamily="@font/primus_bold"
+                android:fontFamily="@font/neo_sans_pro_bold"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -75,8 +75,8 @@
             android:id="@+id/layoutConfigurationAddressLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/layout_device_configuration_device_address_value"
                 android:textColor="@color/colorS4HLightBlue"
-                android:fontFamily="@font/primus_bold"
+                android:fontFamily="@font/neosanspro_regular"
                 android:textSize="24sp" />
 
 
