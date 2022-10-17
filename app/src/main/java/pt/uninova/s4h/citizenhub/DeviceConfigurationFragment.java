@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class DeviceConfigurationFragment extends Fragment {
 
     protected void setupText() {
         final Device device = model.getSelectedDevice().getValue();
-        if(device!=null) {
+        if (device != null) {
             nameDevice.setText(device.getName());
             addressDevice.setText(device.getAddress());
         }
@@ -62,13 +63,12 @@ public class DeviceConfigurationFragment extends Fragment {
 
         if (agent != null) {
 
-            if (agent.getState() != 1 && agent.getEnabledMeasurements()!=null) {
+            if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
 
                 for (int i : agent.getSupportedMeasurements()) {
-                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i),agent.getEnabledMeasurements().contains(i)));
+                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
                 }
-            }
-            else {
+            } else {
                 final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
 
                 for (int i : agent.getSupportedMeasurements()) {
@@ -80,17 +80,26 @@ public class DeviceConfigurationFragment extends Fragment {
         return featureListItems;
     }
 
+    protected List<String> getLabelList(Agent agent) {
+        List<String> labelList = new ArrayList<>();
+        for (int i : agent.getSupportedMeasurements()) {
+            labelList.add(measurementKindLocalization.localize(i));
+        }
+        return labelList;
+    }
+
     protected void loadSupportedFeatures() {
         if (model.getSelectedDeviceAgent() != null) {
             FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1);
 
             listViewFeatures.setAdapter(adapter);
             adapter.updateResults(getSupportedFeatures());
-        }
-        else {
+
+        } else {
             FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
             listViewFeatures.setAdapter(adapter);
             adapter.updateResults(getSupportedFeatures());
+
         }
     }
 

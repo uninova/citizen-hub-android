@@ -13,20 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgentListener;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothScannerListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
-import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
@@ -59,12 +51,11 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
 
         progressBar = view.findViewById(R.id.add_pprogressBar);
-        TextView loadingTextview= view.findViewById(R.id.device_configuration_loading_textview);
+        TextView loadingTextview = view.findViewById(R.id.device_configuration_loading_textview);
         TextView featureMessage = view.findViewById(R.id.textConfigurationMeasurements);
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         setupViews(view);
         setupText();
-
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setVisibility(View.INVISIBLE);
         loadingTextview.setVisibility(View.VISIBLE);
@@ -82,6 +73,10 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             }
 
             DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(DeviceConfigurationAddFragment.this::loadSupportedFeatures);
+
+            assert agent != null;
+            System.out.println(getLabelList(agent));
+            //TODO fill UI list MID fragment, ajustar margens do top shit
 
             connectDevice.setOnClickListener(v -> {
 
