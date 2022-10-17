@@ -260,8 +260,9 @@
         tools:layout="@layout/fragment_device_configuration_add">
 
         <action
-            android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
-            app:destination="@+id/device_list_fragment" />
+            android:id="@+id/action_device_configuration_add_fragment_to_device_configuration_update_fragment"
+            app:destination="@+id/device_configuration_update_fragment"
+            app:popUpTo="@id/device_list_fragment"/>
         <action
             android:id="@+id/action_device_configuration_add_fragment_to_deviceUnsupportedFragment"
             app:destination="@id/deviceUnsupportedFragment"

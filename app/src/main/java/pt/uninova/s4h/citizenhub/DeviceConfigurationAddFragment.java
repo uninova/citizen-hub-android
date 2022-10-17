@@ -122,7 +122,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                             .show();
                 }
 
-                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceListFragment());
+                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
             });
 
             DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
