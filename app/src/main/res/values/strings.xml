@@ -72,6 +72,7 @@
     <string name="fragment_authentication_orange_circular_shape">Orange circular Shape</string>
     <string name="fragment_authentication_text_login">login</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
+
     <string name="fragment_configuration_text_view_address">%1$s</string>
     <string name="fragment_configuration_text_view_connect">Connect</string>
     <string name="fragment_configuration_text_view_delete">Delete</string>
@@ -215,9 +216,9 @@
     <string name="layout_activity_lobby_contentDescription_lines">Design with blue lines.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Smart4Health logo.</string>
     <string name="layout_activity_main_add_device">ADD DEVICE</string>
-    <string name="layout_fragment_device_configuration_address">Address</string>
+    <string name="layout_fragment_device_configuration_address">Address:</string>
     <string name="layout_fragment_device_configuration_features">What this device will read:</string>
-    <string name="layout_fragment_device_configuration_name">Address:</string>
+    <string name="layout_fragment_device_configuration_name">Name:</string>
     <string name="layout_fragment_report_master_select_day">Select a Day</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
@@ -295,19 +296,19 @@
     <string name="fragment_settings_label">Settings</string>
     <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
     <string name="fragment_device_configuration_add_calibration_completed_toast">Calibration Completed!</string>
-    <string name="fragment_device_configuration_add_loading_features_text">Loading device features...</string>
+    <string name="fragment_device_configuration_add_loading_features_text">Loading device features…</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Sensor Calibration</string>
     <string name="fragment_device_configuration_warning_calibration_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
     <string name="fragment_device_configuration_dialog_option_calibrate">Calibrate</string>
     <string name="fragment_device_configuration_warning_calibration_text2"> your back straight.</string>
-    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait…</string>
     <string name="fragment_device_configuration_connect_option_text">connect</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">Calibration Completed!</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensor Calibration</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text2"> your back straight.</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrate</string>
-    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait…</string>
     <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
@@ -571,7 +572,10 @@
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="fragment_device_unsupported_address">Address</string>
     <string name="fragment_device_unsupported_device_button_text">Back</string>
-    <string name="layout_device_configuration_device_name_value">Value</string>
+
+
+    <string name="layout_device_configuration_device_address_value" translatable="false">1$s</string>
+    <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
 
 </resources>
 

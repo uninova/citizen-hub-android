@@ -33,6 +33,42 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutConfigurationAdvancedAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textConfigurationAdvancedDeviceNameValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/layout_device_configuration_device_name_value"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutConfigurationAdvancedAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textConfigurationDeviceAdvancedAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/layout_device_configuration_device_address_value"
+                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/layoutConfigurationAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
