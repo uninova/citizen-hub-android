@@ -51,7 +51,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutConfigurationAdvancedAddress"
+            android:id="@+id/layoutConfigurationAdvancedAddressLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -62,7 +62,7 @@
                 android:id="@+id/textConfigurationDeviceAdvancedAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_address_value"
+                android:text="@string/fragment_device_configuration_advanced_address_text"
                 style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
@@ -80,7 +80,7 @@
                 android:id="@+id/textConfigurationDeviceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/fragment_device_configuration_advanced_address_text"
+                android:text="@string/layout_device_configuration_device_address_value"
                 style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
                 android:textAlignment="center"
                 android:textSize="24sp" />
@@ -98,7 +98,7 @@
 
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
