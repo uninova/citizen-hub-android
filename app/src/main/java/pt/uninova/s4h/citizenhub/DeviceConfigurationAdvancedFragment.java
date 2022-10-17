@@ -55,7 +55,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         nameDevice = view.findViewById(R.id.textConfigurationDeviceName);
-        addressDevice = view.findViewById(R.id.textConfigurationDeviceAddress);
+        addressDevice = view.findViewById(R.id.textConfigurationDeviceAdvancedAddress);
         advancedOKDevice = view.findViewById(R.id.buttonConfigurationAdvancedOK);
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         setupText();

@@ -12,11 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
@@ -44,17 +42,18 @@ public class DeviceConfigurationFragment extends Fragment {
     }
 
     protected void setupViews(View result) {
-        nameDevice = result.findViewById(R.id.textConfigurationDeviceName);
-        addressDevice = result.findViewById(R.id.textConfigurationDeviceAddress);
+        nameDevice = result.findViewById(R.id.textConfigurationDeviceNameValue);
+        addressDevice = result.findViewById(R.id.textConfigurationAddressValue
+        );
         listViewFeatures = result.findViewById(R.id.listViewFeature);
-
     }
 
     protected void setupText() {
         final Device device = model.getSelectedDevice().getValue();
-
-        nameDevice.setText(getString(R.string.fragment_configuration_text_view_name, device.getName()));
-        addressDevice.setText(getString(R.string.fragment_configuration_text_view_address, device.getAddress()));
+        if(device!=null) {
+            nameDevice.setText(device.getName());
+            addressDevice.setText(device.getAddress());
+        }
     }
 
     protected List<FeatureListItem> getSupportedFeatures() {
