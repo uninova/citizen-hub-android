@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            >
             <include
                 layout="@layout/fragment_device_configuration"
                 android:layout_width="match_parent"
@@ -27,19 +28,38 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutLabelList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/layoutConfigurationTop">
+
+        <ListView
+            android:id="@+id/listViewLabel"
+            style="@style/AppTheme.Summary.Item.TextView"
+            android:layout_width="match_parent"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layoutConfiguration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layoutConfigurationTop">
-
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutLabelList">
 
         <LinearLayout
             android:id="@+id/layoutButtonConfiguration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            tools:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/add_pprogressBar"
@@ -55,7 +75,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/buttonConfiguration"
                 app:layout_constraintEnd_toStartOf="@+id/buttonConfiguration"
                 app:layout_constraintTop_toTopOf="@id/buttonConfiguration"
-                tools:targetApi="lollipop"
                 tools:visibility="visible" />
 
             <TextView
@@ -64,23 +83,26 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/neo_sans_pro_medium"
+                android:gravity="center"
                 android:text="@string/fragment_device_configuration_add_loading_features_text"
                 android:textAlignment="center"
-                android:gravity="center"
                 android:textSize="18sp"
                 tools:visibility="visible" />
 
         </LinearLayout>
+
         <Button
             android:id="@+id/buttonConfiguration"
             style="@style/Widget.Citizen.Button"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="@string/fragment_configuration_text_view_connect"
             android:layout_width="wrap_content"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:height="48dp"
+            android:text="@string/fragment_configuration_text_view_connect"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            tools:visibility="gone" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
