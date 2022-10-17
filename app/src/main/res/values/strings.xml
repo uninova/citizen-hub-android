@@ -217,7 +217,7 @@
     <string name="layout_activity_main_add_device">ADD DEVICE</string>
     <string name="layout_fragment_device_configuration_address">Address</string>
     <string name="layout_fragment_device_configuration_features">What this device will read:</string>
-    <string name="layout_fragment_device_configuration_name">Name</string>
+    <string name="layout_fragment_device_configuration_name">Address:</string>
     <string name="layout_fragment_report_master_select_day">Select a Day</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
@@ -571,6 +571,7 @@
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="fragment_device_unsupported_address">Address</string>
     <string name="fragment_device_unsupported_device_button_text">Back</string>
+    <string name="layout_device_configuration_device_name_value">Value</string>
 
 </resources>
 
