@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -58,13 +59,16 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
 
         progressBar = view.findViewById(R.id.add_pprogressBar);
-
+        TextView loadingTextview= view.findViewById(R.id.device_configuration_loading_textview);
+        TextView featureMessage = view.findViewById(R.id.textConfigurationMeasurements);
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         setupViews(view);
         setupText();
 
         progressBar.setVisibility(View.VISIBLE);
-        connectDevice.setText(R.string.fragment_device_configuration_add_loading_features_text);
+        connectDevice.setVisibility(View.INVISIBLE);
+        loadingTextview.setVisibility(View.VISIBLE);
+        featureMessage.setVisibility(View.INVISIBLE);
 
         model.identifySelectedDevice(agent -> {
 
@@ -124,7 +128,9 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
             DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.INVISIBLE);
+                loadingTextview.setVisibility(View.INVISIBLE);
                 connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
+                connectDevice.setVisibility(View.VISIBLE);
             });
 
 
