@@ -77,15 +77,9 @@ public class ChartFunctions {
     public void setupBarChart(BarChart barChart,  ChartMarkerView chartMarkerView) {
         barChart.setDrawGridBackground(false);
         barChart.setFitBars(true);
-        barChart.getDescription().setEnabled(true);
+        barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
         barChart.setMarker(chartMarkerView);
-
-        Description desc = new Description();
-        desc.setTextSize(9f);
-        desc.setTextColor(Color.BLACK);
-        desc.setPosition(60,15);
-        barChart.setDescription(desc);
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
