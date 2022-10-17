@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.UUID;
 
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
@@ -24,11 +25,12 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     public static final UUID UUID_SERVICE_DATA = UUID.fromString("99ddcdab-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_ACTIVITY_LOG = UUID.fromString("99dd0106-a80c-4f94-be5d-c66b9fba40cf");
     private static final UUID UUID_CHARACTERISTIC_COLLECTING_STATE = UUID.fromString("99dd0014-a80c-4f94-be5d-c66b9fba40cf");
+    private static final UUID UUID_CHARACTERISTIC_BATTERY = UUID.fromString("99dd0016-a80c-4f94-be5d-c66b9fba40cf");
 
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole.activity");
 
     long lastTime = 0;
-    int milliForTimer = 120000;
+    int milliForTimer = 70000;
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE) {
         private boolean once0x02 = false;
@@ -72,6 +74,19 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
             getSampleDispatcher().dispatch(sample);
 
             lastTime = System.currentTimeMillis();
+
+            System.out.println("VALUES FROM DIGITSOLE: " + Arrays.toString(value));
+            System.out.println("STEPS DETECTED: " + steps);
+        }
+    };
+
+    private final CharacteristicListener dataListenerBattery = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY) {
+        @Override
+        public void onChange(byte[] value) {
+            double batteryLeft = value[0] & 0xff;
+            double batteryRight = value[2] & 0xff;
+
+            System.out.println("Battery SOLAS: " + batteryLeft + " | " + batteryRight + " | " + Arrays.toString(value));
         }
     };
 
@@ -82,6 +97,11 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void disable() {
         setState(Protocol.STATE_DISABLED);
+        final BluetoothConnection connection = getConnection();
+        connection.removeCharacteristicListener(activationListener);
+        connection.removeCharacteristicListener(dataListener);
+        connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG);
+        connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE);
     }
 
     @Override
@@ -92,7 +112,9 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
             final BluetoothConnection connection = getConnection();
             connection.addCharacteristicListener(activationListener);
             connection.addCharacteristicListener(dataListener);
+            //connection.addCharacteristicListener(dataListenerBattery);
             connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
+            //connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY, true);
             connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
             setState(Protocol.STATE_ENABLED);
         }
