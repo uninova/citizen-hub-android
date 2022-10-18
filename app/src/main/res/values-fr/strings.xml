@@ -75,7 +75,6 @@
     <string name="fragment_authentication_text_powered_by">powered by</string>
     <string name="fragment_configuration_text_view_address">Adresse : %1$s</string>
     <string name="fragment_configuration_text_view_connect">Se connecter</string>
-    <string name="fragment_configuration_text_view_delete">Supprimer</string>
     <string name="fragment_configuration_text_view_name">Nom : %1$s</string>
     <string name="fragment_configuration_text_view_update">Mettre à jour</string>
     <string name="fragment_device_add_button">ajouter un appareil</string>

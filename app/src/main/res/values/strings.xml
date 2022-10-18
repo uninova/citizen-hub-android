@@ -75,7 +75,6 @@
 
     <string name="fragment_configuration_text_view_address">%1$s</string>
     <string name="fragment_configuration_text_view_connect">Connect</string>
-    <string name="fragment_configuration_text_view_delete">Delete</string>
     <string name="fragment_configuration_text_view_name">%1$s</string>
     <string name="fragment_configuration_text_view_update">Update</string>
     <string name="fragment_device_add_button">add device</string>
@@ -578,6 +577,8 @@
     <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
     <string name="layout_device_configuration_device_address_label">Address:</string>
     <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
+    <string name="menu_fragment_device_configuration_remove_item">Delete</string>
+    <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
 
 </resources>
 

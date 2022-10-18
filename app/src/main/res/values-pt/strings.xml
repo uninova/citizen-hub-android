@@ -77,7 +77,6 @@
     <string name="fragment_authentication_text_powered_by">patrocinado por</string>
     <string name="fragment_configuration_text_view_address">Endereço: %1$s</string>
     <string name="fragment_configuration_text_view_connect">Ligar</string>
-    <string name="fragment_configuration_text_view_delete">"Eliminar "</string>
     <string name="fragment_configuration_text_view_name">Nome: %1$s</string>
     <string name="fragment_configuration_text_view_update">"Actualizar "</string>
     <string name="fragment_device_add_button">"Adicionar dispositivo "</string>
