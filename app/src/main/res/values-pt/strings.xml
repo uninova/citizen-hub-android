@@ -433,23 +433,30 @@
     <string name="summary_detail_time_today">Hoje</string>
     <string name="summary_detail_time_last_week">Última Semana</string>
     <string name="summary_detail_time_last_month">Último Mês</string>
+    <string name="summary_detail_time_hours">Horas</string>
+    <string name="summary_detail_time_days">Dias</string>
 
     <string name="summary_detail_activity">Actividade</string>
     <string name="summary_detail_activity_steps">Passos</string>
     <string name="summary_detail_activity_calories">Calorias</string>
+    <string name="summary_detail_activity_calories_with_units">Calorias (kcal)</string>
     <string name="summary_detail_activity_distance">Distância</string>
+    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
 
     <string name="summary_detail_posture">Postura</string>
+    <string name="summary_detail_posture_with_units">Postura (%)</string>
     <string name="summary_detail_posture_correct">Correta</string>
     <string name="summary_detail_posture_incorrect">Incorrect</string>
     <string name="summary_detail_posture_average">Média</string>
 
-    <string name="summary_detail_hear_rate">Batimento Cardíaco</string>
+    <string name="summary_detail_heart_rate">Batimento Cardíaco</string>
+    <string name="summary_detail_heart_rate_with_units">Batimento Cardíaco (bpm)</string>
     <string name="summary_detail_heart_rate_maximum">Max</string>
     <string name="summary_detail_heart_rate_minimum">Min</string>
     <string name="summary_detail_heart_rate_average">Média</string>
 
     <string name="summary_detail_blood_pressure">Pressão Arterial</string>
+    <string name="summary_detail_blood_pressure_with_units">Pressão Arterial (mmHg)</string>
     <string name="summary_detail_blood_pressure_systolic">Sistólica</string>
     <string name="summary_detail_blood_pressure_diastolic">Diastólica</string>
     <string name="summary_detail_blood_pressure_mean">Média</string>
