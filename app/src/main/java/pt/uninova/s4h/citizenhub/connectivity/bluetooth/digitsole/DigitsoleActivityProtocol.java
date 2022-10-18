@@ -70,7 +70,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
                                 break;
                             case 0x04:
                                 getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02}); // 5th (Calibration)
-                                isCalibrated = true;
+                                //isCalibrated = true; // for now, always does calibration, since we do not know when the insoles were charging
                                 break;
                         }
                     }
