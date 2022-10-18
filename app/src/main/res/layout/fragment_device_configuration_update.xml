@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/fragment_device_configuration_update_advanced_button_text"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
@@ -65,16 +67,20 @@
 
             <Button
                 android:id="@+id/buttonConfiguration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_configuration_text_view_update" />
+                style="@style/Widget.Citizen.Button"
+                android:layout_gravity="center"
+                android:text="@string/fragment_configuration_text_view_update"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
 
             <Button
                 android:id="@+id/buttonDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_configuration_text_view_delete" />
-
         </LinearLayout>
 
     </LinearLayout>
