@@ -2,13 +2,14 @@ package pt.uninova.s4h.citizenhub.ui.summary;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Color;
 
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -38,7 +39,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 
 public class ChartFunctions {
 
-    private Context context;
+    private final Context context;
 
     public ChartFunctions(Context context) {
         this.context = context;
@@ -75,7 +76,6 @@ public class ChartFunctions {
     // This section has functions used to define some characteristics of the different charts that cannot done in the layout //
     public void setupBarChart(BarChart barChart,  ChartMarkerView chartMarkerView) {
         barChart.setDrawGridBackground(false);
-        barChart.setScaleEnabled(true);
         barChart.setFitBars(true);
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
@@ -84,7 +84,6 @@ public class ChartFunctions {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(false);
 
         YAxis yAxisLeft = barChart.getAxisLeft();
         yAxisLeft.setAxisMinimum(0);
@@ -131,7 +130,7 @@ public class ChartFunctions {
         cal.add(Calendar.DATE, - max + 1);
 
         if (max == 24) {
-            while(i < max) {
+            while(i <= max) {
                 labels[i] = String.valueOf(i);
                 i++;
             }
@@ -164,7 +163,7 @@ public class ChartFunctions {
 
         for (SummaryDetailUtil data : list) {
             while (currentTime < data.getTime()) {
-                entries.add(new BarEntry(currentTime, -1));
+                entries.add(new BarEntry(currentTime, 0));
                 currentTime++;
             }
             entries.add(new BarEntry(data.getTime(), data.getValue1()));
@@ -172,9 +171,11 @@ public class ChartFunctions {
         }
 
         while (currentTime < max) {
-            entries.add(new BarEntry(currentTime, -1));
+            entries.add(new BarEntry(currentTime, 0));
             currentTime++;
         }
+        if(max == 24)
+            entries.add(new BarEntry(currentTime, -1));
 
         BarDataSet barDataSet = new BarDataSet(entries, label);
         barDataSet.setColor(ContextCompat.getColor(context, R.color.colorS4HLightBlue));

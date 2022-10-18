@@ -194,7 +194,6 @@ public class SummaryDetailActivityFragment extends Fragment {
         });
 
 
-
         chartFunctions.setupBarChart(barChart, model.getChartViewMarker());
         dailySteps();
     }
