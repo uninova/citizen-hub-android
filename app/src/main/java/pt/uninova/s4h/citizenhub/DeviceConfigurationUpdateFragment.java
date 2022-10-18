@@ -31,7 +31,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
-        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
 
@@ -47,13 +46,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         });
 
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
-
-//        deleteDevice.setOnClickListener(v -> {
-//            model.removeSelectedDevice();
-//
-//            Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
-//        });
-
         return view;
     }
 
@@ -77,7 +69,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
-        if (model.getSelectedDeviceAgent() != null) {
+        if (model.getSelectedDeviceAgent().getState() == 1) {
             menu.removeItem(R.id.device_configuration_menu_reconnect_item);
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();

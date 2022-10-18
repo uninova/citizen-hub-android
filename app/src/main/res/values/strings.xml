@@ -577,7 +577,7 @@
     <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
     <string name="layout_device_configuration_device_address_label">Address:</string>
     <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
-    <string name="menu_fragment_device_configuration_remove_item">Delete</string>
+    <string name="menu_fragment_device_configuration_remove_item">Remove</string>
     <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
 
 </resources>
