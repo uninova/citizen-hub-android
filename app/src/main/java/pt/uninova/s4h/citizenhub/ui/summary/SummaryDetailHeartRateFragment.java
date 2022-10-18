@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,10 @@ public class SummaryDetailHeartRateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        lineChart = view.findViewById(R.id.line_chart);
+
+        TextView textViewXLabel = view.findViewById(R.id.text_view_x_axis_label);
+
         TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -48,14 +53,17 @@ public class SummaryDetailHeartRateFragment extends Fragment {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_hours));
                     lineChart.highlightValue(null);
-                    lineChart.getXAxis().setAxisMaximum(23);
+                    lineChart.getXAxis().setAxisMaximum(24);
                     dailyHeartRate();
                 } else if(pos == 1) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
                     lineChart.getXAxis().resetAxisMaximum();
                     weeklyHeartRate();
                 } else if(pos == 2) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
                     lineChart.getXAxis().resetAxisMaximum();
                     monthlyHeartRate();
@@ -73,10 +81,7 @@ public class SummaryDetailHeartRateFragment extends Fragment {
             }
         });
 
-        lineChart = requireView().findViewById(R.id.line_chart);
         chartFunctions.setupLineChart(lineChart, model.getChartViewMarker());
-        // Specific to this fragment
-        lineChart.getXAxis().setAxisMaximum(23);
 
         dailyHeartRate();
     }

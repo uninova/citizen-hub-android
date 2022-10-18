@@ -1,38 +1,20 @@
 package pt.uninova.s4h.citizenhub.ui.summary;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -62,29 +44,33 @@ public class SummaryDetailPostureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        lineChart = requireView().findViewById(R.id.line_chart);
-        pieChart = requireView().findViewById(R.id.pie_chart);
+        lineChart = view.findViewById(R.id.line_chart);
+        pieChart = view.findViewById(R.id.pie_chart);
 
-        TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
+        TextView textViewXLabel = view.findViewById(R.id.text_view_x_axis_label);
+
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
-                    System.out.println("Day");
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_hours));
                     lineChart.highlightValue(null);
-                    //lineChart.setMarker(new MyMarkerView(getContext(), R.layout.fragment_summary_detail_line_chart_marker));
+                    lineChart.getXAxis().setAxisMaximum(24);
                     pieChart.setVisibility(View.VISIBLE);
                     dailyPosture();
                 } else if(pos == 1) {
-                    System.out.println("Week");
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
                     pieChart.setVisibility(View.INVISIBLE);
                     weeklyPosture();
                 } else if(pos == 2) {
-                    System.out.println("Month");
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
+                    lineChart.getXAxis().resetAxisMaximum();
                     pieChart.setVisibility(View.INVISIBLE);
                     monthlyPosture();
                 }

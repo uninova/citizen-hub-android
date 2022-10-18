@@ -103,6 +103,7 @@ public class ChartFunctions {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(24);
 
         YAxis yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setAxisMinimum(0);
@@ -175,7 +176,7 @@ public class ChartFunctions {
             currentTime++;
         }
         if(max == 24)
-            entries.add(new BarEntry(currentTime, -1));
+            entries.add(new BarEntry(currentTime, 0));
 
         BarDataSet barDataSet = new BarDataSet(entries, label);
         barDataSet.setColor(ContextCompat.getColor(context, R.color.colorS4HLightBlue));
@@ -235,12 +236,14 @@ public class ChartFunctions {
         for (SummaryDetailUtil data : list) {
             time = data.getTime();
             entries1.add(new BarEntry(time, data.getValue1()));
-            if(data.getValue2() != null)
+            if (data.getValue2() != null)
                 entries2.add(new BarEntry(time, data.getValue2()));
-            if(data.getValue3() != null)
+            if (data.getValue3() != null)
                 entries3.add(new BarEntry(time, data.getValue3()));
         }
 
+        //Só para debug
+        //entries1.add(new BarEntry(max - 1, 66));
         LineDataSet lineDataSet1 = getLineDataSet(entries1, label[0], 0);
         LineDataSet lineDataSet2 = getLineDataSet(entries2, label[1], 1);
         LineDataSet lineDataSet3 = getLineDataSet(entries3, label[2], 2);
