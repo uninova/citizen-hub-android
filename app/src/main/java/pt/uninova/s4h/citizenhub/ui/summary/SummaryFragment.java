@@ -58,7 +58,10 @@ public class SummaryFragment extends ServiceFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_blood_pressure_fragment);
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment);
+                Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment);
             }
         });
 
