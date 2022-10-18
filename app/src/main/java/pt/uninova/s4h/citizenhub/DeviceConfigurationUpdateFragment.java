@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
@@ -29,11 +33,25 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-
+        final View vi = inflater.inflate(R.layout.fragment_advanced_configurations_inflater, container, false);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
 
+
+        List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        for(int i = 0; i < fragmentList.size(); i++){
+            Fragment newFragment = null;
+            try {
+                newFragment = fragmentList.get(i).getClass().newInstance();
+            } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+            assert newFragment != null;
+            ft.add(R.id.layout_advanced_configurations_container, newFragment);
+        }
+        ft.commit();
 
         enableAdvancedConfigurations();
         setupViews(view);
