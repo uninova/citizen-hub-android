@@ -30,28 +30,50 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole.activity");
 
     long lastTime = 0;
-    int milliForTimer = 70000;
+    int milliForTimer = 75000;
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE) {
         private boolean once0x02 = false;
+        private boolean isCalibrated = false;
 
         @Override
         public void onWrite(byte[] value) {
             switch (value[0]) {
                 case 0x00:
-                    getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02});
+                    if (!isCalibrated)
+                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x24, 0x02}); // 1st (Calibration)
+                    else
+                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02}); // 1st (Re-connect)
+                    break;
+                case 0x24:
+                    getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x02, 0x48, 0x00, 0x00, 0x00}); // 2nd (Calibration)
                     break;
                 case 0x02:
                     if (once0x02) {
-                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x01});
+                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x01}); // 7th (Calibration) | 3rd (Re-connect)
                     } else {
                         once0x02 = true;
-                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02});
+                        getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02}); // 6th (Calibration) | 2nd (Re-connect)
                     }
                     break;
                 case 0x01:
-                    once0x02 = false;
-
+                    once0x02 = false; // 8th (Calibration) | 4th (Re-connect)
+                    break;
+                case 0x46:
+                    if(!isCalibrated){
+                        switch (value[1]) {
+                            case 0x02:
+                                getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x03, (byte) 0xb4, 0x00, 0x00, 0x00}); // 3rd (Calibration)
+                                break;
+                            case 0x03:
+                                getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x04, 0x2a, 0x00, 0x00, 0x00}); // 4th (Calibration)
+                                break;
+                            case 0x04:
+                                getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02}); // 5th (Calibration)
+                                isCalibrated = true;
+                                break;
+                        }
+                    }
                     break;
             }
         }
@@ -96,25 +118,29 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
-        setState(Protocol.STATE_DISABLED);
+        System.out.println("DISABLE");
         final BluetoothConnection connection = getConnection();
         connection.removeCharacteristicListener(activationListener);
         connection.removeCharacteristicListener(dataListener);
+        connection.removeCharacteristicListener(dataListenerBattery);
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG);
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE);
+        setState(Protocol.STATE_DISABLED);
     }
 
     @Override
     public void enable() {
+        System.out.println("ENABLE 1st");
         long currentTime = System.currentTimeMillis();
         runTimer();
         if ((currentTime - lastTime) > milliForTimer) {
+            System.out.println("ENABLE 2nd");
             final BluetoothConnection connection = getConnection();
             connection.addCharacteristicListener(activationListener);
             connection.addCharacteristicListener(dataListener);
-            //connection.addCharacteristicListener(dataListenerBattery);
+            connection.addCharacteristicListener(dataListenerBattery);
             connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
-            //connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY, true);
+            connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY, true);
             connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
             setState(Protocol.STATE_ENABLED);
         }
