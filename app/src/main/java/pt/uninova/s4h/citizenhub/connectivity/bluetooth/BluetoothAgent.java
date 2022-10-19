@@ -27,13 +27,7 @@ public abstract class BluetoothAgent extends AbstractAgent {
     final private BluetoothConnection connection;
 
     final private Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>> observer = (value) -> {
-        if (value.getNewState() == BluetoothConnectionState.READY)
-        {
-            setState(AGENT_STATE_ENABLED);
-        }
-        else {
-            setState(AGENT_STATE_INACTIVE);
-        }
+        updateState(value.getNewState());
     };
 
     protected BluetoothAgent(UUID id, Set<UUID> supportedProtocolsIds, Set<Integer> supportedMeasurements, BluetoothConnection connection, SettingsManager settingsManager) {
@@ -52,17 +46,26 @@ public abstract class BluetoothAgent extends AbstractAgent {
 
     @Override
     public void enable() {
-        this.connection.addConnectionStateChangeListener(observer);
+        connection.addConnectionStateChangeListener(observer);
 
-        if (connection.getState() == BluetoothConnectionState.READY) {
-            this.setState(AGENT_STATE_ENABLED);
+        final BluetoothConnectionState connectionState = connection.getState();
+
+        if (connectionState == BluetoothConnectionState.DISCONNECTED) {
+            connection.connect();
         } else {
-            this.setState(AGENT_STATE_INACTIVE);
-            this.connection.disconnect();
+            updateState(connectionState);
         }
     }
 
     public BluetoothConnection getConnection() {
         return connection;
+    }
+
+    private void updateState(BluetoothConnectionState connectionState) {
+        if (connectionState == BluetoothConnectionState.READY) {
+            setState(AGENT_STATE_ENABLED);
+        } else {
+            setState(AGENT_STATE_INACTIVE);
+        }
     }
 }
