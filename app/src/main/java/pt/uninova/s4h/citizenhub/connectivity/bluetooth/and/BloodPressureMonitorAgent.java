@@ -2,9 +2,12 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.and;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,5 +54,10 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
     @Override
     public String getName() {
         return "A&D Medical Blood Pressure Monitor UA-651BLE";
+    }
+
+    @Override
+    public List<Fragment> getConfigurationFragments() {
+        return null;
     }
 }

@@ -3,9 +3,12 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -125,5 +128,10 @@ public class MiBand2Agent extends BluetoothAgent {
     @Override
     public String getName() {
         return "MI Band 2";
+    }
+
+    @Override
+    public List<Fragment> getConfigurationFragments() {
+        return null;
     }
 }

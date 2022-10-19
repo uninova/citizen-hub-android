@@ -84,48 +84,14 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
             connectDevice.setOnClickListener(v -> {
 
-                model.addAgent(agent);
+                        model.addAgent(agent);
 
-                DeviceConfigurationAddFragment.this.saveFeaturesChosen();
+                        DeviceConfigurationAddFragment.this.saveFeaturesChosen();
 
-                if (agent.getSource().getName().startsWith("UprightGO2")) {
-                    new AlertDialog.Builder(DeviceConfigurationAddFragment.this.getContext())
-                            .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
-                            .setMessage(DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
-                                    DeviceConfigurationAddFragment.this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
-                            .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
+                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
+                    });
 
-                                    UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) agent;
-
-                                    //Send Message calibration
-                                    uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
-
-                                    //default - first vibration settings when adding device
-                                    boolean vibration = true;
-                                    int angle = 1;
-                                    int interval = 5;
-                                    int pattern = 0;
-                                    boolean showPattern = true;
-                                    int strength = 1;
-
-                                    //Send Message vibration settings
-                                    uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
-
-                                    handler.sendMessageDelayed(new Message(), 2500);
-
-                                }
-                            })
-                            .setIcon(R.drawable.img_citizen_hub_logo_png)
-                            .show();
-                }
-
-                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
-            });
-
-            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
+                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
                 assert agent != null;
                 labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(agent)));
                 labelListView.setVisibility(View.VISIBLE);

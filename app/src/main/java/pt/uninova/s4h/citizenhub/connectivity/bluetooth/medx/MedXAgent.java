@@ -2,8 +2,11 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,5 +46,10 @@ public class MedXAgent extends BluetoothAgent {
     @Override
     public String getName() {
         return "MedX";
+    }
+
+    @Override
+    public List<Fragment> getConfigurationFragments() {
+        return null;
     }
 }

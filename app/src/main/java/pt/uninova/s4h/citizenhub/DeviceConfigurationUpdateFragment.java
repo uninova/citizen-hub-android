@@ -37,23 +37,25 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
-
+        updateDevice.setVisibility(View.GONE);
 
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        for(int i = 0; i < fragmentList.size(); i++){
-            Fragment newFragment = null;
-            try {
-                newFragment = fragmentList.get(i).getClass().newInstance();
-            } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                e.printStackTrace();
+        if(fragmentList!=null) {
+            for (int i = 0; i < fragmentList.size(); i++) {
+                Fragment newFragment = null;
+                try {
+                    newFragment = fragmentList.get(i).getClass().newInstance();
+                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
+                assert newFragment != null;
+                ft.add(R.id.layout_advanced_configurations_container, newFragment);
             }
-            assert newFragment != null;
-            ft.add(R.id.layout_advanced_configurations_container, newFragment);
         }
         ft.commit();
 
-        enableAdvancedConfigurations();
+//        enableAdvancedConfigurations();
         setupViews(view);
         setupText();
         loadSupportedFeatures();
@@ -62,19 +64,18 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             saveFeaturesChosen();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
-
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
         return view;
     }
 
-    protected void enableAdvancedConfigurations() {
-        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        final Device device = model.getSelectedDevice().getValue();
-        if (device.getName().equals("UprightGO2"))
-            advancedDevice.setVisibility(View.VISIBLE);
-        else
-            advancedDevice.setVisibility(View.GONE);
-    }
+//    protected void enableAdvancedConfigurations() {
+//        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+//        final Device device = model.getSelectedDevice().getValue();
+//        if (device.getName().equals("UprightGO2"))
+//            advancedDevice.setVisibility(View.VISIBLE);
+//        else
+//            advancedDevice.setVisibility(View.GONE);
+//    }
 
     @Override
     public void onResume() {
@@ -87,6 +88,14 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
+
+        MenuItem updateItem = menu.findItem(R.id.device_configuration_menu_update_item);
+        updateItem.setOnMenuItemClickListener((MenuItem item) -> {
+            saveFeaturesChosen();
+            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
+            return true;
+        });
+
         if (model.getSelectedDeviceAgent().getState() == 1) {
             menu.removeItem(R.id.device_configuration_menu_reconnect_item);
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
@@ -96,16 +105,22 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 return true;
             });
         } else {
-            menu.removeItem(R.id.accounts_fragment_menu_add_item);
-            reconnectItem.setOnMenuItemClickListener((MenuItem item) -> {
-                model.identifySelectedDevice(new Observer<Agent>() {
-                    @Override
-                    public void observe(Agent agent) {
-                        model.addAgent(agent);
-                    }
-                });
-                return false;
+            removeItem.setOnMenuItemClickListener((MenuItem item) -> {
+                model.removeSelectedDevice();
+                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
+
+                return true;
             });
+//            menu.removeItem(R.id.accounts_fragment_menu_add_item);
+//            reconnectItem.setOnMenuItemClickListener((MenuItem item) -> {
+//                model.identifySelectedDevice(new Observer<Agent>() {
+//                    @Override
+//                    public void observe(Agent agent) {
+//                        model.addAgent(agent);
+//                    }
+//                });
+//                return false;
+//            });
         }
     }
 

@@ -12,81 +12,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/layoutConfigurationName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textConfigurationDeviceName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/layout_fragment_device_configuration_name"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutConfigurationAdvancedAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/textConfigurationDeviceNameValue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_name_value"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutConfigurationAdvancedAddressLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/textConfigurationDeviceAdvancedAddress"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/fragment_device_configuration_advanced_address_text"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutConfigurationAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/textConfigurationAddressValue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_address_value"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/layoutConfigurationMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -140,16 +65,7 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            >
-
-            <Button
-                android:id="@+id/buttonConfigurationAdvancedOK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_device_configuration_advanced_update_text"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
+            />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

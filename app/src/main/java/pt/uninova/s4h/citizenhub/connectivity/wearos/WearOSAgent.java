@@ -2,9 +2,12 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -58,6 +61,11 @@ public class WearOSAgent extends AbstractAgent {
     @Override
     public Set<Integer> getSupportedMeasurements() {
         return supportedMeasurementKinds;
+    }
+
+    @Override
+    public List<Fragment> getConfigurationFragments() {
+        return null;
     }
 
     @Override

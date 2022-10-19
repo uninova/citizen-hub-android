@@ -45,6 +45,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         }
     };
     private SharedPreferences sharedPreferences;
+private boolean test = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +57,40 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
 
-
+//        if(test==false) {
+//            new androidx.appcompat.app.AlertDialog.Builder(this.getContext())
+//                    .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
+//                    .setMessage(this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
+//                            this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
+//                    .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
+//
+//                            UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+//
+//                            //Send Message calibration
+//                            uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
+//
+//                            //default - first vibration settings when adding device
+//                            boolean vibration = true;
+//                            int angle = 1;
+//                            int interval = 5;
+//                            int pattern = 0;
+//                            boolean showPattern = true;
+//                            int strength = 1;
+//
+//                            //Send Message vibration settings
+//                            uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
+//
+//                            handler.sendMessageDelayed(new Message(), 2500);
+//
+//                        }
+//                    })
+//                    .setIcon(R.drawable.img_citizen_hub_logo_png)
+//                    .show();
+//            test=true;
+//        }
         enableAdvancedConfigurations(view, model);
         return view;
     }
@@ -202,4 +236,11 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
     }
+
+    public static Fragment newInstance()
+    {
+        return new UprightGo2ConfigurationFragment();
+    }
+
+
 }
