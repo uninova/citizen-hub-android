@@ -10,12 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Click"/>
-
         <TextView
             android:id="@+id/fragment_summary_text_view_no_data"
             style="@style/AppTheme.Summary.Item.TextView"
