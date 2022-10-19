@@ -137,7 +137,7 @@ public class ChartFunctions {
             }
         } else if (max == 7) {
             while (i < max) {
-                labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)).substring(0, 3);
+                labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())).substring(0, 3);
                 cal.add(Calendar.DATE, + 1);
                 i++;
             }
