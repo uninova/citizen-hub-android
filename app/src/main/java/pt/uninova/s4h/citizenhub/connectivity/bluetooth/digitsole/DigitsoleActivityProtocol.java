@@ -12,6 +12,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
@@ -122,7 +123,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         final BluetoothConnection connection = getConnection();
         connection.removeCharacteristicListener(activationListener);
         connection.removeCharacteristicListener(dataListener);
-        connection.removeCharacteristicListener(dataListenerBattery);
+        //connection.removeCharacteristicListener(dataListenerBattery);
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG);
         connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE);
         setState(Protocol.STATE_DISABLED);
@@ -134,15 +135,18 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         long currentTime = System.currentTimeMillis();
         runTimer();
         if ((currentTime - lastTime) > milliForTimer) {
-            System.out.println("ENABLE 2nd");
             final BluetoothConnection connection = getConnection();
-            connection.addCharacteristicListener(activationListener);
-            connection.addCharacteristicListener(dataListener);
-            connection.addCharacteristicListener(dataListenerBattery);
-            connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
-            connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY, true);
-            connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
-            setState(Protocol.STATE_ENABLED);
+            System.out.println("ENABLE 2nd" + getConnection().getState().toString());
+            if (!connection.getState().equals(BluetoothConnectionState.DISCONNECTED)){ //TODO test this
+                System.out.println("ENABLE 3rd");
+                connection.addCharacteristicListener(activationListener);
+                connection.addCharacteristicListener(dataListener);
+                //connection.addCharacteristicListener(dataListenerBattery);
+                connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
+                //connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_BATTERY, true);
+                connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
+                setState(Protocol.STATE_ENABLED);
+            }
         }
     }
 
