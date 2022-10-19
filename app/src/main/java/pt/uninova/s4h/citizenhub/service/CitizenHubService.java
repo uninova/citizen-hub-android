@@ -14,12 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.preference.PreferenceManager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.ListenableWorker;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import java.time.LocalDateTime;
@@ -27,7 +21,6 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
@@ -49,15 +42,11 @@ import pt.uninova.s4h.citizenhub.data.Tag;
 import pt.uninova.s4h.citizenhub.persistence.entity.DeviceRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.StreamRecord;
 import pt.uninova.s4h.citizenhub.persistence.repository.DeviceRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.StreamRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.StreamRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.TagRepository;
-import pt.uninova.s4h.citizenhub.work.BloodPressureUploader;
-import pt.uninova.s4h.citizenhub.work.LumbarExtensionTrainingUploader;
-import pt.uninova.s4h.citizenhub.work.Smart4HealthPdfUploader;
-import pt.uninova.s4h.citizenhub.work.SmartBearUploader;
-import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class CitizenHubService extends LifecycleService {
 
