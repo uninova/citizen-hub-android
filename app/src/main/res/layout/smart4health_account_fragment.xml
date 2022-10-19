@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/image_view_s4h"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:src="@drawable/ic_logo_small_smart4health"
+        android:contentDescription="@string/smart4health_description"/>
+
+    <TextView
+        android:id="@+id/text_view_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_description"
+        android:textColor="@color/colorS4HDarkBlue"/>
+
+    <Switch
+        android:id="@+id/switch_automatic_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_automatic_uploads"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:id="@+id/text_view_automatic_uploads_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_automatic_uploads_description"
+        android:textColor="@color/colorS4HDarkBlue"/>
+
+    <TextView
+        android:id="@+id/text_view_information_to_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_information_to_send"
+        android:textColor="@color/colorS4HDarkBlue"/>
+
+    <TextView
+        android:id="@+id/text_view_information_to_send_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="@string/smart4health_information_to_send_description"
+        android:textColor="@color/colorS4HDarkBlue"/>
+
+    <Switch
+        android:id="@+id/switch_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/smart4health_activity"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_blood_pressure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/smart4health_blood_pressure"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_heart_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/smart4health_heart_rate"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_lumbar_extension_training"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/smart4health_lumbar_extension_training"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_posture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="@string/smart4health_posture"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+</LinearLayout>

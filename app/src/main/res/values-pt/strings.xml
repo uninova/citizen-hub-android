@@ -391,6 +391,8 @@
     <!-- Strings used for the report -->
     <string name="report_upload">Carregar PDF</string>
 
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
+
     <string name="report_complete_report">Relatório Diário</string>
     <string name="report_work_time_report">Relatório Tempo de Trabalho</string>
     <string name="report_not_work_time_report">Relatório fora Tempo de Trabalho</string>
@@ -426,6 +428,57 @@
     <string name="report_lumbar_training_weight_units">kg</string>
     <string name="report_lumbar_training_repetitions_label">Repetições</string>
     <string name="report_lumbar_training_duration_label">Duração</string>
+
+    <!-- Strings used for the Smart4Health fragment -->
+    <string name="smart4health_description">Some information will be displayed here.</string>
+    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
+    <string name="smart4health_information_to_send">Information to send in the reports:</string>
+    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
+    <string name="smart4health_activity">Activity</string>
+    <string name="smart4health_blood_pressure">Blood Pressure</string>
+    <string name="smart4health_heart_rate">Heart Rate</string>
+    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_posture">Posture</string>
+    
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_today">Hoje</string>
+    <string name="summary_detail_time_last_week">Última Semana</string>
+    <string name="summary_detail_time_last_month">Último Mês</string>
+    <string name="summary_detail_time_hours">Hora</string>
+    <string name="summary_detail_time_days">Dia</string>
+
+    <string name="summary_detail_activity">Actividade</string>
+    <string name="summary_detail_activity_steps">Passos</string>
+    <string name="summary_detail_activity_calories">Calorias</string>
+    <string name="summary_detail_activity_calories_with_units">Calorias (kcal)</string>
+    <string name="summary_detail_activity_distance">Distância</string>
+    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
+
+    <string name="summary_detail_posture">Postura</string>
+    <string name="summary_detail_posture_with_units">Postura (%)</string>
+    <string name="summary_detail_posture_correct">Correta</string>
+    <string name="summary_detail_posture_incorrect">Incorrect</string>
+    <string name="summary_detail_posture_average">Média</string>
+
+    <string name="summary_detail_heart_rate">Batimento Cardíaco</string>
+    <string name="summary_detail_heart_rate_with_units">Batimento Cardíaco (bpm)</string>
+    <string name="summary_detail_heart_rate_maximum">Max</string>
+    <string name="summary_detail_heart_rate_minimum">Min</string>
+    <string name="summary_detail_heart_rate_average">Média</string>
+
+    <string name="summary_detail_blood_pressure">Pressão Arterial</string>
+    <string name="summary_detail_blood_pressure_with_units">Pressão Arterial (mmHg)</string>
+    <string name="summary_detail_blood_pressure_systolic">Sistólica</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastólica</string>
+    <string name="summary_detail_blood_pressure_mean">Média</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulsação</string>
+
+    <string name="summary_detail_lumbar_extension">Extensão da Lombar</string>
+    <string name="summary_detail_lumbar_extension_duration">Duração</string>
+    <string name="summary_detail_lumbar_extension_score">Pontuação</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Repetições</string>
+    <string name="summary_detail_lumbar_extension_weight">Peso</string>
 
     <string name="measurement_type.0">Desconhecido</string>
     <string name="measurement_type.1">Frequência cardíaca</string>
@@ -471,5 +524,10 @@
     <string name="bugreport_positive_button">Enviar</string>
     <string name="bugreport_negative_button">Ignorar</string>
     <string name="bugreport_confirmation">Relatório enviado</string>
+
+    <string name="fragment_device_unsupported_message">Dispositivo não suportado</string>
+    <string name="fragment_device_unsupported_name">Nome</string>
+    <string name="fragment_device_unsupported_address">Endereço</string>
+    <string name="fragment_device_unsupported_device_button_text">Voltar</string>
 
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_systolic"
+        android:title="@string/summary_detail_blood_pressure_systolic"/>
+    <item
+        android:id="@+id/nav_diastolic"
+        android:title="@string/summary_detail_blood_pressure_diastolic"/>
+    <item
+        android:id="@+id/nav_mean"
+        android:title="@string/summary_detail_blood_pressure_mean"/>
+
+</menu>

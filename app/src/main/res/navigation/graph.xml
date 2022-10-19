@@ -10,7 +10,59 @@
         android:id="@+id/summary_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryFragment"
         android:label="@string/fragment_summary_label"
-        tools:layout="@layout/fragment_summary" />
+        tools:layout="@layout/fragment_summary">
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_activity_fragment"
+            app:destination="@+id/summary_detail_activity_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_posture_fragment"
+            app:destination="@+id/summary_detail_posture_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_heart_rate_fragment"
+            app:destination="@+id/summary_detail_heart_rate_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_blood_pressure_fragment"
+            app:destination="@+id/summary_detail_blood_pressure_fragment"/>
+
+        <action
+            android:id="@+id/action_summary_fragment_to_summary_detail_lumbar_extension_fragment"
+            app:destination="@+id/summary_detail_lumbar_extension_fragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/summary_detail_activity_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailActivityFragment"
+        android:label="@string/summary_detail_activity"
+        tools:layout="@layout/fragment_summary_detail_activity"/>
+
+    <fragment
+        android:id="@+id/summary_detail_posture_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailPostureFragment"
+        android:label="@string/summary_detail_posture"
+        tools:layout="@layout/fragment_summary_detail_posture"/>
+
+    <fragment
+        android:id="@+id/summary_detail_heart_rate_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailHeartRateFragment"
+        android:label="@string/summary_detail_heart_rate"
+        tools:layout="@layout/fragment_summary_detail_heart_rate"/>
+
+    <fragment
+        android:id="@+id/summary_detail_blood_pressure_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailBloodPressureFragment"
+        android:label="@string/summary_detail_blood_pressure"
+        tools:layout="@layout/fragment_summary_detail_blood_pressure"/>
+
+    <fragment
+        android:id="@+id/summary_detail_lumbar_extension_fragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailLumbarExtensionFragment"
+        android:label="@string/summary_detail_lumbar_extension"
+        tools:layout="@layout/fragment_summary_detail_lumbar_extension"/>
 
     <fragment
         android:id="@+id/report_master_fragment"

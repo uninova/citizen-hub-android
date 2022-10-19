@@ -366,7 +366,9 @@
     <!-- Strings used for the report -->
     <string name="report_upload">Télécharger le PDF</string>
 
-    <string name="report_complete_report">Rapport Journalier</string>
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
+
+    <string name="report_complete_report">Rapport Complet</string>
     <string name="report_work_time_report">Rapport de Temps de Travail</string>
     <string name="report_not_work_time_report">Rapport de Temps non Travaillé</string>
 
@@ -381,7 +383,7 @@
     <string name="report_distance_units">m</string>
     <string name="report_steps_label">Pas</string>
 
-    <string name="report_correct_posture_label">Correct</string>
+    <string name="report_correct_posture_label">Correcte</string>
     <string name="report_incorrect_posture_label">Incorrecte</string>
 
     <string name="report_hr_maximum_label">Maximale</string>
@@ -401,6 +403,57 @@
     <string name="report_lumbar_training_weight_units">kg</string>
     <string name="report_lumbar_training_repetitions_label">Répétitions</string>
     <string name="report_lumbar_training_duration_label">Durée</string>
+
+    <!-- Strings used for the Smart4Health fragment -->
+    <string name="smart4health_description">Some information will be displayed here.</string>
+    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
+    <string name="smart4health_information_to_send">Information to send in the reports:</string>
+    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
+    <string name="smart4health_activity">Activity</string>
+    <string name="smart4health_blood_pressure">Blood Pressure</string>
+    <string name="smart4health_heart_rate">Heart Rate</string>
+    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_posture">Posture</string>
+    
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_today">Aujourd\\'hui</string>
+    <string name="summary_detail_time_last_week">La semaine dernière</string>
+    <string name="summary_detail_time_last_month">Le mois dernier</string>
+    <string name="summary_detail_time_hours">Heure</string>
+    <string name="summary_detail_time_days">Jour</string>
+
+    <string name="summary_detail_activity">Activité</string>
+    <string name="summary_detail_activity_steps">Pas</string>
+    <string name="summary_detail_activity_calories">Calories</string>
+    <string name="summary_detail_activity_calories_with_units">Calories (kcal)</string>
+    <string name="summary_detail_activity_distance">Distance</string>
+    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
+
+    <string name="summary_detail_posture">Posture</string>
+    <string name="summary_detail_posture_with_units">Posture (%)</string>
+    <string name="summary_detail_posture_correct">Correcte</string>
+    <string name="summary_detail_posture_incorrect">Incorrecte</string>
+    <string name="summary_detail_posture_average">Moyenne</string>
+
+    <string name="summary_detail_heart_rate">Rythme Cardiaque</string>
+    <string name="summary_detail_heart_rate_with_units">Rythme Cardiaque (bpm)</string>
+    <string name="summary_detail_heart_rate_maximum">Max</string>
+    <string name="summary_detail_heart_rate_minimum">Min</string>
+    <string name="summary_detail_heart_rate_average">Moyenne</string>
+
+    <string name="summary_detail_blood_pressure">Pression Artérielle</string>
+    <string name="summary_detail_blood_pressure_with_units">Pression Artérielle (mmHg)</string>
+    <string name="summary_detail_blood_pressure_systolic">Systolique</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolique</string>
+    <string name="summary_detail_blood_pressure_mean">Moyenne</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulsation</string>
+
+    <string name="summary_detail_lumbar_extension">Extension Lombaire</string>
+    <string name="summary_detail_lumbar_extension_duration">Durée</string>
+    <string name="summary_detail_lumbar_extension_score">Score</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Répétitions</string>
+    <string name="summary_detail_lumbar_extension_weight">Masse</string>
 
     <string name="measurement_type.0">Inconnue</string>
     <string name="measurement_type.1">Rythme cardiaque</string>
@@ -446,5 +499,11 @@
     <string name="bugreport_positive_button">Envoyer</string>
     <string name="bugreport_negative_button">Ignorer</string>
     <string name="bugreport_confirmation">Rapport envoyé</string>
+
+    <string name="fragment_device_unsupported_message">L\'appareil n\'est pas pris en charge</string>
+    <string name="fragment_device_unsupported_name">Nom</string>
+    <string name="fragment_device_unsupported_address">Adresse</string>
+    <string name="fragment_device_unsupported_device_button_text">Arrière</string>
+
 
 </resources>

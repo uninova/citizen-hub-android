@@ -441,11 +441,11 @@
     <string name="lumbar_training_calories_value" translatable="false">%1$.2f kcal</string>
 
     <!-- Strings used for the report -->
-    <string name="report_upload">Upload PDF</string>
+    <string name="report_upload">Upload to S4H</string>
 
-    <string name="report_title">Citizen Hub Daily Report %s</string>
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
 
-    <string name="report_complete_report">Daily Report</string>
+    <string name="report_complete_report">Complete Report</string>
     <string name="report_work_time_report">Work Time Report</string>
     <string name="report_not_work_time_report">Not Work Time Report</string>
 
@@ -481,6 +481,58 @@
     <string name="report_lumbar_training_repetitions_label">Repetitions</string>
     <string name="report_lumbar_training_duration_label">Duration</string>
 
+    <!-- Strings used for the Smart4Health fragment -->
+    <string name="smart4health_description">Some information will be displayed here.</string>
+    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
+    <string name="smart4health_information_to_send">Information to send in the reports:</string>
+    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
+    <string name="smart4health_activity">Activity</string>
+    <string name="smart4health_blood_pressure">Blood Pressure</string>
+    <string name="smart4health_heart_rate">Heart Rate</string>
+    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_posture">Posture</string>
+    
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_today">Today</string>
+    <string name="summary_detail_time_last_week">Last Week</string>
+    <string name="summary_detail_time_last_month">Last Month</string>
+    <string name="summary_detail_time_hours">Hour</string>
+    <string name="summary_detail_time_days">Day</string>
+
+    <string name="summary_detail_activity">Activity</string>
+    <string name="summary_detail_activity_steps">Steps</string>
+    <string name="summary_detail_activity_calories">Calories</string>
+    <string name="summary_detail_activity_calories_with_units">Calories (kcal)</string>
+    <string name="summary_detail_activity_distance">Distance</string>
+    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
+
+
+    <string name="summary_detail_posture">Posture</string>
+    <string name="summary_detail_posture_with_units">Posture (%)</string>
+    <string name="summary_detail_posture_correct">Correct</string>
+    <string name="summary_detail_posture_incorrect">Incorrect</string>
+    <string name="summary_detail_posture_average">Average</string>
+
+    <string name="summary_detail_heart_rate">Heart Rate</string>
+    <string name="summary_detail_heart_rate_with_units">Heart Rate (bpm)</string>
+    <string name="summary_detail_heart_rate_maximum">Max</string>
+    <string name="summary_detail_heart_rate_minimum">Min</string>
+    <string name="summary_detail_heart_rate_average">Average</string>
+
+    <string name="summary_detail_blood_pressure">Blood Pressure</string>
+    <string name="summary_detail_blood_pressure_with_units">Blood Pressure (mmHg)</string>
+    <string name="summary_detail_blood_pressure_systolic">Systolic</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
+    <string name="summary_detail_blood_pressure_mean">Mean</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulse Rate</string>
+
+    <string name="summary_detail_lumbar_extension">Lumbar Extension</string>
+    <string name="summary_detail_lumbar_extension_duration">Duration</string>
+    <string name="summary_detail_lumbar_extension_score">Score</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Repetitions</string>
+    <string name="summary_detail_lumbar_extension_weight">Weight</string>
+
     <string name="measurement_type.0">Unknown</string>
     <string name="measurement_type.1">Heart rate</string>
     <string name="measurement_type.2">Activity</string>
@@ -504,6 +556,7 @@
     <string name="measurement_type.27">Position</string>
     <string name="measurement_type.28">Position</string>
     <string name="measurement_type.29">Posture</string>
+    <string name="report_title">Citizen Hub Daily Report %s</string>
 
     <string name="fragment_location_disabled_button_text">Device location settings</string>
     <string name="fragment_location_not_supported_text_view">Location is not supported on this device</string>

@@ -40,7 +40,9 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthDailyReportRepository;
+import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
 import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
+import pt.uninova.s4h.citizenhub.report.Report;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class Smart4HealthPdfUploader extends ListenableWorker {
@@ -151,7 +153,20 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                                         }
                                     };
 
-                                    dailyReportGeneratorPDF.generateCompleteReport(observer, getApplicationContext().getResources(), new ReportRepository(getApplicationContext()), i, measurementKindLocalization);
+                                    ReportRepository reportRepository = new ReportRepository(getApplicationContext());
+                                    DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplicationContext());
+                                    Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                                        Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                                            if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                                                dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), i, measurementKindLocalization, observer);
+                                                //dailyReportGeneratorPDF.generateNotWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+                                                //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
+                                            }
+                                        };
+                                        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, i, true, observerNotWorkTimeReport);
+                                    };
+                                    dailyReportGenerator.generateWorkTimeReport(reportRepository, i, true, observerWorkTimeReport);
+
                                 }
                             }
 

@@ -366,7 +366,9 @@
     <!-- Strings used for the report -->
     <string name="report_upload">PDF hochladen</string>
 
-    <string name="report_complete_report">Tagesbericht</string>
+    <string name="report_footer">Escreve aqui qualquer coisa</string>
+
+    <string name="report_complete_report">Kompletter Bericht</string>
     <string name="report_work_time_report">Arbeitszeit-Bericht</string>
     <string name="report_not_work_time_report">Nicht-Arbeitszeit-Bericht</string>
 
@@ -401,6 +403,57 @@
     <string name="report_lumbar_training_weight_units">kg</string>
     <string name="report_lumbar_training_repetitions_label">Wiederholungen</string>
     <string name="report_lumbar_training_duration_label">Dauer</string>
+
+    <!-- Strings used for the Smart4Health fragment -->
+    <string name="smart4health_description">Some information will be displayed here.</string>
+    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
+    <string name="smart4health_information_to_send">Information to send in the reports:</string>
+    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
+    <string name="smart4health_activity">Activity</string>
+    <string name="smart4health_blood_pressure">Blood Pressure</string>
+    <string name="smart4health_heart_rate">Heart Rate</string>
+    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_posture">Posture</string>
+    
+    <!-- Strings used in summary detail fragments-->
+    <string name="summary_detail_time_today">Heute</string>
+    <string name="summary_detail_time_last_week">Letzte Woche</string>
+    <string name="summary_detail_time_last_month">Im Vergangenen Monat</string>
+    <string name="summary_detail_time_hours">Stunde</string>
+    <string name="summary_detail_time_days">Tag</string>
+
+    <string name="summary_detail_activity">Aktivität</string>
+    <string name="summary_detail_activity_steps">Schritte</string>
+    <string name="summary_detail_activity_calories">Kalorien</string>
+    <string name="summary_detail_activity_calories_with_units">Kalorien (kcal)</string>
+    <string name="summary_detail_activity_distance">Distanz</string>
+    <string name="summary_detail_activity_distance_with_units">Distanz (m)</string>
+
+    <string name="summary_detail_posture">Haltung</string>
+    <string name="summary_detail_posture_with_units">Haltung (%)</string>
+    <string name="summary_detail_posture_correct">Richtig</string>
+    <string name="summary_detail_posture_incorrect">Falsch</string>
+    <string name="summary_detail_posture_average">Durchschnitt</string>
+
+    <string name="summary_detail_heart_rate">Pulsschlag</string>
+    <string name="summary_detail_heart_rate_with_units">Pulsschlag (bpm)</string>
+    <string name="summary_detail_heart_rate_maximum">Maximal</string>
+    <string name="summary_detail_heart_rate_minimum">Minimal</string>
+    <string name="summary_detail_heart_rate_average">Mittel</string>
+
+    <string name="summary_detail_blood_pressure">Blutdruck</string>
+    <string name="summary_detail_blood_pressure_with_units">Blutdruck (mmHg)</string>
+    <string name="summary_detail_blood_pressure_systolic">Systolisch</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolisch</string>
+    <string name="summary_detail_blood_pressure_mean">Mittlerer</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulsfrequenz</string>
+
+    <string name="summary_detail_lumbar_extension">Lumbale Verlängerung</string>
+    <string name="summary_detail_lumbar_extension_duration">Dauer</string>
+    <string name="summary_detail_lumbar_extension_score">Punktzahl</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Wiederholungen</string>
+    <string name="summary_detail_lumbar_extension_weight">Gewicht</string>
 
     <string name="measurement_type.0">Unbekannt</string>
     <string name="measurement_type.1">Pulsschlag</string>
@@ -446,5 +499,10 @@
     <string name="bugreport_positive_button">Senden</string>
     <string name="bugreport_negative_button">Ignorieren</string>
     <string name="bugreport_confirmation">Bericht gesendet</string>
+
+    <string name="fragment_device_unsupported_message">Gerät wird nicht unterstützt</string>
+    <string name="fragment_device_unsupported_name">Name</string>
+    <string name="fragment_device_unsupported_address">Adresse</string>
+    <string name="fragment_device_unsupported_device_button_text">Zurück</string>
 
 </resources>
