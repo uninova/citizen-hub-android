@@ -417,7 +417,7 @@
     <string name="smart4health_posture">Posture</string>
     
     <!-- Strings used in summary detail fragments-->
-    <string name="summary_detail_time_today">Aujourd\\'hui</string>
+    <string name="summary_detail_time_today">Aujourd hui</string>
     <string name="summary_detail_time_last_week">La semaine dernière</string>
     <string name="summary_detail_time_last_month">Le mois dernier</string>
     <string name="summary_detail_time_hours">Heure</string>
