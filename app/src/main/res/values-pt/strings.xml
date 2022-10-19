@@ -429,12 +429,12 @@
     <string name="report_lumbar_training_repetitions_label">Repetições</string>
     <string name="report_lumbar_training_duration_label">Duração</string>
 
-    <!-- Strings used in summary detail fragments-->
+    <!-- Strings used in summary detail fragments -->
     <string name="summary_detail_time_today">Hoje</string>
     <string name="summary_detail_time_last_week">Última Semana</string>
     <string name="summary_detail_time_last_month">Último Mês</string>
-    <string name="summary_detail_time_hours">Horas</string>
-    <string name="summary_detail_time_days">Dias</string>
+    <string name="summary_detail_time_hours">Hora</string>
+    <string name="summary_detail_time_days">Dia</string>
 
     <string name="summary_detail_activity">Actividade</string>
     <string name="summary_detail_activity_steps">Passos</string>
