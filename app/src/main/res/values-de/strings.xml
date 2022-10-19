@@ -405,43 +405,43 @@
     <string name="report_lumbar_training_duration_label">Dauer</string>
 
     <!-- Strings used in summary detail fragments-->
-    <string name="summary_detail_time_today">Today</string>
-    <string name="summary_detail_time_last_week">Last Week</string>
-    <string name="summary_detail_time_last_month">Last Month</string>
-    <string name="summary_detail_time_hours">Hours</string>
-    <string name="summary_detail_time_days">Days</string>
+    <string name="summary_detail_time_today">Heute</string>
+    <string name="summary_detail_time_last_week">Letzte Woche</string>
+    <string name="summary_detail_time_last_month">Im Vergangenen Monat</string>
+    <string name="summary_detail_time_hours">Stunde</string>
+    <string name="summary_detail_time_days">Tag</string>
 
-    <string name="summary_detail_activity">Activity</string>
-    <string name="summary_detail_activity_steps">Steps</string>
-    <string name="summary_detail_activity_calories">Calories</string>
-    <string name="summary_detail_activity_calories_with_units">Calories (kcal)</string>
-    <string name="summary_detail_activity_distance">Distance</string>
-    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
+    <string name="summary_detail_activity">Aktivität</string>
+    <string name="summary_detail_activity_steps">Schritte</string>
+    <string name="summary_detail_activity_calories">Kalorien</string>
+    <string name="summary_detail_activity_calories_with_units">Kalorien (kcal)</string>
+    <string name="summary_detail_activity_distance">Distanz</string>
+    <string name="summary_detail_activity_distance_with_units">Distanz (m)</string>
 
-    <string name="summary_detail_posture">Posture</string>
-    <string name="summary_detail_posture_with_units">Posture (%)</string>
-    <string name="summary_detail_posture_correct">Correct</string>
-    <string name="summary_detail_posture_incorrect">Correct</string>
-    <string name="summary_detail_posture_average">Average</string>
+    <string name="summary_detail_posture">Haltung</string>
+    <string name="summary_detail_posture_with_units">Haltung (%)</string>
+    <string name="summary_detail_posture_correct">Richtig</string>
+    <string name="summary_detail_posture_incorrect">Falsch</string>
+    <string name="summary_detail_posture_average">Durchschnitt</string>
 
-    <string name="summary_detail_heart_rate">Heart Rate</string>
-    <string name="summary_detail_heart_rate_with_units">Heart Rate (bpm)</string>
-    <string name="summary_detail_heart_rate_maximum">Max</string>
-    <string name="summary_detail_heart_rate_minimum">Min</string>
-    <string name="summary_detail_heart_rate_average">Average</string>
+    <string name="summary_detail_heart_rate">Pulsschlag</string>
+    <string name="summary_detail_heart_rate_with_units">Pulsschlag (bpm)</string>
+    <string name="summary_detail_heart_rate_maximum">Maximal</string>
+    <string name="summary_detail_heart_rate_minimum">Minimal</string>
+    <string name="summary_detail_heart_rate_average">Mittel</string>
 
-    <string name="summary_detail_blood_pressure">Blood Pressure</string>
-    <string name="summary_detail_blood_pressure_with_units">Blood Pressure (mmHg)</string>
-    <string name="summary_detail_blood_pressure_systolic">Systolic</string>
-    <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
-    <string name="summary_detail_blood_pressure_mean">Mean</string>
-    <string name="summary_detail_blood_pressure_pulse_rate">Pulse Rate</string>
+    <string name="summary_detail_blood_pressure">Blutdruck</string>
+    <string name="summary_detail_blood_pressure_with_units">Blutdruck (mmHg)</string>
+    <string name="summary_detail_blood_pressure_systolic">Systolisch</string>
+    <string name="summary_detail_blood_pressure_diastolic">Diastolisch</string>
+    <string name="summary_detail_blood_pressure_mean">Mittlerer</string>
+    <string name="summary_detail_blood_pressure_pulse_rate">Pulsfrequenz</string>
 
-    <string name="summary_detail_lumbar_extension">Lumbar Extension</string>
-    <string name="summary_detail_lumbar_extension_duration">Duration</string>
-    <string name="summary_detail_lumbar_extension_score">Score</string>
-    <string name="summary_detail_lumbar_extension_repetitions">Repetitions</string>
-    <string name="summary_detail_lumbar_extension_weight">Weight</string>
+    <string name="summary_detail_lumbar_extension">Lumbale Verlängerung</string>
+    <string name="summary_detail_lumbar_extension_duration">Dauer</string>
+    <string name="summary_detail_lumbar_extension_score">Punktzahl</string>
+    <string name="summary_detail_lumbar_extension_repetitions">Wiederholungen</string>
+    <string name="summary_detail_lumbar_extension_weight">Gewicht</string>
 
     <string name="measurement_type.0">Unbekannt</string>
     <string name="measurement_type.1">Pulsschlag</string>
