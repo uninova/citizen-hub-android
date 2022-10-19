@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,19 +25,29 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
+    LinearLayout advancedConfigurationLayout;
+
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
-        requireActivity().runOnUiThread(this::loadSupportedFeatures);
+        requireActivity().runOnUiThread(() -> {
+            loadSupportedFeatures();
+            if(model.getSelectedDeviceAgent().getState() != 1){
+            disable(advancedConfigurationLayout);
+            }
+            else advancedConfigurationLayout.setEnabled(true);
+
+        });
+
     };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        final View vi = inflater.inflate(R.layout.fragment_advanced_configurations_inflater, container, false);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
         updateDevice = view.findViewById(R.id.buttonConfiguration);
         advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
+        advancedConfigurationLayout = view.findViewById(R.id.layout_advanced_configurations_container);
         updateDevice.setVisibility(View.GONE);
 
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
@@ -123,7 +134,17 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //            });
         }
     }
-
+    private static void disable(ViewGroup layout) {
+        layout.setEnabled(false);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                disable((ViewGroup) child);
+            } else {
+                child.setEnabled(false);
+            }
+        }
+    }
 
     @Override
     public void onPause() {
