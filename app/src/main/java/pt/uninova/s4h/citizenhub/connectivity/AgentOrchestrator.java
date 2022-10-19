@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import static java.lang.Class.forName;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import care.data4life.fhir.r4.model.Age;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.UUIDv5;
@@ -137,6 +134,7 @@ public class AgentOrchestrator {
 
         if (agent != null) {
             agent.removeSampleObserver(ingester);
+            tellOnAgentRemoved(device,agent);
         }
 
         agentMap.remove(device);
@@ -150,6 +148,12 @@ public class AgentOrchestrator {
     private void tellOnAgentAttached(Device device, Agent agent) {
         for (AgentOrchestratorListener i : listeners) {
             i.onAgentAttached(device, agent);
+        }
+    }
+
+    private void tellOnAgentRemoved(Device device, Agent agent) {
+        for (AgentOrchestratorListener i : listeners) {
+            i.onAgentRemoved(device, agent);
         }
     }
 

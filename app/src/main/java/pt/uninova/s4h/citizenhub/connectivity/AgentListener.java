@@ -14,4 +14,7 @@ public interface AgentListener {
 
     default void onProtocolEnabled(Agent agent, Protocol protocol) {
     }
+
+    default void onStateChanged (Agent agent, int state){
+    }
 }

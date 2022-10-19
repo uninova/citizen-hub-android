@@ -16,6 +16,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestratorListener;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -25,7 +26,6 @@ public class DeviceViewModel extends AndroidViewModel {
 
     private final ServiceConnection serviceConnection;
     private final AgentOrchestratorListener agentOrchestratorListener;
-
     private final MutableLiveData<AgentOrchestrator> agentOrchestratorLiveData;
     private final MutableLiveData<List<Device>> deviceListLiveData;
     private final MutableLiveData<Device> selectedDeviceLiveData;
@@ -37,8 +37,7 @@ public class DeviceViewModel extends AndroidViewModel {
         agentOrchestratorLiveData = new MutableLiveData<>();
         deviceListLiveData = new MutableLiveData<>(Collections.emptyList());
         selectedDeviceLiveData = new MutableLiveData<>();
-        selectedAgentLiveData = new MutableLiveData<>(null);
-
+        selectedAgentLiveData = new MutableLiveData<>();
         serviceConnection = new ServiceConnection() {
 
             private CitizenHubService service;
@@ -77,6 +76,17 @@ public class DeviceViewModel extends AndroidViewModel {
             }
 
             @Override
+            public void onAgentAttached(Device device, Agent agent) {
+                agent.addStateObserver(new Observer<StateChangedMessage<Integer, ? extends Agent>>() {
+                    @Override
+                    public void observe(StateChangedMessage<Integer, ? extends Agent> value) {
+                        selectedAgentLiveData.postValue(agent);
+                    }
+                });
+                selectedAgentLiveData.postValue(agent);
+            }
+
+            @Override
             public void onDeviceRemoved(Device device) {
                 final List<Device> deviceList = deviceListLiveData.getValue();
 
@@ -89,14 +99,13 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
     public LiveData<Agent> getSelectedAgentLiveData() {
-        if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
-            selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
-        } else {
-            agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), agent -> {
-                selectedAgentLiveData.postValue(agent);
-            });
+        if (agentOrchestratorLiveData.getValue() != null) {
+            if (agentOrchestratorLiveData.getValue().getDevices().contains(selectedDeviceLiveData.getValue())) {
+                selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
+            } else {
+                agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), selectedAgentLiveData::postValue);
+            }
         }
-
         return selectedAgentLiveData;
     }
 
@@ -123,6 +132,14 @@ public class DeviceViewModel extends AndroidViewModel {
         return agentOrchestratorLiveData.getValue().getAgent(device) != null;
     }
 
+    public int getAttachedAgentState(Device device) {
+        if (hasAgentAttached(device)) {
+            return agentOrchestratorLiveData.getValue().getAgent(device).getState();
+        }
+        return 0;
+    }
+
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -147,6 +164,7 @@ public class DeviceViewModel extends AndroidViewModel {
 
         agentOrchestrator.remove(device);
     }
+
 
     public void selectDevice(Device device) {
         selectedDeviceLiveData.postValue(device);
