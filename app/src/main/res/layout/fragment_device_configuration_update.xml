@@ -24,8 +24,6 @@
             <LinearLayout
                 android:id="@+id/layout_advanced_configurations_container"
                 android:layout_width="match_parent"
-                android:clickable="true"
-                android:focusable="true"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <include

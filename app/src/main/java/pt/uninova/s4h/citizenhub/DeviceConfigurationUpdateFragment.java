@@ -25,13 +25,13 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
-    LinearLayout advancedConfigurationLayout;
+    private LinearLayout advancedConfigurationLayout;
 
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
             loadSupportedFeatures();
-            setChildrenEnabledEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
+            setChildrenEnabledEnabled(advancedConfigurationLayout, value.getNewState() == 1);
 
         });
 
@@ -72,6 +72,9 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             saveFeaturesChosen();
             Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
         });
+
+
+
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
         return view;
     }
@@ -89,7 +92,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     public void onResume() {
         super.onResume();
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
-    }
+        if(model.getSelectedDeviceAgent()!=null) {
+            setChildrenEnabledEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
+        }
+        }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
