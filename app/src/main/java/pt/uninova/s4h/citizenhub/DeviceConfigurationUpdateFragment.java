@@ -31,10 +31,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
             loadSupportedFeatures();
-            if(model.getSelectedDeviceAgent().getState() != 1){
-            disable(advancedConfigurationLayout);
-            }
-            else advancedConfigurationLayout.setEnabled(true);
+            setChildrenEnabledEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
 
         });
 
@@ -134,14 +131,14 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //            });
         }
     }
-    private static void disable(ViewGroup layout) {
-        layout.setEnabled(false);
+    private static void setChildrenEnabledEnabled(ViewGroup layout, boolean state) {
+        layout.setEnabled(state);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
-                disable((ViewGroup) child);
+                setChildrenEnabledEnabled((ViewGroup) child,state);
             } else {
-                child.setEnabled(false);
+                child.setEnabled(state);
             }
         }
     }
