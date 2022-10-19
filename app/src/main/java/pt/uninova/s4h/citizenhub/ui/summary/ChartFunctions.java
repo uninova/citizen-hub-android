@@ -310,12 +310,21 @@ public class ChartFunctions {
 
         while(currentTime < max){
             total = values2[currentTime] + values1[currentTime];
-            if(total > 3600000){
-                values1[currentTime] = values1[currentTime] * 3600000 / total;
-                values2[currentTime] = values2[currentTime] * 3600000 / total;
+            if(max == 24) {
+                if (total > 3600000) {
+                    values1[currentTime] = values1[currentTime] * 3600000 / total;
+                    values2[currentTime] = values2[currentTime] * 3600000 / total;
+                }
+                entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 3600000));
+                entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 3600000));
+            } else {
+                if (total > 86400000) {
+                    values1[currentTime] = values1[currentTime] * 86400000 / total;
+                    values2[currentTime] = values2[currentTime] * 86400000 / total;
+                }
+                entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 86400000));
+                entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 86400000));
             }
-            entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 3600000));
-            entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 3600000));
             currentTime++;
         }
         LineDataSet lineDataSet1 = setLineDataSet(entries1, labels[0], ContextCompat.getColor(context, R.color.colorS4HLightBlue));
