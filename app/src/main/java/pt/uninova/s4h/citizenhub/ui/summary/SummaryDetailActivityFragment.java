@@ -1,9 +1,13 @@
 package pt.uninova.s4h.citizenhub.ui.summary;
 
+import android.annotation.SuppressLint;
+import android.graphics.Canvas;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -146,6 +155,47 @@ public class SummaryDetailActivityFragment extends Fragment {
 
             }
         });
+
+        Button testButton = view.findViewById(R.id.test_button);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                View chart = view.findViewById(R.id.bar_chart);
+                /*Bitmap b = barChart.getChartBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                b.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();*/
+                PdfDocument document = new PdfDocument();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(700, 842, 1).create();
+                final PdfDocument.Page[] page = {document.startPage(pageInfo)};
+                Canvas canvas = page[0].getCanvas();
+                canvas.setDensity(72);
+                chart.draw(canvas);
+                final CanvasWriter canvasWriter = new CanvasWriter(canvas);
+                canvasWriter.draw();
+                document.finishPage(page[0]);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                try {
+                    document.writeTo(out);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] outByteArray = out.toByteArray();
+                document.close();
+
+                try {
+                    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File file = new File(path.toString(), "chart" + ".pdf");
+                    OutputStream os = new FileOutputStream(file);
+                    os.write(outByteArray);
+                    os.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
         chartFunctions.setupBarChart(barChart, model.getChartViewMarker());
         dailySteps();
