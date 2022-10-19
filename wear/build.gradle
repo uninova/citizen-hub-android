@@ -7,8 +7,8 @@ android {
         applicationId "pt.uninova.s4h.citizenhub"
         minSdkVersion 26
         targetSdkVersion 32
-        versionCode 220220926
-        versionName "0.3.0"
+        versionCode 220221013
+        versionName "0.4.0"
     }
 
     buildTypes {
@@ -56,4 +56,8 @@ dependencies {
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
     implementation 'androidx.wear:wear:1.2.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation "androidx.work:work-runtime:2.3.4"
+    implementation "androidx.concurrent:concurrent-futures:1.1.0"
+    implementation "androidx.wear:wear-ongoing:1.0.0"
+    implementation "androidx.core:core:1.6.0"
 }

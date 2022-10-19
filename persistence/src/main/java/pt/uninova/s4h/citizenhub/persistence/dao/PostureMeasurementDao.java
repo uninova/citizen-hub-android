@@ -36,7 +36,7 @@ public interface PostureMeasurementDao {
     LiveData<List<PostureClassificationSum>> selectClassificationSumLiveData(LocalDate from, LocalDate to);
 
     @TypeConverters({EpochTypeConverter.class, DurationTypeConverter.class})
-    @Query("WITH agg AS( SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000 GROUP BY classification, hour) SELECT agg.hour AS hour, (SELECT duration FROM agg AS aggi WHERE classification = 1 AND aggi.hour = agg.hour) AS correct_posture_duration, (SELECT duration FROM agg AS aggi WHERE classification = 2 AND aggi.hour = agg.hour) AS incorrect_posture_duration FROM agg GROUP BY agg.hour;")
+    @Query("WITH agg AS (SELECT ((sample.timestamp - :localDate) / 3600000) % 24 AS hour, posture_measurement.classification AS classification, SUM(posture_measurement.duration) AS duration FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id WHERE sample.timestamp >= :localDate AND sample.timestamp < :localDate + 86400000 GROUP BY classification, hour) SELECT agg.hour AS hour, COALESCE((SELECT IFNULL(duration, 0) FROM agg AS aggi WHERE classification = 1 AND aggi.hour = agg.hour), 0) AS correctPostureDuration, COALESCE((SELECT IFNULL(duration, 0) FROM agg AS aggi WHERE classification = 2 AND aggi.hour = agg.hour), 0) AS incorrectPostureDuration FROM agg GROUP BY agg.hour;")
     List<HourlyPosture> selectHourlyPosture(LocalDate localDate);
 
     @TypeConverters({EpochTypeConverter.class, DurationTypeConverter.class})

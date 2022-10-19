@@ -12,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.work.WorkManager;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class SmartBearAccountFragment extends Fragment {
 
@@ -33,17 +35,17 @@ public class SmartBearAccountFragment extends Fragment {
 
         menu.findItem(R.id.smart_bear_account_fragment_menu_advanced).setOnMenuItemClickListener(item -> {
             Navigation.findNavController(requireView()).navigate(SmartBearAccountFragmentDirections.actionSmartBearAccountFragmentToAdvancedSmartBearAccountGateFragment());
-
             return true;
         });
 
         menu.findItem(R.id.smart_bear_account_fragment_menu_log_out).setOnMenuItemClickListener(item -> {
             final AccountsViewModel viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
-
             viewModel.disableSmartBearAccount();
 
-            Navigation.findNavController(requireView()).navigate(SmartBearAccountFragmentDirections.actionSmartBearAccountFragmentToAccountsFragment());
+            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+            workOrchestrator.cancelSmartBearUploader();
 
+            Navigation.findNavController(requireView()).navigate(SmartBearAccountFragmentDirections.actionSmartBearAccountFragmentToAccountsFragment());
             return true;
         });
     }

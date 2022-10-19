@@ -294,15 +294,13 @@ public class ChartFunctions {
     public void setAreaChart(LineChart lineChart, List<SummaryDetailUtil> list1, List<SummaryDetailUtil> list2, String[] labels, int max){
         float[] values1 = new float[max];
         float[] values2 = new float[max];
-        float[] offset = new float[max];
 
         for (SummaryDetailUtil data : list1) {
             values1[Math.round(data.getTime())] = data.getValue1();
-            offset[Math.round(data.getTime())] = data.getValue1();
         }
 
         for (SummaryDetailUtil data : list2) {
-            values2[Math.round(data.getTime())] = data.getValue1() + offset[Math.round(data.getTime())];
+            values2[Math.round(data.getTime())] = data.getValue1() + values1[Math.round(data.getTime())];
         }
 
         int currentTime = 0;
@@ -320,9 +318,8 @@ public class ChartFunctions {
             entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 3600000));
             currentTime++;
         }
-
-        LineDataSet lineDataSet1 = setLineDataSet(entries1, labels[0], ContextCompat.getColor(context, R.color.colorS4HOrange));
-        LineDataSet lineDataSet2 = setLineDataSet(entries2, labels[1], ContextCompat.getColor(context, R.color.colorS4HLightBlue));
+        LineDataSet lineDataSet1 = setLineDataSet(entries1, labels[0], ContextCompat.getColor(context, R.color.colorS4HLightBlue));
+        LineDataSet lineDataSet2 = setLineDataSet(entries2, labels[1], ContextCompat.getColor(context, R.color.colorS4HOrange));
 
         ArrayList<ILineDataSet> dataSet = new ArrayList<>();
         dataSet.add(lineDataSet2);

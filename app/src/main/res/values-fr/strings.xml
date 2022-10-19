@@ -404,6 +404,18 @@
     <string name="report_lumbar_training_repetitions_label">Répétitions</string>
     <string name="report_lumbar_training_duration_label">Durée</string>
 
+    <!-- Strings used for the Smart4Health fragment -->
+    <string name="smart4health_description">Some information will be displayed here.</string>
+    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
+    <string name="smart4health_information_to_send">Information to send in the reports:</string>
+    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
+    <string name="smart4health_activity">Activity</string>
+    <string name="smart4health_blood_pressure">Blood Pressure</string>
+    <string name="smart4health_heart_rate">Heart Rate</string>
+    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_posture">Posture</string>
+    
     <!-- Strings used in summary detail fragments-->
     <string name="summary_detail_time_today">Aujourd\\'hui</string>
     <string name="summary_detail_time_last_week">La semaine dernière</string>
@@ -487,5 +499,11 @@
     <string name="bugreport_positive_button">Envoyer</string>
     <string name="bugreport_negative_button">Ignorer</string>
     <string name="bugreport_confirmation">Rapport envoyé</string>
+
+    <string name="fragment_device_unsupported_message">L\'appareil n\'est pas pris en charge</string>
+    <string name="fragment_device_unsupported_name">Nom</string>
+    <string name="fragment_device_unsupported_address">Adresse</string>
+    <string name="fragment_device_unsupported_device_button_text">Arrière</string>
+
 
 </resources>

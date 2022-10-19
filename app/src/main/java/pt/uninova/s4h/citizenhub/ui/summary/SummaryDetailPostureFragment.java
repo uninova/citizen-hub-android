@@ -99,7 +99,7 @@ public class SummaryDetailPostureFragment extends Fragment {
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(getContext());
         Observer<List<SummaryDetailUtil>> observerCorrect = correct -> {
             Observer<List<SummaryDetailUtil>> observerIncorrect = incorrect -> {
-                chartFunctions.setAreaChart(lineChart, incorrect, correct, new String[]{getString(R.string.summary_detail_posture_incorrect), getString(R.string.summary_detail_posture_correct)}, 24);
+                chartFunctions.setAreaChart(lineChart, correct, incorrect, new String[]{getString(R.string.summary_detail_posture_correct), getString(R.string.summary_detail_posture_incorrect)}, 24);
                 chartFunctions.setPieChart(pieChart, correct, incorrect);
             };
             postureMeasurementRepository.readLastDayIncorrectPosture(LocalDate.now(), observerIncorrect);

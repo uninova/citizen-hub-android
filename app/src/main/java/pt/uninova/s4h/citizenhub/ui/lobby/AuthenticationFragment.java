@@ -4,6 +4,7 @@ import static care.data4life.sdk.Data4LifeClient.D4L_AUTH;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
+import androidx.work.WorkManager;
 
 import care.data4life.sdk.Data4LifeClient;
 import care.data4life.sdk.lang.D4LException;
@@ -25,6 +28,7 @@ import pt.uninova.s4h.citizenhub.BuildConfig;
 import pt.uninova.s4h.citizenhub.MainActivity;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
+import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 
 public class AuthenticationFragment extends Fragment {
     private Button loginButton;
@@ -87,6 +91,8 @@ public class AuthenticationFragment extends Fragment {
     private void authenticate() {
         final Data4LifeClient client = Data4LifeClient.getInstance();
 
+        WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+
         client.isUserLoggedIn(new ResultListener<Boolean>() {
             @Override
             public void onSuccess(Boolean value) {
@@ -98,7 +104,12 @@ public class AuthenticationFragment extends Fragment {
 
                     activity.startActivity(intent);
                     activity.finish();
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    if (preferences.getBoolean("account.smart4health.report.auto-upload", true))
+                        workOrchestrator.enqueueSmart4HealthUploader();
                 } else {
+                    workOrchestrator.cancelSmart4HealthUploader();
                     //    loginButton.setVisibility(View.VISIBLE);
                 }
             }
