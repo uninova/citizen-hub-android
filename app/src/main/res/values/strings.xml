@@ -497,23 +497,31 @@
     <string name="summary_detail_time_today">Today</string>
     <string name="summary_detail_time_last_week">Last Week</string>
     <string name="summary_detail_time_last_month">Last Month</string>
+    <string name="summary_detail_time_hours">Hour</string>
+    <string name="summary_detail_time_days">Day</string>
 
     <string name="summary_detail_activity">Activity</string>
     <string name="summary_detail_activity_steps">Steps</string>
     <string name="summary_detail_activity_calories">Calories</string>
+    <string name="summary_detail_activity_calories_with_units">Calories (kcal)</string>
     <string name="summary_detail_activity_distance">Distance</string>
+    <string name="summary_detail_activity_distance_with_units">Distance (m)</string>
+
 
     <string name="summary_detail_posture">Posture</string>
+    <string name="summary_detail_posture_with_units">Posture (%)</string>
     <string name="summary_detail_posture_correct">Correct</string>
     <string name="summary_detail_posture_incorrect">Incorrect</string>
     <string name="summary_detail_posture_average">Average</string>
 
-    <string name="summary_detail_hear_rate">Heart Rate</string>
+    <string name="summary_detail_heart_rate">Heart Rate</string>
+    <string name="summary_detail_heart_rate_with_units">Heart Rate (bpm)</string>
     <string name="summary_detail_heart_rate_maximum">Max</string>
     <string name="summary_detail_heart_rate_minimum">Min</string>
     <string name="summary_detail_heart_rate_average">Average</string>
 
     <string name="summary_detail_blood_pressure">Blood Pressure</string>
+    <string name="summary_detail_blood_pressure_with_units">Blood Pressure (mmHg)</string>
     <string name="summary_detail_blood_pressure_systolic">Systolic</string>
     <string name="summary_detail_blood_pressure_diastolic">Diastolic</string>
     <string name="summary_detail_blood_pressure_mean">Mean</string>

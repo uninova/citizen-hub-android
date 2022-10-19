@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,18 @@ public class SummaryFragment extends ServiceFragment {
         if (getService() != null) {
             onServiceConnected();
         }
+
+        Button button = view.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_blood_pressure_fragment);
+                //Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment);
+                Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment);
+            }
+        });
+
     }
 
     private void onDailyBloodPressureMeasurementUpdate(List<BloodPressureMeasurementRecord> bloodPressureMeasurementRecords) {
