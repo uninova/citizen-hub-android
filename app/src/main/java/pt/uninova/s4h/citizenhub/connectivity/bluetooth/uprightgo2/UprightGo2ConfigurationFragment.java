@@ -17,10 +17,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -118,7 +118,7 @@ private boolean test = false;
 
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //Posture Correction Vibration ON/OFF
-        Switch postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
+        SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         postureCorrectionVibration.setChecked(sharedPreferences.getBoolean("Posture Correction Vibration",
@@ -136,33 +136,49 @@ private boolean test = false;
             }
         });
         //Vibration Angle (1 (strict) to 6 (relaxed))
-        SeekBar correctionAngle = view.findViewById(R.id.seekbarVibrationAngle);
-        correctionAngle.setMax(5);
-        correctionAngle.incrementProgressBy(1);
-        correctionAngle.setProgress(0);
-        correctionAngle.setProgress(sharedPreferences.
-                getInt("Vibration Angle", -1));
-        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                editor.putInt("Vibration Angle", correctionAngle.getProgress());
+
+        Spinner spinnerAngle = view.findViewById(R.id.spinnerVibrationAngle);
+        spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
+        spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do a default thingy
             }
         });
+//        SeekBar correctionAngle = view.findViewById(R.id.seekbarVibrationAngle);
+//        correctionAngle.setMax(5);
+//        correctionAngle.incrementProgressBy(1);
+//        correctionAngle.setProgress(0);
+//        correctionAngle.setProgress(sharedPreferences.
+//                getInt("Vibration Angle", -1));
+//        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                editor.putInt("Vibration Angle", correctionAngle.getProgress());
+//                editor.apply();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            }
+//        });
         //Vibration Interval (5, 15, 30 or 60 seconds)
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                editor.putInt("Vibration Interval", spinnerInterval.getSelectedItemPosition());
+                editor.putInt("Vibration Interval", (spinnerInterval.getSelectedItemPosition()));
+                System.out.println("Spinner item "+ spinnerInterval.getSelectedItem() + "interval:"  +spinnerInterval.getSelectedItemPosition() + "spinner i & L"
+                        + i + " " + l);
                 editor.apply();
             }
 
@@ -177,7 +193,7 @@ private boolean test = false;
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                editor.putInt("Vibration Pattern", spinnerPattern.getSelectedItemPosition());
+                editor.putInt("Vibration Pattern", (spinnerPattern.getSelectedItemPosition()));
                 editor.apply();
             }
 
@@ -186,26 +202,41 @@ private boolean test = false;
                 //do a default thingy
             }
         });
-        SeekBar correctionStrength = view.findViewById(R.id.seekbarVibrationStrength);
-        correctionStrength.setMax(2);
-        correctionStrength.incrementProgressBy(1);
-        correctionStrength.setProgress(0);
-        correctionStrength.setProgress(sharedPreferences.
-                getInt("Vibration Strength", -1));
-        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                editor.putInt("Vibration Strength", correctionStrength.getProgress());
+//        SeekBar correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
+//        correctionStrength.setMax(2);
+//        correctionStrength.incrementProgressBy(1);
+//        correctionStrength.setProgress(0);
+//        correctionStrength.setProgress(sharedPreferences.
+//                getInt("Vibration Strength", -1));
+//        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                editor.putInt("Vibration Strength", correctionStrength.getProgress());
+//                editor.apply();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            }
+//        });
+
+        Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
+        correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
+        correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                editor.putInt("Vibration Strength", (correctionStrength.getSelectedItemPosition()));
                 editor.apply();
+                System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
         // Perform Calibration (Trigger)

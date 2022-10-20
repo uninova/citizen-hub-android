@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub;
 
+import static android.widget.AdapterView.*;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,6 +22,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -113,7 +116,7 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
 
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //Posture Correction Vibration ON/OFF
-        Switch postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
+        SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         postureCorrectionVibration.setChecked(sharedPreferences.getBoolean("Posture Correction Vibration",
@@ -131,33 +134,50 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
             }
         });
         //Vibration Angle (1 (strict) to 6 (relaxed))
-        SeekBar correctionAngle = view.findViewById(R.id.seekbarVibrationAngle);
-        correctionAngle.setMax(5);
-        correctionAngle.incrementProgressBy(1);
-        correctionAngle.setProgress(0);
-        correctionAngle.setProgress(sharedPreferences.
-                getInt("Vibration Angle", -1));
-        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                editor.putInt("Vibration Angle", correctionAngle.getProgress());
+        Spinner correctionAngle = view.findViewById(R.id.spinnerVibrationAngle);
+        correctionAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
+        correctionAngle.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                editor.putInt("Vibration Angle", i);
+                System.out.println("SELECTED ANGLE:" + correctionAngle.getSelectedItemPosition());
                 editor.apply();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+
+
+//        correctionAngle.setMax(5);
+//        correctionAngle.incrementProgressBy(1);
+//        correctionAngle.setProgress(0);
+//        correctionAngle.setProgress(sharedPreferences.
+//                getInt("Vibration Angle", -1));
+//        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                editor.putInt("Vibration Angle", correctionAngle.getProgress());
+//                editor.apply();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            }
+//        });
         //Vibration Interval (5, 15, 30 or 60 seconds)
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
-        spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerInterval.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                editor.putInt("Vibration Interval", spinnerInterval.getSelectedItemPosition());
+                editor.putInt("Vibration Interval", i);
+                System.out.println("Spinner item "+ spinnerInterval.getSelectedItem() + "interval:"  +spinnerInterval.getSelectedItemPosition() + "spinner i & L"
+                + i + " " + l);
                 editor.apply();
             }
 
@@ -170,9 +190,9 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
         // 5 (heartbeat), 6 (tuk tuk), 7 (ecstatic), 8 (muzzle))
         Spinner spinnerPattern = view.findViewById(R.id.spinnerVibrationPattern);
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
-        spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerPattern.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                editor.putInt("Vibration Pattern", spinnerPattern.getSelectedItemPosition());
+                editor.putInt("Vibration Pattern", i);
                 editor.apply();
             }
 
@@ -181,54 +201,70 @@ public class DeviceConfigurationAdvancedFragment extends DeviceConfigurationFrag
                 //do a default thingy
             }
         });
-        SeekBar correctionStrength = view.findViewById(R.id.seekbarVibrationStrength);
-        correctionStrength.setMax(2);
-        correctionStrength.incrementProgressBy(1);
-        correctionStrength.setProgress(0);
-        correctionStrength.setProgress(sharedPreferences.
-                getInt("Vibration Strength", -1));
-        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                editor.putInt("Vibration Strength", correctionStrength.getProgress());
+//        SeekBar correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
+        Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
+        correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
+        correctionStrength.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                editor.putInt("Vibration Strength", i);
                 editor.apply();
+                System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
+//
+//        correctionStrength.setMax(2);
+//        correctionStrength.incrementProgressBy(1);
+//        correctionStrength.setProgress(0);
+//        correctionStrength.setProgress(sharedPreferences.
+//                getInt("Vibration Strength", -1));
+//        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                editor.putInt("Vibration Strength", correctionStrength.getProgress());
+//                editor.apply();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            }
+//        });
+            // Perform Calibration (Trigger)
+//        Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
 
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        // Perform Calibration (Trigger)
-        Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
+//        buttonCalibration.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                new AlertDialog.Builder(getContext())
+//                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+//                        .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+//                                getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+//                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+//
+//                                agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
+//
+//                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
+//
+//                                handler.sendMessageDelayed(new Message(), 2500);
+//                            }
+//                        })
+//                        .setIcon(R.drawable.img_citizen_hub_logo_png)
+//                        .show();
+//            }
+//        });
 
-
-        buttonCalibration.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
-                        .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
-                                getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
-                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
-
-                                agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
-
-                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
-
-                                handler.sendMessageDelayed(new Message(), 2500);
-                            }
-                        })
-                        .setIcon(R.drawable.img_citizen_hub_logo_png)
-                        .show();
-            }
         });
     }
 }
