@@ -259,6 +259,15 @@
     <string name="lumbar_icon">Lumbar Icon</string>
     <string name="fragment_report_lumbar_extension_training_weight_textview">"Weight: "</string>
     <string name="fragment_report_lumbar_training_weight_value" translatable="false">0</string>
+
+    <string-array name="spinner_uprightgo2_angle">
+        <item>Very Strict</item>
+        <item>Strict</item>
+        <item>Average</item>
+        <item>Relaxed</item>
+        <item>Very Relaxed</item>
+    </string-array>
+
     <string-array name="spinner_uprightgo2_interval">
         <item>5</item>
         <item>15</item>
@@ -275,6 +284,12 @@
         <item>Tuk tuk</item>
         <item>Ecstatic</item>
         <item>Muzzle</item>
+    </string-array>
+
+    <string-array name="spinner_uprightgo2_strength">
+        <item>Gentle</item>
+        <item>Normal</item>
+        <item>Relaxed</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>

@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
-                style="@style/switchCompatStyle"
+                style="@style/AdvancedConfigurationFragment.switchCompatStyle"
                 android:id="@+id/switchFeature"
                 android:checked="false"
                 />
