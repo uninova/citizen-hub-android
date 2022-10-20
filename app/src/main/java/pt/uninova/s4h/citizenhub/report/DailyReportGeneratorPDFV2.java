@@ -1,5 +1,6 @@
 package pt.uninova.s4h.citizenhub.report;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,8 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import androidx.core.content.res.ResourcesCompat;
+
+import com.github.mikephil.charting.charts.BarChart;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -195,6 +198,9 @@ public class DailyReportGeneratorPDFV2 {
                 }
                 if (!hasItem) {
                     y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
+                    if(notWorkTimeLabel == Measurement.TYPE_DISTANCE_SNAPSHOT){
+                        y = drawCharts(canvas[0], canvasWriter[0], y);
+                    }
                 }
             }
             drawRect(canvas[0], y, rectHeight);
@@ -374,6 +380,18 @@ public class DailyReportGeneratorPDFV2 {
         }
         y += 5;
         return y;
+    }
+
+    private int drawCharts(Canvas canvas, CanvasWriter canvasWriter, int y){
+        //new Thread(() -> ((Activity) context).runOnUiThread(() -> {
+            View chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
+            chart.measure(200, 200);
+            chart.layout(0, 0, 2250, 1400);
+            canvas.translate(120, y);
+            chart.draw(canvas);
+            canvasWriter.draw();
+        //})).start();
+        return y + 200;
     }
 
     private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date){
