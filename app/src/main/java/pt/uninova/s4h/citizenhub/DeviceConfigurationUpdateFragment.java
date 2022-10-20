@@ -12,15 +12,12 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.data.Device;
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -31,7 +28,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
             loadSupportedFeatures();
-            setChildrenEnabledEnabled(advancedConfigurationLayout, value.getNewState() == 1);
+            setChildrenEnabled(advancedConfigurationLayout, value.getNewState() == 1);
 
         });
 
@@ -93,7 +90,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         super.onResume();
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
         if(model.getSelectedDeviceAgent()!=null) {
-            setChildrenEnabledEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
+            setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
         }
         }
 
@@ -137,12 +134,12 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //            });
         }
     }
-    private static void setChildrenEnabledEnabled(ViewGroup layout, boolean state) {
+    private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
-                setChildrenEnabledEnabled((ViewGroup) child,state);
+                setChildrenEnabled((ViewGroup) child,state);
             } else {
                 child.setEnabled(state);
             }
