@@ -46,8 +46,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         updateDevice.setVisibility(View.GONE);
 
 
-
-//        enableAdvancedConfigurations();
         setupViews(view);
         setupText();
         loadSupportedFeatures();
@@ -62,15 +60,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
         return view;
     }
-
-//    protected void enableAdvancedConfigurations() {
-//        final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-//        final Device device = model.getSelectedDevice().getValue();
-//        if (device.getName().equals("UprightGO2"))
-//            advancedDevice.setVisibility(View.VISIBLE);
-//        else
-//            advancedDevice.setVisibility(View.GONE);
-//    }
 
 
     @Override
@@ -154,6 +143,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             } else {
                 child.setEnabled(state);
             }
+
+
         }
     }
 
