@@ -254,7 +254,6 @@ private boolean test = false;
                             public void onClick(DialogInterface dialogInterface, int i) {
 //
                                 UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
-//                                agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
 //                                //Send Message vibration settings
 //                                UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
@@ -263,13 +262,24 @@ private boolean test = false;
                                 System.out.println("ONCLICKKK" + agent + agent.getName());
 
                                 //default - first vibration settings when adding device
-                                boolean vibration = true;
-                                int angle = 1;
-                                int interval = 5;
-                                int pattern = 0;
-                                boolean showPattern = true;
-                                int strength = 1;
-                                //TODO IR BUSCAR AOS LISTENERS
+                                boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+                                int angle = sharedPreferences.getInt("Vibration Angle", 1);
+                                int interval = sharedPreferences.getInt("Vibration Interval", 5);
+                                int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+                                boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+                                int strength = sharedPreferences.getInt("Vibration Strength", 0);
+
+                                //some value adaptation
+                                int time = 5;
+                                if (interval == 0)
+                                    time = 5;
+                                else if (interval == 1)
+                                    time = 15;
+                                else if (interval == 2)
+                                    time = 30;
+                                else if (interval == 3)
+                                    time = 60;
+
                                 //Send Message vibration settings
                                 agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
 
