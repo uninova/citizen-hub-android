@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub.report;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
@@ -19,16 +18,19 @@ import android.text.TextPaint;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import com.github.mikephil.charting.charts.BarChart;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
+import pt.uninova.s4h.citizenhub.ui.summary.ChartFunctions;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DailyReportGeneratorPDFV2 {
@@ -150,14 +152,22 @@ public class DailyReportGeneratorPDFV2 {
         int y = 200;
 
         for (Group groupNotWorkTime : groupsNotWorkTime) {
-            if(!verifyGroupSize(groupNotWorkTime, y, false)){
+            if (!verifyGroupSize(groupNotWorkTime, y, false)) {
                 writePage(document, page[0], canvasWriter[0]);
                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
             }
             int rectHeight = y - 20;
-            int notWorkTimeLabel = ((MeasurementTypeLocalizedResource)groupNotWorkTime.getLabel()).getMeasurementType();
+            int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
             drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
             y += 25;
+
+            switch(notWorkTimeLabel){
+                case Measurement.TYPE_BLOOD_PRESSURE: break;
+                case Measurement.TYPE_DISTANCE_SNAPSHOT: break;
+                case Measurement.TYPE_HEART_RATE: break;
+                case Measurement.TYPE_LUMBAR_EXTENSION_TRAINING: break;
+                case Measurement.TYPE_POSTURE: break;
+            }
 
             if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                 for (Group group : groupNotWorkTime.getGroupList()) {
@@ -175,7 +185,7 @@ public class DailyReportGeneratorPDFV2 {
                     int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                     if (notWorkTimeLabel == workTimeLabel) {
                         for (Group group : groupWorkTime.getGroupList()) {
-                            if(!verifyGroupSize(groupWorkTime, y, true)){
+                            if (!verifyGroupSize(groupWorkTime, y, true)) {
                                 drawRect(canvas[0], y + 38, rectHeight);
                                 writePage(document, page[0], canvasWriter[0]);
                                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -191,15 +201,15 @@ public class DailyReportGeneratorPDFV2 {
             } else {
                 boolean hasItem = false;
                 for (Group groupWorkTime : groupsWorkTime) {
-                    if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType()) {
+                    if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
                         hasItem = true;
                         y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
                     }
                 }
                 if (!hasItem) {
                     y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
-                    if(notWorkTimeLabel == Measurement.TYPE_DISTANCE_SNAPSHOT){
-                        y = drawCharts(canvas[0], canvasWriter[0], y);
+                    if (notWorkTimeLabel == Measurement.TYPE_DISTANCE_SNAPSHOT) {
+                        y = drawCharts(canvas[0], (List<SummaryDetailUtil>) dailySteps, y, true);
                     }
                 }
             }
@@ -207,7 +217,7 @@ public class DailyReportGeneratorPDFV2 {
         }
         for (Group groupWorkTime : groupsWorkTime) {
             boolean hasGroup = false;
-            int label = ((MeasurementTypeLocalizedResource)groupWorkTime.getLabel()).getMeasurementType();
+            int label = ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType();
             for (Group groupNotWorkTime : groupsNotWorkTime) {
                 if (label == ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType()) {
                     hasGroup = true;
@@ -215,7 +225,7 @@ public class DailyReportGeneratorPDFV2 {
                 }
             }
             if (!hasGroup) {
-                if(!verifyGroupSize(groupWorkTime, y, false)) {
+                if (!verifyGroupSize(groupWorkTime, y, false)) {
                     writePage(document, page[0], canvasWriter[0]);
                     y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
                 }
@@ -235,8 +245,7 @@ public class DailyReportGeneratorPDFV2 {
                         y = drawComplexGroups(canvasWriter[0], group, 120, y);
                     }
                     y += 38;
-                }
-                else {
+                } else {
                     y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 }
                 drawRect(canvas[0], y, rectHeight);
@@ -251,14 +260,14 @@ public class DailyReportGeneratorPDFV2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         byte[] outByteArray = out.toByteArray();
         document.close();
         observerReportPDF.observe(outByteArray);
 
     }
 
-    private void drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date){
+    private void drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date) {
         /* CitizenHub Logo */
         final Drawable citizenHubLogo = ResourcesCompat.getDrawable(res, R.drawable.ic_citizen_hub_logo, null);
 
@@ -290,7 +299,7 @@ public class DailyReportGeneratorPDFV2 {
         canvas.translate(-60, -805);
     }
 
-    private void drawGroupHeader(Canvas canvas, CanvasWriter canvasWriter, MeasurementKindLocalization measurementKindLocalization, int label, int y, int rectHeight){
+    private void drawGroupHeader(Canvas canvas, CanvasWriter canvasWriter, MeasurementKindLocalization measurementKindLocalization, int label, int y, int rectHeight) {
         Path path = new Path();
         path.addRoundRect(new RectF(50, rectHeight, 550, rectHeight + 25), corners, Path.Direction.CW);
         canvas.drawPath(path, rectFillPaint);
@@ -299,37 +308,37 @@ public class DailyReportGeneratorPDFV2 {
         canvasWriter.addText("MyWork", 500, y - 4, whiteItalicTextPaint);
     }
 
-    private void drawRect(Canvas canvas, int y, int rectHeight){
+    private void drawRect(Canvas canvas, int y, int rectHeight) {
         RectF rectAround = new RectF(50, rectHeight, 550, y - 50);
         canvas.drawRoundRect(rectAround, 12, 12, rectPaint);
     }
 
-    private boolean verifyGroupSize(Group group, int y, boolean complex){
+    private boolean verifyGroupSize(Group group, int y, boolean complex) {
         y += 25;
-        if(group.getGroupList().size() == 0) {
-            if (complex){
-                y += 20 + 20 * group.getItemList().size() + 5 +  38;
+        if (group.getGroupList().size() == 0) {
+            if (complex) {
+                y += 20 + 20 * group.getItemList().size() + 5 + 38 + 370;
                 return y < 842;
             }
-            y += 20 * group.getItemList().size() + 5;
+            y += 20 * group.getItemList().size() + 5 + 370;
             return y < 842;
         }
         y += 20 + 20 * group.getItemList().size() + 5 + 38;
         return y < 842;
     }
 
-    private int drawSimpleGroups(CanvasWriter canvasWriter, Group firstGroup, Group secondGroup, int y){
-        if(firstGroup != null & secondGroup != null){
+    private int drawSimpleGroups(CanvasWriter canvasWriter, Group firstGroup, Group secondGroup, int y) {
+        if (firstGroup != null & secondGroup != null) {
             for (Item itemNotWorkTime : firstGroup.getItemList()) {
                 for (Item itemWorkTime : secondGroup.getItemList()) {
                     if (itemNotWorkTime.getLabel().getLocalizedString().equals(itemWorkTime.getLabel().getLocalizedString())) {
                         canvasWriter.addText(itemNotWorkTime.getLabel().getLocalizedString(), 90, y, darkTextPaintAlignLeft);
                         canvasWriter.addText(itemNotWorkTime.getValue().getLocalizedString(), 350, y, darkTextPaintAlignRight);
-                        if(!itemNotWorkTime.getUnits().getLocalizedString().equals("-")){
+                        if (!itemNotWorkTime.getUnits().getLocalizedString().equals("-")) {
                             canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), 360, y, darkItalicTextPaint);
                         }
                         canvasWriter.addText(itemWorkTime.getValue().getLocalizedString(), 470, y, darkTextPaintAlignRight);
-                        if(!itemWorkTime.getUnits().getLocalizedString().equals("-")){
+                        if (!itemWorkTime.getUnits().getLocalizedString().equals("-")) {
                             canvasWriter.addText(itemNotWorkTime.getUnits().getLocalizedString(), 480, y, darkItalicTextPaint);
                         }
                         y += 20;
@@ -366,14 +375,14 @@ public class DailyReportGeneratorPDFV2 {
         return y;
     }
 
-    private int drawComplexGroups(CanvasWriter canvasWriter, Group group, int x, int y){
+    private int drawComplexGroups(CanvasWriter canvasWriter, Group group, int x, int y) {
         String timestamp = group.getLabel().getLocalizedString();
         canvasWriter.addText(timestamp.substring(timestamp.indexOf("T") + 1, timestamp.indexOf("Z")), 75, y, darkTextPaintAlignLeft);
         y += 20;
         for (Item item : group.getItemList()) {
             canvasWriter.addText(item.getLabel().getLocalizedString(), 90, y, darkTextPaintAlignLeft);
             canvasWriter.addText(item.getValue().getLocalizedString(), x + 350, y, darkTextPaintAlignRight);
-            if(!item.getUnits().getLocalizedString().equals("-"))
+            if (!item.getUnits().getLocalizedString().equals("-"))
                 canvasWriter.addText(item.getUnits().getLocalizedString(), x + 360, y, darkItalicTextPaint);
             canvasWriter.addText("-", 470 - x, y, darkTextPaintAlignRight);
             y += 20;
@@ -382,19 +391,31 @@ public class DailyReportGeneratorPDFV2 {
         return y;
     }
 
-    private int drawCharts(Canvas canvas, CanvasWriter canvasWriter, int y){
-        //new Thread(() -> ((Activity) context).runOnUiThread(() -> {
-            View chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
+    private int drawCharts(Canvas canvas, List<SummaryDetailUtil> data, int y, boolean drawBarChart){
+        ChartFunctions chartFunctions = new ChartFunctions(context);
+        Looper.prepare();
+        View chart;
+        if(drawBarChart){
+            chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
             chart.measure(200, 200);
             chart.layout(0, 0, 2250, 1400);
-            canvas.translate(120, y);
-            chart.draw(canvas);
-            canvasWriter.draw();
-        //})).start();
-        return y + 200;
+            chartFunctions.setupBarChart(chart.findViewById(R.id.bar_chart), null);
+            chartFunctions.setBarChartData(chart.findViewById(R.id.bar_chart), data, context.getString(R.string.summary_detail_activity_steps), 24);
+        }
+        else{
+            chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
+            chart.measure(200, 200);
+            chart.layout(0, 0, 2250, 1400);
+            chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
+            chartFunctions.setLineChartData(chart.findViewById(R.id.line_chart), data, new String[]{context.getString(R.string.summary_detail_activity_steps)}, 24);
+        }
+        canvas.translate(65, y - 50);
+        chart.draw(canvas);
+        canvas.translate(-65, 50 - y);
+        return y + 370;
     }
 
-    private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date){
+    private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date) {
         page[0] = document.startPage(pageInfo);
         canvas[0] = page[0].getCanvas();
         canvasWriter[0] = new CanvasWriter(canvas[0]);
@@ -402,8 +423,9 @@ public class DailyReportGeneratorPDFV2 {
         return 200;
     }
 
-    private void writePage(PdfDocument document, PdfDocument.Page page, CanvasWriter canvasWriter){
+    private void writePage(PdfDocument document, PdfDocument.Page page, CanvasWriter canvasWriter) {
         canvasWriter.draw();
         document.finishPage(page);
     }
+
 }

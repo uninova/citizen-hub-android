@@ -74,7 +74,7 @@ public class ChartFunctions {
     //********************************************************************************************************************//
 
     // This section has functions used to define some characteristics of the different charts that cannot done in the layout //
-    public void setupBarChart(BarChart barChart,  ChartMarkerView chartMarkerView) {
+    public void setupBarChart(BarChart barChart, ChartMarkerView chartMarkerView) {
         barChart.setDrawGridBackground(false);
         barChart.setFitBars(true);
         barChart.getDescription().setEnabled(false);
