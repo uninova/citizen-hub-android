@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -44,21 +45,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         advancedConfigurationLayout = view.findViewById(R.id.layout_advanced_configurations_container);
         updateDevice.setVisibility(View.GONE);
 
-        List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        if(fragmentList!=null) {
-            for (int i = 0; i < fragmentList.size(); i++) {
-                Fragment newFragment = null;
-                try {
-                    newFragment = fragmentList.get(i).getClass().newInstance();
-                } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                    e.printStackTrace();
-                }
-                assert newFragment != null;
-                ft.add(R.id.layout_advanced_configurations_container, newFragment);
-            }
-        }
-        ft.commit();
+
 
 //        enableAdvancedConfigurations();
         setupViews(view);
@@ -85,12 +72,34 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //            advancedDevice.setVisibility(View.GONE);
 //    }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        if(fragmentList!=null) {
+            for (int i = 0; i < fragmentList.size(); i++) {
+                Fragment newFragment = null;
+                try {
+                    newFragment = fragmentList.get(i).getClass().newInstance();
+                } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
+                assert newFragment != null;
+                ft.add(R.id.layout_advanced_configurations_container, newFragment);
+            }
+        }
+        ft.commitNow();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
         if(model.getSelectedDeviceAgent()!=null) {
-            setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == 1);
+            setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
         }
         }
 
@@ -136,10 +145,12 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     }
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
+        System.out.println("NUMERO" + layout.getChildCount());
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
                 setChildrenEnabled((ViewGroup) child,state);
+                System.out.println("CHILD:" + child.getId() + "state" + child.isEnabled());
             } else {
                 child.setEnabled(state);
             }
