@@ -32,7 +32,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
     protected ViewStub deviceAdvancedSettings;
     protected View deviceAdvancedSettingsInflated;
-
     private ProgressDialog dialog;
     private final Handler handler = new Handler() {
         @Override
