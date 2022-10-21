@@ -285,17 +285,6 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/device_configuration_advanced_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAdvancedFragment"
-        android:label="@string/fragment_device_configuration_label"
-        tools:layout="@layout/fragment_device_configuration_advanced">
-
-        <action
-            android:id="@+id/action_device_configuration_advanced_fragment_to_device_configuration_update_fragment"
-            app:destination="@+id/device_configuration_update_fragment" />
-
-    </fragment>
 
     <fragment
         android:id="@+id/settings_fragment"

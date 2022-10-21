@@ -56,40 +56,6 @@ private boolean test = false;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
 
-//        if(test==false) {
-//            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-//                    .setTitle(R.string.fragment_device_configuration_sensor_calibration_text)
-//                    .setMessage(this.getString(R.string.fragment_device_configuration_warning_calibration_text) +
-//                            this.getString(R.string.fragment_device_configuration_warning_calibration_text2))
-//                    .setPositiveButton(R.string.fragment_device_configuration_dialog_option_calibrate, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_dialog_calibrating_message), false);
-//
-//                            UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
-//
-//                            //Send Message calibration
-//                            uprightGo2Agent.enableProtocol(new UprightGo2CalibrationProtocol(uprightGo2Agent));
-//
-//                            //default - first vibration settings when adding device
-//                            boolean vibration = true;
-//                            int angle = 1;
-//                            int interval = 5;
-//                            int pattern = 0;
-//                            boolean showPattern = true;
-//                            int strength = 1;
-//
-//                            //Send Message vibration settings
-//                            uprightGo2Agent.enableProtocol(new UprightGo2VibrationProtocol(uprightGo2Agent, vibration, angle, interval, showPattern, pattern, strength));
-//
-//                            handler.sendMessageDelayed(new Message(), 2500);
-//
-//                        }
-//                    })
-//                    .setIcon(R.drawable.img_citizen_hub_logo_png)
-//                    .show();
-//            test=true;
-//        }
         enableAdvancedConfigurations(view, model);
         return view;
     }
@@ -149,28 +115,7 @@ private boolean test = false;
                 //do a default thingy
             }
         });
-//        SeekBar correctionAngle = view.findViewById(R.id.seekbarVibrationAngle);
-//        correctionAngle.setMax(5);
-//        correctionAngle.incrementProgressBy(1);
-//        correctionAngle.setProgress(0);
-//        correctionAngle.setProgress(sharedPreferences.
-//                getInt("Vibration Angle", -1));
-//        correctionAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-//                editor.putInt("Vibration Angle", correctionAngle.getProgress());
-//                editor.apply();
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//            }
-//        });
-        //Vibration Interval (5, 15, 30 or 60 seconds)
+
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -201,28 +146,6 @@ private boolean test = false;
                 //do a default thingy
             }
         });
-//        SeekBar correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
-//        correctionStrength.setMax(2);
-//        correctionStrength.incrementProgressBy(1);
-//        correctionStrength.setProgress(0);
-//        correctionStrength.setProgress(sharedPreferences.
-//                getInt("Vibration Strength", -1));
-//        correctionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-//                editor.putInt("Vibration Strength", correctionStrength.getProgress());
-//                editor.apply();
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//            }
-//        });
 
         Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));

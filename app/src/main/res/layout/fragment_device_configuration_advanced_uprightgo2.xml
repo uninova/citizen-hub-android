@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:layout_height="match_parent">
+    android:paddingRight="20dp">
 
     <View
         android:id="@+id/divider2"
@@ -35,18 +34,16 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:padding="10dp"
-        android:background=""
         app:layout_constraintBottom_toTopOf="@+id/layoutPostureCorrection"
         app:layout_constraintEnd_toEndOf="@+id/layoutVibrationAngle"
-        app:layout_constraintStart_toStartOf="@+id/layoutPostureCorrection"
-        app:layout_constraintTop_toBottomOf="@id/fragment_device_configuration_advanced_uprightgo2" />
+        app:layout_constraintStart_toStartOf="@+id/layoutPostureCorrection" />
 
 
     <LinearLayout
         android:id="@+id/layoutPostureCorrection"
         android:layout_width="match_parent"
-        android:dividerPadding="10dp"
         android:layout_height="wrap_content"
+        android:dividerPadding="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/divider">
 
@@ -55,51 +52,53 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:text="@string/fragment_device_configuration_advanced_uprightgo2_posture_correction_text" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="end"
             android:layout_weight="0.8"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchPostureCorrection"
                 style="@style/AdvancedConfigurationFragment.switchCompatStyle"
                 android:layout_width="wrap_content"
-                android:gravity="center"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutVibrationAngle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layoutPostureCorrection"
-        android:layout_marginTop="20dp">
+        app:layout_constraintTop_toBottomOf="@id/layoutPostureCorrection">
 
         <TextView
+            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
-        android:gravity="end"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spinnerVibrationAngle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
             android:gravity="end"
-            android:layout_height="wrap_content"
-            android:entries="@array/spinner_uprightgo2_angle"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerVibrationAngle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/spinner_uprightgo2_angle"
+                android:gravity="end"
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
         </LinearLayout>
 
     </LinearLayout>
@@ -108,18 +107,17 @@
         android:id="@+id/layoutVibrationInterval"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationAngle"
-        android:layout_marginTop="20dp">
+        app:layout_constraintTop_toBottomOf="@id/layoutVibrationAngle">
 
         <TextView
+            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_interval_text"
-            />
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_interval_text" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -132,61 +130,28 @@
                 android:id="@+id/spinnerVibrationInterval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:entries="@array/spinner_uprightgo2_interval"
-                android:gravity="center"
-                android:layout_gravity="end"/>
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutVibrationPattern"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/AdvancedConfigurationFragmentTextView"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinnerVibrationPattern"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:entries="@array/spinner_uprightgo2_pattern"
-                    android:gravity="end" />
-            </LinearLayout>
-        </LinearLayout>
-
     <LinearLayout
-        android:id="@+id/layoutVibrationStrength"
+        android:id="@+id/layoutVibrationPattern"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval"
-        android:layout_marginTop="60dp">
+        app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
 
         <TextView
+            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/AdvancedConfigurationFragmentTextView"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_pattern_text" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -195,16 +160,50 @@
             android:orientation="horizontal">
 
             <Spinner
-            android:id="@+id/spinnerVibrationStrength"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                android:entries="@array/spinner_uprightgo2_strength"
-                android:gravity="end"
+                android:id="@+id/spinnerVibrationPattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:entries="@array/spinner_uprightgo2_pattern"
+                android:gravity="end" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutVibrationStrength"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerVibrationStrength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:entries="@array/spinner_uprightgo2_strength"
+                android:gravity="end"
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
+
+        </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutCalibration"
         android:layout_width="match_parent"
