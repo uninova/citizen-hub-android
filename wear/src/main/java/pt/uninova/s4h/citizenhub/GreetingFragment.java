@@ -18,7 +18,7 @@ public class GreetingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(
-                R.layout.fragment_greeting, container, false);
+                R.layout.fragment_main, container, false);
 
         TextView swipeText = view.findViewById(R.id.textViewSwipe);
         ImageView imageCitizen = view.findViewById(R.id.imageViewCitizenHub);
