@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-public class GreetingFragment extends Fragment {
+public class DataDisplayFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -20,6 +20,12 @@ public class GreetingFragment extends Fragment {
         View view = inflater.inflate(
                 R.layout.fragment_main, container, false);
 
+        initialAnimation(view);
+
+        return view;
+    }
+
+    private void initialAnimation(View view){
         TextView swipeText = view.findViewById(R.id.textViewSwipe);
         ImageView imageCitizen = view.findViewById(R.id.imageViewCitizenHub);
 
@@ -57,7 +63,5 @@ public class GreetingFragment extends Fragment {
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
-
-        return view;
     }
 }
