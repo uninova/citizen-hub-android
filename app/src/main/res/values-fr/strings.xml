@@ -366,7 +366,7 @@
     <!-- Strings used for the report -->
     <string name="report_upload">Télécharger le PDF</string>
 
-    <string name="report_footer">Escreve aqui qualquer coisa</string>
+    <string name="report_footer">Les informations contenues dans ce rapport sont fournies sans aucune représentation ou garantie, expresse ou implicite. Si vous avez des questions spécifiques, vous devriez consulter votre médecin ou un autre professionnel de la santé.</string>
 
     <string name="report_complete_report">Rapport Complet</string>
     <string name="report_work_time_report">Rapport de Temps de Travail</string>
@@ -405,15 +405,15 @@
     <string name="report_lumbar_training_duration_label">Durée</string>
 
     <!-- Strings used for the Smart4Health fragment -->
-    <string name="smart4health_description">Some information will be displayed here.</string>
-    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
-    <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
-    <string name="smart4health_information_to_send">Information to send in the reports:</string>
-    <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform when the upload is done.</string>
-    <string name="smart4health_activity">Activity</string>
-    <string name="smart4health_blood_pressure">Blood Pressure</string>
-    <string name="smart4health_heart_rate">Heart Rate</string>
-    <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
+    <string name="smart4health_description">Smart4Health permet aux citoyens de gérer leurs propres données de santé dans l\'Union Européenne et au-delà, en faisant progresser leur bien-être et leur santé ainsi que celle de la société.</string>
+    <string name="smart4health_automatic_uploads">Téléchargements Automatiques</string>
+    <string name="smart4health_automatic_uploads_description">Sélectionnez cette option si vous souhaitez télécharger automatiquement vos informations quotidiennes sur la plateforme Smart4Health.</string>
+    <string name="smart4health_information_to_send">Informations incluses dans les rapports:</string>
+    <string name="smart4health_information_to_send_description">Les informations sélectionnées seront transmises à la plateforme Smart4Health.</string>
+    <string name="smart4health_activity">Activité</string>
+    <string name="smart4health_blood_pressure">Pression artérielle</string>
+    <string name="smart4health_heart_rate">Rythme cardiaque</string>
+    <string name="smart4health_lumbar_extension_training">Formation d\'extension lombaire</string>
     <string name="smart4health_posture">Posture</string>
     
     <!-- Strings used in summary detail fragments-->
@@ -467,7 +467,7 @@
     <string name="measurement_type.9">Respiration</string>
     <string name="measurement_type.11">Inconnue</string>
     <string name="measurement_type.12">Inconnue</string>
-    <string name="measurement_type.16">Training der lumbalextension</string>
+    <string name="measurement_type.16">Formation d\'extension lombaire</string>
     <string name="measurement_type.17">Pression artérielle</string>
     <string name="measurement_type.21">Pression artérielle</string>
     <string name="measurement_type.22">Pression artérielle</string>
