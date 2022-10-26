@@ -19,13 +19,15 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/heartRateDataLayout"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imageIconHeartRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -35,7 +37,7 @@
                     android:src="@drawable/ic_baseline_favorite_24" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/textViewHeartRateValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
@@ -52,13 +54,15 @@
                 android:src="@drawable/img_citizen_hub_logo_only" />
 
             <LinearLayout
+                android:id="@+id/stepsDataLayout"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imageIconSteps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -68,7 +72,7 @@
                     android:src="@drawable/ic_baseline_directions_walk_24" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textViewStepsValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"

@@ -14,12 +14,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,6 +43,7 @@ import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class MainActivity  extends FragmentActivity {
 
@@ -60,13 +63,17 @@ public class MainActivity  extends FragmentActivity {
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
-    SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
+    public TextView swipeLeftTextView;
+    DecimalFormat f = new DecimalFormat("###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        swipeLeftTextView = findViewById(R.id.textViewSwipe);
 
         sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 
@@ -84,6 +91,16 @@ public class MainActivity  extends FragmentActivity {
 
         startListeners();
 
+        /* TODO fix this later
+        protocolHeartRate.observe(this , aBoolean -> {
+            if (aBoolean)
+                MainActivity.swipeLeftTextView.setVisibility(View.GONE);
+        });
+        protocolSteps.observe(this, aBoolean -> {
+            if (aBoolean)
+                MainActivity.swipeLeftTextView.setVisibility(View.GONE);
+        });*/
+
         viewPager = findViewById(R.id.viewPager);
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
@@ -95,15 +112,15 @@ public class MainActivity  extends FragmentActivity {
         final LocalDate now = LocalDate.now();
         stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
             if(value != null)
-                listenSteps.postValue(getString(R.string.show_data_steps, value.intValue()));
+                listenSteps.postValue(String.valueOf(value.intValue()));
             else
-                listenSteps.postValue(getString(R.string.show_data_steps, 0));
+                listenSteps.postValue("0");
         });
         heartRateMeasurementRepository.readAverageObserved(now, value -> {
             if(value != null)
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value));
+                listenHeartRateAverage.postValue(f.format(value));
             else
-                listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average_no_data));
+                listenHeartRateAverage.postValue("-");
         });
 
         startService();
@@ -122,14 +139,21 @@ public class MainActivity  extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    listenHeartRate.setValue(getString(R.string.show_data_heartrate, event.values[0]));
+                    listenHeartRate.setValue(String.valueOf(event.values[0]));
                     new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
 
                     Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
                     sampleRepository.create(sample, sampleId -> {});
 
                     final LocalDate now = LocalDate.now();
-                    heartRateMeasurementRepository.readAverageObserved(now, value -> listenHeartRateAverage.postValue(getString(R.string.show_data_heartrate_average, value)));
+
+                    heartRateMeasurementRepository.readAverageObserved(now, new Observer<Double>() {
+                        @Override
+                        public void observe(Double value) {
+                            System.out.println("HERE" + value);
+                            listenHeartRateAverage.postValue(f.format(value));
+                        }
+                    });
                 }
             }
             @Override
@@ -163,7 +187,7 @@ public class MainActivity  extends FragmentActivity {
                             stepsTotal = value.intValue();
                         else
                             stepsTotal = 0;
-                        listenSteps.postValue(getString(R.string.show_data_steps, stepsTotal));
+                        listenSteps.postValue(String.valueOf(stepsTotal));
                         new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                     });
                 }

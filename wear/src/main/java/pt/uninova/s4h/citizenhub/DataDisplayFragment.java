@@ -7,25 +7,56 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 
 public class DataDisplayFragment extends Fragment {
+
+    LinearLayout heartRateDataLayout, stepsDataLayout;
+    TextView heartRateDataTextView, stepsDataTextView;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(
+        view = inflater.inflate(
                 R.layout.fragment_main, container, false);
 
-        initialAnimation(view);
+        heartRateDataLayout = view.findViewById(R.id.heartRateDataLayout);
+        heartRateDataTextView = view.findViewById(R.id.textViewHeartRateValue);
+        stepsDataLayout = view.findViewById(R.id.stepsDataLayout);
+        stepsDataTextView = view.findViewById(R.id.textViewStepsValue);
+
+        initialAnimation();
+        enableObservers();
 
         return view;
     }
 
-    private void initialAnimation(View view){
+    private void enableObservers(){
+        MainActivity.listenHeartRateAverage.observe((LifecycleOwner) view.getContext(), s -> heartRateDataTextView.setText(s));
+        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> stepsDataTextView.setText(s));
+        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if (aBoolean) {
+                heartRateDataLayout.setVisibility(View.VISIBLE);
+            } else {
+                heartRateDataLayout.setVisibility(View.GONE);
+            }
+        });
+        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if (aBoolean) {
+                stepsDataLayout.setVisibility(View.VISIBLE);
+            } else {
+                stepsDataLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void initialAnimation(){
         TextView swipeText = view.findViewById(R.id.textViewSwipe);
         ImageView imageCitizen = view.findViewById(R.id.imageViewCitizenHub);
 
