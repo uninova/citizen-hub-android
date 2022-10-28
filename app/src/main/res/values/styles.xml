@@ -454,7 +454,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
     </style>
-    <style name="AdvancedConfigurationFragmentTextView">
+    <style name="AdvancedConfigurationFragmentCategoryTextView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/neo_sans_pro_regular</item>
@@ -463,4 +463,20 @@
         <item name="android:textAlignment">textStart</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="AdvancedConfigurationFragmentSpinnerStyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+    <style name="AdvancedConfigurationFragmentDividerStyle">
+        <item name="android:layout_height">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
 </resources>
