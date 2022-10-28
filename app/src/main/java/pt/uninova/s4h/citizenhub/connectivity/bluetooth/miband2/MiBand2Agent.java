@@ -134,4 +134,9 @@ public class MiBand2Agent extends BluetoothAgent {
     public List<Fragment> getConfigurationFragments() {
         return null;
     }
+
+    @Override
+    public Fragment getPairingHelper() {
+        return null;
+    }
 }

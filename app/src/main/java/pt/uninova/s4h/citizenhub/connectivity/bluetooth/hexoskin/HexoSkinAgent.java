@@ -49,6 +49,11 @@ public class HexoSkinAgent extends BluetoothAgent {
     }
 
     @Override
+    public Fragment getPairingHelper() {
+        return null;
+    }
+
+    @Override
     public MeasuringProtocol getMeasuringProtocol(int measurementKind) {
         switch (measurementKind) {
             case Measurement.TYPE_BREATHING_RATE:

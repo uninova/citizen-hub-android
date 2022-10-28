@@ -50,6 +50,11 @@ public class UprightGo2Agent extends BluetoothAgent {
     }
 
     @Override
+    public Fragment getPairingHelper() {
+        return null;
+    }
+
+    @Override
     protected MeasuringProtocol getMeasuringProtocol(int kind) {
         System.out.println("UprightGo2Agent.getMeasuringProtocol kind=" + kind);
 

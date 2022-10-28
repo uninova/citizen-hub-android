@@ -69,6 +69,11 @@ public class WearOSAgent extends AbstractAgent {
     }
 
     @Override
+    public Fragment getPairingHelper() {
+        return null;
+    }
+
+    @Override
     protected MeasuringProtocol getMeasuringProtocol(int kind) {
         switch (kind) {
             case Measurement.TYPE_STEPS_SNAPSHOT:

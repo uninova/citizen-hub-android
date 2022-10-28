@@ -63,4 +63,6 @@ public interface Agent {
     void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer);
 
     List<Fragment> getConfigurationFragments();
+
+    Fragment getPairingHelper();
 }
