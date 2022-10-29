@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 public class DataDisplayFragment extends Fragment {
 
     LinearLayout heartRateDataLayout, stepsDataLayout;
-    TextView heartRateDataTextView, stepsDataTextView;
+    TextView heartRateDataTextView, stepsDataTextView, swipeLeft;
     View view;
 
     @Override
@@ -30,6 +30,7 @@ public class DataDisplayFragment extends Fragment {
         heartRateDataTextView = view.findViewById(R.id.textViewHeartRateValue);
         stepsDataLayout = view.findViewById(R.id.stepsDataLayout);
         stepsDataTextView = view.findViewById(R.id.textViewStepsValue);
+        swipeLeft = view.findViewById(R.id.textViewSwipe);
 
         initialAnimation();
         enableObservers();
@@ -43,6 +44,7 @@ public class DataDisplayFragment extends Fragment {
         MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             if (aBoolean) {
                 heartRateDataLayout.setVisibility(View.VISIBLE);
+                swipeLeft.setVisibility(View.GONE);
             } else {
                 heartRateDataLayout.setVisibility(View.GONE);
             }
@@ -50,6 +52,7 @@ public class DataDisplayFragment extends Fragment {
         MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
             if (aBoolean) {
                 stepsDataLayout.setVisibility(View.VISIBLE);
+                swipeLeft.setVisibility(View.GONE);
             } else {
                 stepsDataLayout.setVisibility(View.GONE);
             }

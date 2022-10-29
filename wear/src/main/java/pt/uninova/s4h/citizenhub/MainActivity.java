@@ -65,15 +65,13 @@ public class MainActivity  extends FragmentActivity {
     public static SensorEventListener stepsListener, heartRateListener;
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
-    public TextView swipeLeftTextView;
+    TextView swipeLeftTextView;
     DecimalFormat f = new DecimalFormat("###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        swipeLeftTextView = findViewById(R.id.textViewSwipe);
 
         sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 
@@ -90,16 +88,6 @@ public class MainActivity  extends FragmentActivity {
         stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(getApplication());
 
         startListeners();
-
-        /* TODO fix this later
-        protocolHeartRate.observe(this , aBoolean -> {
-            if (aBoolean)
-                MainActivity.swipeLeftTextView.setVisibility(View.GONE);
-        });
-        protocolSteps.observe(this, aBoolean -> {
-            if (aBoolean)
-                MainActivity.swipeLeftTextView.setVisibility(View.GONE);
-        });*/
 
         viewPager = findViewById(R.id.viewPager);
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
