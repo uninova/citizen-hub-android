@@ -14,7 +14,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -43,7 +42,6 @@ import pt.uninova.s4h.citizenhub.persistence.repository.SampleRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class MainActivity  extends FragmentActivity {
 
@@ -65,7 +63,6 @@ public class MainActivity  extends FragmentActivity {
     public static SensorEventListener stepsListener, heartRateListener;
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
-    TextView swipeLeftTextView;
     DecimalFormat f = new DecimalFormat("###");
 
     @Override
@@ -135,13 +132,9 @@ public class MainActivity  extends FragmentActivity {
 
                     final LocalDate now = LocalDate.now();
 
-                    heartRateMeasurementRepository.readAverageObserved(now, new Observer<Double>() {
-                        @Override
-                        public void observe(Double value) {
-                            System.out.println("HERE" + value);
-                            listenHeartRateAverage.postValue(f.format(value));
-                        }
-                    });
+                    heartRateMeasurementRepository.readAverageObserved(now, value ->
+                        listenHeartRateAverage.postValue(f.format(value))
+                    );
                 }
             }
             @Override
