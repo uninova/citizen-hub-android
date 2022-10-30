@@ -23,12 +23,16 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailBloodPressureUtil;
+import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailHeartRateUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
+import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
+import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
 import pt.uninova.s4h.citizenhub.ui.summary.ChartFunctions;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -49,6 +53,12 @@ public class DailyReportGeneratorPDFV2 {
     private final Paint rectPaint;
     private final Paint rectFillPaint;
     private final float[] corners;
+    private final List<SummaryDetailUtil> dailySteps = new ArrayList<>();
+    private List<SummaryDetailUtil> dailyBloodPressure = new ArrayList<>();
+    private List<SummaryDetailUtil> dailyHeartRate = new ArrayList<>();
+    private final List<SummaryDetailUtil> dailyCorrectPosture = new ArrayList<>();
+    private final List<SummaryDetailUtil> dailyIncorrectPosture = new ArrayList<>();
+
 
     public DailyReportGeneratorPDFV2(Context context) {
         this.context = context;
@@ -127,6 +137,30 @@ public class DailyReportGeneratorPDFV2 {
                 0, 0,          // Bottom right radius in px
                 0, 0           // Bottom left radius in px
         };
+
+    }
+
+    private void fetchDailyInfo(LocalDate date){
+        ChartFunctions chartFunctions = new ChartFunctions(context);
+
+        Observer<List<SummaryDetailUtil>> observerSteps = dailySteps::addAll;
+        StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(context);
+        stepsSnapshotMeasurementRepository.readLastDay(date, observerSteps);
+
+        Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> dailyBloodPressure = chartFunctions.parseBloodPressureUtil(data);
+        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(context);
+        bloodPressureMeasurementRepository.selectLastDay(date, observerBloodPressure);
+
+        Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> dailyHeartRate = chartFunctions.parseHeartRateUtil(data);
+        HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(context);
+        heartRateMeasurementRepository.selectLastDay(date, observerHeartRate);
+
+        Observer<List<SummaryDetailUtil>> observerCorrectPosture = dailyCorrectPosture::addAll;
+        PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(context);
+        postureMeasurementRepository.readLastDayCorrectPosture(date, observerCorrectPosture);
+
+        Observer<List<SummaryDetailUtil>> observerIncorrectPosture = dailyIncorrectPosture::addAll;
+        postureMeasurementRepository.readLastDayIncorrectPosture(date, observerIncorrectPosture);
     }
 
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
@@ -160,14 +194,6 @@ public class DailyReportGeneratorPDFV2 {
             int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
             drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
             y += 25;
-
-            switch(notWorkTimeLabel){
-                case Measurement.TYPE_BLOOD_PRESSURE: break;
-                case Measurement.TYPE_DISTANCE_SNAPSHOT: break;
-                case Measurement.TYPE_HEART_RATE: break;
-                case Measurement.TYPE_LUMBAR_EXTENSION_TRAINING: break;
-                case Measurement.TYPE_POSTURE: break;
-            }
 
             if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                 for (Group group : groupNotWorkTime.getGroupList()) {
@@ -208,11 +234,17 @@ public class DailyReportGeneratorPDFV2 {
                 }
                 if (!hasItem) {
                     y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
-                    if (notWorkTimeLabel == Measurement.TYPE_DISTANCE_SNAPSHOT) {
-                        y = drawCharts(canvas[0], (List<SummaryDetailUtil>) dailySteps, y, true);
-                    }
                 }
             }
+            if(y + 370 > 842){
+                drawRect(canvas[0], y, rectHeight);
+                writePage(document, page[0], canvasWriter[0]);
+                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                rectHeight = y - 20;
+                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+                y += 25;
+            }
+            y = drawCharts(canvas[0], notWorkTimeLabel, y);
             drawRect(canvas[0], y, rectHeight);
         }
         for (Group groupWorkTime : groupsWorkTime) {
@@ -248,6 +280,15 @@ public class DailyReportGeneratorPDFV2 {
                 } else {
                     y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 }
+                if(y + 370 > 842){
+                    drawRect(canvas[0], y, rectHeight);
+                    writePage(document, page[0], canvasWriter[0]);
+                    y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                    rectHeight = y - 20;
+                    drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
+                    y += 25;
+                }
+                y = drawCharts(canvas[0], label, y);
                 drawRect(canvas[0], y, rectHeight);
             }
         }
@@ -317,10 +358,10 @@ public class DailyReportGeneratorPDFV2 {
         y += 25;
         if (group.getGroupList().size() == 0) {
             if (complex) {
-                y += 20 + 20 * group.getItemList().size() + 5 + 38 + 370;
+                y += 20 + 20 * group.getItemList().size() + 5 + 38;
                 return y < 842;
             }
-            y += 20 * group.getItemList().size() + 5 + 370;
+            y += 20 * group.getItemList().size() + 5;
             return y < 842;
         }
         y += 20 + 20 * group.getItemList().size() + 5 + 38;
@@ -391,28 +432,54 @@ public class DailyReportGeneratorPDFV2 {
         return y;
     }
 
-    private int drawCharts(Canvas canvas, List<SummaryDetailUtil> data, int y, boolean drawBarChart){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        Looper.prepare();
+    private int drawCharts(Canvas canvas, int label, int y){
         View chart;
-        if(drawBarChart){
-            chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
-            chart.measure(200, 200);
-            chart.layout(0, 0, 2250, 1400);
-            chartFunctions.setupBarChart(chart.findViewById(R.id.bar_chart), null);
-            chartFunctions.setBarChartData(chart.findViewById(R.id.bar_chart), data, context.getString(R.string.summary_detail_activity_steps), 24);
+        switch(label){
+            case Measurement.TYPE_ACTIVITY:
+            case Measurement.TYPE_DISTANCE_SNAPSHOT:
+                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
+                drawBarChart(chart, dailySteps); break; //Ver com o carlos
+            case Measurement.TYPE_BLOOD_PRESSURE:
+                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
+                drawLineChart(chart, dailyBloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}); break;
+            case Measurement.TYPE_HEART_RATE:
+                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
+                drawLineChart(chart, dailyHeartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}); break;
+            case Measurement.TYPE_POSTURE:
+                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
+                drawAreaChart(chart, dailyCorrectPosture, dailyIncorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}); break;
+            default:
+                chart = null;
         }
-        else{
-            chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-            chart.measure(200, 200);
-            chart.layout(0, 0, 2250, 1400);
-            chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
-            chartFunctions.setLineChartData(chart.findViewById(R.id.line_chart), data, new String[]{context.getString(R.string.summary_detail_activity_steps)}, 24);
-        }
-        canvas.translate(65, y - 50);
+        canvas.translate(65, y - 40);
+        assert chart != null;
         chart.draw(canvas);
-        canvas.translate(-65, 50 - y);
+        canvas.translate(-65, 40 - y);
         return y + 370;
+    }
+
+    private void drawBarChart(View chart, List<SummaryDetailUtil> data){
+        ChartFunctions chartFunctions = new ChartFunctions(context);
+        chart.measure(200, 200);
+        chart.layout(0, 0, 2250, 1400);
+        chartFunctions.setupBarChart(chart.findViewById(R.id.bar_chart), null);
+        chartFunctions.setBarChartData(chart.findViewById(R.id.bar_chart), data, context.getString(R.string.summary_detail_activity_steps), 24);
+    }
+
+    private void drawLineChart(View chart, List<SummaryDetailUtil> data, String[] labels){
+        ChartFunctions chartFunctions = new ChartFunctions(context);
+        chart.measure(200, 200);
+        chart.layout(0, 0, 2250, 1400);
+        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
+        chartFunctions.setLineChartData(chart.findViewById(R.id.line_chart), data, labels, 24);
+    }
+
+    private void drawAreaChart(View chart, List<SummaryDetailUtil> data1, List<SummaryDetailUtil> data2, String[] labels){
+        ChartFunctions chartFunctions = new ChartFunctions(context);
+        chart.measure(200, 200);
+        chart.layout(0, 0, 2250, 1400);
+        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
+        chartFunctions.setAreaChart(chart.findViewById(R.id.line_chart), data1, data2, labels, 24);
     }
 
     private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date) {
