@@ -2,12 +2,12 @@ package pt.uninova.s4h.citizenhub;
 
 import android.view.View;
 
-public class DeviceConfigurationButtonManager {
+public class ButtonManager {
 
     private int resourceId;
     private View.OnClickListener onClickListener;
 
-    public DeviceConfigurationButtonManager(int resourceId, View.OnClickListener onClickListener) {
+    public ButtonManager(int resourceId, View.OnClickListener onClickListener) {
         this.resourceId = resourceId;
         this.onClickListener = onClickListener;
     }
