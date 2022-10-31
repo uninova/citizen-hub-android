@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import android.content.Context;
+import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
@@ -47,6 +48,22 @@ public class UprightGo2Agent extends BluetoothAgent {
         List<Fragment> uprightList = new ArrayList<>();
         uprightList.add(UprightGo2ConfigurationFragment.newInstance());
         return uprightList;
+    }
+
+    @Override
+    public List<Integer> getConfigurationButtonResources() {
+        UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
+        return uprightGo2ConfigurationFragment.getResourceIds();
+    }
+
+    @Override
+    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
+        UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
+        return uprightGo2ConfigurationFragment.getOnMenuItemClickListeners();    }
+
+    @Override
+    public boolean hasConfigurationButtons() {
+        return true;
     }
 
     @Override

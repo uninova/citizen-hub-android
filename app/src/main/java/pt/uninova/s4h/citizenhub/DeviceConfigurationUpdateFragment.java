@@ -24,6 +24,7 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
     private LinearLayout advancedConfigurationLayout;
+    private Menu optionsMenu;
 
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
@@ -78,6 +79,14 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 }
                 assert newFragment != null;
                 ft.add(R.id.layout_advanced_configurations_container, newFragment);
+               if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
+                   AbstractButtonManager abstractButtonManager = new AbstractButtonManager(
+                           optionsMenu,
+                           model.getSelectedDeviceAgent().getConfigurationButtonResources(),
+                           model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
+                   optionsMenu = abstractButtonManager.addButtons();
+                   updateOptionsMenu();
+               }
             }
         }
         ft.commitNow();
@@ -92,8 +101,15 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         }
         }
 
+    private void updateOptionsMenu() {
+        if (optionsMenu != null) {
+            onPrepareOptionsMenu(optionsMenu);
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        optionsMenu = menu;
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);

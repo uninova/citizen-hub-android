@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import android.view.MenuItem;
+
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
@@ -63,6 +65,12 @@ public interface Agent {
     void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer);
 
     List<Fragment> getConfigurationFragments();
+
+    List<Integer> getConfigurationButtonResources();
+
+    List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener();
+
+    boolean hasConfigurationButtons();
 
     Fragment getPairingHelper();
 }

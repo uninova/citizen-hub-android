@@ -9,13 +9,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,11 +25,16 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pt.uninova.s4h.citizenhub.AbstractButtonManager;
+import pt.uninova.s4h.citizenhub.ButtonManagerInterface;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
-public class UprightGo2ConfigurationFragment extends Fragment {
+public class UprightGo2ConfigurationFragment extends Fragment implements ButtonManagerInterface {
 
     protected ViewStub deviceAdvancedSettings;
     protected View deviceAdvancedSettingsInflated;
@@ -44,7 +50,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         }
     };
     private SharedPreferences sharedPreferences;
-private boolean test = false;
+
+    private MenuItem.OnMenuItemClickListener menuItemClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +62,55 @@ private boolean test = false;
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
+
+        menuItemClickListener  = menuItem -> {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+                    .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+                            getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+                    .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+                            UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+//                                //Send Message vibration settings
+//                                UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+
+                            //Send Message calibration
+                            agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
+                            System.out.println("ONCLICKKK" + agent + agent.getName());
+
+                            //default - first vibration settings when adding device
+                            boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+                            int angle = sharedPreferences.getInt("Vibration Angle", 1);
+                            int interval = sharedPreferences.getInt("Vibration Interval", 5);
+                            int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+                            boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+                            int strength = sharedPreferences.getInt("Vibration Strength", 0);
+
+                            //some value adaptation
+                            int time = 5;
+                            if (interval == 0)
+                                time = 5;
+                            else if (interval == 1)
+                                time = 15;
+                            else if (interval == 2)
+                                time = 30;
+                            else if (interval == 3)
+                                time = 60;
+
+                            //Send Message vibration settings
+                            agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
+
+                            dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
+
+                            handler.sendMessageDelayed(new Message(), 2500);
+                        }
+                    })
+                    .setIcon(R.drawable.img_citizen_hub_logo_png)
+                    .show();
+            return true;
+        };
 
         enableAdvancedConfigurations(view, model);
         return view;
@@ -165,55 +221,51 @@ private boolean test = false;
         Button buttonCalibration = view.findViewById(R.id.buttonCalibration);
 
 
-        buttonCalibration.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
-                        .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
-                                getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
-                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+        buttonCalibration.setOnClickListener(v -> new AlertDialog.Builder(getContext())
+                .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+                .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+                        getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+                .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 //
-                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+                        UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 //                                //Send Message vibration settings
 //                                UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
-                                //Send Message calibration
-                                agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
-                                System.out.println("ONCLICKKK" + agent + agent.getName());
+                        //Send Message calibration
+                        agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
+                        System.out.println("ONCLICKKK" + agent + agent.getName());
 
-                                //default - first vibration settings when adding device
-                                boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
-                                int angle = sharedPreferences.getInt("Vibration Angle", 1);
-                                int interval = sharedPreferences.getInt("Vibration Interval", 5);
-                                int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
-                                boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
-                                int strength = sharedPreferences.getInt("Vibration Strength", 0);
+                        //default - first vibration settings when adding device
+                        boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+                        int angle = sharedPreferences.getInt("Vibration Angle", 1);
+                        int interval = sharedPreferences.getInt("Vibration Interval", 5);
+                        int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+                        boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+                        int strength = sharedPreferences.getInt("Vibration Strength", 0);
 
-                                //some value adaptation
-                                int time = 5;
-                                if (interval == 0)
-                                    time = 5;
-                                else if (interval == 1)
-                                    time = 15;
-                                else if (interval == 2)
-                                    time = 30;
-                                else if (interval == 3)
-                                    time = 60;
+                        //some value adaptation
+                        int time = 5;
+                        if (interval == 0)
+                            time = 5;
+                        else if (interval == 1)
+                            time = 15;
+                        else if (interval == 2)
+                            time = 30;
+                        else if (interval == 3)
+                            time = 60;
 
-                                //Send Message vibration settings
-                                agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
+                        //Send Message vibration settings
+                        agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
 
-                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
+                        dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
 
-                                handler.sendMessageDelayed(new Message(), 2500);
-                            }
-                        })
-                        .setIcon(R.drawable.img_citizen_hub_logo_png)
-                        .show();
-            }
-        });
+                        handler.sendMessageDelayed(new Message(), 2500);
+                    }
+                })
+                .setIcon(R.drawable.img_citizen_hub_logo_png)
+                .show());
     }
 
     public static Fragment newInstance()
@@ -221,5 +273,34 @@ private boolean test = false;
         return new UprightGo2ConfigurationFragment();
     }
 
+    @Override
+    public boolean hasButtons() {
+        return true;
+    }
 
+    @Override
+    public List<Integer> getResourceIds() {
+        List<Integer> resourceIds = new ArrayList<>();
+        resourceIds.add(R.id.buttonCalibration);
+        return resourceIds;
+    }
+
+    @Override
+    public List<MenuItem.OnMenuItemClickListener> getOnMenuItemClickListeners() {
+        List<MenuItem.OnMenuItemClickListener> menuItemClickListenerList = new ArrayList<>();
+        menuItemClickListenerList.add(menuItemClickListener);
+        return menuItemClickListenerList;
+    }
+
+//    @Override
+//    public Menu addButton(Menu menu) {
+//        AbstractButtonManager buttonManager = new AbstractButtonManager(R.id.buttonCalibration,menuItemClickListener);
+//       return buttonManager.addButton(menu);
+//    }
+//
+//    @Override
+//    public Menu removeButton(Menu menu) {
+//     menu.removeItem(R.id.buttonCalibration);
+//     return menu;
+//    }
 }
