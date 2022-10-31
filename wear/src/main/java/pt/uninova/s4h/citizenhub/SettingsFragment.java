@@ -138,8 +138,8 @@ public class SettingsFragment extends Fragment {
             switchSteps.setOnCheckedChangeListener(stepsListener);
         }
         else{
-        switchHeartRate.setOnCheckedChangeListener(null);
-        switchSteps.setOnCheckedChangeListener(null);
+            switchHeartRate.setOnCheckedChangeListener(null);
+            switchSteps.setOnCheckedChangeListener(null);
         }
     }
 
