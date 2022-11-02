@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/summary_detail_heart_rate_fragment"
         android:name="pt.uninova.s4h.citizenhub.ui.summary.SummaryDetailHeartRateFragment"
-        android:label="@string/summary_detail_hear_rate"
+        android:label="@string/summary_detail_heart_rate"
         tools:layout="@layout/fragment_summary_detail_heart_rate"/>
 
     <fragment

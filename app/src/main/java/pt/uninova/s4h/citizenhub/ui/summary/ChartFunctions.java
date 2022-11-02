@@ -2,13 +2,14 @@ package pt.uninova.s4h.citizenhub.ui.summary;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Color;
 
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -38,7 +39,7 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 
 public class ChartFunctions {
 
-    private Context context;
+    private final Context context;
 
     public ChartFunctions(Context context) {
         this.context = context;
@@ -75,7 +76,6 @@ public class ChartFunctions {
     // This section has functions used to define some characteristics of the different charts that cannot done in the layout //
     public void setupBarChart(BarChart barChart,  ChartMarkerView chartMarkerView) {
         barChart.setDrawGridBackground(false);
-        barChart.setScaleEnabled(true);
         barChart.setFitBars(true);
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
@@ -84,7 +84,6 @@ public class ChartFunctions {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(false);
 
         YAxis yAxisLeft = barChart.getAxisLeft();
         yAxisLeft.setAxisMinimum(0);
@@ -104,6 +103,7 @@ public class ChartFunctions {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(24);
 
         YAxis yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setAxisMinimum(0);
@@ -131,13 +131,13 @@ public class ChartFunctions {
         cal.add(Calendar.DATE, - max + 1);
 
         if (max == 24) {
-            while(i < max) {
+            while(i <= max) {
                 labels[i] = String.valueOf(i);
                 i++;
             }
         } else if (max == 7) {
             while (i < max) {
-                labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)).substring(0, 3);
+                labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())).substring(0, 3);
                 cal.add(Calendar.DATE, + 1);
                 i++;
             }
@@ -164,7 +164,7 @@ public class ChartFunctions {
 
         for (SummaryDetailUtil data : list) {
             while (currentTime < data.getTime()) {
-                entries.add(new BarEntry(currentTime, -1));
+                entries.add(new BarEntry(currentTime, 0));
                 currentTime++;
             }
             entries.add(new BarEntry(data.getTime(), data.getValue1()));
@@ -172,9 +172,11 @@ public class ChartFunctions {
         }
 
         while (currentTime < max) {
-            entries.add(new BarEntry(currentTime, -1));
+            entries.add(new BarEntry(currentTime, 0));
             currentTime++;
         }
+        if(max == 24)
+            entries.add(new BarEntry(currentTime, 0));
 
         BarDataSet barDataSet = new BarDataSet(entries, label);
         barDataSet.setColor(ContextCompat.getColor(context, R.color.colorS4HLightBlue));
@@ -234,12 +236,14 @@ public class ChartFunctions {
         for (SummaryDetailUtil data : list) {
             time = data.getTime();
             entries1.add(new BarEntry(time, data.getValue1()));
-            if(data.getValue2() != null)
+            if (data.getValue2() != null)
                 entries2.add(new BarEntry(time, data.getValue2()));
-            if(data.getValue3() != null)
+            if (data.getValue3() != null)
                 entries3.add(new BarEntry(time, data.getValue3()));
         }
 
+        //Só para debug
+        //entries1.add(new BarEntry(max - 1, 66));
         LineDataSet lineDataSet1 = getLineDataSet(entries1, label[0], 0);
         LineDataSet lineDataSet2 = getLineDataSet(entries2, label[1], 1);
         LineDataSet lineDataSet3 = getLineDataSet(entries3, label[2], 2);
@@ -290,15 +294,13 @@ public class ChartFunctions {
     public void setAreaChart(LineChart lineChart, List<SummaryDetailUtil> list1, List<SummaryDetailUtil> list2, String[] labels, int max){
         float[] values1 = new float[max];
         float[] values2 = new float[max];
-        float[] offset = new float[max];
 
         for (SummaryDetailUtil data : list1) {
             values1[Math.round(data.getTime())] = data.getValue1();
-            offset[Math.round(data.getTime())] = data.getValue1();
         }
 
         for (SummaryDetailUtil data : list2) {
-            values2[Math.round(data.getTime())] = data.getValue1() + offset[Math.round(data.getTime())];
+            values2[Math.round(data.getTime())] = data.getValue1() + values1[Math.round(data.getTime())];
         }
 
         int currentTime = 0;
@@ -308,17 +310,25 @@ public class ChartFunctions {
 
         while(currentTime < max){
             total = values2[currentTime] + values1[currentTime];
-            if(total > 3600000){
-                values1[currentTime] = values1[currentTime] * 3600000 / total;
-                values2[currentTime] = values2[currentTime] * 3600000 / total;
+            if(max == 24) {
+                if (total > 3600000) {
+                    values1[currentTime] = values1[currentTime] * 3600000 / total;
+                    values2[currentTime] = values2[currentTime] * 3600000 / total;
+                }
+                entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 3600000));
+                entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 3600000));
+            } else {
+                if (total > 86400000) {
+                    values1[currentTime] = values1[currentTime] * 86400000 / total;
+                    values2[currentTime] = values2[currentTime] * 86400000 / total;
+                }
+                entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 86400000));
+                entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 86400000));
             }
-            entries1.add(new BarEntry(currentTime, values1[currentTime] * 100 / 3600000));
-            entries2.add(new BarEntry(currentTime, values2[currentTime] * 100 / 3600000));
             currentTime++;
         }
-
-        LineDataSet lineDataSet1 = setLineDataSet(entries1, labels[0], ContextCompat.getColor(context, R.color.colorS4HOrange));
-        LineDataSet lineDataSet2 = setLineDataSet(entries2, labels[1], ContextCompat.getColor(context, R.color.colorS4HLightBlue));
+        LineDataSet lineDataSet1 = setLineDataSet(entries1, labels[0], ContextCompat.getColor(context, R.color.colorS4HLightBlue));
+        LineDataSet lineDataSet2 = setLineDataSet(entries2, labels[1], ContextCompat.getColor(context, R.color.colorS4HOrange));
 
         ArrayList<ILineDataSet> dataSet = new ArrayList<>();
         dataSet.add(lineDataSet2);

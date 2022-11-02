@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -44,22 +45,27 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lineChart = view.findViewById(R.id.line_chart);
-        TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
 
+        TextView textViewXLabel = view.findViewById(R.id.text_view_x_axis_label);
+
+        TabLayout tabLayout = requireView().findViewById(R.id.tab_layout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
 
                 if(pos == 0) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_hours));
                     lineChart.highlightValue(null);
-                    lineChart.getXAxis().setAxisMaximum(23);
+                    lineChart.getXAxis().setAxisMaximum(24);
                     dailyBloodPressure();
                 } else if(pos == 1) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
                     lineChart.getXAxis().resetAxisMaximum();
                     weeklyBloodPressure();
                 } else if(pos == 2) {
+                    textViewXLabel.setText(getString(R.string.summary_detail_time_days));
                     lineChart.highlightValue(null);
                     lineChart.getXAxis().resetAxisMaximum();
                     monthlyBloodPressure();
@@ -78,26 +84,25 @@ public class SummaryDetailBloodPressureFragment extends Fragment {
         });
 
         chartFunctions.setupLineChart(lineChart, model.getChartViewMarker());
-        lineChart.getXAxis().setAxisMaximum(23);
         dailyBloodPressure();
     }
 
     private void dailyBloodPressure() {
         Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseBloodPressureUtil(data), new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 24);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.selectLastDay(LocalDate.now(), observer);
+        bloodPressureMeasurementRepository.readLastDay(LocalDate.now(), observer);
     }
 
     private void weeklyBloodPressure() {
         Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseBloodPressureUtil(data), new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 7);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.selectSeveralDays(LocalDate.now(), 7, observer);
+        bloodPressureMeasurementRepository.readLastDays(LocalDate.now(), 7, observer);
     }
 
     private void monthlyBloodPressure() {
         Observer<List<SummaryDetailBloodPressureUtil>> observer = data -> chartFunctions.setLineChartData(lineChart, chartFunctions.parseBloodPressureUtil(data), new String[]{getString(R.string.summary_detail_blood_pressure_systolic), getString(R.string.summary_detail_blood_pressure_diastolic), getString(R.string.summary_detail_blood_pressure_mean)}, 30);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(getContext());
-        bloodPressureMeasurementRepository.selectSeveralDays(LocalDate.now(), 30, observer);
+        bloodPressureMeasurementRepository.readLastDays(LocalDate.now(), 30, observer);
     }
 
     private void dailyPulseRate(){

@@ -92,6 +92,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onResume() {
         super.onResume();
+
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
         if(model.getSelectedDeviceAgent()!=null) {
             setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
@@ -173,6 +174,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onPause() {
         super.onPause();
+
         if (model.getSelectedDeviceAgent() != null) {
             model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
         }

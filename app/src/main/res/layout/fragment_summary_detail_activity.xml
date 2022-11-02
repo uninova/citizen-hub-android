@@ -89,13 +89,40 @@
 
     </RelativeLayout>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/bar_chart"
+    <RelativeLayout
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/tab_layout_activity"
-        tools:visibility="invisible"/>
+        android:layout_marginTop="80dp">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart"
+            android:layout_width="390dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/text_view_y_axis_label"/>
+
+        <pt.uninova.s4h.citizenhub.ui.summary.VerticalTextView
+            android:id="@+id/text_view_y_axis_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="4dip"
+            android:rotation="180"
+            android:text="@string/summary_detail_activity_steps"
+            android:textSize="15sp"
+            android:textColor="@color/colorS4HBlack"/>
+
+        <TextView
+            android:id="@+id/text_view_x_axis_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bar_chart"
+            android:layout_centerHorizontal="true"
+            android:text="@string/summary_detail_time_hours"
+            android:textColor="@color/colorS4HBlack"
+            android:textSize="15sp"/>
+    </RelativeLayout>
 
 </RelativeLayout>
