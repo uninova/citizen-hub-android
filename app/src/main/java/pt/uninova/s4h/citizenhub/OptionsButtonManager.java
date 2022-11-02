@@ -5,13 +5,13 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-public class AbstractButtonManager {
+public class OptionsButtonManager {
 
     private List<Integer> resourceIdList;
     private List<MenuItem.OnMenuItemClickListener> onClickListenerList;
     private Menu menu;
 
-    public AbstractButtonManager(Menu menu, List<Integer> resourceId, List<MenuItem.OnMenuItemClickListener> onClickListener) {
+    public OptionsButtonManager(Menu menu, List<Integer> resourceId, List<MenuItem.OnMenuItemClickListener> onClickListener) {
         this.menu = menu;
         this.resourceIdList = resourceId;
         this.onClickListenerList = onClickListener;

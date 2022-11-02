@@ -80,11 +80,11 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 assert newFragment != null;
                 ft.add(R.id.layout_advanced_configurations_container, newFragment);
                if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
-                   AbstractButtonManager abstractButtonManager = new AbstractButtonManager(
+                   OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
                            optionsMenu,
                            model.getSelectedDeviceAgent().getConfigurationButtonResources(),
                            model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
-                   optionsMenu = abstractButtonManager.addButtons();
+                   optionsMenu = optionsButtonManager.addButtons();
                    updateOptionsMenu();
                }
             }

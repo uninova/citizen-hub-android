@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.AbstractButtonManager;
 import pt.uninova.s4h.citizenhub.ButtonManagerInterface;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
