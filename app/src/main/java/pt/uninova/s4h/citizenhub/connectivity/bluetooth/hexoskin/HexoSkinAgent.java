@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.hexoskin;
 
 import android.content.Context;
+import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
@@ -46,6 +47,21 @@ public class HexoSkinAgent extends BluetoothAgent {
     @Override
     public List<Fragment> getConfigurationFragments() {
         return null;
+    }
+
+    @Override
+    public List<Integer> getConfigurationButtonResources() {
+        return null;
+    }
+
+    @Override
+    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
+        return null;
+    }
+
+    @Override
+    public boolean hasConfigurationButtons() {
+        return false;
     }
 
     @Override
