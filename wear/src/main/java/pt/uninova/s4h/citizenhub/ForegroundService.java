@@ -31,7 +31,7 @@ public class ForegroundService extends Service {
 
         NotificationChannel serviceChannel = new NotificationChannel(
                 CHANNEL_ID,
-                "Citizen Hub",
+                getString(R.string.app_name),
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -42,7 +42,7 @@ public class ForegroundService extends Service {
                 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Citizen Hub Activity")
+                .setContentTitle(getString(R.string.notification_content_title))
                 .setContentText(input)
                 .setSmallIcon(R.drawable.img_logo_figure)
                 .setContentIntent(pendingIntent)
@@ -50,7 +50,7 @@ public class ForegroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_WORKOUT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
+                .addAction(R.drawable.img_logo_figure, getString(R.string.notification_button_open_app), pendingIntent);
 
         Notification notification = builder.build();
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
@@ -59,7 +59,7 @@ public class ForegroundService extends Service {
                 new OngoingActivity.Builder(getApplicationContext(), 1, builder)
                         .setAnimatedIcon(R.drawable.img_logo_figure)
                         .setTouchIntent(pendingIntent)
-                        .setTitle("Citizen Hub")
+                        .setTitle(getString(R.string.app_name))
                         .setOngoingActivityId(1)
                         .build();
 
