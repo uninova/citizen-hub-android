@@ -1,6 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
@@ -13,9 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -51,12 +55,24 @@ public class UprightGo2Agent extends BluetoothAgent {
     }
 
     @Override
+    public List<AdvancedConfigurationButton> getConfigurationButtons() {
+        List<AdvancedConfigurationButton> buttonList = new ArrayList<>();
+        UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
+
+                buttonList.add(new AdvancedConfigurationButton(
+                        R.string.configuration_uprightgo2_button_text,
+                                "Calibration",
+                        uprightGo2ConfigurationFragment.getOnMenuItemClickListeners().get(0)));
+
+        return buttonList;
+    }
+
+    @Override
     public List<Integer> getConfigurationButtonResources() {
         UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
         return uprightGo2ConfigurationFragment.getResourceIds();
     }
 
-    @Override
     public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
         UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
         return uprightGo2ConfigurationFragment.getOnMenuItemClickListeners();    }

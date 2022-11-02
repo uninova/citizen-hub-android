@@ -18,6 +18,7 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
@@ -66,6 +67,11 @@ public class WearOSAgent extends AbstractAgent {
 
     @Override
     public List<Fragment> getConfigurationFragments() {
+        return null;
+    }
+
+    @Override
+    public List<AdvancedConfigurationButton> getConfigurationButtons() {
         return null;
     }
 

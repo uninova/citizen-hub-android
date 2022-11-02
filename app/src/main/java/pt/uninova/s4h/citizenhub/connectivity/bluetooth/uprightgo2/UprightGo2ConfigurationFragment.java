@@ -61,53 +61,56 @@ public class UprightGo2ConfigurationFragment extends Fragment implements ButtonM
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
 
-        menuItemClickListener  = menuItem -> {
-            new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
-                    .setMessage(getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
-                            getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
-                    .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+        menuItemClickListener  = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                new AlertDialog.Builder(UprightGo2ConfigurationFragment.this.getContext())
+                        .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
+                        .setMessage(UprightGo2ConfigurationFragment.this.getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +
+                                UprightGo2ConfigurationFragment.this.getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text2))
+                        .setPositiveButton(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrate_option, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 //
-                            UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
+                                UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 //                                //Send Message vibration settings
 //                                UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
-                            //Send Message calibration
-                            agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
-                            System.out.println("ONCLICKKK" + agent + agent.getName());
+                                //Send Message calibration
+                                agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
+                                System.out.println("ONCLICKKK" + agent + agent.getName());
 
-                            //default - first vibration settings when adding device
-                            boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
-                            int angle = sharedPreferences.getInt("Vibration Angle", 1);
-                            int interval = sharedPreferences.getInt("Vibration Interval", 5);
-                            int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
-                            boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
-                            int strength = sharedPreferences.getInt("Vibration Strength", 0);
+                                //default - first vibration settings when adding device
+                                boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+                                int angle = sharedPreferences.getInt("Vibration Angle", 1);
+                                int interval = sharedPreferences.getInt("Vibration Interval", 5);
+                                int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+                                boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+                                int strength = sharedPreferences.getInt("Vibration Strength", 0);
 
-                            //some value adaptation
-                            int time = 5;
-                            if (interval == 0)
-                                time = 5;
-                            else if (interval == 1)
-                                time = 15;
-                            else if (interval == 2)
-                                time = 30;
-                            else if (interval == 3)
-                                time = 60;
+                                //some value adaptation
+                                int time = 5;
+                                if (interval == 0)
+                                    time = 5;
+                                else if (interval == 1)
+                                    time = 15;
+                                else if (interval == 2)
+                                    time = 30;
+                                else if (interval == 3)
+                                    time = 60;
 
-                            //Send Message vibration settings
-                            agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
+                                //Send Message vibration settings
+                                agent.enableProtocol(new UprightGo2VibrationProtocol(agent, vibration, angle, interval, showPattern, pattern, strength));
 
-                            dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
+                                dialog = ProgressDialog.show(getContext(), "", getString(R.string.fragment_device_configuration_advanced_calibration_dialog_calibrating_text), false);
 
-                            handler.sendMessageDelayed(new Message(), 2500);
-                        }
-                    })
-                    .setIcon(R.drawable.img_citizen_hub_logo_png)
-                    .show();
-            return true;
+                                handler.sendMessageDelayed(new Message(), 2500);
+                            }
+                        })
+                        .setIcon(R.drawable.img_citizen_hub_logo_png)
+                        .show();
+                return true;
+            }
         };
 
         enableAdvancedConfigurations(view, model);

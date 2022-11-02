@@ -19,6 +19,7 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -147,13 +148,26 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         }
         optionsMenu=menu;
         if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
-            OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
-                    optionsMenu,
-                    model.getSelectedDeviceAgent().getConfigurationButtonResources(),
-                    model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
-            optionsMenu = optionsButtonManager.addButtons();
-            updateOptionsMenu();
+            List<AdvancedConfigurationButton> advancedConfigurationButtons = model.getSelectedDeviceAgent().getConfigurationButtons();
+            for (AdvancedConfigurationButton button:advancedConfigurationButtons
+                 ) {
+               OptionsButtonManager buttonManager = new OptionsButtonManager(
+                       optionsMenu,
+                       button.getResId(),
+                       button.getButtonText(),
+                       button.getOnMenuItemClickListener());
+               optionsMenu = buttonManager.addButton();
+               updateOptionsMenu();
+            }
+
         }
+//            OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
+//                    optionsMenu,
+//                    model.getSelectedDeviceAgent().getConfigurationButtonResources(),
+//                    model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
+//            optionsMenu = optionsButtonManager.addButtons();
+//            updateOptionsMenu();
+//        }
     }
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);

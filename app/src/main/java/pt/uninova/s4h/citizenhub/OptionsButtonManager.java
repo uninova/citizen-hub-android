@@ -7,43 +7,45 @@ import java.util.List;
 
 public class OptionsButtonManager {
 
-    private List<Integer> resourceIdList;
-    private List<MenuItem.OnMenuItemClickListener> onClickListenerList;
+    private Integer resourceId;
+    private String buttonText;
+    private MenuItem.OnMenuItemClickListener onClickListener;
     private Menu menu;
 
-    public OptionsButtonManager(Menu menu, List<Integer> resourceId, List<MenuItem.OnMenuItemClickListener> onClickListener) {
+    public OptionsButtonManager(Menu menu, Integer resourceId, String buttonText, MenuItem.OnMenuItemClickListener onClickListener) {
         this.menu = menu;
-        this.resourceIdList = resourceId;
-        this.onClickListenerList = onClickListener;
+        this.resourceId = resourceId;
+        this.buttonText = buttonText;
+        this.onClickListener = onClickListener;
     }
 
-    public Menu addButtons() {
-        int i =0;
-            if (resourceIdList != null && onClickListenerList != null) {
-                for (int resource : resourceIdList
-                ) {
-                    menu.add(resource).setTitle("Calibration").setEnabled(true).setVisible(true).setOnMenuItemClickListener(onClickListenerList.get(i));
-                    i++;
-                }
-            }
+    public Menu addButton() {
+        menu.add(resourceId).setTitle(buttonText).setOnMenuItemClickListener(onClickListener).setVisible(true).setEnabled(true);
         return menu;
     }
 
-
-    public List<Integer> getResourceIdList() {
-        return resourceIdList;
+    public String getButtonText() {
+        return buttonText;
     }
 
-    public void setResourceIdList(List<Integer> resourceIdList) {
-        this.resourceIdList = resourceIdList;
+    public void setButtonText(String buttonText) {
+        this.buttonText = buttonText;
     }
 
-    public List<MenuItem.OnMenuItemClickListener> getOnClickListenerList() {
-        return onClickListenerList;
+    public Integer getResourceId() {
+        return resourceId;
     }
 
-    public void setOnClickListenerList(List<MenuItem.OnMenuItemClickListener> onClickListenerList) {
-        this.onClickListenerList = onClickListenerList;
+    public void setResourceId(Integer resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public MenuItem.OnMenuItemClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+    public void setOnClickListener(MenuItem.OnMenuItemClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     public Menu getMenu() {
