@@ -19,15 +19,13 @@ public class OptionsButtonManager {
 
     public Menu addButtons() {
         int i =0;
-
-        if(resourceIdList!=null&&onClickListenerList!=null) {
-            for (int resource : resourceIdList
-            ) {
-                menu.add(resource);
-                menu.getItem(resource).setOnMenuItemClickListener(onClickListenerList.get(i));
-                i++;
+            if (resourceIdList != null && onClickListenerList != null) {
+                for (int resource : resourceIdList
+                ) {
+                    menu.add(resource).setTitle("Calibration").setEnabled(true).setVisible(true).setOnMenuItemClickListener(onClickListenerList.get(i));
+                    i++;
+                }
             }
-        }
         return menu;
     }
 

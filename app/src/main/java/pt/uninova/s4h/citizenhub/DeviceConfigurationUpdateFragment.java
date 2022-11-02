@@ -25,7 +25,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
     private LinearLayout advancedConfigurationLayout;
     private Menu optionsMenu;
-
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
@@ -62,6 +61,11 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         return view;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        this.optionsMenu = menu;
+        super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -79,14 +83,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 }
                 assert newFragment != null;
                 ft.add(R.id.layout_advanced_configurations_container, newFragment);
-               if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
-                   OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
-                           optionsMenu,
-                           model.getSelectedDeviceAgent().getConfigurationButtonResources(),
-                           model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
-                   optionsMenu = optionsButtonManager.addButtons();
-                   updateOptionsMenu();
-               }
+
             }
         }
         ft.commitNow();
@@ -109,8 +106,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        optionsMenu = menu;
         inflater.inflate(R.menu.device_configuration_fragment, menu);
+
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
 
@@ -146,6 +143,15 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 //                });
 //                return false;
 //            });
+        }
+        optionsMenu=menu;
+        if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
+            OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
+                    optionsMenu,
+                    model.getSelectedDeviceAgent().getConfigurationButtonResources(),
+                    model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
+            optionsMenu = optionsButtonManager.addButtons();
+            updateOptionsMenu();
         }
     }
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
