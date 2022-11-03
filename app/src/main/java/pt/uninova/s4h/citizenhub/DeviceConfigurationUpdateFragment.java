@@ -78,9 +78,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 Fragment newFragment = null;
                 try {
                     newFragment = fragmentList.get(i).getClass().newInstance();
-//                    if(newFragment instanceof UprightGo2ConfigurationFragment){
-//                        System.out.println("INSTANCE OF IS UPRIGHT!");
-//                        }
                     updateOptionsMenu();
 
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
@@ -147,10 +144,9 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             ) {
                 optionsMenu.add(R.string.configuration_uprightgo2_menu_item_text).setEnabled(true).setVisible(true).setTitle(getString(R.string.configuration_uprightgo2_menu_item_text)).setOnMenuItemClickListener(
                         menuItem -> {
-                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
-                    System.out.println("nsdfusdfn");
-                    return true;
-                });
+                            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
+                            return true;
+                        });
             }
             updateOptionsMenu();
 
