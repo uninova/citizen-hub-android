@@ -52,28 +52,9 @@ public class UprightGo2Agent extends BluetoothAgent {
         return uprightList;
     }
 
-    @Override
-    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
-        List<AdvancedConfigurationMenuItem> buttonList = new ArrayList<>();
-        UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
-
-                buttonList.add(new AdvancedConfigurationMenuItem(
-                        R.string.fragment_uprightgo2_calibrate_button_text,
-                                "Calibration",
-                        uprightGo2ConfigurationFragment.getOnMenuItemClickListeners().get(0)));
-
-        return buttonList;
-    }
-
-
     public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
         UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
         return uprightGo2ConfigurationFragment.getOnMenuItemClickListeners();    }
-
-    @Override
-    public boolean hasConfigurationButtons() {
-        return true;
-    }
 
     @Override
     public Fragment getPairingHelper() {

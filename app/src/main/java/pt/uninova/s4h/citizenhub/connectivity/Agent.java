@@ -67,9 +67,5 @@ public interface Agent {
 
     List<Fragment> getConfigurationFragments();
 
-    List<AdvancedConfigurationMenuItem> getConfigurationMenuItems();
-
-    boolean hasConfigurationButtons();
-
     Fragment getPairingHelper();
 }

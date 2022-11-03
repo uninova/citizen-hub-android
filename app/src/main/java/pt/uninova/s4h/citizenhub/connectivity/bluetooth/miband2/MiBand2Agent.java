@@ -136,15 +136,6 @@ public class MiBand2Agent extends BluetoothAgent {
         return null;
     }
 
-    @Override
-    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
-        return null;
-    }
-
-    @Override
-    public boolean hasConfigurationButtons() {
-        return false;
-    }
 
     @Override
     public Fragment getPairingHelper() {

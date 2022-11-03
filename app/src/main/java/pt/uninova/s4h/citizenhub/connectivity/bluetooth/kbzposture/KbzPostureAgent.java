@@ -55,16 +55,6 @@ public class KbzPostureAgent extends BluetoothAgent {
     }
 
     @Override
-    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
-        return null;
-    }
-
-    @Override
-    public boolean hasConfigurationButtons() {
-        return false;
-    }
-
-    @Override
     public Fragment getPairingHelper() {
         return null;
     }
