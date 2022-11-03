@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -51,10 +49,6 @@ public class UprightGo2Agent extends BluetoothAgent {
         uprightList.add(UprightGo2ConfigurationFragment.newInstance());
         return uprightList;
     }
-
-    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
-        UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
-        return uprightGo2ConfigurationFragment.getOnMenuItemClickListeners();    }
 
     @Override
     public Fragment getPairingHelper() {

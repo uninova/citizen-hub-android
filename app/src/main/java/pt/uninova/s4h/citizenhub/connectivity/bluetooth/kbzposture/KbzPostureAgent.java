@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture;
 
 import android.content.Context;
-import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
@@ -14,7 +13,6 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;

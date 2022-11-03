@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.wearos;
 
 import android.content.Context;
-import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
@@ -18,7 +17,6 @@ import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;

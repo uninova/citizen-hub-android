@@ -26,13 +26,12 @@ import androidx.navigation.Navigation;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.ButtonManagerInterface;
 import pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
-public class UprightGo2ConfigurationFragment extends Fragment implements ButtonManagerInterface {
+public class UprightGo2ConfigurationFragment extends Fragment {
 
     public static String uprightGo2MenuItem = "calibration";
 
@@ -181,25 +180,6 @@ public class UprightGo2ConfigurationFragment extends Fragment implements ButtonM
 
     public static Fragment newInstance() {
         return new UprightGo2ConfigurationFragment();
-    }
-
-    @Override
-    public boolean hasButtons() {
-        return true;
-    }
-
-    @Override
-    public List<Integer> getResourceIds() {
-        List<Integer> resourceIds = new ArrayList<>();
-        resourceIds.add(R.id.calibrationLayout);
-        return resourceIds;
-    }
-
-    @Override
-    public List<MenuItem.OnMenuItemClickListener> getOnMenuItemClickListeners() {
-        List<MenuItem.OnMenuItemClickListener> menuItemClickListenerList = new ArrayList<>();
-        menuItemClickListenerList.add(menuItemClickListener);
-        return menuItemClickListenerList;
     }
 
 }

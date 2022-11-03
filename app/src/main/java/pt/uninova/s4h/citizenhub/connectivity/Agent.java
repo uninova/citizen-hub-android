@@ -1,14 +1,11 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import android.view.MenuItem;
-
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;

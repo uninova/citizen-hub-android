@@ -19,7 +19,6 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
