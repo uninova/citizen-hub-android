@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +50,8 @@ public class UprightGo2ConfigurationFragment extends Fragment implements ButtonM
     };
     private SharedPreferences sharedPreferences;
 
-    private MenuItem.OnMenuItemClickListener menuItemClickListener;
+    private MenuItem.OnMenuItemClickListener
+            menuItemClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class UprightGo2ConfigurationFragment extends Fragment implements ButtonM
         menuItemClickListener  = new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+
+                System.out.println("CLICK CALIBRATION");
                 new AlertDialog.Builder(UprightGo2ConfigurationFragment.this.getContext())
                         .setTitle(R.string.fragment_device_configuration_advanced_calibration_dialog_title)
                         .setMessage(UprightGo2ConfigurationFragment.this.getString(R.string.fragment_device_configuration_advanced_warning_calibration_message_text) +

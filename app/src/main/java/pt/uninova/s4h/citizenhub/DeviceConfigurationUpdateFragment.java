@@ -19,7 +19,7 @@ import java.util.List;
 
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -64,6 +64,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        System.out.println("PREPARE OPTIONS MENU");
         this.optionsMenu = menu;
         super.onPrepareOptionsMenu(menu);
     }
@@ -71,14 +72,15 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
         if(fragmentList!=null) {
             for (int i = 0; i < fragmentList.size(); i++) {
                 Fragment newFragment = null;
                 try {
                     newFragment = fragmentList.get(i).getClass().newInstance();
+//                    newFragment instanceof UprightGo2ConfigurationFragment
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
                     e.printStackTrace();
                 }
@@ -109,7 +111,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
-
+        System.out.println("CREATE OPTIONS MENU");
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
 
@@ -148,8 +150,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         }
         optionsMenu=menu;
         if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
-            List<AdvancedConfigurationButton> advancedConfigurationButtons = model.getSelectedDeviceAgent().getConfigurationButtons();
-            for (AdvancedConfigurationButton button:advancedConfigurationButtons
+            List<AdvancedConfigurationMenuItem> advancedConfigurationMenuItems = model.getSelectedDeviceAgent().getConfigurationMenuItems();
+            for (AdvancedConfigurationMenuItem button: advancedConfigurationMenuItems
                  ) {
                OptionsButtonManager buttonManager = new OptionsButtonManager(
                        optionsMenu,

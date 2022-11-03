@@ -5,7 +5,6 @@ import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -15,10 +14,9 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.core.DateTime;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 
 public class BloodPressureMonitorAgent extends BluetoothAgent {
@@ -64,17 +62,7 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
     }
 
     @Override
-    public List<AdvancedConfigurationButton> getConfigurationButtons() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getConfigurationButtonResources() {
-        return null;
-    }
-
-    @Override
-    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
+    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
         return null;
     }
 

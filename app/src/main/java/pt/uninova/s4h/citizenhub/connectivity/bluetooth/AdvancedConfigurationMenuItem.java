@@ -2,13 +2,13 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import android.view.MenuItem;
 
-public class AdvancedConfigurationButton {
+public class AdvancedConfigurationMenuItem {
 
     private int resId;
     private String buttonText;
     private MenuItem.OnMenuItemClickListener onMenuItemClickListener;
 
-    public AdvancedConfigurationButton(int resId, String buttonText, MenuItem.OnMenuItemClickListener onMenuItemClickListener) {
+    public AdvancedConfigurationMenuItem(int resId, String buttonText, MenuItem.OnMenuItemClickListener onMenuItemClickListener) {
         this.resId = resId;
         this.buttonText = buttonText;
         this.onMenuItemClickListener = onMenuItemClickListener;

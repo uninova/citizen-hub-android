@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +19,7 @@ import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
@@ -138,17 +137,7 @@ public class MiBand2Agent extends BluetoothAgent {
     }
 
     @Override
-    public List<AdvancedConfigurationButton> getConfigurationButtons() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getConfigurationButtonResources() {
-        return null;
-    }
-
-    @Override
-    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
+    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
         return null;
     }
 

@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,13 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2Agent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationProtocol;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2VibrationProtocol;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
@@ -84,14 +79,14 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
 
             connectDevice.setOnClickListener(v -> {
 
-                        model.addAgent(agent);
+                model.addAgent(agent);
 
-                        DeviceConfigurationAddFragment.this.saveFeaturesChosen();
+                DeviceConfigurationAddFragment.this.saveFeaturesChosen();
 
-                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
-                    });
+                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
+            });
 
-                DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
+            DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {
                 assert agent != null;
                 labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(agent)));
                 labelListView.setVisibility(View.VISIBLE);

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -67,11 +67,7 @@ public interface Agent {
 
     List<Fragment> getConfigurationFragments();
 
-    List<AdvancedConfigurationButton> getConfigurationButtons();
-
-    List<Integer> getConfigurationButtonResources();
-
-    List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener();
+    List<AdvancedConfigurationMenuItem> getConfigurationMenuItems();
 
     boolean hasConfigurationButtons();
 

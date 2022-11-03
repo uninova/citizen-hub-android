@@ -15,7 +15,7 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationButton;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
@@ -51,17 +51,7 @@ public class HexoSkinAgent extends BluetoothAgent {
     }
 
     @Override
-    public List<AdvancedConfigurationButton> getConfigurationButtons() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getConfigurationButtonResources() {
-        return null;
-    }
-
-    @Override
-    public List<MenuItem.OnMenuItemClickListener> getConfigurationButtonClickListener() {
+    public List<AdvancedConfigurationMenuItem> getConfigurationMenuItems() {
         return null;
     }
 
