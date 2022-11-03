@@ -20,7 +20,6 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2ConfigurationFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -58,7 +57,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         });
 
 
-
         advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
         return view;
     }
@@ -75,7 +73,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
-        if(fragmentList!=null) {
+        if (fragmentList != null) {
             for (int i = 0; i < fragmentList.size(); i++) {
                 Fragment newFragment = null;
                 try {
@@ -101,10 +99,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         super.onResume();
 
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
-        if(model.getSelectedDeviceAgent()!=null) {
+        if (model.getSelectedDeviceAgent() != null) {
             setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
         }
-        }
+    }
 
     private void updateOptionsMenu() {
         if (optionsMenu != null) {
@@ -142,32 +140,29 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             });
 
         }
-        optionsMenu=menu;
-        if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
+        optionsMenu = menu;
+        if (model.getSelectedDeviceAgent().hasConfigurationButtons()) {
             List<AdvancedConfigurationMenuItem> advancedConfigurationMenuItems = model.getSelectedDeviceAgent().getConfigurationMenuItems();
-            for (AdvancedConfigurationMenuItem button: advancedConfigurationMenuItems
-                 ) {
-                optionsMenu.add(R.string.configuration_uprightgo2_menu_item_text).setEnabled(true).setVisible(true).setTitle(getString(R.string.configuration_uprightgo2_menu_item_text)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2ConfigurationFragment());
-                        System.out.println("nsdfusdfn");
-                        return true;
-                    }
-
+            for (AdvancedConfigurationMenuItem button : advancedConfigurationMenuItems
+            ) {
+                optionsMenu.add(R.string.configuration_uprightgo2_menu_item_text).setEnabled(true).setVisible(true).setTitle(getString(R.string.configuration_uprightgo2_menu_item_text)).setOnMenuItemClickListener(
+                        menuItem -> {
+                    Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
+                    System.out.println("nsdfusdfn");
+                    return true;
                 });
-                }
+            }
             updateOptionsMenu();
 
         }
     }
+
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
-                setChildrenEnabled((ViewGroup) child,state);
+                setChildrenEnabled((ViewGroup) child, state);
             } else {
                 child.setEnabled(state);
             }
