@@ -335,6 +335,7 @@ public class SummaryViewModel extends AndroidViewModel {
 
             if (value != null && !value.equals(data.getAverage())) {
                 data.setAverage(value);
+                heartRateData.setValue(data);
             }
         }
     };
@@ -353,6 +354,7 @@ public class SummaryViewModel extends AndroidViewModel {
                 data.setDuration(value.getDuration());
                 data.setRepetitions(value.getRepetitions());
                 data.setTrainingWeight(value.getWeight());
+                lumbarExtensionTrainingData.setValue(data);
             }
         }
     };
