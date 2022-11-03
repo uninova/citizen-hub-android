@@ -7,19 +7,59 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 
-public class GreetingFragment extends Fragment {
+public class DataDisplayFragment extends Fragment {
+
+    LinearLayout heartRateDataLayout, stepsDataLayout;
+    TextView heartRateDataTextView, stepsDataTextView, swipeLeft;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(
-                R.layout.fragment_greeting, container, false);
+        view = inflater.inflate(
+                R.layout.fragment_main, container, false);
 
+        heartRateDataLayout = view.findViewById(R.id.heartRateDataLayout);
+        heartRateDataTextView = view.findViewById(R.id.textViewHeartRateValue);
+        stepsDataLayout = view.findViewById(R.id.stepsDataLayout);
+        stepsDataTextView = view.findViewById(R.id.textViewStepsValue);
+        swipeLeft = view.findViewById(R.id.textViewSwipe);
+
+        initialAnimation();
+        enableObservers();
+
+        return view;
+    }
+
+    private void enableObservers(){
+        MainActivity.listenHeartRateAverage.observe((LifecycleOwner) view.getContext(), s -> heartRateDataTextView.setText(s));
+        MainActivity.listenSteps.observe((LifecycleOwner) view.getContext(), s -> stepsDataTextView.setText(s));
+        MainActivity.protocolHeartRate.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if (aBoolean) {
+                heartRateDataLayout.setVisibility(View.VISIBLE);
+                swipeLeft.setVisibility(View.GONE);
+            } else {
+                heartRateDataLayout.setVisibility(View.GONE);
+            }
+        });
+        MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
+            if (aBoolean) {
+                stepsDataLayout.setVisibility(View.VISIBLE);
+                swipeLeft.setVisibility(View.GONE);
+            } else {
+                stepsDataLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void initialAnimation(){
         TextView swipeText = view.findViewById(R.id.textViewSwipe);
         ImageView imageCitizen = view.findViewById(R.id.imageViewCitizenHub);
 
@@ -57,7 +97,5 @@ public class GreetingFragment extends Fragment {
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
-
-        return view;
     }
 }

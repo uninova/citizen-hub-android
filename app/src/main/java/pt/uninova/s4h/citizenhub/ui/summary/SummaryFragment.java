@@ -12,17 +12,10 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.ServiceFragment;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.data.PostureValue;
-import pt.uninova.s4h.citizenhub.persistence.entity.BloodPressureMeasurementRecord;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.LumbarExtensionTrainingSummary;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.PostureClassificationSum;
 
 public class SummaryFragment extends ServiceFragment {
 
@@ -30,6 +23,45 @@ public class SummaryFragment extends ServiceFragment {
 
     private String millisToString(long value) {
         return secondsToString(value / 1000);
+    }
+
+    private void onActivityDataUpdate(SummaryViewModel.ActivityData value) {
+        final View view = requireView();
+
+        final boolean hasData = value != null && value.hasData();
+
+        if (hasData) {
+            updateTextView(view.findViewById(R.id.activityCaloriesValueTextView), R.string.activity_calories_value, value.getCalories());
+            updateTextView(view.findViewById(R.id.activityDistanceValueTextView), R.string.activity_distance_value, value.getDistance());
+            updateTextView(view.findViewById(R.id.activityStepsValueTextView), R.string.activity_steps_value, value.getSteps());
+        }
+
+        updateCardViewVisibility(view.findViewById(R.id.activityCardView), hasData);
+    }
+
+    private void onBreathingRateUpdate(SummaryViewModel.BreathingRateData value) {
+        final View view = requireView();
+
+        boolean hasData = value != null;
+
+        if (hasData) {
+            updateTextView(view.findViewById(R.id.breathingRateValueTextView), R.string.breathing_rate_value, value.getAverage());
+        }
+
+        updateCardViewVisibility(view.findViewById(R.id.breathingRateCardView), hasData);
+    }
+
+    private void onBloodPressureDataUpdate(SummaryViewModel.BloodPressureData value) {
+        final View view = requireView();
+
+        final boolean hasData = value != null && value.hasData();
+
+        if (hasData) {
+            updateTextView(view.findViewById(R.id.bloodPressureDiastolicValueTextView), R.string.blood_pressure_diastolic_value, value.getDiastolic());
+            updateTextView(view.findViewById(R.id.bloodPressureSystolicValueTextView), R.string.blood_pressure_systolic_value, value.getSystolic());
+        }
+
+        updateCardViewVisibility(view.findViewById(R.id.bloodPressureCardView), hasData);
     }
 
     @Override
@@ -44,64 +76,14 @@ public class SummaryFragment extends ServiceFragment {
         return inflater.inflate(R.layout.fragment_summary_2, container, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (getService() != null) {
-            onServiceConnected();
-        }
-    }
-
-    private void onDailyBloodPressureMeasurementUpdate(List<BloodPressureMeasurementRecord> bloodPressureMeasurementRecords) {
-        final View view = requireView();
-
-        if (!bloodPressureMeasurementRecords.isEmpty()) {
-            final BloodPressureMeasurementRecord record = bloodPressureMeasurementRecords.get(bloodPressureMeasurementRecords.size() - 1);
-
-            TextView bloodPressureSystolicTextView = view.findViewById(R.id.bloodPressureSystolicValueTextView);
-            TextView bloodPressureDiastolicTextView = view.findViewById(R.id.bloodPressureDiastolicValueTextView);
-
-            bloodPressureSystolicTextView.setText(getString(R.string.blood_pressure_systolic_value, record.getSystolic()));
-            bloodPressureDiastolicTextView.setText(getString(R.string.blood_pressure_diastolic_value, record.getDiastolic()));
-        }
-
-        final CardView bloodPressureCardView = view.findViewById(R.id.bloodPressureCardView);
-        if(!bloodPressureMeasurementRecords.isEmpty()) {
-            bloodPressureCardView.setClickable(true);
-            bloodPressureCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_blood_pressure_fragment);
-                }
-            });
-        }
-        bloodPressureCardView.setVisibility(bloodPressureMeasurementRecords.isEmpty() ? View.GONE : View.VISIBLE);
-    }
-
-    private void onDailyBreathingRateUpdate(Double value) {
-        final View view = requireView();
-
-        boolean hasBreathingRate = value != null;
-
-        if (hasBreathingRate) {
-            TextView breathingRateValueTextView = view.findViewById(R.id.breathingRateValueTextView);
-
-            breathingRateValueTextView.setText(getString(R.string.breathing_rate_value, value));
-        }
-
-        final CardView breathingRateCardView = view.findViewById(R.id.breathingRateCardView);
-
-        breathingRateCardView.setVisibility(hasBreathingRate ? View.VISIBLE : View.GONE);
-    }
-
-    private void onDailyDataExistenceUpdate(Integer count) {
+    private void onHasDataUpdate(Boolean value) {
         final View view = requireView();
         final TextView noDataTextView = view.findViewById(R.id.fragment_summary_text_view_no_data);
 
-        if (count > 0) {
+        if (value != null && value) {
             noDataTextView.setVisibility(View.GONE);
         } else {
-            AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
+            final AgentOrchestrator agentOrchestrator = getService().getAgentOrchestrator();
 
             if (agentOrchestrator.getDevices().isEmpty())
                 noDataTextView.setText(getString(R.string.fragment_report_text_view_no_data_summary_nodevices));
@@ -112,31 +94,97 @@ public class SummaryFragment extends ServiceFragment {
         }
     }
 
-    private void onDailyHeartRateUpdate(Double value) {
+    private void onHeartRateDataUpdate(SummaryViewModel.HeartRateData value) {
         final View view = requireView();
 
-        boolean hasHeartRate = value != null;
+        final boolean hasData = value != null && value.hasData();
 
-        if (hasHeartRate) {
-            TextView heartRateTextView = view.findViewById(R.id.heartRateValueTextView);
-
-            heartRateTextView.setText(getString(R.string.heart_rate_value, value));
+        if (hasData) {
+            updateTextView(view.findViewById(R.id.heartRateValueTextView), R.string.heart_rate_value, value.getAverage());
         }
 
-        final CardView heartRateCardView = view.findViewById(R.id.heartRateCardView);
+        updateCardViewVisibility(view.findViewById(R.id.heartRateCardView), hasData);
+    }
 
-        heartRateCardView.setVisibility(hasHeartRate ? View.VISIBLE : View.GONE);
+    private void onPostureDataUpdate(SummaryViewModel.PostureData value) {
+        final View view = requireView();
 
-        if (hasHeartRate) {
-            heartRateCardView.setClickable(true);
-            heartRateCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment);
-                }
-            });
+        final boolean hasData = value != null && value.hasData();
+
+        if (hasData) {
+            updateTextView(view.findViewById(R.id.postureCorrectValueTextView), R.string.posture_correct_value, secondsToString(value.getCorrect()));
+            updateTextView(view.findViewById(R.id.postureIncorrectValueTextView), R.string.posture_incorrect_value, secondsToString(value.getIncorrect()));
+        }
+
+        updateCardViewVisibility(view.findViewById(R.id.postureCardView), hasData);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        model.refreshData();
+    }
+
+    @Override
+    public void onServiceConnected() {
+        model.getActivityData().observe(getViewLifecycleOwner(), this::onActivityDataUpdate);
+        model.getBloodPressureData().observe(getViewLifecycleOwner(), this::onBloodPressureDataUpdate);
+        model.getBreathingRateData().observe(getViewLifecycleOwner(), this::onBreathingRateUpdate);
+        model.getHeartRateData().observe(getViewLifecycleOwner(), this::onHeartRateDataUpdate);
+        model.getPostureData().observe(getViewLifecycleOwner(), this::onPostureDataUpdate);
+        model.hasData().observe(getViewLifecycleOwner(), this::onHasDataUpdate);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.activityCardView).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment));
+        view.findViewById(R.id.bloodPressureCardView).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_summary_fragment_to_summary_detail_blood_pressure_fragment));
+        view.findViewById(R.id.heartRateCardView).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_summary_fragment_to_summary_detail_heart_rate_fragment));
+        view.findViewById(R.id.lumbarTrainingCardView).setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_lumbar_extension_fragment));
+        view.findViewById(R.id.postureCardView).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment));
+    }
+
+    private void updateCardViewVisibility(CardView view, boolean visible) {
+        if (visible) {
+            view.setVisibility(View.VISIBLE);
+            view.setClickable(true);
+        } else {
+            view.setClickable(false);
+            view.setVisibility(View.GONE);
         }
     }
+
+    private void updateTextView(TextView view, int resId, Object args) {
+        if (args == null) {
+            view.setVisibility(View.GONE);
+            view.setText("");
+        } else {
+            view.setText(getString(resId, args));
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private String secondsToString(long value) {
+        long seconds = value;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if (minutes > 0)
+            seconds = seconds % 60;
+
+        if (hours > 0) {
+            minutes = minutes % 60;
+        }
+
+        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
+
+        return result.equals("") ? "0s" : result;
+    }
+
+///////////////////////////////////
 
     private void onDailyLumbarExtensionTrainingUpdate(LumbarExtensionTrainingSummary record) {
         final View view = requireView();
@@ -160,142 +208,6 @@ public class SummaryFragment extends ServiceFragment {
             lumbarExtensionTrainingDurationTextView.setText(getString(R.string.lumbar_training_duration_value, millisToString(record.getDuration().toMillis())));
             lumbarExtensionTrainingRepetitionsTextView.setText(getString(R.string.lumbar_training_repetitions_value, record.getRepetitions()));
             lumbarExtensionTrainingWeightTextView.setText(getString(R.string.lumbar_training_weight_value, record.getWeight()));
-
-            lumbarExtensionTrainingCardView.setVisibility(View.VISIBLE);
-            lumbarExtensionTrainingCardView.setClickable(true);
-            lumbarExtensionTrainingCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_lumbar_extension_fragment);
-                }
-            });
         }
-    }
-
-    private void onDailyPostureMeasurementUpdate(List<PostureClassificationSum> records) {
-        final View view = requireView();
-        final Map<Integer, Long> values = new HashMap<>();
-
-        for (PostureClassificationSum i : records) {
-            if (i.getClassification() == PostureValue.CLASSIFICATION_CORRECT || i.getClassification() == PostureValue.CLASSIFICATION_INCORRECT) {
-                values.put(i.getClassification(), i.getDuration().getSeconds());
-            }
-        }
-
-        boolean hasPosture = !values.isEmpty();
-
-        if (hasPosture) {
-            int pc = values.containsKey(PostureValue.CLASSIFICATION_CORRECT) ? values.get(PostureValue.CLASSIFICATION_CORRECT).intValue() : 0;
-            int pi = values.containsKey(PostureValue.CLASSIFICATION_INCORRECT) ? values.get(PostureValue.CLASSIFICATION_INCORRECT).intValue() : 0;
-
-            TextView postureCorrectTextView = view.findViewById(R.id.postureCorrectValueTextView);
-            TextView postureIncorrectTextView = view.findViewById(R.id.postureIncorrectValueTextView);
-
-            postureCorrectTextView.setText(getString(R.string.posture_correct_value, secondsToString(pc)));
-            postureIncorrectTextView.setText(getString(R.string.posture_incorrect_value, secondsToString(pi)));
-        }
-
-        final CardView postureCardView = view.findViewById(R.id.postureCardView);
-        postureCardView.setVisibility(hasPosture ? View.VISIBLE : View.GONE);
-
-        if (hasPosture) {
-            postureCardView.setClickable(true);
-            postureCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_posture_fragment);
-                }
-            });
-        }
-    }
-
-    public void onDailyStepsAllUpdate(Integer steps) {
-        if (steps != null) {
-            final View view = requireView();
-
-            final TextView activityStepsTextView = view.findViewById(R.id.activityStepsValueTextView);
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityStepsTextView.setVisibility(View.VISIBLE);
-            activityStepsTextView.setText(getString(R.string.activity_steps_value, steps));
-
-            onActivityUpdate();
-        }
-    }
-
-    public void onDailyDistanceAllUpdate(Double distance) {
-        if (distance != null) {
-            final View view = requireView();
-
-            final TextView activityDistanceTextView = view.findViewById(R.id.activityDistanceValueTextView);
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityDistanceTextView.setVisibility(View.VISIBLE);
-            activityDistanceTextView.setText(getString(R.string.activity_distance_value, distance));
-
-            onActivityUpdate();
-        }
-    }
-
-    public void onDailyCaloriesAllUpdate(Double calories) {
-        if (calories != null) {
-            final View view = requireView();
-
-            final TextView activityCaloriesTextView = view.findViewById(R.id.activityCaloriesValueTextView);
-            final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-            activityCardView.setVisibility(View.VISIBLE);
-            activityCaloriesTextView.setVisibility(View.VISIBLE);
-            activityCaloriesTextView.setText(getString(R.string.activity_calories_value, calories));
-
-            onActivityUpdate();
-        }
-    }
-
-    public void onActivityUpdate() {
-        final View view = requireView();
-        final CardView activityCardView = view.findViewById(R.id.activityCardView);
-
-        if (!activityCardView.isClickable()) {
-            activityCardView.setClickable(true);
-            activityCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_summary_fragment_to_summary_detail_activity_fragment);
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onServiceConnected() {
-        model.getDailyBreathingRateMeasurement().observe(getViewLifecycleOwner(), this::onDailyBreathingRateUpdate);
-        model.getDailyLumbarExtensionTraining().observe(getViewLifecycleOwner(), this::onDailyLumbarExtensionTrainingUpdate);
-        model.getDailyBloodPressureMeasurement().observe(getViewLifecycleOwner(), this::onDailyBloodPressureMeasurementUpdate);
-        model.getDailyDataExistence().observe(getViewLifecycleOwner(), this::onDailyDataExistenceUpdate);
-        model.getDailyHeartRate().observe(getViewLifecycleOwner(), this::onDailyHeartRateUpdate);
-        model.getDailyPostureMeasurement().observe(getViewLifecycleOwner(), this::onDailyPostureMeasurementUpdate);
-        model.getDailyStepsAllTypes().observe(getViewLifecycleOwner(), this::onDailyStepsAllUpdate);
-        model.getDailyDistanceAllTypes().observe(getViewLifecycleOwner(), this::onDailyDistanceAllUpdate);
-        model.getDailyCaloriesAllTypes().observe(getViewLifecycleOwner(), this::onDailyCaloriesAllUpdate);
-    }
-
-    private String secondsToString(long value) {
-        long seconds = value;
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-
-        if (minutes > 0)
-            seconds = seconds % 60;
-
-        if (hours > 0) {
-            minutes = minutes % 60;
-        }
-
-        String result = ((hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")).trim();
-
-        return result.equals("") ? "0s" : result;
     }
 }

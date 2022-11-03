@@ -11,6 +11,7 @@ import pt.uninova.s4h.citizenhub.connectivity.Protocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BaseCharacteristicListener;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothMeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.CharacteristicListener;
 import pt.uninova.s4h.citizenhub.data.CaloriesMeasurement;
@@ -28,7 +29,7 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
     public static final UUID ID = AgentOrchestrator.namespaceGenerator().getUUID("bluetooth.digitsole.activity");
 
     long lastTime = 0;
-    int milliForTimer = 120000;
+    int milliForTimer = 75000;
 
     private final CharacteristicListener activationListener = new BaseCharacteristicListener(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE) {
         private boolean once0x02 = false;
@@ -37,7 +38,10 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         public void onWrite(byte[] value) {
             switch (value[0]) {
                 case 0x00:
-                    getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02});
+                    getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x24, 0x02});
+                    break;
+                case 0x24:
+                    getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x02, 0x48, 0x00, 0x00, 0x00});
                     break;
                 case 0x02:
                     if (once0x02) {
@@ -49,7 +53,19 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
                     break;
                 case 0x01:
                     once0x02 = false;
-
+                    break;
+                case 0x46:
+                    switch (value[1]) {
+                        case 0x02:
+                            getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x03, (byte) 0xb4, 0x00, 0x00, 0x00});
+                            break;
+                        case 0x03:
+                            getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x46, 0x04, 0x2a, 0x00, 0x00, 0x00});
+                            break;
+                        case 0x04:
+                            getConnection().writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x02});
+                            break;
+                    }
                     break;
             }
         }
@@ -81,6 +97,12 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
 
     @Override
     public void disable() {
+        System.out.println("DISABLE");
+        final BluetoothConnection connection = getConnection();
+        connection.removeCharacteristicListener(activationListener);
+        connection.removeCharacteristicListener(dataListener);
+        connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG);
+        connection.disableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE);
         setState(Protocol.STATE_DISABLED);
     }
 
@@ -90,11 +112,13 @@ public class DigitsoleActivityProtocol extends BluetoothMeasuringProtocol {
         runTimer();
         if ((currentTime - lastTime) > milliForTimer) {
             final BluetoothConnection connection = getConnection();
-            connection.addCharacteristicListener(activationListener);
-            connection.addCharacteristicListener(dataListener);
-            connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
-            connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
-            setState(Protocol.STATE_ENABLED);
+            if (!connection.getState().equals(BluetoothConnectionState.DISCONNECTED)){
+                connection.addCharacteristicListener(activationListener);
+                connection.addCharacteristicListener(dataListener);
+                connection.enableNotifications(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_ACTIVITY_LOG, true);
+                connection.writeCharacteristic(UUID_SERVICE_DATA, UUID_CHARACTERISTIC_COLLECTING_STATE, new byte[]{0x00});
+                setState(Protocol.STATE_ENABLED);
+            }
         }
     }
 
