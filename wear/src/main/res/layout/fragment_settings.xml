@@ -27,7 +27,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="5dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
@@ -111,20 +111,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/primus_regular"
             android:text="@string/show_data_phone_not_connected"
-            android:textAlignment="center"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textInfoNextFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/primus_regular"
-            android:text="@string/fragment_settings_next_page"
             android:textAlignment="center"
             android:textSize="12sp" />
 
