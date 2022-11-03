@@ -18,6 +18,7 @@ import androidx.wear.ongoing.OngoingActivity;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "CitizenHubChannel";
+    private int numberOfActiveSensors = 0;
 
     @Override
     public void onCreate() {
@@ -42,7 +43,7 @@ public class ForegroundService extends Service {
                 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Citizen Hub Activity")
+                .setContentTitle("Citizen Hub is Active")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.img_logo_figure)
                 .setContentIntent(pendingIntent)
@@ -72,12 +73,19 @@ public class ForegroundService extends Service {
         Sensor sensorSteps = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         Sensor sensorHeartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
+        MainActivity.protocolSteps.observeForever(aBoolean -> {
+            updateNotificationMessage(pendingIntent);
+        });
+
+        MainActivity.protocolHeartRate.observeForever(aBoolean -> {
+            updateNotificationMessage(pendingIntent);
+        });
+
         SensorEventListener stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER)
                     System.out.println("Steps Sensor Event from foreground service: " + event.values[0]);
-                }
             }
 
             @Override
@@ -86,9 +94,8 @@ public class ForegroundService extends Service {
         SensorEventListener heartRateListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE)
                     System.out.println("HR Sensor Event from foreground service: " + event.values[0]);
-                }
             }
 
             @Override
@@ -99,8 +106,7 @@ public class ForegroundService extends Service {
                 SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(heartRateListener, sensorHeartRate,
                 SensorManager.SENSOR_DELAY_NORMAL);
-
-        //stopSelf();
+        
         return START_NOT_STICKY;
     }
     @Override
@@ -112,5 +118,31 @@ public class ForegroundService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void updateNotificationMessage(PendingIntent pendingIntent){
+        int numberOfSensorsMeasuring = 0;
+        if (Boolean.TRUE.equals(MainActivity.protocolSteps.getValue()))
+            numberOfSensorsMeasuring++;
+        if (Boolean.TRUE.equals(MainActivity.protocolHeartRate.getValue()))
+            numberOfSensorsMeasuring++;
+        if (numberOfActiveSensors != numberOfSensorsMeasuring) {
+            {
+                numberOfActiveSensors = numberOfSensorsMeasuring;
+                NotificationCompat.Builder notificationBuilderObserverHR = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                        .setContentTitle("Citizen Hub is Active")
+                        .setContentText(numberOfSensorsMeasuring + " sensors measuring")
+                        .setSmallIcon(R.drawable.img_logo_figure)
+                        .setContentIntent(pendingIntent)
+                        .setOngoing(true)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_WORKOUT)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
+                Notification notificationObserverHR = notificationBuilderObserverHR.build();
+                NotificationManager notificationManagerHR = getSystemService(NotificationManager.class);
+                notificationManagerHR.notify(1, notificationObserverHR);
+            }
+        }
     }
 }

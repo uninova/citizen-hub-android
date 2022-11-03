@@ -114,7 +114,7 @@ public class MainActivity  extends FragmentActivity {
     public void startService() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent serviceIntent = new Intent(getApplicationContext(), ForegroundService.class);
-            serviceIntent.putExtra("inputExtra", "Status: Running");
+            serviceIntent.putExtra("inputExtra", "0 Sensors Measuring");
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
     }
