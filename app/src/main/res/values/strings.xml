@@ -600,14 +600,14 @@
     <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
     <string name="layout_device_configuration_device_address_label">Address:</string>
     <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
+
     <string name="menu_fragment_device_configuration_remove_item">Remove</string>
     <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
     <string name="menu_fragment_device_configuration_update_item">Update</string>
-    <string name="configuration_uprightgo2_menu_item_text">Calibration</string>
     <string name="fragment_uprightgo2_calibrate_button_text">Calibrate</string>
     <string name="fragment_uprightgo2_calibration_text">Press the calibration button to calibrate, when your device vibrates click its button once</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_button_text">Calibration</string>
-    <string name="option_arrow">Options Arrow</string>
+    <string name="option_arrow" translatable="false">Options Arrow</string>
 
 </resources>
 

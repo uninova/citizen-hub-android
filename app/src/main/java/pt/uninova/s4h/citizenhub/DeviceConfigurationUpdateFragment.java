@@ -25,7 +25,6 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
 
     private LinearLayout advancedConfigurationLayout;
-    private Menu optionsMenu;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
@@ -62,12 +61,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     }
 
     @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        this.optionsMenu = menu;
-        super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
@@ -78,7 +71,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 Fragment newFragment = null;
                 try {
                     newFragment = fragmentList.get(i).getClass().newInstance();
-                    updateOptionsMenu();
 
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
                     e.printStackTrace();
@@ -98,12 +90,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
         if (model.getSelectedDeviceAgent() != null) {
             setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
-        }
-    }
-
-    private void updateOptionsMenu() {
-        if (optionsMenu != null) {
-            onPrepareOptionsMenu(optionsMenu);
         }
     }
 
@@ -135,20 +121,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
                 return true;
             });
-
-        }
-        optionsMenu = menu;
-        if (model.getSelectedDeviceAgent().hasConfigurationButtons()) {
-            List<AdvancedConfigurationMenuItem> advancedConfigurationMenuItems = model.getSelectedDeviceAgent().getConfigurationMenuItems();
-            for (AdvancedConfigurationMenuItem button : advancedConfigurationMenuItems
-            ) {
-                optionsMenu.add(R.string.configuration_uprightgo2_menu_item_text).setEnabled(true).setVisible(true).setTitle(getString(R.string.configuration_uprightgo2_menu_item_text)).setOnMenuItemClickListener(
-                        menuItem -> {
-                            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
-                            return true;
-                        });
-            }
-            updateOptionsMenu();
 
         }
     }
