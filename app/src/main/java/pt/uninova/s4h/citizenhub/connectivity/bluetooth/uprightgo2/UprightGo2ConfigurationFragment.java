@@ -35,6 +35,8 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class UprightGo2ConfigurationFragment extends Fragment implements ButtonManagerInterface {
 
+    public static String uprightGo2MenuItem = "calibration";
+
     protected ViewStub deviceAdvancedSettings;
     protected View deviceAdvancedSettingsInflated;
     private ProgressDialog dialog;

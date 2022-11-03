@@ -58,7 +58,7 @@ public class UprightGo2Agent extends BluetoothAgent {
         UprightGo2ConfigurationFragment uprightGo2ConfigurationFragment = new UprightGo2ConfigurationFragment();
 
                 buttonList.add(new AdvancedConfigurationMenuItem(
-                        R.string.configuration_uprightgo2_button_text,
+                        R.string.configuration_uprightgo2_menu_item_text,
                                 "Calibration",
                         uprightGo2ConfigurationFragment.getOnMenuItemClickListeners().get(0)));
 

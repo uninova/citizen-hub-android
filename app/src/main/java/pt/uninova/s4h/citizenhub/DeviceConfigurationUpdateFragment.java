@@ -20,6 +20,7 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AdvancedConfigurationMenuItem;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2ConfigurationFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragment {
@@ -80,6 +81,11 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 Fragment newFragment = null;
                 try {
                     newFragment = fragmentList.get(i).getClass().newInstance();
+
+                    if(newFragment instanceof UprightGo2ConfigurationFragment){
+                        System.out.println("INSTANCE OF IS UPRIGHT!");
+                            updateOptionsMenu();
+                        }
 //                    newFragment instanceof UprightGo2ConfigurationFragment
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
                     e.printStackTrace();
@@ -137,39 +143,26 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
                 return true;
             });
-//            menu.removeItem(R.id.accounts_fragment_menu_add_item);
-//            reconnectItem.setOnMenuItemClickListener((MenuItem item) -> {
-//                model.identifySelectedDevice(new Observer<Agent>() {
-//                    @Override
-//                    public void observe(Agent agent) {
-//                        model.addAgent(agent);
-//                    }
-//                });
-//                return false;
-//            });
+
         }
         optionsMenu=menu;
         if(model.getSelectedDeviceAgent().hasConfigurationButtons()){
             List<AdvancedConfigurationMenuItem> advancedConfigurationMenuItems = model.getSelectedDeviceAgent().getConfigurationMenuItems();
             for (AdvancedConfigurationMenuItem button: advancedConfigurationMenuItems
                  ) {
-               OptionsButtonManager buttonManager = new OptionsButtonManager(
-                       optionsMenu,
-                       button.getResId(),
-                       button.getButtonText(),
-                       button.getOnMenuItemClickListener());
-               optionsMenu = buttonManager.addButton();
-               updateOptionsMenu();
-            }
+                optionsMenu.add(R.string.configuration_uprightgo2_menu_item_text).setEnabled(true).setVisible(true).setTitle(getString(R.string.configuration_uprightgo2_menu_item_text)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        System.out.println("nsdfusdfn");
+                        return true;
+                    }
+
+                });
+                }
+            updateOptionsMenu();
 
         }
-//            OptionsButtonManager optionsButtonManager = new OptionsButtonManager(
-//                    optionsMenu,
-//                    model.getSelectedDeviceAgent().getConfigurationButtonResources(),
-//                    model.getSelectedDeviceAgent().getConfigurationButtonClickListener());
-//            optionsMenu = optionsButtonManager.addButtons();
-//            updateOptionsMenu();
-//        }
     }
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);

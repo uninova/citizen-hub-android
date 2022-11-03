@@ -603,7 +603,7 @@
     <string name="menu_fragment_device_configuration_remove_item">Remove</string>
     <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
     <string name="menu_fragment_device_configuration_update_item">Update</string>
-    <string name="configuration_uprightgo2_button_text">Calibration</string>
+    <string name="configuration_uprightgo2_menu_item_text">Calibration</string>
 
 </resources>
 
