@@ -65,7 +65,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        System.out.println("PREPARE OPTIONS MENU");
         this.optionsMenu = menu;
         super.onPrepareOptionsMenu(menu);
     }
@@ -116,7 +115,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
-        System.out.println("CREATE OPTIONS MENU");
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
 
@@ -166,12 +164,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     }
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
-        System.out.println("NUMERO" + layout.getChildCount());
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
                 setChildrenEnabled((ViewGroup) child,state);
-                System.out.println("CHILD:" + child.getId() + "state" + child.isEnabled());
             } else {
                 child.setEnabled(state);
             }
