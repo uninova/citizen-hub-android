@@ -81,12 +81,11 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 Fragment newFragment = null;
                 try {
                     newFragment = fragmentList.get(i).getClass().newInstance();
+//                    if(newFragment instanceof UprightGo2ConfigurationFragment){
+//                        System.out.println("INSTANCE OF IS UPRIGHT!");
+//                        }
+                    updateOptionsMenu();
 
-                    if(newFragment instanceof UprightGo2ConfigurationFragment){
-                        System.out.println("INSTANCE OF IS UPRIGHT!");
-                            updateOptionsMenu();
-                        }
-//                    newFragment instanceof UprightGo2ConfigurationFragment
                 } catch (IllegalAccessException | java.lang.InstantiationException e) {
                     e.printStackTrace();
                 }
@@ -154,6 +153,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
 
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2ConfigurationFragment());
                         System.out.println("nsdfusdfn");
                         return true;
                     }
