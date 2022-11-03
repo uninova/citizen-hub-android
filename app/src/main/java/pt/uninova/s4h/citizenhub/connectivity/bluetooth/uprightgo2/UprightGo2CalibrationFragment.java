@@ -16,9 +16,7 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class UprightGo2CalibrationFragment extends Fragment {
 
-    public static String uprightGo2MenuItem = "calibration";
     private SharedPreferences sharedPreferences;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,11 +32,9 @@ public class UprightGo2CalibrationFragment extends Fragment {
 
                 UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 //                                //Send Message vibration settings
-//                                UprightGo2Agent uprightGo2Agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 
                 //Send Message calibration
                 agent.enableProtocol(new UprightGo2CalibrationProtocol(agent));
-                System.out.println("ONCLICKKK" + agent + agent.getName());
 
                 //default - first vibration settings when adding device
                 boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
@@ -64,11 +60,6 @@ public class UprightGo2CalibrationFragment extends Fragment {
             }
         });
         return view;
-    }
-
-
-    public static Fragment newInstance() {
-        return new UprightGo2ConfigurationFragment();
     }
 
 }
