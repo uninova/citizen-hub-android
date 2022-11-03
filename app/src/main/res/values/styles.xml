@@ -486,5 +486,14 @@
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
+    <style name="AdvancedConfigurationArrowImageView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/ic_next_arrow</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">@color/colorS4HGreyMedium</item>
+    </style>
 
 </resources>

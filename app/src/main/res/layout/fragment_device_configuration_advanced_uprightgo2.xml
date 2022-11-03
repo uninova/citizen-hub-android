@@ -190,19 +190,36 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutCalibration"
+        android:id="@+id/calibrationLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:orientation="vertical"
+        android:clickable="true"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationStrength">
 
-        <Button
-            android:id="@+id/buttonCalibration"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/calibrationButton"
+            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_sensor_calibration_button_text" />
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_button_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                android:contentDescription="@string/option_arrow" />
+        </LinearLayout>
+
     </LinearLayout>
 
 
