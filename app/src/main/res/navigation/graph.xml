@@ -447,7 +447,7 @@
     <fragment
         android:id="@+id/deviceUnsupportedFragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceUnsupportedFragment"
-        android:label="DeviceUnsupportedFragment" >
+        android:label="@string/device_unsupported_label" >
         <action
             android:id="@+id/action_deviceUnsupportedFragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
@@ -456,6 +456,6 @@
     <fragment
         android:id="@+id/uprightGo2CalibrationFragment"
         android:name="pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationFragment"
-        android:label="UprightGo2CalibrationFragment" />
+        android:label="@string/fragment_device_calibration_label" />
 
 </navigation>

@@ -23,7 +23,6 @@ public class UprightGo2CalibrationFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_uprightgo2_calibration, container, false);
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
         Button calibrationButton = view.findViewById(R.id.buttonCalibrate);
 
         calibrationButton.setOnClickListener(new View.OnClickListener() {

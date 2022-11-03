@@ -608,6 +608,8 @@
     <string name="fragment_uprightgo2_calibration_text">Press the calibration button to calibrate, when your device vibrates click its button once</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_button_text">Calibration</string>
     <string name="option_arrow" translatable="false">Options Arrow</string>
+    <string name="device_unsupported_label">Device Unsupported</string>
+    <string name="fragment_device_calibration_label">Device Calibration</string>
 
 </resources>
 
