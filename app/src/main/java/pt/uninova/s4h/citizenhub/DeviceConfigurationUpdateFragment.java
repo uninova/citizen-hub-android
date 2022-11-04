@@ -44,7 +44,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         advancedConfigurationLayout = view.findViewById(R.id.layout_advanced_configurations_container);
         updateDevice.setVisibility(View.GONE);
 
-
         setupViews(view);
         setupText();
         loadSupportedFeatures();
@@ -105,7 +104,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             return true;
         });
 
-        if (model.getSelectedDeviceAgent().getState() == 1) {
+        if (model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED) {
             menu.removeItem(R.id.device_configuration_menu_reconnect_item);
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();

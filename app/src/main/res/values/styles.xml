@@ -495,5 +495,15 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:tint">@color/colorS4HGreyMedium</item>
     </style>
+    <style name="AdvancedConfigurationLinearLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+    </style>
 
 </resources>

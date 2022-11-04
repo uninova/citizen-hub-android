@@ -6,42 +6,51 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <View
-        android:id="@+id/divider2"
-        style="@style/AdvancedConfigurationFragmentDividerStyle"
-        app:layout_constraintEnd_toEndOf="@+id/layoutPostureCorrection"
-        app:layout_constraintStart_toStartOf="@+id/fragment_device_configuration_advanced_uprightgo2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/fragment_device_configuration_advanced_uprightgo2"
-        style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/neo_sans_pro_light_italic"
-        android:padding="10dp"
-        android:text="Posture"
-        app:layout_constraintBottom_toTopOf="@id/divider"
-        app:layout_constraintStart_toStartOf="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
 
     <View
         android:id="@+id/divider"
         style="@style/AdvancedConfigurationFragmentDividerStyle"
-        app:layout_constraintBottom_toTopOf="@+id/layoutPostureCorrection"
+        app:layout_constraintBottom_toTopOf="@+id/calibrationLayout"
         app:layout_constraintEnd_toEndOf="@+id/layoutVibrationAngle"
         app:layout_constraintStart_toStartOf="@+id/layoutPostureCorrection" />
 
+    <LinearLayout
+        android:id="@+id/calibrationLayout"
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <TextView
+            android:id="@+id/calibrationButton"
+            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_button_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                android:contentDescription="@string/option_arrow" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutPostureCorrection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dividerPadding="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/divider">
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calibrationLayout">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentCategoryTextView"
@@ -67,10 +76,9 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationAngle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutPostureCorrection">
 
         <TextView
@@ -99,10 +107,9 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationInterval"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationAngle">
 
         <TextView
@@ -129,10 +136,9 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationPattern"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
 
         <TextView
@@ -159,11 +165,10 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationStrength"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
+        style="@style/AdvancedConfigurationLinearLayoutStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutVibrationPattern">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentCategoryTextView"
@@ -189,38 +194,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/calibrationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:clickable="true"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationStrength">
 
-        <TextView
-            android:id="@+id/calibrationButton"
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_button_text" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_weight="0.8"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/AdvancedConfigurationArrowImageView"
-                android:contentDescription="@string/option_arrow" />
-        </LinearLayout>
-
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
