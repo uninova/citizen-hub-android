@@ -97,7 +97,7 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
-
+        reconnectItem.setVisible(false);
         MenuItem updateItem = menu.findItem(R.id.device_configuration_menu_update_item);
         updateItem.setOnMenuItemClickListener((MenuItem item) -> {
             saveFeaturesChosen();

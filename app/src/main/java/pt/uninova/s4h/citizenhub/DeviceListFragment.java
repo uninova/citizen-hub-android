@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -26,11 +28,16 @@ import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceListFragment extends Fragment {
 
     private DeviceListAdapter adapter;
     private DeviceViewModel model;
+
+    private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = (StateChangedMessage<Integer, ? extends Agent> value) -> {
+        updateItemAgentState(value.getSource(), value.getNewState());
+    };
 
     private void buildRecycleView(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView_devicesList);
@@ -74,10 +81,7 @@ public class DeviceListFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
 
-        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-        if (model.getSelectedDeviceAgent() != null) {
-            model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(), this::onAgentStateChange);
-        }
+
         Button searchDevices = result.findViewById(R.id.searchButton);
 
         buildRecycleView(result);
@@ -89,10 +93,11 @@ public class DeviceListFragment extends Fragment {
         return result;
     }
 
-    private void onAgentStateChange(Agent agent) {
-        agent.addStateObserver((StateChangedMessage<Integer, ? extends Agent> value) -> {
-            requireActivity().runOnUiThread(() -> updateItemAgentState(agent, value.getNewState()));
-        });
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
+
     }
 
     @Override
@@ -115,20 +120,27 @@ public class DeviceListFragment extends Fragment {
         } else {
             adapter.getItem(pos).setImageResource(R.drawable.ic_devices_unpaired);
         }
-        adapter.updateItem(pos, adapter.getItem(pos));
 
+        requireActivity().runOnUiThread(() -> adapter.updateItem(pos, adapter.getItem(pos)));
     }
 
     public void onDeviceListChanged(List<Device> deviceList) {
+        for (int j = 0; j < adapter.getItemCount(); j++) {
+
+            model.getAttachedAgent(adapter.getItem(j).getDevice()).removeStateObserver(agentStateObserver);
+        }
         adapter.clear();
 
         if (deviceList.size() > 0) {
             for (Device i : deviceList) {
-                if (model.getAttachedAgentState(i) == 1) {
+                final Agent agent = model.getAttachedAgent(i);
+
+                if (agent.getState() == Agent.AGENT_STATE_ENABLED) {
                     adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_connected));
                 } else {
                     adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
                 }
+                agent.addStateObserver(agentStateObserver);
             }
         }
     }
