@@ -309,7 +309,6 @@
     <string name="dialog_do_not_show_this_message_again_text">Não mostre esta mensagem novamente</string>
     <string name="drawer_accounts_title">Contas</string>
     <string name="fragment_device_configuration_advanced_address_text">Endereço</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Configurações avançadas</string>
     <string name="fragment_device_configuration_advanced_update_text">Atualizar</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Postura Correta Vibração</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Ângulo de correção</string>

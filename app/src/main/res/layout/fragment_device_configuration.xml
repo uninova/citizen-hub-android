@@ -107,11 +107,8 @@
                 android:id="@+id/textConfigurationMeasurements"
                 android:layout_width="0dp"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/layout_fragment_device_configuration_features"
-                android:fontFamily="@font/neo_sans_pro_medium"
-                android:textAlignment="center"
                 android:textSize="18sp" />
         </LinearLayout>
 

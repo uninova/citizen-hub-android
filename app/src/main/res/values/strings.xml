@@ -349,7 +349,6 @@
     <string name="dialog_do_not_show_this_message_again_text">Don\'t show this message again</string>
     <string name="drawer_accounts_title">Accounts</string>
     <string name="fragment_device_configuration_advanced_address_text">Address:</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Advanced Configurations</string>
     <string name="fragment_device_configuration_advanced_update_text">Update</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
@@ -610,6 +609,7 @@
     <string name="option_arrow" translatable="false">Options Arrow</string>
     <string name="device_unsupported_label">Device Unsupported</string>
     <string name="fragment_device_calibration_label">Device Calibration</string>
+    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
 
 </resources>
 
