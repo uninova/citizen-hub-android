@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,14 +21,13 @@
             android:id="@+id/layoutSwitchFeature"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="50"
+            android:layout_weight="0.8"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
-                style="@style/AdvancedConfigurationFragment.switchCompatStyle"
                 android:id="@+id/switchFeature"
-                android:checked="false"
-                />
+                style="@style/AdvancedConfigurationFragment.switchCompatStyle"
+                android:checked="false" />
         </LinearLayout>
     </LinearLayout>
 
