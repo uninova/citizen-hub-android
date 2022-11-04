@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
     tools:context=".DeviceConfigurationFragment">
 
     <LinearLayout
@@ -97,27 +99,23 @@
             android:id="@+id/layoutConfigurationMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:layout_width="0dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
-                android:layout_weight="1"
                 android:text="@string/layout_fragment_device_configuration_features"
-                android:textSize="18sp" />
+          />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutConfigurationSteps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp">
 
             <ListView

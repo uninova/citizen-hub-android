@@ -17,6 +17,7 @@
     <LinearLayout
         android:id="@+id/calibrationLayout"
         style="@style/AdvancedConfigurationLinearLayoutStyle"
+        android:layout_marginTop="-20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider">

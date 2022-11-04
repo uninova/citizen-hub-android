@@ -25,13 +25,11 @@
 
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                style="@style/AppTheme.Summary.Item"
-                android:layout_width="0dp"
+                style="@style/AdvancedConfigurationFragmentCategoryTextView"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
-                android:textAlignment="center"
-                android:textSize="18sp"
                 tools:visibility="visible" />
         </LinearLayout>
 
