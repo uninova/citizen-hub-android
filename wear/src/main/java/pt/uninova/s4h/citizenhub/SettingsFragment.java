@@ -35,7 +35,6 @@ public class SettingsFragment extends Fragment {
     SharedPreferences sharedPreferences;
     private final String sharedPreferencesVariableHeartRateBoolean = "HeartRate";
     private final String sharedPreferencesVariableStepsBoolean = "Steps";
-    private final String sharedPreferencesName = "switchesSharedPreferences";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +67,7 @@ public class SettingsFragment extends Fragment {
 
         enabledCheckedListeners(true);
 
+        String sharedPreferencesName = "switchesSharedPreferences";
         sharedPreferences = requireActivity().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
         MainActivity.protocolSteps.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableStepsBoolean, false));
         MainActivity.protocolHeartRate.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableHeartRateBoolean, false));
