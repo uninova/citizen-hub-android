@@ -51,8 +51,7 @@ public class ForegroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_WORKOUT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
-
+                .clearActions();
         Notification notification = builder.build();
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 
@@ -137,8 +136,7 @@ public class ForegroundService extends Service {
                         .setOngoing(true)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_WORKOUT)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
                 Notification notificationObserverHR = notificationBuilderObserverHR.build();
                 NotificationManager notificationManagerHR = getSystemService(NotificationManager.class);
                 notificationManagerHR.notify(1, notificationObserverHR);
