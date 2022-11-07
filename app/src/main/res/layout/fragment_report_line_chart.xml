@@ -7,7 +7,7 @@
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart"
             android:layout_width="250dp"
-            android:layout_height="200dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/text_view_y_axis_label"/>
 
