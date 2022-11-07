@@ -186,7 +186,7 @@ public class DailyReportGeneratorPDFV2 {
         int y = 200;
 
         for (Group groupNotWorkTime : groupsNotWorkTime) {
-            if (!verifyGroupSize(groupNotWorkTime, y, false)) {
+            if (verifyGroupSize(groupNotWorkTime, y, false)) {
                 writePage(document, page[0], canvasWriter[0]);
                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
             }
@@ -197,7 +197,7 @@ public class DailyReportGeneratorPDFV2 {
 
             if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                 for (Group group : groupNotWorkTime.getGroupList()) {
-                    if (!verifyGroupSize(group, y, true)) {
+                    if (verifyGroupSize(group, y, true)) {
                         drawRect(canvas[0], y + 38, rectHeight);
                         writePage(document, page[0], canvasWriter[0]);
                         y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -211,7 +211,7 @@ public class DailyReportGeneratorPDFV2 {
                     int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                     if (notWorkTimeLabel == workTimeLabel) {
                         for (Group group : groupWorkTime.getGroupList()) {
-                            if (!verifyGroupSize(groupWorkTime, y, true)) {
+                            if (verifyGroupSize(groupWorkTime, y, true)) {
                                 drawRect(canvas[0], y + 38, rectHeight);
                                 writePage(document, page[0], canvasWriter[0]);
                                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -236,15 +236,6 @@ public class DailyReportGeneratorPDFV2 {
                     y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
                 }
             }
-            if(y + 370 > 842){
-                drawRect(canvas[0], y, rectHeight);
-                writePage(document, page[0], canvasWriter[0]);
-                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                rectHeight = y - 20;
-                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-                y += 25;
-            }
-            y = drawCharts(canvas[0], notWorkTimeLabel, y);
             drawRect(canvas[0], y, rectHeight);
         }
         for (Group groupWorkTime : groupsWorkTime) {
@@ -257,7 +248,7 @@ public class DailyReportGeneratorPDFV2 {
                 }
             }
             if (!hasGroup) {
-                if (!verifyGroupSize(groupWorkTime, y, false)) {
+                if (verifyGroupSize(groupWorkTime, y, false)) {
                     writePage(document, page[0], canvasWriter[0]);
                     y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
                 }
@@ -266,7 +257,7 @@ public class DailyReportGeneratorPDFV2 {
                 y += 25;
                 if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                     for (Group group : groupWorkTime.getGroupList()) {
-                        if (!verifyGroupSize(group, y, true)) {
+                        if (verifyGroupSize(group, y, true)) {
                             drawRect(canvas[0], y, rectHeight);
                             writePage(document, page[0], canvasWriter[0]);
                             y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -280,15 +271,6 @@ public class DailyReportGeneratorPDFV2 {
                 } else {
                     y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 }
-                if(y + 370 > 842){
-                    drawRect(canvas[0], y, rectHeight);
-                    writePage(document, page[0], canvasWriter[0]);
-                    y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                    rectHeight = y - 20;
-                    drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
-                    y += 25;
-                }
-                y = drawCharts(canvas[0], label, y);
                 drawRect(canvas[0], y, rectHeight);
             }
         }
@@ -359,13 +341,13 @@ public class DailyReportGeneratorPDFV2 {
         if (group.getGroupList().size() == 0) {
             if (complex) {
                 y += 20 + 20 * group.getItemList().size() + 5 + 38;
-                return y < 842;
+                return y >= 842;
             }
             y += 20 * group.getItemList().size() + 5;
-            return y < 842;
+            return y >= 842;
         }
         y += 20 + 20 * group.getItemList().size() + 5 + 38;
-        return y < 842;
+        return y >= 842;
     }
 
     private int drawSimpleGroups(CanvasWriter canvasWriter, Group firstGroup, Group secondGroup, int y) {
@@ -432,55 +414,6 @@ public class DailyReportGeneratorPDFV2 {
         return y;
     }
 
-    private int drawCharts(Canvas canvas, int label, int y){
-        View chart;
-        switch(label){
-            case Measurement.TYPE_ACTIVITY:
-            case Measurement.TYPE_DISTANCE_SNAPSHOT:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
-                drawBarChart(chart, dailySteps); break; //Ver com o carlos
-            case Measurement.TYPE_BLOOD_PRESSURE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyBloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}); break;
-            case Measurement.TYPE_HEART_RATE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyHeartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}); break;
-            case Measurement.TYPE_POSTURE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawAreaChart(chart, dailyCorrectPosture, dailyIncorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}); break;
-            default:
-                chart = null;
-        }
-        canvas.translate(65, y - 40);
-        assert chart != null;
-        chart.draw(canvas);
-        canvas.translate(-65, 40 - y);
-        return y + 370;
-    }
-
-    private void drawBarChart(View chart, List<SummaryDetailUtil> data){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
-        chartFunctions.setupBarChart(chart.findViewById(R.id.bar_chart), null);
-        chartFunctions.setBarChartData(chart.findViewById(R.id.bar_chart), data, context.getString(R.string.summary_detail_activity_steps), 24);
-    }
-
-    private void drawLineChart(View chart, List<SummaryDetailUtil> data, String[] labels){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
-        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
-        chartFunctions.setLineChartData(chart.findViewById(R.id.line_chart), data, labels, 24);
-    }
-
-    private void drawAreaChart(View chart, List<SummaryDetailUtil> data1, List<SummaryDetailUtil> data2, String[] labels){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
-        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
-        chartFunctions.setAreaChart(chart.findViewById(R.id.line_chart), data1, data2, labels, 24);
-    }
 
     private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date) {
         page[0] = document.startPage(pageInfo);
