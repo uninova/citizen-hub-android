@@ -72,9 +72,9 @@
     <string name="fragment_authentication_orange_circular_shape">Orange circular Shape</string>
     <string name="fragment_authentication_text_login">login</string>
     <string name="fragment_authentication_text_powered_by">powered by</string>
+
     <string name="fragment_configuration_text_view_address">%1$s</string>
     <string name="fragment_configuration_text_view_connect">Connect</string>
-    <string name="fragment_configuration_text_view_delete">Delete</string>
     <string name="fragment_configuration_text_view_name">%1$s</string>
     <string name="fragment_configuration_text_view_update">Update</string>
     <string name="fragment_device_add_button">add device</string>
@@ -215,9 +215,9 @@
     <string name="layout_activity_lobby_contentDescription_lines">Design with blue lines.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Smart4Health logo.</string>
     <string name="layout_activity_main_add_device">ADD DEVICE</string>
-    <string name="layout_fragment_device_configuration_address">Address</string>
+    <string name="layout_fragment_device_configuration_address">Address:</string>
     <string name="layout_fragment_device_configuration_features">What this device will read:</string>
-    <string name="layout_fragment_device_configuration_name">Name</string>
+    <string name="layout_fragment_device_configuration_name">Name:</string>
     <string name="layout_fragment_report_master_select_day">Select a Day</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
@@ -259,6 +259,15 @@
     <string name="lumbar_icon">Lumbar Icon</string>
     <string name="fragment_report_lumbar_extension_training_weight_textview">"Weight: "</string>
     <string name="fragment_report_lumbar_training_weight_value" translatable="false">0</string>
+
+    <string-array name="spinner_uprightgo2_angle">
+        <item>Very Strict</item>
+        <item>Strict</item>
+        <item>Average</item>
+        <item>Relaxed</item>
+        <item>Very Relaxed</item>
+    </string-array>
+
     <string-array name="spinner_uprightgo2_interval">
         <item>5</item>
         <item>15</item>
@@ -275,6 +284,12 @@
         <item>Tuk tuk</item>
         <item>Ecstatic</item>
         <item>Muzzle</item>
+    </string-array>
+
+    <string-array name="spinner_uprightgo2_strength">
+        <item>Gentle</item>
+        <item>Normal</item>
+        <item>Relaxed</item>
     </string-array>
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
@@ -295,19 +310,19 @@
     <string name="fragment_settings_label">Settings</string>
     <string name="fragment_settings_string_default_work_days">Monday, Tuesday, Wednesday, Thursday, Friday</string>
     <string name="fragment_device_configuration_add_calibration_completed_toast">Calibration Completed!</string>
-    <string name="fragment_device_configuration_add_loading_features_text">Loading device features...</string>
+    <string name="fragment_device_configuration_add_loading_features_text">Loading device features…</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Sensor Calibration</string>
     <string name="fragment_device_configuration_warning_calibration_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
     <string name="fragment_device_configuration_dialog_option_calibrate">Calibrate</string>
     <string name="fragment_device_configuration_warning_calibration_text2"> your back straight.</string>
-    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_dialog_calibrating_message">Calibrating, Please wait…</string>
     <string name="fragment_device_configuration_connect_option_text">connect</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">Calibration Completed!</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensor Calibration</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ATTENTION: Before pressing Calibrate, please ensure you are sitting and have</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text2"> your back straight.</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Calibrate</string>
-    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait...</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">Calibrating, Please wait…</string>
     <string name="fragment_logout_toast_failure_text">Failure to log out.</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">File uploaded successfully.</string>
     <string name="fragment_report_detail_fragment_toast_upload_failure">File failed to upload.</string>
@@ -333,8 +348,7 @@
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirm</string>
     <string name="dialog_do_not_show_this_message_again_text">Don\'t show this message again</string>
     <string name="drawer_accounts_title">Accounts</string>
-    <string name="fragment_device_configuration_advanced_address_text">Address</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Advanced Configurations</string>
+    <string name="fragment_device_configuration_advanced_address_text">Address:</string>
     <string name="fragment_device_configuration_advanced_update_text">Update</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
@@ -579,6 +593,23 @@
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="fragment_device_unsupported_address">Address</string>
     <string name="fragment_device_unsupported_device_button_text">Back</string>
+
+
+    <string name="layout_device_configuration_device_address_value" translatable="false">1$s</string>
+    <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
+    <string name="layout_device_configuration_device_address_label">Address:</string>
+    <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
+
+    <string name="menu_fragment_device_configuration_remove_item">Remove</string>
+    <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
+    <string name="menu_fragment_device_configuration_update_item">Update</string>
+    <string name="fragment_uprightgo2_calibrate_button_text">Calibrate</string>
+    <string name="fragment_uprightgo2_calibration_text">Press the calibration button to calibrate, when your device vibrates click its button once</string>
+    <string name="fragment_device_configuration_advanced_uprightgo2_button_text">Calibration</string>
+    <string name="option_arrow" translatable="false">Options Arrow</string>
+    <string name="device_unsupported_label">Device Unsupported</string>
+    <string name="fragment_device_calibration_label">Device Calibration</string>
+    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
 
 </resources>
 

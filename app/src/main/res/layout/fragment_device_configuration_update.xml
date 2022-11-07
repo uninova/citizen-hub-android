@@ -11,26 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <include
-                layout="@layout/fragment_device_configuration"
+            <LinearLayout
+                android:id="@+id/layout_advanced_configurations_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <include
+                    layout="@layout/fragment_device_configuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <!-- Inflate multiple xml file here -->
 
-        </FrameLayout>
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutAdvancedConfigurations"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layoutConfigurationTop">
+
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,7 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/fragment_device_configuration_update_advanced_button_text"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
@@ -54,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layoutAdvancedConfigurations">
+        app:layout_constraintBottom_toBottomOf="@id/layoutConfigurationTop">
 
         <LinearLayout
             android:id="@+id/layoutButtonConfiguration"
@@ -65,15 +71,13 @@
 
             <Button
                 android:id="@+id/buttonConfiguration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_configuration_text_view_update" />
-
-            <Button
-                android:id="@+id/buttonDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_configuration_text_view_delete" />
+                style="@style/Widget.Citizen.Button"
+                android:layout_gravity="center"
+                android:text="@string/fragment_configuration_text_view_update"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:visibility="visible"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

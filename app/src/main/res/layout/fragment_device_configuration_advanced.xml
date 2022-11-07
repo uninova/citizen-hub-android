@@ -9,46 +9,8 @@
         android:id="@+id/layoutConfiguration"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/layoutConfigurationName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textConfigurationDeviceName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/layout_fragment_device_configuration_name"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutConfigurationAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/textConfigurationDeviceAddress"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/fragment_device_configuration_advanced_address_text"
-                style="@style/TextAppearance.Citizen.Widget.Toolbar.Title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-        </LinearLayout>
+        android:orientation="vertical"
+        tools:visibility="visible">
 
         <LinearLayout
             android:id="@+id/layoutConfigurationMeasurements"
@@ -58,39 +20,42 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:visibility="visible">
 
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:layout_width="match_parent"
+                style="@style/AdvancedConfigurationFragmentCategoryTextView"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
-                style="@style/AppTheme.Summary.Item"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                tools:visibility="visible" />
         </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutConfigurationAdvancedSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        <LinearLayout
+            android:id="@+id/layoutConfigurationAdvancedSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            tools:visibility="visible">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:visibility="visible">
 
                 <ViewStub
                     android:id="@+id/layoutStubConfigurationAdvancedSettings"
-                    android:inflatedId="@+id/layoutStubConfigurationAdvancedSettingsInflated"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:inflatedId="@+id/layoutStubConfigurationAdvancedSettingsInflated"
+                    tools:visibility="visible" />
             </FrameLayout>
         </LinearLayout>
 
@@ -98,22 +63,13 @@
             android:id="@+id/layoutConfigurationAdvancedOK"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            >
-
-            <Button
-                android:id="@+id/buttonConfigurationAdvancedOK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_device_configuration_advanced_update_text"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
+            tools:visibility="visible" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,7 +75,6 @@
     <string name="fragment_authentication_text_powered_by">betrieben durch</string>
     <string name="fragment_configuration_text_view_address">Adresse: %1$s</string>
     <string name="fragment_configuration_text_view_connect">Verbinden</string>
-    <string name="fragment_configuration_text_view_delete">Löschen</string>
     <string name="fragment_configuration_text_view_name">Name: %1$s</string>
     <string name="fragment_configuration_text_view_update">Aktualisieren</string>
     <string name="fragment_device_add_button">Gerät hinzufügen</string>
@@ -285,7 +284,6 @@
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Korrekturwinkel</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Vibration bei falscher Körperhaltung</string>
     <string name="fragment_device_configuration_advanced_update_text">Aktualisierung</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Erweiterte Einstellungen</string>
     <string name="fragment_device_configuration_advanced_address_text">Anschrift</string>
     <string name="drawer_accounts_title">Konten</string>
     <string name="dialog_do_not_show_this_message_again_text">Diese Nachricht in Zukunft verbergen</string>

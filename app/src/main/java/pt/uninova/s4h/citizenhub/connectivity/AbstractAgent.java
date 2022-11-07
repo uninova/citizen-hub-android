@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

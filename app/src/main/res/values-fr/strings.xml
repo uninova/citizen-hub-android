@@ -75,7 +75,6 @@
     <string name="fragment_authentication_text_powered_by">powered by</string>
     <string name="fragment_configuration_text_view_address">Adresse : %1$s</string>
     <string name="fragment_configuration_text_view_connect">Se connecter</string>
-    <string name="fragment_configuration_text_view_delete">Supprimer</string>
     <string name="fragment_configuration_text_view_name">Nom : %1$s</string>
     <string name="fragment_configuration_text_view_update">Mettre à jour</string>
     <string name="fragment_device_add_button">ajouter un appareil</string>
@@ -295,7 +294,6 @@
     <string name="dialog_do_not_show_this_message_again_text">Ne plus afficher ce message</string>
     <string name="drawer_accounts_title">Comptes</string>
     <string name="fragment_device_configuration_advanced_address_text">Adresse</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Configurations avancées</string>
     <string name="fragment_device_configuration_advanced_update_text">Mise à jour</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Vibration pour la correction de posture</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Angle de correction</string>

@@ -2,8 +2,11 @@ package pt.uninova.s4h.citizenhub.connectivity.bluetooth.digitsole;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,5 +45,15 @@ public class DigitsoleAgent extends BluetoothAgent {
     @Override
     public String getName() {
         return "Digitsole";
+    }
+
+    @Override
+    public List<Fragment> getConfigurationFragments() {
+        return null;
+    }
+
+    @Override
+    public Fragment getPairingHelper() {
+        return null;
     }
 }
