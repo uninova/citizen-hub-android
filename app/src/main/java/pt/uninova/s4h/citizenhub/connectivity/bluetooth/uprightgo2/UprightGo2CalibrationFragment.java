@@ -1,12 +1,14 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,9 +27,13 @@ public class UprightGo2CalibrationFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Button calibrationButton = view.findViewById(R.id.buttonCalibrate);
 
+        ImageView checkMarkImageView = view.findViewById(R.id.calibration_checkmark_imageView);
+
         calibrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkMarkImageView.setVisibility(View.VISIBLE);
+                ((Animatable) checkMarkImageView.getDrawable()).start();
 
                 UprightGo2Agent agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
 //                                //Send Message vibration settings
