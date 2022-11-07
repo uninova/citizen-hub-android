@@ -285,7 +285,8 @@
             app:destination="@+id/device_configuration_advanced_fragment" />
         <action
             android:id="@+id/action_device_configuration_update_fragment_to_uprightGo2CalibrationFragment"
-            app:destination="@id/uprightGo2CalibrationFragment" />
+            app:destination="@id/uprightGo2CalibrationFragment"
+            app:popUpTo="@id/uprightGo2CalibrationFragment"/>
 
     </fragment>
 
@@ -456,6 +457,12 @@
     <fragment
         android:id="@+id/uprightGo2CalibrationFragment"
         android:name="pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationFragment"
-        android:label="@string/fragment_device_calibration_label" />
+        android:label="@string/fragment_device_calibration_label" >
+        <action
+            android:id="@+id/action_uprightGo2CalibrationFragment_to_device_configuration_update_fragment"
+            app:destination="@id/device_configuration_update_fragment"
+            app:popUpTo="@id/device_configuration_update_fragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>

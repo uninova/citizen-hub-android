@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Protocol;
@@ -42,7 +43,13 @@ public class UprightGo2CalibrationFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         checkMarkImageView.setVisibility(View.VISIBLE);
                         ((Animatable) checkMarkImageView.getDrawable()).start();
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                Navigation.findNavController(requireView()).navigate(UprightGo2CalibrationFragmentDirections.actionUprightGo2CalibrationFragmentToDeviceConfigurationUpdateFragment());
+                            }
+                        }, 1000);
                     }
+
                 }
             });
         }
