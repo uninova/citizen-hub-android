@@ -140,29 +140,6 @@ public class DailyReportGeneratorPDFV2 {
 
     }
 
-    private void fetchDailyInfo(LocalDate date){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-
-        Observer<List<SummaryDetailUtil>> observerSteps = dailySteps::addAll;
-        StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(context);
-        stepsSnapshotMeasurementRepository.readLastDay(date, observerSteps);
-
-        Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> dailyBloodPressure = chartFunctions.parseBloodPressureUtil(data);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(context);
-        bloodPressureMeasurementRepository.selectLastDay(date, observerBloodPressure);
-
-        Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> dailyHeartRate = chartFunctions.parseHeartRateUtil(data);
-        HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(context);
-        heartRateMeasurementRepository.selectLastDay(date, observerHeartRate);
-
-        Observer<List<SummaryDetailUtil>> observerCorrectPosture = dailyCorrectPosture::addAll;
-        PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(context);
-        postureMeasurementRepository.readLastDayCorrectPosture(date, observerCorrectPosture);
-
-        Observer<List<SummaryDetailUtil>> observerIncorrectPosture = dailyIncorrectPosture::addAll;
-        postureMeasurementRepository.readLastDayIncorrectPosture(date, observerIncorrectPosture);
-    }
-
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
         Looper.prepare();
 
