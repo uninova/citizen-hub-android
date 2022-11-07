@@ -12,13 +12,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import androidx.core.content.res.ResourcesCompat;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,21 +27,15 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailBloodPressureUtil;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailHeartRateUtil;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
-import pt.uninova.s4h.citizenhub.persistence.repository.BloodPressureMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.HeartRateMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.PostureMeasurementRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurementRepository;
-import pt.uninova.s4h.citizenhub.ui.summary.ChartFunctions;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class WeeklyReportGenerator {
+public class PDFDailyReport {
+
     private final Context context;
 
     private final Paint logoBackgroundPaint;
-    private final Paint footerPaint;
+    private final TextPaint footerPaint;
     private final Paint titlePaint;
     private final Paint darkTextPaintAlignLeft;
     private final Paint darkTextPaintAlignRight;
@@ -61,7 +53,7 @@ public class WeeklyReportGenerator {
     private final List<SummaryDetailUtil> dailyIncorrectPosture = new ArrayList<>();
 
 
-    public WeeklyReportGenerator(Context context) {
+    public PDFDailyReport (Context context) {
         this.context = context;
 
         this.logoBackgroundPaint = new Paint();
@@ -69,8 +61,9 @@ public class WeeklyReportGenerator {
         logoBackgroundPaint.setColor(Color.parseColor("#f0f0f0"));
         logoBackgroundPaint.setAntiAlias(true);
 
-        this.footerPaint = new Paint();
+        this.footerPaint = new TextPaint();
         footerPaint.setStyle(Paint.Style.FILL);
+        footerPaint.setTextSize(9);
         footerPaint.setColor(Color.parseColor("#000000"));
         footerPaint.setAntiAlias(true);
 
@@ -140,32 +133,8 @@ public class WeeklyReportGenerator {
 
     }
 
-    private void fetchDailyInfo(LocalDate date){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-
-        Observer<List<SummaryDetailUtil>> observerSteps = dailySteps::addAll;
-        StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(context);
-        stepsSnapshotMeasurementRepository.readLastDay(date, observerSteps);
-
-        Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> dailyBloodPressure = chartFunctions.parseBloodPressureUtil(data);
-        BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(context);
-        bloodPressureMeasurementRepository.selectLastDay(date, observerBloodPressure);
-
-        Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> dailyHeartRate = chartFunctions.parseHeartRateUtil(data);
-        HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(context);
-        heartRateMeasurementRepository.selectLastDay(date, observerHeartRate);
-
-        Observer<List<SummaryDetailUtil>> observerCorrectPosture = dailyCorrectPosture::addAll;
-        PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(context);
-        postureMeasurementRepository.readLastDayCorrectPosture(date, observerCorrectPosture);
-
-        Observer<List<SummaryDetailUtil>> observerIncorrectPosture = dailyIncorrectPosture::addAll;
-        postureMeasurementRepository.readLastDayIncorrectPosture(date, observerIncorrectPosture);
-    }
-
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
         Looper.prepare();
-        fetchDailyInfo(date);
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -187,18 +156,18 @@ public class WeeklyReportGenerator {
         int y = 200;
 
         for (Group groupNotWorkTime : groupsNotWorkTime) {
-            if (!verifyGroupSize(groupNotWorkTime, y, false)) {
+            if (verifyGroupSize(groupNotWorkTime, y, false)) {
                 writePage(document, page[0], canvasWriter[0]);
                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
             }
             int rectHeight = y - 20;
             int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
             drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-            y += 40;
+            y += 25;
 
             if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                 for (Group group : groupNotWorkTime.getGroupList()) {
-                    if (!verifyGroupSize(group, y, true)) {
+                    if (verifyGroupSize(group, y, true)) {
                         drawRect(canvas[0], y + 38, rectHeight);
                         writePage(document, page[0], canvasWriter[0]);
                         y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -212,7 +181,7 @@ public class WeeklyReportGenerator {
                     int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                     if (notWorkTimeLabel == workTimeLabel) {
                         for (Group group : groupWorkTime.getGroupList()) {
-                            if (!verifyGroupSize(groupWorkTime, y, true)) {
+                            if (verifyGroupSize(groupWorkTime, y, true)) {
                                 drawRect(canvas[0], y + 38, rectHeight);
                                 writePage(document, page[0], canvasWriter[0]);
                                 y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -230,12 +199,10 @@ public class WeeklyReportGenerator {
                 for (Group groupWorkTime : groupsWorkTime) {
                     if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
                         hasItem = true;
-                        y = drawCharts(canvas[0], notWorkTimeLabel, y);
                         y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
                     }
                 }
                 if (!hasItem) {
-                    y = drawCharts(canvas[0], notWorkTimeLabel, y);
                     y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
                 }
             }
@@ -251,7 +218,7 @@ public class WeeklyReportGenerator {
                 }
             }
             if (!hasGroup) {
-                if (!verifyGroupSize(groupWorkTime, y, false)) {
+                if (verifyGroupSize(groupWorkTime, y, false)) {
                     writePage(document, page[0], canvasWriter[0]);
                     y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
                 }
@@ -260,7 +227,7 @@ public class WeeklyReportGenerator {
                 y += 25;
                 if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                     for (Group group : groupWorkTime.getGroupList()) {
-                        if (!verifyGroupSize(group, y, true)) {
+                        if (verifyGroupSize(group, y, true)) {
                             drawRect(canvas[0], y, rectHeight);
                             writePage(document, page[0], canvasWriter[0]);
                             y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
@@ -272,7 +239,6 @@ public class WeeklyReportGenerator {
                     }
                     y += 38;
                 } else {
-                    y = drawCharts(canvas[0], label, y);
                     y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 }
                 drawRect(canvas[0], y, rectHeight);
@@ -320,8 +286,10 @@ public class WeeklyReportGenerator {
         canvasWriter.addText(date.toString(), 445, 138, titlePaint);
 
         /* Footer */
-        //canvas.drawRect(0, 820,595, 842, footerPaint);
-        canvasWriter.addText(res.getString(R.string.report_footer), 60, 835, darkTextPaintAlignLeft);
+        StaticLayout textLayout = new StaticLayout(res.getString(R.string.report_footer), footerPaint, 480, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        canvas.translate(60, 805);
+        textLayout.draw(canvas);
+        canvas.translate(-60, -805);
     }
 
     private void drawGroupHeader(Canvas canvas, CanvasWriter canvasWriter, MeasurementKindLocalization measurementKindLocalization, int label, int y, int rectHeight) {
@@ -343,13 +311,13 @@ public class WeeklyReportGenerator {
         if (group.getGroupList().size() == 0) {
             if (complex) {
                 y += 20 + 20 * group.getItemList().size() + 5 + 38;
-                return y < 842;
+                return y >= 842;
             }
-            y += 20 * group.getItemList().size() + 5 + 170;
-            return y < 842;
+            y += 20 * group.getItemList().size() + 5;
+            return y >= 842;
         }
         y += 20 + 20 * group.getItemList().size() + 5 + 38;
-        return y < 842;
+        return y >= 842;
     }
 
     private int drawSimpleGroups(CanvasWriter canvasWriter, Group firstGroup, Group secondGroup, int y) {
@@ -416,64 +384,6 @@ public class WeeklyReportGenerator {
         return y;
     }
 
-    private int drawCharts(Canvas canvas, int label, int y){
-        View chart;
-        switch(label){
-            case Measurement.TYPE_ACTIVITY:
-            case Measurement.TYPE_DISTANCE_SNAPSHOT:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
-                drawBarChart(chart, dailySteps); break; //Ver com o carlos
-            case Measurement.TYPE_BLOOD_PRESSURE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyBloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}); break;
-            case Measurement.TYPE_HEART_RATE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyHeartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}); break;
-            case Measurement.TYPE_POSTURE:
-                chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawAreaChart(chart, dailyCorrectPosture, dailyIncorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}); break;
-            default:
-                chart = null;
-        }
-        canvas.translate(65, y - 40);
-        assert chart != null;
-        chart.draw(canvas);
-        canvas.translate(-65, 40 - y);
-        return y + 170;
-    }
-
-    private void drawBarChart(View chart, List<SummaryDetailUtil> data){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250,  1400);
-        BarChart barChart = chart.findViewById(R.id.bar_chart);
-        barChart.getXAxis().setTextSize(6f);
-        barChart.getAxisLeft().setTextSize(6f);
-        chartFunctions.setupBarChart(barChart, null);
-        chartFunctions.setBarChartData(barChart, data, context.getString(R.string.summary_detail_activity_steps), 24);
-    }
-
-    private void drawLineChart(View chart, List<SummaryDetailUtil> data, String[] labels){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
-        LineChart lineChart = chart.findViewById(R.id.line_chart);
-        lineChart.getXAxis().setTextSize(6f);
-        lineChart.getAxisLeft().setTextSize(6f);
-        chartFunctions.setupLineChart(lineChart, null);
-        chartFunctions.setLineChartData(lineChart, data, labels, 24);
-    }
-
-    private void drawAreaChart(View chart, List<SummaryDetailUtil> data1, List<SummaryDetailUtil> data2, String[] labels){
-        ChartFunctions chartFunctions = new ChartFunctions(context);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
-        LineChart lineChart = chart.findViewById(R.id.line_chart);
-        lineChart.getXAxis().setTextSize(6f);
-        lineChart.getAxisLeft().setTextSize(6f);
-        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
-        chartFunctions.setAreaChart(chart.findViewById(R.id.line_chart), data1, data2, labels, 24);
-    }
 
     private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, LocalDate date) {
         page[0] = document.startPage(pageInfo);
@@ -487,4 +397,5 @@ public class WeeklyReportGenerator {
         canvasWriter.draw();
         document.finishPage(page);
     }
+
 }

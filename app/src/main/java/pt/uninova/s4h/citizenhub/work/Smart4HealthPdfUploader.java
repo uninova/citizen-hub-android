@@ -41,7 +41,7 @@ import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthDailyReportRepository;
 import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
-import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
+import pt.uninova.s4h.citizenhub.report.PDFDailyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -112,7 +112,7 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                         smart4HealthDailyReportRepository.readDaysWithData(value -> {
                             for (LocalDate i : value) {
                                 if (i.compareTo(now.toLocalDate()) < 0) {
-                                    final DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getApplicationContext());
+                                    final PDFDailyReport dailyReportGeneratorPDF = new PDFDailyReport(getApplicationContext());
 
                                     final Observer<byte[]> observer = bytes -> {
                                         final SdkContract.Fhir4RecordClient fhirClient = client.getFhir4();
