@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/calibrationTopLayout"
@@ -31,6 +32,41 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/animationsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/calibration_pprogressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorS4HLightBlue"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/calibration_checkmark_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:srcCompat="@drawable/animated_checkmark" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,12 +86,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calibrationTopLayout" />
 
-        <ImageView
-            android:id="@+id/calibration_checkmark_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/animated_checkmark" />
 
     </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

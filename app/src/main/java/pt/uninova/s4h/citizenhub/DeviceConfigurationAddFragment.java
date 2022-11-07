@@ -28,17 +28,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     private ProgressBar progressBar;
     private ProgressDialog dialog;
 
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-                Toast.makeText(getActivity(), getString(R.string.fragment_device_configuration_add_calibration_completed_toast), Toast.LENGTH_LONG).show();
-            }
-        }
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

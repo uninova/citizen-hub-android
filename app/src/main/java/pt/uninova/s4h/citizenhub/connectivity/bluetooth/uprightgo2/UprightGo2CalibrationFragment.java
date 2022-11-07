@@ -5,12 +5,15 @@ import static pt.uninova.s4h.citizenhub.connectivity.Protocol.STATE_COMPLETED;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,13 +29,22 @@ public class UprightGo2CalibrationFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     UprightGo2Agent agent;
     ImageView checkMarkImageView;
+    LinearLayout animationsLayout;
+    ProgressBar progressBar;
+
     private final Observer<StateChangedMessage<Integer, ? extends Protocol>> protocolStateObserver = new Observer<StateChangedMessage<Integer, ? extends Protocol>>() {
         @Override
         public void observe(StateChangedMessage<Integer, ? extends Protocol> value) {
-            if (value.getNewState() == STATE_COMPLETED) {
-                checkMarkImageView.setVisibility(View.VISIBLE);
-                ((Animatable) checkMarkImageView.getDrawable()).start();
-            }
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (value.getNewState() == STATE_COMPLETED) {
+                        progressBar.setVisibility(View.GONE);
+                        checkMarkImageView.setVisibility(View.VISIBLE);
+                        ((Animatable) checkMarkImageView.getDrawable()).start();
+                    }
+                }
+            });
         }
     };
 
@@ -43,21 +55,30 @@ public class UprightGo2CalibrationFragment extends Fragment {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Button calibrationButton = view.findViewById(R.id.buttonCalibrate);
+        LinearLayout topLayout = view.findViewById(R.id.calibrationTopLayout);
+        LinearLayout buttonLayout = view.findViewById(R.id.button_layout);
+        animationsLayout = view.findViewById(R.id.animationsLayout);
+        progressBar = view.findViewById(R.id.calibration_pprogressBar);
         checkMarkImageView = view.findViewById(R.id.calibration_checkmark_imageView);
 
         calibrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-//                                //Send Message vibration settings
-
+                progressBar.setVisibility(View.VISIBLE);
                 //Send Message calibration
+                topLayout.setVisibility(View.GONE);
+                buttonLayout.setVisibility(View.GONE);
+                animationsLayout.setVisibility(View.VISIBLE);
                 agent = (UprightGo2Agent) model.getSelectedDeviceAgent();
                 UprightGo2CalibrationProtocol uprightGo2CalibrationProtocol = new UprightGo2CalibrationProtocol(agent);
-                uprightGo2CalibrationProtocol.addStateObserver(protocolStateObserver);
-                agent.enableProtocol(uprightGo2CalibrationProtocol);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
 
+                        uprightGo2CalibrationProtocol.addStateObserver(protocolStateObserver);
+                        agent.enableProtocol(uprightGo2CalibrationProtocol);
+                    }
+                }, 1000);
                 //default - first vibration settings when adding device
                 boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
                 int angle = sharedPreferences.getInt("Vibration Angle", 1);
