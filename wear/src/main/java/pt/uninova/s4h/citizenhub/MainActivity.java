@@ -109,6 +109,14 @@ public class MainActivity  extends FragmentActivity {
         });
 
         startService();
+
+        initializeAllSensorsActive();
+    }
+
+    private void initializeAllSensorsActive(){
+        sharedPreferences = this.getSharedPreferences("switchesSharedPreferences", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("HeartRate", true).apply();
+        sharedPreferences.edit().putBoolean("Steps", true).apply();
     }
 
     public void startService() {
