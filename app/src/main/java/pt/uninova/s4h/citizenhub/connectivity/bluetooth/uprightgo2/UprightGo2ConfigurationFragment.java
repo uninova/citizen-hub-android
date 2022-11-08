@@ -15,10 +15,12 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -90,6 +92,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //Posture Correction Vibration ON/OFF
         SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
+        if(!postureCorrectionVibration.isEnabled()){
+                postureCorrectionVibration.setAlpha(0.5f);
+        }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         postureCorrectionVibration.setChecked(sharedPreferences.getBoolean("Posture Correction Vibration", true));
@@ -111,6 +116,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
             }
@@ -120,11 +126,11 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 //do a default thingy
             }
         });
-
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Interval", (spinnerInterval.getSelectedItemPosition()));
                 System.out.println("Spinner item " + spinnerInterval.getSelectedItem() + "interval:" + spinnerInterval.getSelectedItemPosition() + "spinner i & L" + i + " " + l);
                 editor.apply();
@@ -141,6 +147,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Pattern", (spinnerPattern.getSelectedItemPosition()));
                 editor.apply();
             }
@@ -155,6 +162,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Strength", (correctionStrength.getSelectedItemPosition()));
                 editor.apply();
                 System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());
