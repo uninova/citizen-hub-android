@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,6 +34,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.HeartRateMeasurement;
 import pt.uninova.s4h.citizenhub.data.Sample;
@@ -43,7 +45,7 @@ import pt.uninova.s4h.citizenhub.persistence.repository.StepsSnapshotMeasurement
 import pt.uninova.s4h.citizenhub.ui.ScreenSlidePagerAdapter;
 import pt.uninova.s4h.citizenhub.ui.ZoomOutPageTransformer;
 
-public class MainActivity  extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
 
     public static String nodeIdString;
     public static StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository;
@@ -91,19 +93,21 @@ public class MainActivity  extends FragmentActivity {
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        viewPager.setCurrentItem(2);viewPager.setCurrentItem(1);viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
 
-        new SendMessage(citizenHubPath + nodeIdString,"Ready");
+        new SendMessage(citizenHubPath + nodeIdString, "Ready");
 
         final LocalDate now = LocalDate.now();
         stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-            if(value != null)
+            if (value != null)
                 listenSteps.postValue(String.valueOf(value.intValue()));
             else
                 listenSteps.postValue("0");
         });
         heartRateMeasurementRepository.readAverageObserved(now, value -> {
-            if(value != null)
+            if (value != null)
                 listenHeartRateAverage.postValue(f.format(value));
             else
                 listenHeartRateAverage.postValue("-");
@@ -120,68 +124,74 @@ public class MainActivity  extends FragmentActivity {
         }, 10000);
     }
 
-    public void startListeners(){
+    public void startListeners() {
         heartRateListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if(event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                     listenHeartRate.setValue(String.valueOf(event.values[0]));
-                    new SendMessage(citizenHubPath + nodeIdString,event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
+                    new SendMessage(citizenHubPath + nodeIdString, event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
 
-                    Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int)event.values[0]));
-                    sampleRepository.create(sample, sampleId -> {});
+                    Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int) event.values[0]));
+                    sampleRepository.create(sample, sampleId -> {
+                    });
 
                     final LocalDate now = LocalDate.now();
 
                     heartRateMeasurementRepository.readAverageObserved(now, value ->
-                        listenHeartRateAverage.postValue(f.format(value))
+                            listenHeartRateAverage.postValue(f.format(value))
                     );
                 }
             }
+
             @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
+            public void onAccuracyChanged(Sensor sensor, int i) {
+            }
         };
 
         stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
+                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
 
                     int stepCounter = (int) event.values[0];
                     final LocalDate now = LocalDate.now();
 
-                    if (resetSteps(stepCounter)){
+                    if (resetSteps(stepCounter)) {
                         sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
                         sharedPreferences.edit().putInt("offsetStepCounter", -stepCounter).apply();
                     }
-                    System.out.println(getLastStepCounter() + "|" + getOffsetStepCounter() + "|" + sharedPreferences.getLong("dayLastStepCounter",0));
+                    System.out.println(getLastStepCounter() + "|" + getOffsetStepCounter() + "|" + sharedPreferences.getLong("dayLastStepCounter", 0));
 
-                    if(stepCounter<getLastStepCounter())
-                        sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter()+getOffsetStepCounter()).apply();
+                    if (stepCounter < getLastStepCounter())
+                        sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter() + getOffsetStepCounter()).apply();
                     sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
                     sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
 
-                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter()+getOffsetStepCounter()));
-                    sampleRepository.create(sample, sampleId -> {});
+                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter() + getOffsetStepCounter()));
+                    sampleRepository.create(sample, sampleId -> {
+                    });
 
                     stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-                        if(value != null)
+                        if (value != null)
                             stepsTotal = value.intValue();
                         else
                             stepsTotal = 0;
                         listenSteps.postValue(String.valueOf(stepsTotal));
-                        new SendMessage(citizenHubPath + nodeIdString,stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                        new SendMessage(citizenHubPath + nodeIdString, stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                     });
                 }
             }
+
             @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
+            public void onAccuracyChanged(Sensor sensor, int i) {
+            }
         };
     }
 
-    private Boolean resetSteps(int steps){
+    private Boolean resetSteps(int steps) {
         long recordedDate = sharedPreferences.getLong("dayLastStepCounter", 0);
-        if(recordedDate == 0){
+        if (recordedDate == 0) {
             if (steps > 0)
                 sharedPreferences.edit().putInt("offsetStepCounter", -steps).apply();
             return false;
@@ -198,12 +208,12 @@ public class MainActivity  extends FragmentActivity {
                 && calendarRecordedDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR));
     }
 
-    private int getOffsetStepCounter(){
-        return sharedPreferences.getInt("offsetStepCounter",0);
+    private int getOffsetStepCounter() {
+        return sharedPreferences.getInt("offsetStepCounter", 0);
     }
 
-    private int getLastStepCounter(){
-        return sharedPreferences.getInt("lastStepCounter",0);
+    private int getLastStepCounter() {
+        return sharedPreferences.getInt("lastStepCounter", 0);
     }
 
     @Override
@@ -221,11 +231,14 @@ public class MainActivity  extends FragmentActivity {
     }
 
     public void permissionRequest() {
-        if (checkSelfPermission(Manifest.permission.BODY_SENSORS)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(
-                    new String[]{Manifest.permission.BODY_SENSORS},
-                    21);
+        if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.BODY_SENSORS}, 21);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 22);
+            }
         }
     }
 
@@ -235,12 +248,12 @@ public class MainActivity  extends FragmentActivity {
         stepsCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
     }
 
-    private void setDevice(){
+    private void setDevice() {
         new Thread(() -> {
             try {
                 Node localNode = Tasks.await(Wearable.getNodeClient(getApplicationContext()).getLocalNode());
                 nodeIdString = localNode.getId();
-                wearDevice = new Device(nodeIdString,"WearOS Device",2);
+                wearDevice = new Device(nodeIdString, "WearOS Device", 2);
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -250,21 +263,21 @@ public class MainActivity  extends FragmentActivity {
     public static class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.hasExtra("WearOSHeartRateProtocol")){
+            if (intent.hasExtra("WearOSHeartRateProtocol")) {
                 protocolHeartRate.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
                 if (Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")))
                     protocolPhoneConnected.setValue(true);
                 else
                     protocolPhoneConnected.setValue(false);
             }
-            if (intent.hasExtra("WearOSStepsProtocol")){
+            if (intent.hasExtra("WearOSStepsProtocol")) {
                 protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
                 if (Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")))
                     protocolPhoneConnected.setValue(true);
                 else
                     protocolPhoneConnected.setValue(false);
             }
-            if (intent.hasExtra("WearOSAgent")){
+            if (intent.hasExtra("WearOSAgent")) {
                 protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
             }
         }
@@ -273,10 +286,12 @@ public class MainActivity  extends FragmentActivity {
     class SendMessage extends Thread {
         String path;
         String message;
+
         SendMessage(String p, String msg) {
             path = p;
             message = msg;
         }
+
         public void run() {
             Task<List<Node>> nodeListTask = Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
             try {
@@ -286,8 +301,7 @@ public class MainActivity  extends FragmentActivity {
                 System.out.println("Node associated: " + n.getId() + " Message: " + message);
                 List<Node> nodes = Tasks.await(nodeListTask);
                 for (Node node : nodes) {
-                    Task<Integer> sendMessageTask =
-                            Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
+                    Task<Integer> sendMessageTask = Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
                     try {
                         Tasks.await(sendMessageTask);
                     } catch (ExecutionException | InterruptedException exception) {

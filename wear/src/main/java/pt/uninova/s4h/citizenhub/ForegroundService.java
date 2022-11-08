@@ -85,7 +85,8 @@ public class ForegroundService extends Service {
             }
 
             @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
+            public void onAccuracyChanged(Sensor sensor, int i) {
+            }
         };
         SensorEventListener heartRateListener = new SensorEventListener() {
             @Override
@@ -95,16 +96,18 @@ public class ForegroundService extends Service {
             }
 
             @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
+            public void onAccuracyChanged(Sensor sensor, int i) {
+            }
         };
 
         sensorManager.registerListener(stepsListener, sensorSteps,
                 SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(heartRateListener, sensorHeartRate,
                 SensorManager.SENSOR_DELAY_NORMAL);
-        
+
         return START_NOT_STICKY;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -116,7 +119,7 @@ public class ForegroundService extends Service {
         return null;
     }
 
-    private void updateNotificationMessage(PendingIntent pendingIntent){
+    private void updateNotificationMessage(PendingIntent pendingIntent) {
         int numberOfSensorsMeasuring = 0;
         if (Boolean.TRUE.equals(MainActivity.protocolSteps.getValue()))
             numberOfSensorsMeasuring++;
