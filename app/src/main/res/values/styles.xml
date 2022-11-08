@@ -476,8 +476,7 @@
     <style name="CategoryTextViewDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_margin">20dp</item>
         <item name="android:background">@color/colorS4HDarkBlue</item>
 
     </style>
