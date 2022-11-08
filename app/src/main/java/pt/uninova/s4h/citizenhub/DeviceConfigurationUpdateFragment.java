@@ -131,6 +131,10 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 setChildrenEnabled((ViewGroup) child, state);
             } else {
                 child.setEnabled(state);
+                if(!child.isEnabled()) {
+                    child.setAlpha(0.5f);
+                }
+                else child.setAlpha(1);
             }
 
 
