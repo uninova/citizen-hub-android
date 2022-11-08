@@ -68,6 +68,7 @@ public class MainActivity  extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
@@ -109,14 +110,6 @@ public class MainActivity  extends FragmentActivity {
         });
 
         startService();
-
-        initializeAllSensorsActive();
-    }
-
-    private void initializeAllSensorsActive(){
-        sharedPreferences = this.getSharedPreferences("switchesSharedPreferences", Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("HeartRate", true).apply();
-        sharedPreferences.edit().putBoolean("Steps", true).apply();
     }
 
     public void startService() {
