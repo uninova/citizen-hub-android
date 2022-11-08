@@ -260,8 +260,9 @@
         tools:layout="@layout/fragment_device_configuration_add">
 
         <action
-            android:id="@+id/action_device_configuration_add_fragment_to_device_list_fragment"
-            app:destination="@+id/device_list_fragment" />
+            android:id="@+id/action_device_configuration_add_fragment_to_device_configuration_update_fragment"
+            app:destination="@+id/device_configuration_update_fragment"
+            app:popUpTo="@id/device_list_fragment"/>
         <action
             android:id="@+id/action_device_configuration_add_fragment_to_deviceUnsupportedFragment"
             app:destination="@id/deviceUnsupportedFragment"
@@ -275,26 +276,19 @@
         android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_update">
 
+
         <action
             android:id="@+id/action_device_configuration_update_fragment_to_device_list_fragment"
             app:destination="@+id/device_list_fragment" />
         <action
             android:id="@+id/action_device_configuration_update_fragment_to_device_configuration_advanced_fragment"
             app:destination="@+id/device_configuration_advanced_fragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/device_configuration_advanced_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAdvancedFragment"
-        android:label="@string/fragment_device_configuration_label"
-        tools:layout="@layout/fragment_device_configuration_advanced">
-
         <action
-            android:id="@+id/action_device_configuration_advanced_fragment_to_device_configuration_update_fragment"
-            app:destination="@+id/device_configuration_update_fragment" />
+            android:id="@+id/action_device_configuration_update_fragment_to_uprightGo2CalibrationFragment"
+            app:destination="@id/uprightGo2CalibrationFragment" />
 
     </fragment>
+
 
     <fragment
         android:id="@+id/settings_fragment"
@@ -453,11 +447,15 @@
     <fragment
         android:id="@+id/deviceUnsupportedFragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceUnsupportedFragment"
-        android:label="DeviceUnsupportedFragment" >
+        android:label="@string/device_unsupported_label" >
         <action
             android:id="@+id/action_deviceUnsupportedFragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
             app:popUpTo="@id/device_list_fragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/uprightGo2CalibrationFragment"
+        android:name="pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationFragment"
+        android:label="@string/fragment_device_calibration_label" />
 
 </navigation>

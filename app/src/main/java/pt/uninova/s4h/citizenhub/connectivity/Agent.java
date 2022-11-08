@@ -1,5 +1,8 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
+import androidx.fragment.app.Fragment;
+
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -59,4 +62,7 @@ public interface Agent {
 
     void removeStateObserver(Observer<StateChangedMessage<Integer, ? extends Agent>> observer);
 
+    List<Fragment> getConfigurationFragments();
+
+    Fragment getPairingHelper();
 }

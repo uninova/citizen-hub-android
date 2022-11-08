@@ -203,7 +203,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="AppTheme.About" />
@@ -438,7 +438,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="SummaryDetailSecondaryTabLayout">
@@ -452,7 +452,58 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AdvancedConfigurationFragment.switchCompatStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="thumbTint">@color/thumb_selector</item>
+        <item name="trackTint">@color/track_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="AdvancedConfigurationFragmentCategoryTextView">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_regular</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AdvancedConfigurationFragmentSpinnerStyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+    <style name="AdvancedConfigurationFragmentDividerStyle">
+        <item name="android:layout_height">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+    <style name="AdvancedConfigurationArrowImageView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/ic_next_arrow</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">@color/colorS4HGreyMedium</item>
+    </style>
+    <style name="AdvancedConfigurationLinearLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
     </style>
 
 </resources>
