@@ -6,7 +6,6 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-
     <View
         android:id="@+id/divider"
         style="@style/AdvancedConfigurationFragmentDividerStyle"
@@ -194,8 +193,5 @@
 
         </LinearLayout>
     </LinearLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

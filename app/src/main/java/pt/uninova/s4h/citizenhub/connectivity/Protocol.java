@@ -12,6 +12,8 @@ public interface Protocol {
     public static final int STATE_ENABLING = 3;
     public static final int STATE_SUSPENDED = 4;
     public static final int STATE_COMPLETED = 5;
+    public static final int STATE_FAILED = 6;
+
 
     void addStateObserver(Observer<StateChangedMessage<Integer, ? extends Protocol>> observer);
 

@@ -286,11 +286,7 @@
         <item>Muzzle</item>
     </string-array>
 
-    <string-array name="spinner_uprightgo2_strength">
-        <item>Gentle</item>
-        <item>Normal</item>
-        <item>Relaxed</item>
-    </string-array>
+
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
     <string name="fragment_report_detail_text_sbp" translatable="false">SBP:</string>
@@ -610,6 +606,12 @@
     <string name="device_unsupported_label">Device Unsupported</string>
     <string name="fragment_device_calibration_label">Device Calibration</string>
     <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
+
+    <string-array name="spinner_uprightgo2_strength">
+        <item>Gentle</item>
+        <item>Medium</item>
+        <item>Strong</item>
+    </string-array>
 
 </resources>
 
