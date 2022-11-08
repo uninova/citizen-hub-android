@@ -11,28 +11,32 @@ public class MessageService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         String citizenHubPath = "/citizenhub_";
-        if(messageEvent.getPath().equals(citizenHubPath +"WearOSHeartRateProtocol"))
+        String protocolPathHeartRate = "WearOSHeartRateProtocol";
+        String protocolPathSteps = "WearOSStepsProtocol";
+        String agentPath = "WearOSAgent";
+
+        if(messageEvent.getPath().equals(citizenHubPath + protocolPathHeartRate))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
             messageIntent.setAction(Intent.ACTION_SEND);
-            messageIntent.putExtra("WearOSHeartRateProtocol", message);
+            messageIntent.putExtra(protocolPathHeartRate, message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenHubPath +"WearOSStepsProtocol"))
+        if(messageEvent.getPath().equals(citizenHubPath + protocolPathSteps))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
             messageIntent.setAction(Intent.ACTION_SEND);
-            messageIntent.putExtra("WearOSStepsProtocol", message);
+            messageIntent.putExtra(protocolPathSteps, message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
-        if(messageEvent.getPath().equals(citizenHubPath +"WearOSAgent"))
+        if(messageEvent.getPath().equals(citizenHubPath + agentPath))
         {
             final String message = new String(messageEvent.getData());
             Intent messageIntent = new Intent();
             messageIntent.setAction(Intent.ACTION_SEND);
-            messageIntent.putExtra("WearOSAgent", message);
+            messageIntent.putExtra(agentPath, message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
         else {

@@ -33,6 +33,8 @@ public class SettingsFragment extends Fragment {
     private CompoundButton.OnCheckedChangeListener heartRateListener, stepsListener;
     private final String citizenHubPath = "/citizenhub_";
     SharedPreferences sharedPreferences;
+    private final String sharedPreferencesVariableHeartRateBoolean = "HeartRate";
+    private final String sharedPreferencesVariableStepsBoolean = "Steps";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +49,7 @@ public class SettingsFragment extends Fragment {
 
         heartRateListener = (compoundButton, isChecked) -> {
             MainActivity.protocolHeartRate.setValue(isChecked);
-            sharedPreferences.edit().putBoolean("HeartRate", isChecked).apply();
+            sharedPreferences.edit().putBoolean(sharedPreferencesVariableHeartRateBoolean, isChecked).apply();
             Date now = new Date();
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE;
             String dataPath = citizenHubPath + MainActivity.nodeIdString;
@@ -56,7 +58,7 @@ public class SettingsFragment extends Fragment {
 
         stepsListener = (compoundButton, isChecked) -> {
             MainActivity.protocolSteps.setValue(isChecked);
-            sharedPreferences.edit().putBoolean("Steps", isChecked).apply();
+            sharedPreferences.edit().putBoolean(sharedPreferencesVariableStepsBoolean, isChecked).apply();
             Date now = new Date();
             String msg = checkedToCommunicationValue(isChecked) + "," + now.getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT;
             String dataPath = citizenHubPath + MainActivity.nodeIdString;
@@ -65,9 +67,10 @@ public class SettingsFragment extends Fragment {
 
         enabledCheckedListeners(true);
 
-        sharedPreferences = requireActivity().getSharedPreferences("switchesSharedPreferences", Context.MODE_PRIVATE);
-        MainActivity.protocolSteps.setValue(sharedPreferences.getBoolean("Steps", false));
-        MainActivity.protocolHeartRate.setValue(sharedPreferences.getBoolean("HeartRate", false));
+        String sharedPreferencesName = "switchesSharedPreferences";
+        sharedPreferences = requireActivity().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
+        MainActivity.protocolSteps.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableStepsBoolean, false));
+        MainActivity.protocolHeartRate.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableHeartRateBoolean, false));
 
         return view;
     }

@@ -33,4 +33,7 @@
     <string name="fragment_data_heartrate_protocol_disabled">Heart Rate: - bpm"</string>
     <string name="fragment_data_heartrate_average_protocol_disabled">Daily Average: - bpm"</string>
     <string name="fragment_data_steps_protocol_disabled">"Steps: -"</string>
+    <string name="notification_content_title">"Citizen Hub is Active"</string>
+    <string name="notification_button_open_app">"Open App"</string>
+    <string name="notification_sensors_measuring">" sensors measuring"</string>
 </resources>
