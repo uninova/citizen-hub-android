@@ -99,14 +99,19 @@
             android:id="@+id/layoutConfigurationMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
+            <View
+                android:id="@+id/divider_configuration_id"
+                style="@style/CategoryTextViewDivider"
+
+                android:layout_width="match_parent"
+                />
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
                 android:text="@string/layout_fragment_device_configuration_features"
           />

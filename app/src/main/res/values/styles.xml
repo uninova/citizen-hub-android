@@ -465,8 +465,30 @@
     <style name="AdvancedConfigurationFragmentCategoryTextView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CategoryTextViewDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorS4HGreyMedium</item>
+        <item name="android:alpha">0.5</item>
+        <item name="android:layout_marginHorizontal">10dp</item>
+        <item name="android:layout_marginVertical">20dp</item>
+
+    </style>
+
+    <style name="AdvancedConfigurationFragmentListItemTextView">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/neo_sans_pro_regular</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:textSize">16sp</item>
@@ -476,9 +498,11 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAlignment">textEnd</item>
+        <item name="android:backgroundTint">@color/colorS4HDarkBlue</item>
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
+
     <style name="AdvancedConfigurationFragmentDividerStyle">
         <item name="android:layout_height">10dp</item>
         <item name="android:layout_width">wrap_content</item>

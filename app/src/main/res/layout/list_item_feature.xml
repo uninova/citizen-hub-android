@@ -11,7 +11,7 @@
 
         <TextView
             android:id="@+id/textFeature"
-          style="@style/AdvancedConfigurationFragmentCategoryTextView"
+          style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:text="@string/layout_list_item_feature_unknown_feature"
           />
 
@@ -20,7 +20,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
-
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
