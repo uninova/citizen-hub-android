@@ -62,8 +62,15 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+            if (fragment != null) {
+                getChildFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
 
         if (fragmentList != null) {
             for (int i = 0; i < fragmentList.size(); i++) {
@@ -77,8 +84,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 assert newFragment != null;
                 ft.add(R.id.layout_advanced_configurations_container, newFragment);
                 View divider_view = view.findViewById(R.id.divider_advanced_configuration_id);
-                if(divider_view!=null)
-                divider_view.setAlpha(0.5f);
+                if (divider_view != null)
+                    divider_view.setAlpha(0.5f);
             }
         }
         ft.commitNow();
@@ -134,10 +141,9 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
                 setChildrenEnabled((ViewGroup) child, state);
             } else {
                 child.setEnabled(state);
-                if(!child.isEnabled()) {
+                if (!child.isEnabled()) {
                     child.setAlpha(0.5f);
-                }
-                else child.setAlpha(1);
+                } else child.setAlpha(1);
             }
 
 
