@@ -63,7 +63,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
-
+        deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_advanced_uprightgo2);
+        deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
         enableAdvancedConfigurations(view, model);
         return view;
     }
@@ -82,8 +83,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             - Vibration Strength (1 (gentle), 2 (medium), 3 (strong))
             - Perform Calibration (Trigger)
              */
-            deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_advanced_uprightgo2);
-            deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
+
             setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
         }
     }
@@ -116,6 +116,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getChildAt(0)!=null)
                 ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
@@ -130,7 +131,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if(adapterView.getChildAt(0)!=null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Interval", (spinnerInterval.getSelectedItemPosition()));
                 System.out.println("Spinner item " + spinnerInterval.getSelectedItem() + "interval:" + spinnerInterval.getSelectedItemPosition() + "spinner i & L" + i + " " + l);
                 editor.apply();
@@ -147,7 +149,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if(adapterView.getChildAt(0)!=null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Pattern", (spinnerPattern.getSelectedItemPosition()));
                 editor.apply();
             }
@@ -162,7 +165,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if(adapterView.getChildAt(0)!=null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Strength", (correctionStrength.getSelectedItemPosition()));
                 editor.apply();
                 System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());

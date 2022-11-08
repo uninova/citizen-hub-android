@@ -38,6 +38,8 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
         connectDevice = view.findViewById(R.id.buttonConfiguration);
         featureMessageLayout = view.findViewById(R.id.layoutConfigurationMeasurements);
+        View divider_view = view.findViewById(R.id.divider_configuration_id);
+        divider_view.setAlpha(0.5f);
         labelListView = view.findViewById(R.id.listViewLabel);
         loadingTextview = view.findViewById(R.id.device_configuration_loading_textview);
         progressBar = view.findViewById(R.id.add_pprogressBar);
