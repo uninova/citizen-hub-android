@@ -32,7 +32,7 @@ public class ForegroundService extends Service {
 
         NotificationChannel serviceChannel = new NotificationChannel(
                 CHANNEL_ID,
-                "Citizen Hub",
+                getString(R.string.app_name),
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -43,7 +43,7 @@ public class ForegroundService extends Service {
                 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Citizen Hub is Active")
+                .setContentTitle(getString(R.string.notification_content_title))
                 .setContentText(input)
                 .setSmallIcon(R.drawable.img_logo_figure)
                 .setContentIntent(pendingIntent)
@@ -51,7 +51,7 @@ public class ForegroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_WORKOUT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
+                .addAction(R.drawable.img_logo_figure, getString(R.string.notification_button_open_app), pendingIntent);
 
         Notification notification = builder.build();
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
@@ -60,7 +60,7 @@ public class ForegroundService extends Service {
                 new OngoingActivity.Builder(getApplicationContext(), 1, builder)
                         .setAnimatedIcon(R.drawable.img_logo_figure)
                         .setTouchIntent(pendingIntent)
-                        .setTitle("Citizen Hub")
+                        .setTitle(getString(R.string.app_name))
                         .setOngoingActivityId(1)
                         .build();
 
@@ -73,17 +73,14 @@ public class ForegroundService extends Service {
         Sensor sensorSteps = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         Sensor sensorHeartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
 
-        MainActivity.protocolSteps.observeForever(aBoolean -> {
-            updateNotificationMessage(pendingIntent);
-        });
+        MainActivity.protocolSteps.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
 
-        MainActivity.protocolHeartRate.observeForever(aBoolean -> {
-            updateNotificationMessage(pendingIntent);
-        });
+        MainActivity.protocolHeartRate.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
 
         SensorEventListener stepsListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
+                //TODO
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER)
                     System.out.println("Steps Sensor Event from foreground service: " + event.values[0]);
             }
@@ -130,15 +127,15 @@ public class ForegroundService extends Service {
             {
                 numberOfActiveSensors = numberOfSensorsMeasuring;
                 NotificationCompat.Builder notificationBuilderObserverHR = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                        .setContentTitle("Citizen Hub is Active")
-                        .setContentText(numberOfSensorsMeasuring + " sensors measuring")
+                        .setContentTitle(getString(R.string.notification_content_title))
+                        .setContentText(numberOfSensorsMeasuring + getString(R.string.notification_sensors_measuring))
                         .setSmallIcon(R.drawable.img_logo_figure)
                         .setContentIntent(pendingIntent)
                         .setOngoing(true)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_WORKOUT)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .addAction(R.drawable.img_logo_figure, "Open App", pendingIntent);
+                        .addAction(R.drawable.img_logo_figure, getString(R.string.notification_button_open_app), pendingIntent);
                 Notification notificationObserverHR = notificationBuilderObserverHR.build();
                 NotificationManager notificationManagerHR = getSystemService(NotificationManager.class);
                 notificationManagerHR.notify(1, notificationObserverHR);
