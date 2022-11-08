@@ -2,16 +2,14 @@ package pt.uninova.s4h.citizenhub;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -21,7 +19,7 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 
     private DeviceViewModel model;
-    private TextView featureMessage;
+    private LinearLayout featureMessageLayout;
     private ListView labelListView;
     private TextView loadingTextview;
 
@@ -39,7 +37,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_add, container, false);
         connectDevice = view.findViewById(R.id.buttonConfiguration);
-        featureMessage = view.findViewById(R.id.textConfigurationMeasurements);
+        featureMessageLayout = view.findViewById(R.id.layoutConfigurationMeasurements);
         labelListView = view.findViewById(R.id.listViewLabel);
         loadingTextview = view.findViewById(R.id.device_configuration_loading_textview);
         progressBar = view.findViewById(R.id.add_pprogressBar);
@@ -47,7 +45,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
         progressBar.setVisibility(View.VISIBLE);
         connectDevice.setVisibility(View.INVISIBLE);
         loadingTextview.setVisibility(View.VISIBLE);
-        featureMessage.setVisibility(View.INVISIBLE);
+        featureMessageLayout.setVisibility(View.INVISIBLE);
 
         setupViews(view);
         setupText();
@@ -81,7 +79,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 labelListView.setVisibility(View.VISIBLE);
 
                 progressBar.setVisibility(View.GONE);
-                featureMessage.setVisibility(View.VISIBLE);
+                featureMessageLayout.setVisibility(View.VISIBLE);
                 loadingTextview.setVisibility(View.GONE);
                 connectDevice.setText(R.string.fragment_device_configuration_connect_option_text);
                 connectDevice.setVisibility(View.VISIBLE);

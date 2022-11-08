@@ -99,10 +99,12 @@
             android:id="@+id/layoutConfigurationMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
+            <View
+                style="@style/CategoryTextViewDivider"
+                />
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
                 android:paddingRight="10dp"
