@@ -105,8 +105,8 @@
 
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
                 android:text="@string/layout_fragment_device_configuration_features"
           />

@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/calibrationButton"
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,12 +53,13 @@
         app:layout_constraintTop_toBottomOf="@id/calibrationLayout">
 
         <TextView
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:text="@string/fragment_device_configuration_advanced_uprightgo2_posture_correction_text" />
 
         <LinearLayout
+            android:id="@+id/switchPostureLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
@@ -82,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutPostureCorrection">
 
         <TextView
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -113,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationAngle">
 
         <TextView
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -142,7 +143,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
 
         <TextView
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -171,7 +172,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutVibrationPattern">
 
         <TextView
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
