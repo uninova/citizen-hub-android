@@ -54,7 +54,6 @@ public class DeviceSearchFragment extends BluetoothFragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
         scanner.start((address, name) -> {
-            progressBar.setVisibility(View.VISIBLE);
             final Device device = new Device(address, name == null ? address : name, Connection.CONNECTION_KIND_BLUETOOTH);
 
             if (!model.hasAgentAttached(device)) {
@@ -86,6 +85,8 @@ public class DeviceSearchFragment extends BluetoothFragment {
 
         buildRecycleView(view);
         progressBar = view.findViewById(R.id.progressBarLayout);
+        progressBar.setVisibility(View.VISIBLE);
+
         return view;
     }
 
