@@ -24,13 +24,8 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
 
-    protected Button connectDevice;
-    protected Button deleteDevice;
     protected Button updateDevice;
     protected Button advancedDevice;
-    protected Button advancedOKDevice;
-    protected ViewStub deviceAdvancedSettings;
-    protected View deviceAdvancedSettingsInflated;
     protected TextView nameDevice;
     protected TextView addressDevice;
     protected ListView listViewFeatures;

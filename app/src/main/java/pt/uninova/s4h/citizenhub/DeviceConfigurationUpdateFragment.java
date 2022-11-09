@@ -39,22 +39,12 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         setHasOptionsMenu(true);
 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update, container, false);
-        updateDevice = view.findViewById(R.id.buttonConfiguration);
-        advancedDevice = view.findViewById(R.id.buttonAdvancedConfigurations);
         advancedConfigurationLayout = view.findViewById(R.id.layout_advanced_configurations_container);
-        updateDevice.setVisibility(View.GONE);
 
         setupViews(view);
         setupText();
         loadSupportedFeatures();
 
-        updateDevice.setOnClickListener(v -> {
-            saveFeaturesChosen();
-            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
-        });
-
-
-        advancedDevice.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceConfigurationAdvancedFragment()));
 
         return view;
     }
@@ -107,12 +97,6 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
         reconnectItem.setVisible(false);
-        MenuItem updateItem = menu.findItem(R.id.device_configuration_menu_update_item);
-        updateItem.setOnMenuItemClickListener((MenuItem item) -> {
-            saveFeaturesChosen();
-            Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
-            return true;
-        });
 
         if (model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED) {
             menu.removeItem(R.id.device_configuration_menu_reconnect_item);
