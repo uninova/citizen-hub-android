@@ -94,15 +94,9 @@ public class DeviceListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
 
         TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
 
@@ -110,6 +104,15 @@ public class DeviceListFragment extends Fragment {
             noDevices.setVisibility(View.VISIBLE);
         } else {
             noDevices.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        for (int j = 0; j < adapter.getItemCount(); j++) {
+
+            model.getAttachedAgent(adapter.getItem(j).getDevice()).removeStateObserver(agentStateObserver);
         }
     }
 
