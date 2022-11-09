@@ -107,6 +107,15 @@ public class DeviceListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        for (int j = 0; j < adapter.getItemCount(); j++) {
+
+            model.getAttachedAgent(adapter.getItem(j).getDevice()).removeStateObserver(agentStateObserver);
+        }
+    }
+
     public void updateItemAgentState(Agent agent, int state) {
         int pos = requireNonNull(model.getDeviceList().getValue()).indexOf(agent.getSource());
         if (state == 1) {
