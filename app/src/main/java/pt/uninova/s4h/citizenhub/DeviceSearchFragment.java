@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,7 +24,7 @@ public class DeviceSearchFragment extends BluetoothFragment {
 
     private DeviceListAdapter adapter;
     private DeviceViewModel model;
-
+    private LinearLayout progressBar;
     private BluetoothScanner scanner;
 
     private void buildRecycleView(View view) {
@@ -45,7 +46,6 @@ public class DeviceSearchFragment extends BluetoothFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
     }
 
@@ -54,10 +54,13 @@ public class DeviceSearchFragment extends BluetoothFragment {
         scanner = new BluetoothScanner((BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE));
 
         scanner.start((address, name) -> {
+            progressBar.setVisibility(View.VISIBLE);
             final Device device = new Device(address, name == null ? address : name, Connection.CONNECTION_KIND_BLUETOOTH);
 
             if (!model.hasAgentAttached(device)) {
+                progressBar.setVisibility(View.GONE);
                 adapter.addItem(new DeviceListItem(device, R.drawable.ic_devices_unpaired));
+
             }
         });
     }
@@ -82,7 +85,7 @@ public class DeviceSearchFragment extends BluetoothFragment {
         final View view = inflater.inflate(R.layout.fragment_device_search, container, false);
 
         buildRecycleView(view);
-
+        progressBar = view.findViewById(R.id.progressBarLayout);
         return view;
     }
 
