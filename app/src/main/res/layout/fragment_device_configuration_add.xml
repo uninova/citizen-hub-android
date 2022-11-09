@@ -31,7 +31,9 @@
         android:id="@+id/layoutLabelList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="start"
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/layoutConfigurationTop">
