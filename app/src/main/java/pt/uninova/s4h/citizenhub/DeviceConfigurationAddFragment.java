@@ -70,9 +70,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             connectDevice.setOnClickListener(v -> {
 
                 model.addAgent(agent);
-
-                DeviceConfigurationAddFragment.this.saveFeaturesChosen();
-
                 Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
             });
 
