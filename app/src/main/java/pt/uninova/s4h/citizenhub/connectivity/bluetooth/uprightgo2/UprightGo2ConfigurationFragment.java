@@ -114,10 +114,15 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         Spinner spinnerAngle = view.findViewById(R.id.spinnerVibrationAngle);
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
+        if(!spinnerAngle.isEnabled()){
+            spinnerAngle.setAlpha(0.5f);
+            spinnerAngle.getBackground().setAlpha(50);
+        }
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null)
-                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if(adapterView.getChildAt(0)!=null) {
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                }
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
             }
@@ -129,6 +134,11 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         });
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
+        if(!spinnerInterval.isEnabled()){
+            spinnerInterval.setAlpha(0.5f);
+            spinnerInterval.getBackground().setAlpha(50);
+
+        }
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(adapterView.getChildAt(0)!=null)
@@ -147,6 +157,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         // 5 (heartbeat), 6 (tuk tuk), 7 (ecstatic), 8 (muzzle))
         Spinner spinnerPattern = view.findViewById(R.id.spinnerVibrationPattern);
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
+        if(!spinnerPattern.isEnabled()){
+            spinnerPattern.setAlpha(0.5f);
+        }
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(adapterView.getChildAt(0)!=null)
@@ -163,6 +176,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
+        if(!correctionStrength.isEnabled()){
+            correctionStrength.setAlpha(0.5f);
+        }
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(adapterView.getChildAt(0)!=null)
