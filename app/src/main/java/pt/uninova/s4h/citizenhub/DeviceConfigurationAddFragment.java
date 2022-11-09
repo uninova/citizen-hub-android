@@ -1,6 +1,5 @@
 package pt.uninova.s4h.citizenhub;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     private TextView loadingTextview;
     private Button connectDevice;
     private ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
