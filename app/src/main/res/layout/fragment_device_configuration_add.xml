@@ -40,7 +40,7 @@
 
         <ListView
             android:id="@+id/listViewLabel"
-            style="@style/AppTheme.Summary.Item.TextView"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
