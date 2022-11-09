@@ -94,15 +94,9 @@ public class DeviceListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        model.getDeviceList().observe(getViewLifecycleOwner(), this::onDeviceListChanged);
 
         TextView noDevices = requireActivity().findViewById(R.id.fragment_device_list_no_data);
 
