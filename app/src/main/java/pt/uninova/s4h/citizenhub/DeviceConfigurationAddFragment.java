@@ -25,8 +25,6 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
     private TextView loadingTextview;
     private Button connectDevice;
     private ProgressBar progressBar;
-    private ProgressDialog dialog;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
