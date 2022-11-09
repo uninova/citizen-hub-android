@@ -60,7 +60,6 @@ public class DeviceConfigurationFragment extends Fragment {
     protected List<FeatureListItem> getSupportedFeatures() {
         final List<FeatureListItem> featureListItems = new LinkedList<>();
         final Agent agent = model.getSelectedDeviceAgent();
-
         if (agent != null) {
 
             if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
@@ -90,13 +89,13 @@ public class DeviceConfigurationFragment extends Fragment {
 
     protected void loadSupportedFeatures() {
         if (model.getSelectedDeviceAgent() != null) {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1);
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
 
             listViewFeatures.setAdapter(adapter);
             adapter.updateResults(getSupportedFeatures());
 
         } else {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures());
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
             listViewFeatures.setAdapter(adapter);
             adapter.updateResults(getSupportedFeatures());
 

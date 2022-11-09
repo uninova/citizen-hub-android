@@ -15,6 +15,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
+import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
+
 class FeatureListAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
@@ -22,19 +26,28 @@ class FeatureListAdapter extends BaseAdapter {
     CompoundButton.OnCheckedChangeListener switchListener;
     private final boolean isEnabled;
     LinearLayout layoutFeature;
+    Agent agent;
+    private MeasurementKindLocalization measurementKindLocalization;
 
-    public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled) {
+
+    public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled, Agent agent) {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         isEnabled = isSwitchEnabled;
+        measurementKindLocalization = new MeasurementKindLocalization(context);
+        this.agent=agent;
     }
 
-    public FeatureListAdapter(Context context, List<FeatureListItem> data) {
+    //TODO recebe só agente, MAIS NADA, caracteristicas e serviços estão abstraidas. Localize
+
+    public FeatureListAdapter(Context context, List<FeatureListItem> data, Agent agent) {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        measurementKindLocalization = new MeasurementKindLocalization(context);
         isEnabled = true;
+        this.agent = agent;
     }
 
     @Override
@@ -46,6 +59,26 @@ class FeatureListAdapter extends BaseAdapter {
         SwitchCompat nameSwitch = vi.findViewById(R.id.switchFeature);
         switchListener = (buttonView, isChecked) -> {
             data.get(position).setActive(isChecked);
+
+            for (int i = 0; i < data.size(); i++) {
+
+            final FeatureListItem item = (FeatureListItem) data.get(position);
+
+            int k = item.getFeatureId();
+
+            if (item.isActive()) {
+                if (!agent.getEnabledMeasurements().contains(k)) {
+                    System.out.println(k + " " + item + " " +item.getFeatureId() + " " +item.getLabel());
+                    agent.enableMeasurement(k);
+                }
+            } else {
+                if (agent.getEnabledMeasurements().contains(k)) {
+                    System.out.println(k + " " + item + " " +item.getFeatureId() + " " +item.getLabel());
+                    agent.disableMeasurement(k);
+                }
+            }
+            }
+
             FeatureListAdapter.this.notifyDataSetChanged();
         };
 
