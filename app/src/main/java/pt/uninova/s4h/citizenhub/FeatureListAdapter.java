@@ -39,8 +39,6 @@ class FeatureListAdapter extends BaseAdapter {
         this.agent=agent;
     }
 
-    //TODO recebe só agente, MAIS NADA, caracteristicas e serviços estão abstraidas. Localize
-
     public FeatureListAdapter(Context context, List<FeatureListItem> data, Agent agent) {
         this.data = data;
         Collections.sort(this.data, Comparator.comparing(FeatureListItem::getLabel));
@@ -68,12 +66,10 @@ class FeatureListAdapter extends BaseAdapter {
 
             if (item.isActive()) {
                 if (!agent.getEnabledMeasurements().contains(k)) {
-                    System.out.println(k + " " + item + " " +item.getFeatureId() + " " +item.getLabel());
                     agent.enableMeasurement(k);
                 }
             } else {
                 if (agent.getEnabledMeasurements().contains(k)) {
-                    System.out.println(k + " " + item + " " +item.getFeatureId() + " " +item.getLabel());
                     agent.disableMeasurement(k);
                 }
             }
