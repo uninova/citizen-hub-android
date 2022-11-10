@@ -18,9 +18,6 @@
             android:id="@+id/layoutConfigurationNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -39,9 +36,6 @@
             android:id="@+id/layoutConfigurationNameValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -59,9 +53,6 @@
             android:id="@+id/layoutConfigurationAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
             android:orientation="horizontal">
 
             <TextView
@@ -78,9 +69,6 @@
             android:id="@+id/layoutConfigurationAddressLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -100,7 +88,6 @@
             android:id="@+id/layoutConfigurationMeasurements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <View
@@ -111,8 +98,6 @@
                 />
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
                 android:text="@string/layout_fragment_device_configuration_features"
           />
@@ -121,9 +106,7 @@
         <LinearLayout
             android:id="@+id/layoutConfigurationSteps"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content">
 
             <ListView
                 android:id="@+id/listViewFeature"
