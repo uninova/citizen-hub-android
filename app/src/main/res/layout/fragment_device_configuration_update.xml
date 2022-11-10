@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".DeviceConfigurationFragment">
 
-    <LinearLayout
-        android:id="@+id/layoutConfigurationTop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -42,7 +35,5 @@
 
         </ScrollView>
 
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

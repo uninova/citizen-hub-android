@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:paddingHorizontal="30dp"
     android:paddingVertical="10dp"
-    android:background="@color/colorS4HTurquoise"
     tools:context=".DeviceConfigurationFragment">
 
     <LinearLayout
