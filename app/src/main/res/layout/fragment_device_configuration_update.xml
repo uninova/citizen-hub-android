@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarFadeDuration="0"
+    android:scrollbarThumbVertical="@color/colorS4HDarkBlue"
+    android:scrollbarSize="6dp"
     tools:context=".DeviceConfigurationFragment">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:fillViewport="true"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="false"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarThumbVertical="@color/colorS4HDarkBlue"
-            android:scrollbarSize="6dp">
 
             <LinearLayout
                 android:id="@+id/layout_advanced_configurations_container"
@@ -34,4 +29,4 @@
         </ScrollView>
 
 
-</LinearLayout>
+</ScrollView>
