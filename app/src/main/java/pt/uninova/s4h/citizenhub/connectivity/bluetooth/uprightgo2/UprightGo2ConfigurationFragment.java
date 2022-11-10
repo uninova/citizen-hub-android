@@ -116,8 +116,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null)
-                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if(adapterView.getChildAt(0)!=null) {
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                }
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
             }
