@@ -11,10 +11,6 @@
             layout="@layout/fragment_device_configuration_header"
             style="@style/DeviceConfiguration.DefaultHeightWidth" />
         <!-- Inflate multiple xml file here -->
-        <include
-            layout="@layout/fragment_device_configuration_listview"
-            />
-        
     </LinearLayout>
 
 </ScrollView>
