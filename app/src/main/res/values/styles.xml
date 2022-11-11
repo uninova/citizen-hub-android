@@ -483,6 +483,27 @@
 
     </style>
 
+    <style name="DeviceConfiguration"/>
+
+    <style name="DeviceConfiguration.ScrollView">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fillViewport">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
+        <item name="android:scrollbarFadeDuration">0</item>
+        <item name="android:scrollbarThumbVertical">@color/colorS4HDarkBlue</item>
+        <item name="android:scrollbarSize">6dp</item>
+
+
+
+
+
+
+    </style>
+
+
     <style name="AdvancedConfigurationFragmentListItemTextView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
@@ -526,7 +547,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingTop">20dp</item>
-
     </style>
 
 </resources>
