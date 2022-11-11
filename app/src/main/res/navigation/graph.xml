@@ -247,7 +247,7 @@
 
     <fragment
         android:id="@+id/device_configuration_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragment"
         android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration">
 
@@ -255,7 +255,7 @@
 
     <fragment
         android:id="@+id/device_configuration_add_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationAddFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationAddFragment"
         android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_add">
 
@@ -272,7 +272,7 @@
 
     <fragment
         android:id="@+id/device_configuration_update_fragment"
-        android:name="pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUpdateFragment"
         android:label="@string/fragment_device_configuration_label"
         tools:layout="@layout/fragment_device_configuration_update">
 

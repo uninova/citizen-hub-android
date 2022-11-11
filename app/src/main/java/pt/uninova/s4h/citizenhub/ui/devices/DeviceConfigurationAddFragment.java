@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.R;
 
 public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment {
 

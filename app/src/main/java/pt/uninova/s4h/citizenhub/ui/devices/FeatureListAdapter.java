@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,8 +15,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 
 class FeatureListAdapter extends BaseAdapter {

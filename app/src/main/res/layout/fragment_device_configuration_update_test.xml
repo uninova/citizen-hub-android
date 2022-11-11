@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/DeviceConfiguration.ScrollView"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DeviceConfigurationFragment">
+    tools:context=".ui.devices.DeviceConfigurationFragment">
 
     <LinearLayout
         android:id="@+id/layout_device_configuration_container"

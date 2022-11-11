@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 
 public class FeatureListItem {

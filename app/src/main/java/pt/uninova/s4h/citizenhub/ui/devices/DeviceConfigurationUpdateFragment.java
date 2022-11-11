@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import java.util.List;
 
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;

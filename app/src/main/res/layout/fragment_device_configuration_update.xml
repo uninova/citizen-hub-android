@@ -10,7 +10,7 @@
     android:scrollbarFadeDuration="0"
     android:scrollbarThumbVertical="@color/colorS4HDarkBlue"
     android:scrollbarSize="6dp"
-    tools:context=".DeviceConfigurationFragment">
+    tools:context=".ui.devices.DeviceConfigurationFragment">
 
             <LinearLayout
                 android:id="@+id/layout_advanced_configurations_container"

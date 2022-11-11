@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationTestFragment extends Fragment {
 

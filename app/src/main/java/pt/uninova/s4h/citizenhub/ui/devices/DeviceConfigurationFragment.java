@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub;
+package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
 

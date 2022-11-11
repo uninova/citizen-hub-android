@@ -4,7 +4,7 @@
     style="@style/DeviceConfiguration.ScrollView"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".DeviceConfigurationFragment">
+    tools:context=".ui.devices.DeviceConfigurationFragment">
 
     <LinearLayout
         android:id="@+id/layout_device_configuration_connect_container"

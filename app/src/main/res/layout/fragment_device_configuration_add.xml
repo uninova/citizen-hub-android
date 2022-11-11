@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="30dp"
     android:paddingVertical="10dp"
-    tools:context=".DeviceConfigurationFragment">
+    tools:context=".ui.devices.DeviceConfigurationFragment">
 
         <FrameLayout
             android:layout_width="match_parent"
