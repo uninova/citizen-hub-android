@@ -22,7 +22,6 @@ import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class DeviceConfigurationFragment extends Fragment {
 
-
     protected TextView nameDevice;
     protected TextView addressDevice;
     protected ListView listViewFeatures;
