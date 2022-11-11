@@ -388,6 +388,7 @@
     </style>
 
     /* Styles used for the report */
+
     <style name="ReportDetailValueType">
         <item name="android:fontFamily">@font/neosanspro</item>
         <item name="android:gravity">left</item>
@@ -462,6 +463,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
     <style name="AdvancedConfigurationFragmentCategoryTextView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
@@ -483,7 +485,7 @@
 
     </style>
 
-    <style name="DeviceConfiguration"/>
+    <style name="DeviceConfiguration" />
 
     <style name="DeviceConfiguration.ScrollView">
         <item name="android:layout_height">match_parent</item>
@@ -496,24 +498,35 @@
         <item name="android:scrollbarThumbVertical">@color/colorS4HDarkBlue</item>
         <item name="android:scrollbarSize">6dp</item>
     </style>
+
     <style name="DeviceConfiguration.LinearLayout">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">vertical</item>
     </style>
+
     <style name="DeviceConfiguration.DefaultHeightWidth">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="DeviceConfiguration.Divider">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">1dp</item>
-    <item name="android:background">@color/colorS4HGreyMedium</item>
-    <item name="android:alpha">0.5</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorS4HGreyMedium</item>
+        <item name="android:alpha">0.5</item>
     </style>
 
 
+    <style name="DeviceConfiguration.ProgressBarTextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="fontFamily">@font/neo_sans_pro_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="AdvancedConfigurationFragmentListItemTextView">
         <item name="android:layout_height">match_parent</item>
@@ -542,6 +555,7 @@
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
+
     <style name="AdvancedConfigurationArrowImageView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -551,6 +565,7 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:tint">@color/colorS4HGreyMedium</item>
     </style>
+
     <style name="AdvancedConfigurationLinearLayoutStyle">
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
