@@ -495,13 +495,17 @@
         <item name="android:scrollbarFadeDuration">0</item>
         <item name="android:scrollbarThumbVertical">@color/colorS4HDarkBlue</item>
         <item name="android:scrollbarSize">6dp</item>
-
-
-
-
-
-
     </style>
+    <style name="DeviceConfiguration.LinearLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="DeviceConfiguration.DefaultHeightWidth">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 
 
     <style name="AdvancedConfigurationFragmentListItemTextView">

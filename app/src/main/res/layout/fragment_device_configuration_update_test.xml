@@ -4,19 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DeviceConfigurationFragment">
 
-
-
     <LinearLayout
-        android:id="@+id/layout_advanced_configurations_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:id="@+id/layout_device_configuration_container"
+       style="@style/DeviceConfiguration.LinearLayout" >
         <include
-            layout="@layout/fragment_device_configuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            layout="@layout/fragment_device_configuration_header"
+            style="@style/DeviceConfiguration.DefaultHeightWidth" />
         <!-- Inflate multiple xml file here -->
-
     </LinearLayout>
 
 </ScrollView>
