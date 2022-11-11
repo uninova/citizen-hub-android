@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -40,13 +41,21 @@ public class DeviceConfigurationTestFragment extends Fragment {
         final Device device = model.getSelectedDevice().getValue();
         setHeaderValues(device);
 
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-
+//        ft.add() progressbar fragment
         model.identifySelectedDevice(agent -> {
 
             if (agent == null) {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
             }
+/*
+            ft.replace() progressbarFragment to Listview fragment (labels)
+            ft.add() connectButtonFragment
+            onClick remove Connect & listview, add listview with listview (switches)
+            if agent.getPairingHelper, ft.add PairingHelper
+            replace/add PairingHelper for agent.getAdvancedConfiguration
+                    */
         });
 
 
