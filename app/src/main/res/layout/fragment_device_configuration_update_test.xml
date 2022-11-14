@@ -7,9 +7,7 @@
     <LinearLayout
         android:id="@+id/layout_device_configuration_container"
        style="@style/DeviceConfiguration.LinearLayout" >
-        <include
-            layout="@layout/fragment_device_configuration_header"
-            style="@style/DeviceConfiguration.DefaultHeightWidth" />
+
         <!-- Inflate multiple xml file here -->
     </LinearLayout>
 
