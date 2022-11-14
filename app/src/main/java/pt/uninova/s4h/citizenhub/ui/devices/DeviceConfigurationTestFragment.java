@@ -19,14 +19,14 @@ import pt.uninova.s4h.citizenhub.data.Device;
 public class DeviceConfigurationTestFragment extends Fragment {
 
     private LinearLayout containerLayout;
-    protected TextView nameDevice;
-    protected TextView addressDevice;
+
     DeviceViewModel model;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
     }
 
     @Override
@@ -35,15 +35,12 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update_test, container, false);
         containerLayout = view.findViewById(R.id.layout_device_configuration_container);
-        nameDevice = view.findViewById(R.id.textConfigurationDeviceNameValue);
-        addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
 
         final Device device = model.getSelectedDevice().getValue();
-        setHeaderValues(device);
 
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        addFragment(new DeviceConfigurationHeaderFragment());
 
-//        ft.add() progressbar fragment
+        //        ft.add() progressbar fragment
         model.identifySelectedDevice(agent -> {
 
             if (agent == null) {
@@ -61,12 +58,13 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
         return view;
     }
+        private void addFragment(Fragment fragment){
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.layout_device_configuration_container, fragment);
+            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment());
 
-    private void setHeaderValues(Device device) {
-        if (device != null) {
-            nameDevice.setText(device.getName());
-            addressDevice.setText(device.getAddress());
+            transaction.commitNow();
         }
+
     }
 
-}
