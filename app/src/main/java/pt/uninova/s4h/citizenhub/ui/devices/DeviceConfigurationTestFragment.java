@@ -39,14 +39,17 @@ public class DeviceConfigurationTestFragment extends Fragment {
         final Device device = model.getSelectedDevice().getValue();
 
         addFragment(new DeviceConfigurationHeaderFragment());
+        addDividerFragment("header_divider");
         addFragment(new DeviceConfigurationProgressBarFragment());
 
         //        ft.add() progressbar fragment
         model.identifySelectedDevice(agent -> {
-
+            removeFragment(new DeviceConfigurationProgressBarFragment());
             if (agent == null) {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
             }
+            addFragment(new DeviceConfigurationFeaturesFragment());
+
 /*
             ft.replace() progressbarFragment to Listview fragment (labels)
             ft.add() connectButtonFragment
@@ -60,12 +63,21 @@ public class DeviceConfigurationTestFragment extends Fragment {
         return view;
     }
         private void addFragment(Fragment fragment){
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.layout_device_configuration_container, fragment);
-            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment());
 
             transaction.commitNow();
         }
 
-    }
+        private void addDividerFragment(String dividerId){
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment()).addToBackStack(dividerId);
+
+        }
+
+        private void removeFragment(Fragment fragment){
+            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+            fragmentTransaction.remove(fragment).commit();
+        }
+}
 
