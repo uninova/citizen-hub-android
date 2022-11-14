@@ -39,6 +39,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
         final Device device = model.getSelectedDevice().getValue();
 
         addFragment(new DeviceConfigurationHeaderFragment());
+        addFragment(new DeviceConfigurationProgressBarFragment());
 
         //        ft.add() progressbar fragment
         model.identifySelectedDevice(agent -> {
