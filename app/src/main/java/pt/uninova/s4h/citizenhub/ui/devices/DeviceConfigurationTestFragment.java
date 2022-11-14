@@ -49,7 +49,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
             }
             addFragment(new DeviceConfigurationFeaturesFragment());
-
+            addFragment(new DeviceConfigurationConnectFragment());
 /*
             ft.replace() progressbarFragment to Listview fragment (labels)
             ft.add() connectButtonFragment
