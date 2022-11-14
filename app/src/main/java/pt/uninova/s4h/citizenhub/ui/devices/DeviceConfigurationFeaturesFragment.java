@@ -37,9 +37,11 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
-        DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(() -> {
-            labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
-        });
+        if(model.getSelectedDeviceAgent()!=null) {
+            DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(() -> {
+                labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
+            });
+        }
         return view;
     }
 

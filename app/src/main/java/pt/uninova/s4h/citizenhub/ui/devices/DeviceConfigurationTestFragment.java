@@ -1,19 +1,18 @@
 package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
-import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
@@ -23,6 +22,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
     private LinearLayout containerLayout;
 
     DeviceViewModel model;
+    Handler uiHandler = new Handler(Looper.getMainLooper());
 
 
 
@@ -39,21 +39,35 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update_test, container, false);
         containerLayout = view.findViewById(R.id.layout_device_configuration_container);
+        addFragment(new DeviceConfigurationHeaderFragment());
 
         final Device device = model.getSelectedDevice().getValue();
+        uiHandler.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                addDividerFragment();
+                addFragment(new DeviceConfigurationProgressBarFragment());            }
+        });
 
-        addFragment(new DeviceConfigurationHeaderFragment());
-        addDividerFragment("header_divider");
-        addFragment(new DeviceConfigurationProgressBarFragment());
 
         //        ft.add() progressbar fragment
         model.identifySelectedDevice(agent -> {
-            removeFragment(new DeviceConfigurationProgressBarFragment());
             if (agent == null) {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
-            addFragment(new DeviceConfigurationFeaturesFragment());
-            addFragment(new DeviceConfigurationConnectFragment());
+            uiHandler.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    removeFragment(new DeviceConfigurationProgressBarFragment());
+                    addFragment(new DeviceConfigurationFeaturesFragment());
+                    addFragment(new DeviceConfigurationConnectFragment());
+                }
+            });
+
 /*
             ft.replace() progressbarFragment to Listview fragment (labels)
             ft.add() connectButtonFragment
@@ -80,9 +94,10 @@ public class DeviceConfigurationTestFragment extends Fragment {
             transaction.commitNow();
         }
 
-        private void addDividerFragment(String dividerId){
+        private void addDividerFragment(){
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment()).addToBackStack(dividerId);
+            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment());
+            transaction.commitNow();
 
         }
 
