@@ -13,9 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -40,8 +38,8 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
         DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(() -> {
-                    labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
-                });
+            labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
+        });
         return view;
     }
 
