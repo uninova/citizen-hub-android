@@ -37,9 +37,10 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
-        if(model.getSelectedDeviceAgent()!=null) {
+        if(model.getSelectedAgentLiveData()!=null) {
+            System.out.println("asd");
             DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(() -> {
-                labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
+                labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedAgentLiveData().getValue())));
             });
         }
         return view;
@@ -52,42 +53,6 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
         }
         return labelList;
     }
-
-//    protected void loadSupportedFeatures() {
-//        if (model.getSelectedDeviceAgent() != null) {
-//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
-//
-//            listViewFeatures.setAdapter(adapter);
-//            adapter.updateResults(getSupportedFeatures());
-//
-//        } else {
-//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
-//            listViewFeatures.setAdapter(adapter);
-//            adapter.updateResults(getSupportedFeatures());
-//
-//        }
-//    }
-//
-//    protected List<FeatureListItem> getSupportedFeatures() {
-//        final List<FeatureListItem> featureListItems = new LinkedList<>();
-//        final Agent agent = model.getSelectedDeviceAgent();
-//        if (agent != null) {
-//
-//            if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
-//
-//                for (int i : agent.getSupportedMeasurements()) {
-//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
-//                }
-//            } else {
-//                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
-//
-//                for (int i : agent.getSupportedMeasurements()) {
-//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
-//                }
-//            }
-//        }
-//
-//        return featureListItems;
 //    }
 
 
