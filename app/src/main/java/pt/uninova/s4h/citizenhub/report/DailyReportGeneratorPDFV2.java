@@ -55,7 +55,7 @@ public class DailyReportGeneratorPDFV2 {
 
         this.footerPaint = new TextPaint();
         footerPaint.setStyle(Paint.Style.FILL);
-        footerPaint.setTextSize(10);
+        footerPaint.setTextSize(9);
         footerPaint.setColor(Color.parseColor("#000000"));
         footerPaint.setAntiAlias(true);
 
