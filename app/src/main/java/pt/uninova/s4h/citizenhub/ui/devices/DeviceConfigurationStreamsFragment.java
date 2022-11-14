@@ -53,34 +53,34 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
         listViewFeatures = view.findViewById(R.id.listViewFeature);
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
         loadSupportedFeatures();
+        if(model.getSelectedDeviceAgent()!=null) {
+            List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-        List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-
-        for (Fragment fragment : getChildFragmentManager().getFragments()) {
-            if (fragment != null) {
-                getChildFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }
-
-        if (fragmentList != null) {
-            for (int i = 0; i < fragmentList.size(); i++) {
-                Fragment newFragment = null;
-                try {
-                    newFragment = fragmentList.get(i).getClass().newInstance();
-
-                } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                    e.printStackTrace();
+            for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                if (fragment != null) {
+                    getChildFragmentManager().beginTransaction().remove(fragment).commit();
                 }
-                assert newFragment != null;
-                Fragment divider = new DeviceConfigurationDividerFragment();
-                ft.add(R.id.layout_device_configuration_container, newFragment);
-                ft.add(R.id.layout_device_configuration_container, divider);
-
             }
-        }
-        ft.commitNow();
 
+            if (fragmentList != null) {
+                for (int i = 0; i < fragmentList.size(); i++) {
+                    Fragment newFragment = null;
+                    try {
+                        newFragment = fragmentList.get(i).getClass().newInstance();
+
+                    } catch (IllegalAccessException | java.lang.InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                    assert newFragment != null;
+                    Fragment divider = new DeviceConfigurationDividerFragment();
+                    ft.add(R.id.layout_device_configuration_container, newFragment);
+                    ft.add(R.id.layout_device_configuration_container, divider);
+
+                }
+            }
+            ft.commitNow();
+        }
         return view;
     }
 
@@ -138,9 +138,8 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
         if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
             setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
         }
     }

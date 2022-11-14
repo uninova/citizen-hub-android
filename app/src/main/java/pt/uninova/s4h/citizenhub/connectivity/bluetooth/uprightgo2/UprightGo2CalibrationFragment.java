@@ -45,7 +45,7 @@ public class UprightGo2CalibrationFragment extends Fragment {
                         ((Animatable) checkMarkImageView.getDrawable()).start();
                         new Handler().postDelayed(new Runnable() {
                             public void run() {
-                                Navigation.findNavController(requireView()).navigate(UprightGo2CalibrationFragmentDirections.actionUprightGo2CalibrationFragmentToDeviceConfigurationUpdateFragment());
+                                Navigation.findNavController(requireView()).navigate(UprightGo2CalibrationFragmentDirections.actionUprightGo2CalibrationFragmentToDeviceConfigurationTestFragment());
                             }
                         }, 1000);
                     }

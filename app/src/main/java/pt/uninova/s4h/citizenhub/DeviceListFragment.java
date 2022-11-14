@@ -47,7 +47,7 @@ public class DeviceListFragment extends Fragment {
 
             model.selectDevice(item.getDevice());
 
-            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationUpdateFragment());
+            Navigation.findNavController(requireView()).navigate(DeviceListFragmentDirections.actionDeviceListFragmentToDeviceConfigurationTestFragment());
         });
 
         adapter.setHasStableIds(true);

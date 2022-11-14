@@ -57,7 +57,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
                 DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+//                        Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
                     }
                 });
             }
@@ -68,7 +68,7 @@ public class DeviceConfigurationAddFragment extends DeviceConfigurationFragment 
             connectDevice.setOnClickListener(v -> {
 
                 model.addAgent(agent);
-                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
+//                Navigation.findNavController(DeviceConfigurationAddFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceConfigurationUpdateFragment());
             });
 
             DeviceConfigurationAddFragment.this.requireActivity().runOnUiThread(() -> {

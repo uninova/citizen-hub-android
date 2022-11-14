@@ -50,7 +50,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
         model.identifySelectedDevice(agent -> {
             removeFragment(new DeviceConfigurationProgressBarFragment());
             if (agent == null) {
-                Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationAddFragmentDirections.actionDeviceConfigurationAddFragmentToDeviceUnsupportedFragment());
+                Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
             addFragment(new DeviceConfigurationFeaturesFragment());
             addFragment(new DeviceConfigurationConnectFragment());

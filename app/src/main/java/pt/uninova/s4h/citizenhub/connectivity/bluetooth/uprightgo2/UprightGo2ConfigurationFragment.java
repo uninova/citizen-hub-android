@@ -25,9 +25,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationTestFragmentDirections;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
 public class UprightGo2ConfigurationFragment extends Fragment {
@@ -89,8 +89,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //Posture Correction Vibration ON/OFF
         SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
-        if(!postureCorrectionVibration.isEnabled()){
-                postureCorrectionVibration.setAlpha(0.5f);
+        if (!postureCorrectionVibration.isEnabled()) {
+            postureCorrectionVibration.setAlpha(0.5f);
         }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -113,8 +113,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null) {
-                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if (adapterView.getChildAt(0) != null) {
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 }
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
@@ -129,8 +129,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null)
-                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if (adapterView.getChildAt(0) != null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Interval", (spinnerInterval.getSelectedItemPosition()));
                 System.out.println("Spinner item " + spinnerInterval.getSelectedItem() + "interval:" + spinnerInterval.getSelectedItemPosition() + "spinner i & L" + i + " " + l);
                 editor.apply();
@@ -147,8 +147,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null)
-                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if (adapterView.getChildAt(0) != null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Pattern", (spinnerPattern.getSelectedItemPosition()));
                 editor.apply();
             }
@@ -163,8 +163,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getChildAt(0)!=null)
-                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(),R.color.colorS4HDarkBlue));
+                if (adapterView.getChildAt(0) != null)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Strength", (correctionStrength.getSelectedItemPosition()));
                 editor.apply();
                 System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());
@@ -181,7 +181,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
+                Navigation.findNavController(requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
         });
 

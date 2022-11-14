@@ -103,14 +103,14 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
             menu.removeItem(R.id.device_configuration_menu_reconnect_item);
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();
-                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
+//                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
 
                 return true;
             });
         } else {
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();
-                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
+//                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());
 
                 return true;
             });
