@@ -155,12 +155,70 @@ public class ReportDetailFragment extends Fragment {
 
         menu.findItem(R.id.upload_weekly_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
+            Observer<byte[]> observer = pdfData -> {
+                try {
+                    System.out.println("Aqui");
+                    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File file = new File(path.toString(), "my_file" + ".pdf");
+                    OutputStream os = new FileOutputStream(file);
+                    os.write(pdfData);
+                    os.close();
+                    System.out.println("Escreveu");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+
+            ReportRepository reportRepository = new ReportRepository(requireContext());
+            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+
+            Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                    if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                        PDFDailyReport pdfDailyReport = new PDFDailyReport(getContext());
+                        pdfDailyReport.generateCompleteReport(workTimeReport, notWorkTimeReport, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
+                    }
+                };
+                dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerNotWorkTimeReport);
+            };
+            dailyReportGenerator.generateWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerWorkTimeReport);
+
             return true;
+
         });
 
         menu.findItem(R.id.upload_monthly_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
+            Observer<byte[]> observer = pdfData -> {
+                try {
+                    System.out.println("Aqui");
+                    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File file = new File(path.toString(), "my_file" + ".pdf");
+                    OutputStream os = new FileOutputStream(file);
+                    os.write(pdfData);
+                    os.close();
+                    System.out.println("Escreveu");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+
+            ReportRepository reportRepository = new ReportRepository(requireContext());
+            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+
+            Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                    if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                        PDFDailyReport pdfDailyReport = new PDFDailyReport(getContext());
+                        pdfDailyReport.generateCompleteReport(workTimeReport, notWorkTimeReport, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
+                    }
+                };
+                dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerNotWorkTimeReport);
+            };
+            dailyReportGenerator.generateWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerWorkTimeReport);
+
             return true;
+
         });
     }
 
