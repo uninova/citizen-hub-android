@@ -50,8 +50,6 @@ public class DeviceConfigurationTestFragment extends Fragment {
             }
             addFragment(new DeviceConfigurationFeaturesFragment());
             addFragment(new DeviceConfigurationConnectFragment());
-            //how to know it was remove (?)
-
 /*
             ft.replace() progressbarFragment to Listview fragment (labels)
             ft.add() connectButtonFragment
@@ -60,9 +58,13 @@ public class DeviceConfigurationTestFragment extends Fragment {
             replace/add PairingHelper for agent.getAdvancedConfiguration
                     */
         });
-        removeFragment(new DeviceConfigurationFeaturesFragment());
-        removeFragment(new DeviceConfigurationConnectFragment());
-        addFragment(new DeviceConfigurationStreamsFragment());
+        try {
+            removeFragment(new DeviceConfigurationConnectFragment());
+            removeFragment(new DeviceConfigurationFeaturesFragment());
+            addFragment(new DeviceConfigurationStreamsFragment());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
     }
