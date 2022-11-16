@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 
 public class DeviceConfigurationTestFragment extends Fragment {
@@ -42,31 +43,42 @@ public class DeviceConfigurationTestFragment extends Fragment {
         addFragment(new DeviceConfigurationHeaderFragment());
 
         final Device device = model.getSelectedDevice().getValue();
+        System.out.println(device.getName());
         uiHandler.post(new Runnable()
         {
             @Override
             public void run()
             {
+                System.out.println("PROGRESSBAR + DIVIDER");
                 addDividerFragment();
                 addFragment(new DeviceConfigurationProgressBarFragment());            }
         });
 
 
         //        ft.add() progressbar fragment
-        model.identifySelectedDevice(agent -> {
+        model.identifySelectedDevice((Agent agent) -> {
+            System.out.println("IDENTIFY AGENTTTTTTTTTTTTT" + agent);
+
             if (agent == null) {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
-            uiHandler.post(new Runnable()
-            {
-                @Override
-                public void run()
+            else {
+                uiHandler.post(new Runnable()
                 {
-                    removeFragment(new DeviceConfigurationProgressBarFragment());
-                    addFragment(new DeviceConfigurationFeaturesFragment());
-                    addFragment(new DeviceConfigurationConnectFragment());
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+
+
+                System.out.println("ADD FEATURES FRAGMENT & CONNECT");
+//                    removeFragment(new DeviceConfigurationProgressBarFragment());
+                addFragment(new DeviceConfigurationFeaturesFragment());
+                addFragment(new DeviceConfigurationConnectFragment());
+            }
+                });
+            }
+
+
 
 /*
             ft.replace() progressbarFragment to Listview fragment (labels)
@@ -76,14 +88,16 @@ public class DeviceConfigurationTestFragment extends Fragment {
             replace/add PairingHelper for agent.getAdvancedConfiguration
                     */
         });
-        try {
-            removeFragment(new DeviceConfigurationConnectFragment());
-            removeFragment(new DeviceConfigurationFeaturesFragment());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        addFragment(new DeviceConfigurationStreamsFragment());
-
+//        try {
+//            System.out.println("REMOVE FRAGMENTS");
+//
+//            removeFragment(new DeviceConfigurationConnectFragment());
+//            removeFragment(new DeviceConfigurationFeaturesFragment());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        addFragment(new DeviceConfigurationStreamsFragment());
+//
 
         return view;
     }
