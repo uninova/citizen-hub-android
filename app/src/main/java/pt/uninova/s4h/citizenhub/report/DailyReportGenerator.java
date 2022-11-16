@@ -214,4 +214,34 @@ public class DailyReportGenerator {
 
     }
 
+    public void generateWeeklyOrMonthlyReport(ReportRepository reportRepository, LocalDate today, boolean weekly, boolean pdf, Observer<Report> reportObserver){
+
+        String title;
+        LocalDate initialDay;
+        int days;
+        if (weekly) {
+            title = "Weekly Report";
+            days = 7;
+        }
+        else {
+            title = "Monthly Report";
+            int monthValue = today.getMonthValue();
+            if (monthValue == 2)
+                days = 28;
+            else if(monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
+                days = 30;
+            else
+                days = 31;
+        }
+        initialDay = today.minusDays(days);
+
+        Report report = new Report(() -> title, new LocalDateLocalizedResource(today));
+        List<Group> groups = report.getGroups();
+
+        reportRepository.getWeeklyOrMonthlySimpleRecords(initialDay, today, days, recordsObserver ->{
+            groupSimpleRecords(recordsObserver, groups, pdf);
+            reportObserver.observe(report);
+        });
+    }
+
 }
