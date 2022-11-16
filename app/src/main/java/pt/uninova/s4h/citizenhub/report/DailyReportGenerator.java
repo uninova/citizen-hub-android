@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import java.text.DecimalFormat;
@@ -16,7 +15,6 @@ import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.entity.util.ReportUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
-import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DailyReportGenerator {
@@ -91,6 +89,7 @@ public class DailyReportGenerator {
         }
         if(preferences.getBoolean("account.smart4health.report.data.posture", true) || !pdf) {
             if (reportUtil.getCorrectPostureDuration() != null) {
+                System.out.println("rrrrrr");
                 MeasurementTypeLocalizedResource label = new MeasurementTypeLocalizedResource(localization, Measurement.TYPE_POSTURE);
                 Group groupPosture = new Group(label);
                 groupPosture.getItemList().add(new Item(new ResourceType(resources.getString(R.string.report_correct_posture_label)), new ResourceValue(secondsToString(reportUtil.getCorrectPostureDuration().getSeconds())), new ResourceUnits("-")));
@@ -214,32 +213,31 @@ public class DailyReportGenerator {
 
     }
 
-    public void generateWeeklyOrMonthlyReport(ReportRepository reportRepository, LocalDate today, boolean weekly, boolean pdf, Observer<Report> reportObserver){
+    public void generateWeeklyOrMonthlyReport(ReportRepository reportRepository, LocalDate localDate, boolean weekly, boolean pdf, Observer<Report> reportObserver){
 
         String title;
-        LocalDate initialDay;
         int days;
+
         if (weekly) {
             title = "Weekly Report";
             days = 7;
         }
         else {
             title = "Monthly Report";
-            int monthValue = today.getMonthValue();
+            int monthValue = localDate.getMonthValue();
             if (monthValue == 2)
                 days = 28;
-            else if(monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
+            else if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
                 days = 30;
             else
                 days = 31;
         }
-        initialDay = today.minusDays(days);
 
-        Report report = new Report(() -> title, new LocalDateLocalizedResource(today));
+        Report report = new Report(() -> title, new LocalDateLocalizedResource(localDate));
         List<Group> groups = report.getGroups();
 
-        reportRepository.getWeeklyOrMonthlySimpleRecords(initialDay, today, days, recordsObserver ->{
-            groupSimpleRecords(recordsObserver, groups, pdf);
+        reportRepository.getWeeklyOrMonthlyWorkTimeSimpleRecords(localDate, days, observer -> {
+            groupSimpleRecords(observer, groups, pdf);
             reportObserver.observe(report);
         });
     }
