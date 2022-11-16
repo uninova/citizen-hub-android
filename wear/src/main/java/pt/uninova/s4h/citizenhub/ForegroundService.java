@@ -65,45 +65,10 @@ public class ForegroundService extends Service {
 
         ongoingActivity.apply(getApplicationContext());
         manager.notify(1, notification);
-
         startForeground(1, notification);
 
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor sensorSteps = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        Sensor sensorHeartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-
         MainActivity.protocolSteps.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
-
         MainActivity.protocolHeartRate.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
-
-        SensorEventListener stepsListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                //TODO
-                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER)
-                    System.out.println("Steps Sensor Event from foreground service: " + event.values[0]);
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
-        SensorEventListener heartRateListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE)
-                    System.out.println("HR Sensor Event from foreground service: " + event.values[0]);
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
-
-        sensorManager.registerListener(stepsListener, sensorSteps,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(heartRateListener, sensorHeartRate,
-                SensorManager.SENSOR_DELAY_NORMAL);
 
         return START_NOT_STICKY;
     }
