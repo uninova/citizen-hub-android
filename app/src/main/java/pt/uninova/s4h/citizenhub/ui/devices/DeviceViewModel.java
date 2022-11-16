@@ -104,6 +104,7 @@ public class DeviceViewModel extends AndroidViewModel {
                 selectedAgentLiveData.postValue(agentOrchestratorLiveData.getValue().getAgent(selectedDeviceLiveData.getValue()));
             } else {
                 agentOrchestratorLiveData.getValue().identify(selectedDeviceLiveData.getValue(), selectedAgentLiveData::postValue);
+
             }
         }
         return selectedAgentLiveData;

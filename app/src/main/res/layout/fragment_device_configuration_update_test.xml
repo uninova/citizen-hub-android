@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/DeviceConfiguration.ScrollView"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.devices.DeviceConfigurationFragment">
@@ -7,8 +7,7 @@
     <LinearLayout
         android:id="@+id/layout_device_configuration_container"
        style="@style/DeviceConfiguration.LinearLayout" >
-
         <!-- Inflate multiple xml file here -->
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

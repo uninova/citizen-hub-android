@@ -42,7 +42,7 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
+        measurementKindLocalization = new MeasurementKindLocalization(requireContext());
         return view;
     }
 
@@ -51,12 +51,12 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        if(model.getSelectedDeviceAgent()!=null) {
-
-            DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(DeviceConfigurationFeaturesFragment.this::loadSupportedFeatures);
-
             System.out.println("ONVIEWCREATEDDDDDDDD " + " " + model.getSelectedDeviceAgent());
-        }
+            labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
+                model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(),);
+//            DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(DeviceConfigurationFeaturesFragment.this::loadSupportedFeatures);
+
+
     }
 
     protected List<String> getLabelList(Agent agent) {
@@ -68,14 +68,14 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     }
 //    }
 protected List<FeatureListItem> getSupportedFeatures() {
-    System.out.println("SUPPORTED FEATURES " + " " + model.getSelectedAgentLiveData());
+    System.out.println("SUPPORTED FEATURES " + " " + model.getSelectedAgentLiveData().getValue());
 
     final List<FeatureListItem> featureListItems = new LinkedList<>();
     final Agent agent = model.getSelectedDeviceAgent();
     if (agent != null) {
 
         if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
-            System.out.println("AGENT !=1 " + " " + model.getSelectedAgentLiveData());
+            System.out.println("AGENT !=1 " + " " + model.getSelectedAgentLiveData().getValue());
 
             for (int i : agent.getSupportedMeasurements()) {
                 featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
@@ -95,11 +95,12 @@ protected List<FeatureListItem> getSupportedFeatures() {
 }
 
     protected void loadSupportedFeatures() {
-        labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
-        labelListView.deferNotifyDataSetChanged();
-//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
-//            labelListView.setAdapter(adapter);
-//            adapter.updateResults(getSupportedFeatures());
+//        labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
+//        labelListView.deferNotifyDataSetChanged();
+
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
+            labelListView.setAdapter(adapter);
+            adapter.updateResults(getSupportedFeatures());
 
         }
     }

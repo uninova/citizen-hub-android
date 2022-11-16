@@ -6,7 +6,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,7 +27,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
     DeviceViewModel model;
     Handler uiHandler = new Handler(Looper.getMainLooper());
-
+    private ListView listViewFeature;
 
 
     @Override
@@ -41,41 +44,40 @@ public class DeviceConfigurationTestFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update_test, container, false);
         containerLayout = view.findViewById(R.id.layout_device_configuration_container);
         addFragment(new DeviceConfigurationHeaderFragment());
-
         final Device device = model.getSelectedDevice().getValue();
         System.out.println(device.getName());
-        uiHandler.post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                System.out.println("PROGRESSBAR + DIVIDER");
-                addDividerFragment();
-                addFragment(new DeviceConfigurationProgressBarFragment());            }
-        });
+        addDividerFragment();
+        Fragment progressBar = new DeviceConfigurationProgressBarFragment();
+        addFragment(progressBar);
+
 
 
         //        ft.add() progressbar fragment
         model.identifySelectedDevice((Agent agent) -> {
             System.out.println("IDENTIFY AGENTTTTTTTTTTTTT" + agent);
-
+            removeFragment(progressBar);
             if (agent == null) {
                 Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
             else {
-                uiHandler.post(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
 
+                DeviceConfigurationTestFragment.this.requireActivity().runOnUiThread(() -> {
+                            assert agent != null;
+                            addFragment(new DeviceConfigurationFeaturesFragment());
 
-                System.out.println("ADD FEATURES FRAGMENT & CONNECT");
-//                    removeFragment(new DeviceConfigurationProgressBarFragment());
-                addFragment(new DeviceConfigurationFeaturesFragment());
-                addFragment(new DeviceConfigurationConnectFragment());
-            }
                 });
+//                uiHandler.post(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//
+//                System.out.println("ADD FEATURES FRAGMENT & CONNECT");
+////                    removeFragment(new DeviceConfigurationProgressBarFragment());
+//                addFragment(new DeviceConfigurationFeaturesFragment());
+//                addFragment(new DeviceConfigurationConnectFragment());
+//            }
+//                });
             }
 
 
@@ -122,4 +124,9 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
 
 }
+
+
+//TODO Novo fragmento ao carregar no connect, porque só ai é que temos addAgent, por as configs como estavam e depois criar globalIdentifier com um campo de escrita
+//TODO guardar referencia dos "new Fragment" para depois poder removê-los sem problema
+//TODO criar um novo viewmodel para os agentes temporarios que vêm do deviceSearch para o test e depois para o features
 
