@@ -4,7 +4,7 @@
     style="@style/DeviceConfiguration.LinearLayout"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ui.devices.DeviceConfigurationTestFragment">
+    tools:context=".ui.devices.DeviceIdentificationFragment">
 
         <Button
             android:id="@+id/button_connect"

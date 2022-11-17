@@ -6,10 +6,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,7 +19,7 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 
-public class DeviceConfigurationTestFragment extends Fragment {
+public class DeviceIdentificationFragment extends Fragment {
 
     private LinearLayout containerLayout;
 
@@ -58,11 +56,11 @@ public class DeviceConfigurationTestFragment extends Fragment {
             System.out.println("IDENTIFY AGENTTTTTTTTTTTTT" + agent);
             removeFragment(progressBar);
             if (agent == null) {
-                Navigation.findNavController(DeviceConfigurationTestFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
+                Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
             }
             else {
 
-                DeviceConfigurationTestFragment.this.requireActivity().runOnUiThread(() -> {
+                DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
                             assert agent != null;
                             addFragment(new DeviceConfigurationFeaturesFragment());
                             addFragment(new DeviceConfigurationConnectFragment());

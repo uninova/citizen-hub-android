@@ -461,7 +461,7 @@
     </fragment>
     <fragment
         android:id="@+id/deviceConfigurationTestFragment"
-        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationTestFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceIdentificationFragment"
         android:label="DeviceConfigurationTestFragment">
         <action
             android:id="@+id/action_deviceConfigurationTestFragment_to_uprightGo2CalibrationFragment"
