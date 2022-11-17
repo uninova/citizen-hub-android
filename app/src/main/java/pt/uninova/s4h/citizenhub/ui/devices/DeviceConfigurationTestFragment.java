@@ -65,7 +65,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
                 DeviceConfigurationTestFragment.this.requireActivity().runOnUiThread(() -> {
                             assert agent != null;
                             addFragment(new DeviceConfigurationFeaturesFragment());
-
+                            addFragment(new DeviceConfigurationConnectFragment());
                 });
 //                uiHandler.post(new Runnable()
 //                {

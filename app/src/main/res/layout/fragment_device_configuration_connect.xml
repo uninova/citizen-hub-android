@@ -12,5 +12,5 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:text="@string/fragment_device_add_button" />
+            android:text="@string/fragment_device_connect_button" />
 </LinearLayout>

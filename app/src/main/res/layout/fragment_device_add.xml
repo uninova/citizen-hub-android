@@ -24,7 +24,7 @@
     <Button
         android:id="@+id/button_add_device"
         style="@style/Widget.Citizen.Button"
-        android:text="@string/fragment_device_add_button"
+        android:text="@string/fragment_device_connect_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

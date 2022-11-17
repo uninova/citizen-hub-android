@@ -23,7 +23,7 @@ public class DeviceConfigurationConnectFragment extends Fragment {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.addAgent(model.getSelectedDeviceAgent());
+                model.addAgent(model.getConfigurationAgent().getValue());
                 getActivity().getSupportFragmentManager().beginTransaction().remove(DeviceConfigurationConnectFragment.this).commitNow();
 
             }
