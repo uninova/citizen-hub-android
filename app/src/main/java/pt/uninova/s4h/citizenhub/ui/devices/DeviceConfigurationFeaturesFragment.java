@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import org.hl7.fhir.utilities.json.JSONUtil;
 
@@ -34,6 +35,9 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+
     }
 
     @Nullable
@@ -41,7 +45,7 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
         return view;
     }
@@ -49,7 +53,9 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        if(model.getSelectedDeviceAgent()!=null){
+            Navigation.findNavController(DeviceConfigurationFeaturesFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
+        }
 
             System.out.println("ONVIEWCREATEDDDDDDDD " + " " + model.getSelectedDeviceAgent());
             labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getConfigurationAgent().getValue())));

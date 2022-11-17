@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DeviceConfiguration.ScrollView"
+    style="@style/DeviceConfiguration.LinearLayout"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.devices.DeviceConfigurationFragment">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <include
+            layout="@layout/fragment_device_configuration_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/layout_device_configuration_container"
-       style="@style/DeviceConfiguration.LinearLayout" >
+        style="@style/DeviceConfiguration.LinearLayout" >
         <!-- Inflate multiple xml file here -->
     </LinearLayout>
-
 </LinearLayout>

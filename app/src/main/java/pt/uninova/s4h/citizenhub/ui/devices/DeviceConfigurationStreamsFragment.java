@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import java.util.Set;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -28,7 +30,8 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     private DeviceViewModel model;
     private ListView listViewFeatures;
     private MeasurementKindLocalization measurementKindLocalization;
-
+    private TextView nameDevice;
+    private TextView addressDevice;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
@@ -50,7 +53,12 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
+        nameDevice = view.findViewById(R.id.textConfigurationDeviceNameValue);
+        addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
+        setHeaderValues(model.getSelectedDevice().getValue());
+
         listViewFeatures = view.findViewById(R.id.listViewFeature);
+
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
         loadSupportedFeatures();
         if(model.getSelectedDeviceAgent()!=null) {
@@ -150,6 +158,12 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
 
         if (model.getSelectedDeviceAgent() != null) {
             model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
+        }
+    }
+    private void setHeaderValues(Device device) {
+        if (device != null) {
+            nameDevice.setText(device.getName());
+            addressDevice.setText(device.getAddress());
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,7 +27,8 @@ public class DeviceIdentificationFragment extends Fragment {
     DeviceViewModel model;
     Handler uiHandler = new Handler(Looper.getMainLooper());
     private ListView listViewFeature;
-
+    private TextView nameDevice;
+    private TextView addressDevice;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +40,13 @@ public class DeviceIdentificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-
         final View view = inflater.inflate(R.layout.fragment_device_configuration_update_test, container, false);
+
         containerLayout = view.findViewById(R.id.layout_device_configuration_container);
-        addFragment(new DeviceConfigurationHeaderFragment());
         final Device device = model.getSelectedDevice().getValue();
+        nameDevice = view.findViewById(R.id.textConfigurationDeviceNameValue);
+        addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
+        setHeaderValues(model.getSelectedDevice().getValue());
         System.out.println(device.getName());
         addDividerFragment();
         Fragment progressBar = new DeviceConfigurationProgressBarFragment();
@@ -59,12 +63,15 @@ public class DeviceIdentificationFragment extends Fragment {
                 Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceUnsupportedFragment());
             }
             else {
-
-                DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
-                            assert agent != null;
-                            addFragment(new DeviceConfigurationFeaturesFragment());
-                            addFragment(new DeviceConfigurationConnectFragment());
-                });
+                if (model.getSelectedDeviceAgent() != null) {
+                    DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
+                        Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
+                    });
+                } else {
+                    DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
+                        addFragment(new DeviceConfigurationFeaturesFragment());
+                        addFragment(new DeviceConfigurationConnectFragment());
+                    });
 //                uiHandler.post(new Runnable()
 //                {
 //                    @Override
@@ -77,8 +84,8 @@ public class DeviceIdentificationFragment extends Fragment {
 //                addFragment(new DeviceConfigurationConnectFragment());
 //            }
 //                });
+                }
             }
-
 
 
 /*
@@ -120,7 +127,12 @@ public class DeviceIdentificationFragment extends Fragment {
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             fragmentTransaction.remove(fragment).commit();
         }
-
+    private void setHeaderValues(Device device) {
+        if (device != null) {
+            nameDevice.setText(device.getName());
+            addressDevice.setText(device.getAddress());
+        }
+    }
 
 }
 

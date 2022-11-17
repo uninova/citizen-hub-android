@@ -33,7 +33,7 @@ public class DeviceConfigurationConnectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 model.addAgent(model.getConfigurationAgent().getValue());
-             //   getActivity().getSupportFragmentManager().beginTransaction().remove(DeviceConfigurationConnectFragment.this).commitNow();
+                model.getConfigurationAgent().setValue(null);
 //                Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceConfigurationConnectFragmentDirections.actionDeviceConfigurationConnectFragmentToDeviceConfigurationStreamsFragment());
                 Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
 

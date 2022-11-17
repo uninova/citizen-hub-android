@@ -104,7 +104,7 @@
             app:destination="@+id/device_connection_method_fragment" />
         <action
             android:id="@+id/action_device_list_fragment_to_deviceConfigurationTestFragment"
-            app:destination="@id/deviceIdentificationFragment"
+            app:destination="@id/deviceConfigurationStreamsFragment"
             app:popUpTo="@id/device_list_fragment" />
 
 
@@ -475,7 +475,8 @@
             tools:layout="@layout/fragment_bluetooth_unsupported" />
         <action
             android:id="@+id/action_deviceIdentificationFragment_to_deviceConfigurationStreamsFragment"
-            app:destination="@id/deviceConfigurationStreamsFragment" />
+            app:destination="@id/deviceConfigurationStreamsFragment"
+            app:popUpTo="@id/device_list_fragment" />
 
     </fragment>
     <fragment
@@ -489,7 +490,8 @@
         <action
             android:id="@+id/action_deviceConfigurationConnectFragment_to_deviceConfigurationStreamsFragment"
             app:destination="@id/deviceConfigurationStreamsFragment"
-            app:popUpTo="@id/deviceConfigurationStreamsFragment"/>
+            app:popUpTo="@id/deviceConfigurationStreamsFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 
