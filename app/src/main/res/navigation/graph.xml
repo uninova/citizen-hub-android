@@ -482,7 +482,12 @@
     <fragment
         android:id="@+id/deviceConfigurationStreamsFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationStreamsFragment"
-        android:label="@string/device_configuration_label"/>
+        android:label="@string/device_configuration_label">
+        <action
+            android:id="@+id/action_deviceConfigurationStreamsFragment_to_device_list_fragment"
+            app:destination="@id/device_list_fragment"
+            app:popUpTo="@id/device_list_fragment"/>
+    </fragment>
     <fragment
         android:id="@+id/deviceConfigurationConnectFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationConnectFragment"

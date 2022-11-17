@@ -43,7 +43,7 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
+        final View view = inflater.inflate(R.layout.fragment_device_configuration_features_listview, container, false);
         labelListView = view.findViewById(R.id.listViewFeature);
 
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());

@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -117,6 +118,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();
+            Navigation.findNavController(DeviceConfigurationStreamsFragment.this.requireView()).navigate(DeviceConfigurationStreamsFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
 
                 return true;
             });
