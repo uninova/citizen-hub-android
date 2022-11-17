@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationStreamsFragmentDirections;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceIdentificationFragment;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceIdentificationFragmentDirections;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
@@ -182,7 +183,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationToUprightGo2CalibrationFragment());
+                Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationStreamsFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment());
             }
         });
 
