@@ -43,7 +43,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
+        measurementKindLocalization = new MeasurementKindLocalization(requireContext());
     }
 
     @Nullable
