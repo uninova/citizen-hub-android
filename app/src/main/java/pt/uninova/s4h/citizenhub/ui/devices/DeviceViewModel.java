@@ -177,7 +177,6 @@ public class DeviceViewModel extends AndroidViewModel {
     }
 
 
-
     public void selectDevice(Device device) {
         selectedDeviceLiveData.postValue(device);
     }

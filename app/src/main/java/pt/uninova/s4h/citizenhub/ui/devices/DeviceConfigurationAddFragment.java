@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 

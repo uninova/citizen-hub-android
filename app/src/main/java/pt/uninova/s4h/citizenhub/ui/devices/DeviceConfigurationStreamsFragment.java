@@ -66,7 +66,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
 
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
         loadSupportedFeatures();
-        if(model.getSelectedDeviceAgent()!=null) {
+        if (model.getSelectedDeviceAgent() != null) {
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
@@ -86,9 +86,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
                         e.printStackTrace();
                     }
                     assert newFragment != null;
-                    Fragment divider = new DeviceConfigurationDividerFragment();
                     ft.add(R.id.layout_device_configuration_container, newFragment);
-                    ft.add(R.id.layout_device_configuration_container, divider);
 
                 }
             }
@@ -97,7 +95,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
         return view;
     }
 
-        protected void loadSupportedFeatures() {
+    protected void loadSupportedFeatures() {
         if (model.getSelectedDeviceAgent() != null) {
             FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
 
@@ -117,11 +115,11 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         removeItem.setOnMenuItemClickListener((MenuItem item) -> {
-                model.removeSelectedDevice();
+            model.removeSelectedDevice();
             Navigation.findNavController(DeviceConfigurationStreamsFragment.this.requireView()).navigate(DeviceConfigurationStreamsFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
 
-                return true;
-            });
+            return true;
+        });
     }
 
 
@@ -146,6 +144,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
 
         return featureListItems;
     }
+
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
         for (int i = 0; i < layout.getChildCount(); i++) {
@@ -178,6 +177,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
             model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
         }
     }
+
     private void setHeaderValues(Device device) {
         if (device != null) {
             nameDevice.setText(device.getName());

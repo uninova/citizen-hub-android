@@ -27,7 +27,7 @@ class FeatureListAdapter extends BaseAdapter {
     private final boolean isEnabled;
     LinearLayout layoutFeature;
     Agent agent;
-    private MeasurementKindLocalization measurementKindLocalization;
+    private final MeasurementKindLocalization measurementKindLocalization;
 
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data, boolean isSwitchEnabled, Agent agent) {
@@ -36,7 +36,7 @@ class FeatureListAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         isEnabled = isSwitchEnabled;
         measurementKindLocalization = new MeasurementKindLocalization(context);
-        this.agent=agent;
+        this.agent = agent;
     }
 
     public FeatureListAdapter(Context context, List<FeatureListItem> data, Agent agent) {
@@ -60,19 +60,19 @@ class FeatureListAdapter extends BaseAdapter {
 
             for (int i = 0; i < data.size(); i++) {
 
-            final FeatureListItem item = (FeatureListItem) data.get(position);
+                final FeatureListItem item = data.get(position);
 
-            int k = item.getFeatureId();
+                int k = item.getFeatureId();
 
-            if (item.isActive()) {
-                if (!agent.getEnabledMeasurements().contains(k)) {
-                    agent.enableMeasurement(k);
+                if (item.isActive()) {
+                    if (!agent.getEnabledMeasurements().contains(k)) {
+                        agent.enableMeasurement(k);
+                    }
+                } else {
+                    if (agent.getEnabledMeasurements().contains(k)) {
+                        agent.disableMeasurement(k);
+                    }
                 }
-            } else {
-                if (agent.getEnabledMeasurements().contains(k)) {
-                    agent.disableMeasurement(k);
-                }
-            }
             }
 
             FeatureListAdapter.this.notifyDataSetChanged();

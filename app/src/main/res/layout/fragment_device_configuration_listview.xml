@@ -16,12 +16,6 @@
 
     <LinearLayout
      style="@style/DeviceConfiguration.LinearLayout">
-
-        <View
-            android:id="@+id/divider_configuration_id"
-            style="@style/DeviceConfiguration.Divider"
-            android:layout_width="match_parent"
-            />
         <TextView
             android:id="@+id/textConfigurationMeasurements"
             style="@style/AdvancedConfigurationFragmentCategoryTextView"
@@ -33,11 +27,6 @@
             style="@style/DeviceConfiguration.DefaultHeightWidth"
             android:divider="@null"
             />
-<!--        <View-->
-<!--            android:id="@+id/divider_configuration_id2"-->
-<!--            style="@style/DeviceConfiguration.Divider"-->
-<!--            android:layout_width="match_parent"-->
-<!--            />-->
 
 </LinearLayout>
     <LinearLayout

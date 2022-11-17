@@ -48,10 +48,8 @@ public class DeviceIdentificationFragment extends Fragment {
         addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
         setHeaderValues(model.getSelectedDevice().getValue());
         System.out.println(device.getName());
-        addDividerFragment();
         Fragment progressBar = new DeviceConfigurationProgressBarFragment();
         addFragment(progressBar);
-
 
 
         //        ft.add() progressbar fragment
@@ -61,8 +59,7 @@ public class DeviceIdentificationFragment extends Fragment {
             removeFragment(progressBar);
             if (agent == null) {
                 Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceUnsupportedFragment());
-            }
-            else {
+            } else {
                 if (model.getSelectedDeviceAgent() != null) {
                     DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
                         Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
@@ -109,24 +106,19 @@ public class DeviceIdentificationFragment extends Fragment {
 
         return view;
     }
-        private void addFragment(Fragment fragment){
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.layout_device_configuration_container, fragment);
 
-            transaction.commitNow();
-        }
+    private void addFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.layout_device_configuration_container, fragment);
 
-        private void addDividerFragment(){
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.layout_device_configuration_container, new DeviceConfigurationDividerFragment());
-            transaction.commitNow();
+        transaction.commitNow();
+    }
 
-        }
+    private void removeFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.remove(fragment).commit();
+    }
 
-        private void removeFragment(Fragment fragment){
-            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-            fragmentTransaction.remove(fragment).commit();
-        }
     private void setHeaderValues(Device device) {
         if (device != null) {
             nameDevice.setText(device.getName());
