@@ -52,8 +52,7 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
 
 
             System.out.println("ONVIEWCREATEDDDDDDDD " + " " + model.getSelectedDeviceAgent());
-            labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
-                model.getSelectedAgentLiveData().observe(getViewLifecycleOwner(),);
+            labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getConfigurationAgent().getValue())));
 //            DeviceConfigurationFeaturesFragment.this.requireActivity().runOnUiThread(DeviceConfigurationFeaturesFragment.this::loadSupportedFeatures);
 
 
@@ -71,7 +70,7 @@ protected List<FeatureListItem> getSupportedFeatures() {
     System.out.println("SUPPORTED FEATURES " + " " + model.getSelectedAgentLiveData().getValue());
 
     final List<FeatureListItem> featureListItems = new LinkedList<>();
-    final Agent agent = model.getSelectedDeviceAgent();
+    final Agent agent = model.getConfigurationAgent().getValue();
     if (agent != null) {
 
         if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
@@ -98,7 +97,7 @@ protected List<FeatureListItem> getSupportedFeatures() {
 //        labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getSelectedDeviceAgent())));
 //        labelListView.deferNotifyDataSetChanged();
 
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
+            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getConfigurationAgent().getValue());
             labelListView.setAdapter(adapter);
             adapter.updateResults(getSupportedFeatures());
 

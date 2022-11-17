@@ -54,6 +54,7 @@ public class DeviceConfigurationTestFragment extends Fragment {
 
         //        ft.add() progressbar fragment
         model.identifySelectedDevice((Agent agent) -> {
+            model.getConfigurationAgent().postValue(agent);
             System.out.println("IDENTIFY AGENTTTTTTTTTTTTT" + agent);
             removeFragment(progressBar);
             if (agent == null) {
