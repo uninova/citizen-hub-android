@@ -2,6 +2,9 @@ package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -105,6 +108,18 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
             adapter.updateResults(getSupportedFeatures());
 
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.device_configuration_fragment, menu);
+        MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
+
+            removeItem.setOnMenuItemClickListener((MenuItem item) -> {
+                model.removeSelectedDevice();
+
+                return true;
+            });
     }
 
     protected List<FeatureListItem> getSupportedFeatures() {
