@@ -55,6 +55,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
         nameDevice = view.findViewById(R.id.textConfigurationDeviceNameValue);
         addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
@@ -114,13 +115,13 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
-
-            removeItem.setOnMenuItemClickListener((MenuItem item) -> {
+        removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();
 
                 return true;
             });
     }
+
 
     protected List<FeatureListItem> getSupportedFeatures() {
         final List<FeatureListItem> featureListItems = new LinkedList<>();

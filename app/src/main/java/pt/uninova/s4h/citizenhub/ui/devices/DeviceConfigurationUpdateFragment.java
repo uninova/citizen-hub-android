@@ -96,11 +96,8 @@ public class DeviceConfigurationUpdateFragment extends DeviceConfigurationFragme
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
-        MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
-        reconnectItem.setVisible(false);
 
         if (model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED) {
-            menu.removeItem(R.id.device_configuration_menu_reconnect_item);
             removeItem.setOnMenuItemClickListener((MenuItem item) -> {
                 model.removeSelectedDevice();
 //                Navigation.findNavController(getView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToDeviceListFragment());

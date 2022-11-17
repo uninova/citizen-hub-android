@@ -7,9 +7,4 @@
         android:title="@string/menu_fragment_device_configuration_remove_item"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/device_configuration_menu_reconnect_item"
-        android:title="@string/menu_fragment_device_configuration_reconnect_item"
-        android:visible="false"
-        app:showAsAction="never" />
 </menu>
