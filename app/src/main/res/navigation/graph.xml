@@ -104,8 +104,8 @@
             app:destination="@+id/device_connection_method_fragment" />
         <action
             android:id="@+id/action_device_list_fragment_to_deviceConfigurationTestFragment"
-            app:popUpTo="@id/device_list_fragment"
-            app:destination="@id/deviceConfigurationTestFragment" />
+            app:destination="@id/deviceIdentificationFragment"
+            app:popUpTo="@id/device_list_fragment" />
 
 
     </fragment>
@@ -219,7 +219,7 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_device_search_fragment_to_deviceConfigurationTestFragment"
-            app:destination="@id/deviceConfigurationTestFragment" />
+            app:destination="@id/deviceIdentificationFragment" />
 
     </fragment>
 
@@ -455,25 +455,41 @@
         android:label="@string/fragment_device_calibration_label">
         <action
             android:id="@+id/action_uprightGo2CalibrationFragment_to_device_configuration_test_fragment"
-            app:destination="@id/deviceConfigurationTestFragment"
-            app:popUpTo="@id/deviceConfigurationTestFragment"
+            app:destination="@id/deviceIdentificationFragment"
+            app:popUpTo="@id/deviceIdentificationFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/deviceConfigurationTestFragment"
+        android:id="@+id/deviceIdentificationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceIdentificationFragment"
-        android:label="DeviceConfigurationTestFragment">
+        android:label="@string/device_configuration_label">
         <action
-            android:id="@+id/action_deviceConfigurationTestFragment_to_uprightGo2CalibrationFragment"
+            android:id="@+id/action_deviceIdentification_to_uprightGo2CalibrationFragment"
             app:destination="@id/uprightGo2CalibrationFragment"
             app:popUpTo="@id/uprightGo2CalibrationFragment"
 
             />
         <action
-            android:id="@+id/action_deviceConfigurationTestFragment_to_deviceUnsupportedFragment"
+            android:id="@+id/action_deviceIdentificationFragment_to_deviceUnsupportedFragment"
             app:destination="@id/deviceUnsupportedFragment"
-            tools:layout="@layout/fragment_bluetooth_unsupported"/>
+            tools:layout="@layout/fragment_bluetooth_unsupported" />
+        <action
+            android:id="@+id/action_deviceIdentificationFragment_to_deviceConfigurationStreamsFragment"
+            app:destination="@id/deviceConfigurationStreamsFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/deviceConfigurationStreamsFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationStreamsFragment"
+        android:label="@string/device_configuration_label"/>
+    <fragment
+        android:id="@+id/deviceConfigurationConnectFragment"
+        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationConnectFragment"
+        android:label="DeviceConfigurationConnectFragment" >
+        <action
+            android:id="@+id/action_deviceConfigurationConnectFragment_to_deviceConfigurationStreamsFragment"
+            app:destination="@id/deviceConfigurationStreamsFragment"
+            app:popUpTo="@id/deviceConfigurationStreamsFragment"/>
     </fragment>
 
 

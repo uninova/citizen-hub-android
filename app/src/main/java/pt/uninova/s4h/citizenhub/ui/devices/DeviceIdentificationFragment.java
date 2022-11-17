@@ -56,7 +56,7 @@ public class DeviceIdentificationFragment extends Fragment {
             System.out.println("IDENTIFY AGENTTTTTTTTTTTTT" + agent);
             removeFragment(progressBar);
             if (agent == null) {
-                Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceConfigurationTestFragmentDirections.actionDeviceConfigurationTestFragmentToUprightGo2CalibrationFragment());
+                Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceUnsupportedFragment());
             }
             else {
 

@@ -9,11 +9,20 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 
 public class DeviceConfigurationConnectFragment extends Fragment {
     private DeviceViewModel model;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+    }
 
     @Nullable
     @Override
@@ -24,7 +33,9 @@ public class DeviceConfigurationConnectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 model.addAgent(model.getConfigurationAgent().getValue());
-                getActivity().getSupportFragmentManager().beginTransaction().remove(DeviceConfigurationConnectFragment.this).commitNow();
+             //   getActivity().getSupportFragmentManager().beginTransaction().remove(DeviceConfigurationConnectFragment.this).commitNow();
+//                Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceConfigurationConnectFragmentDirections.actionDeviceConfigurationConnectFragmentToDeviceConfigurationStreamsFragment());
+                Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
 
             }
         });

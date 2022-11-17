@@ -606,6 +606,7 @@
     <string name="device_unsupported_label">Device Unsupported</string>
     <string name="fragment_device_calibration_label">Device Calibration</string>
     <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
+    <string name="device_configuration_label">Device Configuration</string>
 
     <string-array name="spinner_uprightgo2_strength">
         <item>Gentle</item>
