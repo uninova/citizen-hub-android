@@ -17,9 +17,11 @@
         android:clickable="true">
 
         <TextView
+            android:id="@+id/udiTextViewValue"
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/neo_sans_pro_italic"
             android:layout_weight="1"
             android:text="@string/fragment_device_configuration_unique_device_identifier_text" />
 
