@@ -137,10 +137,10 @@ public interface ReportDao {
     ReportUtil getNotWorkTimeSimpleRecords(LocalDate from, LocalDate to);
 
     @Query("SELECT breathingRate.maxBreathingRate, breathingRate.minBreathingRate, breathingRate.avgBreathingRate, "
-            + " dailyCalories.calories, dailyDistance.distance, "
+            + " caloriesData.calories, distanceData.distance, "
             + " heartRate.maxHeartRate, heartRate.minHeartRate, heartRate.avgHeartRate, "
             + " correctPosture.correctPostureDuration, wrongPosture.wrongPostureDuration, "
-            + " dailySteps.steps"
+            + " stepsData.steps "
             + " FROM "
 
             + "(SELECT MAX(value) AS maxBreathingRate, MIN(value) AS minBreathingRate, AVG(value) AS avgBreathingRate FROM breathing_rate_measurement "
@@ -149,17 +149,17 @@ public interface ReportDao {
             + " AND NOT EXISTS "
             + " (SELECT tag.label FROM tag WHERE tag.sample_id = breathing_rate_measurement.sample_id AND tag.label = 1)) breathingRate,"
 
-            + " (SELECT MAX(value) AS calories FROM calories_snapshot_measurement "
-            + " INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
+            + " (SELECT SUM(max_values) AS calories FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(calories_snapshot_measurement.value) AS max_values "
+            + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
             + " AND NOT EXISTS "
-            + " (SELECT tag.label FROM tag WHERE tag.sample_id = calories_snapshot_measurement.sample_id AND tag.label = 1)) dailyCalories, "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = calories_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) caloriesData, "
 
-            + " (SELECT MAX(value) AS distance FROM distance_snapshot_measurement "
-            + " INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
+            + " (SELECT SUM(max_values) AS distance FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(distance_snapshot_measurement.value) AS max_values "
+            + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
             + " AND NOT EXISTS "
-            + " (SELECT tag.label FROM tag WHERE tag.sample_id = distance_snapshot_measurement.sample_id AND tag.label = 1)) dailyDistance, "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = distance_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) distanceData, "
 
             + " (SELECT MAX(value) AS maxHeartRate, MIN(value) AS minHeartRate, AVG(value) AS avgHeartRate FROM heart_rate_measurement "
             + " INNER JOIN sample ON heart_rate_measurement.sample_id = sample.id "
@@ -181,13 +181,13 @@ public interface ReportDao {
             + " AND NOT EXISTS "
             + "(SELECT tag.label FROM tag WHERE tag.sample_id = posture_measurement.sample_id AND tag.label = 1)) wrongPosture, "
 
-            + "(SELECT MAX(value) AS steps FROM steps_snapshot_measurement "
-            + " INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
+            + " (SELECT SUM(max_values) AS steps FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(steps_snapshot_measurement.value) AS max_values "
+            + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
             + " AND NOT EXISTS "
-            + "(SELECT tag.label FROM tag WHERE tag.sample_id = steps_snapshot_measurement.sample_id AND tag.label = 1)) dailySteps")
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = steps_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) stepsData")
     @TypeConverters(EpochTypeConverter.class)
-    ReportUtil getWeeklyOrMonthlyWorkTimeSimpleRecords(LocalDate from, LocalDate to);
+    ReportUtil getWeeklyOrMonthlyWorkTimeSimpleRecords(LocalDate from, LocalDate to, int days);
 
     @Query("WITH sample_window(id) AS (SELECT id FROM sample WHERE timestamp >= :from AND timestamp < :to), sample_tag (id) AS (SELECT sample_window.id FROM sample_window INNER JOIN tag ON sample_window.id = tag.sample_id WHERE tag.label = :tag), calories (value) AS (SELECT SUM(value) FROM (SELECT SUM(calories_measurement.value) AS value FROM sample_tag INNER JOIN calories_measurement ON sample_tag.id = calories_measurement.sample_id UNION ALL SELECT MAX(calories_snapshot_measurement.value) AS value FROM sample_tag INNER JOIN calories_snapshot_measurement ON sample_tag.id = calories_snapshot_measurement.sample_id)), distance (value) AS (SELECT SUM(value) FROM (SELECT SUM(distance_measurement.value) AS value FROM sample_tag INNER JOIN distance_measurement ON sample_tag.id = distance_measurement.sample_id UNION ALL SELECT MAX(distance_snapshot_measurement.value) AS value FROM sample_tag INNER JOIN distance_snapshot_measurement ON sample_tag.id = distance_snapshot_measurement.sample_id)), heart_rate (maximum, minimum, average) AS (SELECT MAX(value) AS maximum, MIN(value) AS minimum, AVG(value) AS average FROM sample_tag INNER JOIN heart_rate_measurement ON sample_tag.id = heart_rate_measurement.sample_id), posture (classification, duration) AS (SELECT classification, SUM(duration) FROM sample_tag INNER JOIN posture_measurement ON sample_tag.id = posture_measurement.sample_id GROUP BY classification), steps (value) AS (SELECT SUM(value) FROM (SELECT SUM(steps_measurement.value) AS value FROM sample_tag INNER JOIN steps_measurement ON sample_tag.id = steps_measurement.sample_id UNION ALL SELECT MAX(steps_snapshot_measurement.value) AS value FROM sample_tag INNER JOIN steps_snapshot_measurement ON sample_tag.id = steps_snapshot_measurement.sample_id)) SELECT calories.value AS calories, distance.value AS distance, heart_rate.maximum AS maxHeartRate, heart_rate.minimum AS minHeartRate, heart_rate.average AS avgHeartRate, correct_posture.duration AS correctPostureDuration, incorrect_posture.duration AS wrongPostureDuration, steps.value AS steps FROM calories LEFT JOIN distance LEFT JOIN heart_rate LEFT JOIN (SELECT duration FROM posture WHERE classification = 1) AS correct_posture LEFT JOIN (SELECT duration FROM posture WHERE classification = 2) AS incorrect_posture LEFT JOIN steps;")
     @TypeConverters(EpochTypeConverter.class)

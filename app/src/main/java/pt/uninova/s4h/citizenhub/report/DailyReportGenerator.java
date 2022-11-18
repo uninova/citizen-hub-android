@@ -89,7 +89,6 @@ public class DailyReportGenerator {
         }
         if(preferences.getBoolean("account.smart4health.report.data.posture", true) || !pdf) {
             if (reportUtil.getCorrectPostureDuration() != null) {
-                System.out.println("rrrrrr");
                 MeasurementTypeLocalizedResource label = new MeasurementTypeLocalizedResource(localization, Measurement.TYPE_POSTURE);
                 Group groupPosture = new Group(label);
                 groupPosture.getItemList().add(new Item(new ResourceType(resources.getString(R.string.report_correct_posture_label)), new ResourceValue(secondsToString(reportUtil.getCorrectPostureDuration().getSeconds())), new ResourceUnits("-")));
@@ -233,6 +232,7 @@ public class DailyReportGenerator {
                 days = 31;
         }
 
+        System.out.println(localDate.minusDays(days));
         Report report = new Report(() -> title, new LocalDateLocalizedResource(localDate));
         List<Group> groups = report.getGroups();
 

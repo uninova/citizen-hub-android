@@ -176,7 +176,6 @@ public class ReportDetailFragment extends Fragment {
             Observer<Report> observer = report -> {
                 System.out.println(report.getTitle().getLocalizedString());
                 System.out.println(report.getDate().getLocalizedString());
-                System.out.println(model.getCurrentDate().minusDays(7));
                 for (Group group : report.getGroups()){
                     System.out.println("Aqui");
                     for (Item item1 : group.getItemList())
@@ -191,7 +190,7 @@ public class ReportDetailFragment extends Fragment {
 
         menu.findItem(R.id.upload_monthly_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            Observer<byte[]> observer = pdfData -> {
+            /*Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -203,22 +202,23 @@ public class ReportDetailFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            };
+            };*/
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
 
-            Observer<Report> observerWorkTimeReport = workTimeReport -> {
-                Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
-                    if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
-                        PDFDailyReport pdfDailyReport = new PDFDailyReport(getContext());
-                        pdfDailyReport.generateCompleteReport(workTimeReport, notWorkTimeReport, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
-                    }
-                };
-                dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerNotWorkTimeReport);
+            Observer<Report> observer = report -> {
+                System.out.println(report.getTitle().getLocalizedString());
+                System.out.println(report.getDate().getLocalizedString());
+                System.out.println(model.getCurrentDate().minusDays(7));
+                for (Group group : report.getGroups()){
+                    System.out.println("Aqui");
+                    for (Item item1 : group.getItemList())
+                        System.out.println(item1.getLabel().getLocalizedString() + ": " + item1.getValue().getLocalizedString() + " " + item1.getUnits().getLocalizedString());
+                }
             };
-            dailyReportGenerator.generateWorkTimeReport(reportRepository, model.getCurrentDate(), true, observerWorkTimeReport);
-
+            dailyReportGenerator.generateWeeklyOrMonthlyReport(reportRepository, model.getCurrentDate(), false, true, observer);
+            //dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observer);
             return true;
 
         });
