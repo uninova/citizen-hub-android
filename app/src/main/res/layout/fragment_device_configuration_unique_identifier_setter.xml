@@ -20,15 +20,15 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/udi_set_button"
             android:paddingHorizontal="10dp"
             style="@style/Widget.Citizen.Button"
-            android:text="Set" />
+            android:text="@string/fragment_device_configuration_udi_set_button" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/udi_clear_button"
             android:paddingHorizontal="10dp"
             style="@style/Widget.Citizen.Button"
-            android:text="Clear" />
+            android:text="@string/fragment_device_configuration_udi_clear_button" />
     </LinearLayout>
 </LinearLayout>

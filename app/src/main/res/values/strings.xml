@@ -610,6 +610,8 @@
     <string name="fragment_device_configuration_unique_device_identifier_text">None</string>
     <string name="fragment_device_configuration_unique_device_identifier_category">Unique Device Identifier</string>
     <string name="fragment_device_configuration_udi_setter_text">Click here to add a UDI</string>
+    <string name="fragment_device_configuration_udi_set_button">Set</string>
+    <string name="fragment_device_configuration_udi_clear_button">Clear</string>
 
     <string-array name="spinner_uprightgo2_strength">
         <item>Gentle</item>
