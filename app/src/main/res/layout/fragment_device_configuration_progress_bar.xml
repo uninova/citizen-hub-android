@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/device_configuration_loading_progress_bar_text"
         style="@style/DeviceConfiguration.ProgressBarTextView"
-        android:text="@string/fragment_device_configuration_add_loading_features_text"
-  />
+        android:text="@string/fragment_device_configuration_add_loading_features_text" />
 
     <ProgressBar
         android:id="@+id/add_pprogressBar"

@@ -51,12 +51,9 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             }
         });
 
-        clearUdi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
-                model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
-            }
+        clearUdi.setOnClickListener(view12 -> {
+            Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
+            model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
         });
 
         return view;

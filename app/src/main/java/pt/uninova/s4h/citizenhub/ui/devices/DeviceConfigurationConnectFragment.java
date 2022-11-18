@@ -29,15 +29,11 @@ public class DeviceConfigurationConnectFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_connect, container, false);
         Button connectButton = view.findViewById(R.id.button_connect);
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                model.addAgent(model.getConfigurationAgent().getValue());
-                model.getConfigurationAgent().setValue(null);
-//                Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceConfigurationConnectFragmentDirections.actionDeviceConfigurationConnectFragmentToDeviceConfigurationStreamsFragment());
-                Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
+        connectButton.setOnClickListener(view1 -> {
+            model.addAgent(model.getConfigurationAgent().getValue());
+            model.getConfigurationAgent().setValue(null);
+            Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
 
-            }
         });
 
         return view;
