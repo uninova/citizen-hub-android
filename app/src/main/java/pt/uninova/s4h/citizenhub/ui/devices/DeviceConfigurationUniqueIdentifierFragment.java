@@ -43,7 +43,7 @@ public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
         model.getSelectedDeviceAgent().getSettingsManager().get("uid", new Observer<String>() {
             @Override
             public void observe(String value) {
-                if (value != null) {
+                if (value != null && !value.equals("")) {
                     udiTextView.setText(value);
                 }
             }
