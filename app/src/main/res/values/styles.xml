@@ -475,16 +475,6 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="CategoryTextViewDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/colorS4HGreyMedium</item>
-        <item name="android:alpha">0.5</item>
-        <item name="android:layout_marginHorizontal">10dp</item>
-        <item name="android:layout_marginVertical">10dp</item>
-
-    </style>
-
     <style name="DeviceConfiguration" />
 
     <style name="DeviceConfiguration.ScrollView">
@@ -501,6 +491,8 @@
 
     <style name="DeviceConfiguration.LinearLayout">
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">15dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">vertical</item>
     </style>
@@ -531,12 +523,6 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">18sp</item>
     </style>
-
-
-
-
-
-
 
 
     <style name="AdvancedConfigurationFragmentListItemTextView">
@@ -584,6 +570,16 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingTop">20dp</item>
+    </style>
+
+    <style name="AdvancedConfigurationNestedLinearLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">20dp</item>
+
     </style>
 
 </resources>

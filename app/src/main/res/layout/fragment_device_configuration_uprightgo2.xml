@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:orientation="vertical"
+    android:weightSum="6"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/calibrationLayout"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="10dp">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             android:id="@+id/calibrationButton"
@@ -40,10 +35,7 @@
 
     <LinearLayout
         android:id="@+id/layoutPostureCorrection"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/calibrationLayout">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
@@ -70,10 +62,7 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationAngle"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutPostureCorrection">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
@@ -101,10 +90,7 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationInterval"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationAngle">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
@@ -130,10 +116,7 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationPattern"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationInterval">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
@@ -159,10 +142,7 @@
 
     <LinearLayout
         android:id="@+id/layoutVibrationStrength"
-        style="@style/AdvancedConfigurationLinearLayoutStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutVibrationPattern">
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
@@ -188,4 +168,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

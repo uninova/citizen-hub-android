@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     style="@style/DeviceConfiguration.LinearLayout"
+    android:layout_marginVertical="10dp"
     android:layout_height="match_parent">
 
     <TextView
@@ -14,6 +15,7 @@
     </TextView>
 
     <EditText
+        android:layout_marginTop="20dp"
         android:id="@+id/fragment_device_configuration_udi_setter_textview"
         style="@style/DeviceConfiguration.EditText"
         android:hint="@string/fragment_device_configuration_udi_setter_text" />
@@ -22,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <Button

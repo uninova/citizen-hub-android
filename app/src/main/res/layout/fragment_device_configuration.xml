@@ -90,12 +90,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <View
-                android:id="@+id/divider_configuration_id"
-                style="@style/CategoryTextViewDivider"
-
-                android:layout_width="match_parent"
-                />
             <TextView
                 android:id="@+id/textConfigurationMeasurements"
                 style="@style/AdvancedConfigurationFragmentCategoryTextView"
