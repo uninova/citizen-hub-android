@@ -12,11 +12,20 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 
 public class DeviceConfigurationUdiSetterFragment extends Fragment {
+    private DeviceViewModel model;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
+
+    }
 
     @Nullable
     @Override
@@ -36,6 +45,7 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
         setUdi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                model.getSelectedDeviceAgent().getSettingsManager().set("uid", udiText.getText().toString());
                 Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
 
             }
@@ -45,7 +55,7 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
-
+                model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
             }
         });
 
