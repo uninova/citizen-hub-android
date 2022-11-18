@@ -239,53 +239,6 @@
 
     </fragment>
 
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/device_configuration_fragment"-->
-    <!--        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragment"-->
-    <!--        android:label="@string/fragment_device_configuration_label"-->
-    <!--        tools:layout="@layout/fragment_device_configuration">-->
-
-    <!--    </fragment>-->
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/device_configuration_add_fragment"-->
-    <!--        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationAddFragment"-->
-    <!--        android:label="@string/fragment_device_configuration_label"-->
-    <!--        tools:layout="@layout/fragment_device_configuration_add">-->
-
-    <!--        <action-->
-    <!--            android:id="@+id/action_device_configuration_add_fragment_to_device_configuration_update_fragment"-->
-    <!--            app:destination="@+id/device_configuration_update_fragment"-->
-    <!--            app:popUpTo="@id/device_list_fragment"/>-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_device_configuration_add_fragment_to_deviceUnsupportedFragment"-->
-    <!--            app:destination="@id/deviceUnsupportedFragment"-->
-    <!--            app:popUpTo="@+id/device_list_fragment" />-->
-
-    <!--    </fragment>-->
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/device_configuration_update_fragment"-->
-    <!--        android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUpdateFragment"-->
-    <!--        android:label="@string/fragment_device_configuration_label"-->
-    <!--        tools:layout="@layout/fragment_device_configuration_update">-->
-
-
-    <!--        <action-->
-    <!--            android:id="@+id/action_device_configuration_update_fragment_to_device_list_fragment"-->
-    <!--            app:destination="@+id/device_list_fragment" />-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_device_configuration_update_fragment_to_device_configuration_advanced_fragment"-->
-    <!--            app:destination="@+id/device_configuration_advanced_fragment" />-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_device_configuration_update_fragment_to_uprightGo2CalibrationFragment"-->
-    <!--            app:destination="@id/uprightGo2CalibrationFragment"-->
-    <!--            app:popUpTo="@id/uprightGo2CalibrationFragment"/>-->
-
-    <!--    </fragment>-->
-
-
     <fragment
         android:id="@+id/settings_fragment"
         android:name="pt.uninova.s4h.citizenhub.SettingsFragment"
