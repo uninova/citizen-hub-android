@@ -30,6 +30,8 @@
         <Button
             android:id="@+id/udi_set_button"
             android:paddingHorizontal="10dp"
+            android:enabled="false"
+            android:textColor="@color/button_color_selector"
             style="@style/Widget.Citizen.Button"
             android:text="@string/fragment_device_configuration_udi_set_button" />
 

@@ -2,6 +2,8 @@ package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,24 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(view1, InputMethodManager.SHOW_IMPLICIT);
         });
+
+        udiText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                setUdi.setEnabled(s.toString().length() > 0);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
 
         setUdi.setOnClickListener(new View.OnClickListener() {
             @Override
