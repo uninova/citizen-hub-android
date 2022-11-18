@@ -69,40 +69,10 @@ public class DeviceIdentificationFragment extends Fragment {
                         addFragment(new DeviceConfigurationFeaturesFragment());
                         addFragment(new DeviceConfigurationConnectFragment());
                     });
-//                uiHandler.post(new Runnable()
-//                {
-//                    @Override
-//                    public void run()
-//                    {
-//
-//                System.out.println("ADD FEATURES FRAGMENT & CONNECT");
-////                    removeFragment(new DeviceConfigurationProgressBarFragment());
-//                addFragment(new DeviceConfigurationFeaturesFragment());
-//                addFragment(new DeviceConfigurationConnectFragment());
-//            }
-//                });
                 }
             }
 
-
-/*
-            ft.replace() progressbarFragment to Listview fragment (labels)
-            ft.add() connectButtonFragment
-            onClick remove Connect & listview, add listview with listview (switches)
-            if agent.getPairingHelper, ft.add PairingHelper
-            replace/add PairingHelper for agent.getAdvancedConfiguration
-                    */
         });
-//        try {
-//            System.out.println("REMOVE FRAGMENTS");
-//
-//            removeFragment(new DeviceConfigurationConnectFragment());
-//            removeFragment(new DeviceConfigurationFeaturesFragment());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        addFragment(new DeviceConfigurationStreamsFragment());
-//
 
         return view;
     }

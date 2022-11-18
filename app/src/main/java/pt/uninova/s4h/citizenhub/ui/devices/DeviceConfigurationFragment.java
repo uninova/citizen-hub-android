@@ -29,7 +29,7 @@ import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class DeviceConfigurationStreamsFragment extends Fragment {
+public class DeviceConfigurationFragment extends Fragment {
     private LinearLayout advancedConfigurationLayout;
     private DeviceViewModel model;
     private ListView listViewFeatures;
@@ -116,7 +116,7 @@ public class DeviceConfigurationStreamsFragment extends Fragment {
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
         removeItem.setOnMenuItemClickListener((MenuItem item) -> {
             model.removeSelectedDevice();
-            Navigation.findNavController(DeviceConfigurationStreamsFragment.this.requireView()).navigate(DeviceConfigurationStreamsFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
+            Navigation.findNavController(DeviceConfigurationFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
 
             return true;
         });

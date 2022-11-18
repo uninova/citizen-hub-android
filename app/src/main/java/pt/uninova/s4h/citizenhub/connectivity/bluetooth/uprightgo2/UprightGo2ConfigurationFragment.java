@@ -180,7 +180,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationStreamsFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment());
+                Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment());
             }
         });
 
