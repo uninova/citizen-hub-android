@@ -36,6 +36,7 @@ public class DeviceConfigurationFragment extends Fragment {
     private MeasurementKindLocalization measurementKindLocalization;
     private TextView nameDevice;
     private TextView addressDevice;
+    private Fragment udiFragment;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
@@ -69,7 +70,8 @@ public class DeviceConfigurationFragment extends Fragment {
         if (model.getSelectedDeviceAgent() != null) {
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-
+            udiFragment = new DeviceConfigurationUniqueIdentifierFragment();
+            ft.add(R.id.layout_device_configuration_container, udiFragment);
             for (Fragment fragment : getChildFragmentManager().getFragments()) {
                 if (fragment != null) {
                     getChildFragmentManager().beginTransaction().remove(fragment).commit();
