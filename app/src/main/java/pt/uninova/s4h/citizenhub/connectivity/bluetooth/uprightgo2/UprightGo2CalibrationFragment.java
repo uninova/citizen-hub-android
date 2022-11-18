@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,6 +33,7 @@ public class UprightGo2CalibrationFragment extends Fragment {
     ImageView checkMarkImageView;
     LinearLayout animationsLayout;
     ProgressBar progressBar;
+    TextView calibrationMessage;
 
     private final Observer<StateChangedMessage<Integer, ? extends Protocol>> protocolStateObserver = new Observer<StateChangedMessage<Integer, ? extends Protocol>>() {
         @Override
@@ -41,6 +43,7 @@ public class UprightGo2CalibrationFragment extends Fragment {
                 public void run() {
                     if (value.getNewState() == STATE_COMPLETED) {
                         progressBar.setVisibility(View.GONE);
+                        calibrationMessage.setVisibility(View.GONE);
                         checkMarkImageView.setVisibility(View.VISIBLE);
                         ((Animatable) checkMarkImageView.getDrawable()).start();
                         new Handler().postDelayed(new Runnable() {
@@ -62,6 +65,7 @@ public class UprightGo2CalibrationFragment extends Fragment {
         final DeviceViewModel model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Button calibrationButton = view.findViewById(R.id.buttonCalibrate);
+        calibrationMessage = view.findViewById(R.id.device_configuration_loading_textview);
         LinearLayout topLayout = view.findViewById(R.id.calibrationTopLayout);
         LinearLayout buttonLayout = view.findViewById(R.id.button_layout);
         animationsLayout = view.findViewById(R.id.animationsLayout);
