@@ -462,6 +462,7 @@
         <action
             android:id="@+id/action_deviceConfigurationUdiSetterFragment_to_deviceConfigurationFragment"
             app:destination="@id/deviceConfigurationFragment"
+            app:popUpTo="@id/deviceConfigurationFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
