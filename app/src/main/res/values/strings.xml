@@ -609,6 +609,7 @@
     <string name="device_configuration_label">Device Configuration</string>
     <string name="fragment_device_configuration_unique_device_identifier_text">None</string>
     <string name="fragment_device_configuration_unique_device_identifier_category">Unique Device Identifier</string>
+    <string name="fragment_device_configuration_udi_setter_text">Click here to add a UDI</string>
 
     <string-array name="spinner_uprightgo2_strength">
         <item>Gentle</item>

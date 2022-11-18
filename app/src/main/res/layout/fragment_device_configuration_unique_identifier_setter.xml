@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    style="@style/DeviceConfiguration.LinearLayout"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/fragment_device_configuration_udi_setter_textview"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_device_configuration_udi_setter_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:paddingHorizontal="10dp"
+            style="@style/Widget.Citizen.Button"
+            android:text="Set" />
+
+        <Button
+            android:id="@+id/button2"
+            android:paddingHorizontal="10dp"
+            style="@style/Widget.Citizen.Button"
+            android:text="Clear" />
+    </LinearLayout>
+</LinearLayout>
