@@ -15,15 +15,8 @@
 
     <EditText
         android:id="@+id/fragment_device_configuration_udi_setter_textview"
-        android:layout_width="wrap_content"
-        android:layout_gravity="start"
-        android:focusableInTouchMode="true"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        style="@style/AdvancedConfigurationFragmentListItemTextView"
-        android:clickable="true"
-        android:hint="@string/fragment_device_configuration_udi_setter_text"
-        android:layout_height="wrap_content" />
+        style="@style/DeviceConfiguration.EditText"
+        android:hint="@string/fragment_device_configuration_udi_setter_text" />
 
     <LinearLayout
         android:layout_width="match_parent"

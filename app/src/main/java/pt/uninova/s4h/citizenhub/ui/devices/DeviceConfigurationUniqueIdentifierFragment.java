@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
 
@@ -40,19 +39,13 @@ public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        model.getSelectedDeviceAgent().getSettingsManager().get("uid", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                if (value != null && !value.equals("")) {
-                    udiTextView.setText(value);
-                }
+
+        model.getSelectedDeviceAgent().getSettingsManager().get("uid", value -> {
+            if (value != null && !value.equals("")) {
+                udiTextView.setText(value);
             }
         });
-        udiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(DeviceConfigurationUniqueIdentifierFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationFragmentToDeviceConfigurationUdiSetterFragment());
-            }
-        });
+
+        udiButton.setOnClickListener(view1 -> Navigation.findNavController(DeviceConfigurationUniqueIdentifierFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationFragmentToDeviceConfigurationUdiSetterFragment()));
     }
 }

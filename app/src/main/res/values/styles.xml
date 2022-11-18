@@ -510,6 +510,18 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+
+    <style name="DeviceConfiguration.EditText" parent="@android:style/Widget.EditText">
+        <item name="android:fontFamily">@font/neo_sans_pro_italic</item>
+        <item name="android:backgroundTint">@color/colorS4HDarkBlue</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="DeviceConfiguration.ProgressBarTextView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
