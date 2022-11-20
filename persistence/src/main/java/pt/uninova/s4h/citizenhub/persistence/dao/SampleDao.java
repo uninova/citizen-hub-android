@@ -76,12 +76,6 @@ public abstract class SampleDao {
     @Transaction
     public long insert(Sample sample) {
         if(sample == null || sample.getSource() == null || sample.getSource().getAddress() == null){
-            //TODO this is a temporary fix for reaching here on wearOS
-            try {
-                System.out.println("On SAMPLEDAO: " + sample + "|" + sample.getSource() + "|" + sample.getSource().getAddress());
-            } catch (Exception e){
-                e.printStackTrace();
-            }
             return -1;
         }
         final long sampleId = insert(sample.getSource().getAddress(), sample.getTimestamp());
