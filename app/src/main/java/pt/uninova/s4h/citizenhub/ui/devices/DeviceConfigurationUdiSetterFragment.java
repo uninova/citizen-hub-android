@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -29,12 +32,23 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.device_configuration_udi_setter_menu, menu);
+        MenuItem clearUdi = menu.findItem(R.id.device_configuration_udi_clear_item);
+        clearUdi.setOnMenuItemClickListener((MenuItem item) -> {
+            Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
+            model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
+            return true;
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_unique_identifier_setter, container, false);
         Button setUdi = view.findViewById(R.id.udi_set_button);
-        Button clearUdi = view.findViewById(R.id.udi_clear_button);
         EditText udiText = view.findViewById(R.id.fragment_device_configuration_udi_setter_textview);
 
         udiText.setOnClickListener(view1 -> {
@@ -69,11 +83,6 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
 
             }
-        });
-
-        clearUdi.setOnClickListener(view12 -> {
-            Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
-            model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
         });
 
         return view;

@@ -35,10 +35,5 @@
             style="@style/Widget.Citizen.Button"
             android:text="@string/fragment_device_configuration_udi_set_button" />
 
-        <Button
-            android:id="@+id/udi_clear_button"
-            android:paddingHorizontal="10dp"
-            style="@style/Widget.Citizen.Button"
-            android:text="@string/fragment_device_configuration_udi_clear_button" />
     </LinearLayout>
 </LinearLayout>

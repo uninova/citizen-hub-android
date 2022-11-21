@@ -615,6 +615,7 @@
     <string name="fragment_unique_device_identifier_setter_title">Unique Device Identifier</string>
     <string name="fragment_device_search_progress_bar_message">Scanning for devices …</string>
     <string name="fragment_uprightgo2_progress_bar_message">Calibrating ...</string>
+    <string name="menu_fragment_device_configuration_udi_clear_item">Clear</string>
 
     <string-array name="spinner_uprightgo2_strength">
         <item>Gentle</item>
