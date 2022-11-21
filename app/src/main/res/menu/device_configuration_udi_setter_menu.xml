@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/device_configuration_udi_clear_item"
+        android:title="@string/menu_fragment_device_configuration_udi_clear_item"
+        app:showAsAction="never" />
+
+</menu>
