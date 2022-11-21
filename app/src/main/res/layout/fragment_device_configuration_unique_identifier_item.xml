@@ -20,6 +20,7 @@
             android:id="@+id/udiTextViewValue"
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:fontFamily="@font/neo_sans_pro_italic"
             android:layout_weight="1"
