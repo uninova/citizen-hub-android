@@ -36,7 +36,7 @@ public class ForegroundService extends Service {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.notification_content_title))
