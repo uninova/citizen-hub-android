@@ -34,6 +34,7 @@
             android:id="@+id/udi_set_button"
             android:paddingHorizontal="10dp"
             android:layout_width="match_parent"
+            android:paddingTop="6dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.8"
             android:enabled="false"
