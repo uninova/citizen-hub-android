@@ -33,6 +33,8 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
         connection.addChannelListener(new BaseChannelListener(kind) {
             @Override
             public void onChange(double value, Date timestamp) {
+                Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
+                service.getWearOSMessageService().sendMessage("WearOSConnected","true");
                 if (value < wearProtocolDisable) {
                     final int steps = (int) value;
                     final Sample sample = new Sample(getAgent().getSource(),
@@ -40,8 +42,11 @@ public class WearOSStepsProtocol extends AbstractMeasuringProtocol {
                             new DistanceSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps * 0.762),
                             new CaloriesSnapshotMeasurement(SnapshotMeasurement.TYPE_DAY, steps * 0.04));
                     getSampleDispatcher().dispatch(sample);
+
+                    if(!enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT)){
+                        getAgent().enableMeasurement(Measurement.TYPE_STEPS_SNAPSHOT);
+                    }
                 } else {
-                    Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
                     if (value == wearProtocolDisable && enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))
                         getAgent().disableMeasurement(Measurement.TYPE_STEPS_SNAPSHOT);
                     else if (value == wearProtocolEnable && !enabledMeasurements.contains(Measurement.TYPE_STEPS_SNAPSHOT))

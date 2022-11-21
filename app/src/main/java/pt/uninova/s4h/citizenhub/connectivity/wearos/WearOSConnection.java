@@ -3,6 +3,7 @@ package pt.uninova.s4h.citizenhub.connectivity.wearos;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,25 +38,24 @@ public class WearOSConnection {
 
         synchronized (channelListenerMap) {
             if (!channelListenerMap.containsKey(key)) {
-                channelListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<ChannelListener, Boolean>()));
+                channelListenerMap.put(key, Collections.newSetFromMap(new ConcurrentHashMap<>()));
             }
         }
-        channelListenerMap.get(key).add(listener);
+        Objects.requireNonNull(channelListenerMap.get(key)).add(listener);
     }
 
     public void onCharacteristicChanged(String[] messageArray) {
         final int key = Integer.parseInt(messageArray[2]);
 
         if (channelListenerMap.containsKey(key)) {
-            for (ChannelListener i : channelListenerMap.get(key)) {
+            for (ChannelListener i : Objects.requireNonNull(channelListenerMap.get(key))) {
                 i.onChange(getValue(messageArray), getTimeStamp(messageArray));
             }
         }
     }
 
     public double getValue(String[] message) {
-        double value = Double.parseDouble(message[0]);
-        return value;
+        return Double.parseDouble(message[0]);
     }
 
 

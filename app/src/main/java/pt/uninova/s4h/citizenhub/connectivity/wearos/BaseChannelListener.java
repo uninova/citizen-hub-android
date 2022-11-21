@@ -16,11 +16,8 @@ public class BaseChannelListener implements ChannelListener {
     }
 
     @Override
-    public void onChange(double value, Date timestamp) {
-    }
+    public void onChange(double value, Date timestamp) {}
 
     @Override
-    public void onWrite(byte[] value) {
-    }
-
+    public void onWrite(byte[] value) {}
 }

@@ -6,10 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
@@ -65,45 +61,10 @@ public class ForegroundService extends Service {
 
         ongoingActivity.apply(getApplicationContext());
         manager.notify(1, notification);
-
         startForeground(1, notification);
 
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor sensorSteps = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        Sensor sensorHeartRate = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-
         MainActivity.protocolSteps.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
-
         MainActivity.protocolHeartRate.observeForever(aBoolean -> updateNotificationMessage(pendingIntent));
-
-        SensorEventListener stepsListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                //TODO
-                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER)
-                    System.out.println("Steps Sensor Event from foreground service: " + event.values[0]);
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
-        SensorEventListener heartRateListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (event.sensor.getType() == Sensor.TYPE_HEART_RATE)
-                    System.out.println("HR Sensor Event from foreground service: " + event.values[0]);
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
-
-        sensorManager.registerListener(stepsListener, sensorSteps,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(heartRateListener, sensorHeartRate,
-                SensorManager.SENSOR_DELAY_NORMAL);
 
         return START_NOT_STICKY;
     }
@@ -128,7 +89,7 @@ public class ForegroundService extends Service {
         if (numberOfActiveSensors != numberOfSensorsMeasuring) {
             {
                 numberOfActiveSensors = numberOfSensorsMeasuring;
-                NotificationCompat.Builder notificationBuilderObserverHR = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                NotificationCompat.Builder notificationBuilderObserverUpdate = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                         .setContentTitle(getString(R.string.notification_content_title))
                         .setContentText(numberOfSensorsMeasuring + getString(R.string.notification_sensors_measuring))
                         .setSmallIcon(R.drawable.img_logo_figure)
@@ -137,9 +98,9 @@ public class ForegroundService extends Service {
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_WORKOUT)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                Notification notificationObserverHR = notificationBuilderObserverHR.build();
+                Notification notificationObserverUpdate = notificationBuilderObserverUpdate.build();
                 NotificationManager notificationManagerHR = getSystemService(NotificationManager.class);
-                notificationManagerHR.notify(1, notificationObserverHR);
+                notificationManagerHR.notify(1, notificationObserverUpdate);
             }
         }
     }

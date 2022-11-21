@@ -46,7 +46,7 @@ public class DataDisplayFragment extends Fragment {
                 heartRateDataLayout.setVisibility(View.VISIBLE);
                 swipeLeft.setVisibility(View.GONE);
             } else {
-                heartRateDataLayout.setVisibility(View.GONE);
+                heartRateDataLayout.setVisibility(View.INVISIBLE);
             }
         });
         MainActivity.protocolSteps.observe((LifecycleOwner) view.getContext(), aBoolean -> {
@@ -54,7 +54,7 @@ public class DataDisplayFragment extends Fragment {
                 stepsDataLayout.setVisibility(View.VISIBLE);
                 swipeLeft.setVisibility(View.GONE);
             } else {
-                stepsDataLayout.setVisibility(View.GONE);
+                stepsDataLayout.setVisibility(View.INVISIBLE);
             }
         });
     }
