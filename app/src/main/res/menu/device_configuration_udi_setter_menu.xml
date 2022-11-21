@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/device_configuration_menu_remove_item"
-        android:title="@string/menu_fragment_device_configuration_remove_item"
-        app:showAsAction="never"/>
+        android:id="@+id/device_configuration_udi_clear_item"
+        android:title="@string/menu_fragment_device_configuration_udi_clear_item"
+        app:showAsAction="never" />
 
 </menu>

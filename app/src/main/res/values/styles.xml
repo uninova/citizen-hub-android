@@ -388,6 +388,7 @@
     </style>
 
     /* Styles used for the report */
+
     <style name="ReportDetailValueType">
         <item name="android:fontFamily">@font/neosanspro</item>
         <item name="android:gravity">left</item>
@@ -462,6 +463,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
     <style name="AdvancedConfigurationFragmentCategoryTextView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
@@ -473,15 +475,57 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="CategoryTextViewDivider">
+    <style name="DeviceConfiguration" />
+
+    <style name="DeviceConfiguration.ScrollView">
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/colorS4HGreyMedium</item>
-        <item name="android:alpha">0.5</item>
-        <item name="android:layout_marginHorizontal">10dp</item>
-        <item name="android:layout_marginVertical">20dp</item>
+        <item name="android:fillViewport">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
+        <item name="android:scrollbarFadeDuration">0</item>
+        <item name="android:scrollbarThumbVertical">@color/colorS4HDarkBlue</item>
+        <item name="android:scrollbarSize">6dp</item>
+    </style>
+
+    <style name="DeviceConfiguration.LinearLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">15dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="DeviceConfiguration.DefaultHeightWidth">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+
+    <style name="DeviceConfiguration.EditText" parent="@android:style/Widget.EditText">
+        <item name="android:fontFamily">@font/neo_sans_pro_italic</item>
+        <item name="android:backgroundTint">@color/colorS4HDarkBlue</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="DeviceConfiguration.ProgressBarTextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="fontFamily">@font/neo_sans_pro_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:titleMarginTop">20dp</item>
 
     </style>
+
 
     <style name="AdvancedConfigurationFragmentListItemTextView">
         <item name="android:layout_height">match_parent</item>
@@ -513,6 +557,7 @@
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
+
     <style name="AdvancedConfigurationArrowImageView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -522,15 +567,24 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:tint">@color/colorS4HGreyMedium</item>
     </style>
+
     <style name="AdvancedConfigurationLinearLayoutStyle">
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">30dp</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="android:paddingTop">20dp</item>
+    </style>
+
+    <style name="AdvancedConfigurationNestedLinearLayoutStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">20dp</item>
+
     </style>
 
 </resources>

@@ -1,30 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeviceConfigurationFragment">
-
-    <LinearLayout
-        android:id="@+id/layoutConfigurationTop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:fillViewport="true"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="false"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarThumbVertical="@color/colorS4HDarkBlue"
-            android:scrollbarSize="6dp">
+    android:fillViewport="true"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarFadeDuration="0"
+    android:scrollbarThumbVertical="@color/colorS4HDarkBlue"
+    android:scrollbarSize="6dp"
+    tools:context=".ui.devices.DeviceConfigurationFragment">
 
             <LinearLayout
                 android:id="@+id/layout_advanced_configurations_container"
@@ -34,58 +20,10 @@
                 <include
                     layout="@layout/fragment_device_configuration"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
                 <!-- Inflate multiple xml file here -->
 
             </LinearLayout>
 
 
         </ScrollView>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <Button
-                android:id="@+id/buttonAdvancedConfigurations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/fragment_device_configuration_update_advanced_button_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutConfiguration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/layoutConfigurationTop">
-
-        <LinearLayout
-            android:id="@+id/animationsLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp">
-
-            <Button
-                android:id="@+id/buttonConfiguration"
-                style="@style/Widget.Citizen.Button"
-                android:layout_gravity="center"
-                android:text="@string/fragment_configuration_text_view_update"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:visibility="visible"
-                tools:visibility="visible" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>

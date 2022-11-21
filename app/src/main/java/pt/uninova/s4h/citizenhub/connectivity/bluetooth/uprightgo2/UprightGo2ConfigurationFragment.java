@@ -25,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import pt.uninova.s4h.citizenhub.DeviceConfigurationUpdateFragmentDirections;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
@@ -61,7 +60,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
-        deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_advanced_uprightgo2);
+        deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
         enableAdvancedConfigurations(view, model);
         return view;
@@ -206,7 +205,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         buttonCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(DeviceConfigurationUpdateFragmentDirections.actionDeviceConfigurationUpdateFragmentToUprightGo2CalibrationFragment());
+                Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment());
             }
         });
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        style="@style/DeviceConfiguration.LinearLayout">
+
+        <TextView
+            android:id="@+id/textConfigurationMeasurements"
+            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            android:text="@string/layout_fragment_device_configuration_features"
+            />
+
+        <ListView
+            android:id="@+id/listViewFeature"
+            style="@style/DeviceConfiguration.DefaultHeightWidth"
+            android:divider="@null"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:listSelector="@android:color/transparent" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_device_configuration_container"
+        style="@style/DeviceConfiguration.LinearLayout" >
+
+    </LinearLayout>
+
+</LinearLayout>

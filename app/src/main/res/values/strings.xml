@@ -77,7 +77,7 @@
     <string name="fragment_configuration_text_view_connect">Connect</string>
     <string name="fragment_configuration_text_view_name">%1$s</string>
     <string name="fragment_configuration_text_view_update">Update</string>
-    <string name="fragment_device_add_button">add device</string>
+    <string name="fragment_device_connect_button">Connect</string>
     <string name="fragment_device_add_info_text">Info</string>
     <string name="fragment_device_add_label">Add Device</string>
     <string name="fragment_device_configuration_add_label">About Smart4Health</string>
@@ -606,8 +606,16 @@
     <string name="device_unsupported_label">Device Unsupported</string>
     <string name="fragment_device_calibration_label">Device Calibration</string>
     <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
+    <string name="device_configuration_label">Device Configuration</string>
+    <string name="fragment_device_configuration_unique_device_identifier_text">None</string>
+    <string name="fragment_device_configuration_unique_device_identifier_category">Unique Device Identifier</string>
+    <string name="fragment_device_configuration_udi_setter_text">Click here to add a UDI</string>
+    <string name="fragment_device_configuration_udi_set_button">Set</string>
+    <string name="fragment_device_configuration_udi_clear_button">Clear</string>
+    <string name="fragment_unique_device_identifier_setter_title">Unique Device Identifier</string>
     <string name="fragment_device_search_progress_bar_message">Scanning for devices …</string>
     <string name="fragment_uprightgo2_progress_bar_message">Calibrating ...</string>
+    <string name="menu_fragment_device_configuration_udi_clear_item">Clear</string>
 
     <string-array name="spinner_uprightgo2_strength">
         <item>Gentle</item>

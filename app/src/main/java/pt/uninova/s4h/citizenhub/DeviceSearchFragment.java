@@ -34,7 +34,7 @@ public class DeviceSearchFragment extends BluetoothFragment {
         adapter = new DeviceListAdapter(item -> {
             model.selectDevice(item.getDevice());
 
-            Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceAddConfigurationFragment());
+            Navigation.findNavController(requireView()).navigate(DeviceSearchFragmentDirections.actionDeviceSearchFragmentToDeviceConfigurationTestFragment());
         });
 
         recyclerView.setLayoutManager(layoutManager);
