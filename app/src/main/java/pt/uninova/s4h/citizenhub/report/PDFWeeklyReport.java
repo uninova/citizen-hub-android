@@ -139,32 +139,32 @@ public class PDFWeeklyReport {
 
     }
 
-    private void fetchDailyInfo(LocalDate date){
+    private void fetchDailyInfo(LocalDate localDate, int days){
         ChartFunctions chartFunctions = new ChartFunctions(context);
 
         Observer<List<SummaryDetailUtil>> observerSteps = dailySteps::addAll;
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(context);
-        stepsSnapshotMeasurementRepository.readLastDay(date, observerSteps);
+        stepsSnapshotMeasurementRepository.readSeveralDays(localDate, days, observerSteps);
 
         Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> dailyBloodPressure = chartFunctions.parseBloodPressureUtil(data);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(context);
-        bloodPressureMeasurementRepository.selectLastDay(date, observerBloodPressure);
+        bloodPressureMeasurementRepository.selectLastDay(localDate, observerBloodPressure);
 
         Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> dailyHeartRate = chartFunctions.parseHeartRateUtil(data);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(context);
-        heartRateMeasurementRepository.selectLastDay(date, observerHeartRate);
+        heartRateMeasurementRepository.selectLastDay(localDate, observerHeartRate);
 
         Observer<List<SummaryDetailUtil>> observerCorrectPosture = dailyCorrectPosture::addAll;
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(context);
-        postureMeasurementRepository.readLastDayCorrectPosture(date, observerCorrectPosture);
+        postureMeasurementRepository.readLastDayCorrectPosture(localDate, observerCorrectPosture);
 
         Observer<List<SummaryDetailUtil>> observerIncorrectPosture = dailyIncorrectPosture::addAll;
-        postureMeasurementRepository.readLastDayIncorrectPosture(date, observerIncorrectPosture);
+        postureMeasurementRepository.readLastDayIncorrectPosture(localDate, observerIncorrectPosture);
     }
 
-    public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
+    public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, int days, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
         Looper.prepare();
-        fetchDailyInfo(date);
+        fetchDailyInfo(date, days);
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -194,49 +194,17 @@ public class PDFWeeklyReport {
             int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
             drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
             y += 40;
-
-            if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                for (Group group : groupNotWorkTime.getGroupList()) {
-                    if (verifyGroupSize(group, y, true)) {
-                        drawRect(canvas[0], y + 38, rectHeight);
-                        writePage(document, page[0], canvasWriter[0]);
-                        y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                        rectHeight = y - 20;
-                        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-                        y += 25;
-                    }
-                    y = drawComplexGroups(canvasWriter[0], group, 0, y);
-                }
-                for (Group groupWorkTime : groupsWorkTime) {
-                    int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
-                    if (notWorkTimeLabel == workTimeLabel) {
-                        for (Group group : groupWorkTime.getGroupList()) {
-                            if (verifyGroupSize(groupWorkTime, y, true)) {
-                                drawRect(canvas[0], y + 38, rectHeight);
-                                writePage(document, page[0], canvasWriter[0]);
-                                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                                rectHeight = y - 20;
-                                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
-                                y += 25;
-                            }
-                            y = drawComplexGroups(canvasWriter[0], group, 120, y);
-                        }
-                    }
-                }
-                y += 38;
-            } else {
-                boolean hasItem = false;
-                for (Group groupWorkTime : groupsWorkTime) {
-                    if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
-                        hasItem = true;
-                        y = drawCharts(canvas[0], notWorkTimeLabel, y);
-                        y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
-                    }
-                }
-                if (!hasItem) {
+            boolean hasItem = false;
+            for (Group groupWorkTime : groupsWorkTime) {
+                if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
+                    hasItem = true;
                     y = drawCharts(canvas[0], notWorkTimeLabel, y);
-                    y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
+                    y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
                 }
+            }
+            if (!hasItem) {
+                y = drawCharts(canvas[0], notWorkTimeLabel, y);
+                y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
             }
             drawRect(canvas[0], y, rectHeight);
         }
@@ -257,23 +225,8 @@ public class PDFWeeklyReport {
                 int rectHeight = y - 20;
                 drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
                 y += 25;
-                if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
-                    for (Group group : groupWorkTime.getGroupList()) {
-                        if (verifyGroupSize(group, y, true)) {
-                            drawRect(canvas[0], y, rectHeight);
-                            writePage(document, page[0], canvasWriter[0]);
-                            y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
-                            rectHeight = y - 20;
-                            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
-                            y += 25;
-                        }
-                        y = drawComplexGroups(canvasWriter[0], group, 120, y);
-                    }
-                    y += 38;
-                } else {
-                    y = drawCharts(canvas[0], label, y);
-                    y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
-                }
+                y = drawCharts(canvas[0], label, y);
+                y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
                 drawRect(canvas[0], y, rectHeight);
             }
         }
