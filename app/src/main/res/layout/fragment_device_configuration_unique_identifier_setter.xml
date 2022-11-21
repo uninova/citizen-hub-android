@@ -14,22 +14,28 @@
 
     </TextView>
 
-    <EditText
-        android:layout_marginTop="20dp"
-        android:id="@+id/fragment_device_configuration_udi_setter_textview"
-        style="@style/DeviceConfiguration.EditText"
-        android:hint="@string/fragment_device_configuration_udi_setter_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
+        android:weightSum="1"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
+
+        <EditText
+            android:layout_gravity="center_vertical"
+            android:gravity="start"
+            android:layout_weight="0.2"
+            android:id="@+id/fragment_device_configuration_udi_setter_textview"
+            style="@style/DeviceConfiguration.EditText"
+            android:hint="@string/fragment_device_configuration_udi_setter_text" />
 
         <Button
             android:id="@+id/udi_set_button"
             android:paddingHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.8"
             android:enabled="false"
             android:textColor="@color/button_color_selector"
             style="@style/Widget.Citizen.Button"
