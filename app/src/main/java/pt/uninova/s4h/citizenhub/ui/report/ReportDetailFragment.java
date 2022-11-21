@@ -32,6 +32,8 @@ import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
 import pt.uninova.s4h.citizenhub.report.MeasurementTypeLocalizedResource;
 import pt.uninova.s4h.citizenhub.report.PDFDailyReport;
+import pt.uninova.s4h.citizenhub.report.PDFMonthlyReport;
+import pt.uninova.s4h.citizenhub.report.PDFWeeklyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -156,11 +158,11 @@ public class ReportDetailFragment extends Fragment {
 
         menu.findItem(R.id.upload_weekly_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            /*Observer<byte[]> observer = pdfData -> {
+            Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    File file = new File(path.toString(), "my_file" + ".pdf");
+                    File file = new File(path.toString(), "my_weekly_file" + ".pdf");
                     OutputStream os = new FileOutputStream(file);
                     os.write(pdfData);
                     os.close();
@@ -168,33 +170,34 @@ public class ReportDetailFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            };*/
+            };
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
 
-            Observer<Report> observer = report -> {
-                System.out.println(report.getTitle().getLocalizedString());
-                System.out.println(report.getDate().getLocalizedString());
-                for (Group group : report.getGroups()){
-                    System.out.println("Aqui");
-                    for (Item item1 : group.getItemList())
-                        System.out.println(item1.getLabel().getLocalizedString() + ": " + item1.getValue().getLocalizedString() + " " + item1.getUnits().getLocalizedString());
-                }
+            int days = 7;
+
+            Observer<Report> observerWorkTime = workTime -> {
+                Observer<Report> observerNotWorkTime = notWorkTime -> {
+                    if(workTime.getGroups().size() > 0 || notWorkTime.getGroups().size() > 0) {
+                        PDFWeeklyReport pdfWeeklyReport = new PDFWeeklyReport(getContext());
+                        pdfWeeklyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), days, measurementKindLocalization, observer);
+                    }
+                };
+                dailyReportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, model.getCurrentDate(), days, true, observerNotWorkTime);
             };
-            dailyReportGenerator.generateWeeklyOrMonthlyReport(reportRepository, model.getCurrentDate(), true, true, observer);
-            //dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observer);
+            dailyReportGenerator.generateWeeklyOrMonthlyWorkTimeReport(reportRepository, model.getCurrentDate(), days, true, observerWorkTime);
             return true;
 
         });
 
         menu.findItem(R.id.upload_monthly_pdf).setOnMenuItemClickListener((MenuItem item) -> {
 
-            /*Observer<byte[]> observer = pdfData -> {
+            Observer<byte[]> observer = pdfData -> {
                 try {
                     System.out.println("Aqui");
                     File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    File file = new File(path.toString(), "my_file" + ".pdf");
+                    File file = new File(path.toString(), "my_monthly_file" + ".pdf");
                     OutputStream os = new FileOutputStream(file);
                     os.write(pdfData);
                     os.close();
@@ -202,23 +205,30 @@ public class ReportDetailFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            };*/
+            };
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
 
-            Observer<Report> observer = report -> {
-                System.out.println(report.getTitle().getLocalizedString());
-                System.out.println(report.getDate().getLocalizedString());
-                System.out.println(model.getCurrentDate().minusDays(7));
-                for (Group group : report.getGroups()){
-                    System.out.println("Aqui");
-                    for (Item item1 : group.getItemList())
-                        System.out.println(item1.getLabel().getLocalizedString() + ": " + item1.getValue().getLocalizedString() + " " + item1.getUnits().getLocalizedString());
-                }
+            int days = 31;
+            int monthValue = model.getCurrentDate().getMonthValue();
+            if (monthValue == 2)
+                days = 28;
+            else if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
+                days = 30;
+
+            int finalDays = days; //o generateWeeklyOrMonthlyNotWorkTimeReport não em deixa usar os days...??????
+
+            Observer<Report> observerWorkTime = workTime -> {
+                Observer<Report> observerNotWorkTime = notWorkTime -> {
+                    if(workTime.getGroups().size() > 0 || notWorkTime.getGroups().size() > 0) {
+                        PDFMonthlyReport pdfMonthlyReport = new PDFMonthlyReport(getContext());
+                        pdfMonthlyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
+                    }
+                };
+                dailyReportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, model.getCurrentDate(), finalDays, true, observerNotWorkTime);
             };
-            dailyReportGenerator.generateWeeklyOrMonthlyReport(reportRepository, model.getCurrentDate(), false, true, observer);
-            //dailyReportGenerator.generateNotWorkTimeReport(reportRepository, model.getCurrentDate(), true, observer);
+            dailyReportGenerator.generateWeeklyOrMonthlyWorkTimeReport(reportRepository, model.getCurrentDate(), finalDays, true, observerWorkTime);
             return true;
 
         });
