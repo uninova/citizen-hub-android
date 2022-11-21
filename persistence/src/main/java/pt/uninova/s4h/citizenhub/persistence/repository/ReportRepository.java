@@ -36,6 +36,10 @@ public class ReportRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getWeeklyOrMonthlyWorkTimeSimpleRecords(localDate.minusDays(days), localDate.plusDays(1), days)));
     }
 
+    public void getWeeklyOrMonthlyNotWorkTimeSimpleRecords(LocalDate localDate, int days, Observer<ReportUtil> observer) {
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getWeeklyOrMonthlyNotWorkTimeSimpleRecords(localDate.minusDays(days), localDate.plusDays(1), days)));
+    }
+
     public void getBloodPressure(LocalDate localDate, Observer<List<ReportUtil>> observer) {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(reportDao.getBloodPressure(localDate, localDate.plusDays(1))));
     }
