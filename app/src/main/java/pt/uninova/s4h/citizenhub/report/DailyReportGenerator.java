@@ -212,31 +212,42 @@ public class DailyReportGenerator {
 
     }
 
-    public void generateWeeklyOrMonthlyReport(ReportRepository reportRepository, LocalDate localDate, boolean weekly, boolean pdf, Observer<Report> reportObserver){
+    public void generateWeeklyOrMonthlyWorkTimeReport(ReportRepository reportRepository, LocalDate localDate, int days, boolean pdf, Observer<Report> reportObserver){
 
         String title;
-        int days;
 
-        if (weekly) {
+        if (days == 7) {
             title = "Weekly Report";
-            days = 7;
         }
         else {
             title = "Monthly Report";
-            int monthValue = localDate.getMonthValue();
-            if (monthValue == 2)
-                days = 28;
-            else if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
-                days = 30;
-            else
-                days = 31;
+        }
+
+        Report report = new Report(() -> title, new LocalDateLocalizedResource(localDate));
+        List<Group> groups = report.getGroups();
+
+        reportRepository.getWeeklyOrMonthlyWorkTimeSimpleRecords(localDate, days, observer -> {
+            groupSimpleRecords(observer, groups, pdf);
+            reportObserver.observe(report);
+        });
+    }
+
+    public void generateWeeklyOrMonthlyNotWorkTimeReport(ReportRepository reportRepository, LocalDate localDate, int days, boolean pdf, Observer<Report> reportObserver){
+
+        String title;
+
+        if (days == 7) {
+            title = "Weekly Report";
+        }
+        else {
+            title = "Monthly Report";
         }
 
         System.out.println(localDate.minusDays(days));
         Report report = new Report(() -> title, new LocalDateLocalizedResource(localDate));
         List<Group> groups = report.getGroups();
 
-        reportRepository.getWeeklyOrMonthlyWorkTimeSimpleRecords(localDate, days, observer -> {
+        reportRepository.getWeeklyOrMonthlyNotWorkTimeSimpleRecords(localDate, days, observer -> {
             groupSimpleRecords(observer, groups, pdf);
             reportObserver.observe(report);
         });
