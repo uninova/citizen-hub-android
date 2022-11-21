@@ -46,6 +46,12 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
         super.enable();
     }
 
+    public void saveSettings(){
+        final BluetoothConnection connection = getConnection();
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
+                vibrationSettings(angle, interval, showPattern, pattern, strength));
+    }
+
     private byte[] vibrationEnabled (boolean vibration){
         if(vibration)
             return vibrationON;

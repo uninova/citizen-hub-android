@@ -31,14 +31,19 @@ public class WearOSHeartRateProtocol extends AbstractMeasuringProtocol {
         connection.addChannelListener(new BaseChannelListener(kind) {
             @Override
             public void onChange(double value, Date timestamp) {
+                service.getWearOSMessageService().sendMessage("WearOSConnected","true");
                 final int heartRate = (int) value;
+                Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
                 if(value<wearProtocolDisable){
                     final Sample sample = new Sample(getAgent().getSource(),
                             new HeartRateMeasurement(heartRate));
                     getSampleDispatcher().dispatch(sample);
+
+                    if(!enabledMeasurements.contains(Measurement.TYPE_HEART_RATE)){
+                        getAgent().enableMeasurement(Measurement.TYPE_HEART_RATE);
+                    }
                 }
                 else{
-                    Set<Integer> enabledMeasurements = getAgent().getEnabledMeasurements();
                     if(value==wearProtocolDisable && enabledMeasurements.contains(Measurement.TYPE_HEART_RATE))
                         getAgent().disableMeasurement(Measurement.TYPE_HEART_RATE);
                     else if(value==wearProtocolEnable && !enabledMeasurements.contains(Measurement.TYPE_HEART_RATE))

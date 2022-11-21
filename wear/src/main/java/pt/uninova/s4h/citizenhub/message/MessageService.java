@@ -14,6 +14,7 @@ public class MessageService extends WearableListenerService {
         String protocolPathHeartRate = "WearOSHeartRateProtocol";
         String protocolPathSteps = "WearOSStepsProtocol";
         String agentPath = "WearOSAgent";
+        String phoneConnected = "WearOSConnected";
 
         if(messageEvent.getPath().equals(citizenHubPath + protocolPathHeartRate))
         {
@@ -39,6 +40,15 @@ public class MessageService extends WearableListenerService {
             messageIntent.putExtra(agentPath, message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
         }
+        if(messageEvent.getPath().equals(citizenHubPath + phoneConnected))
+        {
+            final String message = new String(messageEvent.getData());
+            Intent messageIntent = new Intent();
+            messageIntent.setAction(Intent.ACTION_SEND);
+            messageIntent.putExtra(phoneConnected, message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
+        }
+
         else {
             super.onMessageReceived(messageEvent);
         }

@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 
@@ -104,12 +105,17 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                     editor.putBoolean("Posture Correction Vibration", false);
                     editor.apply();
                 }
+                setSetting(model.getSelectedDeviceAgent());
             }
         });
         //Vibration Angle (1 (strict) to 6 (relaxed))
 
         Spinner spinnerAngle = view.findViewById(R.id.spinnerVibrationAngle);
         spinnerAngle.setSelection(sharedPreferences.getInt("Vibration Angle", -1));
+        if (!spinnerAngle.isEnabled()) {
+            spinnerAngle.setAlpha(0.5f);
+            spinnerAngle.getBackground().setAlpha(50);
+        }
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null) {
@@ -117,6 +123,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 }
                 editor.putInt("Vibration Angle", (spinnerAngle.getSelectedItemPosition()));
                 editor.apply();
+
+                setSetting(model.getSelectedDeviceAgent());
             }
 
             @Override
@@ -126,6 +134,11 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         });
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
         spinnerInterval.setSelection(sharedPreferences.getInt("Vibration Interval", -1));
+        if (!spinnerInterval.isEnabled()) {
+            spinnerInterval.setAlpha(0.5f);
+            spinnerInterval.getBackground().setAlpha(50);
+
+        }
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
@@ -133,6 +146,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 editor.putInt("Vibration Interval", (spinnerInterval.getSelectedItemPosition()));
                 System.out.println("Spinner item " + spinnerInterval.getSelectedItem() + "interval:" + spinnerInterval.getSelectedItemPosition() + "spinner i & L" + i + " " + l);
                 editor.apply();
+
+                setSetting(model.getSelectedDeviceAgent());
             }
 
             @Override
@@ -144,12 +159,17 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         // 5 (heartbeat), 6 (tuk tuk), 7 (ecstatic), 8 (muzzle))
         Spinner spinnerPattern = view.findViewById(R.id.spinnerVibrationPattern);
         spinnerPattern.setSelection(sharedPreferences.getInt("Vibration Pattern", -1));
+        if (!spinnerPattern.isEnabled()) {
+            spinnerPattern.setAlpha(0.5f);
+        }
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Pattern", (spinnerPattern.getSelectedItemPosition()));
                 editor.apply();
+
+                setSetting(model.getSelectedDeviceAgent());
             }
 
             @Override
@@ -160,12 +180,17 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
         correctionStrength.setSelection(sharedPreferences.getInt("Vibration Strength", -1));
+        if (!correctionStrength.isEnabled()) {
+            correctionStrength.setAlpha(0.5f);
+        }
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 editor.putInt("Vibration Strength", (correctionStrength.getSelectedItemPosition()));
                 editor.apply();
+
+                setSetting(model.getSelectedDeviceAgent());
                 System.out.println("Strength:" + correctionStrength.getSelectedItemPosition());
             }
 
@@ -191,4 +216,28 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         return new UprightGo2ConfigurationFragment();
     }
 
+    private void setSetting(Agent agent) {
+        boolean vibration = sharedPreferences.getBoolean("Posture Correction Vibration", true);
+        int angle = sharedPreferences.getInt("Vibration Angle", 1);
+        int interval = sharedPreferences.getInt("Vibration Interval", 5);
+        int pattern = sharedPreferences.getInt("Vibration Pattern", 0);
+        boolean showPattern = sharedPreferences.getBoolean("Show Vibration Pattern", true);
+        int strength = sharedPreferences.getInt("Vibration Strength", 0);
+
+        //some value adaptation
+        int time = 5;
+        if (interval == 0)
+            time = 5;
+        else if (interval == 1)
+            time = 15;
+        else if (interval == 2)
+            time = 30;
+        else if (interval == 3)
+            time = 60;
+
+        //Send Message vibration settings
+        UprightGo2VibrationProtocol vibrationProtocol;
+        vibrationProtocol = new UprightGo2VibrationProtocol((UprightGo2Agent) agent, vibration, angle, interval, showPattern, pattern, strength);
+        vibrationProtocol.saveSettings();
+    }
 }

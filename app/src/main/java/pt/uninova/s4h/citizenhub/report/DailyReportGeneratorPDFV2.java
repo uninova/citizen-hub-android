@@ -11,7 +11,10 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
-
+import android.os.Looper;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -23,7 +26,6 @@ import java.util.List;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DailyReportGeneratorPDFV2 {
@@ -31,7 +33,7 @@ public class DailyReportGeneratorPDFV2 {
     private final Context context;
 
     private final Paint logoBackgroundPaint;
-    private final Paint footerPaint;
+    private final TextPaint footerPaint;
     private final Paint titlePaint;
     private final Paint darkTextPaintAlignLeft;
     private final Paint darkTextPaintAlignRight;
@@ -51,8 +53,9 @@ public class DailyReportGeneratorPDFV2 {
         logoBackgroundPaint.setColor(Color.parseColor("#f0f0f0"));
         logoBackgroundPaint.setAntiAlias(true);
 
-        this.footerPaint = new Paint();
+        this.footerPaint = new TextPaint();
         footerPaint.setStyle(Paint.Style.FILL);
+        footerPaint.setTextSize(9);
         footerPaint.setColor(Color.parseColor("#000000"));
         footerPaint.setAntiAlias(true);
 
@@ -316,6 +319,7 @@ public class DailyReportGeneratorPDFV2 {
     }*/
 
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
+        Looper.prepare();
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -468,8 +472,10 @@ public class DailyReportGeneratorPDFV2 {
         canvasWriter.addText(date.toString(), 445, 138, titlePaint);
 
         /* Footer */
-        //canvas.drawRect(0, 820,595, 842, footerPaint);
-        canvasWriter.addText(res.getString(R.string.report_footer), 60, 835, darkTextPaintAlignLeft);
+        StaticLayout textLayout = new StaticLayout(res.getString(R.string.report_footer), footerPaint, 480, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        canvas.translate(60, 805);
+        textLayout.draw(canvas);
+        canvas.translate(-60, -805);
     }
 
     /*private void drawCitizenHub (Canvas canvas, Resources res){
@@ -528,8 +534,7 @@ public class DailyReportGeneratorPDFV2 {
             return y < 842;
         }
         y += 20 + 20 * group.getItemList().size() + 5 + 38;
-        System.out.println(y);
-        return y < 820;
+        return y < 842;
     }
 
     private int drawSimpleGroups(CanvasWriter canvasWriter, Group firstGroup, Group secondGroup, int y){

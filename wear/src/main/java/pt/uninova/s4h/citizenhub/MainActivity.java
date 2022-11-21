@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity {
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
     DecimalFormat f = new DecimalFormat("###");
+    public static long lastTimeConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class MainActivity extends FragmentActivity {
     public void startService() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent serviceIntent = new Intent(getApplicationContext(), ForegroundService.class);
-            serviceIntent.putExtra("inputExtra", "0 " + getString(R.string.notification_sensors_measuring));
+            serviceIntent.putExtra("inputExtra", "2 " + getString(R.string.notification_sensors_measuring));
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
     }
@@ -129,18 +130,22 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-                    listenHeartRate.setValue(String.valueOf(event.values[0]));
-                    new SendMessage(citizenHubPath + nodeIdString, event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
+                    if (Boolean.TRUE.equals(protocolHeartRate.getValue())) {
+                        checkIfConnected();
 
-                    Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int) event.values[0]));
-                    sampleRepository.create(sample, sampleId -> {
-                    });
+                        listenHeartRate.setValue(String.valueOf(event.values[0]));
+                        new SendMessage(citizenHubPath + nodeIdString, event.values[0] + "," + new Date().getTime() + "," + HeartRateMeasurement.TYPE_HEART_RATE).start();
 
-                    final LocalDate now = LocalDate.now();
+                        Sample sample = new Sample(wearDevice, new HeartRateMeasurement((int) event.values[0]));
+                        sampleRepository.create(sample, sampleId -> {
+                        });
 
-                    heartRateMeasurementRepository.readAverageObserved(now, value ->
-                            listenHeartRateAverage.postValue(f.format(value))
-                    );
+                        final LocalDate now = LocalDate.now();
+
+                        heartRateMeasurementRepository.readAverageObserved(now, value ->
+                                listenHeartRateAverage.postValue(f.format(value))
+                        );
+                    }
                 }
             }
 
@@ -153,33 +158,35 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                    if (Boolean.TRUE.equals(protocolSteps.getValue())) {
+                        checkIfConnected();
 
-                    int stepCounter = (int) event.values[0];
-                    final LocalDate now = LocalDate.now();
+                        int stepCounter = (int) event.values[0];
+                        final LocalDate now = LocalDate.now();
 
-                    if (resetSteps(stepCounter)) {
-                        sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
-                        sharedPreferences.edit().putInt("offsetStepCounter", -stepCounter).apply();
+                        if (resetSteps(stepCounter)) {
+                            sharedPreferences.edit().putInt("lastStepCounter", 0).apply();
+                            sharedPreferences.edit().putInt("offsetStepCounter", -stepCounter).apply();
+                        }
+
+                        if (stepCounter < getLastStepCounter())
+                            sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter() + getOffsetStepCounter()).apply();
+                        sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
+                        sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
+
+                        Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter() + getOffsetStepCounter()));
+                        sampleRepository.create(sample, sampleId -> {
+                        });
+
+                        stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
+                            if (value != null)
+                                stepsTotal = value.intValue();
+                            else
+                                stepsTotal = 0;
+                            listenSteps.postValue(String.valueOf(stepsTotal));
+                            new SendMessage(citizenHubPath + nodeIdString, stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                        });
                     }
-                    System.out.println(getLastStepCounter() + "|" + getOffsetStepCounter() + "|" + sharedPreferences.getLong("dayLastStepCounter", 0));
-
-                    if (stepCounter < getLastStepCounter())
-                        sharedPreferences.edit().putInt("offsetStepCounter", getLastStepCounter() + getOffsetStepCounter()).apply();
-                    sharedPreferences.edit().putInt("lastStepCounter", stepCounter).apply();
-                    sharedPreferences.edit().putLong("dayLastStepCounter", new Date().getTime()).apply();
-
-                    Sample sample = new Sample(wearDevice, new StepsSnapshotMeasurement(StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT, getLastStepCounter() + getOffsetStepCounter()));
-                    sampleRepository.create(sample, sampleId -> {
-                    });
-
-                    stepsSnapshotMeasurementRepository.readMaximumObserved(now, value -> {
-                        if (value != null)
-                            stepsTotal = value.intValue();
-                        else
-                            stepsTotal = 0;
-                        listenSteps.postValue(String.valueOf(stepsTotal));
-                        new SendMessage(citizenHubPath + nodeIdString, stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
-                    });
                 }
             }
 
@@ -187,6 +194,16 @@ public class MainActivity extends FragmentActivity {
             public void onAccuracyChanged(Sensor sensor, int i) {
             }
         };
+    }
+
+    private void checkIfConnected(){
+        long currentTime = System.currentTimeMillis();
+        if(currentTime-lastTimeConnected > (30 * 1000)){
+            protocolPhoneConnected.setValue(false);
+        }
+        else{
+            protocolPhoneConnected.setValue(true);
+        }
     }
 
     private Boolean resetSteps(int steps) {
@@ -267,18 +284,18 @@ public class MainActivity extends FragmentActivity {
                 protocolHeartRate.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")));
                 if (Boolean.parseBoolean(intent.getStringExtra("WearOSHeartRateProtocol")))
                     protocolPhoneConnected.setValue(true);
-                else
-                    protocolPhoneConnected.setValue(false);
             }
             if (intent.hasExtra("WearOSStepsProtocol")) {
                 protocolSteps.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")));
                 if (Boolean.parseBoolean(intent.getStringExtra("WearOSStepsProtocol")))
                     protocolPhoneConnected.setValue(true);
-                else
-                    protocolPhoneConnected.setValue(false);
             }
             if (intent.hasExtra("WearOSAgent")) {
                 protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
+            }
+            if (intent.hasExtra("WearOSConnected"))
+            {
+                lastTimeConnected = System.currentTimeMillis();
             }
         }
     }
