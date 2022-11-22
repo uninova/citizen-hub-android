@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -138,12 +136,16 @@ public class DeviceListFragment extends Fragment {
             for (Device i : deviceList) {
                 final Agent agent = model.getAttachedAgent(i);
 
-                if (agent.getState() == Agent.AGENT_STATE_ENABLED) {
-                    adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_connected));
-                } else {
+                if (agent == null || agent.getState() != Agent.AGENT_STATE_ENABLED) {
+                    if (agent != null) {
+                        agent.addStateObserver(agentStateObserver);
+                    }
                     adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_unpaired));
+
+                } else {
+                    adapter.addItem(new DeviceListItem(i, R.drawable.ic_devices_connected));
+                    agent.addStateObserver(agentStateObserver);
                 }
-                agent.addStateObserver(agentStateObserver);
             }
         }
     }
