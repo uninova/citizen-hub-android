@@ -56,13 +56,17 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
 
+        LinearLayout buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
+
+        buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
+
         model.getSelectedDeviceAgent().getSettingsManager().get("First Time", new Observer<String>() {
             @Override
             public void observe(String value) {
                 if (value == null) {
                     model.getSelectedDeviceAgent().getSettingsManager().set("Posture Correction Vibration", "true");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Angle", "1");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Interval", "4");
+                    model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Angle", "0");
+                    model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Interval", "0");
                     model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Pattern", "0");
                     model.getSelectedDeviceAgent().getSettingsManager().set("Show Vibration Pattern", "true");
                     model.getSelectedDeviceAgent().getSettingsManager().set("Vibration Strength", "0");
@@ -204,8 +208,13 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         model.getSelectedDeviceAgent().getSettingsManager().get("Vibration Strength", new Observer<String>() {
             @Override
             public void observe(String value) {
-                correctionStrength.setSelection(Integer.parseInt(value));
-                strength = Integer.parseInt(value);
+                if (value == null) {
+                    correctionStrength.setSelection(0);
+                    strength = 0;
+                } else {
+                    correctionStrength.setSelection(Integer.parseInt(value));
+                    strength = Integer.parseInt(value);
+                }
             }
         });
 
@@ -227,14 +236,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
         // Perform Calibration (Trigger)
-        LinearLayout buttonCalibration = view.findViewById(R.id.calibrationLayout);
-
-        buttonCalibration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment());
-            }
-        });
 
 
     }
@@ -263,4 +264,65 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             vibrationProtocol.saveSettings();
         }
     }
+
+    private void getSettings() {
+        int angle;
+        int interval;
+        int pattern;
+        boolean showPattern;
+        int strength;
+
+        model.getSelectedDeviceAgent().getSettingsManager().get("Posture Correction Vibration", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                boolean vib;
+                if (value.equals("true")) {
+                    vib = true;
+                } else {
+                    if (value.equals("false")) {
+                        vib = false;
+                    }
+                }
+            }
+        });
+
+        model.getSelectedDeviceAgent().getSettingsManager().get("Vibration Angle", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                int angle;
+                angle = Integer.parseInt(value);
+            }
+        });
+
+
+        model.getSelectedDeviceAgent().getSettingsManager().get("Vibration Interval", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                int interval;
+                interval = Integer.parseInt(value);
+
+            }
+        });
+        model.getSelectedDeviceAgent().getSettingsManager().get("Vibration Pattern", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                int pattern;
+                pattern = Integer.parseInt(value);
+            }
+        });
+        model.getSelectedDeviceAgent().getSettingsManager().get("Show Vibration Pattern", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                boolean showPattern = false;
+            }
+        });
+        model.getSelectedDeviceAgent().getSettingsManager().get("Vibration Strength", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                int strength;
+                strength = Integer.parseInt(value);
+            }
+        });
+    }
+
 }
