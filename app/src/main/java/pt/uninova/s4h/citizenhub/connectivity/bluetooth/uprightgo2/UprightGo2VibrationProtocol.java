@@ -40,7 +40,8 @@ public class UprightGo2VibrationProtocol extends BluetoothMeasuringProtocol {
     @Override
     public void enable() {
         final BluetoothConnection connection = getConnection();
-        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC,vibrationEnabled(vibration));
+        connection.readCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC);
+        connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_CHARACTERISTIC, vibrationEnabled(vibration));
         connection.writeCharacteristic(VIBRATION_SERVICE, VIBRATION_INTERVAL_CHARACTERISTIC,
                 vibrationSettings(angle, interval, showPattern, pattern, strength));
         super.enable();
