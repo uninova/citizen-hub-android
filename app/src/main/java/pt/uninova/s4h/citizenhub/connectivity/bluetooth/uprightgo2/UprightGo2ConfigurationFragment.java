@@ -88,7 +88,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //Posture Correction Vibration ON/OFF
         SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
-        if (!postureCorrectionVibration.isEnabled()) {
+        if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
             postureCorrectionVibration.setAlpha(0.5f);
         }
         model.getSelectedDeviceAgent().getSettingsManager().get("Posture Correction Vibration", new Observer<String>() {
@@ -126,10 +126,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 angle = Integer.parseInt(value);
             }
         });
-        if (!spinnerAngle.isEnabled()) {
-            spinnerAngle.setAlpha(0.5f);
-            spinnerAngle.getBackground().setAlpha(50);
-        }
+        setSpinnerAlpha(spinnerAngle);
         spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null) {
@@ -155,10 +152,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 interval = Integer.parseInt(value);
             }
         });
-        if (!spinnerInterval.isEnabled()) {
-            spinnerInterval.setAlpha(0.5f);
-            spinnerInterval.getBackground().setAlpha(50);
-        }
+        setSpinnerAlpha(spinnerInterval);
         spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
@@ -184,9 +178,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 pattern = Integer.parseInt(value);
             }
         });
-        if (!spinnerPattern.isEnabled()) {
-            spinnerPattern.setAlpha(0.5f);
-        }
+        setSpinnerAlpha(spinnerPattern);
         spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
@@ -218,9 +210,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
 
-        if (!correctionStrength.isEnabled()) {
-            correctionStrength.setAlpha(0.5f);
-        }
+        setSpinnerAlpha(correctionStrength);
         correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
@@ -262,6 +252,12 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             UprightGo2VibrationProtocol vibrationProtocol;
             vibrationProtocol = new UprightGo2VibrationProtocol((UprightGo2Agent) agent, vibration, angle, interval, false, pattern, strength);
             vibrationProtocol.saveSettings();
+        }
+    }
+
+    private void setSpinnerAlpha(Spinner spinner) {
+        if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
+            spinner.setAlpha(0.5f);
         }
     }
 
