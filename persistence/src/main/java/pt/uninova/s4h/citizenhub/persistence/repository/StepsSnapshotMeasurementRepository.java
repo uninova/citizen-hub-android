@@ -56,6 +56,6 @@ public class StepsSnapshotMeasurementRepository {
     }
 
     public void readSeveralDays(LocalDate localDate, int days, Observer<List<SummaryDetailUtil>> observer){
-        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectSeveralDays(localDate.minusDays(days), localDate.plusDays(1), days)));
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(stepsSnapshotMeasurementDao.selectSeveralDays(localDate.minusDays(days - 1), localDate.plusDays(1), days)));
     }
 }
