@@ -54,11 +54,11 @@ public class PDFWeeklyReport {
     private final Paint rectPaint;
     private final Paint rectFillPaint;
     private final float[] corners;
-    private final List<SummaryDetailUtil> dailySteps = new ArrayList<>();
-    private List<SummaryDetailUtil> dailyBloodPressure = new ArrayList<>();
-    private List<SummaryDetailUtil> dailyHeartRate = new ArrayList<>();
-    private final List<SummaryDetailUtil> dailyCorrectPosture = new ArrayList<>();
-    private final List<SummaryDetailUtil> dailyIncorrectPosture = new ArrayList<>();
+    private final List<SummaryDetailUtil> steps = new ArrayList<>();
+    private List<SummaryDetailUtil> bloodPressure = new ArrayList<>();
+    private List<SummaryDetailUtil> heartRate = new ArrayList<>();
+    private final List<SummaryDetailUtil> correctPosture = new ArrayList<>();
+    private final List<SummaryDetailUtil> incorrectPosture = new ArrayList<>();
 
     public PDFWeeklyReport (Context context) {
         this.context = context;
@@ -139,32 +139,32 @@ public class PDFWeeklyReport {
 
     }
 
-    private void fetchDailyInfo(LocalDate localDate, int days){
+    private void fetchChartsInfo(LocalDate localDate, int days){
         ChartFunctions chartFunctions = new ChartFunctions(context);
 
-        Observer<List<SummaryDetailUtil>> observerSteps = dailySteps::addAll;
+        Observer<List<SummaryDetailUtil>> observerSteps = steps::addAll;
         StepsSnapshotMeasurementRepository stepsSnapshotMeasurementRepository = new StepsSnapshotMeasurementRepository(context);
         stepsSnapshotMeasurementRepository.readSeveralDays(localDate, days, observerSteps);
 
-        Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> dailyBloodPressure = chartFunctions.parseBloodPressureUtil(data);
+        Observer<List<SummaryDetailBloodPressureUtil>> observerBloodPressure = data -> bloodPressure = chartFunctions.parseBloodPressureUtil(data);
         BloodPressureMeasurementRepository bloodPressureMeasurementRepository = new BloodPressureMeasurementRepository(context);
         bloodPressureMeasurementRepository.selectLastDay(localDate, observerBloodPressure);
 
-        Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> dailyHeartRate = chartFunctions.parseHeartRateUtil(data);
+        Observer<List<SummaryDetailHeartRateUtil>> observerHeartRate = data -> heartRate = chartFunctions.parseHeartRateUtil(data);
         HeartRateMeasurementRepository heartRateMeasurementRepository = new HeartRateMeasurementRepository(context);
         heartRateMeasurementRepository.selectLastDay(localDate, observerHeartRate);
 
-        Observer<List<SummaryDetailUtil>> observerCorrectPosture = dailyCorrectPosture::addAll;
+        Observer<List<SummaryDetailUtil>> observerCorrectPosture = correctPosture::addAll;
         PostureMeasurementRepository postureMeasurementRepository = new PostureMeasurementRepository(context);
         postureMeasurementRepository.readLastDayCorrectPosture(localDate, observerCorrectPosture);
 
-        Observer<List<SummaryDetailUtil>> observerIncorrectPosture = dailyIncorrectPosture::addAll;
+        Observer<List<SummaryDetailUtil>> observerIncorrectPosture = incorrectPosture::addAll;
         postureMeasurementRepository.readLastDayIncorrectPosture(localDate, observerIncorrectPosture);
     }
 
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, int days, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
         Looper.prepare();
-        fetchDailyInfo(date, days);
+        fetchChartsInfo(date, days);
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -374,16 +374,16 @@ public class PDFWeeklyReport {
             case Measurement.TYPE_ACTIVITY:
             case Measurement.TYPE_DISTANCE_SNAPSHOT:
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
-                drawBarChart(chart, dailySteps); break; //Ver com o carlos
+                drawBarChart(chart, steps); break; //Ver com o carlos
             case Measurement.TYPE_BLOOD_PRESSURE:
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyBloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}); break;
+                drawLineChart(chart, bloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}); break;
             case Measurement.TYPE_HEART_RATE:
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawLineChart(chart, dailyHeartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}); break;
+                drawLineChart(chart, heartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}); break;
             case Measurement.TYPE_POSTURE:
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
-                drawAreaChart(chart, dailyCorrectPosture, dailyIncorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}); break;
+                drawAreaChart(chart, correctPosture, incorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}); break;
             default:
                 chart = null;
         }
