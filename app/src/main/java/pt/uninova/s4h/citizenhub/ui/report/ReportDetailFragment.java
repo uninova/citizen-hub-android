@@ -32,8 +32,7 @@ import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
 import pt.uninova.s4h.citizenhub.report.MeasurementTypeLocalizedResource;
 import pt.uninova.s4h.citizenhub.report.PDFDailyReport;
-import pt.uninova.s4h.citizenhub.report.PDFMonthlyReport;
-import pt.uninova.s4h.citizenhub.report.PDFWeeklyReport;
+import pt.uninova.s4h.citizenhub.report.PDFWeeklyAndMonthlyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -175,18 +174,18 @@ public class ReportDetailFragment extends Fragment {
             ReportRepository reportRepository = new ReportRepository(requireContext());
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
 
-            int days = 7;
-
             Observer<Report> observerWorkTime = workTime -> {
                 Observer<Report> observerNotWorkTime = notWorkTime -> {
+                    System.out.println(model.getCurrentDate().minusDays(6));
+                    System.out.println(model.getCurrentDate());
                     if(workTime.getGroups().size() > 0 || notWorkTime.getGroups().size() > 0) {
-                        PDFWeeklyReport pdfWeeklyReport = new PDFWeeklyReport(getContext());
-                        pdfWeeklyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), days, measurementKindLocalization, observer);
+                        PDFWeeklyAndMonthlyReport pdfWeeklyAndMonthlyReport = new PDFWeeklyAndMonthlyReport(getContext(), model.getCurrentDate());
+                        pdfWeeklyAndMonthlyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), 7, measurementKindLocalization, observer);
                     }
                 };
-                dailyReportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, model.getCurrentDate(), days, true, observerNotWorkTime);
+                dailyReportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, model.getCurrentDate(), 7, true, observerNotWorkTime);
             };
-            dailyReportGenerator.generateWeeklyOrMonthlyWorkTimeReport(reportRepository, model.getCurrentDate(), days, true, observerWorkTime);
+            dailyReportGenerator.generateWeeklyOrMonthlyWorkTimeReport(reportRepository, model.getCurrentDate(), 7, true, observerWorkTime);
             return true;
 
         });
@@ -210,20 +209,20 @@ public class ReportDetailFragment extends Fragment {
             ReportRepository reportRepository = new ReportRepository(requireContext());
             DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
 
-            int days = 31;
+            int days = 30;
             int monthValue = model.getCurrentDate().getMonthValue();
             if (monthValue == 2)
-                days = 28;
+                days = 27;
             else if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
-                days = 30;
+                days = 29;
 
             int finalDays = days; //o generateWeeklyOrMonthlyNotWorkTimeReport não em deixa usar os days...??????
 
             Observer<Report> observerWorkTime = workTime -> {
                 Observer<Report> observerNotWorkTime = notWorkTime -> {
                     if(workTime.getGroups().size() > 0 || notWorkTime.getGroups().size() > 0) {
-                        PDFMonthlyReport pdfMonthlyReport = new PDFMonthlyReport(getContext());
-                        pdfMonthlyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), measurementKindLocalization, observer);
+                        PDFWeeklyAndMonthlyReport pdfWeeklyAndMonthlyReport = new PDFWeeklyAndMonthlyReport(getContext(), model.getCurrentDate());
+                        pdfWeeklyAndMonthlyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), finalDays,measurementKindLocalization, observer);
                     }
                 };
                 dailyReportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, model.getCurrentDate(), finalDays, true, observerNotWorkTime);
