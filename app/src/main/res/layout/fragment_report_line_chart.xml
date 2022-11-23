@@ -31,7 +31,7 @@
             android:layout_alignEnd="@id/line_chart"
             android:layout_alignStart="@id/line_chart"
             android:gravity="center"
-            android:text="@string/summary_detail_time_hours"
+            android:text="@string/summary_detail_time_days"
             android:textSize="7sp"
             android:textColor="@color/colorS4HBlack"
             tools:ignore="SmallSp" />
