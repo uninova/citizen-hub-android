@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2;
 
 import android.content.Context;
-import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +18,7 @@ import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
 public class UprightGo2Agent extends BluetoothAgent {
 
@@ -46,6 +46,7 @@ public class UprightGo2Agent extends BluetoothAgent {
     @Override
     public List<Fragment> getConfigurationFragments() {
         List<Fragment> uprightList = new ArrayList<>();
+        uprightList.add(DeviceConfigurationUniqueIdentifierFragment.newInstance());
         uprightList.add(UprightGo2ConfigurationFragment.newInstance());
         return uprightList;
     }

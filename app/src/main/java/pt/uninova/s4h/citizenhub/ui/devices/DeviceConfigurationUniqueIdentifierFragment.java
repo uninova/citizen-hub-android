@@ -21,6 +21,10 @@ public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
     private DeviceViewModel model;
     TextView udiTextView;
 
+    public static Fragment newInstance() {
+        return new DeviceConfigurationUniqueIdentifierFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
