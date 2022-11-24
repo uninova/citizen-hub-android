@@ -68,16 +68,16 @@ public class DeviceConfigurationFragment extends Fragment {
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
         loadSupportedFeatures();
         if (model.getSelectedDeviceAgent() != null) {
+
+//            udiFragment = new DeviceConfigurationUniqueIdentifierFragment();
+//            ft.add(R.id.layout_device_configuration_container, udiFragment);
+//            for (Fragment fragment : getChildFragmentManager().getFragments()) {
+//                if (fragment != null) {
+//                    getChildFragmentManager().beginTransaction().remove(fragment).commit();
+//                }
+//            }
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            udiFragment = new DeviceConfigurationUniqueIdentifierFragment();
-            ft.add(R.id.layout_device_configuration_container, udiFragment);
-            for (Fragment fragment : getChildFragmentManager().getFragments()) {
-                if (fragment != null) {
-                    getChildFragmentManager().beginTransaction().remove(fragment).commit();
-                }
-            }
-
             if (fragmentList != null) {
                 for (int i = 0; i < fragmentList.size(); i++) {
                     Fragment newFragment = null;
