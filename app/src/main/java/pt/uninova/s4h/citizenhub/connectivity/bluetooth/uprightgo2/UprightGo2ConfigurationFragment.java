@@ -107,10 +107,10 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         });
         postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                model.getSelectedDeviceAgent().getSettingsManager().set("uid", "true");
+                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "true");
                 vibration = true;
             } else {
-                model.getSelectedDeviceAgent().getSettingsManager().set("uid", "false");
+                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "false");
                 vibration = false;
             }
             setSetting(model.getSelectedDeviceAgent());
