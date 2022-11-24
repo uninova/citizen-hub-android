@@ -14,8 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 
-public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
+public class DeviceConfigurationUniqueIdentifierFragment extends AbstractConfigurationFragment {
 
     private LinearLayout udiButton;
     private DeviceViewModel model;
