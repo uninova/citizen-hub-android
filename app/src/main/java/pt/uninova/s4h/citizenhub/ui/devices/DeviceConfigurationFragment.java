@@ -36,7 +36,7 @@ public class DeviceConfigurationFragment extends Fragment {
     private TextView addressDevice;
     private Fragment udiFragment;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
-        listViewFeatures.deferNotifyDataSetChanged();
+//        listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
 //            loadSupportedFeatures();
             setChildrenEnabled(advancedConfigurationLayout, value.getNewState() == 1);

@@ -8,7 +8,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,26 +15,32 @@ import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.ui.devices.FeatureListAdapter;
 import pt.uninova.s4h.citizenhub.ui.devices.FeatureListItem;
+import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
-
-    private DeviceViewModel model;
+    private final Agent agent;
     private ListView streamsListView;
     private MeasurementKindLocalization measurementKindLocalization;
 
+    private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
+        streamsListView.deferNotifyDataSetChanged();
+        requireActivity().runOnUiThread(this::loadSupportedFeatures);
+
+    };
+
     public UprightGo2StreamsFragment(Agent agent) {
         super(agent);
+        this.agent = agent;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
     }
 
@@ -50,23 +55,20 @@ public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
     }
 
     protected void loadSupportedFeatures() {
-        if (model.getSelectedDeviceAgent() != null) {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
-
-            streamsListView.setAdapter(adapter);
-            adapter.updateResults(getSupportedFeatures());
+        FeatureListAdapter adapter;
+        if (agent != null) {
+            adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), agent.getState() == 1, agent);
 
         } else {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
-            streamsListView.setAdapter(adapter);
-            adapter.updateResults(getSupportedFeatures());
+            adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), agent);
 
         }
+        streamsListView.setAdapter(adapter);
+        adapter.updateResults(getSupportedFeatures());
     }
 
     protected List<FeatureListItem> getSupportedFeatures() {
         final List<FeatureListItem> featureListItems = new LinkedList<>();
-        final Agent agent = model.getSelectedDeviceAgent();
         if (agent != null) {
 
             if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {

@@ -19,7 +19,6 @@ import java.util.Objects;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
-import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragment {
@@ -37,13 +36,13 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
 
     public UprightGo2ConfigurationFragment(Agent agent) {
         super(agent);
+        this.agent = agent;
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_advanced, container, false);
-        final Device device = agent.getSource();
 
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
@@ -65,10 +64,10 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                     agent.getSettingsManager().set("vibration-strength", "0");
 
                     agent.getSettingsManager().set("First Time", "1");
-                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, device);
+                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
 
                 } else {
-                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, device);
+                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
 
                 }
             }
@@ -78,7 +77,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     }
 
 
-    protected void setupAdvancedConfigurationsUprightGo2(View view, Device device) {
+    protected void setupAdvancedConfigurationsUprightGo2(View view) {
         //posture-correction-vibration ON/OFF
         SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
         if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
