@@ -77,16 +77,8 @@ public class DeviceConfigurationFragment extends Fragment {
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             if (fragmentList != null) {
-                for (int i = 0; i < fragmentList.size(); i++) {
-                    Fragment newFragment = null;
-                    try {
-                        newFragment = fragmentList.get(i).getClass().newInstance();
-
-                    } catch (IllegalAccessException | java.lang.InstantiationException e) {
-                        e.printStackTrace();
-                    }
-                    assert newFragment != null;
-                    ft.add(R.id.layout_device_configuration_container, newFragment);
+                for (Fragment fragment : fragmentList) {
+                    ft.add(R.id.layout_device_configuration_container, fragment);
 
                 }
             }

@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 
 public class DeviceConfigurationUniqueIdentifierFragment extends AbstractConfigurationFragment {
@@ -22,8 +22,8 @@ public class DeviceConfigurationUniqueIdentifierFragment extends AbstractConfigu
     private DeviceViewModel model;
     TextView udiTextView;
 
-    public static Fragment newInstance() {
-        return new DeviceConfigurationUniqueIdentifierFragment();
+    public DeviceConfigurationUniqueIdentifierFragment(Agent agent) {
+        super(agent);
     }
 
     @Override

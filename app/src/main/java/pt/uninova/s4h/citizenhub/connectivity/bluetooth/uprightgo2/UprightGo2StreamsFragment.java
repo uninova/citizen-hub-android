@@ -8,7 +8,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.LinkedList;
@@ -29,8 +28,8 @@ public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
     private ListView streamsListView;
     private MeasurementKindLocalization measurementKindLocalization;
 
-    public static Fragment newInstance() {
-        return new UprightGo2StreamsFragment();
+    public UprightGo2StreamsFragment(Agent agent) {
+        super(agent);
     }
 
     @Override
