@@ -18,9 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
@@ -40,7 +38,7 @@ public class DeviceConfigurationFragment extends Fragment {
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
-            loadSupportedFeatures();
+//            loadSupportedFeatures();
             setChildrenEnabled(advancedConfigurationLayout, value.getNewState() == 1);
 
         });
@@ -66,7 +64,7 @@ public class DeviceConfigurationFragment extends Fragment {
         listViewFeatures = view.findViewById(R.id.listViewFeature);
 
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
-        loadSupportedFeatures();
+//        loadSupportedFeatures();
         if (model.getSelectedDeviceAgent() != null) {
 
 //            udiFragment = new DeviceConfigurationUniqueIdentifierFragment();
@@ -97,20 +95,20 @@ public class DeviceConfigurationFragment extends Fragment {
         return view;
     }
 
-    protected void loadSupportedFeatures() {
-        if (model.getSelectedDeviceAgent() != null) {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
-
-            listViewFeatures.setAdapter(adapter);
-            adapter.updateResults(getSupportedFeatures());
-
-        } else {
-            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
-            listViewFeatures.setAdapter(adapter);
-            adapter.updateResults(getSupportedFeatures());
-
-        }
-    }
+//    protected void loadSupportedFeatures() {
+//        if (model.getSelectedDeviceAgent() != null) {
+//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
+//
+//            listViewFeatures.setAdapter(adapter);
+//            adapter.updateResults(getSupportedFeatures());
+//
+//        } else {
+//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
+//            listViewFeatures.setAdapter(adapter);
+//            adapter.updateResults(getSupportedFeatures());
+//
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -124,28 +122,28 @@ public class DeviceConfigurationFragment extends Fragment {
         });
     }
 
-
-    protected List<FeatureListItem> getSupportedFeatures() {
-        final List<FeatureListItem> featureListItems = new LinkedList<>();
-        final Agent agent = model.getSelectedDeviceAgent();
-        if (agent != null) {
-
-            if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
-
-                for (int i : agent.getSupportedMeasurements()) {
-                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
-                }
-            } else {
-                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
-
-                for (int i : agent.getSupportedMeasurements()) {
-                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
-                }
-            }
-        }
-
-        return featureListItems;
-    }
+//
+//    protected List<FeatureListItem> getSupportedFeatures() {
+//        final List<FeatureListItem> featureListItems = new LinkedList<>();
+//        final Agent agent = model.getSelectedDeviceAgent();
+//        if (agent != null) {
+//
+//            if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
+//
+//                for (int i : agent.getSupportedMeasurements()) {
+//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
+//                }
+//            } else {
+//                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
+//
+//                for (int i : agent.getSupportedMeasurements()) {
+//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
+//                }
+//            }
+//        }
+//
+//        return featureListItems;
+//    }
 
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);

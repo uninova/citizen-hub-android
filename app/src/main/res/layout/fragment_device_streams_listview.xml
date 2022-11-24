@@ -12,7 +12,7 @@
             android:text="@string/layout_fragment_device_configuration_features" />
 
         <ListView
-            android:id="@+id/listViewFeature"
+            android:id="@+id/streamsListView"
             style="@style/DeviceConfiguration.DefaultHeightWidth"
             android:divider="@null" />
     </LinearLayout>
