@@ -30,4 +30,8 @@ public class AbstractConfigurationFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    public void enableView(View view, boolean state) {
+        view.setEnabled(state);
+    }
+
 }
