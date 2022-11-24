@@ -49,7 +49,7 @@
             <ImageView
                 android:id="@+id/imageViewCitizenHub"
                 android:layout_width="60dp"
-                android:layout_height="110dp"
+                android:layout_height="105dp"
                 android:layout_gravity="center"
                 android:src="@drawable/img_citizen_hub_logo_dark_icon" />
 
@@ -86,7 +86,7 @@
         <ImageView
             android:id="@+id/imageView6"
             android:layout_width="140dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:src="@drawable/img_citizen_hub_logo_dark_name" />
 
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
             android:fontFamily="@font/primus_regular"
             android:gravity="center"
             android:text="@string/fragment_greeting_next_page"
