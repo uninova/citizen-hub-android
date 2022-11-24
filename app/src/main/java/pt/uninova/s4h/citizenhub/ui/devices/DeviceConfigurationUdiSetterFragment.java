@@ -2,6 +2,8 @@ package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import pt.uninova.s4h.citizenhub.R;
 public class DeviceConfigurationUdiSetterFragment extends Fragment {
     private DeviceViewModel model;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +40,14 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
         inflater.inflate(R.menu.device_configuration_udi_setter_menu, menu);
         MenuItem clearUdi = menu.findItem(R.id.device_configuration_udi_clear_item);
         clearUdi.setOnMenuItemClickListener((MenuItem item) -> {
+
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
+                }
+            });
             Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
-            model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
             return true;
         });
     }
@@ -79,12 +88,18 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
         setUdi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.getSelectedDeviceAgent().getSettingsManager().set("uid", udiText.getText().toString());
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        model.getSelectedDeviceAgent().getSettingsManager().set("uid", udiText.getText().toString());
+                    }
+                });
+
                 Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
 
             }
         });
-
         return view;
     }
 
