@@ -502,7 +502,7 @@
     <string name="smart4health_heart_rate">Heart Rate</string>
     <string name="smart4health_lumbar_extension_training">Lumbar Extension Training</string>
     <string name="smart4health_posture">Posture</string>
-    
+
     <!-- Strings used in summary detail fragments-->
     <string name="summary_detail_time_today">Today</string>
     <string name="summary_detail_time_last_week">Last Week</string>
@@ -579,12 +579,16 @@
     <string name="fragment_bluetooth_disabled_label">Bluetooth disabled</string>
     <string name="fragment_bluetooth_denied_text_view">Bluetooth permissions denied</string>
     <string name="fragment_bluetooth_denied_label">Bluetooth permissions denied</string>
-    
+
     <string name="bugreport_message">It seems Citizen Hub has crashed the last time it was used.\n\nDo you want to submit a bug report?</string>
     <string name="bugreport_positive_button">Send</string>
     <string name="bugreport_negative_button">Ignore</string>
     <string name="bugreport_confirmation">Report sent</string>
 
+
+    <!--  -->
+    <!-- NEW STRINGS  -->
+    <!--  -->
     <string name="fragment_device_unsupported_message">Device is not supported</string>
     <string name="fragment_device_unsupported_name">Name</string>
     <string name="fragment_device_unsupported_address">Address</string>
@@ -593,16 +597,28 @@
 
     <string name="layout_device_configuration_device_address_value" translatable="false">1$s</string>
     <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
+    <string name="option_arrow" translatable="false">Options Arrow</string>
+
+    <string-array name="spinner_uprightgo2_strength">
+        <item>Gentle</item>
+        <item>Medium</item>
+        <item>Strong</item>
+    </string-array>
+    <!-- At least one of the values above was updated  -->
+
     <string name="layout_device_configuration_device_address_label">Address:</string>
     <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
-
+    <!--  TRANSLATABLE FALSE? (o valor depois é injectado  -->
     <string name="menu_fragment_device_configuration_remove_item">Remove</string>
     <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
     <string name="menu_fragment_device_configuration_update_item">Update</string>
     <string name="fragment_uprightgo2_calibrate_button_text">Calibrate</string>
+
+
     <string name="fragment_uprightgo2_calibration_text">Press the calibration button to calibrate, when your device vibrates click its button once</string>
+    <!--  NEEDS PROPER STRING  -->
+
     <string name="fragment_device_configuration_advanced_uprightgo2_button_text">Calibration</string>
-    <string name="option_arrow" translatable="false">Options Arrow</string>
     <string name="device_unsupported_label">Device Unsupported</string>
     <string name="fragment_device_calibration_label">Device Calibration</string>
     <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
@@ -614,14 +630,8 @@
     <string name="fragment_device_configuration_udi_clear_button">Clear</string>
     <string name="fragment_unique_device_identifier_setter_title">Unique Device Identifier</string>
     <string name="fragment_device_search_progress_bar_message">Scanning for devices …</string>
-    <string name="fragment_uprightgo2_progress_bar_message">Calibrating ...</string>
+    <string name="fragment_uprightgo2_progress_bar_message">Calibrating …</string>
     <string name="menu_fragment_device_configuration_udi_clear_item">Clear</string>
-
-    <string-array name="spinner_uprightgo2_strength">
-        <item>Gentle</item>
-        <item>Medium</item>
-        <item>Strong</item>
-    </string-array>
 
 </resources>
 
