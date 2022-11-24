@@ -46,6 +46,7 @@ public class UprightGo2Agent extends BluetoothAgent {
     @Override
     public List<Fragment> getConfigurationFragments() {
         List<Fragment> uprightList = new ArrayList<>();
+        uprightList.add(UprightGo2StreamsFragment.newInstance());
         uprightList.add(DeviceConfigurationUniqueIdentifierFragment.newInstance());
         uprightList.add(UprightGo2ConfigurationFragment.newInstance());
         return uprightList;
