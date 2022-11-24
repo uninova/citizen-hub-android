@@ -17,29 +17,17 @@ import java.util.Set;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.ui.devices.FeatureListAdapter;
 import pt.uninova.s4h.citizenhub.ui.devices.FeatureListItem;
-import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class UprightGo2StreamsFragment extends Fragment {
+public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
 
     private DeviceViewModel model;
     private ListView streamsListView;
     private MeasurementKindLocalization measurementKindLocalization;
-
-
-    private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
-        streamsListView.deferNotifyDataSetChanged();
-        requireActivity().runOnUiThread(() -> {
-//            loadSupportedFeatures();
-//            setChildrenEnabled(advancedConfigurationLayout, value.getNewState() == 1);
-
-        });
-
-    };
 
     public static Fragment newInstance() {
         return new UprightGo2StreamsFragment();
@@ -50,7 +38,6 @@ public class UprightGo2StreamsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
-
     }
 
     @Nullable
@@ -98,24 +85,6 @@ public class UprightGo2StreamsFragment extends Fragment {
         }
 
         return featureListItems;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (model.getSelectedDeviceAgent() != null) {
-            model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
-//            setChildrenEnabled(advancedConfigurationLayout, model.getSelectedDeviceAgent().getState() == Agent.AGENT_STATE_ENABLED);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (model.getSelectedDeviceAgent() != null) {
-            model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
-        }
     }
 
 }
