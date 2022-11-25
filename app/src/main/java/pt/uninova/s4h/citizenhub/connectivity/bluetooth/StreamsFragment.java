@@ -1,4 +1,4 @@
-package pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2;
+package pt.uninova.s4h.citizenhub.connectivity.bluetooth;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +12,9 @@ import androidx.annotation.Nullable;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class MiBand2StreamsFragment extends AbstractConfigurationFragment {
+public class StreamsFragment extends AbstractConfigurationFragment {
     private final Agent agent;
     private ListView streamsListView;
 
@@ -24,7 +23,7 @@ public class MiBand2StreamsFragment extends AbstractConfigurationFragment {
         requireActivity().runOnUiThread(() -> loadSupportedFeatures(streamsListView));
     };
 
-    public MiBand2StreamsFragment(Agent agent) {
+    public StreamsFragment(Agent agent) {
         super(agent);
         this.agent = agent;
     }
@@ -38,6 +37,7 @@ public class MiBand2StreamsFragment extends AbstractConfigurationFragment {
 
         return view;
     }
+
 
 
 }

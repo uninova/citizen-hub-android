@@ -17,6 +17,7 @@ import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
@@ -49,7 +50,7 @@ public class UprightGo2Agent extends BluetoothAgent {
     @Override
     public List<Fragment> getConfigurationFragments() {
         List<Fragment> uprightList = new ArrayList<>();
-        uprightList.add(new UprightGo2StreamsFragment(this));
+        uprightList.add(new StreamsFragment(this));
         uprightList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
         uprightList.add(new UprightGo2ConfigurationFragment(this));
         return uprightList;

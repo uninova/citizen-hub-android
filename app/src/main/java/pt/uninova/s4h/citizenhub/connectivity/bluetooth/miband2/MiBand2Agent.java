@@ -22,6 +22,7 @@ import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
@@ -134,7 +135,7 @@ public class MiBand2Agent extends BluetoothAgent {
     @Override
     public List<Fragment> getConfigurationFragments() {
         List<Fragment> miBand2List = new ArrayList<>();
-        miBand2List.add(new MiBand2StreamsFragment(this));
+        miBand2List.add(new StreamsFragment(this));
         miBand2List.add(new DeviceConfigurationUniqueIdentifierFragment(this));
         return miBand2List;
     }
