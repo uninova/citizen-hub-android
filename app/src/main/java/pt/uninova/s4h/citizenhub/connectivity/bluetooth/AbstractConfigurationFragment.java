@@ -21,7 +21,7 @@ import pt.uninova.s4h.citizenhub.ui.devices.FeatureListItem;
 
 public class AbstractConfigurationFragment extends Fragment {
 
-    private Agent agent;
+    private final Agent agent;
     public MeasurementKindLocalization measurementKindLocalization;
     public AbstractConfigurationFragment(Agent agent) {
         this.agent = agent;

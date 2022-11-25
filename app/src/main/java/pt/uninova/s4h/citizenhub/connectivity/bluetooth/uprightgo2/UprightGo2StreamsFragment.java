@@ -13,7 +13,6 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
-import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
@@ -28,12 +27,6 @@ public class UprightGo2StreamsFragment extends AbstractConfigurationFragment {
     public UprightGo2StreamsFragment(Agent agent) {
         super(agent);
         this.agent = agent;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        measurementKindLocalization = new MeasurementKindLocalization(requireContext());
     }
 
     @Nullable
