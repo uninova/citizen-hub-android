@@ -161,6 +161,12 @@ public class MainActivity extends FragmentActivity {
                     if (Boolean.TRUE.equals(protocolSteps.getValue())) {
                         checkIfConnected();
 
+                        System.out.println("BEFORE: " + getLastStepCounter() + "|" + getOffsetStepCounter());
+                        //TODO: testing if data from watch system is equal to citizen hub watch and to citizen hub phone (and if data in reports is only deltas)
+                        //testing pending due to problem in adding wearOS device, preliminary testing seems good
+
+                        int previousStepsValue = getLastStepCounter();
+
                         int stepCounter = (int) event.values[0];
                         final LocalDate now = LocalDate.now();
 
@@ -184,8 +190,10 @@ public class MainActivity extends FragmentActivity {
                             else
                                 stepsTotal = 0;
                             listenSteps.postValue(String.valueOf(stepsTotal));
-                            new SendMessage(citizenHubPath + nodeIdString, stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                            new SendMessage(citizenHubPath + nodeIdString, stepsTotal-previousStepsValue + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                         });
+
+                        System.out.println("AFTER: " + getLastStepCounter() + "|" + getOffsetStepCounter() + "|" + previousStepsValue + "|" + stepsTotal + "|" + (stepsTotal-previousStepsValue));
                     }
                 }
             }
