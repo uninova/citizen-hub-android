@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,23 +23,16 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.data.Device;
-import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class DeviceConfigurationFragment extends Fragment {
     private LinearLayout advancedConfigurationLayout;
     private DeviceViewModel model;
-    private ListView listViewFeatures;
-    private MeasurementKindLocalization measurementKindLocalization;
     private TextView nameDevice;
     private TextView addressDevice;
-    private Fragment udiFragment;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
-//        listViewFeatures.deferNotifyDataSetChanged();
         requireActivity().runOnUiThread(() -> {
-//            loadSupportedFeatures();
             setChildrenEnabled(advancedConfigurationLayout, value.getNewState() == 1);
-
         });
 
     };
@@ -49,7 +41,6 @@ public class DeviceConfigurationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-        measurementKindLocalization = new MeasurementKindLocalization(requireContext());
     }
 
     @Nullable
@@ -61,19 +52,9 @@ public class DeviceConfigurationFragment extends Fragment {
         addressDevice = view.findViewById(R.id.textConfigurationAddressValue);
         setHeaderValues(model.getSelectedDevice().getValue());
 
-        listViewFeatures = view.findViewById(R.id.listViewFeature);
-
         advancedConfigurationLayout = view.findViewById(R.id.layout_device_configuration_container);
-//        loadSupportedFeatures();
         if (model.getSelectedDeviceAgent() != null) {
 
-//            udiFragment = new DeviceConfigurationUniqueIdentifierFragment();
-//            ft.add(R.id.layout_device_configuration_container, udiFragment);
-//            for (Fragment fragment : getChildFragmentManager().getFragments()) {
-//                if (fragment != null) {
-//                    getChildFragmentManager().beginTransaction().remove(fragment).commit();
-//                }
-//            }
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             if (fragmentList != null) {
@@ -87,21 +68,6 @@ public class DeviceConfigurationFragment extends Fragment {
         return view;
     }
 
-//    protected void loadSupportedFeatures() {
-//        if (model.getSelectedDeviceAgent() != null) {
-//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent().getState() == 1, model.getSelectedDeviceAgent());
-//
-//            listViewFeatures.setAdapter(adapter);
-//            adapter.updateResults(getSupportedFeatures());
-//
-//        } else {
-//            FeatureListAdapter adapter = new FeatureListAdapter(requireActivity(), getSupportedFeatures(), model.getSelectedDeviceAgent());
-//            listViewFeatures.setAdapter(adapter);
-//            adapter.updateResults(getSupportedFeatures());
-//
-//        }
-//    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
@@ -113,29 +79,6 @@ public class DeviceConfigurationFragment extends Fragment {
             return true;
         });
     }
-
-//
-//    protected List<FeatureListItem> getSupportedFeatures() {
-//        final List<FeatureListItem> featureListItems = new LinkedList<>();
-//        final Agent agent = model.getSelectedDeviceAgent();
-//        if (agent != null) {
-//
-//            if (agent.getState() != 1 && agent.getEnabledMeasurements() != null) {
-//
-//                for (int i : agent.getSupportedMeasurements()) {
-//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), agent.getEnabledMeasurements().contains(i)));
-//                }
-//            } else {
-//                final Set<Integer> measurementKindSet = agent.getEnabledMeasurements();
-//
-//                for (int i : agent.getSupportedMeasurements()) {
-//                    featureListItems.add(new FeatureListItem(i, measurementKindLocalization.localize(i), measurementKindSet.contains(i)));
-//                }
-//            }
-//        }
-//
-//        return featureListItems;
-//    }
 
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
