@@ -88,7 +88,6 @@
     <string name="fragment_device_list_button_search">Search Devices</string>
     <string name="fragment_device_list_item_text_description">Description</string>
     <string name="fragment_device_list_item_text_title">Title</string>
-    <string name="fragment_device_list_label">Devices</string>
     <string name="fragment_device_list_text_no_data">No devices connected.</string>
     <string name="fragment_device_search_bluetooth_disable_button">Don\'t turn on bluetooth</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth not enabled</string>
@@ -201,8 +200,6 @@
     <!-- <string name="fragment_summary_text_view_lumbar_text">Duration: %1$s s\nScore: %2$.2f %%\n Repetitions: %3$d</string> -->
     <string name="fragment_summary_text_view_activity_text">Steps: %1$.0f steps\nDistance: %2$.0f m\nCalories: %3$.0f kcal</string>
     <string name="fragment_user_label">User Profile</string>
-    <string name="layout_activity_add_device_address">Address</string>
-    <string name="layout_activity_add_device_name">Name</string>
     <string name="layout_activity_add_device_priority">Priority: </string>
     <string name="layout_activity_add_device_submit">SUBMIT</string>
     <string name="layout_activity_example_device_item_content_description_device">Device Icon</string>
@@ -215,9 +212,6 @@
     <string name="layout_activity_lobby_contentDescription_lines">Design with blue lines.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Smart4Health logo.</string>
     <string name="layout_activity_main_add_device">ADD DEVICE</string>
-    <string name="layout_fragment_device_configuration_address">Address:</string>
-    <string name="layout_fragment_device_configuration_features">What this device will read:</string>
-    <string name="layout_fragment_device_configuration_name">Name:</string>
     <string name="layout_fragment_report_master_select_day">Select a Day</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon for User</string>
@@ -259,33 +253,6 @@
     <string name="lumbar_icon">Lumbar Icon</string>
     <string name="fragment_report_lumbar_extension_training_weight_textview">"Weight: "</string>
     <string name="fragment_report_lumbar_training_weight_value" translatable="false">0</string>
-
-    <string-array name="spinner_uprightgo2_angle">
-        <item>Very Strict</item>
-        <item>Strict</item>
-        <item>Average</item>
-        <item>Relaxed</item>
-        <item>Very Relaxed</item>
-    </string-array>
-
-    <string-array name="spinner_uprightgo2_interval">
-        <item>5</item>
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-    </string-array>
-    <string-array name="spinner_uprightgo2_pattern">
-        <item>Long</item>
-        <item>Medium</item>
-        <item>Short</item>
-        <item>Ramp up</item>
-        <item>Knock knock</item>
-        <item>Heartbeat</item>
-        <item>Tuk tuk</item>
-        <item>Ecstatic</item>
-        <item>Muzzle</item>
-    </string-array>
-
 
     <string name="spinner_uprightgo2_pattern">Long, Medium, Short, Ramp, Knock knock, Heartbeat, Tuk tuk</string>
     <string name="fragment_report_detail_title_blood_pressure">Blood Pressure</string>
@@ -344,7 +311,6 @@
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirm</string>
     <string name="dialog_do_not_show_this_message_again_text">Don\'t show this message again</string>
     <string name="drawer_accounts_title">Accounts</string>
-    <string name="fragment_device_configuration_advanced_address_text">Address:</string>
     <string name="fragment_device_configuration_advanced_update_text">Update</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Posture Correction Vibration</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Correction Angle</string>
@@ -398,8 +364,6 @@
     <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
     <string name="database_table_name_blood_pressure" translatable="false">blood_pressure</string>
     <string name="database_blood_pressure_column_id" translatable="false">sample_id</string>
-    <string name="fragment_device_add_name">Name: </string>
-    <string name="fragment_device_add_address">Address: </string>
     <string name="fragment_device_search_posture_sensor_name">Posture Sensor</string>
     <string name="fragment_settings_work_days">Work Days</string>
     <string name="fragment_summary_text_view_steps_text">Steps: %1$.0f steps</string>
@@ -585,55 +549,63 @@
     <string name="bugreport_negative_button">Ignore</string>
     <string name="bugreport_confirmation">Report sent</string>
 
+    <!-- 2022-11-24 -->
+    <string name="action_back">Back</string>
+    <string name="action_calibrate">Calibrate</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_reconnect">Reconnect</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_set">Set</string>
+    <string name="action_update">Update</string>
 
-    <!--  -->
-    <!-- NEW STRINGS  -->
-    <!--  -->
-    <string name="fragment_device_unsupported_message">Device is not supported</string>
-    <string name="fragment_device_unsupported_name">Name</string>
-    <string name="fragment_device_unsupported_address">Address</string>
-    <string name="fragment_device_unsupported_device_button_text">Back</string>
+    <string name="description_value_empty">Touch here to change the value…</string>
 
+    <string name="label_active_streams">Collected data</string>
+    <string name="label_address">Address</string>
+    <string name="label_advanced_settings">Advanced settings</string>
+    <string name="label_devices">Devices</string>
+    <string name="label_name">Name</string>
+    <string name="label_udi">Unique Device Identifier</string>
+    <string name="label_uprightgo2_setting_calibration">Calibration</string>
 
-    <string name="layout_device_configuration_device_address_value" translatable="false">1$s</string>
-    <string name="layout_device_configuration_device_name_value" translatable="false">1$s</string>
-    <string name="option_arrow" translatable="false">Options Arrow</string>
+    <string name="loader_calibrate">Calibrating …</string>
+    <string name="loader_search_devices">Searching for devices …</string>
 
-    <string-array name="spinner_uprightgo2_strength">
+    <string name="message_device_unsupported">Device is unsupported.</string>
+    <string name="message_uprightgo2_calibration_indication">Position your back in a naturally straight position and press the Calibrate button.</string>
+
+    <string name="value_address_default" translatable="false">-</string>
+    <string name="value_name_default" translatable="false">-</string>
+    <string name="value_udi_default">None</string>
+
+    <string-array name="value_uprightgo2_angle">
+        <item>Very Strict</item>
+        <item>Strict</item>
+        <item>Average</item>
+        <item>Relaxed</item>
+        <item>Very Relaxed</item>
+    </string-array>
+    <string-array name="value_uprightgo2_interval" translatable="false">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="value_uprightgo2_pattern">
+        <item>Long</item>
+        <item>Medium</item>
+        <item>Short</item>
+        <item>Ramp up</item>
+        <item>Knock knock</item>
+        <item>Heartbeat</item>
+        <item>Tuk tuk</item>
+        <item>Ecstatic</item>
+        <item>Muzzle</item>
+    </string-array>
+    <string-array name="value_uprightgo2_strength">
         <item>Gentle</item>
         <item>Medium</item>
         <item>Strong</item>
     </string-array>
-    <!-- At least one of the values above was updated  -->
-
-    <string name="layout_device_configuration_device_address_label">Address:</string>
-    <string name="layout_list_item_feature_label">enabledMeasurementRecord</string>
-    <!--  TRANSLATABLE FALSE? (o valor depois é injectado  -->
-    <string name="menu_fragment_device_configuration_remove_item">Remove</string>
-    <string name="menu_fragment_device_configuration_reconnect_item">Reconnect</string>
-    <string name="menu_fragment_device_configuration_update_item">Update</string>
-    <string name="fragment_uprightgo2_calibrate_button_text">Calibrate</string>
-
-
-    <string name="fragment_uprightgo2_calibration_text">Press the calibration button to calibrate, when your device vibrates click its button once</string>
-    <!--  NEEDS PROPER STRING  -->
-
-    <string name="fragment_device_configuration_advanced_uprightgo2_button_text">Calibration</string>
-    <string name="device_unsupported_label">Device Unsupported</string>
-    <string name="fragment_device_calibration_label">Device Calibration</string>
-    <string name="fragment_device_configuration_advanced_text_advanced_configuration">Device Configurations</string>
-    <string name="device_configuration_label">Device Configuration</string>
-    <string name="fragment_device_configuration_unique_device_identifier_text">None</string>
-    <string name="fragment_device_configuration_unique_device_identifier_category">Unique Device Identifier</string>
-    <string name="fragment_device_configuration_udi_setter_text">Click here to add a UDI</string>
-    <string name="fragment_device_configuration_udi_set_button">Set</string>
-    <string name="fragment_device_configuration_udi_clear_button">Clear</string>
-    <string name="fragment_unique_device_identifier_setter_title">Unique Device Identifier</string>
-    <string name="fragment_device_search_progress_bar_message">Scanning for devices …</string>
-    <string name="fragment_uprightgo2_progress_bar_message">Calibrating …</string>
-    <string name="menu_fragment_device_configuration_udi_clear_item">Clear</string>
 
 </resources>
-
-
-

@@ -8,7 +8,7 @@
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:text="@string/fragment_unique_device_identifier_setter_title"
+        android:text="@string/label_udi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -28,7 +28,7 @@
             android:layout_weight="0.2"
             android:id="@+id/fragment_device_configuration_udi_setter_textview"
             style="@style/DeviceConfiguration.EditText"
-            android:hint="@string/fragment_device_configuration_udi_setter_text" />
+            android:hint="@string/description_value_empty" />
 
         <Button
             android:id="@+id/udi_set_button"
@@ -40,7 +40,7 @@
             android:enabled="false"
             android:textColor="@color/button_color_selector"
             style="@style/Widget.Citizen.Button"
-            android:text="@string/fragment_device_configuration_udi_set_button" />
+            android:text="@string/action_set" />
 
     </LinearLayout>
 </LinearLayout>

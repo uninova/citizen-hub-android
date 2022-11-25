@@ -88,7 +88,6 @@
     <string name="fragment_device_list_button_search">Geräte suchen</string>
     <string name="fragment_device_list_item_text_description">Beschreibung</string>
     <string name="fragment_device_list_item_text_title">Titel</string>
-    <string name="fragment_device_list_label">Geräte</string>
     <string name="fragment_device_list_text_no_data">Keine Geräte verbunden.</string>
     <string name="fragment_device_search_bluetooth_disable_button">Bluetooth nicht einschalten</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth nicht aktiviert</string>
@@ -194,8 +193,6 @@
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s nicht OK</string>
     <string name="fragment_summary_text_view_activity_text">%1$.0f Schritte</string>
     <string name="fragment_user_label">Benutzerprofil</string>
-    <string name="layout_activity_add_device_address">Adresse</string>
-    <string name="layout_activity_add_device_name">Name</string>
     <string name="layout_activity_add_device_priority">Priorität:</string>
     <string name="layout_activity_add_device_submit">SUBMIT</string>
     <string name="layout_activity_example_device_item_content_description_device">Gerätesymbol</string>
@@ -208,9 +205,6 @@
     <string name="layout_activity_lobby_contentDescription_lines">Design mit blauen Linien.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Smart4Health-Logo.</string>
     <string name="layout_activity_main_add_device">GERÄT HINZUFÜGEN</string>
-    <string name="layout_fragment_device_configuration_address">Adresse</string>
-    <string name="layout_fragment_device_configuration_features">Worauf dieses Gerät Zugriff braucht:</string>
-    <string name="layout_fragment_device_configuration_name">Name</string>
     <string name="layout_fragment_report_master_select_day">Wählen Sie einen Tag</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icon für Benutzer</string>
@@ -284,7 +278,6 @@
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Korrekturwinkel</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Vibration bei falscher Körperhaltung</string>
     <string name="fragment_device_configuration_advanced_update_text">Aktualisierung</string>
-    <string name="fragment_device_configuration_advanced_address_text">Anschrift</string>
     <string name="drawer_accounts_title">Konten</string>
     <string name="dialog_do_not_show_this_message_again_text">Diese Nachricht in Zukunft verbergen</string>
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Bestätigen</string>
@@ -306,26 +299,24 @@
     <string name="fragment_report_detail_fragment_toast_upload_failure">"Datei konnte nicht hochgeladen werden. "</string>
     <string name="fragment_report_detail_fragment_toast_upload_success">"Datei wurde erfolgreich hochgeladen. "</string>
     <string name="fragment_logout_toast_failure_text">"Nicht ausloggen. "</string>
-    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">"Kalibriere, bitte warten... "</string>
+    <string name="fragment_device_configuration_advanced_calibration_dialog_calibrating_text">"Kalibriere, bitte warten..."</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_calibrate_option">Kalibrieren</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text2">" gerade halten.</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_message_text">ACHTUNG: Bevor Sie Kalibrieren drücken, stellen Sie bitte sicher, dass Sie sitzen und ihren Rücken</string>
     <string name="fragment_device_configuration_advanced_calibration_dialog_title">Sensorkalibrierung</string>
     <string name="fragment_device_configuration_advanced_warning_calibration_completed_text">"Kalibrierung abgeschlossen! "</string>
     <string name="fragment_device_configuration_connect_option_text">verbinden</string>
-    <string name="fragment_device_configuration_dialog_calibrating_message">"Kalibriere, bitte warten... "</string>
+    <string name="fragment_device_configuration_dialog_calibrating_message">"Kalibriere, bitte warten..."</string>
     <string name="fragment_device_configuration_warning_calibration_text2"> gerade halten.</string>
     <string name="fragment_device_configuration_dialog_option_calibrate">Kalibrieren</string>
     <string name="fragment_device_configuration_warning_calibration_text">ACHTUNG: Bevor Sie Kalibrieren drücken, stellen Sie bitte sicher, dass Sie sitzen und ihren Rücken</string>
     <string name="fragment_device_configuration_sensor_calibration_text">Sensorkalibrierung</string>
-    <string name="fragment_device_configuration_add_loading_features_text">"Lade Geräteigenschaften... "</string>
+    <string name="fragment_device_configuration_add_loading_features_text">"Lade Geräteigenschaften..."</string>
     <string name="medex_fragment_dialog_textview">"Wenn Sie kein Medx-Benutzer sind oder diesen Inhalt ausblenden möchten, können Sie dies jederzeit in den Einstellungen ändern. "</string>
     <string name="login_fragment_login_text_view">Durch die Authentifizierung werden Sie in der Lage sein, Ihre Gesundheitsberichte hochzuladen und zu verfolgen.</string>
     <string name="fragment_smart4health_account_log_in_title">Anmelden</string>
     <string name="fragment_authentication_skip_text">Sie können die Authentifizierung überspringen und später authentifizieren\n\n<b><i>Überspringen</i></b></string>
     <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
-    <string name="fragment_device_add_name">Name: </string>
-    <string name="fragment_device_add_address">Adresse: </string>
     <string name="fragment_device_search_posture_sensor_name">Haltungssensor</string>
     <string name="fragment_report_text_view_no_data_summary_nodevices">Sie scheinen keine Geräte angeschlossen zu haben. Haben Sie den Bereich Geräte im Seitenmenü überprüft?</string>
     <string name="fragment_settings_work_days">Arbeitstage:</string>
@@ -413,7 +404,7 @@
     <string name="smart4health_heart_rate">Pulsschlag</string>
     <string name="smart4health_lumbar_extension_training">Lumbalextensionstraining</string>
     <string name="smart4health_posture">Haltung</string>
-    
+
     <!-- Strings used in summary detail fragments-->
     <string name="summary_detail_time_today">Heute</string>
     <string name="summary_detail_time_last_week">Letzte Woche</string>
@@ -498,9 +489,57 @@
     <string name="bugreport_negative_button">Ignorieren</string>
     <string name="bugreport_confirmation">Bericht gesendet</string>
 
-    <string name="fragment_device_unsupported_message">Gerät wird nicht unterstützt</string>
-    <string name="fragment_device_unsupported_name">Name</string>
-    <string name="fragment_device_unsupported_address">Adresse</string>
-    <string name="fragment_device_unsupported_device_button_text">Zurück</string>
+
+    <!-- 2022-11-24 -->
+    <string name="action_back">Zurück</string>
+    <string name="action_calibrate">Kalibrieren</string>
+    <string name="action_clear">Löschen</string>
+    <string name="action_reconnect">Wiederverbinden</string>
+    <string name="action_remove">Entfernen</string>
+    <string name="action_set">Definieren</string>
+    <string name="action_update">Aktualisieren</string>
+
+    <string name="description_value_empty">Berühren Sie hier, um den Wert zu ändern…</string>
+
+    <string name="label_active_streams">Gesammelte Daten</string>
+    <string name="label_address">Adresse</string>
+    <string name="label_advanced_settings">Erweiterte Einstellungen</string>
+    <string name="label_devices">Geräte</string>
+    <string name="label_name">Name</string>
+    <string name="label_udi">Eindeutige Gerätekennung (UDI)</string>
+    <string name="label_uprightgo2_setting_calibration">Kalibrierung</string>
+
+    <string name="loader_calibrate">Kalibrieren …</string>
+    <string name="loader_search_devices">Suche nach Geräten …</string>
+
+    <string name="message_device_unsupported">Gerät wird nicht unterstützt.</string>
+    <string name="message_uprightgo2_calibration_indication">Positionieren Sie Ihren Rücken in einer natürlichen geraden Position und drücken Sie die Kalibrieren-Taste.</string>
+
+
+    <string name="value_udi_default">Keiner</string>
+
+    <string-array name="value_uprightgo2_angle">
+        <item>Sehr streng</item>
+        <item>Streng</item>
+        <item>Durchschnittlich</item>
+        <item>Entspannt</item>
+        <item>Sehr entspannt</item>
+    </string-array>
+    <string-array name="value_uprightgo2_pattern">
+        <item>Lang</item>
+        <item>Mittel</item>
+        <item>Kurz</item>
+        <item>Aufsteigend</item>
+        <item>Klopf klopf</item>
+        <item>Pulsieren</item>
+        <item>Tuk tuk</item>
+        <item>Ekstatisch</item>
+        <item>Ruhig</item>
+    </string-array>
+    <string-array name="value_uprightgo2_strength">
+        <item>Sanft</item>
+        <item>Mittel</item>
+        <item>Stark</item>
+    </string-array>
 
 </resources>

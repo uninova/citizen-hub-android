@@ -24,7 +24,7 @@
             android:id="@+id/textUnsupportedDevice"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/fragment_device_unsupported_name"
+            android:text="@string/label_name"
             android:textColor="@color/colorS4HDarkBlue"
             android:fontFamily="@font/primus_bold"
             android:textSize="24sp" />
@@ -43,7 +43,7 @@
             android:id="@+id/textUnsupportedDeviceAddress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/fragment_device_unsupported_address"
+            android:text="@string/label_address"
             android:textColor="@color/colorS4HDarkBlue"
             android:fontFamily="@font/primus_bold"
             android:textSize="24sp" />
@@ -63,7 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/fragment_device_unsupported_message"
+                android:text="@string/message_device_unsupported"
                 android:fontFamily="@font/neo_sans_pro_medium"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -82,7 +82,7 @@
                 android:id="@+id/buttonUnsupportedDeviceContinue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_device_unsupported_device_button_text" />
+                android:text="@string/action_back" />
 
         </LinearLayout>
     </LinearLayout>

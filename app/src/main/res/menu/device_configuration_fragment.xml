@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/device_configuration_menu_remove_item"
-        android:title="@string/menu_fragment_device_configuration_remove_item"
+        android:title="@string/action_remove"
         app:showAsAction="never"/>
 
 </menu>

@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/device_list_fragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceListFragment"
-        android:label="@string/fragment_device_list_label"
+        android:label="@string/label_devices"
         tools:layout="@layout/fragment_device_list">
 
         <action
@@ -113,7 +113,7 @@
     <fragment
         android:id="@+id/device_connection_method_fragment"
         android:name="pt.uninova.s4h.citizenhub.MethodConnectionFragment"
-        android:label="@string/fragment_device_list_label"
+        android:label="@string/label_devices"
         tools:layout="@layout/fragment_device_list">
 
         <action
@@ -396,7 +396,7 @@
     <fragment
         android:id="@+id/deviceUnsupportedFragment"
         android:name="pt.uninova.s4h.citizenhub.DeviceUnsupportedFragment"
-        android:label="@string/device_unsupported_label">
+        android:label="@string/label_devices">
         <action
             android:id="@+id/action_deviceUnsupportedFragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
@@ -405,7 +405,7 @@
     <fragment
         android:id="@+id/uprightGo2CalibrationFragment"
         android:name="pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2CalibrationFragment"
-        android:label="@string/fragment_device_calibration_label">
+        android:label="@string/label_devices">
         <action
             android:id="@+id/action_uprightGo2CalibrationFragment_to_device_configuration_streams_fragment"
             app:destination="@id/deviceConfigurationFragment"
@@ -415,7 +415,7 @@
     <fragment
         android:id="@+id/deviceIdentificationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceIdentificationFragment"
-        android:label="@string/device_configuration_label">
+        android:label="@string/label_devices">
 
         <action
             android:id="@+id/action_deviceIdentificationFragment_to_deviceUnsupportedFragment"
@@ -430,7 +430,7 @@
     <fragment
         android:id="@+id/deviceConfigurationFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragment"
-        android:label="@string/device_configuration_label">
+        android:label="@string/label_devices">
         <action
             android:id="@+id/action_deviceConfigurationStreamsFragment_to_device_list_fragment"
             app:destination="@id/device_list_fragment"
