@@ -38,6 +38,21 @@ public class StreamsFragment extends AbstractConfigurationFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (agent != null) {
+            agent.addStateObserver(agentStateObserver);
+        }
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (agent != null) {
+            agent.removeStateObserver(agentStateObserver);
+        }
+    }
 
 }
