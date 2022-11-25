@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="40dp"
-            android:text="@string/fragment_uprightgo2_calibration_text" />
+            android:text="@string/message_uprightgo2_calibration_indication" />
 
     </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/neo_sans_pro_medium"
                 android:gravity="center"
-                android:text="@string/fragment_uprightgo2_progress_bar_message"
+                android:text="@string/loader_calibrate"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 tools:visibility="visible" />
@@ -99,7 +99,7 @@
         <Button
             android:id="@+id/buttonCalibrate"
             style="@style/Widget.Citizen.Button"
-            android:text="@string/fragment_uprightgo2_calibrate_button_text"
+            android:text="@string/action_calibrate"
             android:textAlignment="center"
             android:textSize="18sp"
             android:visibility="visible"

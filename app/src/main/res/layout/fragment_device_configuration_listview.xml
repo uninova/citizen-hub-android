@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/textConfigurationMeasurements"
             style="@style/AdvancedConfigurationFragmentCategoryTextView"
-            android:text="@string/layout_fragment_device_configuration_features"
+            android:text="@string/label_active_streams"
             />
 
         <ListView

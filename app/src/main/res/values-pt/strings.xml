@@ -90,7 +90,6 @@
     <string name="fragment_device_list_button_search">Procurar Dispositivos</string>
     <string name="fragment_device_list_item_text_description">"Descrição "</string>
     <string name="fragment_device_list_item_text_title">Título</string>
-    <string name="fragment_device_list_label">Dispositivos</string>
     <string name="fragment_device_list_text_no_data">Sem dispositivos ligados.</string>
     <string name="fragment_device_search_bluetooth_disable_button">Não ligue o bluetooth</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth não activado</string>
@@ -196,8 +195,6 @@
     <string name="fragment_summary_text_view_posture_text">Correta: %1$s\nIncorreta: %2$s</string>
     <string name="fragment_summary_text_view_activity_text">%1$.0f passos</string>
     <string name="fragment_user_label">Perfil do utilizador</string>
-    <string name="layout_activity_add_device_address">Endereço</string>
-    <string name="layout_activity_add_device_name">Nome</string>
     <string name="layout_activity_add_device_priority">Prioridade:</string>
     <string name="layout_activity_add_device_submit">SUBMETER</string>
     <string name="layout_activity_example_device_item_content_description_device">Ícone do dispositivo</string>
@@ -210,9 +207,6 @@
     <string name="layout_activity_lobby_contentDescription_lines">Desenho com linhas azuis.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Logotipo Smart4Health.</string>
     <string name="layout_activity_main_add_device">ADICIONAR DISPOSITIVO</string>
-    <string name="layout_fragment_device_configuration_address">Endereço</string>
-    <string name="layout_fragment_device_configuration_features">O que este dispositivo irá ler:</string>
-    <string name="layout_fragment_device_configuration_name">Nome</string>
     <string name="layout_fragment_report_master_select_day">Seleccione um Dia</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Ícone para o utilizador</string>
@@ -234,23 +228,6 @@
     <string name="slide_screen_welcome_text">Welcome</string>
     <string name="styled_citizen_text_first_word">Citizen</string>
     <string name="styled_citizen_text_second_word">HUB</string>
-    <string-array name="spinner_uprightgo2_interval">
-        <item>5</item>
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-    </string-array>
-    <string-array name="spinner_uprightgo2_pattern">
-        <item>Long</item>
-        <item>Medium</item>
-        <item>Short</item>
-        <item>Ramp up</item>
-        <item>Knock knock</item>
-        <item>Heartbeat</item>
-        <item>Tuk tuk</item>
-        <item>Ecstatic</item>
-        <item>Muzzle</item>
-    </string-array>
     <string name="spinner_uprightgo2_pattern">Longo, Medio, Pequeno, Rampa, Toc Toc, Batimento cardiaco, Tuk tuk</string>
     <string name="fragment_lumbar_extension_training_label">Programa lombar</string>
     <string name="medex_fragment_explanation_textview">"Pressione o botão abaixo para encontrar a máquina onde fez o treino. "</string>
@@ -308,7 +285,6 @@
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirmar</string>
     <string name="dialog_do_not_show_this_message_again_text">Não mostre esta mensagem novamente</string>
     <string name="drawer_accounts_title">Contas</string>
-    <string name="fragment_device_configuration_advanced_address_text">Endereço</string>
     <string name="fragment_device_configuration_advanced_update_text">Atualizar</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Postura Correta Vibração</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Ângulo de correção</string>
@@ -349,8 +325,6 @@
     <string name="fragment_smart4health_account_log_in_title">Login</string>
     <string name="fragment_authentication_skip_text">Pode saltar a autenticação e autenticar-se mais tarde\n\n<b><i>Saltar</i></b></string>
     <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
-    <string name="fragment_device_add_name">Nome: </string>
-    <string name="fragment_device_add_address">Endereço: </string>
     <string name="fragment_device_search_posture_sensor_name">Sensor de Postura</string>
     <string name="fragment_settings_work_days">Dias de trabalho</string>
     <string name="fragment_summary_text_view_steps_text">%1$.0f passos</string>
@@ -523,9 +497,56 @@
     <string name="bugreport_negative_button">Ignorar</string>
     <string name="bugreport_confirmation">Relatório enviado</string>
 
-    <string name="fragment_device_unsupported_message">Dispositivo não suportado</string>
-    <string name="fragment_device_unsupported_name">Nome</string>
-    <string name="fragment_device_unsupported_address">Endereço</string>
-    <string name="fragment_device_unsupported_device_button_text">Voltar</string>
+    <!-- 2022-11-24 -->
+    <string name="action_back">Voltar</string>
+    <string name="action_calibrate">Calibrar</string>
+    <string name="action_clear">Limpar</string>
+    <string name="action_reconnect">Reconectar</string>
+    <string name="action_remove">Remover</string>
+    <string name="action_set">Definir</string>
+    <string name="action_update">Atualizar</string>
+
+    <string name="description_value_empty">Toque aqui para modificar o valor…</string>
+
+    <string name="loader_calibrate">A calibrar …</string>
+    <string name="loader_search_devices">À procura de dispositivos …</string>
+
+    <string name="label_active_streams">Dados recolhidos</string>
+    <string name="label_address">Endereço</string>
+    <string name="label_advanced_settings">Configurações avançadas</string>
+    <string name="label_devices">Dispositivos</string>
+    <string name="label_name">Nome</string>
+    <string name="label_udi">Identificador de dispositivo único (UDI)</string>
+    <string name="label_uprightgo2_setting_calibration">Calibração</string>
+
+    <string name="message_device_unsupported">Dispositivo não suportado.</string>
+    <string name="message_uprightgo2_calibration_indication">Posicione as suas costas numa posição direita natural e pressione o botão Calibrar.</string>
+
+
+    <string name="value_udi_default">Nenhum</string>
+
+    <string-array name="value_uprightgo2_angle">
+        <item>Muito rígido</item>
+        <item>Rígido</item>
+        <item>Médio</item>
+        <item>Relaxado</item>
+        <item>Muito relaxado</item>
+    </string-array>
+    <string-array name="value_uprightgo2_pattern">
+        <item>Longo</item>
+        <item>Médio</item>
+        <item>Curto</item>
+        <item>Ascendente</item>
+        <item>Toc toc</item>
+        <item>Batimento</item>
+        <item>Tuk tuk</item>
+        <item>Extático</item>
+        <item>Tranquilo</item>
+    </string-array>
+    <string-array name="value_uprightgo2_strength">
+        <item>Gentil</item>
+        <item>Médio</item>
+        <item>Forte</item>
+    </string-array>
 
 </resources>

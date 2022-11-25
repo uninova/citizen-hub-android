@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:weightSum="6"
-    android:layout_height="wrap_content">
+    android:weightSum="6">
 
     <LinearLayout
         android:id="@+id/calibrationLayout"
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_button_text" />
+            android:text="@string/label_uprightgo2_setting_calibration" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
 
             <ImageView
                 style="@style/AdvancedConfigurationArrowImageView"
-                android:contentDescription="@string/option_arrow" />
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
     </LinearLayout>
@@ -82,7 +83,7 @@
             <Spinner
                 android:id="@+id/spinnerVibrationAngle"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/spinner_uprightgo2_angle"
+                android:entries="@array/value_uprightgo2_angle"
                 android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
         </LinearLayout>
 
@@ -110,7 +111,7 @@
             <Spinner
                 android:id="@+id/spinnerVibrationInterval"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/spinner_uprightgo2_interval" />
+                android:entries="@array/value_uprightgo2_interval" />
         </LinearLayout>
     </LinearLayout>
 
@@ -136,7 +137,7 @@
             <Spinner
                 android:id="@+id/spinnerVibrationPattern"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/spinner_uprightgo2_pattern" />
+                android:entries="@array/value_uprightgo2_pattern" />
         </LinearLayout>
     </LinearLayout>
 
@@ -162,7 +163,7 @@
             <Spinner
                 android:id="@+id/spinnerVibrationStrength"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/spinner_uprightgo2_strength"
+                android:entries="@array/value_uprightgo2_strength"
                 android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
 
         </LinearLayout>

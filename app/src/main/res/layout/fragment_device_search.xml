@@ -40,7 +40,7 @@
                 android:fontFamily="@font/neo_sans_pro_medium"
                 android:gravity="center"
                 android:visibility="visible"
-                android:text="@string/fragment_device_search_progress_bar_message"
+                android:text="@string/loader_search_devices"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 tools:visibility="visible" />

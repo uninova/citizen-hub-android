@@ -88,7 +88,6 @@
     <string name="fragment_device_list_button_search">Rechercher des appareils</string>
     <string name="fragment_device_list_item_text_description">Description</string>
     <string name="fragment_device_list_item_text_title">Titre</string>
-    <string name="fragment_device_list_label">Appareils</string>
     <string name="fragment_device_list_text_no_data">Aucun appareil n\'est connecté.</string>
     <string name="fragment_device_search_bluetooth_disable_button">Ne pas activer le bluetooth</string>
     <string name="fragment_device_search_bluetooth_not_enabled_title">Bluetooth non activé</string>
@@ -194,8 +193,6 @@
     <string name="fragment_summary_text_view_posture_text">%1$s OK\\n%2$s non OK</string>
     <string name="fragment_summary_text_view_activity_text">%1$.0f pas</string>
     <string name="fragment_user_label">Profil Utilisateur</string>
-    <string name="layout_activity_add_device_address">Adresse</string>
-    <string name="layout_activity_add_device_name">Nom</string>
     <string name="layout_activity_add_device_priority">Priorité :</string>
     <string name="layout_activity_add_device_submit">Valider</string>
     <string name="layout_activity_example_device_item_content_description_device">Icône de l\'appareil</string>
@@ -208,9 +205,6 @@
     <string name="layout_activity_lobby_contentDescription_lines">Conçu avec des lignes bleues.</string>
     <string name="layout_activity_lobby_contentDescription_logo">Logo Smart4Health.</string>
     <string name="layout_activity_main_add_device">AJOUTER UN APPAREIL</string>
-    <string name="layout_fragment_device_configuration_address">Adresse</string>
-    <string name="layout_fragment_device_configuration_features">Ce que cet appareil va lire :</string>
-    <string name="layout_fragment_device_configuration_name">Nom</string>
     <string name="layout_fragment_report_master_select_day">Sélectionnez un jour</string>
     <string name="layout_fragment_user_email">someone@uninova.pt</string>
     <string name="layout_fragment_user_icon_content_description">Icône pour l\'utilisateur</string>
@@ -293,7 +287,6 @@
     <string name="menu_fragment_advanced_smart_bear_account_gate_confirm_title">Confirmer</string>
     <string name="dialog_do_not_show_this_message_again_text">Ne plus afficher ce message</string>
     <string name="drawer_accounts_title">Comptes</string>
-    <string name="fragment_device_configuration_advanced_address_text">Adresse</string>
     <string name="fragment_device_configuration_advanced_update_text">Mise à jour</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_posture_correction_text">Vibration pour la correction de posture</string>
     <string name="fragment_device_configuration_advanced_uprightgo2_correction_angle_text">Angle de correction</string>
@@ -324,8 +317,6 @@
     <string name="fragment_smart4health_account_log_in_title">Connexion</string>
     <string name="fragment_authentication_skip_text">Vous pouvez sauter l\'authentification et vous authentifier plus tard\n\n<b><i>Passer</i></b></string>
     <string name="agent_blood_pressure_monitor_name"><![CDATA[A&D Medical Blood Pressure Monitor UA-651BLE]]></string>
-    <string name="fragment_device_add_name">Nom: </string>
-    <string name="fragment_device_add_address">Adresse: </string>
     <string name="fragment_device_search_posture_sensor_name">Capteur de posture</string>
     <string name="fragment_report_text_view_no_data_summary_nodevices">Vous ne semblez pas avoir des appareils connectés. Avez-vous vérifié la section Appareils dans le menu latéral?</string>
     <string name="fragment_settings_work_days">Journées de travail</string>
@@ -498,10 +489,57 @@
     <string name="bugreport_negative_button">Ignorer</string>
     <string name="bugreport_confirmation">Rapport envoyé</string>
 
-    <string name="fragment_device_unsupported_message">L\'appareil n\'est pas pris en charge</string>
-    <string name="fragment_device_unsupported_name">Nom</string>
-    <string name="fragment_device_unsupported_address">Adresse</string>
-    <string name="fragment_device_unsupported_device_button_text">Arrière</string>
 
+    <!-- 2022-11-24 -->
+    <string name="action_back">Arrière</string>
+    <string name="action_calibrate">Calibrer</string>
+    <string name="action_clear">Effacer</string>
+    <string name="action_reconnect">Se reconnecter</string>
+    <string name="action_remove">Éliminer</string>
+    <string name="action_set">Définir</string>
+    <string name="action_update">Actualiser</string>
+
+    <string name="description_value_empty">Touchez ici pour modifier la valeur…</string>
+
+    <string name="loader_calibrate">Calibrage …</string>
+    <string name="loader_search_devices">Recherche d\'appareils …</string>
+
+    <string name="label_active_streams">Données collectées</string>
+    <string name="label_address">Adresse</string>
+    <string name="label_advanced_settings">Réglages avancés</string>
+    <string name="label_devices">Appareils</string>
+    <string name="label_name">Nom</string>
+    <string name="label_udi">Identifiant unique de l\'appareil (UDI)</string>
+    <string name="label_uprightgo2_setting_calibration">Calibrage</string>
+
+    <string name="message_device_unsupported">L\'appareil n\'est pas pris en charge.</string>
+    <string name="message_uprightgo2_calibration_indication">Positionnez votre dos dans une position droite naturelle et appuyez sur le bouton Calibrer.</string>
+
+
+    <string name="value_udi_default">Aucun</string>
+
+    <string-array name="value_uprightgo2_angle">
+        <item>Très strict</item>
+        <item>Strict</item>
+        <item>Moyen</item>
+        <item>Détendu</item>
+        <item>Très détendu</item>
+    </string-array>
+    <string-array name="value_uprightgo2_pattern">
+        <item>Long</item>
+        <item>Moyen</item>
+        <item>Court</item>
+        <item>Ascendant</item>
+        <item>Toc toc</item>
+        <item>Pulsation</item>
+        <item>Tuk tuk</item>
+        <item>Extatique</item>
+        <item>Calme</item>
+    </string-array>
+    <string-array name="value_uprightgo2_strength">
+        <item>Doux</item>
+        <item>Moyen</item>
+        <item>Fort</item>
+    </string-array>
 
 </resources>

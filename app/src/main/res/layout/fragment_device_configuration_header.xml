@@ -8,7 +8,7 @@
                 android:id="@+id/textConfigurationDeviceNameLabel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/layout_fragment_device_configuration_name"
+                android:text="@string/label_name"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:fontFamily="@font/neo_sans_pro_bold"
                 android:textSize="24sp" />
@@ -17,7 +17,7 @@
                 android:id="@+id/textConfigurationDeviceNameValue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_name_value"
+                android:text="@string/value_name_default"
                 android:textColor="@color/colorS4HLightBlue"
                 android:fontFamily="@font/neosanspro_regular"
                 android:textSize="24sp" />
@@ -29,7 +29,7 @@
                 android:id="@+id/textConfigurationDeviceAddressLabel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_address_label"
+                android:text="@string/label_address"
                 android:textColor="@color/colorS4HDarkBlue"
                 android:fontFamily="@font/neo_sans_pro_bold"
                 android:textSize="24sp" />
@@ -38,7 +38,7 @@
                 android:id="@+id/textConfigurationAddressValue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/layout_device_configuration_device_address_value"
+                android:text="@string/value_address_default"
                 android:textColor="@color/colorS4HLightBlue"
                 android:fontFamily="@font/neosanspro_regular"
                 android:textSize="24sp" />

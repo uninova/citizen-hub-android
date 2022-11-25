@@ -19,7 +19,7 @@
             style="@style/AdvancedConfigurationFragmentCategoryTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/fragment_device_configuration_advanced_text_advanced_configuration"
+            android:text="@string/label_advanced_settings"
             tools:visibility="visible" />
     </LinearLayout>
 
