@@ -160,7 +160,6 @@ public class MainActivity extends FragmentActivity {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                     if (Boolean.TRUE.equals(protocolSteps.getValue())) {
                         checkIfConnected();
-                        int previousStepsValue = getLastStepCounter();
                         int stepCounter = (int) event.values[0];
                         final LocalDate now = LocalDate.now();
 
@@ -184,7 +183,7 @@ public class MainActivity extends FragmentActivity {
                             else
                                 stepsTotal = 0;
                             listenSteps.postValue(String.valueOf(stepsTotal));
-                            new SendMessage(citizenHubPath + nodeIdString, stepsTotal-previousStepsValue + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
+                            new SendMessage(citizenHubPath + nodeIdString, stepsTotal + "," + new Date().getTime() + "," + StepsSnapshotMeasurement.TYPE_STEPS_SNAPSHOT).start();
                         });
                     }
                 }
