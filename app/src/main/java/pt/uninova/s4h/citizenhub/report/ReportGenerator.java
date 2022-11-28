@@ -17,13 +17,13 @@ import pt.uninova.s4h.citizenhub.persistence.entity.util.ReportUtil;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class DailyReportGenerator {
+public class ReportGenerator {
 
     private final Resources resources;
     private final MeasurementKindLocalization localization;
     private final SharedPreferences preferences;
 
-    public DailyReportGenerator(Context context) {
+    public ReportGenerator(Context context) {
         this.resources = context.getResources();
         this.localization = new MeasurementKindLocalization(context);
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
