@@ -558,7 +558,7 @@
     <string name="action_set">Set</string>
     <string name="action_update">Update</string>
 
-    <string name="description_value_empty">Touch here to change the value…</string>
+    <string name="description_value_empty">Touch to change…</string>
 
     <string name="label_active_streams">Collected data</string>
     <string name="label_address">Address</string>
@@ -580,6 +580,7 @@
     <string name="label_device_information">Device Information</string>
     <string name="label_serial_number">Serial Number</string>
     <string name="label_system">System</string>
+    <string name="label_device_identifier">Device Identifier</string>
 
     <string-array name="value_uprightgo2_angle">
         <item>Very Strict</item>
