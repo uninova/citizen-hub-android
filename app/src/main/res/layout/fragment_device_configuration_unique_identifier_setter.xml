@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     style="@style/DeviceConfiguration.LinearLayout"
     android:layout_marginVertical="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
@@ -14,33 +15,103 @@
 
     </TextView>
 
+    <LinearLayout
+        android:weightSum="1.8"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="@string/label_serial_number" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_weight="1.8"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:layout_width="wrap_content"
+                android:id="@+id/value_serial_number_edit_text"
+                style="@style/DeviceConfiguration.EditText"
+                android:hint="@string/description_value_empty"
+                tools:ignore="TextFields" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/label_system" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_udi_system"
+                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
+                android:entries="@array/value_udi_system"
+                android:text="GS1" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:weightSum="1.8"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
-        <EditText
-            android:layout_gravity="center_vertical"
-            android:gravity="start"
-            android:layout_weight="0.2"
-            android:id="@+id/fragment_device_configuration_udi_setter_textview"
-            style="@style/DeviceConfiguration.EditText"
-            android:hint="@string/description_value_empty" />
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="@string/label_device_identifier" />
 
-        <Button
-            android:id="@+id/udi_set_button"
-            android:paddingHorizontal="10dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:paddingTop="6dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.8"
-            android:enabled="false"
-            android:textColor="@color/button_color_selector"
-            style="@style/Widget.Citizen.Button"
-            android:text="@string/action_set" />
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_weight="1.8"
 
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:layout_width="wrap_content"
+                android:id="@+id/value_device_identifier_text"
+                style="@style/DeviceConfiguration.EditText"
+                android:hint="@string/description_value_empty" />
+        </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/udi_set_button"
+        android:layout_margin="20dp"
+        android:paddingHorizontal="10dp"
+        android:layout_width="wrap_content"
+        android:paddingTop="6dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="0.8"
+        android:textColor="@color/button_color_selector"
+        style="@style/Widget.Citizen.Button"
+        android:text="@string/action_set" />
 </LinearLayout>
