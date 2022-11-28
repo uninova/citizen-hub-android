@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -130,7 +131,9 @@ public class ChartFunctions {
     * Return:
     * labels (String) - a string that contains the labels which will be displayed in the charts */
     public String[] setLabels(int days) {
-        String[] labels = new String[days + 1];
+        String[] labels = new String[days];
+        if(days == 24)
+            labels = new String[days + 1];
         int i = 0;
         Calendar cal = Calendar.getInstance();
         cal.setTime(Date.from(localDate.minusDays(days - 1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -142,7 +145,6 @@ public class ChartFunctions {
             }
         } else if (days == 7) {
             while (i < days) {
-                System.out.println(localDate.minusDays(6).getDayOfWeek());
                 labels[i] = Objects.requireNonNull(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())).substring(0, 3);
                 cal.add(Calendar.DATE, + 1);
                 i++;
@@ -155,6 +157,7 @@ public class ChartFunctions {
                 i++;
             }
         }
+        System.out.println(Arrays.toString(labels));
         return labels;
     }
     // This sections has functions used to input data into the different charts //
@@ -317,7 +320,7 @@ public class ChartFunctions {
 
         while(currentTime < days){
             total = values2[currentTime] + values1[currentTime];
-            if(max == 24) {
+            if(days == 24) {
                 if (total > 3600000) {
                     values1[currentTime] = values1[currentTime] * 3600000 / total;
                     values2[currentTime] = values2[currentTime] * 3600000 / total;
