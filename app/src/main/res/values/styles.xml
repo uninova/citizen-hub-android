@@ -550,6 +550,7 @@
         <item name="android:textAlignment">textEnd</item>
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
         <item name="android:backgroundTint">@color/spinner_selector</item>
+        <item name="android:paddingHorizontal">30dp</item>
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
