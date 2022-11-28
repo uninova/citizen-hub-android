@@ -14,21 +14,20 @@
 
     </FrameLayout>
 
-    <LinearLayout
-     style="@style/DeviceConfiguration.LinearLayout">
-        <TextView
-            android:id="@+id/textConfigurationMeasurements"
-            style="@style/AdvancedConfigurationFragmentCategoryTextView"
-            android:text="@string/label_active_streams"
-            />
+    <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
+        <!--        <TextView-->
+        <!--            android:id="@+id/textConfigurationMeasurements"-->
+        <!--            style="@style/AdvancedConfigurationFragmentCategoryTextView"-->
+        <!--            android:text="@string/layout_fragment_device_configuration_features"-->
+        <!--            />-->
 
-        <ListView
-            android:id="@+id/listViewFeature"
-            style="@style/DeviceConfiguration.DefaultHeightWidth"
-            android:divider="@null"
-            />
+        <!--        <ListView-->
+        <!--            android:id="@+id/listViewFeature"-->
+        <!--            style="@style/DeviceConfiguration.DefaultHeightWidth"-->
+        <!--            android:divider="@null"-->
+        <!--            />-->
 
-</LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_device_configuration_container"
         android:layout_width="match_parent"

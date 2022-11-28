@@ -9,22 +9,26 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 
-public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
+public class DeviceConfigurationUniqueIdentifierFragment extends AbstractConfigurationFragment {
 
+    private final Agent agent;
     private LinearLayout udiButton;
-    private DeviceViewModel model;
     TextView udiTextView;
+
+    public DeviceConfigurationUniqueIdentifierFragment(Agent agent) {
+        super(agent);
+        this.agent = agent;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
     }
 
     @Nullable
@@ -40,7 +44,7 @@ public class DeviceConfigurationUniqueIdentifierFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("uid", value -> {
+        agent.getSettingsManager().get("uid", value -> {
             if (value != null && !value.equals("")) {
                 udiTextView.setText(value);
             }

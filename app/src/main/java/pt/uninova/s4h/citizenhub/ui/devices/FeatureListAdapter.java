@@ -19,7 +19,7 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 
-class FeatureListAdapter extends BaseAdapter {
+public class FeatureListAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
     private final List<FeatureListItem> data;

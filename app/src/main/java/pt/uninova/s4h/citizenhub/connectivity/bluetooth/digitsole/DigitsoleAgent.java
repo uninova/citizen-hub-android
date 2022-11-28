@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,10 @@ import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2ConfigurationFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
 public class DigitsoleAgent extends BluetoothAgent {
 
@@ -49,7 +53,11 @@ public class DigitsoleAgent extends BluetoothAgent {
 
     @Override
     public List<Fragment> getConfigurationFragments() {
-        return null;
+        List<Fragment> digitSoleList = new ArrayList<>();
+        digitSoleList.add(new StreamsFragment(this));
+        digitSoleList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
+        digitSoleList.add(new UprightGo2ConfigurationFragment(this));
+        return digitSoleList;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,7 +22,9 @@ import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class MiBand2Agent extends BluetoothAgent {
@@ -131,7 +134,10 @@ public class MiBand2Agent extends BluetoothAgent {
 
     @Override
     public List<Fragment> getConfigurationFragments() {
-        return null;
+        List<Fragment> miBand2List = new ArrayList<>();
+        miBand2List.add(new StreamsFragment(this));
+        miBand2List.add(new DeviceConfigurationUniqueIdentifierFragment(this));
+        return miBand2List;
     }
 
 
