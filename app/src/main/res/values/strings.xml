@@ -578,6 +578,8 @@
     <string name="value_name_default" translatable="false">-</string>
     <string name="value_udi_default">None</string>
     <string name="label_device_information">Device Information</string>
+    <string name="label_serial_number">Serial Number</string>
+    <string name="label_system">System</string>
 
     <string-array name="value_uprightgo2_angle">
         <item>Very Strict</item>
@@ -607,6 +609,13 @@
         <item>Gentle</item>
         <item>Medium</item>
         <item>Strong</item>
+    </string-array>
+
+    <string-array name="value_udi_system">
+        <item>GS1</item>
+        <item>HIBCC</item>
+        <item>ICCBBA</item>
+        <item>ICCBA</item>
     </string-array>
 
 </resources>
