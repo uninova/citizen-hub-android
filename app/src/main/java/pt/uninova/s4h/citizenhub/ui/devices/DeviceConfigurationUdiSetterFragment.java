@@ -45,6 +45,8 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 @Override
                 public void run() {
                     model.getSelectedDeviceAgent().getSettingsManager().set("uid", "None");
+
+                    //TODO https://build.fhir.org/device-mappings.html
                 }
             });
             Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
