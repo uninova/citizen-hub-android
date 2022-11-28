@@ -512,6 +512,10 @@
         <item name="android:clickable">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:gravity">end</item>
     </style>
 
     <style name="DeviceConfiguration.ProgressBarTextView">
