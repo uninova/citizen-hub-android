@@ -21,13 +21,11 @@ import androidx.core.content.res.ResourcesCompat;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
-import pt.uninova.s4h.citizenhub.persistence.entity.util.SummaryDetailUtil;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class PDFDailyReport {
@@ -46,12 +44,6 @@ public class PDFDailyReport {
     private final Paint rectPaint;
     private final Paint rectFillPaint;
     private final float[] corners;
-    private final List<SummaryDetailUtil> dailySteps = new ArrayList<>();
-    private List<SummaryDetailUtil> dailyBloodPressure = new ArrayList<>();
-    private List<SummaryDetailUtil> dailyHeartRate = new ArrayList<>();
-    private final List<SummaryDetailUtil> dailyCorrectPosture = new ArrayList<>();
-    private final List<SummaryDetailUtil> dailyIncorrectPosture = new ArrayList<>();
-
 
     public PDFDailyReport (Context context) {
         this.context = context;
@@ -134,7 +126,8 @@ public class PDFDailyReport {
     }
 
     public void generateCompleteReport(Report workTime, Report notWorkTime, Resources res, LocalDate date, MeasurementKindLocalization measurementKindLocalization, Observer<byte[]> observerReportPDF) {
-        Looper.prepare();
+        if(Looper.myLooper() == null)
+            Looper.prepare();
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -258,6 +251,8 @@ public class PDFDailyReport {
         document.close();
         observerReportPDF.observe(outByteArray);
 
+        if(Looper.myLooper() != null)
+            Looper.myLooper().quitSafely();
     }
 
     private void drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date) {
