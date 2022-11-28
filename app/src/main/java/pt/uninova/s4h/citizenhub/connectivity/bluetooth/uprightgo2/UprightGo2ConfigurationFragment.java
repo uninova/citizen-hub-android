@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,6 +28,12 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 public class UprightGo2ConfigurationFragment extends Fragment {
 
     public static String uprightGo2MenuItem = "calibration";
+
+    private SwitchCompat postureCorrectionVibration;
+    private LinearLayout buttonCalibration;
+    private LinearLayout spinnerAngleLayout;
+    private LinearLayout spinnerIntervalLayout;
+    private LinearLayout spinnerPatternLayout;
 
     protected ViewStub deviceAdvancedSettings;
     protected View deviceAdvancedSettingsInflated;
@@ -57,8 +62,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
 
-        LinearLayout buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
-        Group postureCorrectionGroup = deviceAdvancedSettings.findViewById(R.id.postureCorrectionVibrationGroup);
+        buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
         model.getSelectedDeviceAgent().getSettingsManager().get("First Time", new Observer<String>() {
@@ -88,7 +92,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
         //posture-correction-vibration ON/OFF
-        SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
+        postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
         if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
             postureCorrectionVibration.setAlpha(0.5f);
         }
@@ -98,12 +102,26 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 if (Objects.equals(value, "true")) {
                     vibration = true;
                     postureCorrectionVibration.setChecked(true);
-                    postureCorrectionVibration.setEnabled(true);
+
+                    buttonCalibration.setEnabled(true);
+                    buttonCalibration.setAlpha(1);
+                    spinnerAngleLayout.setEnabled(true);
+                    spinnerAngleLayout.setAlpha(1);
+                    spinnerIntervalLayout.setEnabled(true);
+                    spinnerIntervalLayout.setAlpha(1);
+                    spinnerPatternLayout.setEnabled(true);
+                    spinnerPatternLayout.setAlpha(1);
+
                 } else {
                     if (Objects.equals(value, "false")) {
-                        postureCorrectionVibration.setEnabled(false);
-                        postureCorrectionVibration.setChecked(false);
-                        vibration = false;
+                        buttonCalibration.setEnabled(false);
+                        buttonCalibration.setAlpha(0.5f);
+                        spinnerAngleLayout.setEnabled(false);
+                        spinnerAngleLayout.setAlpha(0.5f);
+                        spinnerIntervalLayout.setEnabled(false);
+                        spinnerIntervalLayout.setAlpha(0.5f);
+                        spinnerPatternLayout.setEnabled(false);
+                        spinnerPatternLayout.setAlpha(0.5f);
                     }
                 }
             }
@@ -323,5 +341,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
     }
+
 
 }

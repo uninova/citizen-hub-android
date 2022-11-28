@@ -1,103 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="6">
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/postureCorrectionVibrationGroup"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:constraint_referenced_ids="layoutVibrationAngle,calibrationLayout,layoutVibrationPattern,layoutVibrationInterval" />
-
-    <LinearLayout
-        android:id="@+id/layoutVibrationStrength"
-        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
-
-        <TextView
-            style="@style/AdvancedConfigurationFragmentListItemTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/spinnerVibrationStrength"
-                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/value_uprightgo2_strength"
-                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutPostureCorrection"
-        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
-
-        <TextView
-            style="@style/AdvancedConfigurationFragmentListItemTextView"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_posture_correction_text" />
-
-        <LinearLayout
-            android:id="@+id/switchPostureLayout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchPostureCorrection"
-                style="@style/AdvancedConfigurationFragment.switchCompatStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/calibrationLayout"
-        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
-
-        <TextView
-            android:id="@+id/calibrationButton"
-            style="@style/AdvancedConfigurationFragmentListItemTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/label_uprightgo2_setting_calibration" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_weight="0.8"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/AdvancedConfigurationArrowImageView"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
 
     <LinearLayout
         android:id="@+id/layoutVibrationAngle"
@@ -127,7 +34,68 @@
 
     </LinearLayout>
 
+
     <LinearLayout
+        android:id="@+id/layoutPostureCorrection"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_posture_correction_text" />
+
+        <LinearLayout
+            android:id="@+id/switchPostureLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchPostureCorrection"
+                style="@style/AdvancedConfigurationFragment.switchCompatStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:alpha="0.5"
+        android:clickable="false"
+        android:id="@+id/calibrationLayout"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            android:id="@+id/calibrationButton"
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/label_uprightgo2_setting_calibration" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:alpha="0.5"
+        android:clickable="false"
         android:id="@+id/layoutVibrationInterval"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
@@ -154,6 +122,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:alpha="0.5"
+        android:clickable="false"
         android:id="@+id/layoutVibrationPattern"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
@@ -180,6 +150,35 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:alpha="0.5"
+        android:clickable="false"
+        android:id="@+id/layoutVibrationStrength"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerVibrationStrength"
+                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
+                android:entries="@array/value_uprightgo2_strength"
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_vibration_strength_text" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>
