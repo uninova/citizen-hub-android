@@ -577,6 +577,7 @@
     <string name="value_address_default" translatable="false">-</string>
     <string name="value_name_default" translatable="false">-</string>
     <string name="value_udi_default">None</string>
+    <string name="label_device_information">Device Information</string>
 
     <string-array name="value_uprightgo2_angle">
         <item>Very Strict</item>

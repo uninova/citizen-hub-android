@@ -9,7 +9,7 @@
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:text="@string/label_udi" />
+        android:text="@string/label_device_information" />
 
     <LinearLayout
         android:id="@+id/unique_device_identifier_layout"
@@ -24,8 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:fontFamily="@font/neo_sans_pro_italic"
-            android:text="@string/value_udi_default" />
+            android:text="@string/label_udi" />
 
         <ImageView
             style="@style/AdvancedConfigurationArrowImageView"
