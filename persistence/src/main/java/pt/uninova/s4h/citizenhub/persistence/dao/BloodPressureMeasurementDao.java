@@ -44,6 +44,6 @@ public interface BloodPressureMeasurementDao {
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to) "
             + " SELECT systolic AS systolic, diastolic AS diastolic, mean AS mean, day AS time FROM agg GROUP BY day")
     @TypeConverters(EpochTypeConverter.class)
-    List<SummaryDetailBloodPressureUtil> selectLastDays(LocalDate from, LocalDate to, int days);
+    List<SummaryDetailBloodPressureUtil> selectSeveralDays(LocalDate from, LocalDate to, int days);
 
 }
