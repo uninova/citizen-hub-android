@@ -27,13 +27,14 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
-import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
+
 import pt.uninova.s4h.citizenhub.report.Group;
 import pt.uninova.s4h.citizenhub.report.Item;
 import pt.uninova.s4h.citizenhub.report.MeasurementTypeLocalizedResource;
 import pt.uninova.s4h.citizenhub.report.PDFDailyReport;
 import pt.uninova.s4h.citizenhub.report.PDFWeeklyAndMonthlyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.report.ReportGenerator;
 import pt.uninova.s4h.citizenhub.ui.accounts.AccountsViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
@@ -138,7 +139,7 @@ public class ReportDetailFragment extends Fragment {
             };
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
-            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+            ReportGenerator dailyReportGenerator = new ReportGenerator(requireContext());
 
             Observer<Report> observerWorkTimeReport = workTimeReport -> {
                 Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
@@ -172,7 +173,7 @@ public class ReportDetailFragment extends Fragment {
             };
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
-            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+            ReportGenerator dailyReportGenerator = new ReportGenerator(requireContext());
 
             Observer<Report> observerWorkTime = workTime -> {
                 Observer<Report> observerNotWorkTime = notWorkTime -> {
@@ -207,14 +208,14 @@ public class ReportDetailFragment extends Fragment {
             };
 
             ReportRepository reportRepository = new ReportRepository(requireContext());
-            DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(requireContext());
+            ReportGenerator dailyReportGenerator = new ReportGenerator(requireContext());
 
-            int days = 30;
+            int days = 31;
             int monthValue = model.getCurrentDate().getMonthValue();
             if (monthValue == 2)
-                days = 27;
+                days = 28;
             else if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11)
-                days = 29;
+                days = 30;
 
             int finalDays = days; //o generateWeeklyOrMonthlyNotWorkTimeReport não em deixa usar os days...??????
 

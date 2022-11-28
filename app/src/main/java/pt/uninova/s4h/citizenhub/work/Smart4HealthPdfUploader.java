@@ -40,9 +40,9 @@ import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthDailyReportRepository;
-import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
 import pt.uninova.s4h.citizenhub.report.PDFDailyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.report.ReportGenerator;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class Smart4HealthPdfUploader extends ListenableWorker {
@@ -154,7 +154,7 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                                     };
 
                                     ReportRepository reportRepository = new ReportRepository(getApplicationContext());
-                                    DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplicationContext());
+                                    ReportGenerator reportGenerator = new ReportGenerator(getApplicationContext());
                                     Observer<Report> observerWorkTimeReport = workTimeReport -> {
                                         Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
                                             if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
@@ -163,9 +163,9 @@ public class Smart4HealthPdfUploader extends ListenableWorker {
                                                 //dailyReportGeneratorPDF.generateWorkTimeReportPDF(observer, getResources(), new ReportRepository(getContext()), model.getCurrentDate(), measurementKindLocalization);
                                             }
                                         };
-                                        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, i, true, observerNotWorkTimeReport);
+                                        reportGenerator.generateNotWorkTimeReport(reportRepository, i, true, observerNotWorkTimeReport);
                                     };
-                                    dailyReportGenerator.generateWorkTimeReport(reportRepository, i, true, observerWorkTimeReport);
+                                    reportGenerator.generateWorkTimeReport(reportRepository, i, true, observerWorkTimeReport);
 
                                 }
                             }
