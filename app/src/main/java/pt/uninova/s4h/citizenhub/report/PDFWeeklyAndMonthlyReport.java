@@ -240,27 +240,31 @@ public class PDFWeeklyAndMonthlyReport {
             }
         }
 
-        if (y + 195 > 842) {
-            writePage(document, page[0], canvasWriter[0]);
-            y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, workTime.getTitle().getLocalizedString(),date);
+        if(bloodPressure.size() > 0) {
+            if (y + 195 > 842) {
+                writePage(document, page[0], canvasWriter[0]);
+                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, workTime.getTitle().getLocalizedString(),date);
+            }
+            int rectHeight = y - 20;
+            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, Measurement.TYPE_BLOOD_PRESSURE, y, rectHeight);
+            y += 40;
+            y = drawCharts(canvas[0], Measurement.TYPE_BLOOD_PRESSURE, days, y);
+            y += 43;
+            drawRect(canvas[0], y, rectHeight);
         }
-        int rectHeight = y - 20;
-        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, Measurement.TYPE_BLOOD_PRESSURE, y, rectHeight);
-        y += 40;
-        y = drawCharts(canvas[0], Measurement.TYPE_BLOOD_PRESSURE, days, y);
-        y += 43;
-        drawRect(canvas[0], y, rectHeight);
 
-        if (y + 195 > 842) {
-            writePage(document, page[0], canvasWriter[0]);
-            y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, workTime.getTitle().getLocalizedString(),date);
+        if(heartRate.size() > 0) {
+            if (y + 195 > 842) {
+                writePage(document, page[0], canvasWriter[0]);
+                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, workTime.getTitle().getLocalizedString(),date);
+            }
+            int rectHeight = y - 20;
+            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, Measurement.TYPE_HEART_RATE, y, rectHeight);
+            y += 40;
+            y = drawCharts(canvas[0], Measurement.TYPE_HEART_RATE, days, y);
+            y += 43;
+            drawRect(canvas[0], y, rectHeight);
         }
-        rectHeight = y - 20;
-        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, Measurement.TYPE_HEART_RATE, y, rectHeight);
-        y += 40;
-        y = drawCharts(canvas[0], Measurement.TYPE_HEART_RATE, days, y);
-        y += 43;
-        drawRect(canvas[0], y, rectHeight);
 
         writePage(document, page[0], canvasWriter[0]);
 
@@ -391,15 +395,19 @@ public class PDFWeeklyAndMonthlyReport {
         switch(label){
             case Measurement.TYPE_ACTIVITY:
             case Measurement.TYPE_DISTANCE_SNAPSHOT:
+                System.out.println("Activity");
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_bar_chart, null);
                 drawBarChart(chart, steps, days); break; //Ver com o carlos
             case Measurement.TYPE_BLOOD_PRESSURE:
+                System.out.println("Blood Pressure");
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
                 drawLineChart(chart, bloodPressure, new String[]{context.getString(R.string.summary_detail_blood_pressure_systolic), context.getString(R.string.summary_detail_blood_pressure_diastolic), context.getString(R.string.summary_detail_blood_pressure_mean)}, context.getString(R.string.summary_detail_blood_pressure_with_units), days); break;
             case Measurement.TYPE_HEART_RATE:
+                System.out.println("Heart Rate");
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
                 drawLineChart(chart, heartRate, new String[]{context.getString(R.string.summary_detail_heart_rate_average), context.getString(R.string.summary_detail_heart_rate_maximum), context.getString(R.string.summary_detail_heart_rate_minimum)}, context.getString(R.string.summary_detail_heart_rate_with_units), days); break;
             case Measurement.TYPE_POSTURE:
+                System.out.println("Posture");
                 chart = LayoutInflater.from(context).inflate(R.layout.fragment_report_line_chart, null);
                 drawAreaChart(chart, correctPosture, incorrectPosture, new String[]{context.getString(R.string.summary_detail_posture_correct), context.getString(R.string.summary_detail_posture_incorrect)}, context.getString(R.string.summary_detail_posture), days); break;
             default:
@@ -418,37 +426,35 @@ public class PDFWeeklyAndMonthlyReport {
         barChart.getAxisLeft().setTextSize(6f);
         chartFunctions.setupBarChart(barChart, null);
         chartFunctions.setBarChartData(barChart, data, context.getString(R.string.summary_detail_activity_steps), days);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250,  1400);
+        chart.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        chart.layout(chart.getLeft(), chart.getTop(), chart.getRight(), chart.getBottom());
     }
 
     private void drawLineChart(View chart, List<SummaryDetailUtil> data, String[] labels, String leftAxisLabel, int days){
         LineChart lineChart = chart.findViewById(R.id.line_chart);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setTextSize(6f);
-        xAxis.setAxisMaximum(days - 1);
+        chartFunctions.setupLineChart(lineChart, null);
+        lineChart.getXAxis().setAxisMaximum(days - 1);
+        lineChart.getXAxis().setTextSize(6f);
         lineChart.getAxisLeft().setTextSize(6f);
         VerticalTextView verticalTextView = chart.findViewById(R.id.text_view_y_axis_label);
         verticalTextView.setText(leftAxisLabel);
-        chartFunctions.setupLineChart(lineChart, null);
         chartFunctions.setLineChartData(lineChart, data, labels, days);
-        lineChart.measure(View.MeasureSpec.makeMeasureSpec(chart.getWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(chart.getHeight(), View.MeasureSpec.EXACTLY));
         chart.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         chart.layout(chart.getLeft(), chart.getTop(), chart.getRight(), chart.getBottom());
     }
 
     private void drawAreaChart(View chart, List<SummaryDetailUtil> data1, List<SummaryDetailUtil> data2, String[] labels, String leftAxisLabel, int days){
         LineChart lineChart = chart.findViewById(R.id.line_chart);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setTextSize(6f);
-        xAxis.setAxisMaximum(days - 1);
+        chartFunctions.setupLineChart(lineChart, null);
+        lineChart.getAxisLeft().setAxisMaximum(100);
+        lineChart.getXAxis().setAxisMaximum(days - 1);
         lineChart.getAxisLeft().setTextSize(6f);
+        lineChart.getXAxis().setTextSize(6f);
         VerticalTextView verticalTextView = chart.findViewById(R.id.text_view_y_axis_label);
         verticalTextView.setText(leftAxisLabel);
-        chartFunctions.setupLineChart(chart.findViewById(R.id.line_chart), null);
-        chartFunctions.setAreaChart(chart.findViewById(R.id.line_chart), data1, data2, labels, days);
-        chart.measure(200, 200);
-        chart.layout(0, 0, 2250, 1400);
+        chartFunctions.setAreaChart(lineChart, data1, data2, labels, days);
+        chart.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        chart.layout(chart.getLeft(), chart.getTop(), chart.getRight(), chart.getBottom());
     }
 
     private int createNewPage(PdfDocument document, PdfDocument.Page[] page, PdfDocument.PageInfo pageInfo, Canvas[] canvas, CanvasWriter[] canvasWriter, Resources res, String title, LocalDate date) {
