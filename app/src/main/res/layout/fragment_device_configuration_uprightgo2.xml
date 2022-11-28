@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="6">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/postureCorrectionVibrationGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:constraint_referenced_ids="layoutVibrationAngle,calibrationLayout,layoutVibrationPattern,layoutVibrationInterval" />
 
     <LinearLayout
         android:id="@+id/layoutVibrationStrength"
@@ -169,6 +177,7 @@
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
                 android:entries="@array/value_uprightgo2_pattern" />
         </LinearLayout>
+
     </LinearLayout>
 
 

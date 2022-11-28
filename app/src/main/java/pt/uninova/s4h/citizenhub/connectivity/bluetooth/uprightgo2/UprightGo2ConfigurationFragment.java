@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -57,7 +58,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
 
         LinearLayout buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
-
+        Group postureCorrectionGroup = deviceAdvancedSettings.findViewById(R.id.postureCorrectionVibrationGroup);
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
         model.getSelectedDeviceAgent().getSettingsManager().get("First Time", new Observer<String>() {
@@ -97,8 +98,10 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 if (Objects.equals(value, "true")) {
                     vibration = true;
                     postureCorrectionVibration.setChecked(true);
+                    postureCorrectionVibration.setEnabled(true);
                 } else {
                     if (Objects.equals(value, "false")) {
+                        postureCorrectionVibration.setEnabled(false);
                         postureCorrectionVibration.setChecked(false);
                         vibration = false;
                     }
