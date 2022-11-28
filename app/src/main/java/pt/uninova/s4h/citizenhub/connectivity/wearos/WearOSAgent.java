@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,12 +15,12 @@ import java.util.UUID;
 import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentOrchestrator;
-import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
-import pt.uninova.s4h.citizenhub.data.Device;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.service.CitizenHubService;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
 
 public class WearOSAgent extends AbstractAgent {
@@ -40,7 +41,7 @@ public class WearOSAgent extends AbstractAgent {
     CitizenHubService service;
 
     public WearOSAgent(WearOSConnection connection, CitizenHubService service, Context context) {
-        super(ID, new Device(connection.getAddress(), Connection.CONNECTION_KIND_WEAROS), supportedProtocolsIds, supportedMeasurementKinds, new RoomSettingsManager(context, connection.getAddress()));
+        super(ID, connection.getSource(), supportedProtocolsIds, supportedMeasurementKinds, new RoomSettingsManager(context, connection.getAddress()));
 
         this.service = service;
         this.connection = connection;
@@ -65,7 +66,10 @@ public class WearOSAgent extends AbstractAgent {
 
     @Override
     public List<Fragment> getConfigurationFragments() {
-        return null;
+        List<Fragment> wearOsList = new ArrayList<>();
+        wearOsList.add(new StreamsFragment(this));
+        wearOsList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
+        return wearOsList;
     }
 
     @Override

@@ -31,11 +31,9 @@ public class DeviceViewModel extends AndroidViewModel {
     private final MutableLiveData<Device> selectedDeviceLiveData;
     private final MutableLiveData<Agent> selectedAgentLiveData;
 
-    private final MutableLiveData<Agent> configurationAgent;
 
     public DeviceViewModel(Application application) {
         super(application);
-        configurationAgent = new MutableLiveData<>();
         agentOrchestratorLiveData = new MutableLiveData<>();
         deviceListLiveData = new MutableLiveData<>(Collections.emptyList());
         selectedDeviceLiveData = new MutableLiveData<>();
@@ -131,9 +129,6 @@ public class DeviceViewModel extends AndroidViewModel {
         return agentOrchestrator.getAgent(device);
     }
 
-    public MutableLiveData<Agent> getConfigurationAgent() {
-        return configurationAgent;
-    }
 
     public boolean hasAgentAttached(Device device) {
         return agentOrchestratorLiveData.getValue().getAgent(device) != null;

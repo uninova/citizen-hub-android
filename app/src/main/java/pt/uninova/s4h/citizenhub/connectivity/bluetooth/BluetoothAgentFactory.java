@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import pt.uninova.s4h.citizenhub.connectivity.AbstractAgent;
-import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.AgentFactory;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.and.BloodPressureMonitorAgentMatcher;
@@ -22,6 +20,7 @@ import pt.uninova.s4h.citizenhub.connectivity.bluetooth.kbzposture.KbzPostureAge
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.medx.MedXAgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.miband2.MiBand2AgentMatcher;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2AgentMatcher;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
@@ -108,5 +107,15 @@ public class BluetoothAgentFactory implements AgentFactory<BluetoothAgent> {
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void create(Device device, Observer<BluetoothAgent> observer) {
+        create(device.getAddress(), observer);
+    }
+
+    @Override
+    public void create(Device device, Class<?> c, Observer<BluetoothAgent> observer) {
+        create(device.getAddress(), c, observer);
     }
 }

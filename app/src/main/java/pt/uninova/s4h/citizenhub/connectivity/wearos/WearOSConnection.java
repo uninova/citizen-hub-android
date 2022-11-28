@@ -7,18 +7,22 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import pt.uninova.s4h.citizenhub.connectivity.Connection;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.util.messaging.Dispatcher;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class WearOSConnection {
     private final String address;
+    private final String name;
     private final Dispatcher<StateChangedMessage<WearOSConnectionState, WearOSConnection>> stateChangedMessageDispatcher;
     private final Map<Integer, Set<ChannelListener>> channelListenerMap;
     private WearOSConnectionState state;
 
-    public WearOSConnection(String address) {
+    public WearOSConnection(String address, String name) {
         this.address = address;
+        this.name = name;
 
         state = WearOSConnectionState.DISCONNECTED;
         stateChangedMessageDispatcher = new Dispatcher<>();
@@ -27,6 +31,14 @@ public class WearOSConnection {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Device getSource() {
+        return new Device(address, name, Connection.CONNECTION_KIND_WEAROS);
     }
 
     public void addConnectionStateChangeListener(Observer<StateChangedMessage<WearOSConnectionState, WearOSConnection>> listener) {
