@@ -12,6 +12,7 @@
         android:text="@string/label_device_information" />
 
     <LinearLayout
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle"
         android:id="@+id/unique_device_identifier_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
             android:id="@+id/udiTextViewValue"
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="@string/label_udi" />
