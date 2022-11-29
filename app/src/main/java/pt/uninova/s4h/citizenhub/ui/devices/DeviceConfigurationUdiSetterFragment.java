@@ -1,6 +1,7 @@
 package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -95,19 +97,21 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.UdiAlertDialogStyle);
                 builder.setTitle(getString(R.string.label_device_identifier));
-
                 final EditText input = new EditText(requireContext());
+
                 Drawable wrappedDrawable = DrawableCompat.wrap(input.getBackground());
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
-
-
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+
                 builder.setView(input);
+                input.requestFocus();
+                showKeyboard();
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        closeKeyboard();
                         deviceIdentifierPlaceholder.setText(input.getText().toString());
                         model.getSelectedDeviceAgent().getSettingsManager().set("udi-device-identifier", input.getText().toString());
                     }
@@ -115,6 +119,7 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        closeKeyboard();
                         dialog.cancel();
                     }
                 });
@@ -128,19 +133,22 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.UdiAlertDialogStyle);
                 builder.setTitle(getString(R.string.label_serial_number));
-
                 final EditText input = new EditText(requireContext());
+
                 Drawable wrappedDrawable = DrawableCompat.wrap(input.getBackground());
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
 
-
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+
                 builder.setView(input);
+                input.requestFocus();
+                showKeyboard();
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        closeKeyboard();
                         serialNumberPlaceholder.setText(input.getText().toString());
                         model.getSelectedDeviceAgent().getSettingsManager().set("udi-serial-number", input.getText().toString());
                     }
@@ -148,10 +156,10 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        closeKeyboard();
                         dialog.cancel();
                     }
                 });
-
                 builder.show();
             }
         });
@@ -180,6 +188,16 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void showKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void closeKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
 }
