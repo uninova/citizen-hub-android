@@ -1,51 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
     style="@style/DeviceConfiguration.LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginVertical="10dp"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:text="@string/label_udi"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="@string/label_udi">
 
     </TextView>
 
     <LinearLayout
         android:id="@+id/layout_serial_number"
-        android:weightSum="1.8"
-        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
-
-        <TextView
-            style="@style/AdvancedConfigurationFragmentListItemTextView"
-            android:layout_width="wrap_content"
-            android:text="@string/label_serial_number" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="end"
-            android:layout_weight="1.8"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/label_serial_number" />
 
             <TextView
                 android:id="@+id/value_placeholder_serial_number"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="2dp"
-
                 style="@style/AdvancedConfigurationFragmentListItemTextView"
-                android:textColor="@color/colorS4HGreyMedium"
-                android:text="Click to set serial number" />
+                android:layout_width="wrap_content"
+                android:layout_gravity="start"
+                android:textSize="14sp"
+                android:text="@string/description_value_empty"
+                android:textColor="@color/colorS4HLightBlue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:foregroundGravity="right"
                 style="@style/AdvancedConfigurationArrowImageView"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
@@ -54,14 +66,12 @@
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/label_system" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
             android:gravity="end"
             android:orientation="horizontal">
 
@@ -73,46 +83,46 @@
     </LinearLayout>
 
     <LinearLayout
-        android:weightSum="1.8"
+        android:id="@+id/layout_device_identifier"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
-        <TextView
-            style="@style/AdvancedConfigurationFragmentListItemTextView"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:text="@string/label_device_identifier" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:text="@string/label_device_identifier" />
+
+
+            <TextView
+                android:id="@+id/value_placeholder_device_identifier"
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="start"
+                android:textSize="14sp"
+                android:text="@string/description_value_empty"
+                android:textColor="@color/colorS4HLightBlue" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:gravity="end"
-            android:layout_weight="1.8"
+            android:layout_height="wrap_content">
 
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_gravity="center_vertical"
-                android:gravity="start"
+            <ImageView
                 android:layout_width="wrap_content"
-                android:id="@+id/value_device_identifier_text"
-                style="@style/DeviceConfiguration.EditText"
-                android:hint="@string/description_value_empty" />
+                android:layout_gravity="end"
+                android:foregroundGravity="right"
+                style="@style/AdvancedConfigurationArrowImageView"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/udi_set_button"
-        android:layout_margin="20dp"
-        android:paddingHorizontal="10dp"
-        android:layout_width="wrap_content"
-        android:paddingTop="6dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="0.8"
-        android:textColor="@color/button_color_selector"
-        style="@style/Widget.Citizen.Button"
-        android:text="@string/action_set" />
 </LinearLayout>

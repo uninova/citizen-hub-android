@@ -1,7 +1,6 @@
 package pt.uninova.s4h.citizenhub.ui.devices;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,9 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -69,10 +66,10 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_unique_identifier_setter, container, false);
-        Button setUdi = view.findViewById(R.id.udi_set_button);
         LinearLayout serialNumber = view.findViewById(R.id.layout_serial_number);
+        LinearLayout deviceIdentifierLayout = view.findViewById(R.id.layout_device_identifier);
         TextView serialNumberPlaceholder = view.findViewById(R.id.value_placeholder_serial_number);
-        EditText deviceIdentifier = view.findViewById(R.id.value_device_identifier_text);
+        TextView deviceIdentifierPlaceholder = view.findViewById(R.id.value_placeholder_device_identifier);
         Spinner systemSpinner = view.findViewById(R.id.spinner_udi_system);
 
         model.getSelectedDeviceAgent().getSettingsManager().get("udi-serial-number", new Observer<String>() {
@@ -81,6 +78,48 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 if (value != null) {
                     serialNumberPlaceholder.setText(value);
                 }
+            }
+        });
+
+        model.getSelectedDeviceAgent().getSettingsManager().get("udi-device-identifier", new Observer<String>() {
+            @Override
+            public void observe(String value) {
+                if (value != null) {
+                    deviceIdentifierPlaceholder.setText(value);
+                }
+            }
+        });
+
+        deviceIdentifierLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.UdiAlertDialogStyle);
+                builder.setTitle(getString(R.string.label_device_identifier));
+
+                final EditText input = new EditText(requireContext());
+                Drawable wrappedDrawable = DrawableCompat.wrap(input.getBackground());
+                DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
+                DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
+
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deviceIdentifierPlaceholder.setText(input.getText().toString());
+                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-device-identifier", input.getText().toString());
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -118,39 +157,6 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
         });
 
 
-        //        model.getSelectedDeviceAgent().getSettingsManager().get("udi-serial-number", new Observer<String>() {
-//            @Override
-//            public void observe(String value) {
-//                if (value != null) {
-//                    serialNumber.setHint(value);
-//                }
-//            }
-//        });
-
-//        serialNumber.setOnClickListener(view1 -> {
-//            serialNumber.requestFocus();
-//
-//            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//            inputMethodManager.showSoftInput(view1, InputMethodManager.SHOW_IMPLICIT);
-//        });
-
-        deviceIdentifier.setOnClickListener(view1 -> {
-            deviceIdentifier.requestFocus();
-
-            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(view1, InputMethodManager.SHOW_IMPLICIT);
-        });
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("udi-device-identifier", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                if (value != null) {
-                    deviceIdentifier.setHint(value);
-                }
-            }
-        });
-
-
         model.getSelectedDeviceAgent().getSettingsManager().get("udi-system", new Observer<String>() {
             @Override
             public void observe(String value) {
@@ -164,29 +170,12 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 if (adapterView.getChildAt(0) != null) {
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 }
+                model.getSelectedDeviceAgent().getSettingsManager().set("udi-system", String.valueOf(systemSpinner.getSelectedItemPosition()));
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        setUdi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-//                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-serial-number", serialNumber.getText().toString());
-                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-system", String.valueOf(systemSpinner.getSelectedItemPosition()));
-                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-device-identifier", deviceIdentifier.getText().toString());
-
-                    }
-                });
-
-                Navigation.findNavController(DeviceConfigurationUdiSetterFragment.this.requireView()).navigate(DeviceConfigurationUdiSetterFragmentDirections.actionDeviceConfigurationUdiSetterFragmentToDeviceConfigurationFragment());
 
             }
         });

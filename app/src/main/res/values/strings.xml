@@ -558,7 +558,7 @@
     <string name="action_set">Set</string>
     <string name="action_update">Update</string>
 
-    <string name="description_value_empty">Touch to change…</string>
+    <string name="description_value_empty">None</string>
 
     <string name="label_active_streams">Collected data</string>
     <string name="label_address">Address</string>
