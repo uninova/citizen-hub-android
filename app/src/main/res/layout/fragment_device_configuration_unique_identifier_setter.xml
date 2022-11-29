@@ -68,6 +68,7 @@
             android:orientation="horizontal">
 
             <Spinner
+                android:layout_height="wrap_content"
                 android:id="@+id/spinner_udi_system"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
                 android:entries="@array/value_udi_system" />

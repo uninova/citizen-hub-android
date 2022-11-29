@@ -103,7 +103,7 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
-
+                input.setText(deviceIdentifierPlaceholder.getText());
                 builder.setView(input);
                 input.requestFocus();
                 showKeyboard();
@@ -139,7 +139,8 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
                 DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
 
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(serialNumberPlaceholder.getText());
 
                 builder.setView(input);
                 input.requestFocus();
