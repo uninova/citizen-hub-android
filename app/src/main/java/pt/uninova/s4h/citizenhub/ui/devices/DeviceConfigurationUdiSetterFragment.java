@@ -1,9 +1,13 @@
 package pt.uninova.s4h.citizenhub.ui.devices;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +18,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -64,7 +70,8 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
         setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_unique_identifier_setter, container, false);
         Button setUdi = view.findViewById(R.id.udi_set_button);
-        EditText serialNumber = view.findViewById(R.id.value_serial_number_edit_text);
+        LinearLayout serialNumber = view.findViewById(R.id.layout_serial_number);
+        TextView serialNumberPlaceholder = view.findViewById(R.id.value_placeholder_serial_number);
         EditText deviceIdentifier = view.findViewById(R.id.value_device_identifier_text);
         Spinner systemSpinner = view.findViewById(R.id.spinner_udi_system);
 
@@ -72,17 +79,60 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
             @Override
             public void observe(String value) {
                 if (value != null) {
-                    serialNumber.setHint(value);
+                    serialNumberPlaceholder.setText(value);
                 }
             }
         });
 
-        serialNumber.setOnClickListener(view1 -> {
-            serialNumber.requestFocus();
+        serialNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.UdiAlertDialogStyle);
+                builder.setTitle(getString(R.string.label_serial_number));
 
-            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(view1, InputMethodManager.SHOW_IMPLICIT);
+                final EditText input = new EditText(requireContext());
+                Drawable wrappedDrawable = DrawableCompat.wrap(input.getBackground());
+                DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
+                DrawableCompat.setTint(wrappedDrawable.mutate(), getResources().getColor(R.color.colorS4HDarkBlue));
+
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        serialNumberPlaceholder.setText(input.getText().toString());
+                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-serial-number", input.getText().toString());
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
         });
+
+
+        //        model.getSelectedDeviceAgent().getSettingsManager().get("udi-serial-number", new Observer<String>() {
+//            @Override
+//            public void observe(String value) {
+//                if (value != null) {
+//                    serialNumber.setHint(value);
+//                }
+//            }
+//        });
+
+//        serialNumber.setOnClickListener(view1 -> {
+//            serialNumber.requestFocus();
+//
+//            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.showSoftInput(view1, InputMethodManager.SHOW_IMPLICIT);
+//        });
 
         deviceIdentifier.setOnClickListener(view1 -> {
             deviceIdentifier.requestFocus();
@@ -129,7 +179,7 @@ public class DeviceConfigurationUdiSetterFragment extends Fragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-serial-number", serialNumber.getText().toString());
+//                        model.getSelectedDeviceAgent().getSettingsManager().set("udi-serial-number", serialNumber.getText().toString());
                         model.getSelectedDeviceAgent().getSettingsManager().set("udi-system", String.valueOf(systemSpinner.getSelectedItemPosition()));
                         model.getSelectedDeviceAgent().getSettingsManager().set("udi-device-identifier", deviceIdentifier.getText().toString());
 
