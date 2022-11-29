@@ -613,6 +613,7 @@
     </string-array>
 
     <string-array name="value_udi_system">
+        <item>None</item>
         <item>GS1</item>
         <item>HIBCC</item>
         <item>ICCBBA</item>
