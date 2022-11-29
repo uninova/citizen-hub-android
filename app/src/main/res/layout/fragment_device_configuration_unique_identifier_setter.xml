@@ -7,14 +7,13 @@
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:text="@string/label_udi">
-    </TextView>
+        android:text="@string/label_udi"></TextView>
 
     <LinearLayout
         android:id="@+id/layout_serial_number"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/AdvancedConfigurationNestedLinearLayoutStyle"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -23,9 +22,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_height="wrap_content"
                 style="@style/AdvancedConfigurationFragmentListItemTextView"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="@string/label_serial_number" />
 
@@ -38,15 +37,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:gravity="end"
-            android:layout_height="wrap_content">
+            android:gravity="end">
 
             <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
                 android:foregroundGravity="right"
-                style="@style/AdvancedConfigurationArrowImageView"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 
@@ -63,14 +62,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="end"
             android:orientation="horizontal">
 
             <Spinner
-                android:layout_height="wrap_content"
                 android:id="@+id/spinner_udi_system"
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
+                android:layout_height="wrap_content"
                 android:entries="@array/value_udi_system" />
         </LinearLayout>
     </LinearLayout>
@@ -101,15 +100,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:gravity="end"
-            android:layout_height="wrap_content">
+            android:gravity="end">
 
             <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
                 android:foregroundGravity="right"
-                style="@style/AdvancedConfigurationArrowImageView"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
