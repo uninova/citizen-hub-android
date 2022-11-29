@@ -593,4 +593,11 @@
 
     </style>
 
+    <style name="UdiAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/colorS4HWhite</item>
+        <item name="android:padding">2dp</item>
+        <item name="colorAccent">@color/colorS4HLightBlue</item>
+        <item name="android:textColorPrimary">@color/colorS4HDarkBlue</item>
+    </style>
+
 </resources>

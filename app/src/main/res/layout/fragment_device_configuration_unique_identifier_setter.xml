@@ -16,33 +16,35 @@
     </TextView>
 
     <LinearLayout
+        android:id="@+id/layout_serial_number"
         android:weightSum="1.8"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:gravity="center"
             android:text="@string/label_serial_number" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:gravity="end"
             android:layout_weight="1.8"
             android:orientation="horizontal">
 
-            <EditText
-                android:layout_gravity="center_vertical"
-                android:gravity="start"
+            <TextView
+                android:id="@+id/value_placeholder_serial_number"
                 android:layout_width="wrap_content"
-                android:id="@+id/value_serial_number_edit_text"
-                style="@style/DeviceConfiguration.EditText"
-                android:hint="@string/description_value_empty"
-                tools:ignore="TextFields" />
+                android:layout_marginEnd="2dp"
+
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:textColor="@color/colorS4HGreyMedium"
+                android:text="Click to set serial number" />
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
 
