@@ -234,8 +234,9 @@
             app:destination="@id/device_list_fragment"
             app:popUpTo="@+id/device_list_fragment" />
         <action
-            android:id="@+id/action_device_search_fragment_to_device_add_configuration_fragment"
-            app:destination="@+id/device_configuration_add_fragment" />
+            android:id="@+id/action_device_search_wearos_fragment_to_deviceIdentificationFragment"
+            app:destination="@id/deviceIdentificationFragment" />
+
 
     </fragment>
 

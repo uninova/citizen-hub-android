@@ -10,28 +10,23 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import java.util.Objects;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
-import pt.uninova.s4h.citizenhub.data.Device;
-import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class UprightGo2ConfigurationFragment extends Fragment {
+public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragment {
 
     public static String uprightGo2MenuItem = "calibration";
-
+    private Agent agent;
     protected ViewStub deviceAdvancedSettings;
     protected View deviceAdvancedSettingsInflated;
-    private DeviceViewModel model;
     private boolean vibration;
     private int angle;
     private int interval;
@@ -39,18 +34,15 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     private boolean showPattern;
     private int strength;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
+    public UprightGo2ConfigurationFragment(Agent agent) {
+        super(agent);
+        this.agent = agent;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_advanced, container, false);
-        final Device device = model.getSelectedDevice().getValue();
 
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
@@ -60,22 +52,22 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("First Time", new Observer<String>() {
+        agent.getSettingsManager().get("First Time", new Observer<String>() {
             @Override
             public void observe(String value) {
                 if (value == null) {
-                    model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "true");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("vibration-angle", "0");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("vibration-interval", "0");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("vibration-pattern", "0");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("show-vibration-pattern", "true");
-                    model.getSelectedDeviceAgent().getSettingsManager().set("vibration-strength", "0");
+                    agent.getSettingsManager().set("posture-correction-vibration", "true");
+                    agent.getSettingsManager().set("vibration-angle", "0");
+                    agent.getSettingsManager().set("vibration-interval", "0");
+                    agent.getSettingsManager().set("vibration-pattern", "0");
+                    agent.getSettingsManager().set("show-vibration-pattern", "true");
+                    agent.getSettingsManager().set("vibration-strength", "0");
 
-                    model.getSelectedDeviceAgent().getSettingsManager().set("First Time", "1");
-                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
+                    agent.getSettingsManager().set("First Time", "1");
+                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
 
                 } else {
-                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
+                    setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
 
                 }
             }
@@ -85,13 +77,13 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     }
 
 
-    protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
+    protected void setupAdvancedConfigurationsUprightGo2(View view) {
         //posture-correction-vibration ON/OFF
         SwitchCompat postureCorrectionVibration = view.findViewById(R.id.switchPostureCorrection);
-        if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
+        if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
             postureCorrectionVibration.setAlpha(0.5f);
         }
-        model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", new Observer<String>() {
+        agent.getSettingsManager().get("posture-correction-vibration", new Observer<String>() {
             @Override
             public void observe(String value) {
                 if (Objects.equals(value, "true")) {
@@ -107,19 +99,19 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         });
         postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "true");
+                agent.getSettingsManager().set("posture-correction-vibration", "true");
                 vibration = true;
             } else {
-                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "false");
+                agent.getSettingsManager().set("posture-correction-vibration", "false");
                 vibration = false;
             }
-            setSetting(model.getSelectedDeviceAgent());
+            setSetting(agent);
         });
         //vibration-angle (1 (strict) to 6 (relaxed))
 
         Spinner spinnerAngle = view.findViewById(R.id.spinnerVibrationAngle);
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-angle", new Observer<String>() {
+        agent.getSettingsManager().get("vibration-angle", new Observer<String>() {
             @Override
             public void observe(String value) {
                 spinnerAngle.setSelection(Integer.parseInt(value));
@@ -132,10 +124,10 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 if (adapterView.getChildAt(0) != null) {
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                 }
-                model.getSelectedDeviceAgent().getSettingsManager().set("vibration-angle", String.valueOf(spinnerAngle.getSelectedItemPosition()));
+                agent.getSettingsManager().set("vibration-angle", String.valueOf(spinnerAngle.getSelectedItemPosition()));
                 angle = spinnerAngle.getSelectedItemPosition();
 
-                setSetting(model.getSelectedDeviceAgent());
+                setSetting(agent);
             }
 
             @Override
@@ -145,7 +137,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         });
         Spinner spinnerInterval = view.findViewById(R.id.spinnerVibrationInterval);
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-interval", new Observer<String>() {
+        agent.getSettingsManager().get("vibration-interval", new Observer<String>() {
             @Override
             public void observe(String value) {
                 spinnerInterval.setSelection(Integer.parseInt(value));
@@ -157,9 +149,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
-                model.getSelectedDeviceAgent().getSettingsManager().set("vibration-interval", String.valueOf(spinnerInterval.getSelectedItemPosition()));
+                agent.getSettingsManager().set("vibration-interval", String.valueOf(spinnerInterval.getSelectedItemPosition()));
                 interval = spinnerInterval.getSelectedItemPosition();
-                setSetting(model.getSelectedDeviceAgent());
+                setSetting(agent);
             }
 
             @Override
@@ -171,7 +163,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         // 5 (heartbeat), 6 (tuk tuk), 7 (ecstatic), 8 (muzzle))
         Spinner spinnerPattern = view.findViewById(R.id.spinnerVibrationPattern);
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-pattern", new Observer<String>() {
+        agent.getSettingsManager().get("vibration-pattern", new Observer<String>() {
             @Override
             public void observe(String value) {
                 spinnerPattern.setSelection(Integer.parseInt(value));
@@ -184,9 +176,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 if (adapterView.getChildAt(0) != null)
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
 
-                model.getSelectedDeviceAgent().getSettingsManager().set("vibration-pattern", String.valueOf(spinnerPattern.getSelectedItemPosition()));
+                agent.getSettingsManager().set("vibration-pattern", String.valueOf(spinnerPattern.getSelectedItemPosition()));
                 pattern = spinnerPattern.getSelectedItemPosition();
-                setSetting(model.getSelectedDeviceAgent());
+                setSetting(agent);
             }
 
             @Override
@@ -197,7 +189,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
         Spinner correctionStrength = view.findViewById(R.id.spinnerVibrationStrength);
 
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-strength", new Observer<String>() {
+        agent.getSettingsManager().get("vibration-strength", new Observer<String>() {
             @Override
             public void observe(String value) {
                 if (value == null) {
@@ -215,9 +207,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getChildAt(0) != null)
                     ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
-                model.getSelectedDeviceAgent().getSettingsManager().set("vibration-strength", String.valueOf((correctionStrength.getSelectedItemPosition())));
+                agent.getSettingsManager().set("vibration-strength", String.valueOf((correctionStrength.getSelectedItemPosition())));
                 strength = (correctionStrength.getSelectedItemPosition());
-                setSetting(model.getSelectedDeviceAgent());
+                setSetting(agent);
             }
 
             @Override
@@ -228,10 +220,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         // Perform Calibration (Trigger)
 
 
-    }
-
-    public static Fragment newInstance() {
-        return new UprightGo2ConfigurationFragment();
     }
 
     private void setSetting(Agent agent) {
@@ -256,69 +244,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     }
 
     private void setSpinnerAlpha(Spinner spinner) {
-        if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
+        if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
             spinner.setAlpha(0.5f);
         }
-    }
-
-    private void getSettings() {
-        int angle;
-        int interval;
-        int pattern;
-        boolean showPattern;
-        int strength;
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                boolean vib;
-                if (value.equals("true")) {
-                    vib = true;
-                } else {
-                    if (value.equals("false")) {
-                        vib = false;
-                    }
-                }
-            }
-        });
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-angle", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int angle;
-                angle = Integer.parseInt(value);
-            }
-        });
-
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-interval", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int interval;
-                interval = Integer.parseInt(value);
-
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-pattern", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int pattern;
-                pattern = Integer.parseInt(value);
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("show-vibration-pattern", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                boolean showPattern = false;
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-strength", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int strength;
-                strength = Integer.parseInt(value);
-            }
-        });
     }
 
 }

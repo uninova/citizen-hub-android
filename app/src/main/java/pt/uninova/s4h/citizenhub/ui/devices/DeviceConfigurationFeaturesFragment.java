@@ -10,8 +10,6 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +20,12 @@ import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 
 public class DeviceConfigurationFeaturesFragment extends Fragment {
 
-    private DeviceViewModel model;
     private MeasurementKindLocalization measurementKindLocalization;
     private ListView labelListView;
+    private Agent agent;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(DeviceViewModel.class);
-
-
+    public DeviceConfigurationFeaturesFragment(Agent agent) {
+        this.agent = agent;
     }
 
     @Nullable
@@ -48,10 +41,8 @@ public class DeviceConfigurationFeaturesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (model.getSelectedDeviceAgent() != null) {
-            Navigation.findNavController(DeviceConfigurationFeaturesFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
-        }
-        labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(model.getConfigurationAgent().getValue())));
+
+        labelListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_item_label, getLabelList(agent)));
 
     }
 

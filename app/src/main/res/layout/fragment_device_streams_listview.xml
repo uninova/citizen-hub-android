@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
+
+        <TextView
+            android:id="@+id/textConfigurationMeasurements"
+            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            android:text="@string/label_active_streams" />
+
+        <ListView
+            android:id="@+id/streamsListView"
+            style="@style/DeviceConfiguration.DefaultHeightWidth"
+            android:divider="@null" />
+    </LinearLayout>
+</LinearLayout>

@@ -121,7 +121,7 @@ public class AgentOrchestrator {
         final AgentFactory<? extends Agent> factory = agentFactoryMap.get(device.getConnectionKind());
 
         if (factory != null) {
-            factory.create(device.getAddress(), observer::observe);
+            factory.create(device, observer::observe);
         }
     }
 

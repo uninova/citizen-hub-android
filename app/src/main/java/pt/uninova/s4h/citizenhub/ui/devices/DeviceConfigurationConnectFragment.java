@@ -13,9 +13,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
+import pt.uninova.s4h.citizenhub.connectivity.Agent;
 
 public class DeviceConfigurationConnectFragment extends Fragment {
     private DeviceViewModel model;
+    private final Agent agent;
+
+    public DeviceConfigurationConnectFragment(Agent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,8 +36,7 @@ public class DeviceConfigurationConnectFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_connect, container, false);
         Button connectButton = view.findViewById(R.id.button_connect);
         connectButton.setOnClickListener(view1 -> {
-            model.addAgent(model.getConfigurationAgent().getValue());
-            model.getConfigurationAgent().setValue(null);
+            model.addAgent(agent);
             Navigation.findNavController(DeviceConfigurationConnectFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceConfigurationStreamsFragment());
 
         });
