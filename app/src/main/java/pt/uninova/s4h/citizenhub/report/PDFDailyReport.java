@@ -131,12 +131,12 @@ public class PDFDailyReport {
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
-        final PdfDocument.Page[] page = {document.startPage(pageInfo)}; // Não percebo porque é que se tem que alterar para isto
+        PdfDocument.Page page = document.startPage(pageInfo); // Não percebo porque é que se tem que alterar para isto
 
-        final Canvas[] canvas = {page[0].getCanvas()};
-        canvas[0].setDensity(72);
+        Canvas canvas = page.getCanvas();
+        //canvas.setDensity(72);
 
-        final CanvasWriter[] canvasWriter = {new CanvasWriter(canvas[0])};
+        CanvasWriter canvasWriter = new CanvasWriter(canvas);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -145,44 +145,52 @@ public class PDFDailyReport {
         List<Group> groupsWorkTime = workTime.getGroups();
         List<Group> groupsNotWorkTime = notWorkTime.getGroups();
 
-        drawHeaderAndFooter(canvas[0], canvasWriter[0], res, date);
-        int y = 200;
+        int y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
 
         for (Group groupNotWorkTime : groupsNotWorkTime) {
             if (verifyGroupSize(groupNotWorkTime, y, false)) {
-                writePage(document, page[0], canvasWriter[0]);
-                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                writePage(document, page, canvasWriter);
+                page = document.startPage(pageInfo);
+                canvas = page.getCanvas();
+                canvasWriter = new CanvasWriter(canvas);
+                y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
             }
             int rectHeight = y - 20;
             int notWorkTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
-            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+            drawGroupHeader(canvas, canvasWriter, measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
             y += 25;
 
             if (notWorkTimeLabel == Measurement.TYPE_BLOOD_PRESSURE || notWorkTimeLabel == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                 for (Group group : groupNotWorkTime.getGroupList()) {
                     if (verifyGroupSize(group, y, true)) {
-                        drawRect(canvas[0], y + 38, rectHeight);
-                        writePage(document, page[0], canvasWriter[0]);
-                        y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                        drawRect(canvas, y + 38, rectHeight);
+                        writePage(document, page, canvasWriter);
+                        page = document.startPage(pageInfo);
+                        canvas = page.getCanvas();
+                        canvasWriter = new CanvasWriter(canvas);
+                        y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
                         rectHeight = y - 20;
-                        drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+                        drawGroupHeader(canvas, canvasWriter, measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
                         y += 25;
                     }
-                    y = drawComplexGroups(canvasWriter[0], group, 0, y);
+                    y = drawComplexGroups(canvasWriter, group, 0, y);
                 }
                 for (Group groupWorkTime : groupsWorkTime) {
                     int workTimeLabel = ((MeasurementTypeLocalizedResource) groupNotWorkTime.getLabel()).getMeasurementType();
                     if (notWorkTimeLabel == workTimeLabel) {
                         for (Group group : groupWorkTime.getGroupList()) {
                             if (verifyGroupSize(groupWorkTime, y, true)) {
-                                drawRect(canvas[0], y + 38, rectHeight);
-                                writePage(document, page[0], canvasWriter[0]);
-                                y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                                drawRect(canvas, y + 38, rectHeight);
+                                writePage(document, page, canvasWriter);
+                                page = document.startPage(pageInfo);
+                                canvas = page.getCanvas();
+                                canvasWriter = new CanvasWriter(canvas);
+                                y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
                                 rectHeight = y - 20;
-                                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
+                                drawGroupHeader(canvas, canvasWriter, measurementKindLocalization, notWorkTimeLabel, y, rectHeight);
                                 y += 25;
                             }
-                            y = drawComplexGroups(canvasWriter[0], group, 120, y);
+                            y = drawComplexGroups(canvasWriter, group, 120, y);
                         }
                     }
                 }
@@ -192,14 +200,14 @@ public class PDFDailyReport {
                 for (Group groupWorkTime : groupsWorkTime) {
                     if (notWorkTimeLabel == ((MeasurementTypeLocalizedResource) groupWorkTime.getLabel()).getMeasurementType()) {
                         hasItem = true;
-                        y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, groupWorkTime, y);
+                        y = drawSimpleGroups(canvasWriter, groupNotWorkTime, groupWorkTime, y);
                     }
                 }
                 if (!hasItem) {
-                    y = drawSimpleGroups(canvasWriter[0], groupNotWorkTime, null, y);
+                    y = drawSimpleGroups(canvasWriter, groupNotWorkTime, null, y);
                 }
             }
-            drawRect(canvas[0], y, rectHeight);
+            drawRect(canvas, y, rectHeight);
         }
         for (Group groupWorkTime : groupsWorkTime) {
             boolean hasGroup = false;
@@ -212,33 +220,39 @@ public class PDFDailyReport {
             }
             if (!hasGroup) {
                 if (verifyGroupSize(groupWorkTime, y, false)) {
-                    writePage(document, page[0], canvasWriter[0]);
-                    y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                    writePage(document, page, canvasWriter);
+                    page = document.startPage(pageInfo);
+                    canvas = page.getCanvas();
+                    canvasWriter = new CanvasWriter(canvas);
+                    y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
                 }
                 int rectHeight = y - 20;
-                drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
+                drawGroupHeader(canvas, canvasWriter, measurementKindLocalization, label, y, rectHeight);
                 y += 25;
                 if (label == Measurement.TYPE_BLOOD_PRESSURE || label == Measurement.TYPE_LUMBAR_EXTENSION_TRAINING) {
                     for (Group group : groupWorkTime.getGroupList()) {
                         if (verifyGroupSize(group, y, true)) {
-                            drawRect(canvas[0], y, rectHeight);
-                            writePage(document, page[0], canvasWriter[0]);
-                            y = createNewPage(document, page, pageInfo, canvas, canvasWriter, res, date);
+                            drawRect(canvas, y, rectHeight);
+                            writePage(document, page, canvasWriter);
+                            page = document.startPage(pageInfo);
+                            canvas = page.getCanvas();
+                            canvasWriter = new CanvasWriter(canvas);
+                            y = drawHeaderAndFooter(canvas, canvasWriter, res, date);
                             rectHeight = y - 20;
-                            drawGroupHeader(canvas[0], canvasWriter[0], measurementKindLocalization, label, y, rectHeight);
+                            drawGroupHeader(canvas, canvasWriter, measurementKindLocalization, label, y, rectHeight);
                             y += 25;
                         }
-                        y = drawComplexGroups(canvasWriter[0], group, 120, y);
+                        y = drawComplexGroups(canvasWriter, group, 120, y);
                     }
                     y += 38;
                 } else {
-                    y = drawSimpleGroups(canvasWriter[0], null, groupWorkTime, y);
+                    y = drawSimpleGroups(canvasWriter, null, groupWorkTime, y);
                 }
-                drawRect(canvas[0], y, rectHeight);
+                drawRect(canvas, y, rectHeight);
             }
         }
 
-        writePage(document, page[0], canvasWriter[0]);
+        writePage(document, page, canvasWriter);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
@@ -255,7 +269,7 @@ public class PDFDailyReport {
             Looper.myLooper().quitSafely();
     }
 
-    private void drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date) {
+    private int drawHeaderAndFooter(Canvas canvas, CanvasWriter canvasWriter, Resources res, LocalDate date) {
         /* CitizenHub Logo */
         final Drawable citizenHubLogo = ResourcesCompat.getDrawable(res, R.drawable.ic_citizen_hub_logo, null);
 
@@ -285,6 +299,8 @@ public class PDFDailyReport {
         canvas.translate(60, 805);
         textLayout.draw(canvas);
         canvas.translate(-60, -805);
+
+        return 200;
     }
 
     private void drawGroupHeader(Canvas canvas, CanvasWriter canvasWriter, MeasurementKindLocalization measurementKindLocalization, int label, int y, int rectHeight) {
