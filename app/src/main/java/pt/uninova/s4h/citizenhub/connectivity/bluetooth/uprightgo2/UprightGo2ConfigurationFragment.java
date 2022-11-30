@@ -275,8 +275,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
         // Perform Calibration (Trigger)
-
-
     }
 
     public static Fragment newInstance() {
@@ -308,66 +306,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
         if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
             spinner.setAlpha(0.5f);
         }
-    }
-
-    private void getSettings() {
-        int angle;
-        int interval;
-        int pattern;
-        boolean showPattern;
-        int strength;
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                boolean vib;
-                if (value.equals("true")) {
-                    vib = true;
-                } else {
-                    if (value.equals("false")) {
-                        vib = false;
-                    }
-                }
-            }
-        });
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-angle", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int angle;
-                angle = Integer.parseInt(value);
-            }
-        });
-
-
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-interval", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int interval;
-                interval = Integer.parseInt(value);
-
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-pattern", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int pattern;
-                pattern = Integer.parseInt(value);
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("show-vibration-pattern", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                boolean showPattern = false;
-            }
-        });
-        model.getSelectedDeviceAgent().getSettingsManager().get("vibration-strength", new Observer<String>() {
-            @Override
-            public void observe(String value) {
-                int strength;
-                strength = Integer.parseInt(value);
-            }
-        });
     }
 
     private static void setView(ViewGroup layout, boolean enabled) {
