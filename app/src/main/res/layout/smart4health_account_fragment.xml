@@ -23,12 +23,32 @@
         android:textColor="@color/colorS4HDarkBlue"/>
 
     <Switch
-        android:id="@+id/switch_automatic_upload"
+        android:id="@+id/switch_daily_report_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
         android:layout_marginHorizontal="30dp"
-        android:text="@string/smart4health_automatic_uploads"
+        android:text="@string/smart4health_daily_report_uploads"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_weekly_report_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_weekly_report_uploads"
+        android:textColor="@color/colorS4HDarkBlue"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch_monthly_report_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="30dp"
+        android:text="@string/smart4health_monthly_report_uploads"
         android:textColor="@color/colorS4HDarkBlue"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 

@@ -429,7 +429,9 @@
 
     <!-- Strings used for the Smart4Health fragment -->
     <string name="smart4health_description">O projeto Smart4Health coloca o cidadão no centro da decisão relativamente à partilha e gestão dos seus dados de saúde, contribuindo para melhorar o seu bem estar e qualidade de vida.</string>
-    <string name="smart4health_automatic_uploads">Envio Automático</string>
+    <string name="smart4health_daily_report_uploads">Upload Diário</string>
+    <string name="smart4health_weekly_report_uploads">Upload Semanal</string>
+    <string name="smart4health_monthly_report_uploads">Upload Mensal</string>
     <string name="smart4health_automatic_uploads_description">Seleccione esta opção se desejar enviar automáticamente relatórios diários para a plataforma Smart4Health.</string>
     <string name="smart4health_information_to_send">Informação incluída nos relatórioes:</string>
     <string name="smart4health_information_to_send_description">A informação seleccionada será enviada para a plataforma Smart4Health.</string>

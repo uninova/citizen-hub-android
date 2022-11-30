@@ -33,7 +33,11 @@ public class Smart4HealthAccountFragment extends Fragment {
 
     private AccountsViewModel viewModel;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_automatic_upload;
+    private Switch switch_daily_report_upload;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_weekly_report_upload;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch switch_monthly_report_upload;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switch_activity;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -61,7 +65,9 @@ public class Smart4HealthAccountFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
 
-        switch_automatic_upload = view.findViewById(R.id.switch_automatic_upload);
+        switch_daily_report_upload = view.findViewById(R.id.switch_daily_report_upload);
+        switch_weekly_report_upload = view.findViewById(R.id.switch_weekly_report_upload);
+        switch_monthly_report_upload = view.findViewById(R.id.switch_monthly_report_upload);
         switch_activity = view.findViewById(R.id.switch_activity);
         switch_blood_pressure = view.findViewById(R.id.switch_blood_pressure);
         switch_heart_rate = view.findViewById(R.id.switch_heart_rate);
@@ -69,17 +75,31 @@ public class Smart4HealthAccountFragment extends Fragment {
         switch_posture = view.findViewById(R.id.switch_posture);
 
         if(viewModel.hasReportAutomaticUpload())
-            switch_automatic_upload.setChecked(true);
-        switch_automatic_upload.setOnCheckedChangeListener((compoundButton, b) -> {
+            switch_daily_report_upload.setChecked(true);
+        switch_daily_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
             if(compoundButton.isChecked())
                 workOrchestrator.enqueueSmart4HealthUploader();
             else
                 workOrchestrator.cancelSmart4HealthUploader();
-
         });
 
+        if(viewModel.hasReportWeeklyAutomaticUpload())
+            switch_weekly_report_upload.setChecked(true);
+        switch_weekly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportWeeklyAutomaticUpload(compoundButton.isChecked());
+            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+            if(compoundButton.isChecked());
+        });
+
+        if(viewModel.hasReportMonthlyAutomaticUpload())
+            switch_weekly_report_upload.setChecked(true);
+        switch_weekly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewModel.setReportMonthlyAutomaticUpload(compoundButton.isChecked());
+            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+            if(compoundButton.isChecked());
+        });
 
         if(viewModel.hasReportDataActivity())
             switch_activity.setChecked(true);
@@ -125,15 +145,29 @@ public class Smart4HealthAccountFragment extends Fragment {
     private void verifyAllSwitchStatus(){
         WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
         if(!switch_activity.isChecked() && !switch_blood_pressure.isChecked() && !switch_heart_rate.isChecked() && !switch_lumbar_extension_training.isChecked() && !switch_posture.isChecked()){
-            switch_automatic_upload.setChecked(false);
-            switch_automatic_upload.setClickable(false);
+            switch_daily_report_upload.setChecked(false);
+            switch_daily_report_upload.setClickable(false);
             workOrchestrator.cancelSmart4HealthUploader();
+            switch_weekly_report_upload.setChecked(false);
+            switch_weekly_report_upload.setClickable(false);
+            switch_monthly_report_upload.setChecked(false);
+            switch_monthly_report_upload.setClickable(false);
         }
         else {
-            if(!switch_automatic_upload.isClickable()) {
-                switch_automatic_upload.setChecked(true);
-                switch_automatic_upload.setClickable(true);
-                workOrchestrator.enqueueSmart4HealthUploader();
+            if(!switch_daily_report_upload.isClickable()){
+                //switch_daily_report_upload.setChecked(true);
+                switch_daily_report_upload.setClickable(true);
+                //workOrchestrator.enqueueSmart4HealthUploader();
+            }
+            if(!switch_weekly_report_upload.isClickable()){
+                //switch_weekly_report_upload.setChecked(true);
+                switch_weekly_report_upload.setClickable(true);
+                //workOrchestrator.enqueueSmart4HealthUploader();
+            }
+            if(!switch_monthly_report_upload.isClickable()){
+                //switch_monthly_report_upload.setChecked(true);
+                switch_monthly_report_upload.setClickable(true);
+                //workOrchestrator.enqueueSmart4HealthUploader();
             }
         }
     }

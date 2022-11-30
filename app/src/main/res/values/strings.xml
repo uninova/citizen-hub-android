@@ -493,7 +493,9 @@
 
     <!-- Strings used for the Smart4Health fragment -->
     <string name="smart4health_description">Smart4Health enables citizens to manage and bridge their own health data throughout the EU and beyond, advancing own and societal health and well-being.</string>
-    <string name="smart4health_automatic_uploads">Automatic Uploads</string>
+    <string name="smart4health_daily_report_uploads">Daily Upload</string>
+    <string name="smart4health_weekly_report_uploads">Weekly Upload</string>
+    <string name="smart4health_monthly_report_uploads">Monthly Upload</string>
     <string name="smart4health_automatic_uploads_description">Select this option if you want to automatically upload your daily information to the Smart4Health platform.</string>
     <string name="smart4health_information_to_send">Information included in the reports:</string>
     <string name="smart4health_information_to_send_description">The information selected will be sent to the Smart4Health platform.</string>

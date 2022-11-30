@@ -404,7 +404,9 @@
 
     <!-- Strings used for the Smart4Health fragment -->
     <string name="smart4health_description">Smart4Health permet aux citoyens de gérer leurs propres données de santé dans l\'Union Européenne et au-delà, en faisant progresser leur bien-être et leur santé ainsi que celle de la société.</string>
-    <string name="smart4health_automatic_uploads">Téléchargements Automatiques</string>
+    <string name="smart4health_daily_report_uploads">Daily Uploads</string>
+    <string name="smart4health_weekly_report_uploads">Weekly Uploads</string>
+    <string name="smart4health_monthly_report_uploads">Monthly Uploads</string>
     <string name="smart4health_automatic_uploads_description">Sélectionnez cette option si vous souhaitez télécharger automatiquement vos informations quotidiennes sur la plateforme Smart4Health.</string>
     <string name="smart4health_information_to_send">Informations incluses dans les rapports:</string>
     <string name="smart4health_information_to_send_description">Les informations sélectionnées seront transmises à la plateforme Smart4Health.</string>
