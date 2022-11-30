@@ -63,8 +63,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:alpha="0.5"
-        android:clickable="false"
         android:id="@+id/calibrationLayout"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
@@ -94,8 +92,6 @@
 
 
     <LinearLayout
-        android:alpha="0.5"
-        android:clickable="false"
         android:id="@+id/layoutVibrationInterval"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
@@ -122,8 +118,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:alpha="0.5"
-        android:clickable="false"
         android:id="@+id/layoutVibrationPattern"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
@@ -151,8 +145,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:alpha="0.5"
-        android:clickable="false"
         android:id="@+id/layoutVibrationStrength"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
