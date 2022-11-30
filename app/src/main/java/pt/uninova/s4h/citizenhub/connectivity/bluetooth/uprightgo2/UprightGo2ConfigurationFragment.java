@@ -341,8 +341,8 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
-        model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
-
+        if (model.getSelectedDeviceAgent() != null) {
+            model.getSelectedDeviceAgent().removeStateObserver(agentStateObserver);
+        }
     }
 }
