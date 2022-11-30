@@ -1,46 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/DeviceConfiguration.LinearLayout"
     android:layout_marginVertical="10dp"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <TextView
         style="@style/AdvancedConfigurationFragmentCategoryTextView"
-        android:text="@string/label_udi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </TextView>
-
+        android:text="@string/label_udi"></TextView>
 
     <LinearLayout
+        android:id="@+id/layout_serial_number"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <EditText
-            android:layout_gravity="center_vertical"
-            android:gravity="start"
-            android:layout_weight="0.2"
-            android:id="@+id/fragment_device_configuration_udi_setter_textview"
-            style="@style/DeviceConfiguration.EditText"
-            android:hint="@string/description_value_empty" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/udi_set_button"
-            android:paddingHorizontal="10dp"
+            <TextView
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/label_serial_number" />
+
+            <TextView
+                android:id="@+id/value_placeholder_serial_number"
+                style="@style/AdvancedConfigurationFragmentListItemValue"
+                android:text="@string/description_value_empty" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:paddingTop="6dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.8"
-            android:enabled="false"
-            android:textColor="@color/button_color_selector"
-            style="@style/Widget.Citizen.Button"
-            android:text="@string/action_set" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end">
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:foregroundGravity="right"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <TextView
+            style="@style/AdvancedConfigurationFragmentListItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/label_system" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_udi_system"
+                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
+                android:layout_height="wrap_content"
+                android:entries="@array/value_udi_system" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_device_identifier"
+        style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/AdvancedConfigurationFragmentListItemTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:text="@string/label_device_identifier" />
+
+
+            <TextView
+                android:id="@+id/value_placeholder_device_identifier"
+                style="@style/AdvancedConfigurationFragmentListItemValue"
+                android:text="@string/description_value_empty" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end">
+
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:foregroundGravity="right"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

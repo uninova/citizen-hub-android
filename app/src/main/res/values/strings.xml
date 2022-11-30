@@ -558,7 +558,7 @@
     <string name="action_set">Set</string>
     <string name="action_update">Update</string>
 
-    <string name="description_value_empty">Touch here to change the value…</string>
+    <string name="description_value_empty">None</string>
 
     <string name="label_active_streams">Collected data</string>
     <string name="label_address">Address</string>
@@ -577,6 +577,10 @@
     <string name="value_address_default" translatable="false">-</string>
     <string name="value_name_default" translatable="false">-</string>
     <string name="value_udi_default">None</string>
+    <string name="label_device_information">Device Information</string>
+    <string name="label_serial_number">Serial Number</string>
+    <string name="label_system">System</string>
+    <string name="label_device_identifier">Device Identifier</string>
 
     <string-array name="value_uprightgo2_angle">
         <item>Very Strict</item>
@@ -606,6 +610,14 @@
         <item>Gentle</item>
         <item>Medium</item>
         <item>Strong</item>
+    </string-array>
+
+    <string-array name="value_udi_system">
+        <item>None</item>
+        <item>GS1</item>
+        <item>HIBCC</item>
+        <item>ICCBBA</item>
+        <item>ICCBA</item>
     </string-array>
 
 </resources>

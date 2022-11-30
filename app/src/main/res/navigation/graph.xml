@@ -459,7 +459,7 @@
     <fragment
         android:id="@+id/deviceConfigurationUdiSetterFragment"
         android:name="pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUdiSetterFragment"
-        android:label="Device Configuration">
+        android:label="Devices">
         <action
             android:id="@+id/action_deviceConfigurationUdiSetterFragment_to_deviceConfigurationFragment"
             app:destination="@id/deviceConfigurationFragment"
