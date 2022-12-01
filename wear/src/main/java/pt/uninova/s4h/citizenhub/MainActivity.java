@@ -140,11 +140,7 @@ public class MainActivity extends FragmentActivity {
                         sampleRepository.create(sample, sampleId -> {
                         });
 
-                        final LocalDate now = LocalDate.now();
-
-                        heartRateMeasurementRepository.readAverageObserved(now, value ->
-                                listenHeartRateAverage.postValue(f.format(value))
-                        );
+                        listenHeartRateAverage.postValue(f.format((int) event.values[0]));
                     }
                 }
             }
