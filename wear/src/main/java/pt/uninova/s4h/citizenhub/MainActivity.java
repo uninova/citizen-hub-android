@@ -115,6 +115,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         startService();
+        startStateCheckTimer();
     }
 
     public void startService() {
@@ -123,6 +124,21 @@ public class MainActivity extends FragmentActivity {
             serviceIntent.putExtra("inputExtra", "2 " + getString(R.string.notification_sensors_measuring));
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
+    }
+
+    private void startStateCheckTimer(){
+        Handler handler = new Handler();
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+
+                listenHeartRateAverage.postValue("--");
+                //TODO change icon to no recent HR
+
+                handler.postDelayed(this, 60000);
+            }
+        };
+        handler.post(run);
     }
 
     public void startListeners() {
@@ -141,6 +157,7 @@ public class MainActivity extends FragmentActivity {
                         });
 
                         listenHeartRateAverage.postValue(f.format((int) event.values[0]));
+                        //TODO set icon to normal HR
                     }
                 }
             }
