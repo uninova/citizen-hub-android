@@ -17,7 +17,6 @@ import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2ConfigurationFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
@@ -56,7 +55,6 @@ public class DigitsoleAgent extends BluetoothAgent {
         List<Fragment> digitSoleList = new ArrayList<>();
         digitSoleList.add(new StreamsFragment(this));
         digitSoleList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
-        digitSoleList.add(new UprightGo2ConfigurationFragment(this));
         return digitSoleList;
     }
 
