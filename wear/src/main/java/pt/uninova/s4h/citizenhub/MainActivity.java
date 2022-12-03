@@ -62,11 +62,13 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
+    static MutableLiveData<Integer> heartRateIcon = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
     DecimalFormat f = new DecimalFormat("###");
     public static long lastTimeConnected;
+    long lastHeartRate = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +109,7 @@ public class MainActivity extends FragmentActivity {
             else
                 listenSteps.postValue("0");
         });
-        heartRateMeasurementRepository.readAverageObserved(now, value -> {
-            if (value != null)
-                listenHeartRateAverage.postValue(f.format(value));
-            else
-                listenHeartRateAverage.postValue("-");
-        });
+        listenHeartRate.postValue("--");
 
         startService();
         startStateCheckTimer();
@@ -131,11 +128,13 @@ public class MainActivity extends FragmentActivity {
         Runnable run = new Runnable() {
             @Override
             public void run() {
-
-                listenHeartRateAverage.postValue("--");
-                //TODO change icon to no recent HR
-
-                handler.postDelayed(this, 60000);
+                long currentTime = System.currentTimeMillis();
+                if(currentTime > (lastHeartRate + 5*60000))
+                {
+                    listenHeartRateAverage.postValue("--");
+                    heartRateIcon.postValue(R.drawable.ic_heart_disconnected);
+                }
+                handler.postDelayed(this, 5*60000);
             }
         };
         handler.post(run);
@@ -157,7 +156,8 @@ public class MainActivity extends FragmentActivity {
                         });
 
                         listenHeartRateAverage.postValue(f.format((int) event.values[0]));
-                        //TODO set icon to normal HR
+                        heartRateIcon.postValue(R.drawable.ic_heart);
+                        lastHeartRate = System.currentTimeMillis();
                     }
                 }
             }
