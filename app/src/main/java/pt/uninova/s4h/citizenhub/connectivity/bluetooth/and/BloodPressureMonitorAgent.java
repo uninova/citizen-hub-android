@@ -17,7 +17,6 @@ import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.uprightgo2.UprightGo2ConfigurationFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
@@ -63,7 +62,6 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
         List<Fragment> bloodPressureList = new ArrayList<>();
         bloodPressureList.add(new StreamsFragment(this));
         bloodPressureList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
-        bloodPressureList.add(new UprightGo2ConfigurationFragment(this));
         return bloodPressureList;
     }
 
