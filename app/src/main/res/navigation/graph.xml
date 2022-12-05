@@ -439,7 +439,7 @@
         <action
             android:id="@+id/action_deviceConfigurationStreamsFragment_to_uprightGo2CalibrationFragment"
             app:destination="@id/uprightGo2CalibrationFragment"
-            app:popUpTo="@id/action_deviceConfigurationStreamsFragment_to_uprightGo2CalibrationFragment" />
+            app:popUpTo="@id/uprightGo2CalibrationFragment" />
         <action
             android:id="@+id/action_deviceConfigurationFragment_to_deviceConfigurationUdiSetterFragment"
             app:destination="@id/deviceConfigurationUdiSetterFragment"
