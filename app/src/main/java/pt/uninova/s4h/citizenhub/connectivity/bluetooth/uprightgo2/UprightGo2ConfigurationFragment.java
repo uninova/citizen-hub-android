@@ -14,20 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 import pt.uninova.s4h.citizenhub.connectivity.StateChangedMessage;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.AbstractConfigurationFragment;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.ui.devices.DeviceViewModel;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
-public class UprightGo2ConfigurationFragment extends Fragment {
+public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragment {
 
     public static String uprightGo2MenuItem = "calibration";
+    private final Agent agent;
 
     private SwitchCompat postureCorrectionVibration;
     private LinearLayout buttonCalibration;
@@ -53,11 +54,20 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         boolean state = value.getNewState() == Agent.AGENT_STATE_ENABLED;
         requireActivity().runOnUiThread(() -> {
-            setView(spinnerAngleLayout, state);
-            setView(buttonCalibration, state);
-            setView(spinnerIntervalLayout, state);
-            setView(spinnerStrengthLayout, state);
-            setView(spinnerPatternLayout, state);
+
+            if (!postureCorrectionVibration.isChecked()) {
+                setView(buttonCalibration, false);
+                setView(spinnerIntervalLayout, false);
+                setView(spinnerStrengthLayout, false);
+                setView(spinnerPatternLayout, false);
+                setSetting(model.getSelectedDeviceAgent(), false);
+            } else {
+                setView(spinnerAngleLayout, state);
+                setView(buttonCalibration, state);
+                setView(spinnerIntervalLayout, state);
+                setView(spinnerStrengthLayout, state);
+                setView(spinnerPatternLayout, state);
+            }
         });
     };
 
@@ -67,26 +77,33 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             if (value.equals("true")) {
                 vibration = true;
                 requireActivity().runOnUiThread(() -> {
-                    postureCorrectionVibration.setChecked(true);
                     setView(buttonCalibration, true);
                     setView(spinnerIntervalLayout, true);
                     setView(spinnerStrengthLayout, true);
                     setView(spinnerPatternLayout, true);
+                    postureCorrectionVibration.setChecked(true);
+
                 });
             } else {
                 if (value.equals("false")) {
                     vibration = false;
                     requireActivity().runOnUiThread(() -> {
-                        postureCorrectionVibration.setChecked(false);
                         setView(buttonCalibration, false);
                         setView(spinnerIntervalLayout, false);
                         setView(spinnerStrengthLayout, false);
                         setView(spinnerPatternLayout, false);
+                        postureCorrectionVibration.setChecked(false);
+
                     });
                 }
             }
         }
     };
+
+    public UprightGo2ConfigurationFragment(Agent agent) {
+        super(agent);
+        this.agent = agent;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,8 +158,6 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated, model, device);
             }
         });
-        setListeners();
-        model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
 
     }
 
@@ -196,16 +211,14 @@ public class UprightGo2ConfigurationFragment extends Fragment {
                 }
             }
         });
+        setListeners();
+        model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
+
 //        setSpinnerAlpha(spinnerAngle);
 //        setSpinnerAlpha(spinnerInterval);
 //        setSpinnerAlpha(spinnerPattern);
 //        setSpinnerAlpha(correctionStrength);
         // Perform Calibration (Trigger)
-        setListeners();
-    }
-
-    public static Fragment newInstance() {
-        return new UprightGo2ConfigurationFragment();
     }
 
     private void setListeners() {
@@ -213,6 +226,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 //        spinnerPattern.setSelection(0, false);
 //        spinnerInterval.setSelection(0, false);
 //        spinnerAngle.setSelection(0, false);
+        disableListeners();
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
         correctionStrength.post(new Runnable() {
@@ -299,25 +313,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
             }
         });
 
-        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (isChecked) {
-                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "true");
-                vibration = true;
-                setView(buttonCalibration, true);
-                setView(spinnerIntervalLayout, true);
-                setView(spinnerStrengthLayout, true);
-                setView(spinnerPatternLayout, true);
-                setSetting(model.getSelectedDeviceAgent(), true);
-            } else {
-                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "false");
-                vibration = false;
-                setView(buttonCalibration, false);
-                setView(spinnerIntervalLayout, false);
-                setView(spinnerStrengthLayout, false);
-                setView(spinnerPatternLayout, false);
-                setSetting(model.getSelectedDeviceAgent(), false);
-            }
-        });
+
     }
 
     private void setSetting(Agent agent, boolean vibrate) {
@@ -354,9 +350,9 @@ public class UprightGo2ConfigurationFragment extends Fragment {
 
     private void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
-//        if (!layout.isEnabled()) {
-//            layout.setAlpha(0.5f);
-//        } else layout.setAlpha(1);
+        if (!layout.isEnabled()) {
+            layout.setAlpha(0.5f);
+        } else layout.setAlpha(1);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
@@ -376,6 +372,25 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         model.getSelectedDeviceAgent().addStateObserver(agentStateObserver);
+        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked) {
+                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "true");
+                vibration = true;
+                setView(buttonCalibration, true);
+                setView(spinnerIntervalLayout, true);
+                setView(spinnerStrengthLayout, true);
+                setView(spinnerPatternLayout, true);
+                setSetting(model.getSelectedDeviceAgent(), true);
+            } else {
+                model.getSelectedDeviceAgent().getSettingsManager().set("posture-correction-vibration", "false");
+                vibration = false;
+                setView(buttonCalibration, false);
+                setView(spinnerIntervalLayout, false);
+                setView(spinnerStrengthLayout, false);
+                setView(spinnerPatternLayout, false);
+                setSetting(model.getSelectedDeviceAgent(), false);
+            }
+        });
         setSetting(model.getSelectedDeviceAgent(), false);
 //        vibration = postureCorrectionVibration.isChecked();
     }
