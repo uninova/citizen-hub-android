@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -109,7 +110,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         spinnerPattern = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationPattern);
         spinnerInterval = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationInterval);
         correctionStrength = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationStrength);
-        disableListeners();
         return view;
     }
 
@@ -189,9 +189,12 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         disableListeners();
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
+        correctionStrength.setSelection(0,false);
+
         correctionStrength.post(new Runnable() {
             @Override
             public void run() {
+
                 correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         if (adapterView.getChildAt(0) != null)
@@ -209,6 +212,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
+        spinnerPattern.setSelection(0,false);
 
         spinnerPattern.post(new Runnable() {
             @Override
@@ -230,6 +234,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
+        spinnerInterval.setSelection(0,false);
 
         spinnerInterval.post(new Runnable() {
             @Override
@@ -250,6 +255,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
+        spinnerAngle.setSelection(0,false);
 
         spinnerAngle.post(new Runnable() {
             @Override
