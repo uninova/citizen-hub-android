@@ -54,6 +54,11 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 setView(spinnerStrengthLayout, postureCorrectionVibration.isChecked());
                 setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
             });
+        } else {
+            setView(buttonCalibration, false);
+            setView(spinnerIntervalLayout, false);
+            setView(spinnerStrengthLayout, false);
+            setView(spinnerPatternLayout, false);
         }
 
     };
@@ -109,6 +114,8 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         spinnerPattern = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationPattern);
         spinnerInterval = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationInterval);
         correctionStrength = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationStrength);
+        setListeners();
+
         return view;
     }
 
@@ -134,7 +141,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
             }
         });
         agent.getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
-        setListeners();
     }
 
     protected void setupAdvancedConfigurationsUprightGo2(View view) {
@@ -187,7 +193,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         disableListeners();
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
-        correctionStrength.setSelection(0, false);
+        correctionStrength.setSelection(strength, false);
 
         correctionStrength.post(new Runnable() {
             @Override
@@ -208,7 +214,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerPattern.setSelection(0, false);
+        spinnerPattern.setSelection(pattern, false);
 
         spinnerPattern.post(new Runnable() {
             @Override
@@ -228,7 +234,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerInterval.setSelection(0, false);
+        spinnerInterval.setSelection(interval, false);
 
         spinnerInterval.post(new Runnable() {
             @Override
@@ -248,7 +254,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerAngle.setSelection(0, false);
+        spinnerAngle.setSelection(angle, false);
 
         spinnerAngle.post(new Runnable() {
             @Override
@@ -306,31 +312,33 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     public void onResume() {
         super.onResume();
         agent.addStateObserver(agentStateObserver);
-        if(agent.getState()!=Agent.AGENT_STATE_ENABLED){
-                requireActivity().runOnUiThread(() -> {
-                    setView(buttonCalibration, postureCorrectionVibration.isChecked());
-                    setView(spinnerIntervalLayout, postureCorrectionVibration.isChecked());
-                    setView(spinnerStrengthLayout, postureCorrectionVibration.isChecked());
-                    setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
-                });
-        }
-        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (isChecked) {
-                agent.getSettingsManager().set("posture-correction-vibration", "true");
-                vibration = true;
-                setView(buttonCalibration, true);
-                setView(spinnerIntervalLayout, true);
-                setView(spinnerStrengthLayout, true);
-                setView(spinnerPatternLayout, true);
-                setSetting(agent, true);
-            } else {
-                agent.getSettingsManager().set("posture-correction-vibration", "false");
-                vibration = false;
+        if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
+            requireActivity().runOnUiThread(() -> {
                 setView(buttonCalibration, false);
                 setView(spinnerIntervalLayout, false);
                 setView(spinnerStrengthLayout, false);
                 setView(spinnerPatternLayout, false);
-                setSetting(agent, false);
+            });
+        }
+        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (postureCorrectionVibration.isPressed()) {
+                    if (isChecked && agent.getState()==Agent.AGENT_STATE_ENABLED) {
+                        agent.getSettingsManager().set("posture-correction-vibration", "true");
+                        vibration = true;
+                        setView(buttonCalibration, true);
+                        setView(spinnerIntervalLayout, true);
+                        setView(spinnerStrengthLayout, true);
+                        setView(spinnerPatternLayout, true);
+                        setSetting(agent, true);
+                    } else {
+                        agent.getSettingsManager().set("posture-correction-vibration", "false");
+                        vibration = false;
+                        setView(buttonCalibration, false);
+                        setView(spinnerIntervalLayout, false);
+                        setView(spinnerStrengthLayout, false);
+                        setView(spinnerPatternLayout, false);
+                        setSetting(agent, false);
+                    }
             }
         });
 //        setSetting(agent, false);
