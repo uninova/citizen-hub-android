@@ -6,15 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 
 import pt.uninova.s4h.citizenhub.R;
@@ -29,6 +26,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     private final Agent agent;
 
     private SwitchCompat postureCorrectionVibration;
+    private LinearLayout parentLayout;
     private LinearLayout buttonCalibration;
     private LinearLayout spinnerIntervalLayout;
     private LinearLayout spinnerPatternLayout;
@@ -57,6 +55,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
             });
         }
+
     };
 
     private final Observer<String> postureSwitchObserver = new Observer<String>() {
@@ -134,7 +133,8 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
             }
         });
-
+        agent.getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
+        setListeners();
     }
 
     protected void setupAdvancedConfigurationsUprightGo2(View view) {
@@ -180,8 +180,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 }
             }
         });
-        setListeners();
-        agent.getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
 
     }
 
@@ -189,7 +187,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         disableListeners();
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
-        correctionStrength.setSelection(0,false);
+        correctionStrength.setSelection(0, false);
 
         correctionStrength.post(new Runnable() {
             @Override
@@ -197,8 +195,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
 
                 correctionStrength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (adapterView.getChildAt(0) != null)
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
                         agent.getSettingsManager().set("vibration-strength", String.valueOf((correctionStrength.getSelectedItemPosition())));
                         strength = (correctionStrength.getSelectedItemPosition());
                         setSetting(agent, true);
@@ -212,15 +208,13 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerPattern.setSelection(0,false);
+        spinnerPattern.setSelection(0, false);
 
         spinnerPattern.post(new Runnable() {
             @Override
             public void run() {
                 spinnerPattern.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (adapterView.getChildAt(0) != null)
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
 
                         agent.getSettingsManager().set("vibration-pattern", String.valueOf(spinnerPattern.getSelectedItemPosition()));
                         pattern = spinnerPattern.getSelectedItemPosition();
@@ -234,15 +228,14 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerInterval.setSelection(0,false);
+        spinnerInterval.setSelection(0, false);
 
         spinnerInterval.post(new Runnable() {
             @Override
             public void run() {
                 spinnerInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (adapterView.getChildAt(0) != null)
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
+
                         agent.getSettingsManager().set("vibration-interval", String.valueOf(spinnerInterval.getSelectedItemPosition()));
                         interval = spinnerInterval.getSelectedItemPosition();
                         setSetting(agent, false);
@@ -255,16 +248,14 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerAngle.setSelection(0,false);
+        spinnerAngle.setSelection(0, false);
 
         spinnerAngle.post(new Runnable() {
             @Override
             public void run() {
                 spinnerAngle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (adapterView.getChildAt(0) != null) {
-                            ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorS4HDarkBlue));
-                        }
+
                         agent.getSettingsManager().set("vibration-angle", String.valueOf(spinnerAngle.getSelectedItemPosition()));
                         angle = spinnerAngle.getSelectedItemPosition();
 
@@ -315,6 +306,14 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     public void onResume() {
         super.onResume();
         agent.addStateObserver(agentStateObserver);
+        if(agent.getState()!=Agent.AGENT_STATE_ENABLED){
+                requireActivity().runOnUiThread(() -> {
+                    setView(buttonCalibration, postureCorrectionVibration.isChecked());
+                    setView(spinnerIntervalLayout, postureCorrectionVibration.isChecked());
+                    setView(spinnerStrengthLayout, postureCorrectionVibration.isChecked());
+                    setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
+                });
+        }
         postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 agent.getSettingsManager().set("posture-correction-vibration", "true");
