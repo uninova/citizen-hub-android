@@ -29,8 +29,10 @@ public class StreamsFragment extends AbstractConfigurationFragment {
     private TextView collectedData;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         streamsListView.deferNotifyDataSetChanged();
-        collectedData.setEnabled(value.getNewState() == 1);
-        requireActivity().runOnUiThread(() -> loadSupportedFeatures(streamsListView));
+        requireActivity().runOnUiThread(() -> {
+            collectedData.setEnabled(value.getNewState() == 1);
+            loadSupportedFeatures(streamsListView);
+        });
 
     };
 
