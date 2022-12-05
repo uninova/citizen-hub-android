@@ -4,7 +4,9 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
-    <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
+    <LinearLayout
+        style="@style/DeviceConfiguration.LinearLayout"
+        android:layout_marginTop="0dp">
 
         <TextView
             android:id="@+id/textConfigurationMeasurements"
