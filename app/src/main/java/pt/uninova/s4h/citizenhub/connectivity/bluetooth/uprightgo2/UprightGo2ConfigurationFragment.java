@@ -101,7 +101,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     };
 
     public UprightGo2ConfigurationFragment(Agent agent) {
-        super(agent);
         this.agent = agent;
     }
 
@@ -116,8 +115,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_advanced, container, false);
-        final Device device = model.getSelectedDevice().getValue();
-
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
@@ -162,14 +159,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     }
 
     protected void setupAdvancedConfigurationsUprightGo2(View view, DeviceViewModel model, Device device) {
-        //posture-correction-vibration ON/OFF
-        if (model.getSelectedDeviceAgent().getState() != Agent.AGENT_STATE_ENABLED) {
-//            postureCorrectionVibration.setAlpha(0.5f);
-        }
-
-
         //vibration-angle (1 (strict) to 6 (relaxed))
-
 
         model.getSelectedDeviceAgent().getSettingsManager().get("vibration-angle", new Observer<String>() {
             @Override
@@ -214,18 +204,9 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         setListeners();
         model.getSelectedDeviceAgent().getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
 
-//        setSpinnerAlpha(spinnerAngle);
-//        setSpinnerAlpha(spinnerInterval);
-//        setSpinnerAlpha(spinnerPattern);
-//        setSpinnerAlpha(correctionStrength);
-        // Perform Calibration (Trigger)
     }
 
     private void setListeners() {
-//        correctionStrength.setSelection(0, false);
-//        spinnerPattern.setSelection(0, false);
-//        spinnerInterval.setSelection(0, false);
-//        spinnerAngle.setSelection(0, false);
         disableListeners();
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
@@ -356,14 +337,9 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {
-//                if (!layout.isEnabled()) {
                 setChildrenEnabled((ViewGroup) child, state);
-//                }
             } else {
                 child.setEnabled(state);
-//                if (!child.isEnabled()) {
-//                    child.setAlpha(0.5f);
-//                } else child.setAlpha(1);
             }
         }
     }
@@ -392,7 +368,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
             }
         });
         setSetting(model.getSelectedDeviceAgent(), false);
-//        vibration = postureCorrectionVibration.isChecked();
     }
 
     @Override

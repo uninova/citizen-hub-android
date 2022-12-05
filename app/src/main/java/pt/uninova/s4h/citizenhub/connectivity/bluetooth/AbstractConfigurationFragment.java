@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import pt.uninova.s4h.citizenhub.connectivity.Agent;
 
 public class AbstractConfigurationFragment extends Fragment {
-
     public AbstractConfigurationFragment(Agent agent) {
+    }
+
+    public AbstractConfigurationFragment() {
     }
 
     @Override
