@@ -48,15 +48,14 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     private int strength;
 
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
-        boolean state = value.getNewState() == Agent.AGENT_STATE_ENABLED;
-        requireActivity().runOnUiThread(() -> {
-            setView(spinnerAngleLayout, state);
-            setView(buttonCalibration, state);
-            setView(spinnerIntervalLayout, state);
-            setView(spinnerStrengthLayout, state);
-            setView(spinnerPatternLayout, state);
-
-        });
+        if (value.getNewState() == Agent.AGENT_STATE_ENABLED) {
+            requireActivity().runOnUiThread(() -> {
+                setView(buttonCalibration, postureCorrectionVibration.isChecked());
+                setView(spinnerIntervalLayout, postureCorrectionVibration.isChecked());
+                setView(spinnerStrengthLayout, postureCorrectionVibration.isChecked());
+                setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
+            });
+        }
     };
 
     private final Observer<String> postureSwitchObserver = new Observer<String>() {
@@ -329,7 +328,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 setSetting(agent, false);
             }
         });
-        setSetting(agent, false);
+//        setSetting(agent, false);
     }
 
     @Override
