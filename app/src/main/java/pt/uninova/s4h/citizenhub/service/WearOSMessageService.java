@@ -69,14 +69,14 @@ public class WearOSMessageService extends FragmentActivity implements MessageCli
         new SendMessage(citizenHubPath+path,message,appContext).start();
     }
 
-    public WearOSConnection connect(String address, CitizenHubService service){
+    public WearOSConnection connect(String address, String name, CitizenHubService service) {
         Log.d(TAG, "Entered connect with address " + address);
         appContext = service;
 
         Wearable.getMessageClient(service).addListener(this);
-        WearOSConnection wearOSConnection = new WearOSConnection(address);
+        WearOSConnection wearOSConnection = new WearOSConnection(address, name);
         connectionMap.put(address, wearOSConnection);
-        new SendMessage(citizenHubPath,"Ready",appContext).start();
+        new SendMessage(citizenHubPath, "Ready", appContext).start();
 
         MessageClient.OnMessageReceivedListener listener = messageEvent -> {
             String message = new String(messageEvent.getData());

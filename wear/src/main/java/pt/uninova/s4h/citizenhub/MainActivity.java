@@ -160,7 +160,6 @@ public class MainActivity extends FragmentActivity {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                     if (Boolean.TRUE.equals(protocolSteps.getValue())) {
                         checkIfConnected();
-
                         int stepCounter = (int) event.values[0];
                         final LocalDate now = LocalDate.now();
 

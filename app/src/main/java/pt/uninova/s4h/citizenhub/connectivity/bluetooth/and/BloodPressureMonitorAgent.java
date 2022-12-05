@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,9 @@ import pt.uninova.s4h.citizenhub.connectivity.MeasuringProtocol;
 import pt.uninova.s4h.citizenhub.connectivity.RoomSettingsManager;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.StreamsFragment;
 import pt.uninova.s4h.citizenhub.data.Measurement;
+import pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationUniqueIdentifierFragment;
 
 public class BloodPressureMonitorAgent extends BluetoothAgent {
 
@@ -56,7 +59,10 @@ public class BloodPressureMonitorAgent extends BluetoothAgent {
 
     @Override
     public List<Fragment> getConfigurationFragments() {
-        return null;
+        List<Fragment> bloodPressureList = new ArrayList<>();
+        bloodPressureList.add(new StreamsFragment(this));
+        bloodPressureList.add(new DeviceConfigurationUniqueIdentifierFragment(this));
+        return bloodPressureList;
     }
 
     @Override

@@ -99,6 +99,7 @@ public class UprightGo2ConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_advanced, container, false);
+        final Device device = model.getSelectedDevice().getValue();
 
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);

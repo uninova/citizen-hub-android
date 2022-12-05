@@ -42,7 +42,6 @@ public class DeviceIdentificationFragment extends Fragment {
         addFragment(progressBar);
 
         model.identifySelectedDevice((Agent agent) -> {
-            model.getConfigurationAgent().postValue(agent);
             removeFragment(progressBar);
             if (agent == null) {
                 Navigation.findNavController(DeviceIdentificationFragment.this.requireView()).navigate(DeviceIdentificationFragmentDirections.actionDeviceIdentificationFragmentToDeviceUnsupportedFragment());
@@ -53,8 +52,8 @@ public class DeviceIdentificationFragment extends Fragment {
                     });
                 } else {
                     DeviceIdentificationFragment.this.requireActivity().runOnUiThread(() -> {
-                        addFragment(new DeviceConfigurationFeaturesFragment());
-                        addFragment(new DeviceConfigurationConnectFragment());
+                        addFragment(new DeviceConfigurationFeaturesFragment(agent));
+                        addFragment(new DeviceConfigurationConnectFragment(agent));
                     });
                 }
             }

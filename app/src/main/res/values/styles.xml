@@ -510,8 +510,13 @@
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">text</item>
         <item name="android:clickable">true</item>
+        <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/colorS4HDarkBlue</item>
+        <item name="android:gravity">end</item>
     </style>
 
     <style name="DeviceConfiguration.ProgressBarTextView">
@@ -538,6 +543,16 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="AdvancedConfigurationFragmentListItemValue">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/neo_sans_pro_regular</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/colorS4HLightBlue</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="AdvancedConfigurationFragmentSpinnerStyle">
         <item name="android:layout_height">match_parent</item>
@@ -546,6 +561,7 @@
         <item name="android:textAlignment">textEnd</item>
         <item name="android:textColor">@color/colorS4HDarkBlue</item>
         <item name="android:backgroundTint">@color/spinner_selector</item>
+        <item name="android:paddingHorizontal">30dp</item>
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
     </style>
@@ -560,7 +576,7 @@
 
     <style name="AdvancedConfigurationArrowImageView">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:src">@drawable/ic_next_arrow</item>
         <item name="android:gravity">end</item>
         <item name="android:layout_gravity">end</item>
@@ -585,6 +601,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">20dp</item>
 
+    </style>
+
+    <style name="UdiAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/colorS4HWhite</item>
+        <item name="android:padding">2dp</item>
+        <item name="colorAccent">@color/colorS4HLightBlue</item>
+        <item name="android:textColorPrimary">@color/colorS4HDarkBlue</item>
     </style>
 
 </resources>
