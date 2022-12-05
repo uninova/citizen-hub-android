@@ -69,12 +69,19 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
             if (value.equals("true")) {
                 vibration = true;
                 requireActivity().runOnUiThread(() -> {
-                    setView(buttonCalibration, true);
-                    setView(spinnerIntervalLayout, true);
-                    setView(spinnerStrengthLayout, true);
-                    setView(spinnerPatternLayout, true);
                     postureCorrectionVibration.setChecked(true);
-
+                    if(agent.getState()==Agent.AGENT_STATE_ENABLED) {
+                        setView(buttonCalibration, true);
+                        setView(spinnerIntervalLayout, true);
+                        setView(spinnerStrengthLayout, true);
+                        setView(spinnerPatternLayout, true);
+                    }
+                    else{
+                        setView(buttonCalibration, false);
+                        setView(spinnerIntervalLayout, false);
+                        setView(spinnerStrengthLayout, false);
+                        setView(spinnerPatternLayout, false);
+                    }
                 });
             } else {
                 if (value.equals("false")) {
