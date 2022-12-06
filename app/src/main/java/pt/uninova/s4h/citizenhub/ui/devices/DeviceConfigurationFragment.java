@@ -57,7 +57,8 @@ public class DeviceConfigurationFragment extends Fragment {
 
             List<Fragment> fragmentList = model.getSelectedDeviceAgent().getConfigurationFragments();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            if (fragmentList != null) {
+
+            if (fragmentList != null && getChildFragmentManager().getFragments().size() < 1) {
                 for (Fragment fragment : fragmentList) {
                     ft.add(R.id.layout_device_configuration_container, fragment);
 

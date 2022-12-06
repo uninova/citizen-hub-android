@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,10 +26,13 @@ public class StreamsFragment extends AbstractConfigurationFragment {
     private final Agent agent;
     private ListView streamsListView;
     private MeasurementKindLocalization measurementKindLocalization;
-
+    private TextView collectedData;
     private final Observer<StateChangedMessage<Integer, ? extends Agent>> agentStateObserver = value -> {
         streamsListView.deferNotifyDataSetChanged();
-        requireActivity().runOnUiThread(() -> loadSupportedFeatures(streamsListView));
+        requireActivity().runOnUiThread(() -> {
+            collectedData.setEnabled(value.getNewState() == 1);
+            loadSupportedFeatures(streamsListView);
+        });
 
     };
 
@@ -42,6 +46,7 @@ public class StreamsFragment extends AbstractConfigurationFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_streams_listview, container, false);
         streamsListView = view.findViewById(R.id.streamsListView);
+        collectedData = view.findViewById(R.id.textConfigurationMeasurements);
         measurementKindLocalization = new MeasurementKindLocalization(requireContext());
         loadSupportedFeatures(streamsListView);
         return view;

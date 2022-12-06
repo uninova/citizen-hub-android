@@ -2,38 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/fragment_uprightgo2_configuration_parent_layout"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="6">
 
     <LinearLayout
-        android:id="@+id/calibrationLayout"
+        android:id="@+id/layoutVibrationAngle"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
-            android:id="@+id/calibrationButton"
             style="@style/AdvancedConfigurationFragmentListItemTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/label_uprightgo2_setting_calibration" />
+            android:gravity="center"
+            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:gravity="end"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                style="@style/AdvancedConfigurationArrowImageView"
-                tools:ignore="ContentDescription" />
+            <Spinner
+                android:id="@+id/spinnerVibrationAngle"
+                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
+                android:entries="@array/value_uprightgo2_angle"
+                android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
         </LinearLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/layoutPostureCorrection"
@@ -63,32 +64,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutVibrationAngle"
+        android:id="@+id/calibrationLayout"
         style="@style/AdvancedConfigurationNestedLinearLayoutStyle">
 
         <TextView
+            android:id="@+id/calibrationButton"
             style="@style/AdvancedConfigurationFragmentListItemTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_uprightgo2_setting_calibration" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:gravity="end"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spinnerVibrationAngle"
-                style="@style/AdvancedConfigurationFragmentSpinnerStyle"
-                android:entries="@array/value_uprightgo2_angle"
-                android:text="@string/fragment_device_configuration_advanced_uprightgo2_correction_angle_text" />
+            <ImageView
+                style="@style/AdvancedConfigurationArrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/layoutVibrationInterval"
@@ -140,6 +141,7 @@
                 style="@style/AdvancedConfigurationFragmentSpinnerStyle"
                 android:entries="@array/value_uprightgo2_pattern" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -169,5 +171,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>
