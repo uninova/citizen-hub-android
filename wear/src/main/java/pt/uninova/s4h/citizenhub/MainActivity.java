@@ -62,11 +62,13 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
+    static MutableLiveData<Integer> heartRateIcon = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
     DecimalFormat f = new DecimalFormat("###");
     public static long lastTimeConnected;
+    long lastHeartRate = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,14 +109,10 @@ public class MainActivity extends FragmentActivity {
             else
                 listenSteps.postValue("0");
         });
-        heartRateMeasurementRepository.readAverageObserved(now, value -> {
-            if (value != null)
-                listenHeartRateAverage.postValue(f.format(value));
-            else
-                listenHeartRateAverage.postValue("-");
-        });
+        listenHeartRate.postValue("--");
 
         startService();
+        startStateCheckTimer();
     }
 
     public void startService() {
@@ -123,6 +121,23 @@ public class MainActivity extends FragmentActivity {
             serviceIntent.putExtra("inputExtra", "2 " + getString(R.string.notification_sensors_measuring));
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
+    }
+
+    private void startStateCheckTimer(){
+        Handler handler = new Handler();
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                if(currentTime > (lastHeartRate + 5*60000))
+                {
+                    listenHeartRateAverage.postValue("--");
+                    heartRateIcon.postValue(R.drawable.ic_heart_disconnected);
+                }
+                handler.postDelayed(this, 5*60000);
+            }
+        };
+        handler.post(run);
     }
 
     public void startListeners() {
@@ -140,11 +155,9 @@ public class MainActivity extends FragmentActivity {
                         sampleRepository.create(sample, sampleId -> {
                         });
 
-                        final LocalDate now = LocalDate.now();
-
-                        heartRateMeasurementRepository.readAverageObserved(now, value ->
-                                listenHeartRateAverage.postValue(f.format(value))
-                        );
+                        listenHeartRateAverage.postValue(f.format((int) event.values[0]));
+                        heartRateIcon.postValue(R.drawable.ic_heart);
+                        lastHeartRate = System.currentTimeMillis();
                     }
                 }
             }

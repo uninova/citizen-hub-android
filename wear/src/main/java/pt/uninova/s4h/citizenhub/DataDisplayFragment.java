@@ -18,6 +18,7 @@ public class DataDisplayFragment extends Fragment {
     LinearLayout heartRateDataLayout, stepsDataLayout;
     TextView heartRateDataTextView, stepsDataTextView, swipeLeft;
     View view;
+    ImageView heartIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +32,7 @@ public class DataDisplayFragment extends Fragment {
         stepsDataLayout = view.findViewById(R.id.stepsDataLayout);
         stepsDataTextView = view.findViewById(R.id.textViewStepsValue);
         swipeLeft = view.findViewById(R.id.textViewSwipe);
+        heartIcon = view.findViewById(R.id.imageIconHeartRate);
 
         initialAnimation();
         enableObservers();
@@ -57,6 +59,7 @@ public class DataDisplayFragment extends Fragment {
                 stepsDataLayout.setVisibility(View.INVISIBLE);
             }
         });
+        MainActivity.heartRateIcon.observe((LifecycleOwner) view.getContext(), s -> heartIcon.setImageResource(s));
     }
 
     private void initialAnimation(){
