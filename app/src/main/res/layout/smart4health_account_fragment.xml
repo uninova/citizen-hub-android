@@ -1,108 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DeviceConfiguration.ScrollView">
 
-    <ImageView
-        android:id="@+id/image_view_s4h"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:src="@drawable/ic_logo_small_smart4health"
-        android:contentDescription="@string/smart4health_description"/>
+    <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
 
-    <TextView
-        android:id="@+id/text_view_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:text="@string/smart4health_description"
-        android:textColor="@color/colorS4HDarkBlue"/>
+        <ImageView
+            android:id="@+id/image_view_s4h"
+            style="@style/AppTheme.Summary.Item.ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/smart4health_description"
+            android:src="@drawable/img_s4h_logo_transparent_png" />
 
-    <Switch
-        android:id="@+id/switch_automatic_upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="30dp"
-        android:text="@string/smart4health_automatic_uploads"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <TextView
+            android:id="@+id/text_view_description"
+            style="@style/AccountSettings.TextView"
+            android:text="@string/smart4health_description"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/text_view_automatic_uploads_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:text="@string/smart4health_automatic_uploads_description"
-        android:textColor="@color/colorS4HDarkBlue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_view_information_to_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="30dp"
-        android:text="@string/smart4health_information_to_send"
-        android:textColor="@color/colorS4HDarkBlue"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_automatic_upload"
+                style="@style/AccountSettingsFragment.switchCompatStyle"
+                android:layout_marginVertical="0dp"
+                android:text="@string/smart4health_automatic_uploads"
+                android:thumbTint="@color/thumb_selector"
+                android:trackTint="@color/track_selector" />
 
-    <TextView
-        android:id="@+id/text_view_information_to_send_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:text="@string/smart4health_information_to_send_description"
-        android:textColor="@color/colorS4HDarkBlue"/>
+            <TextView
+                android:id="@+id/text_view_automatic_uploads_description"
+                style="@style/AccountSettingsFragment.subTextView"
+                android:text="@string/smart4health_automatic_uploads_description" />
+        </LinearLayout>
 
-    <Switch
-        android:id="@+id/switch_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/smart4health_activity"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <TextView
+            android:id="@+id/text_view_information_to_send"
+            style="@style/AdvancedConfigurationFragmentCategoryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_information_to_send" />
 
-    <Switch
-        android:id="@+id/switch_blood_pressure"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/smart4health_blood_pressure"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <TextView
+            android:id="@+id/text_view_information_to_send_description"
+            style="@style/AccountSettingsFragment.subTextView"
+            android:layout_marginTop="10dp"
+            android:text="@string/smart4health_information_to_send_description"
+            android:textColor="@color/colorS4HGreyMedium"
+            android:textSize="12sp" />
 
-    <Switch
-        android:id="@+id/switch_heart_rate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/smart4health_heart_rate"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_activity"
+            style="@style/AccountSettingsFragment.switchCompatStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_activity"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:thumbTint="@color/thumb_selector"
+            android:trackTint="@color/track_selector" />
 
-    <Switch
-        android:id="@+id/switch_lumbar_extension_training"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/smart4health_lumbar_extension_training"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_blood_pressure"
+            style="@style/AccountSettingsFragment.switchCompatStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_blood_pressure"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:thumbTint="@color/thumb_selector"
+            android:trackTint="@color/track_selector" />
 
-    <Switch
-        android:id="@+id/switch_posture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/smart4health_posture"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_heart_rate"
+            style="@style/AccountSettingsFragment.switchCompatStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_heart_rate"
+            android:textColor="@color/colorS4HDarkBlue" />
 
-</LinearLayout>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_lumbar_extension_training"
+            style="@style/AccountSettingsFragment.switchCompatStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_lumbar_extension_training"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:thumbTint="@color/thumb_selector"
+            android:trackTint="@color/track_selector" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_posture"
+            style="@style/AccountSettingsFragment.switchCompatStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/smart4health_posture"
+            android:textColor="@color/colorS4HDarkBlue"
+            android:thumbTint="@color/thumb_selector"
+            android:trackTint="@color/track_selector" />
+    </LinearLayout>
+</ScrollView>
