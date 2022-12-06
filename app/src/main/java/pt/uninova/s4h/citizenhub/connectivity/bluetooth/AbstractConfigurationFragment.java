@@ -30,15 +30,9 @@ public class AbstractConfigurationFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public void setView(ViewGroup layout, boolean enabled) {
-        setChildrenEnabled(layout, enabled);
-    }
 
     public void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
-//        if (!layout.isEnabled()) {
-//            layout.setAlpha(0.5f);
-//        } else layout.setAlpha(1);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
             if (child instanceof ViewGroup) {

@@ -22,16 +22,13 @@ import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragment {
 
-    public static String uprightGo2MenuItem = "calibration";
     private final Agent agent;
 
     private SwitchCompat postureCorrectionVibration;
-    private LinearLayout parentLayout;
     private LinearLayout buttonCalibration;
     private LinearLayout spinnerIntervalLayout;
     private LinearLayout spinnerPatternLayout;
     private LinearLayout spinnerStrengthLayout;
-    private LinearLayout spinnerAngleLayout;
     Spinner correctionStrength;
     Spinner spinnerAngle;
     Spinner spinnerInterval;
@@ -55,10 +52,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 setView(spinnerPatternLayout, postureCorrectionVibration.isChecked());
             });
         } else {
-            setView(buttonCalibration, false);
-            setView(spinnerIntervalLayout, false);
-            setView(spinnerStrengthLayout, false);
-            setView(spinnerPatternLayout, false);
+            disable();
         }
 
     };
@@ -66,34 +60,25 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     private final Observer<String> postureSwitchObserver = new Observer<String>() {
         @Override
         public void observe(String value) {
-            if (value.equals("true")) {
-                vibration = true;
-                requireActivity().runOnUiThread(() -> {
-                    postureCorrectionVibration.setChecked(true);
-                    if(agent.getState()==Agent.AGENT_STATE_ENABLED) {
-                        setView(buttonCalibration, true);
-                        setView(spinnerIntervalLayout, true);
-                        setView(spinnerStrengthLayout, true);
-                        setView(spinnerPatternLayout, true);
-                    }
-                    else{
-                        setView(buttonCalibration, false);
-                        setView(spinnerIntervalLayout, false);
-                        setView(spinnerStrengthLayout, false);
-                        setView(spinnerPatternLayout, false);
-                    }
-                });
-            } else {
-                if (value.equals("false")) {
-                    vibration = false;
+            if (value != null) {
+                if (value.equals("true")) {
+                    vibration = true;
                     requireActivity().runOnUiThread(() -> {
-                        setView(buttonCalibration, false);
-                        setView(spinnerIntervalLayout, false);
-                        setView(spinnerStrengthLayout, false);
-                        setView(spinnerPatternLayout, false);
-                        postureCorrectionVibration.setChecked(false);
-
+                        postureCorrectionVibration.setChecked(true);
+                        if (agent.getState() == Agent.AGENT_STATE_ENABLED) {
+                            enable();
+                        } else {
+                            disable();
+                        }
                     });
+                } else {
+                    if (value.equals("false")) {
+                        vibration = false;
+                        requireActivity().runOnUiThread(() -> {
+                            disable();
+                            postureCorrectionVibration.setChecked(false);
+                        });
+                    }
                 }
             }
         }
@@ -103,24 +88,13 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         this.agent = agent;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_configuration_advanced, container, false);
         deviceAdvancedSettings = view.findViewById(R.id.layoutStubConfigurationAdvancedSettings);
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
-
-        buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
-        postureCorrectionVibration = deviceAdvancedSettingsInflated.findViewById(R.id.switchPostureCorrection);
-        spinnerIntervalLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationInterval);
-        spinnerPatternLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationPattern);
-        spinnerStrengthLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationStrength);
-        spinnerAngleLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationAngle);
-        spinnerAngle = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationAngle);
-        spinnerPattern = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationPattern);
-        spinnerInterval = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationInterval);
-        correctionStrength = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationStrength);
+        findViews();
         setListeners();
 
         return view;
@@ -161,7 +135,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
             }
         });
 
-
         agent.getSettingsManager().get("vibration-interval", new Observer<String>() {
             @Override
             public void observe(String value) {
@@ -201,7 +174,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         buttonCalibration.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigate(pt.uninova.s4h.citizenhub.ui.devices.DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToUprightGo2CalibrationFragment()));
 
         correctionStrength.setSelection(strength, false);
-
         correctionStrength.post(new Runnable() {
             @Override
             public void run() {
@@ -221,8 +193,8 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerPattern.setSelection(pattern, false);
 
+        spinnerPattern.setSelection(pattern, false);
         spinnerPattern.post(new Runnable() {
             @Override
             public void run() {
@@ -241,8 +213,8 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerInterval.setSelection(interval, false);
 
+        spinnerInterval.setSelection(interval, false);
         spinnerInterval.post(new Runnable() {
             @Override
             public void run() {
@@ -261,8 +233,8 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-        spinnerAngle.setSelection(angle, false);
 
+        spinnerAngle.setSelection(angle, false);
         spinnerAngle.post(new Runnable() {
             @Override
             public void run() {
@@ -308,47 +280,28 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
 
     }
 
-    private void setSpinnerAlpha(Spinner spinner) {
-        if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
-            spinner.setAlpha(0.5f);
-        }
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
         agent.addStateObserver(agentStateObserver);
         if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
-            requireActivity().runOnUiThread(() -> {
-                setView(buttonCalibration, false);
-                setView(spinnerIntervalLayout, false);
-                setView(spinnerStrengthLayout, false);
-                setView(spinnerPatternLayout, false);
-            });
+            requireActivity().runOnUiThread(this::disable);
         }
         postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (postureCorrectionVibration.isPressed()) {
-                    if (isChecked && agent.getState()==Agent.AGENT_STATE_ENABLED) {
-                        agent.getSettingsManager().set("posture-correction-vibration", "true");
-                        vibration = true;
-                        setView(buttonCalibration, true);
-                        setView(spinnerIntervalLayout, true);
-                        setView(spinnerStrengthLayout, true);
-                        setView(spinnerPatternLayout, true);
-                        setSetting(agent, true);
-                    } else {
-                        agent.getSettingsManager().set("posture-correction-vibration", "false");
-                        vibration = false;
-                        setView(buttonCalibration, false);
-                        setView(spinnerIntervalLayout, false);
-                        setView(spinnerStrengthLayout, false);
-                        setView(spinnerPatternLayout, false);
-                        setSetting(agent, false);
-                    }
+                if (isChecked && agent.getState() == Agent.AGENT_STATE_ENABLED) {
+                    agent.getSettingsManager().set("posture-correction-vibration", "true");
+                    vibration = true;
+                    enable();
+                    setSetting(agent, true);
+                } else {
+                    agent.getSettingsManager().set("posture-correction-vibration", "false");
+                    vibration = false;
+                    disable();
+                    setSetting(agent, false);
+                }
             }
         });
-//        setSetting(agent, false);
     }
 
     @Override
@@ -367,5 +320,35 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         spinnerPattern.setOnItemSelectedListener(null);
         spinnerInterval.setOnItemSelectedListener(null);
         correctionStrength.setOnItemSelectedListener(null);
+    }
+
+    public void enable() {
+        setView(buttonCalibration, true);
+        setView(spinnerIntervalLayout, true);
+        setView(spinnerStrengthLayout, true);
+        setView(spinnerPatternLayout, true);
+    }
+
+    public void disable() {
+        setView(buttonCalibration, false);
+        setView(spinnerIntervalLayout, false);
+        setView(spinnerStrengthLayout, false);
+        setView(spinnerPatternLayout, false);
+    }
+
+    public void setView(ViewGroup layout, boolean enabled) {
+        setChildrenEnabled(layout, enabled);
+    }
+
+    public void findViews() {
+        buttonCalibration = deviceAdvancedSettingsInflated.findViewById(R.id.calibrationLayout);
+        postureCorrectionVibration = deviceAdvancedSettingsInflated.findViewById(R.id.switchPostureCorrection);
+        spinnerIntervalLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationInterval);
+        spinnerPatternLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationPattern);
+        spinnerStrengthLayout = deviceAdvancedSettingsInflated.findViewById(R.id.layoutVibrationStrength);
+        spinnerAngle = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationAngle);
+        spinnerPattern = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationPattern);
+        spinnerInterval = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationInterval);
+        correctionStrength = deviceAdvancedSettingsInflated.findViewById(R.id.spinnerVibrationStrength);
     }
 }
