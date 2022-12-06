@@ -2,6 +2,7 @@ package pt.uninova.s4h.citizenhub;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -37,12 +39,17 @@ public class SettingsFragment extends Fragment {
     private final String sharedPreferencesVariableHeartRateBoolean = "HeartRate";
     private final String sharedPreferencesVariableStepsBoolean = "Steps";
 
+    private View heartRateControl;
+    private View stepsControl;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         switchHeartRate = view.findViewById(R.id.switchHeartRate);
         switchSteps = view.findViewById(R.id.switchSteps);
+        heartRateControl = view.findViewById(R.id.heartRateControl);
+        stepsControl = view.findViewById(R.id.stepsControl);
         textPhoneConnected = view.findViewById(R.id.textInfoPhone);
 
         enableObservers(view);
@@ -71,6 +78,10 @@ public class SettingsFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
         MainActivity.protocolSteps.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableStepsBoolean, false));
         MainActivity.protocolHeartRate.setValue(sharedPreferences.getBoolean(sharedPreferencesVariableHeartRateBoolean, false));
+
+
+        heartRateControl.setVisibility(MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null ? View.VISIBLE : View.GONE);
+        stepsControl.setVisibility(MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null ? View.VISIBLE : View.INVISIBLE);
 
         return view;
     }
@@ -116,7 +127,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void enableStepsSensor(Boolean enabled) {
-        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             if (enabled)
                 MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
             else

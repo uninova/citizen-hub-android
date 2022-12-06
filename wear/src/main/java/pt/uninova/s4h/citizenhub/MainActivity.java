@@ -23,6 +23,7 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -113,12 +114,6 @@ public class MainActivity extends FragmentActivity {
 
         startService();
         startStateCheckTimer();
-
-        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null)
-            MainActivity.sensorManager.registerListener(MainActivity.heartRateListener, MainActivity.heartSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null)
-            MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void startService() {
@@ -264,14 +259,22 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void permissionRequest() {
+        ArrayList<String> permissions = new ArrayList<>(2);
+
         if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.BODY_SENSORS}, 21);
+            permissions.add(Manifest.permission.BODY_SENSORS);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 22);
+                permissions.add(Manifest.permission.ACTIVITY_RECOGNITION);
             }
+        }
+
+        if (permissions.size() > 0) {
+            String[] p = new String[permissions.size()];
+            permissions.toArray(p);
+            requestPermissions(p, 21);
         }
     }
 
