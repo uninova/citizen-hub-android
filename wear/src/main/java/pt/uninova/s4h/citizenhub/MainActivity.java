@@ -113,6 +113,12 @@ public class MainActivity extends FragmentActivity {
 
         startService();
         startStateCheckTimer();
+
+        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE) != null)
+            MainActivity.sensorManager.registerListener(MainActivity.heartRateListener, MainActivity.heartSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        if (MainActivity.sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null)
+            MainActivity.sensorManager.registerListener(MainActivity.stepsListener, MainActivity.stepsCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void startService() {
@@ -123,18 +129,17 @@ public class MainActivity extends FragmentActivity {
         }, 10000);
     }
 
-    private void startStateCheckTimer(){
+    private void startStateCheckTimer() {
         Handler handler = new Handler();
         Runnable run = new Runnable() {
             @Override
             public void run() {
                 long currentTime = System.currentTimeMillis();
-                if(currentTime > (lastHeartRate + 5*60000))
-                {
+                if (currentTime > (lastHeartRate + 5 * 60000)) {
                     listenHeartRateAverage.postValue("--");
                     heartRateIcon.postValue(R.drawable.ic_heart_disconnected);
                 }
-                handler.postDelayed(this, 5*60000);
+                handler.postDelayed(this, 5 * 60000);
             }
         };
         handler.post(run);
@@ -208,12 +213,11 @@ public class MainActivity extends FragmentActivity {
         };
     }
 
-    private void checkIfConnected(){
+    private void checkIfConnected() {
         long currentTime = System.currentTimeMillis();
-        if(currentTime-lastTimeConnected > (30 * 1000)){
+        if (currentTime - lastTimeConnected > (30 * 1000)) {
             protocolPhoneConnected.setValue(false);
-        }
-        else{
+        } else {
             protocolPhoneConnected.setValue(true);
         }
     }
@@ -305,8 +309,7 @@ public class MainActivity extends FragmentActivity {
             if (intent.hasExtra("WearOSAgent")) {
                 protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
             }
-            if (intent.hasExtra("WearOSConnected"))
-            {
+            if (intent.hasExtra("WearOSConnected")) {
                 lastTimeConnected = System.currentTimeMillis();
             }
         }
