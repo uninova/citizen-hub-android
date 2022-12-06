@@ -95,7 +95,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         deviceAdvancedSettings.setLayoutResource(R.layout.fragment_device_configuration_uprightgo2);
         deviceAdvancedSettingsInflated = deviceAdvancedSettings.inflate();
         findViews();
-        setListeners();
 
         return view;
     }
@@ -166,6 +165,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 }
             }
         });
+        setListeners();
 
     }
 
