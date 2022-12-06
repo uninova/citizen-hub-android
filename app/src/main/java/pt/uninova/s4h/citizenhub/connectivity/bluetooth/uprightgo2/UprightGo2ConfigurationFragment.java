@@ -118,9 +118,12 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
 
                 }
                 setupAdvancedConfigurationsUprightGo2(deviceAdvancedSettingsInflated);
+
             }
         });
         agent.getSettingsManager().get("posture-correction-vibration", postureSwitchObserver);
+
+
     }
 
     protected void setupAdvancedConfigurationsUprightGo2(View view) {
@@ -254,7 +257,22 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 });
             }
         });
-
+        postureCorrectionVibration.setOnCheckedChangeListener(null);
+        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (postureCorrectionVibration.isPressed()) {
+                if (isChecked && agent.getState() == Agent.AGENT_STATE_ENABLED) {
+                    agent.getSettingsManager().set("posture-correction-vibration", "true");
+                    vibration = true;
+                    enable();
+                    setSetting(agent, true);
+                } else {
+                    agent.getSettingsManager().set("posture-correction-vibration", "false");
+                    vibration = false;
+                    disable();
+                    setSetting(agent, false);
+                }
+            }
+        });
 
     }
 
@@ -287,21 +305,7 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
         if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
             requireActivity().runOnUiThread(this::disable);
         }
-        postureCorrectionVibration.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (postureCorrectionVibration.isPressed()) {
-                if (isChecked && agent.getState() == Agent.AGENT_STATE_ENABLED) {
-                    agent.getSettingsManager().set("posture-correction-vibration", "true");
-                    vibration = true;
-                    enable();
-                    setSetting(agent, true);
-                } else {
-                    agent.getSettingsManager().set("posture-correction-vibration", "false");
-                    vibration = false;
-                    disable();
-                    setSetting(agent, false);
-                }
-            }
-        });
+
     }
 
     @Override
