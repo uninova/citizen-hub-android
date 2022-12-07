@@ -25,6 +25,10 @@ public class Smart4HealthWeeklyReportRepository {
         CitizenHubDatabase.executorService().execute(() -> observer.observe(dao.insert(record)));
     }
 
+    public void selectLastWeekUploaded(Observer<Smart4HealthWeeklyReportRecord> observer){
+        CitizenHubDatabase.executorService().execute(() -> observer.observe(dao.selectLastWeekUploaded()));
+    }
+
     public void createOrUpdateFhir(Integer year, Integer week, Boolean value) {
         CitizenHubDatabase.executorService().execute(() -> dao.insertOrReplaceFhir(year, week, value));
     }
