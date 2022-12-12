@@ -168,13 +168,13 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 }
             }
         });
-        requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setListeners();
-
-            }
-        });
+//        requireActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                setListeners();
+//
+//            }
+//        });
 
     }
 
@@ -309,6 +309,13 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
     public void onResume() {
         super.onResume();
         agent.addStateObserver(agentStateObserver);
+        requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setListeners();
+
+            }
+        });
         if (agent.getState() != Agent.AGENT_STATE_ENABLED) {
             requireActivity().runOnUiThread(this::disable);
         }
