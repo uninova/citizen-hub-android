@@ -168,13 +168,6 @@ public class UprightGo2ConfigurationFragment extends AbstractConfigurationFragme
                 }
             }
         });
-//        requireActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                setListeners();
-//
-//            }
-//        });
 
     }
 
