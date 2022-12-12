@@ -112,65 +112,70 @@ public class Smart4HealthMonthlyPDFUploader extends ListenableWorker {
 
                         smart4HealthMonthlyReportRepository.selectLastMonthUploaded(value -> {
 
-                            LocalDate localDate = LocalDate.of(value.getYear(), value.getMonth(), 1).plusMonths(1);
+                            if(value == null) {
+                                now.minusMonths(1);
+                                smart4HealthMonthlyReportRepository.createOrUpdatePdf(now.getYear(), now.getMonthValue(), true);
+                            }
+                            else {
+                                LocalDate localDate = LocalDate.of(value.getYear(), value.getMonth(), 1).plusMonths(1);
+                                while (localDate.compareTo(now.toLocalDate()) < 0) {
 
-                            while (localDate.compareTo(now.toLocalDate()) < 0) {
+                                    final Observer<byte[]> observer = bytes -> {
+                                        final SdkContract.Fhir4RecordClient fhirClient = client.getFhir4();
+                                        final List<Attachment> attachments = new ArrayList<>(1);
 
-                                final Observer<byte[]> observer = bytes -> {
-                                    final SdkContract.Fhir4RecordClient fhirClient = client.getFhir4();
-                                    final List<Attachment> attachments = new ArrayList<>(1);
+                                        try {
+                                            final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", bytes);
+                                            attachments.add(attachment);
 
-                                    try {
-                                        final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", bytes);
-                                        attachments.add(attachment);
-
-                                        final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                                                getApplicationContext().getResources().getString(R.string.report_title, localDate.format(DateTimeFormatter.ISO_DATE)),
-                                                CodeSystemDocumentReferenceStatus.CURRENT,
-                                                attachments,
-                                                getGeneralReportCodeableConcept(),
-                                                getAuthor(),
-                                                null);
+                                            final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
+                                                    getApplicationContext().getResources().getString(R.string.report_title, localDate.format(DateTimeFormatter.ISO_DATE)),
+                                                    CodeSystemDocumentReferenceStatus.CURRENT,
+                                                    attachments,
+                                                    getGeneralReportCodeableConcept(),
+                                                    getAuthor(),
+                                                    null);
 
 
-                                        final FhirDate dt = new FhirDate(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
-                                        final FhirTime tm = new FhirTime(0, 0, 0, null, null);
-                                        final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
+                                            final FhirDate dt = new FhirDate(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
+                                            final FhirTime tm = new FhirTime(0, 0, 0, null, null);
+                                            final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
 
-                                        documentReference.date = new FhirInstant(dttm);
+                                            documentReference.date = new FhirInstant(dttm);
 
-                                        fhirClient.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
-                                            @Override
-                                            public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
-                                                smart4HealthMonthlyReportRepository.createOrUpdatePdf(localDate.getYear(), localDate.getMonthValue(), true);
-                                            }
+                                            fhirClient.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
+                                                @Override
+                                                public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
+                                                    smart4HealthMonthlyReportRepository.createOrUpdatePdf(localDate.getYear(), localDate.getMonthValue(), true);
+                                                }
 
-                                            @Override
-                                            public void onError(@NonNull D4LException e) {
-                                                e.printStackTrace();
-                                            }
-                                        });
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                };
-
-                                int days = localDate.lengthOfMonth();
-
-                                final DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getApplicationContext());
-                                ReportRepository reportRepository = new ReportRepository(getApplicationContext());
-                                DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplicationContext());
-                                Observer<Report> observerWorkTimeReport = workTimeReport -> {
-                                    Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
-                                        if(workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
-                                            dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), localDate, measurementKindLocalization, observer);
+                                                @Override
+                                                public void onError(@NonNull D4LException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
                                     };
-                                    dailyReportGenerator.generateNotWorkTimeReport(reportRepository, localDate, true, observerNotWorkTimeReport);
-                                };
-                                dailyReportGenerator.generateWorkTimeReport(reportRepository, localDate, true, observerWorkTimeReport);
 
-                                localDate.plusMonths(1);
+                                    int days = localDate.lengthOfMonth();
+
+                                    final DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getApplicationContext());
+                                    ReportRepository reportRepository = new ReportRepository(getApplicationContext());
+                                    DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplicationContext());
+                                    Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                                        Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                                            if (workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                                                dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), localDate, measurementKindLocalization, observer);
+                                            }
+                                        };
+                                        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, localDate, true, observerNotWorkTimeReport);
+                                    };
+                                    dailyReportGenerator.generateWorkTimeReport(reportRepository, localDate, true, observerWorkTimeReport);
+
+                                    localDate.plusMonths(1);
+                                }
                             }
 
                             completer.set(Result.success());
