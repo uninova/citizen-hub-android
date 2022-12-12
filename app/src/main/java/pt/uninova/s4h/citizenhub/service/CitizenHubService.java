@@ -3,8 +3,11 @@ package pt.uninova.s4h.citizenhub.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -256,6 +259,11 @@ public class CitizenHubService extends LifecycleService {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+
+        IntentFilter bleFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(bleStateReceiver, bleFilter);
+
+
         initAgentOrchestrator();
         initWorkOrchestrator();
     }
@@ -269,7 +277,7 @@ public class CitizenHubService extends LifecycleService {
     @Override
     public void onDestroy() {
         orchestrator.clear();
-
+        unregisterReceiver(bleStateReceiver);
         super.onDestroy();
     }
 
@@ -283,5 +291,33 @@ public class CitizenHubService extends LifecycleService {
     public WearOSMessageService getService() {
         return wearOSMessageService;
     }
+
+    private final BroadcastReceiver bleStateReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        System.out.println("BLUETOOTH OFF");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        System.out.println("TURNING BLUETOOTH OFF");
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        System.out.println("BLUETOOTH ON");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        System.out.println("TURNING BLUETOOTH ON");
+                        break;
+                }
+
+            }
+        }
+    };
+
 
 }
