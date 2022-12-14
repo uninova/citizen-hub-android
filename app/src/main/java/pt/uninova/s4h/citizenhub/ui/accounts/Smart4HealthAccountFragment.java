@@ -98,7 +98,7 @@ public class Smart4HealthAccountFragment extends Fragment {
 
         if(viewModel.hasReportMonthlyAutomaticUpload())
             switch_weekly_report_upload.setChecked(true);
-        switch_weekly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
+        switch_monthly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportMonthlyAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
             if(compoundButton.isChecked())
