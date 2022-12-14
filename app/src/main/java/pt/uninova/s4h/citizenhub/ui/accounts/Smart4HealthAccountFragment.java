@@ -90,7 +90,10 @@ public class Smart4HealthAccountFragment extends Fragment {
         switch_weekly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportWeeklyAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
-            if(compoundButton.isChecked());
+            if(compoundButton.isChecked())
+                workOrchestrator.enqueueSmart4HealthWeeklyUploader();
+            else
+                workOrchestrator.cancelSmart4HealthWeeklyUploader();
         });
 
         if(viewModel.hasReportMonthlyAutomaticUpload())
@@ -98,7 +101,10 @@ public class Smart4HealthAccountFragment extends Fragment {
         switch_weekly_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportMonthlyAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
-            if(compoundButton.isChecked());
+            if(compoundButton.isChecked())
+                workOrchestrator.enqueueSmart4HealthMonthlyUploader();
+            else
+                workOrchestrator.cancelSmart4HealthMonthlyUploader();
         });
 
         if(viewModel.hasReportDataActivity())
@@ -153,21 +159,16 @@ public class Smart4HealthAccountFragment extends Fragment {
             switch_monthly_report_upload.setChecked(false);
             switch_monthly_report_upload.setClickable(false);
         }
-        else {
+        else
+        {
             if(!switch_daily_report_upload.isClickable()){
-                //switch_daily_report_upload.setChecked(true);
                 switch_daily_report_upload.setClickable(true);
-                //workOrchestrator.enqueueSmart4HealthUploader();
             }
             if(!switch_weekly_report_upload.isClickable()){
-                //switch_weekly_report_upload.setChecked(true);
                 switch_weekly_report_upload.setClickable(true);
-                //workOrchestrator.enqueueSmart4HealthUploader();
             }
             if(!switch_monthly_report_upload.isClickable()){
-                //switch_monthly_report_upload.setChecked(true);
                 switch_monthly_report_upload.setClickable(true);
-                //workOrchestrator.enqueueSmart4HealthUploader();
             }
         }
     }
