@@ -53,21 +53,14 @@ public class WorkOrchestrator {
         cancelWork("smart4healthuploader");
     }
 
-    public void enqueueS4HWeeklyUploader(){
-        return;
+    public void cancelSmart4HealthWeeklyUploader(){
+        cancelWork("smart4healthweeklyuploader");
     }
 
-    public void cancelS4HWeeklyUploader(){
-        cancelWork("s4h_weekly_uploader");
+    public void cancelSmart4HealthMonthlyUploader(){
+        cancelWork("smart4healthmonthlyuploader");
     }
 
-    public void enqueueS4HMonthlyUploader(){
-        return;
-    }
-
-    public void cancelS4HMonthlyUploader(){
-        cancelWork("s4h_monthly_uploader");
-    }
 
     public void enqueueSmart4HealthUniqueWorkBloodPressure(Context context, long sampleId){
         final WorkManager workManager = WorkManager.getInstance(context);
