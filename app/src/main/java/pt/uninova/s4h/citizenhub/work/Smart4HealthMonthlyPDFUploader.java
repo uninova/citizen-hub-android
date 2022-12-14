@@ -39,11 +39,10 @@ import care.data4life.sdk.listener.ResultListener;
 import pt.uninova.s4h.citizenhub.R;
 import pt.uninova.s4h.citizenhub.localization.MeasurementKindLocalization;
 import pt.uninova.s4h.citizenhub.persistence.repository.ReportRepository;
-import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthDailyReportRepository;
 import pt.uninova.s4h.citizenhub.persistence.repository.Smart4HealthMonthlyReportRepository;
-import pt.uninova.s4h.citizenhub.report.DailyReportGenerator;
-import pt.uninova.s4h.citizenhub.report.DailyReportGeneratorPDFV2;
+import pt.uninova.s4h.citizenhub.report.PDFWeeklyAndMonthlyReport;
 import pt.uninova.s4h.citizenhub.report.Report;
+import pt.uninova.s4h.citizenhub.report.ReportGenerator;
 import pt.uninova.s4h.citizenhub.util.messaging.Observer;
 
 public class Smart4HealthMonthlyPDFUploader extends ListenableWorker {
@@ -102,83 +101,20 @@ public class Smart4HealthMonthlyPDFUploader extends ListenableWorker {
                         final Smart4HealthMonthlyReportRepository smart4HealthMonthlyReportRepository = new Smart4HealthMonthlyReportRepository(getApplicationContext());
 
                         final LocalDateTime now = LocalDateTime.now();
-                        final LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
-
-                        final FhirDate date = new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-                        final FhirTime time = new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null);
-                        final FhirDateTime dateTime = new FhirDateTime(date, time, TimeZone.getDefault());
-
-                        final MeasurementKindLocalization measurementKindLocalization = new MeasurementKindLocalization(getApplicationContext());
 
                         smart4HealthMonthlyReportRepository.selectLastMonthUploaded(value -> {
 
-                            if(value == null) {
+                            if(value == null)
+                            {
                                 now.minusMonths(1);
                                 smart4HealthMonthlyReportRepository.createOrUpdatePdf(now.getYear(), now.getMonthValue(), true);
                             }
-                            else {
-                                LocalDate localDate = LocalDate.of(value.getYear(), value.getMonth(), 1).plusMonths(1);
-                                while (localDate.compareTo(now.toLocalDate()) < 0) {
-
-                                    final Observer<byte[]> observer = bytes -> {
-                                        final SdkContract.Fhir4RecordClient fhirClient = client.getFhir4();
-                                        final List<Attachment> attachments = new ArrayList<>(1);
-
-                                        try {
-                                            final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", bytes);
-                                            attachments.add(attachment);
-
-                                            final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
-                                                    getApplicationContext().getResources().getString(R.string.report_title, localDate.format(DateTimeFormatter.ISO_DATE)),
-                                                    CodeSystemDocumentReferenceStatus.CURRENT,
-                                                    attachments,
-                                                    getGeneralReportCodeableConcept(),
-                                                    getAuthor(),
-                                                    null);
-
-
-                                            final FhirDate dt = new FhirDate(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
-                                            final FhirTime tm = new FhirTime(0, 0, 0, null, null);
-                                            final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
-
-                                            documentReference.date = new FhirInstant(dttm);
-
-                                            fhirClient.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
-                                                @Override
-                                                public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
-                                                    smart4HealthMonthlyReportRepository.createOrUpdatePdf(localDate.getYear(), localDate.getMonthValue(), true);
-                                                }
-
-                                                @Override
-                                                public void onError(@NonNull D4LException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            });
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    };
-
-                                    int days = localDate.lengthOfMonth();
-
-                                    final DailyReportGeneratorPDFV2 dailyReportGeneratorPDF = new DailyReportGeneratorPDFV2(getApplicationContext());
-                                    ReportRepository reportRepository = new ReportRepository(getApplicationContext());
-                                    DailyReportGenerator dailyReportGenerator = new DailyReportGenerator(getApplicationContext());
-                                    Observer<Report> observerWorkTimeReport = workTimeReport -> {
-                                        Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
-                                            if (workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
-                                                dailyReportGeneratorPDF.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), localDate, measurementKindLocalization, observer);
-                                            }
-                                        };
-                                        dailyReportGenerator.generateNotWorkTimeReport(reportRepository, localDate, true, observerNotWorkTimeReport);
-                                    };
-                                    dailyReportGenerator.generateWorkTimeReport(reportRepository, localDate, true, observerWorkTimeReport);
-
-                                    localDate.plusMonths(1);
-                                }
+                            else
+                            {
+                                LocalDate localDate = LocalDate.of(value.getYear(), value.getMonth(), LocalDate.of(value.getYear(), value.getMonth(), 1).lengthOfMonth());
+                                upload(completer, smart4HealthMonthlyReportRepository, client, localDate.plusMonths(1));
                             }
 
-                            completer.set(Result.success());
                         });
                     } else {
                         completer.set(Result.success());
@@ -193,6 +129,78 @@ public class Smart4HealthMonthlyPDFUploader extends ListenableWorker {
 
             return this.toString();
         });
+    }
+
+    private void upload(CallbackToFutureAdapter.Completer<ListenableWorker.Result> completer, Smart4HealthMonthlyReportRepository smart4HealthMonthlyReportRepository, Data4LifeClient client, LocalDate localDate) {
+        final LocalDateTime now = LocalDateTime.now();
+
+        final FhirDate date = new FhirDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        final FhirTime time = new FhirTime(now.getHour(), now.getMinute(), now.getSecond(), null, null);
+        final FhirDateTime dateTime = new FhirDateTime(date, time, TimeZone.getDefault());
+
+        final MeasurementKindLocalization measurementKindLocalization = new MeasurementKindLocalization(getApplicationContext());
+
+        if (localDate.getYear() < now.toLocalDate().getYear() || localDate.getYear() == now.toLocalDate().getYear() && localDate.getMonthValue() < now.toLocalDate().getMonthValue()) {
+
+            final Observer<byte[]> observer = bytes -> {
+                final SdkContract.Fhir4RecordClient fhirClient = client.getFhir4();
+                final List<Attachment> attachments = new ArrayList<>(1);
+
+                try {
+                    final Attachment attachment = AttachmentBuilder.buildWith(now.toString(), dateTime, "application/pdf", bytes);
+                    attachments.add(attachment);
+
+                    final DocumentReference documentReference = DocumentReferenceBuilder.buildWith(
+                            getApplicationContext().getResources().getString(R.string.monthly_report_title, localDate.getMonth().toString()),
+                            CodeSystemDocumentReferenceStatus.CURRENT,
+                            attachments,
+                            getGeneralReportCodeableConcept(),
+                            getAuthor(),
+                            null);
+
+
+                    final FhirDate dt = new FhirDate(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth());
+                    final FhirTime tm = new FhirTime(0, 0, 0, null, null);
+                    final FhirDateTime dttm = new FhirDateTime(dt, tm, TimeZone.getDefault());
+
+                    documentReference.date = new FhirInstant(dttm);
+
+                    fhirClient.create(documentReference, new ArrayList<>(), new Callback<Fhir4Record<DocumentReference>>() {
+                        @Override
+                        public void onSuccess(Fhir4Record<DocumentReference> fhir4Record) {
+                            smart4HealthMonthlyReportRepository.createOrUpdatePdf(localDate.getYear(), localDate.getMonthValue(), true);
+                        }
+
+                        @Override
+                        public void onError(@NonNull D4LException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+
+            int days = localDate.lengthOfMonth();
+
+            final PDFWeeklyAndMonthlyReport pdfWeeklyAndMonthlyReport = new PDFWeeklyAndMonthlyReport(getApplicationContext(), localDate);
+            ReportRepository reportRepository = new ReportRepository(getApplicationContext());
+            ReportGenerator reportGenerator = new ReportGenerator(getApplicationContext());
+            Observer<Report> observerWorkTimeReport = workTimeReport -> {
+                Observer<Report> observerNotWorkTimeReport = notWorkTimeReport -> {
+                    if (workTimeReport.getGroups().size() > 0 || notWorkTimeReport.getGroups().size() > 0) {
+                        pdfWeeklyAndMonthlyReport.generateCompleteReport(workTimeReport, notWorkTimeReport, getApplicationContext().getResources(), localDate, days, measurementKindLocalization, observer);
+                        upload(completer, smart4HealthMonthlyReportRepository, client, localDate.plusMonths(1));
+                    }
+                };
+                reportGenerator.generateWeeklyOrMonthlyNotWorkTimeReport(reportRepository, localDate, days, true, observerNotWorkTimeReport);
+            };
+            reportGenerator.generateWeeklyOrMonthlyWorkTimeReport(reportRepository, localDate, days,true, observerWorkTimeReport);
+        }
+        else
+        {
+            completer.set(Result.success());
+        }
     }
 
 }
