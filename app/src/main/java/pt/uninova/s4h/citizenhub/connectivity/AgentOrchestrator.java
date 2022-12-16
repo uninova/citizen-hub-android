@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.UUIDv5;
@@ -121,6 +122,7 @@ public class AgentOrchestrator {
         Set<Device> deviceSet = getDevices();
         for (Device device : deviceSet
         ) {
+            ((BluetoothAgent) getAgent(device)).getConnection().close();
             getAgent(device).disable();
         }
     }
@@ -129,6 +131,9 @@ public class AgentOrchestrator {
         Set<Device> deviceSet = getDevices();
         for (Device device : deviceSet
         ) {
+            identify(device, Agent::enable);
+            System.out.println(getAgent(device));
+            ((BluetoothAgent) getAgent(device)).getConnection().connect();
             getAgent(device).enable();
         }
     }
@@ -150,7 +155,7 @@ public class AgentOrchestrator {
 
         if (agent != null) {
             agent.removeSampleObserver(ingester);
-            tellOnAgentRemoved(device,agent);
+            tellOnAgentRemoved(device, agent);
         }
 
         agentMap.remove(device);
