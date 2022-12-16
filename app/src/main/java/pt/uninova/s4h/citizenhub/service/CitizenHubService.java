@@ -302,19 +302,11 @@ public class CitizenHubService extends LifecycleService {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (state) {
                     case BluetoothAdapter.STATE_OFF:
-                        System.out.println("BLUETOOTH OFF");
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                        System.out.println("TURNING BLUETOOTH OFF");
-                        break;
                     case BluetoothAdapter.STATE_ON:
-                        System.out.println("BLUETOOTH ON");
-                        break;
                     case BluetoothAdapter.STATE_TURNING_ON:
-                        System.out.println("TURNING BLUETOOTH ON");
+                    case BluetoothAdapter.STATE_TURNING_OFF:
                         break;
                 }
-
             }
         }
     };
