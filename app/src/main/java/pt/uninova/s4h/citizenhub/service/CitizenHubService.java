@@ -304,7 +304,9 @@ public class CitizenHubService extends LifecycleService {
                     case BluetoothAdapter.STATE_OFF:
                     case BluetoothAdapter.STATE_ON:
                     case BluetoothAdapter.STATE_TURNING_ON:
+                        orchestrator.enableAll();
                     case BluetoothAdapter.STATE_TURNING_OFF:
+                        orchestrator.disableAll();
                         break;
                 }
             }
