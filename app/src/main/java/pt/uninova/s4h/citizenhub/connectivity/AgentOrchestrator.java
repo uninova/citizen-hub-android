@@ -117,6 +117,18 @@ public class AgentOrchestrator {
         return Collections.unmodifiableSet(new TreeSet<>(agentMap.keySet()));
     }
 
+    public void disableAll() {
+        Set<Device> deviceSet = getDevices();
+        for (Device device : deviceSet
+        ) {
+            getAgent(device).disable();
+        }
+    }
+
+    public void enableAll() {
+
+    }
+
     public void identify(Device device, Observer<Agent> observer) {
         final AgentFactory<? extends Agent> factory = agentFactoryMap.get(device.getConnectionKind());
 
