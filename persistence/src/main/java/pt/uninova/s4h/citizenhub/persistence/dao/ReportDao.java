@@ -203,6 +203,104 @@ public interface ReportDao {
     @TypeConverters(EpochTypeConverter.class)
     ReportUtil getNotWorkTimeSimpleRecords(LocalDate from, LocalDate to);
 
+    @Query("SELECT breathingRate.maxBreathingRate, breathingRate.minBreathingRate, breathingRate.avgBreathingRate, "
+            + " caloriesData.calories, distanceData.distance, "
+            + " correctPosture.correctPostureDuration, wrongPosture.wrongPostureDuration, "
+            + " stepsData.steps "
+            + " FROM "
+
+            + "(SELECT MAX(value) AS maxBreathingRate, MIN(value) AS minBreathingRate, AVG(value) AS avgBreathingRate FROM breathing_rate_measurement "
+            + " INNER JOIN sample ON breathing_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + " (SELECT tag.label FROM tag WHERE tag.sample_id = breathing_rate_measurement.sample_id AND tag.label = 1)) breathingRate,"
+
+            + " (SELECT SUM(value) AS calories FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(calories_snapshot_measurement.value) AS value "
+            + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON calories_snapshot_measurement.sample_id = tag.sample_id "
+            + " UNION ALL SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, SUM(calories_measurement.value) AS value "
+            + " FROM calories_measurement INNER JOIN sample ON calories_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON calories_measurement.sample_id = tag.sample_id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND tag.label = 1 GROUP BY days)) caloriesData, "
+
+            + " (SELECT SUM(value) AS distance FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(distance_snapshot_measurement.value) AS value "
+            + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON distance_snapshot_measurement.sample_id = tag.sample_id "
+            + " UNION ALL SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, SUM(distance_measurement.value) AS value "
+            + " FROM distance_measurement INNER JOIN sample ON distance_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON distance_measurement.sample_id = tag.sample_id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND tag.label = 1 GROUP BY days)) distanceData, "
+
+            /*+ " (SELECT classification AS classification, SUM(duration) AS dailyPostureDuration "
+            + " FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification) posture, "*/
+            + " (SELECT classification AS classification, SUM(duration) AS correctPostureDuration FROM posture_measurement "
+            + " INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON posture_measurement.sample_id = tag.sample_id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND tag.label = 1 AND classification = 1) correctPosture, "
+
+            + "(SELECT classification AS classification, SUM(duration) AS wrongPostureDuration FROM posture_measurement "
+            + " INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON posture_measurement.sample_id = tag.sample_id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND tag.label = 1 AND classification = 2) wrongPosture, "
+
+            + " (SELECT SUM(value) AS steps FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(steps_snapshot_measurement.value) AS value "
+            + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON steps_snapshot_measurement.sample_id = tag.sample_id "
+            + " UNION ALL SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, SUM(steps_measurement.value) AS value "
+            + " FROM steps_measurement INNER JOIN sample ON steps_measurement.sample_id = sample.id "
+            + " INNER JOIN tag ON steps_measurement.sample_id = tag.sample_id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND tag.label = 1 AND tag.label = 1 GROUP BY days)) stepsData ")
+    @TypeConverters(EpochTypeConverter.class)
+    ReportUtil getWeeklyOrMonthlyWorkTimeSimpleRecords(LocalDate from, LocalDate to, int days);
+
+    @Query("SELECT breathingRate.maxBreathingRate, breathingRate.minBreathingRate, breathingRate.avgBreathingRate, "
+            + " caloriesData.calories, distanceData.distance, "
+            + " correctPosture.correctPostureDuration, wrongPosture.wrongPostureDuration, "
+            + " stepsData.steps "
+            + " FROM "
+
+            + "(SELECT MAX(value) AS maxBreathingRate, MIN(value) AS minBreathingRate, AVG(value) AS avgBreathingRate FROM breathing_rate_measurement "
+            + " INNER JOIN sample ON breathing_rate_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + " (SELECT tag.label FROM tag WHERE tag.sample_id = breathing_rate_measurement.sample_id AND tag.label = 1)) breathingRate,"
+
+            + " (SELECT SUM(max_values) AS calories FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(calories_snapshot_measurement.value) AS max_values "
+            + " FROM calories_snapshot_measurement INNER JOIN sample ON calories_snapshot_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = calories_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) caloriesData, "
+
+            + " (SELECT SUM(max_values) AS distance FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(distance_snapshot_measurement.value) AS max_values "
+            + " FROM distance_snapshot_measurement INNER JOIN sample ON distance_snapshot_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = distance_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) distanceData, "
+
+            /*+ " (SELECT classification AS classification, SUM(duration) AS dailyPostureDuration "
+            + " FROM posture_measurement INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to GROUP BY classification) posture, "*/
+            + " (SELECT classification AS classification, SUM(duration) AS correctPostureDuration FROM posture_measurement "
+            + " INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND classification = 1 "
+            + " AND NOT EXISTS "
+            + " (SELECT tag.label FROM tag WHERE tag.sample_id = posture_measurement.sample_id AND tag.label = 1)) correctPosture, "
+
+            + " (SELECT classification AS classification, SUM(duration) AS wrongPostureDuration FROM posture_measurement "
+            + " INNER JOIN sample ON posture_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to AND classification = 2 "
+            + " AND NOT EXISTS "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = posture_measurement.sample_id AND tag.label = 1)) wrongPosture, "
+
+            + " (SELECT SUM(max_values) AS steps FROM (SELECT ((sample.timestamp - :from) / 86400000) % :days AS days, MAX(steps_snapshot_measurement.value) AS max_values "
+            + " FROM steps_snapshot_measurement INNER JOIN sample ON steps_snapshot_measurement.sample_id = sample.id "
+            + " WHERE sample.timestamp >= :from AND sample.timestamp < :to "
+            + " AND NOT EXISTS "
+            + "(SELECT tag.label FROM tag WHERE tag.sample_id = steps_snapshot_measurement.sample_id AND tag.label = 1) GROUP BY days)) stepsData")
+    @TypeConverters(EpochTypeConverter.class)
+    ReportUtil getWeeklyOrMonthlyNotWorkTimeSimpleRecords(LocalDate from, LocalDate to, int days);
+
     @Query("SELECT diastolic, systolic, mean_arterial_pressure AS meanArterialPressure, sample.timestamp AS timestamp "
             + " FROM blood_pressure_measurement INNER JOIN sample ON blood_pressure_measurement.sample_id = sample.id "
             + " WHERE sample.timestamp >= :from AND sample.timestamp < :to ORDER BY timestamp")
