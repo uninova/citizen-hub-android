@@ -126,7 +126,11 @@ public class AgentOrchestrator {
     }
 
     public void enableAll() {
-
+        Set<Device> deviceSet = getDevices();
+        for (Device device : deviceSet
+        ) {
+            getAgent(device).enable();
+        }
     }
 
     public void identify(Device device, Observer<Agent> observer) {
