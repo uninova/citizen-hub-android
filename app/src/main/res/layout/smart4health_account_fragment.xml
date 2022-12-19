@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DeviceConfiguration.ScrollView">
+    style="@style/DeviceConfiguration.ScrollView"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
 
@@ -41,12 +42,6 @@
         android:text="@string/smart4health_monthly_report_uploads"
         android:textColor="@color/colorS4HDarkBlue"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
-        
-        <TextView
-            android:id="@+id/text_view_description"
-            style="@style/AccountSettings.TextView"
-            android:text="@string/smart4health_description"
-            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +53,7 @@
                 android:id="@+id/switch_automatic_upload"
                 style="@style/AccountSettingsFragment.switchCompatStyle"
                 android:layout_marginVertical="0dp"
-                android:text="@string/smart4health_automatic_uploads"
+                android:text="@string/smart4health_daily_report_uploads"
                 android:thumbTint="@color/thumb_selector"
                 android:trackTint="@color/track_selector" />
 
