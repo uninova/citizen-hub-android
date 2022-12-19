@@ -215,7 +215,6 @@ public class ReportDetailFragment extends Fragment {
             Observer<Report> observerWorkTime = workTime -> {
                 Observer<Report> observerNotWorkTime = notWorkTime -> {
                     if(workTime.getGroups().size() > 0 || notWorkTime.getGroups().size() > 0) {
-                        System.out.println("oidoj");
                         PDFWeeklyAndMonthlyReport pdfWeeklyAndMonthlyReport = new PDFWeeklyAndMonthlyReport(getContext(), model.getCurrentDate());
                         pdfWeeklyAndMonthlyReport.generateCompleteReport(workTime, notWorkTime, getResources(), model.getCurrentDate(), days,measurementKindLocalization, observer);
                     }
