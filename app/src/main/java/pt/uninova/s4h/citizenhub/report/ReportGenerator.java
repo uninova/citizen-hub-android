@@ -30,8 +30,6 @@ public class ReportGenerator {
     }
 
     private void groupSimpleRecords(ReportUtil reportUtil, List<Group> groups, boolean pdf) {
-        if (reportUtil == null)
-            return;
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         if(preferences.getBoolean("account.smart4health.report.data.activity", true) || !pdf) {
@@ -243,7 +241,6 @@ public class ReportGenerator {
             title = "Monthly Report";
         }
 
-        System.out.println(localDate.minusDays(days));
         Report report = new Report(() -> title, new LocalDateLocalizedResource(localDate));
         List<Group> groups = report.getGroups();
 
