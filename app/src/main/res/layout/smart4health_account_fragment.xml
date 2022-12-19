@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DeviceConfiguration.ScrollView"
-    xmlns:tools="http://schemas.android.com/tools">
+    style="@style/DeviceConfiguration.ScrollView">
 
     <LinearLayout style="@style/DeviceConfiguration.LinearLayout">
 
@@ -13,35 +12,32 @@
             android:contentDescription="@string/smart4health_description"
             android:src="@drawable/img_s4h_logo_transparent_png" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_daily_report_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
         android:layout_marginHorizontal="30dp"
         android:text="@string/smart4health_daily_report_uploads"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:textColor="@color/colorS4HDarkBlue"/>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_weekly_report_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
         android:layout_marginHorizontal="30dp"
         android:text="@string/smart4health_weekly_report_uploads"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:textColor="@color/colorS4HDarkBlue"/>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_monthly_report_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="15dp"
         android:layout_marginHorizontal="30dp"
         android:text="@string/smart4health_monthly_report_uploads"
-        android:textColor="@color/colorS4HDarkBlue"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:textColor="@color/colorS4HDarkBlue"/>
 
         <LinearLayout
             android:layout_width="match_parent"

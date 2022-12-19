@@ -32,22 +32,14 @@ import pt.uninova.s4h.citizenhub.work.WorkOrchestrator;
 public class Smart4HealthAccountFragment extends Fragment {
 
     private AccountsViewModel viewModel;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_daily_report_upload;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_weekly_report_upload;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_monthly_report_upload;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_activity;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_blood_pressure;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_heart_rate;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_lumbar_extension_training;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch switch_posture;
+    private SwitchCompat switch_daily_report_upload;
+    private SwitchCompat switch_weekly_report_upload;
+    private SwitchCompat switch_monthly_report_upload;
+    private SwitchCompat switch_activity;
+    private SwitchCompat switch_blood_pressure;
+    private SwitchCompat switch_heart_rate;
+    private SwitchCompat switch_lumbar_extension_training;
+    private SwitchCompat switch_posture;
 
     public Smart4HealthAccountFragment() {
     }
