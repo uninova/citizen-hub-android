@@ -23,6 +23,7 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,11 +63,13 @@ public class MainActivity extends FragmentActivity {
     static MutableLiveData<Boolean> protocolHeartRate = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolSteps = new MutableLiveData<>();
     static MutableLiveData<Boolean> protocolPhoneConnected = new MutableLiveData<>();
+    static MutableLiveData<Integer> heartRateIcon = new MutableLiveData<>();
     public static SensorEventListener stepsListener, heartRateListener;
     public static SharedPreferences sharedPreferences;
     SampleRepository sampleRepository;
     DecimalFormat f = new DecimalFormat("###");
     public static long lastTimeConnected;
+    long lastHeartRate = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,14 +110,10 @@ public class MainActivity extends FragmentActivity {
             else
                 listenSteps.postValue("0");
         });
-        heartRateMeasurementRepository.readAverageObserved(now, value -> {
-            if (value != null)
-                listenHeartRateAverage.postValue(f.format(value));
-            else
-                listenHeartRateAverage.postValue("-");
-        });
+        listenHeartRate.postValue("--");
 
         startService();
+        startStateCheckTimer();
     }
 
     public void startService() {
@@ -123,6 +122,22 @@ public class MainActivity extends FragmentActivity {
             serviceIntent.putExtra("inputExtra", "2 " + getString(R.string.notification_sensors_measuring));
             ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
         }, 10000);
+    }
+
+    private void startStateCheckTimer() {
+        Handler handler = new Handler();
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime > (lastHeartRate + 5 * 60000)) {
+                    listenHeartRateAverage.postValue("--");
+                    heartRateIcon.postValue(R.drawable.ic_heart_disconnected);
+                }
+                handler.postDelayed(this, 5 * 60000);
+            }
+        };
+        handler.post(run);
     }
 
     public void startListeners() {
@@ -140,11 +155,9 @@ public class MainActivity extends FragmentActivity {
                         sampleRepository.create(sample, sampleId -> {
                         });
 
-                        final LocalDate now = LocalDate.now();
-
-                        heartRateMeasurementRepository.readAverageObserved(now, value ->
-                                listenHeartRateAverage.postValue(f.format(value))
-                        );
+                        listenHeartRateAverage.postValue(f.format((int) event.values[0]));
+                        heartRateIcon.postValue(R.drawable.ic_heart);
+                        lastHeartRate = System.currentTimeMillis();
                     }
                 }
             }
@@ -195,12 +208,11 @@ public class MainActivity extends FragmentActivity {
         };
     }
 
-    private void checkIfConnected(){
+    private void checkIfConnected() {
         long currentTime = System.currentTimeMillis();
-        if(currentTime-lastTimeConnected > (30 * 1000)){
+        if (currentTime - lastTimeConnected > (30 * 1000)) {
             protocolPhoneConnected.setValue(false);
-        }
-        else{
+        } else {
             protocolPhoneConnected.setValue(true);
         }
     }
@@ -247,14 +259,22 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void permissionRequest() {
+        ArrayList<String> permissions = new ArrayList<>(2);
+
         if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.BODY_SENSORS}, 21);
+            permissions.add(Manifest.permission.BODY_SENSORS);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 22);
+                permissions.add(Manifest.permission.ACTIVITY_RECOGNITION);
             }
+        }
+
+        if (permissions.size() > 0) {
+            String[] p = new String[permissions.size()];
+            permissions.toArray(p);
+            requestPermissions(p, 21);
         }
     }
 
@@ -292,8 +312,7 @@ public class MainActivity extends FragmentActivity {
             if (intent.hasExtra("WearOSAgent")) {
                 protocolPhoneConnected.setValue(Boolean.parseBoolean(intent.getStringExtra("WearOSAgent")));
             }
-            if (intent.hasExtra("WearOSConnected"))
-            {
+            if (intent.hasExtra("WearOSConnected")) {
                 lastTimeConnected = System.currentTimeMillis();
             }
         }

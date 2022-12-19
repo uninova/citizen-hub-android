@@ -34,7 +34,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_baseline_favorite_24" />
+                    android:src="@drawable/ic_heart" />
 
                 <TextView
                     android:id="@+id/textViewHeartRateValue"
@@ -43,7 +43,7 @@
                     android:layout_gravity="center|top"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
-                    android:text="-" />
+                    android:text="--" />
             </LinearLayout>
 
             <ImageView
@@ -69,7 +69,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_baseline_directions_walk_24" />
+                    android:src="@drawable/ic_steps" />
 
                 <TextView
                     android:id="@+id/textViewStepsValue"
@@ -90,16 +90,6 @@
             android:layout_gravity="center"
             android:src="@drawable/img_citizen_hub_logo_dark_name" />
 
-        <TextView
-            android:id="@+id/textViewSwipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/primus_regular"
-            android:gravity="center"
-            android:text="@string/fragment_greeting_next_page"
-            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>
