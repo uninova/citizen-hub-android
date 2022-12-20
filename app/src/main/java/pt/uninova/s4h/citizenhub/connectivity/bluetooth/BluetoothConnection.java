@@ -458,10 +458,15 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
         stateChangedMessageDispatcher.removeObserver(listener);
     }
 
-    public BluetoothConnection reconnect() {
-        clear();
-        close();
-        return new BluetoothConnection(device);
+    public void reconnect() {
+        if (gatt != null) {
+            gatt.disconnect();
+            gatt.close();
+
+            gatt = null;
+        }
+        runnables.clear();
+        connect();
     }
 
     public void removeDescriptorListener(DescriptorListener listener) {

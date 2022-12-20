@@ -301,15 +301,14 @@ public class CitizenHubService extends LifecycleService {
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (state) {
+                    case BluetoothAdapter.STATE_ON:
+                        orchestrator.enableAll();
+                        break;
                     case BluetoothAdapter.STATE_OFF:
                         break;
-                    case BluetoothAdapter.STATE_ON:
-                        break;
                     case BluetoothAdapter.STATE_TURNING_ON:
-                        orchestrator.enableAll(context);
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        orchestrator.disableAll();
                         break;
                 }
             }

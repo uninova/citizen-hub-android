@@ -1,7 +1,5 @@
 package pt.uninova.s4h.citizenhub.connectivity;
 
-import android.content.Context;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,8 +10,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothAgent;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnection;
-import pt.uninova.s4h.citizenhub.connectivity.bluetooth.BluetoothConnectionState;
 import pt.uninova.s4h.citizenhub.data.Device;
 import pt.uninova.s4h.citizenhub.data.Sample;
 import pt.uninova.s4h.citizenhub.util.UUIDv5;
@@ -122,35 +118,13 @@ public class AgentOrchestrator {
         return Collections.unmodifiableSet(new TreeSet<>(agentMap.keySet()));
     }
 
-    public void disableAll() {
-        Set<Device> deviceSet = getDevices();
-        for (Device device : deviceSet
+    public void enableAll() {
+        for (Device device : getDevices()
         ) {
-            ((BluetoothAgent) getAgent(device)).getConnection().close();
-            ((BluetoothAgent) getAgent(device)).disable();
-//            System.out.println(getAgent(device));
-        }
-    }
+            BluetoothAgent agent = ((BluetoothAgent) getAgent(device));
 
-    public void enableAll(Context context) {
-        Set<Device> deviceSet = getDevices();
-        for (Device device : deviceSet
-        ) {
-            BluetoothConnection connection = ((BluetoothAgent) getAgent(device)).getConnection().reconnect();
-            connection.addConnectionStateChangeListener(new Observer<StateChangedMessage<BluetoothConnectionState, BluetoothConnection>>() {
-                @Override
-                public void observe(StateChangedMessage<BluetoothConnectionState, BluetoothConnection> value) {
-                    if (value.getNewState() == BluetoothConnectionState.READY) {
-                        final BluetoothConnection source = value.getSource();
-                        System.out.println("ASDUINH8UFHSDAFHNSDHFDSHF");
-                        value.getSource().removeConnectionStateChangeListener(this);
-                    } else System.out.println("not ready");
-                }
-            });
-            connection.connect();
-            //            System.out.println(connection.getState());
-//            System.out.println(connection.getAddress());
-//            System.out.println(connection.getServices());
+            agent.getConnection().reconnect();
+
         }
     }
 
