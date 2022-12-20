@@ -122,8 +122,6 @@ public class AgentOrchestrator {
         for (Device device : getDevices()
         ) {
             BluetoothAgent agent = ((BluetoothAgent) getAgent(device));
-            System.out.println("ENABLE ALL - agent" + agent.getName());
-
             agent.getConnection().reconnect();
 
         }
