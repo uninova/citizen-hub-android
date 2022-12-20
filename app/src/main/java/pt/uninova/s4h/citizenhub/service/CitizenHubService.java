@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -302,7 +303,12 @@ public class CitizenHubService extends LifecycleService {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (state) {
                     case BluetoothAdapter.STATE_ON:
-                        orchestrator.enableAll();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                orchestrator.enableAll();
+                            }
+                        }, 5000);   //5 seconds
                         break;
                     case BluetoothAdapter.STATE_OFF:
                         break;

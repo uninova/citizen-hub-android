@@ -133,6 +133,8 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void connect() {
+        System.out.println("CONNECTTTT GATTTTT ");
+
         device.connectGatt(null, true, this, BluetoothDevice.TRANSPORT_LE);
     }
 
@@ -459,12 +461,19 @@ public class BluetoothConnection extends BluetoothGattCallback implements Connec
     }
 
     public void reconnect() {
+        System.out.println("RECONNECTTTT");
+
         if (gatt != null) {
+
+            System.out.println("GATTTTT !=NULL");
+
             gatt.disconnect();
             gatt.close();
 
             gatt = null;
         }
+        System.out.println("GATTTTT ==NULL");
+
         runnables.clear();
         connect();
     }
