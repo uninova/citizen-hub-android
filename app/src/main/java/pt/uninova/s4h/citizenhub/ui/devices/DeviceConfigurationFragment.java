@@ -73,6 +73,7 @@ public class DeviceConfigurationFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.device_configuration_fragment, menu);
         MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
+
         removeItem.setOnMenuItemClickListener((MenuItem item) -> {
             model.removeSelectedDevice();
             Navigation.findNavController(DeviceConfigurationFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
