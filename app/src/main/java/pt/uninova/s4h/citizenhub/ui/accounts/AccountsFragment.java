@@ -42,6 +42,7 @@ public class AccountsFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.accounts_fragment_menu_add_item) {
                     Navigation.findNavController(requireView()).navigate(AccountsFragmentDirections.actionAccountsFragmentToAddAccountFragment());
+                    return true;
                 }
                 return false;
             }

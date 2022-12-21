@@ -63,10 +63,13 @@ public class DeviceConfigurationFragment extends Fragment {
 
                 if (id == R.id.device_configuration_menu_reconnect_item) {
                     model.reconnectDevice(model.getSelectedDevice().getValue());
+                    return true;
 
                 } else if (id == R.id.device_configuration_menu_remove_item) {
                     model.removeSelectedDevice();
                     Navigation.findNavController(DeviceConfigurationFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
+                    return true;
+
                 }
                 return false;
             }
