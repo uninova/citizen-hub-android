@@ -199,12 +199,5 @@ public class Smart4HealthAccountFragment extends Fragment {
             }
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        //viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
-
-
-    }
+    
 }
