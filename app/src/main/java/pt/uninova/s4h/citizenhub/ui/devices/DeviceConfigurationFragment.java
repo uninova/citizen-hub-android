@@ -16,6 +16,7 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -73,7 +74,8 @@ public class DeviceConfigurationFragment extends Fragment {
                 }
                 return false;
             }
-        });
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
 
         nameDevice = view.findViewById(R.id.textConfigurationDeviceNameValue);
         addressDevice = view.findViewById(R.id.textConfigurationAddressValue);

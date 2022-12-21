@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -46,7 +47,7 @@ public class AccountsFragment extends Fragment {
                 }
                 return false;
             }
-        });
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
         View smart4HealthCard = view.findViewById(R.id.card_smart4health);
         View smartBearCard = view.findViewById(R.id.card_smartbear);

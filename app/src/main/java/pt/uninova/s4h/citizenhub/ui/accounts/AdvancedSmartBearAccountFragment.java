@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -59,7 +60,8 @@ public class AdvancedSmartBearAccountFragment extends Fragment {
                 }
                 return false;
             }
-        });
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
 
         patientIdEditText.setText(String.format(Locale.getDefault(), "%d", viewModel.getSmartBearId()));
 
