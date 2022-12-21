@@ -16,7 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.work.WorkManager;
 
@@ -50,12 +53,82 @@ public class Smart4HealthAccountFragment extends Fragment {
         final View view = inflater.inflate(R.layout.smart4health_account_fragment, container, false);
 
         viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
-        setHasOptionsMenu(true);
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.smart4health_account_fragment, menu);
+                if (viewModel.hasSmart4HealthAccount()) {
+                    menu.removeItem(R.id.smart4health_account_fragment_menu_log_in);
+                } else {
+                    menu.removeItem(R.id.smart4health_account_fragment_menu_log_out);
+                }
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.smart4health_account_fragment_menu_log_out) {
+                    final Data4LifeClient client = Data4LifeClient.getInstance();
+
+                    client.logout(new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            final Activity activity = requireActivity();
+                            final Intent intent = new Intent(activity, LobbyActivity.class);
+
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                            startActivity(intent);
+                            activity.finish();
+
+                            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                            workOrchestrator.cancelSmart4HealthUploader();
+                        }
+
+                        @Override
+                        public void onError(@NonNull D4LException exception) {
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), getString(R.string.fragment_smart4health_account_fragment_logout_failure_toast), Toast.LENGTH_SHORT).show();
+                                exception.printStackTrace();
+                            });
+                        }
+                    });
+
+                    return true;
+                } else if (menuItem.getItemId() == R.id.smart4health_account_fragment_menu_log_in) {
+                    final Data4LifeClient client = Data4LifeClient.getInstance();
+                    client.isUserLoggedIn(new ResultListener<Boolean>() {
+                        @Override
+                        public void onError(@NonNull D4LException e) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Boolean value) {
+                            if (value) {
+                                final Activity activity = requireActivity();
+                                final Intent intent = new Intent(activity, MainActivity.class);
+//                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                                activity.startActivity(intent);
+                                activity.finish();
+
+                                WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
+                                workOrchestrator.enqueueSmart4HealthUploader();
+                            }
+                        }
+                    });
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
 
         return view;
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         switch_daily_report_upload = view.findViewById(R.id.switch_daily_report_upload);
         switch_weekly_report_upload = view.findViewById(R.id.switch_weekly_report_upload);
@@ -71,7 +144,7 @@ public class Smart4HealthAccountFragment extends Fragment {
         switch_daily_report_upload.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportAutomaticUpload(compoundButton.isChecked());
             WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
-            if(compoundButton.isChecked())
+            if (compoundButton.isChecked())
                 workOrchestrator.enqueueSmart4HealthUploader();
             else
                 workOrchestrator.cancelSmart4HealthUploader();
@@ -99,14 +172,14 @@ public class Smart4HealthAccountFragment extends Fragment {
                 workOrchestrator.cancelSmart4HealthMonthlyUploader();
         });
 
-        if(viewModel.hasReportDataActivity())
+        if (viewModel.hasReportDataActivity())
             switch_activity.setChecked(true);
         switch_activity.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportDataActivity(compoundButton.isChecked());
             verifyAllSwitchStatus();
         });
 
-        if(viewModel.hasReportDataBloodPressure())
+        if (viewModel.hasReportDataBloodPressure())
             switch_blood_pressure.setChecked(true);
         switch_blood_pressure.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportDataBloodPressure(compoundButton.isChecked());
@@ -114,7 +187,7 @@ public class Smart4HealthAccountFragment extends Fragment {
         });
 
 
-        if(viewModel.hasReportDataHeartRate())
+        if (viewModel.hasReportDataHeartRate())
             switch_heart_rate.setChecked(true);
         switch_heart_rate.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportDataHeartRate(compoundButton.isChecked());
@@ -122,7 +195,7 @@ public class Smart4HealthAccountFragment extends Fragment {
         });
 
 
-        if(viewModel.hasReportDataLumbarExtensionTraining())
+        if (viewModel.hasReportDataLumbarExtensionTraining())
             switch_lumbar_extension_training.setChecked(true);
         switch_lumbar_extension_training.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportDataLumbarExtensionTraining(compoundButton.isChecked());
@@ -130,7 +203,7 @@ public class Smart4HealthAccountFragment extends Fragment {
         });
 
 
-        if(viewModel.hasReportDataPosture())
+        if (viewModel.hasReportDataPosture())
             switch_posture.setChecked(true);
         switch_posture.setOnCheckedChangeListener((compoundButton, b) -> {
             viewModel.setReportDataPosture(compoundButton.isChecked());
@@ -140,7 +213,7 @@ public class Smart4HealthAccountFragment extends Fragment {
         verifyAllSwitchStatus();
     }
 
-    private void verifyAllSwitchStatus(){
+    private void verifyAllSwitchStatus() {
         WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
         if(!switch_activity.isChecked() && !switch_blood_pressure.isChecked() && !switch_heart_rate.isChecked() && !switch_lumbar_extension_training.isChecked() && !switch_posture.isChecked()){
             switch_daily_report_upload.setChecked(false);
@@ -164,72 +237,5 @@ public class Smart4HealthAccountFragment extends Fragment {
             }
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.smart4health_account_fragment, menu);
-
-        //viewModel = new ViewModelProvider(requireActivity()).get(AccountsViewModel.class);
-
-        if (viewModel.hasSmart4HealthAccount()) {
-            menu.removeItem(R.id.smart4health_account_fragment_menu_log_in);
-            menu.findItem(R.id.smart4health_account_fragment_menu_log_out).setOnMenuItemClickListener((MenuItem item) -> {
-                final Data4LifeClient client = Data4LifeClient.getInstance();
-
-                client.logout(new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        final Activity activity = requireActivity();
-                        final Intent intent = new Intent(activity, LobbyActivity.class);
-
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                        startActivity(intent);
-                        activity.finish();
-
-                        WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
-                        workOrchestrator.cancelSmart4HealthUploader();
-                    }
-
-                    @Override
-                    public void onError(@NonNull D4LException exception) {
-                        requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), getString(R.string.fragment_smart4health_account_fragment_logout_failure_toast), Toast.LENGTH_SHORT).show();
-                            exception.printStackTrace();
-                        });
-                    }
-                });
-
-                return true;
-            });
-        } else {
-            menu.removeItem(R.id.smart4health_account_fragment_menu_log_out);
-            menu.findItem(R.id.smart4health_account_fragment_menu_log_in).setOnMenuItemClickListener((MenuItem item) -> {
-                final Data4LifeClient client = Data4LifeClient.getInstance();
-                client.isUserLoggedIn(new ResultListener<Boolean>() {
-                    @Override
-                    public void onError(@NonNull D4LException e) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Boolean value) {
-                        if (value) {
-                            final Activity activity = requireActivity();
-                            final Intent intent = new Intent(activity, MainActivity.class);
-//                    Navigation.findNavController(getView()).navigate(AuthenticationFragmentDirections.actionAuthenticationFragmentToSummaryFragment());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                            activity.startActivity(intent);
-                            activity.finish();
-
-                            WorkOrchestrator workOrchestrator = new WorkOrchestrator(WorkManager.getInstance(requireContext()));
-                            workOrchestrator.enqueueSmart4HealthUploader();
-                        }
-                    }
-                });
-                return true;
-
-            });
-        }
-    }
+    
 }
