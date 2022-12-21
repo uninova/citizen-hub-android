@@ -48,7 +48,6 @@ public class DeviceConfigurationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.fragment_device_configuration_listview, container, false);
 
         MenuHost menuHost = requireActivity();
@@ -93,25 +92,6 @@ public class DeviceConfigurationFragment extends Fragment {
         }
         return view;
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        inflater.inflate(R.menu.device_configuration_fragment, menu);
-//        MenuItem reconnectItem = menu.findItem(R.id.device_configuration_menu_reconnect_item);
-//
-//        MenuItem removeItem = menu.findItem(R.id.device_configuration_menu_remove_item);
-//
-//        reconnectItem.setOnMenuItemClickListener((MenuItem item) -> {
-//            model.reconnectDevice(model.getSelectedDevice().getValue());
-//            return true;
-//        });
-//        removeItem.setOnMenuItemClickListener((MenuItem item) -> {
-//            model.removeSelectedDevice();
-//            Navigation.findNavController(DeviceConfigurationFragment.this.requireView()).navigate(DeviceConfigurationFragmentDirections.actionDeviceConfigurationStreamsFragmentToDeviceListFragment());
-//
-//            return true;
-//        });
-//    }
 
     private static void setChildrenEnabled(ViewGroup layout, boolean state) {
         layout.setEnabled(state);
