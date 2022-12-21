@@ -1,5 +1,7 @@
 package pt.uninova.s4h.citizenhub.service;
 
+import static pt.uninova.s4h.citizenhub.connectivity.Connection.CONNECTION_KIND_BLUETOOTH;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -304,7 +306,7 @@ public class CitizenHubService extends LifecycleService {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
-                                orchestrator.enableAll();
+                                orchestrator.enableAll(CONNECTION_KIND_BLUETOOTH);
                             }
                         }, 5000);   //5 seconds
                         break;

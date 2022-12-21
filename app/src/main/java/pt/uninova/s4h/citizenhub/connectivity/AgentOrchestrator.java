@@ -118,12 +118,14 @@ public class AgentOrchestrator {
         return Collections.unmodifiableSet(new TreeSet<>(agentMap.keySet()));
     }
 
-    public void enableAll() {
+    public void enableAll(int connectionType) {
+        int connectionKind = connectionType;
         for (Device device : getDevices()
         ) {
-            BluetoothAgent agent = ((BluetoothAgent) getAgent(device));
-            agent.getConnection().reconnect();
-
+            if (device.getConnectionKind() == connectionKind) {
+                BluetoothAgent agent = ((BluetoothAgent) getAgent(device));
+                agent.getConnection().reconnect();
+            }
         }
     }
 
